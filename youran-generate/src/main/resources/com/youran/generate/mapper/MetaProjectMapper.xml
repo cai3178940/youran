@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.mapper.MetaProjectMapper">
+
+    <select id="findById" resultType="MetaProjectPO">
+        select * from meta_project
+        where delSign=0
+        and projectId = #{projectId,jdbcType=INTEGER}
+    </select>
+
+    <select id="exist" resultType="int">
+        select count(*) from meta_project
+        where delSign=0
+        and projectId = #{projectId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="projectId" parameterType="MetaProjectPO">
+        insert into meta_project (
+          projectId, packageName, projectName,
+          author, createDate, createBy,
+          operateDate, operateBy, delSign,
+          version)
+        values (#{projectId,jdbcType=INTEGER}, #{packageName,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
+          #{author,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
+          #{operateDate,jdbcType=TIMESTAMP}, #{operateBy,jdbcType=VARCHAR}, #{delSign,jdbcType=SMALLINT},
+          #{version,jdbcType=INTEGER})
+    </insert>
+
+    <update id="update" parameterType="MetaProjectPO">
+        update meta_project
+        set
+          packageName = #{packageName,jdbcType=VARCHAR},
+          projectName = #{projectName,jdbcType=VARCHAR},
+          author = #{author,jdbcType=VARCHAR},
+          operateDate = #{operateDate,jdbcType=TIMESTAMP},
+          operateBy = #{operateBy,jdbcType=VARCHAR},
+          version = #{version,jdbcType=INTEGER}
+        where projectId = #{projectId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and delSign=0
+    </update>
+
+    <delete id="delete">
+        update meta_project set
+        delSign=1
+        where projectId = #{projectId,jdbcType=INTEGER}
+        and delSign=0
+    </delete>
+
+    <select id="findCountByQuery" parameterType="MetaProjectQueryDTO" resultType="int">
+        select count(*) from (
+        select * from meta_project t
+        where t.delSign=0
+        ) as count_select_
+    </select>
+
+    <select id="findListByQuery" parameterType="MetaProjectQueryDTO" resultType="MetaProjectListVO">
+        select * from meta_project t
+        where t.delSign=0
+        limit #{startIndex},#{pageSize}
+    </select>
+</mapper>

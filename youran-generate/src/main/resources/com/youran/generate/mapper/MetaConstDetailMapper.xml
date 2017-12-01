@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.mapper.MetaConstDetailMapper">
+
+    <select id="findById" resultType="MetaConstDetailPO">
+        select * from meta_const_detail
+        where delSign=0
+        and constDetailId = #{constDetailId,jdbcType=INTEGER}
+    </select>
+
+    <select id="exist" resultType="int">
+        select count(*) from meta_const_detail
+        where delSign=0
+        and constDetailId = #{constDetailId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="constDetailId" parameterType="MetaConstDetailPO">
+        insert into meta_const_detail (
+            constDetailId,
+            constId,
+            detailName,
+            detailValue,
+            detailRemark,
+            createDate,
+            createBy,
+            operateDate,
+            operateBy,
+            delSign,
+            version)
+        values (
+            #{constDetailId,jdbcType=INTEGER},
+            #{constId,jdbcType=INTEGER},
+            #{detailName,jdbcType=VARCHAR},
+            #{detailValue,jdbcType=VARCHAR},
+            #{detailRemark,jdbcType=VARCHAR},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=VARCHAR},
+            #{operateDate,jdbcType=TIMESTAMP},
+            #{operateBy,jdbcType=VARCHAR},
+            #{delSign,jdbcType=SMALLINT},
+            #{version,jdbcType=INTEGER})
+    </insert>
+
+    <update id="update" parameterType="MetaConstDetailPO">
+        update meta_const_detail
+        set constId = #{constId,jdbcType=INTEGER},
+            detailName = #{detailName,jdbcType=VARCHAR},
+            detailValue = #{detailValue,jdbcType=VARCHAR},
+            detailRemark = #{detailRemark,jdbcType=VARCHAR},
+            operateDate = #{operateDate,jdbcType=TIMESTAMP},
+            operateBy = #{operateBy,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER}
+        where constDetailId = #{constDetailId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and delSign=0
+    </update>
+
+    <delete id="delete">
+        update meta_const_detail set
+        delSign=1
+        where constDetailId = #{constDetailId,jdbcType=INTEGER}
+        and delSign=0
+    </delete>
+
+    <select id="findCountByQuery" parameterType="MetaConstDetailQueryDTO" resultType="int">
+        select count(*) from (
+        select * from meta_const_detail t
+        where t.delSign=0
+        and t.constId = #{constId,jdbcType=INTEGER}
+        ) as count_select_
+    </select>
+
+    <select id="findListByQuery" parameterType="MetaConstDetailQueryDTO" resultType="MetaConstDetailListVO">
+        select * from meta_const_detail t
+        where t.delSign=0
+        and t.constId = #{constId,jdbcType=INTEGER}
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="findByConstId" resultType="MetaConstDetailPO">
+        select * from meta_const_detail
+        where delSign=0
+        and constId = #{constId,jdbcType=INTEGER}
+    </select>
+</mapper>

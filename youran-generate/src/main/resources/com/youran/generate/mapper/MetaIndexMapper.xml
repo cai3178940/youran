@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.mapper.MetaIndexMapper">
+
+    <select id="findById" resultType="MetaIndexPO">
+        select * from meta_index
+        where delSign=0
+        and indexId = #{indexId,jdbcType=INTEGER}
+    </select>
+
+    <select id="exist" resultType="int">
+        select count(*) from meta_index
+        where delSign=0
+        and indexId = #{indexId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="indexId" parameterType="MetaIndexPO">
+        insert into meta_index (
+          indexId, indexName, entityId,
+          `unique`, createDate, createBy,
+          operateDate, operateBy, delSign,
+          version)
+        values (#{indexId,jdbcType=INTEGER}, #{indexName,jdbcType=VARCHAR}, #{entityId,jdbcType=INTEGER},
+          #{unique,jdbcType=SMALLINT}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
+          #{operateDate,jdbcType=TIMESTAMP}, #{operateBy,jdbcType=VARCHAR}, #{delSign,jdbcType=SMALLINT},
+          #{version,jdbcType=INTEGER})
+    </insert>
+
+    <update id="update" parameterType="MetaIndexPO">
+        update meta_index
+        set indexName = #{indexName,jdbcType=VARCHAR},
+        entityId = #{entityId,jdbcType=INTEGER},
+        `unique` = #{unique,jdbcType=SMALLINT},
+        operateDate = #{operateDate,jdbcType=TIMESTAMP},
+        operateBy = #{operateBy,jdbcType=VARCHAR},
+        version = #{version,jdbcType=INTEGER}
+        where indexId = #{indexId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and delSign=0
+    </update>
+
+    <delete id="delete">
+        update meta_index set
+        delSign=1
+        where indexId = #{indexId,jdbcType=INTEGER}
+        and delSign=0
+    </delete>
+
+    <select id="findListByQuery" parameterType="MetaIndexQueryDTO" resultType="MetaIndexListVO">
+        select * from meta_index t
+        where t.delSign=0
+        and t.entityId = #{entityId,jdbcType=INTEGER}
+        order by t.createDate
+    </select>
+
+    <select id="findByEntityId" parameterType="int" resultType="MetaIndexPO">
+        select * from meta_index
+        where delSign=0
+        and entityId = #{entityId,jdbcType=INTEGER}
+        order by indexId
+    </select>
+
+</mapper>

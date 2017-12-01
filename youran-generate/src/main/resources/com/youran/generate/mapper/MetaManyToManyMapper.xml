@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.mapper.MetaManyToManyMapper">
+
+    <select id="findById" resultType="MetaManyToManyPO">
+        select * from meta_mtm
+        where delSign=0
+        and mtmId = #{mtmId,jdbcType=INTEGER}
+    </select>
+
+    <select id="exist" resultType="int">
+        select count(*) from meta_mtm
+        where delSign=0
+        and mtmId = #{mtmId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="mtmId" parameterType="MetaManyToManyPO">
+        insert into meta_mtm (
+          mtmId, projectId, tableName,
+          schemaName, desc, entityId1,
+          entityId2, holdRefer1, holdRefer2,
+          createDate, createBy, operateDate,
+          operateBy, delSign, version
+          )
+        values (#{mtmId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR},
+          #{schemaName,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{entityId1,jdbcType=INTEGER},
+          #{entityId2,jdbcType=INTEGER}, #{holdRefer1,jdbcType=SMALLINT}, #{holdRefer2,jdbcType=SMALLINT},
+          #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{operateDate,jdbcType=TIMESTAMP},
+          #{operateBy,jdbcType=VARCHAR}, #{delSign,jdbcType=SMALLINT}, #{version,jdbcType=INTEGER}
+          )
+    </insert>
+
+    <update id="update" parameterType="MetaManyToManyPO">
+        update meta_mtm
+        set projectId = #{projectId,jdbcType=INTEGER},
+        tableName = #{tableName,jdbcType=VARCHAR},
+        schemaName = #{schemaName,jdbcType=VARCHAR},
+        desc = #{desc,jdbcType=VARCHAR},
+        entityId1 = #{entityId1,jdbcType=INTEGER},
+        entityId2 = #{entityId2,jdbcType=INTEGER},
+        holdRefer1 = #{holdRefer1,jdbcType=SMALLINT},
+        holdRefer2 = #{holdRefer2,jdbcType=SMALLINT},
+        operateDate = #{operateDate,jdbcType=TIMESTAMP},
+        operateBy = #{operateBy,jdbcType=VARCHAR},
+        version = #{version,jdbcType=INTEGER}
+        where mtmId = #{mtmId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and delSign=0
+    </update>
+
+    <delete id="delete">
+        update meta_mtm set
+        delSign=1
+        where mtmId = #{mtmId,jdbcType=INTEGER}
+        and delSign=0
+    </delete>
+
+    <select id="findListByQuery" parameterType="MetaManyToManyQueryDTO" resultType="MetaManyToManyListVO">
+        select * from meta_mtm t
+        where t.delSign=0
+        and t.projectId = #{projectId,jdbcType=INTEGER}
+        order by t.createDate
+    </select>
+
+    <select id="findByProjectId" parameterType="int" resultType="MetaManyToManyPO">
+        select * from meta_mtm
+        where delSign=0
+        and projectId = #{projectId,jdbcType=INTEGER}
+        order by mtmId
+    </select>
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.mapper.MetaEntityMapper">
+
+    <select id="findById" resultType="MetaEntityPO">
+        select * from meta_entity
+        where delSign=0
+        and entityId = #{entityId,jdbcType=INTEGER}
+    </select>
+
+    <select id="exist" resultType="int">
+        select count(*) from meta_entity
+        where delSign=0
+        and entityId = #{entityId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="entityId" parameterType="MetaEntityPO">
+        insert into meta_entity (
+          entityId, projectId, schemaName,
+          className, tableName, title, `desc`,
+          commonCall, createDate, createBy,
+          operateDate, operateBy, delSign,
+          version)
+        values (#{entityId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{schemaName,jdbcType=VARCHAR},
+          #{className,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+          #{desc,jdbcType=VARCHAR},
+          #{commonCall,jdbcType=SMALLINT}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
+          #{operateDate,jdbcType=TIMESTAMP}, #{operateBy,jdbcType=VARCHAR}, #{delSign,jdbcType=SMALLINT},
+          #{version,jdbcType=INTEGER})
+    </insert>
+
+    <update id="update" parameterType="MetaEntityPO">
+        update meta_entity
+        set projectId = #{projectId,jdbcType=INTEGER},
+          schemaName = #{schemaName,jdbcType=VARCHAR},
+          className = #{className,jdbcType=VARCHAR},
+          tableName = #{tableName,jdbcType=VARCHAR},
+          title = #{title,jdbcType=VARCHAR},
+          `desc` = #{desc,jdbcType=VARCHAR},
+          commonCall = #{commonCall,jdbcType=SMALLINT},
+          operateDate = #{operateDate,jdbcType=TIMESTAMP},
+          operateBy = #{operateBy,jdbcType=VARCHAR},
+          version = #{version,jdbcType=INTEGER
+        where entityId = #{entityId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and delSign=0
+    </update>
+
+    <delete id="delete">
+        update meta_entity set
+        delSign=1
+        where entityId = #{entityId,jdbcType=INTEGER}
+        and delSign=0
+    </delete>
+
+    <select id="findCountByQuery" parameterType="MetaEntityQueryDTO" resultType="int">
+        select count(*) from (
+        select * from meta_entity t
+        where t.delSign=0
+        and t.projectId = #{projectId,jdbcType=INTEGER}
+        ) as count_select_
+    </select>
+
+    <select id="findListByQuery" parameterType="MetaEntityQueryDTO" resultType="MetaEntityListVO">
+        select * from meta_entity t
+        where t.delSign=0
+        and t.projectId = #{projectId,jdbcType=INTEGER}
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="findIdsByProject" resultType="int">
+        select entityId from meta_entity
+        where delSign=0
+        and projectId = #{projectId,jdbcType=INTEGER}
+    </select>
+</mapper>

@@ -1,0 +1,21 @@
+server:
+    context-path: /
+    port: 8080
+spring:
+    application:
+        name: youran-generate
+    profiles:
+        active: local
+    http:
+        encoding:
+            force: true
+
+swagger:
+    basePackage: com.youran.generate
+
+mybatis:
+    config-location: classpath:mybatis-config.xml
+
+youran:
+    generate:
+        rootPath: generate

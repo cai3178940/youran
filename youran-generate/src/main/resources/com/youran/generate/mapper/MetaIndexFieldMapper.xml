@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.mapper.MetaIndexFieldMapper">
+
+    <insert id="saveBatch">
+        insert into meta_index_field (
+        indexId, fieldId)
+        values
+        <foreach collection="fieldIdList" index="index" item="fieldId" separator=",">
+            (#{indexId},#{fieldId})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+        delete from meta_index_field
+        where indexId = #{indexId,jdbcType=INTEGER}
+    </delete>
+
+    <select id="findByIndexId" resultType="int">
+        select fieldId from meta_index_field
+        where indexId = #{indexId,jdbcType=INTEGER}
+    </select>
+</mapper>

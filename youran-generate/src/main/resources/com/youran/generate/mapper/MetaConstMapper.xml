@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.mapper.MetaConstMapper">
+
+    <select id="findById" resultType="MetaConstPO">
+        select * from meta_const
+        where delSign=0
+        and constId = #{constId,jdbcType=INTEGER}
+    </select>
+
+    <select id="exist" resultType="int">
+        select count(*) from meta_const
+        where delSign=0
+        and constId = #{constId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="constId" parameterType="MetaConstPO">
+        insert into meta_const (
+          constId, projectId, constName,
+          constRemark, constType,
+          createDate, createBy, operateDate,
+          operateBy, delSign, version
+          )
+        values (#{constId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{constName,jdbcType=VARCHAR},
+          #{constRemark,jdbcType=VARCHAR}, #{constType,jdbcType=INTEGER},
+          #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{operateDate,jdbcType=TIMESTAMP},
+          #{operateBy,jdbcType=VARCHAR}, #{delSign,jdbcType=SMALLINT}, #{version,jdbcType=INTEGER}
+          )
+    </insert>
+
+    <update id="update" parameterType="MetaConstPO">
+        update meta_const
+        set projectId = #{projectId,jdbcType=INTEGER},
+          constName = #{constName,jdbcType=VARCHAR},
+          constRemark = #{constRemark,jdbcType=VARCHAR},
+          constType = #{constType,jdbcType=INTEGER},
+          operateDate = #{operateDate,jdbcType=TIMESTAMP},
+          operateBy = #{operateBy,jdbcType=VARCHAR},
+          version = #{version,jdbcType=INTEGER}
+        where constId = #{constId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and delSign=0
+    </update>
+
+    <delete id="delete">
+        update meta_const set
+        delSign=1
+        where constId = #{constId,jdbcType=INTEGER}
+        and delSign=0
+    </delete>
+
+    <select id="findCountByQuery" parameterType="MetaConstQueryDTO" resultType="int">
+        select count(*) from (
+        select * from meta_const t
+        where t.delSign=0
+        and t.projectId = #{projectId,jdbcType=INTEGER}
+        ) as count_select_
+    </select>
+
+    <select id="findListByQuery" parameterType="MetaConstQueryDTO" resultType="MetaConstListVO">
+        select * from meta_const t
+        where t.delSign=0
+        and t.projectId = #{projectId,jdbcType=INTEGER}
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="findIdsByProject" resultType="int">
+        select constId from meta_const
+        where delSign=0
+        and projectId = #{projectId,jdbcType=INTEGER}
+    </select>
+</mapper>
