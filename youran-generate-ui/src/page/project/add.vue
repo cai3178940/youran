@@ -40,15 +40,15 @@
         rules: {
           projectName: [
             {required: true, message: '请输入项目名称', trigger: 'blur'},
-            {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
+            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
           ],
           packageName: [
             {required: true, message: '请输入包名', trigger: 'blur'},
-            {min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur'}
+            {max: 100, message: '长度不能超过100个字符', trigger: 'blur'}
           ],
           author: [
             {required: true, message: '请输入作者', trigger: 'blur'},
-            {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
+            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
           ]
         }
       }

@@ -33,6 +33,9 @@ public class MetaFieldController implements MetaFieldAPI {
     @Override
     @PostMapping(value = "/save")
     public ReplyVO<Integer> save(@Valid @RequestBody MetaFieldAddDTO metaFieldAddDTO) {
+        if(metaFieldAddDTO.getDefaultValue()==null){
+            metaFieldAddDTO.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
+        }
         MetaFieldPO metaFieldPO = metaFieldService.save(metaFieldAddDTO);
         ReplyVO<Integer> result = ReplyVO.success();
         result.setData(metaFieldPO.getFieldId());
@@ -42,6 +45,9 @@ public class MetaFieldController implements MetaFieldAPI {
     @Override
     @PutMapping(value = "/update")
     public ReplyVO<Void> update(@Valid @RequestBody MetaFieldUpdateDTO metaFieldUpdateDTO) {
+        if(metaFieldUpdateDTO.getDefaultValue()==null){
+            metaFieldUpdateDTO.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
+        }
         metaFieldService.update(metaFieldUpdateDTO);
         ReplyVO<Void> result = ReplyVO.success();
         return result;

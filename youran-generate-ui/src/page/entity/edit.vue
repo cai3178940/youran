@@ -71,18 +71,18 @@
           ],
           title: [
             {required: true, message: '请输入实体名', trigger: 'blur'},
-            {min: 1, max: 25, message: '长度在 1 到 25 个字符', trigger: 'blur'}
+            {max: 25, message: '长度不能超过25个字符', trigger: 'blur'}
           ],
           className: [
             {required: true, message: '请输入类名', trigger: 'blur'},
-            {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
+            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
           ],
           tableName: [
             {required: true, message: '请输入表名', trigger: 'blur'},
-            {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
+            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
           ],
           desc: [
-            {max: 250, message: '长度在 250 个字符以内', trigger: 'blur'}
+            {max: 250, message: '长度不能超过250个字符', trigger: 'blur'}
           ]
         }
       }

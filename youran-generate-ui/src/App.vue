@@ -11,9 +11,9 @@
     <main>
       <!-- 左侧导航 -->
       <div class="main-left">
-        <el-menu default-active="/project" class="el-menu-vertical-demo" :router="true">
-          <el-menu-item index="/">首页</el-menu-item>
-          <el-menu-item index="/project">项目管理</el-menu-item>
+        <el-menu class="el-menu-vertical-demo" :router="true">
+          <el-menu-item index="/" :class="{'is-active': isRoutePath('/')}">首页</el-menu-item>
+          <el-menu-item index="/project" :class="{'is-active': isRouteIndexOf('/project')}">项目管理</el-menu-item>
         </el-menu>
       </div>
 
@@ -35,13 +35,20 @@
 
       }
     },
+    methods: {
+      isRoutePath:function (path) {
+        return this.$route.path==path
+      },
+      isRouteIndexOf:function (path) {
+        return this.$route.path.indexOf(path)==0
+      }
+    },
     created: function () {
 
     },
-    methods: {},
     watch: {
       '$route': function (to, from) {
-        console.info(to)
+        //console.info(to)
       }
     }
   }

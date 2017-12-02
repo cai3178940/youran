@@ -10,13 +10,13 @@ import com.youran.common.validator.Check;
  */
 public class QueryType {
 
-    public static final int EQ = 1;//相等
+    public static final int EQ = 1;//等于
     public static final int LIKE = 2;//like
     public static final int GT = 3;//大于
     public static final int GE = 4;//大于等于
     public static final int LT = 5;//小于
     public static final int LE = 6;//小于等于
-    public static final int BETWEEN = 7;//介于
+    public static final int BETWEEN = 7;//between
 
     @Check
     public static final boolean check(int value) {

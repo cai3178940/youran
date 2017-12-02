@@ -91,6 +91,22 @@ export default {
             return reject();
           }
         });
+      },
+      //trim+移除空串字段
+      removeBlankField: function (form) {
+        var result = {}
+        for(var field in form){
+          if(typeof form[field] == 'string'){
+            const value = form[field].trim()
+            if(value==''){
+              continue
+            }
+            result[field]=value
+          }else{
+            result[field]=form[field]
+          }
+        }
+        return result
       }
 
     }

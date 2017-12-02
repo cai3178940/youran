@@ -8,28 +8,18 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="100px">
-          <el-form-item label="字段名" prop="fieldName">
-            <el-input v-model="form.fieldName" placeholder="请输入字段名，例如：age"></el-input>
-          </el-form-item>
+        <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="java字段名" prop="jfieldName">
-            <el-input v-model="form.jfieldName" placeholder="请输入java字段名，例如：age"></el-input>
+            <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age"></el-input>
+          </el-form-item>
+          <el-form-item label="mysql字段名" prop="fieldName">
+            <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age"></el-input>
           </el-form-item>
           <el-form-item label="字段描述" prop="fieldDesc">
-            <el-input v-model="form.fieldDesc" placeholder="请输入字段描述（中文名），例如：年龄"></el-input>
-          </el-form-item>
-          <el-form-item label="字段类型" prop="fieldType">
-            <el-select v-model="form.fieldType" filterable placeholder="请选择字段类型">
-              <el-option
-                v-for="item in fieldTypeOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+            <el-input v-model="form.fieldDesc" placeholder="字段描述，例如：年龄"></el-input>
           </el-form-item>
           <el-form-item label="java字段类型" prop="jfieldType">
-            <el-select v-model="form.jfieldType" filterable placeholder="请选择java字段类型">
+            <el-select v-model="form.jfieldType" filterable placeholder="请选择">
               <el-option
                 v-for="item in jfieldTypeOptions"
                 :key="item.value"
@@ -38,16 +28,97 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="mysql字段类型" prop="fieldType">
+            <el-select v-model="form.fieldType" filterable placeholder="请选择">
+              <el-option
+                v-for="item in fieldTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="字段长度" prop="fieldLength">
-            <el-input v-model="form.fieldLength" placeholder="请输入字段长度，例如：10"></el-input>
+            <el-input-number v-model="form.fieldLength" :min="0" placeholder="字段长度，例如：10"></el-input-number>
           </el-form-item>
           <el-form-item label="字段精度" prop="fieldScale">
-            <el-input v-model="form.fieldScale" placeholder="请输入字段精度，例如：2"></el-input>
+            <el-input-number v-model="form.fieldScale" :min="0" placeholder="字段精度，例如：2"></el-input-number>
           </el-form-item>
           <el-form-item label="是否主键" prop="primaryKey">
             <el-radio-group v-model="form.primaryKey">
-              <el-radio v-for="item in boolOptions" :label="item.value">{{item.label}}</el-radio>
+              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
+          </el-form-item>
+          <el-form-item label="是否自增" prop="autoIncrement">
+            <el-radio-group v-model="form.autoIncrement">
+              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="不能为空" prop="notNull">
+            <el-radio-group v-model="form.notNull">
+              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="字段示例" prop="fieldExample">
+            <el-input v-model="form.fieldExample" placeholder="字段示例，例如年龄字段：21"></el-input>
+          </el-form-item>
+          <el-form-item label="字段备注" prop="fieldComment">
+            <el-input v-model="form.fieldComment" type="textarea" :rows="2" placeholder="字段备注，例如：年龄【整型】"></el-input>
+          </el-form-item>
+          <el-form-item label="枚举字典" prop="dicType">
+            <el-autocomplete
+              v-model="form.dicType"
+              :fetch-suggestions="queryDicType"
+              placeholder="请输入枚举字典"
+            ></el-autocomplete>
+          </el-form-item>
+          <el-form-item label="是否查询字段" prop="query">
+            <el-radio-group v-model="form.query">
+              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="查询方式" prop="queryType">
+            <el-select v-model="form.queryType" filterable placeholder="请选择">
+              <el-option
+                v-for="item in queryTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="是否新增字段" prop="insert">
+            <el-radio-group v-model="form.insert">
+              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="是否编辑字段" prop="update">
+            <el-radio-group v-model="form.update">
+              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="是否列表字段" prop="list">
+            <el-radio-group v-model="form.list">
+              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="是否详情字段" prop="show">
+            <el-radio-group v-model="form.show">
+              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="排序号" prop="orderNo">
+            <el-input-number v-model="form.orderNo" :min="1"></el-input-number>
+          </el-form-item>
+          <el-form-item label="特殊字段类型" prop="specialField">
+            <el-select v-model="form.specialField" filterable placeholder="请选择">
+              <el-option
+                v-for="item in specialFieldOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
 
           <el-form-item>
@@ -70,41 +141,123 @@
         boolOptions: options.boolOptions,
         fieldTypeOptions: options.fieldTypeOptions,
         jfieldTypeOptions: options.jfieldTypeOptions,
+        queryTypeOptions: options.queryTypeOptions,
+        specialFieldOptions: options.specialFieldOptions,
+        constList:[{
+          constName:'SexConst'
+        }],
         form: {
           entityId: null,
-          //字段名
-          fieldName: '',
           //java字段名
           jfieldName: '',
+          //mysql字段名
+          fieldName: '',
           //字段描述
           fieldDesc: '',
-          //字段长度
-          fieldLength: null,
-          //字段精度
-          fieldScale: null,
-          //字段类型
-          fieldType: '',
           //java字段类型
           jfieldType: '',
+          //mysql字段类型
+          fieldType: '',
+          //字段长度
+          fieldLength: 0,
+          //字段精度
+          fieldScale: 0,
           //是否主键
-          primaryKey: null,
-          notNull: null,
-          autoIncrement: null,
+          primaryKey: 0,
+          //是否自增
+          autoIncrement: 0,
+          //默认值(暂时不用)
+          defaultValue:'',
+          //不能为空
+          notNull: 0,
+          //字段示例
           fieldExample: '',
+          //字段备注
           fieldComment: '',
+          //枚举字典
           dicType: '',
-          query: null,
+          //是否查询字段
+          query: 0,
+          //查询方式
           queryType: null,
-          insert: null,
-          update: null,
-          list: null,
-          show: null,
+          //是否新增字段
+          insert: 1,
+          //是否编辑字段
+          update: 1,
+          //是否列表字段
+          list: 1,
+          //是否详情字段
+          show: 1,
+          //编辑方式(暂时不用)
           editType: null,
-          orderNo: null,
+          //排序号
+          orderNo: 1,
+          //特殊字段类型
           specialField: ''
         },
         rules: {
-
+          jfieldName: [
+            {required: true, message: '请输入java字段名', trigger: 'blur'},
+            {max: 20, message: '长度不能超过20个字符', trigger: 'blur'}
+          ],
+          fieldName: [
+            {required: true, message: '请输入mysql字段名', trigger: 'blur'},
+            {max: 20, message: '长度不能超过20个字符', trigger: 'blur'}
+          ],
+          fieldDesc: [
+            {required: true, message: '请输入字段描述', trigger: 'blur'},
+            {max: 40, message: '长度不能超过40个字符', trigger: 'blur'}
+          ],
+          jfieldType: [
+            {required: true, type: 'string',message: '请选择java字段类型', trigger: 'change'}
+          ],
+          fieldType: [
+            {required: true, type: 'string',message: '请选择mysql字段类型', trigger: 'change'}
+          ],
+          fieldLength: [
+            {required: true, message: '请输入字段长度', trigger: 'blur'},
+          ],
+          fieldScale: [
+            {required: true, message: '请输入字段精度', trigger: 'blur'},
+          ],
+          primaryKey: [
+            {required: true, type: 'number', message: '请选择是否主键', trigger: 'change'},
+          ],
+          autoIncrement: [
+            {required: true, type: 'number', message: '请选择是否自增', trigger: 'change'},
+          ],
+          notNull: [
+            {required: true, type: 'number', message: '请选择不能为空', trigger: 'change'},
+          ],
+          fieldExample: [
+            {required: true, message: '请输入字段示例', trigger: 'blur'},
+            {max: 100, message: '长度不能超过100个字符', trigger: 'blur'}
+          ],
+          fieldComment: [
+            {required: true, message: '请输入字段备注', trigger: 'blur'},
+            {max: 100, message: '长度不能超过100个字符', trigger: 'blur'}
+          ],
+          dicType: [
+            {max: 40, message: '长度不能超过40个字符', trigger: 'blur'}
+          ],
+          query: [
+            {required: true, type: 'number', message: '请选择是否查询字段', trigger: 'change'},
+          ],
+          insert: [
+            {required: true, type: 'number', message: '请选择是否新增字段', trigger: 'change'},
+          ],
+          update: [
+            {required: true, type: 'number', message: '请选择是否编辑字段', trigger: 'change'},
+          ],
+          list: [
+            {required: true, type: 'number', message: '请选择是否列表字段', trigger: 'change'},
+          ],
+          show: [
+            {required: true, type: 'number', message: '请选择是否详情字段', trigger: 'change'},
+          ],
+          orderNo: [
+            {required: true, message: '请输入排序号', trigger: 'blur'},
+          ]
         }
       }
     },
@@ -114,12 +267,20 @@
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.projectList = result.data.entities)
       },
+      //查询可用枚举字典
+      queryDicType: function (queryString, cb) {
+        var constList = this.constList;
+        var results = queryString ? constList.filter(
+          c=>c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        ) : constList;
+        cb(results.map(c=>({value:c.constName})));
+      },
       submit: function () {
         console.info(this.form)
         //校验表单
         this.$refs.addForm.validate()
         //提交表单
-          .then(() => this.$ajax.post('/generate/meta_field/save', this.form))
+          .then(() => this.$ajax.post('/generate/meta_field/save', this.$common.removeBlankField(this.form)))
           //校验返回结果
           .then(response => this.$common.checkResult(response.data))
           //执行页面跳转
@@ -134,8 +295,7 @@
       }
     },
     created: function () {
-      this.queryProject()
-        .then(() => this.form.projectId = parseInt(this.projectId))
+      this.form.entityId = parseInt(this.entityId)
     }
   }
 </script>

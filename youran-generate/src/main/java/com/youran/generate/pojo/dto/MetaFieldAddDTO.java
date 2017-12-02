@@ -34,13 +34,12 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
 
     @ApiModelProperty(notes = N_DEFAULTVALUE, example = E_DEFAULTVALUE)
-    @NotNull
-    @Length(max = 100, message = "packageName最大长度不能超过100")
+    @Length(max = 100, message = "defaultValue最大长度不能超过100")
     private String defaultValue;
 
 
     @ApiModelProperty(notes = N_DICTYPE, example = E_DICTYPE)
-    @Length(max = 40, message = "packageName最大长度不能超过40")
+    @Length(max = 40, message = "dicType最大长度不能超过40")
     @Pattern(regexp = PatternConst.ALPHANUM, message = PatternConst.ALPHANUM_MSG)
     private String dicType;
 

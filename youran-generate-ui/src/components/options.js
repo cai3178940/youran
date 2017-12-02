@@ -76,5 +76,61 @@ export default {
       label: 'BigDecimal'
     }
   ],
+  queryTypeOptions:[
+    {
+      value: 1,
+      label: '等于'
+    },
+    {
+      value: 2,
+      label: 'like'
+    },
+    {
+      value: 3,
+      label: '大于'
+    },
+    {
+      value: 4,
+      label: '大于等于'
+    },
+    {
+      value: 5,
+      label: '小于'
+    },
+    {
+      value: 6,
+      label: '小于等于'
+    },
+    {
+      value: 7,
+      label: 'between'
+    }
+  ],
+  specialFieldOptions:[
+    {
+      value: 'delSign',
+      label: '逻辑删除'
+    },
+    {
+      value: 'createDate',
+      label: '创建时间'
+    },
+    {
+      value: 'createBy',
+      label: '创建人员'
+    },
+    {
+      value: 'operateDate',
+      label: '更新时间'
+    },
+    {
+      value: 'operateBy',
+      label: '更新人员'
+    },
+    {
+      value: 'version',
+      label: '乐观锁版本'
+    }
+  ],
 
 }
