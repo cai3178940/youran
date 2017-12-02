@@ -33,7 +33,6 @@ public class MetaFieldData {
         dto.setFieldName(E_FIELDNAME);
         dto.setFieldScale(SafeUtil.getInteger(E_FIELDSCALE));
         dto.setFieldType(E_FIELDTYPE);
-        dto.setUnicode(SafeUtil.getInteger(E_UNICODE));
         dto.setInsert(SafeUtil.getInteger(E_INSERT));
         dto.setJfieldName(E_JFIELDNAME);
         dto.setJfieldType(E_JFIELDTYPE);
@@ -69,7 +68,6 @@ public class MetaFieldData {
         metaFieldUpdateDTO.setFieldName(metaField.getFieldName());
         metaFieldUpdateDTO.setFieldScale(metaField.getFieldScale());
         metaFieldUpdateDTO.setFieldType(metaField.getFieldType());
-        metaFieldUpdateDTO.setUnicode(metaField.getUnicode());
         metaFieldUpdateDTO.setInsert(metaField.getInsert());
         metaFieldUpdateDTO.setJfieldName(metaField.getJfieldName());
         metaFieldUpdateDTO.setJfieldType(metaField.getJfieldType());

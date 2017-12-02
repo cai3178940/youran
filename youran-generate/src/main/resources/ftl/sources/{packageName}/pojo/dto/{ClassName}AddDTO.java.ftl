@@ -29,7 +29,7 @@ public class ${CName}AddDTO extends AbstractDTO {
     @Const(constClass = ${fetchClassName(field.dicType)}.class)
     <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
         <#assign importLength=true>
-    @Length(max = ${(field.unicode?? && field.unicode == 1)?string(field.fieldLength/2,field.fieldLength)},message = "${field.jfieldName}最大长度不能超过{max}")
+    @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
         <#assign importDate=true>
     @JSONField(format = JsonFieldConst.DEFAULT_DATE_FORMAT)

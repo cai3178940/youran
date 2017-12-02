@@ -34,8 +34,6 @@ public class MetaFieldExample {
     public static final String E_FIELDSCALE = "0";
     public static final String N_FIELDTYPE = "表字段类型";
     public static final String E_FIELDTYPE = "int";
-    public static final String N_UNICODE = "是否unicode字符";
-    public static final String E_UNICODE = "0";
     public static final String N_INSERT = "是否手动插入字段";
     public static final String E_INSERT = "0";
     public static final String N_JFIELDNAME = "实体字段名称";

@@ -16,7 +16,7 @@ public class ${CName}UpdateDTO extends AbstractDTO {
     @NotNull
     <#if pkField.jfieldType==JFieldType.STRING.getJavaType()>
         <#assign importLength=true>
-    @Length(max = ${(pkField.unicode?? && pkField.unicode == 1)?string(pkField.fieldLength/2,pkField.fieldLength)},message = "${pkField.jfieldName}最大长度不能超过{max}")
+    @Length(max = ${pkField.fieldLength},message = "${pkField.jfieldName}最大长度不能超过{max}")
     </#if>
     private ${pkField.jfieldType} ${pkField.jfieldName};
 
@@ -35,7 +35,7 @@ public class ${CName}UpdateDTO extends AbstractDTO {
     @Const(constClass = ${fetchClassName(field.dicType)}.class)
     <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
         <#assign importLength=true>
-    @Length(max = ${(field.unicode?? && field.unicode == 1)?string(field.fieldLength/2,field.fieldLength)},message = "${field.jfieldName}最大长度不能超过{max}")
+    @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
         <#assign importDate=true>
     @JSONField(format = JsonFieldConst.DEFAULT_DATE_FORMAT)

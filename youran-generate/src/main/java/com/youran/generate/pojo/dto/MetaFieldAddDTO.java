@@ -81,10 +81,6 @@ public class MetaFieldAddDTO extends AbstractDTO {
     @Pattern(regexp = PatternConst.ALPHA, message = PatternConst.ALPHA_MSG)
     private String fieldType;
 
-    @ApiModelProperty(notes = N_UNICODE, example = E_UNICODE)
-    @Const(constClass = BoolConst.class)
-    private Integer unicode;
-
     @ApiModelProperty(notes = N_INSERT, example = E_INSERT)
     @NotNull
     @Const(constClass = BoolConst.class)
@@ -141,15 +137,6 @@ public class MetaFieldAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_SPECIALFIELD, example = E_SPECIALFIELD)
     @Const(constClass = MetaSpecialField.class)
     private String specialField;
-
-
-    public Integer getUnicode() {
-        return unicode;
-    }
-
-    public void setUnicode(Integer unicode) {
-        this.unicode = unicode;
-    }
 
     public String getFieldExample() {
         return fieldExample;

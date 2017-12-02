@@ -134,7 +134,6 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setFieldName("userName");
         dto.setFieldScale(null);
         dto.setFieldType(MySqlType.VARCHAR);
-        dto.setUnicode(0);
         dto.setInsert(1);
         dto.setJfieldName("userName");
         dto.setJfieldType(JFieldType.STRING.getJavaType());
@@ -162,7 +161,6 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setFieldDesc("性别");
         dto.setFieldExample("1");
         dto.setFieldLength(1);
-        dto.setUnicode(0);
         dto.setFieldName("sex");
         dto.setFieldScale(null);
         dto.setFieldType(MySqlType.SMALLINT);
@@ -196,7 +194,6 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setFieldName("birthday");
         dto.setFieldScale(null);
         dto.setFieldType(MySqlType.DATETIME);
-        dto.setUnicode(0);
         dto.setInsert(1);
         dto.setJfieldName("birthday");
         dto.setJfieldType(JFieldType.DATE.getJavaType());

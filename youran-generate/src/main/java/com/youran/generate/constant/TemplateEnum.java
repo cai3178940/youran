@@ -178,10 +178,6 @@ public enum TemplateEnum {
      */
     JsonUtil(COMMON,"sources/{commonPackage}/util/JsonUtil.java.ftl"),
     /**
-     * 我的字符串工具
-     */
-    MyStringUtil(COMMON,"sources/{commonPackage}/util/MyStringUtil.java.ftl"),
-    /**
      * 空指针安全的类型转换工具
      */
     SafeUtil(COMMON,"sources/{commonPackage}/util/SafeUtil.java.ftl"),

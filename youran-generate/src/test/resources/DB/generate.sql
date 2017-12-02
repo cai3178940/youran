@@ -46,7 +46,6 @@ CREATE TABLE `meta_field` (
   `fieldName` varchar(20) NOT NULL COMMENT '表字段名称',
   `jfieldType` varchar(10) NOT NULL COMMENT '实体字段类型',
   `fieldType` varchar(10) NOT NULL COMMENT '表字段类型',
-  `unicode` smallint(1) DEFAULT NULL COMMENT '是否unicode字符',
   `fieldDesc` varchar(40) NOT NULL COMMENT '字段描述（中文名）',
   `fieldExample` varchar(200) NOT NULL COMMENT '字段示例',
   `fieldComment` varchar(200) NOT NULL COMMENT '字段备注',

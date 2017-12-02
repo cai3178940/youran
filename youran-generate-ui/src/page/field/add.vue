@@ -2,34 +2,54 @@
   <div class="fieldAdd">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/field` }">字段管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity/${this.entityId}/field` }">字段管理</el-breadcrumb-item>
       <el-breadcrumb-item>添加</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="80px">
-          <el-form-item label="项目" prop="projectId">
-            <el-select v-model="form.projectId" filterable placeholder="请选择项目">
+        <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="100px">
+          <el-form-item label="字段名" prop="fieldName">
+            <el-input v-model="form.fieldName" placeholder="请输入字段名，例如：age"></el-input>
+          </el-form-item>
+          <el-form-item label="java字段名" prop="jfieldName">
+            <el-input v-model="form.jfieldName" placeholder="请输入java字段名，例如：age"></el-input>
+          </el-form-item>
+          <el-form-item label="字段描述" prop="fieldDesc">
+            <el-input v-model="form.fieldDesc" placeholder="请输入字段描述（中文名），例如：年龄"></el-input>
+          </el-form-item>
+          <el-form-item label="字段类型" prop="fieldType">
+            <el-select v-model="form.fieldType" filterable placeholder="请选择字段类型">
               <el-option
-                v-for="item in projectList"
-                :key="item.projectId"
-                :label="item.projectName"
-                :value="item.projectId">
+                v-for="item in fieldTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="字段名" prop="title">
-            <el-input v-model="form.title"></el-input>
+          <el-form-item label="java字段类型" prop="jfieldType">
+            <el-select v-model="form.jfieldType" filterable placeholder="请选择java字段类型">
+              <el-option
+                v-for="item in jfieldTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="类名" prop="className">
-            <el-input v-model="form.className"></el-input>
+          <el-form-item label="字段长度" prop="fieldLength">
+            <el-input v-model="form.fieldLength" placeholder="请输入字段长度，例如：10"></el-input>
           </el-form-item>
-          <el-form-item label="表名" prop="tableName">
-            <el-input v-model="form.tableName"></el-input>
+          <el-form-item label="字段精度" prop="fieldScale">
+            <el-input v-model="form.fieldScale" placeholder="请输入字段精度，例如：2"></el-input>
           </el-form-item>
-          <el-form-item label="描述" prop="desc">
-            <el-input v-model="form.desc" type="textarea" :rows="2"></el-input>
+          <el-form-item label="是否主键" prop="primaryKey">
+            <el-radio-group v-model="form.primaryKey">
+              <el-radio v-for="item in boolOptions" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
           </el-form-item>
+
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
             <el-button @click="goBack()">返回</el-button>
@@ -41,56 +61,50 @@
 </template>
 
 <script>
+  import options from '@/components/options.js'
   export default {
     name: 'fieldAdd',
-    props: ['projectId'],
+    props: ['projectId','entityId'],
     data: function () {
       return {
-        projectList: [],
+        boolOptions: options.boolOptions,
+        fieldTypeOptions: options.fieldTypeOptions,
+        jfieldTypeOptions: options.jfieldTypeOptions,
         form: {
           entityId: null,
-          autoIncrement: null,
-          dicType: '',
-          editType: null,
-          fieldComment: '',
-          fieldDesc: '',
-          fieldExample: '',
-          fieldLength: null,
+          //字段名
           fieldName: '',
-          fieldScale: null,
-          fieldType: '',
-          insert: null,
+          //java字段名
           jfieldName: '',
+          //字段描述
+          fieldDesc: '',
+          //字段长度
+          fieldLength: null,
+          //字段精度
+          fieldScale: null,
+          //字段类型
+          fieldType: '',
+          //java字段类型
           jfieldType: '',
-          list: null,
-          notNull: null,
-          orderNo: null,
+          //是否主键
           primaryKey: null,
+          notNull: null,
+          autoIncrement: null,
+          fieldExample: '',
+          fieldComment: '',
+          dicType: '',
           query: null,
           queryType: null,
-          show: null,
+          insert: null,
           update: null,
+          list: null,
+          show: null,
+          editType: null,
+          orderNo: null,
           specialField: ''
         },
         rules: {
-          projectId: [
-            {required: true, type: 'number', message: '请选择项目', trigger: 'change'},
-          ],
-          title: [
-            {required: true, message: '请输入字段名', trigger: 'blur'},
-            {min: 1, max: 25, message: '长度在 1 到 25 个字符', trigger: 'blur'}
-          ],
-          className: [
-            {required: true, message: '请输入类名', trigger: 'blur'},
-            {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
-          ],
-          tableName: [
-            {required: true, message: '请输入表名', trigger: 'blur'},
-            {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
-          ],
-          desc: [
-            {max: 250, message: '长度在 250 个字符以内', trigger: 'blur'}
-          ]
+
         }
       }
     },
@@ -116,7 +130,7 @@
           .catch(error => this.$common.showNotifyError(error))
       },
       goBack: function () {
-        this.$router.push(`/project/${this.projectId}/field`)
+        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
       }
     },
     created: function () {

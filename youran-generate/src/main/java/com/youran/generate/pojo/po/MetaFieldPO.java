@@ -19,7 +19,6 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
     private String fieldName;
     private String jfieldType;
     private String fieldType;
-    private Integer unicode;
     private String fieldDesc;
     private String fieldExample;
     private String fieldComment;
@@ -51,14 +50,6 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
     private Integer version;
 
     private Integer delSign;
-
-    public Integer getUnicode() {
-        return unicode;
-    }
-
-    public void setUnicode(Integer unicode) {
-        this.unicode = unicode;
-    }
 
     public String getFieldExample() {
         return fieldExample;

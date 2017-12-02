@@ -18,7 +18,6 @@ import static com.youran.generate.pojo.example.MetaProjectExample.*;
 @ApiModel(description = "新增元数据项目参数")
 public class MetaProjectAddDTO extends AbstractDTO {
 
-
     @ApiModelProperty(notes = N_PACKAGENAME, example = E_PACKAGENAME)
     @NotNull
     @Length(min=1, max = 100, message = "packageName最大长度不能超过100")
@@ -30,7 +29,7 @@ public class MetaProjectAddDTO extends AbstractDTO {
     private String projectName;
 
     @ApiModelProperty(notes = N_AUTHOR, example = E_AUTHOR)
-    @Length(min=1, max = 25, message = "author最大长度不能超过25")
+    @Length(min=1, max = 50, message = "author最大长度不能超过50")
     private String author;
 
     public String getAuthor() {

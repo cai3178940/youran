@@ -308,7 +308,6 @@ public class GenerateHelper{
         dto.setShow(1);
         dto.setUpdate(1);
         dto.setSpecialField(null);
-        dto.setUnicode(0);
         return dto;
     }
 
@@ -403,7 +402,6 @@ public class GenerateHelper{
         dto.setJfieldName(fieldName);
         dto.setJfieldType(JFieldType.STRING.getJavaType());
         dto.setOrderNo(orderNo);
-        dto.setUnicode(1);
         dto.setQuery(0);
         dto.setQueryType(null);
         MetaFieldPO metaField = metaFieldService.save(dto);

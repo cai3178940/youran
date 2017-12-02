@@ -13,7 +13,7 @@ public class ${CName}QueryDTO extends PageQueryDTO {
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
     <#if field.jfieldType==JFieldType.STRING.getJavaType()>
         <#assign importLength=true>
-    @Length(max = ${field.fieldLength/2},message = "${field.jfieldName}最大长度不能超过{max}")
+    @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
         <#assign importDate=true>
     @JSONField(format = JsonFieldConst.DEFAULT_DATE_FORMAT)
