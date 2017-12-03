@@ -9,7 +9,7 @@
       <el-col :span="12">
         <el-form ref="editForm" class="editForm" :rules="rules" :model="form" label-width="80px">
           <el-form-item label="项目" prop="projectId">
-            <el-select v-model="form.projectId" filterable placeholder="请选择项目" :disabled="true">
+            <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
               <el-option
                 v-for="item in projectList"
                 :key="item.projectId"

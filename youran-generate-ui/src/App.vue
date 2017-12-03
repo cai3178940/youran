@@ -19,8 +19,8 @@
 
       <!-- 右侧主内容区 -->
       <div class="main-right">
-        <transition name="fade">
-          <router-view class="view"></router-view>
+        <transition name="slide-fade" mode="out-in">
+          <router-view></router-view>
         </transition>
       </div>
     </main>
@@ -81,7 +81,7 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    min-height: 800px;
+    min-height: 600px;
     border: solid 20px #E9ECF1;
     background-color: #FCFCFC;
   }
@@ -101,8 +101,36 @@
     padding: 20px 50px;
   }
 
+  .el-breadcrumb__inner{
+    color: #409EFF;
+  }
 
   .el-breadcrumb{
     padding-bottom: 20px;
   }
+  .slide-fade-enter-active {
+    animation: fade-in .2s;
+  }
+  .slide-fade-leave-active {
+    animation: fade-out .4s;
+  }
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 100;
+    }
+  }
+  @keyframes fade-out {
+    0% {
+      /*transform: translateX(0%);*/
+      opacity: 100;
+    }
+    100% {
+      /*transform: translateX(90%);*/
+      opacity: 0;
+    }
+  }
+
 </style>

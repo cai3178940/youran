@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const URL_PRE = ''
+const BASE_API_URL = 'http://localhost:8080'
 var ajax = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: BASE_API_URL,
   timeout: 60000,
   responseType: 'json',
   headers: {'Content-Type': 'application/json; charset=utf-8'}
@@ -15,6 +15,8 @@ export default {
     Vue.prototype.$ajax = ajax;
 
     Vue.prototype.$common = {
+
+      BASE_API_URL,
 
       //查询项目下拉列表
       getProjectOptions:function(){
@@ -42,7 +44,6 @@ export default {
       },
       //打印常用异常
       showNotifyError: function (error) {
-        console.info(error)
         //表单校验异常
         if (error === false) {
           return this.showNotify('error', '出错了', '表单校验失败')

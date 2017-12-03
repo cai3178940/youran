@@ -19,7 +19,7 @@
             <el-input v-model="form.fieldDesc" placeholder="字段描述，例如：年龄"></el-input>
           </el-form-item>
           <el-form-item label="java字段类型" prop="jfieldType">
-            <el-select v-model="form.jfieldType" filterable placeholder="请选择">
+            <el-select v-model="form.jfieldType" style="width:100%;" filterable placeholder="请选择">
               <el-option
                 v-for="item in jfieldTypeOptions"
                 :key="item.value"
@@ -29,7 +29,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="mysql字段类型" prop="fieldType">
-            <el-select v-model="form.fieldType" filterable placeholder="请选择">
+            <el-select v-model="form.fieldType" style="width:100%;" filterable placeholder="请选择">
               <el-option
                 v-for="item in fieldTypeOptions"
                 :key="item.value"
@@ -39,24 +39,24 @@
             </el-select>
           </el-form-item>
           <el-form-item label="字段长度" prop="fieldLength">
-            <el-input-number v-model="form.fieldLength" :min="0" placeholder="字段长度，例如：10"></el-input-number>
+            <el-input-number v-model="form.fieldLength" style="width:100%;" :min="0" placeholder="字段长度，例如：10"></el-input-number>
           </el-form-item>
           <el-form-item label="字段精度" prop="fieldScale">
-            <el-input-number v-model="form.fieldScale" :min="0" placeholder="字段精度，例如：2"></el-input-number>
+            <el-input-number v-model="form.fieldScale" style="width:100%;" :min="0" placeholder="字段精度，例如：2"></el-input-number>
           </el-form-item>
           <el-form-item label="是否主键" prop="primaryKey">
             <el-radio-group v-model="form.primaryKey">
-              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否自增" prop="autoIncrement">
             <el-radio-group v-model="form.autoIncrement">
-              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="不能为空" prop="notNull">
             <el-radio-group v-model="form.notNull">
-              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="字段示例" prop="fieldExample">
@@ -66,7 +66,7 @@
             <el-input v-model="form.fieldComment" type="textarea" :rows="2" placeholder="字段备注，例如：年龄【整型】"></el-input>
           </el-form-item>
           <el-form-item label="枚举字典" prop="dicType">
-            <el-autocomplete
+            <el-autocomplete style="width:100%;"
               v-model="form.dicType"
               :fetch-suggestions="queryDicType"
               placeholder="请输入枚举字典"
@@ -74,11 +74,11 @@
           </el-form-item>
           <el-form-item label="是否查询字段" prop="query">
             <el-radio-group v-model="form.query">
-              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="查询方式" prop="queryType">
-            <el-select v-model="form.queryType" filterable placeholder="请选择">
+            <el-select v-model="form.queryType" style="width:100%;" filterable placeholder="请选择">
               <el-option
                 v-for="item in queryTypeOptions"
                 :key="item.value"
@@ -89,29 +89,29 @@
           </el-form-item>
           <el-form-item label="是否新增字段" prop="insert">
             <el-radio-group v-model="form.insert">
-              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否编辑字段" prop="update">
             <el-radio-group v-model="form.update">
-              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否列表字段" prop="list">
             <el-radio-group v-model="form.list">
-              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否详情字段" prop="show">
             <el-radio-group v-model="form.show">
-              <el-radio v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="排序号" prop="orderNo">
-            <el-input-number v-model="form.orderNo" :min="1"></el-input-number>
+            <el-input-number v-model="form.orderNo" style="width:100%;" :min="1"></el-input-number>
           </el-form-item>
           <el-form-item label="特殊字段类型" prop="specialField">
-            <el-select v-model="form.specialField" filterable placeholder="请选择">
+            <el-select v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
               <el-option
                 v-for="item in specialFieldOptions"
                 :key="item.value"
@@ -262,11 +262,6 @@
       }
     },
     methods: {
-      queryProject: function () {
-        return this.$common.getProjectOptions()
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data.entities)
-      },
       //查询可用枚举字典
       queryDicType: function (queryString, cb) {
         var constList = this.constList;
@@ -276,7 +271,6 @@
         cb(results.map(c=>({value:c.constName})));
       },
       submit: function () {
-        console.info(this.form)
         //校验表单
         this.$refs.addForm.validate()
         //提交表单

@@ -9,7 +9,7 @@
       <el-col :span="12">
         <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="80px">
           <el-form-item label="项目" prop="projectId">
-            <el-select v-model="form.projectId" filterable placeholder="请选择项目">
+            <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目">
               <el-option
                 v-for="item in projectList"
                 :key="item.projectId"
@@ -84,7 +84,6 @@
           .then(result => this.projectList = result.data.entities)
       },
       submit: function () {
-        console.info(this.form)
         //校验表单
         this.$refs.addForm.validate()
         //提交表单

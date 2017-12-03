@@ -8,13 +8,13 @@
       <el-col :span="12">
         <el-form ref="showForm" class="showForm" :model="form" label-width="80px">
           <el-form-item label="项目名称" prop="projectName">
-            <el-input v-model="form.projectName" :readonly="true"></el-input>
+            <el-input v-model="form.projectName" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="包名" prop="packageName">
-            <el-input v-model="form.packageName" :readonly="true"></el-input>
+            <el-input v-model="form.packageName" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="作者" prop="author">
-            <el-input v-model="form.author" :readonly="true"></el-input>
+            <el-input v-model="form.author" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button @click="goBack()">返回</el-button>

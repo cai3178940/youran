@@ -1,4 +1,5 @@
-export default {
+export default  {
+
   //布尔枚举
   boolOptions: [
     {

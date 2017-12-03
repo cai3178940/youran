@@ -20,11 +20,13 @@
       <el-table-column property="packageName" label="包名"></el-table-column>
       <el-table-column
         label="操作"
-        width="150">
+        width="180">
         <template slot-scope="scope">
           <el-button @click="handleEntity(scope.row)" type="text" size="small">实体管理</el-button>
           <el-button @click="handleShow(scope.row)" type="text" size="small">查看</el-button>
           <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
+          <el-button @click="handleGenCode(scope.row)" type="text" size="small">生成代码</el-button>
+          <el-button @click="handleGenSql(scope.row)" type="text" size="small">生成sql</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -109,6 +111,12 @@
       },
       handleShow: function (row) {
         this.$router.push(`/project/show/${row.projectId}`)
+      },
+      handleGenSql: function (row) {
+        window.open(`${this.$common.BASE_API_URL}/generate/code_gen/genSql?projectId=${row.projectId}`)
+      },
+      handleGenCode: function (row) {
+        window.open(`${this.$common.BASE_API_URL}/generate/code_gen/genCode?projectId=${row.projectId}`)
       }
     },
     activated: function () {

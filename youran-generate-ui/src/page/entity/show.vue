@@ -9,7 +9,7 @@
       <el-col :span="12">
         <el-form ref="showForm" class="showForm" :model="form" label-width="80px">
           <el-form-item label="项目" prop="projectId">
-            <el-select v-model="form.projectId" filterable placeholder="请选择项目" :disabled="true">
+            <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
               <el-option
                 v-for="item in projectList"
                 :key="item.projectId"
@@ -19,16 +19,16 @@
             </el-select>
           </el-form-item>
           <el-form-item label="实体名" prop="title">
-            <el-input v-model="form.title" :readonly="true"></el-input>
+            <el-input v-model="form.title" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="类名" prop="className">
-            <el-input v-model="form.className" :readonly="true"></el-input>
+            <el-input v-model="form.className" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="表名" prop="tableName">
-            <el-input v-model="form.tableName" :readonly="true"></el-input>
+            <el-input v-model="form.tableName" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="描述" prop="desc">
-            <el-input v-model="form.desc" type="textarea" :rows="2" :readonly="true"></el-input>
+            <el-input v-model="form.desc" type="textarea" :rows="2" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button @click="goBack()">返回</el-button>
