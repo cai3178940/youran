@@ -10,10 +10,15 @@
 <#assign Id=metaEntity.pkField.jfieldName?capFirst><#--主键字段名称大写-->
 <#assign type=metaEntity.pkField.jfieldType><#--主键字段类型-->
 <#assign fields=metaEntity.fields><#--字段列表-->
-<#assign versionField=metaEntity.versionField><#--版本字段-->
-<#assign delField=metaEntity.delField><#--逻辑删除字段-->
-<#assign queryFields=metaEntity.queryFields><#--查询字段-->
-
+<#if metaEntity.versionField??>
+    <#assign versionField=metaEntity.versionField><#--版本字段-->
+</#if>
+<#if metaEntity.delField??>
+    <#assign delField=metaEntity.delField><#--逻辑删除字段-->
+</#if>
+<#if metaEntity.queryFields??>
+    <#assign queryFields=metaEntity.queryFields><#--查询字段-->
+</#if>
 <#-- 定义类名截取函数 -->
 <#function fetchClassName dicType>
     <#local index=dicType?lastIndexOf(".")/>

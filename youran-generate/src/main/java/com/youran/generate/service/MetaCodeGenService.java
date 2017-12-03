@@ -85,6 +85,7 @@ public class MetaCodeGenService {
         this.fillEntityHoldRefs(metaEntities, manyToManies);//填充多对多持有引用
         project.setMtms(manyToManies);
         project.setEntities(metaEntities);
+        this.checkProject(project,false);
         Map<String, Object> map = this.buildTemplateParamMap(project, null, null);
         String text = FreeMakerUtil.writeToStr("test_resources/DB/{projectName}.sql.ftl", map);
         logger.debug("------打印生成sql脚本-----");
@@ -151,6 +152,8 @@ public class MetaCodeGenService {
         project.setEntities(metaEntities);
         project.setConsts(metaConstPOS);
 
+        this.checkProject(project,true);
+
         for (TemplateEnum templateEnum : TemplateEnum.values()) {
             //生成全局文件
             if (templateEnum.getType() == TemplateType.COMMON) {
@@ -200,6 +203,12 @@ public class MetaCodeGenService {
         }
         //返回zip文件
         return new File(outFilePath);
+    }
+
+    //校验项目完整性
+    private void checkProject(MetaProjectPO project,boolean checkConst) {
+        //TODO
+
     }
 
 
