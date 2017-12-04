@@ -1,8 +1,8 @@
 <template>
-  <div class="entityShow">
+  <div class="constShow">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/const` }">枚举管理</el-breadcrumb-item>
       <el-breadcrumb-item>查看</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
@@ -18,17 +18,16 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="实体名" prop="title">
-            <el-input v-model="form.title" :disabled="true"></el-input>
+          <el-form-item label="枚举名称" prop="constRemark">
+            <el-input v-model="form.constRemark" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="类名" prop="className">
-            <el-input v-model="form.className" :disabled="true"></el-input>
+          <el-form-item label="枚举类名" prop="constName">
+            <el-input v-model="form.constName" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="表名" prop="tableName">
-            <el-input v-model="form.tableName" :disabled="true"></el-input>
-          </el-form-item>
-          <el-form-item label="描述" prop="desc">
-            <el-input v-model="form.desc" type="textarea" :rows="2" :disabled="true"></el-input>
+          <el-form-item label="类型" prop="constType">
+            <el-radio-group v-model="form.constType" :disabled="true">
+              <el-radio border v-for="item in constTypeOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item>
             <el-button @click="goBack()">返回</el-button>
@@ -40,25 +39,24 @@
 </template>
 
 <script>
-
-  //实体模型
-  const entityModel = {
-    entityId: null,
+  import options from '@/components/options.js'
+  //枚举模型
+  const constModel = {
+    constId: null,
     projectId: null,
-    title: '',
-    className: '',
-    tableName: '',
-    desc: '',
-    commonCall: true
+    constRemark: '',
+    constName: '',
+    constType: ''
   }
 
   export default {
-    name: 'entityShow',
-    props: ['projectId', 'entityId'],
+    name: 'constShow',
+    props: ['projectId', 'constId'],
     data: function () {
       return {
+        constTypeOptions: options.constTypeOptions,
         form: {
-          ...entityModel
+          ...constModel
         }
       }
     },
@@ -68,25 +66,25 @@
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.projectList = result.data.entities)
       },
-      getEntity: function () {
-        return this.$ajax.get(`/generate/meta_entity/${this.entityId}`)
+      getConst: function () {
+        return this.$ajax.get(`/generate/meta_const/${this.constId}`)
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.form = result.data)
           .catch(error => this.$common.showNotifyError(error))
       },
       goBack: function () {
-        this.$router.push(`/project/${this.projectId}/entity`)
+        this.$router.push(`/project/${this.projectId}/const`)
       }
     },
     created: function () {
       this.queryProject()
-        .then(()=>this.getEntity())
+        .then(()=>this.getConst())
     }
   }
 </script>
 
 <style>
-  .entityShow .showForm {
+  .constShow .showForm {
     padding: 30px 50px;
   }
 

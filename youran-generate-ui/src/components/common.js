@@ -26,6 +26,10 @@ export default {
       getEntityOptions:function(projectId){
         return ajax.post('/generate/meta_entity/list', {projectId,pageSize:1000,pageNo:1})
       },
+      //查询枚举下拉列表
+      getConstOptions:function(projectId){
+        return ajax.post('/generate/meta_const/list', {projectId,pageSize:1000,pageNo:1})
+      },
 
       confirm: function (msg) {
         return Vue.prototype.$confirm(msg, '提示', {

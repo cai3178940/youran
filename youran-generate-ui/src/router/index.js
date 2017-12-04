@@ -20,6 +20,18 @@ import fieldAdd from '../page/field/add.vue'
 import fieldEdit from '../page/field/edit.vue'
 import fieldShow from '../page/field/show.vue'
 
+import constIndex from '../page/const/index.vue'
+import constList from '../page/const/list.vue'
+import constAdd from '../page/const/add.vue'
+import constEdit from '../page/const/edit.vue'
+import constShow from '../page/const/show.vue'
+
+import constDetail from '../page/constDetail/index.vue'
+import constDetailList from '../page/constDetail/list.vue'
+import constDetailAdd from '../page/constDetail/add.vue'
+import constDetailEdit from '../page/constDetail/edit.vue'
+import constDetailShow from '../page/constDetail/show.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -102,6 +114,60 @@ export default new Router({
         {
           path: 'show/:fieldId',
           component: fieldShow,
+          props: true
+        }
+      ]
+    },
+    {
+      path: '/project/:projectId/const',
+      component: constIndex,
+      props: true,
+      children: [
+        {
+          path: '',
+          component: constList,
+          props: true
+        },
+        {
+          path: 'add',
+          component: constAdd,
+          props: true
+        },
+        {
+          path: 'edit/:constId',
+          component: constEdit,
+          props: true
+        },
+        {
+          path: 'show/:constId',
+          component: constShow,
+          props: true
+        }
+      ]
+    },
+    {
+      path: '/project/:projectId/const/:constId/constDetail',
+      component: constDetail,
+      props: true,
+      children: [
+        {
+          path: '',
+          component: constDetailList,
+          props: true
+        },
+        {
+          path: 'add',
+          component: constDetailAdd,
+          props: true
+        },
+        {
+          path: 'edit/:constDetailId',
+          component: constDetailEdit,
+          props: true
+        },
+        {
+          path: 'show/:constDetailId',
+          component: constDetailShow,
           props: true
         }
       ]

@@ -23,6 +23,7 @@
         width="180">
         <template slot-scope="scope">
           <el-button @click="handleEntity(scope.row)" type="text" size="small">实体管理</el-button>
+          <el-button @click="handleConst(scope.row)" type="text" size="small">枚举管理</el-button>
           <el-button @click="handleShow(scope.row)" type="text" size="small">查看</el-button>
           <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
           <el-button @click="handleGenCode(scope.row)" type="text" size="small">生成代码</el-button>
@@ -105,6 +106,9 @@
       },
       handleEntity: function (row) {
         this.$router.push(`/project/${row.projectId}/entity`)
+      },
+      handleConst: function (row) {
+        this.$router.push(`/project/${row.projectId}/const`)
       },
       handleEdit: function (row) {
         this.$router.push(`/project/edit/${row.projectId}`)

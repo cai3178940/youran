@@ -1,8 +1,8 @@
 <template>
-  <div class="entityAdd">
+  <div class="constAdd">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/const` }">枚举管理</el-breadcrumb-item>
       <el-breadcrumb-item>添加</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
@@ -18,17 +18,16 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="实体名" prop="title">
-            <el-input v-model="form.title" placeholder="例如：用户"></el-input>
+          <el-form-item label="枚举名称" prop="constRemark">
+            <el-input v-model="form.constRemark" placeholder="例如：性别"></el-input>
           </el-form-item>
-          <el-form-item label="类名" prop="className">
-            <el-input v-model="form.className" placeholder="例如：User"></el-input>
+          <el-form-item label="枚举类名" prop="constName">
+            <el-input v-model="form.constName" placeholder="例如：Sex"></el-input>
           </el-form-item>
-          <el-form-item label="表名" prop="tableName">
-            <el-input v-model="form.tableName" placeholder="例如：t_user"></el-input>
-          </el-form-item>
-          <el-form-item label="描述" prop="desc">
-            <el-input v-model="form.desc" type="textarea" :rows="2"></el-input>
+          <el-form-item label="类型" prop="constType">
+            <el-radio-group v-model="form.constType">
+              <el-radio border v-for="item in constTypeOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
@@ -41,11 +40,13 @@
 </template>
 
 <script>
+  import options from '@/components/options.js'
   export default {
-    name: 'entityAdd',
+    name: 'constAdd',
     props: ['projectId'],
     data: function () {
       return {
+        constTypeOptions: options.constTypeOptions,
         projectList: [],
         form: {
           projectId: null,
@@ -59,20 +60,16 @@
           projectId: [
             {required: true, type: 'number', message: '请选择项目', trigger: 'change'},
           ],
-          title: [
-            {required: true, message: '请输入实体名', trigger: 'blur'},
-            {max: 25, message: '长度不能超过25个字符', trigger: 'blur'}
+          constRemark: [
+            {required: true, message: '请输入枚举名称', trigger: 'blur'},
+            {max: 100, message: '长度不能超过100个字符', trigger: 'blur'}
           ],
-          className: [
-            {required: true, message: '请输入类名', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
+          constName: [
+            {required: true, message: '请输入枚举类名', trigger: 'blur'},
+            {max: 20, message: '长度不能超过20个字符', trigger: 'blur'}
           ],
-          tableName: [
-            {required: true, message: '请输入表名', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          desc: [
-            {max: 250, message: '长度不能超过250个字符', trigger: 'blur'}
+          constType: [
+            {required: true, type: 'number', message: '请选择类型', trigger: 'change'},
           ]
         }
       }
@@ -87,7 +84,7 @@
         //校验表单
         this.$refs.addForm.validate()
         //提交表单
-          .then(() => this.$ajax.post('/generate/meta_entity/save', this.form))
+          .then(() => this.$ajax.post('/generate/meta_const/save', this.form))
           //校验返回结果
           .then(response => this.$common.checkResult(response.data))
           //执行页面跳转
@@ -98,7 +95,7 @@
           .catch(error => this.$common.showNotifyError(error))
       },
       goBack: function () {
-        this.$router.push(`/project/${this.projectId}/entity`)
+        this.$router.push(`/project/${this.projectId}/const`)
       }
     },
     created: function () {
@@ -109,7 +106,7 @@
 </script>
 
 <style>
-  .entityAdd .addForm {
+  .constAdd .addForm {
     padding: 30px 50px;
   }
 

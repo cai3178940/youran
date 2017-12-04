@@ -1,48 +1,48 @@
 <template>
-  <div class="fieldShow">
+  <div class="constDetailShow">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity/${this.entityId}/field` }">字段管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">枚举管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity/${this.entityId}/constDetail` }">枚举值管理</el-breadcrumb-item>
       <el-breadcrumb-item>查看</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
         <el-form ref="showForm" class="showForm" :model="form" label-width="120px">
-          <el-form-item label="java字段名" prop="jfieldName">
-            <el-input :disabled="true" v-model="form.jfieldName"></el-input>
+          <el-form-item label="java枚举值名" prop="jconstDetailName">
+            <el-input :disabled="true" v-model="form.jconstDetailName"></el-input>
           </el-form-item>
-          <el-form-item label="mysql字段名" prop="fieldName">
-            <el-input :disabled="true" v-model="form.fieldName"></el-input>
+          <el-form-item label="mysql枚举值名" prop="constDetailName">
+            <el-input :disabled="true" v-model="form.constDetailName"></el-input>
           </el-form-item>
-          <el-form-item label="字段描述" prop="fieldDesc">
-            <el-input :disabled="true" v-model="form.fieldDesc"></el-input>
+          <el-form-item label="枚举值描述" prop="constDetailDesc">
+            <el-input :disabled="true" v-model="form.constDetailDesc"></el-input>
           </el-form-item>
-          <el-form-item label="java字段类型" prop="jfieldType">
-            <el-select :disabled="true" v-model="form.jfieldType" style="width:100%;" filterable>
+          <el-form-item label="java枚举值类型" prop="jconstDetailType">
+            <el-select :disabled="true" v-model="form.jconstDetailType" style="width:100%;" filterable>
               <el-option
-                v-for="item in jfieldTypeOptions"
+                v-for="item in jconstDetailTypeOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="mysql字段类型" prop="fieldType">
-            <el-select :disabled="true" v-model="form.fieldType" style="width:100%;" filterable>
+          <el-form-item label="mysql枚举值类型" prop="constDetailType">
+            <el-select :disabled="true" v-model="form.constDetailType" style="width:100%;" filterable>
               <el-option
-                v-for="item in fieldTypeOptions"
+                v-for="item in constDetailTypeOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="字段长度" prop="fieldLength">
-            <el-input-number :disabled="true" v-model="form.fieldLength" style="width:100%;" :min="0"></el-input-number>
+          <el-form-item label="枚举值长度" prop="constDetailLength">
+            <el-input-number :disabled="true" v-model="form.constDetailLength" style="width:100%;" :min="0"></el-input-number>
           </el-form-item>
-          <el-form-item label="字段精度" prop="fieldScale">
-            <el-input-number :disabled="true" v-model="form.fieldScale" style="width:100%;" :min="0"></el-input-number>
+          <el-form-item label="枚举值精度" prop="constDetailScale">
+            <el-input-number :disabled="true" v-model="form.constDetailScale" style="width:100%;" :min="0"></el-input-number>
           </el-form-item>
           <el-form-item label="是否主键" prop="primaryKey">
             <el-radio-group :disabled="true" v-model="form.primaryKey">
@@ -59,16 +59,16 @@
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="字段示例" prop="fieldExample">
-            <el-input :disabled="true" v-model="form.fieldExample"></el-input>
+          <el-form-item label="枚举值示例" prop="constDetailExample">
+            <el-input :disabled="true" v-model="form.constDetailExample"></el-input>
           </el-form-item>
-          <el-form-item label="字段备注" prop="fieldComment">
-            <el-input :disabled="true" v-model="form.fieldComment" type="textarea" :rows="2"></el-input>
+          <el-form-item label="枚举值备注" prop="constDetailComment">
+            <el-input :disabled="true" v-model="form.constDetailComment" type="textarea" :rows="2"></el-input>
           </el-form-item>
           <el-form-item label="枚举字典" prop="dicType">
             <el-input :disabled="true" style="width:100%;" v-model="form.dicType"></el-input>
           </el-form-item>
-          <el-form-item label="是否查询字段" prop="query">
+          <el-form-item label="是否查询枚举值" prop="query">
             <el-radio-group :disabled="true" v-model="form.query">
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
@@ -83,22 +83,22 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="是否新增字段" prop="insert">
+          <el-form-item label="是否新增枚举值" prop="insert">
             <el-radio-group :disabled="true" v-model="form.insert">
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="是否编辑字段" prop="update">
+          <el-form-item label="是否编辑枚举值" prop="update">
             <el-radio-group :disabled="true" v-model="form.update">
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="是否列表字段" prop="list">
+          <el-form-item label="是否列表枚举值" prop="list">
             <el-radio-group :disabled="true" v-model="form.list">
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="是否详情字段" prop="show">
+          <el-form-item label="是否详情枚举值" prop="show">
             <el-radio-group :disabled="true" v-model="form.show">
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
@@ -106,7 +106,7 @@
           <el-form-item label="排序号" prop="orderNo">
             <el-input-number :disabled="true" v-model="form.orderNo" style="width:100%;" :min="1"></el-input-number>
           </el-form-item>
-          <el-form-item label="特殊字段类型" prop="specialField">
+          <el-form-item label="特殊枚举值类型" prop="specialField">
             <el-select :disabled="true" v-model="form.specialField" style="width:100%;" filterable>
               <el-option
                 v-for="item in specialFieldOptions"
@@ -128,24 +128,24 @@
 <script>
 
   import options from '@/components/options.js'
-  //字段模型
-  const fieldModel = {
-    fieldId: null,
+  //枚举值模型
+  const constDetailModel = {
+    constDetailId: null,
     entityId: null,
-    //java字段名
-    jfieldName: '',
-    //mysql字段名
-    fieldName: '',
-    //字段描述
-    fieldDesc: '',
-    //java字段类型
-    jfieldType: '',
-    //mysql字段类型
-    fieldType: '',
-    //字段长度
-    fieldLength: 0,
-    //字段精度
-    fieldScale: 0,
+    //java枚举值名
+    jconstDetailName: '',
+    //mysql枚举值名
+    constDetailName: '',
+    //枚举值描述
+    constDetailDesc: '',
+    //java枚举值类型
+    jconstDetailType: '',
+    //mysql枚举值类型
+    constDetailType: '',
+    //枚举值长度
+    constDetailLength: 0,
+    //枚举值精度
+    constDetailScale: 0,
     //是否主键
     primaryKey: 0,
     //是否自增
@@ -154,56 +154,56 @@
     defaultValue:'',
     //不能为空
     notNull: 0,
-    //字段示例
-    fieldExample: '',
-    //字段备注
-    fieldComment: '',
+    //枚举值示例
+    constDetailExample: '',
+    //枚举值备注
+    constDetailComment: '',
     //枚举字典
     dicType: '',
-    //是否查询字段
+    //是否查询枚举值
     query: 0,
     //查询方式
     queryType: null,
-    //是否新增字段
+    //是否新增枚举值
     insert: 1,
-    //是否编辑字段
+    //是否编辑枚举值
     update: 1,
-    //是否列表字段
+    //是否列表枚举值
     list: 1,
-    //是否详情字段
+    //是否详情枚举值
     show: 1,
     //编辑方式(暂时不用)
     editType: null,
     //排序号
     orderNo: 1,
-    //特殊字段类型
+    //特殊枚举值类型
     specialField: ''
   }
 
   export default {
-    name: 'fieldShow',
-    props: ['projectId','entityId','fieldId'],
+    name: 'constDetailShow',
+    props: ['projectId','entityId','constDetailId'],
     data: function () {
       return {
         boolOptions: options.boolOptions,
-        fieldTypeOptions: options.fieldTypeOptions,
-        jfieldTypeOptions: options.jfieldTypeOptions,
+        constDetailTypeOptions: options.constDetailTypeOptions,
+        jconstDetailTypeOptions: options.jconstDetailTypeOptions,
         queryTypeOptions: options.queryTypeOptions,
         specialFieldOptions: options.specialFieldOptions,
         form: {
-          ...fieldModel
+          ...constDetailModel
         }
       }
     },
     methods: {
       getField: function () {
-        return this.$ajax.get(`/generate/meta_field/${this.fieldId}`)
+        return this.$ajax.get(`/generate/meta_const_detail/${this.constDetailId}`)
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.form = result.data)
           .catch(error => this.$common.showNotifyError(error))
       },
       goBack: function () {
-        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
+        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/constDetail`)
       }
     },
     created: function () {
@@ -213,7 +213,7 @@
 </script>
 
 <style>
-  .fieldShow .showForm {
+  .constDetailShow .showForm {
     padding: 30px 50px;
   }
 

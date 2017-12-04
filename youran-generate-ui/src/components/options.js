@@ -133,5 +133,15 @@ export default  {
       label: '乐观锁版本'
     }
   ],
+  constTypeOptions:[
+    {
+      value: 1,
+      label: '整型'
+    },
+    {
+      value: 2,
+      label: '字符串'
+    }
+  ],
 
 }
