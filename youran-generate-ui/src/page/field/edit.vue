@@ -41,7 +41,7 @@
           <el-form-item label="字段长度" prop="fieldLength">
             <el-input-number v-model="form.fieldLength" style="width:100%;" :min="0" placeholder="字段长度，例如：10"></el-input-number>
           </el-form-item>
-          <el-form-item label="字段精度" prop="fieldScale">
+          <el-form-item v-if="form.fieldType=='decimal'" label="字段精度" prop="fieldScale">
             <el-input-number v-model="form.fieldScale" style="width:100%;" :min="0" placeholder="字段精度，例如：2"></el-input-number>
           </el-form-item>
           <el-form-item label="是否主键" prop="primaryKey">
@@ -290,6 +290,10 @@
         }
       },
       submit: function () {
+        //表单预处理
+        if(this.form.fieldType!='decimal'){
+          this.form.fieldScale=null
+        }
         //校验表单
         this.$refs.editForm.validate()
         //提交表单

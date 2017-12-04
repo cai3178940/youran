@@ -1,3 +1,4 @@
+<#include "/common.ftl">
 spring:
     datasource:
         url: jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1
@@ -6,6 +7,4 @@ logging:
         root: info
         java:
             sql: debug
-        com:
-            cbb:
-                sample: trace
+        ${packageName}: trace

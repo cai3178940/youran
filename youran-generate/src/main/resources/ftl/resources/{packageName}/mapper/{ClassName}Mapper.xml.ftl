@@ -6,8 +6,12 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${packageName}.mapper.${CName}Mapper">
     <select id="findById" resultType="${CName}PO">
-        select * from ${tableName}
-        where delSign=0
+        select
+        <#list fields as field>
+            ${field.fieldName}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${field.jfieldName}</#if><#if field_has_next>,</#if>
+        </#list>
+        from ${tableName}
+        where ${delField.fieldName}=0
         and ${pk.fieldName} = ${r'#'}{arg0}
     </select>
 
@@ -27,7 +31,7 @@
     <update id="update" parameterType="${CName}PO">
         update ${tableName} set
         <#list fields as field>
-            <#if field.delSign==1>
+            <#if field.specialField?? && field.specialField==MetaSpecialField.VERSION>
             ${field.fieldName} = ${field.fieldName}+1<#if field_has_next>,</#if>
             <#else>
             ${field.fieldName}=${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>

@@ -314,6 +314,8 @@ public class MetaCodeGenService {
         map.put("JFieldType", FreeMakerUtil.getStaticModel(JFieldType.class));
         //注入常量类
         map.put("QueryType", FreeMakerUtil.getStaticModel(QueryType.class));
+        //注入常量类
+        map.put("MetaSpecialField", FreeMakerUtil.getStaticModel(MetaSpecialField.class));
         return map;
     }
 
