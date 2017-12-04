@@ -115,6 +115,10 @@
         this.query = {
           ...this.queryForm
         }
+        if (this.query.constId == null) {
+          this.$common.showNotifyError('请选择常量')
+          return
+        }
         if (this.query.constId != parseInt(this.constId)) {
           this.$router.push(`/project/${this.query.projectId}/const/${this.query.constId}/constDetail`)
         }

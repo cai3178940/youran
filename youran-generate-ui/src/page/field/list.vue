@@ -150,6 +150,10 @@
         this.query = {
           ...this.queryForm
         }
+        if (this.query.entityId == null) {
+          this.$common.showNotifyError('请选择实体')
+          return
+        }
         if (this.query.entityId != parseInt(this.entityId)) {
           this.$router.push(`/project/${this.query.projectId}/entity/${this.query.entityId}/field`)
         }
