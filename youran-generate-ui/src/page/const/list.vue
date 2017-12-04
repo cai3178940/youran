@@ -41,7 +41,7 @@
         label="操作"
         width="180">
         <template slot-scope="scope">
-          <el-button @click="handleField(scope.row)" type="text" size="small">枚举值管理</el-button>
+          <el-button @click="handleConstDetail(scope.row)" type="text" size="small">枚举值管理</el-button>
           <el-button @click="handleShow(scope.row)" type="text" size="small">查看</el-button>
           <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
         </template>
@@ -158,8 +158,8 @@
       handleAdd: function () {
         this.$router.push(`/project/${this.projectId}/const/add`)
       },
-      handleField: function (row) {
-        this.$router.push(`/project/${this.projectId}/const/${row.constId}/field`)
+      handleConstDetail: function (row) {
+        this.$router.push(`/project/${this.projectId}/const/${row.constId}/constDetail`)
       },
       handleEdit: function (row) {
         this.$router.push(`/project/${this.projectId}/const/edit/${row.constId}`)
