@@ -64,7 +64,7 @@
         //校验表单
         this.$refs.addForm.validate()
         //提交表单
-          .then(() => this.$ajax.post('/generate/meta_const_detail/save', this.$common.removeBlankField(this.form)))
+          .then(() => this.$ajax.post('/generate/meta_const_detail/save', this.form))
           //校验返回结果
           .then(response => this.$common.checkResult(response.data))
           //执行页面跳转

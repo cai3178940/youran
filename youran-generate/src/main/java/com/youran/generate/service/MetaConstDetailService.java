@@ -1,7 +1,6 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.MetaConstDetailDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
@@ -14,6 +13,8 @@ import com.youran.generate.pojo.vo.MetaConstDetailShowVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Title:元数据常量值增删改查服务
@@ -61,9 +62,8 @@ public class MetaConstDetailService {
      * @param metaConstDetailQueryDTO
      * @return
      */
-    public PageVO<MetaConstDetailListVO> list(MetaConstDetailQueryDTO metaConstDetailQueryDTO) {
-        PageVO<MetaConstDetailListVO> page = metaConstDetailDAO.findByPage(metaConstDetailQueryDTO);
-        return page;
+    public List<MetaConstDetailListVO> list(MetaConstDetailQueryDTO metaConstDetailQueryDTO) {
+        return metaConstDetailDAO.findByQuery(metaConstDetailQueryDTO);
     }
 
     /**

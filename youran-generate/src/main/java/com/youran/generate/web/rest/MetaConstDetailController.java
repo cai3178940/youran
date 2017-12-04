@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Title:元数据常量控制器
@@ -49,10 +49,10 @@ public class MetaConstDetailController implements MetaConstDetailAPI {
 
     @Override
     @PostMapping(value = "/list")
-    public ReplyVO<PageVO<MetaConstDetailListVO>> list(@Valid @RequestBody MetaConstDetailQueryDTO metaConstDetailQueryDTO) {
-        PageVO<MetaConstDetailListVO> page = metaConstDetailService.list(metaConstDetailQueryDTO);
-        ReplyVO<PageVO<MetaConstDetailListVO>> result = ReplyVO.success();
-        result.setData(page);
+    public ReplyVO<List<MetaConstDetailListVO>> list(@Valid @RequestBody MetaConstDetailQueryDTO metaConstDetailQueryDTO) {
+        List<MetaConstDetailListVO> list = metaConstDetailService.list(metaConstDetailQueryDTO);
+        ReplyVO<List<MetaConstDetailListVO>> result = ReplyVO.success();
+        result.setData(list);
         return result;
     }
 

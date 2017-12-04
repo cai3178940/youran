@@ -1,6 +1,5 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
 import com.youran.generate.pojo.dto.MetaConstDetailQueryDTO;
@@ -11,6 +10,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
 
 /**
  * Title:元数据常量值api
@@ -40,13 +41,13 @@ public interface MetaConstDetailAPI {
     ReplyVO<Void> update(MetaConstDetailUpdateDTO metaConstDetailUpdateDTO);
 
     /**
-     * 分页查询常量值
+     * 查询常量值列表
      */
-    @ApiOperation(value = "分页查询常量值")
+    @ApiOperation(value = "查询常量值列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstDetailQueryDTO", dataType = "MetaConstDetailQueryDTO", value = "分页查询参数", paramType = "body"),
     })
-    ReplyVO<PageVO<MetaConstDetailListVO>> list(MetaConstDetailQueryDTO metaConstDetailQueryDTO);
+    ReplyVO<List<MetaConstDetailListVO>> list(MetaConstDetailQueryDTO metaConstDetailQueryDTO);
 
     /**
      * 查看常量值详情

@@ -26,7 +26,7 @@
               <el-option
                 v-for="item in constList"
                 :key="item.constId"
-                :label="item.title"
+                :label="item.constRemark"
                 :value="item.constId">
               </el-option>
             </el-select>
@@ -74,7 +74,7 @@
           constId: null
         },
         projectList: [],
-        entityList: [],
+        constList: [],
         activeNum: 0,
         selectItems: [],
         entities: [],
@@ -103,7 +103,7 @@
       queryConst: function (projectId) {
         return this.$common.getConstOptions(projectId)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.entityList = result.data.entities)
+          .then(result => this.constList = result.data.entities)
       },
       //项目选择框修改时，清空枚举选择框
       projectChange: function () {

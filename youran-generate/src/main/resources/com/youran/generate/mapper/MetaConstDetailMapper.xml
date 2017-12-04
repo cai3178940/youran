@@ -64,19 +64,11 @@
         and delSign=0
     </delete>
 
-    <select id="findCountByQuery" parameterType="MetaConstDetailQueryDTO" resultType="int">
-        select count(*) from (
-        select * from meta_const_detail t
-        where t.delSign=0
-        and t.constId = #{constId,jdbcType=INTEGER}
-        ) as count_select_
-    </select>
 
     <select id="findListByQuery" parameterType="MetaConstDetailQueryDTO" resultType="MetaConstDetailListVO">
         select * from meta_const_detail t
         where t.delSign=0
         and t.constId = #{constId,jdbcType=INTEGER}
-        limit #{startIndex},#{pageSize}
     </select>
 
     <select id="findByConstId" resultType="MetaConstDetailPO">

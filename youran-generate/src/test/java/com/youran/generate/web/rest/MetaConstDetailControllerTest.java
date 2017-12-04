@@ -70,7 +70,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(queryDTO)))
                 .andExpect(jsonPath("$.errorCode").value(is(0)))
-                .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
+                .andExpect(jsonPath("$.data.length()").value(is(1)));
     }
 
     @Test
