@@ -34,4 +34,8 @@ java -jar youran-generate/target/youran-generate-1.0-SNAPSHOT.war
 
 ```
 
+![image](https://github.com/cai3178940/youran/blob/master/image1.png)
+![image](https://github.com/cai3178940/youran/blob/master/image2.png)
+![image](https://github.com/cai3178940/youran/blob/master/image3.png)
+![image](https://github.com/cai3178940/youran/blob/master/image4.png)
 
