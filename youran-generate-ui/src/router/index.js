@@ -35,7 +35,6 @@ import constDetailShow from '../page/constDetail/show.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
   routes: [
     {
       path:'',
