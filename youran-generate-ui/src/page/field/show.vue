@@ -59,6 +59,16 @@
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="特殊字段类型" prop="specialField">
+            <el-select :disabled="true" v-model="form.specialField" style="width:100%;" filterable>
+              <el-option
+                v-for="item in specialFieldOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="字段示例" prop="fieldExample">
             <el-input :disabled="true" v-model="form.fieldExample"></el-input>
           </el-form-item>
@@ -106,16 +116,7 @@
           <el-form-item label="排序号" prop="orderNo">
             <el-input-number :disabled="true" v-model="form.orderNo" style="width:100%;" :min="1"></el-input-number>
           </el-form-item>
-          <el-form-item label="特殊字段类型" prop="specialField">
-            <el-select :disabled="true" v-model="form.specialField" style="width:100%;" filterable>
-              <el-option
-                v-for="item in specialFieldOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
+
           <el-form-item>
             <el-button @click="goBack()">返回</el-button>
           </el-form-item>
@@ -154,6 +155,8 @@
     defaultValue:'',
     //不能为空
     notNull: 0,
+    //特殊字段类型
+    specialField: '',
     //字段示例
     fieldExample: '',
     //字段备注
@@ -175,9 +178,7 @@
     //编辑方式(暂时不用)
     editType: null,
     //排序号
-    orderNo: 1,
-    //特殊字段类型
-    specialField: ''
+    orderNo: 1
   }
 
   export default {

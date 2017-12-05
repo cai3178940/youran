@@ -55,9 +55,19 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="不能为空" prop="notNull">
-            <el-radio-group v-model="form.notNull">
+            <el-radio-group :disabled="notNullDisabled" v-model="form.notNull">
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
+          </el-form-item>
+          <el-form-item v-if="!specialFieldHidden" label="特殊字段类型" prop="specialField">
+            <el-select v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
+              <el-option
+                v-for="item in specialFieldOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="字段示例" prop="fieldExample">
             <el-input v-model="form.fieldExample" placeholder="字段示例，例如年龄字段：21"></el-input>
@@ -110,16 +120,6 @@
           <el-form-item label="排序号" prop="orderNo">
             <el-input-number v-model="form.orderNo" style="width:100%;" :min="1"></el-input-number>
           </el-form-item>
-          <el-form-item label="特殊字段类型" prop="specialField">
-            <el-select v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
-              <el-option
-                v-for="item in specialFieldOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
 
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
@@ -143,9 +143,9 @@
         jfieldTypeOptions: options.jfieldTypeOptions,
         queryTypeOptions: options.queryTypeOptions,
         specialFieldOptions: options.specialFieldOptions,
-        constList:[{
-          constName:'SexConst'
-        }],
+        constList:null,
+        notNullDisabled:false,
+        specialFieldHidden:false,
         form: {
           entityId: null,
           //java字段名
@@ -170,6 +170,8 @@
           defaultValue:'',
           //不能为空
           notNull: 0,
+          //特殊字段类型
+          specialField: '',
           //字段示例
           fieldExample: '',
           //字段备注
@@ -191,9 +193,7 @@
           //编辑方式(暂时不用)
           editType: null,
           //排序号
-          orderNo: 1,
-          //特殊字段类型
-          specialField: ''
+          orderNo: 1
         },
         rules: {
           jfieldName: [
@@ -261,17 +261,40 @@
         }
       }
     },
+    watch: {
+      'form.primaryKey':function (value) {
+        if(value==1){
+          this.form.notNull=1
+          this.notNullDisabled=true
+          this.form.specialField=''
+          this.specialFieldHidden=true
+        }else{
+          this.notNullDisabled=false
+          this.specialFieldHidden=false
+        }
+      }
+    },
     methods: {
       //查询可用枚举字典
       queryDicType: function (queryString, cb) {
-        var constList = this.constList;
-        var results = queryString ? constList.filter(
-          c=>c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-        ) : constList;
-        cb(results.map(c=>({value:c.constName})));
+        //定义回调操作
+        var action = function () {
+          var results = queryString ? this.constList.filter(
+            c=>c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+          ) : this.constList;
+          cb(results.map(c=>({value:c.constName})));
+        }.bind(this)
+        if(this.constList){
+          action()
+        }else{
+          this.$common.getConstOptions(this.projectId)
+            .then(response => this.$common.checkResult(response.data))
+            .then(result=>{
+              this.constList = result.data.entities
+              action();
+            })
+        }
       },
-
-
       submit: function () {
         //表单预处理
         if(this.form.fieldType!='decimal'){

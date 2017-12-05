@@ -9,10 +9,7 @@ import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaManyToManyDAO;
 import com.youran.generate.dao.MetaProjectDAO;
 import com.youran.generate.exception.GenerateException;
-import com.youran.generate.pojo.po.MetaConstPO;
-import com.youran.generate.pojo.po.MetaEntityPO;
-import com.youran.generate.pojo.po.MetaManyToManyPO;
-import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.pojo.po.*;
 import com.youran.generate.util.FreeMakerUtil;
 import com.youran.generate.util.MetadataUtil;
 import com.youran.generate.util.Zip4jUtil;
@@ -207,7 +204,69 @@ public class MetaCodeGenService {
 
     //校验项目完整性
     private void checkProject(MetaProjectPO project,boolean checkConst) {
-        //TODO
+        List<MetaEntityPO> entities = project.getEntities();
+        List<MetaConstPO> consts = project.getConsts();
+
+        for (MetaEntityPO entity : entities) {
+            List<MetaFieldPO> fields = entity.getFields();
+            int pkCount = 0;
+            int delSignCount = 0;
+            int createByCount = 0;
+            int createDateCount = 0;
+            int operateByCount = 0;
+            int operateDateCount = 0;
+            int versionCount = 0;
+            for (MetaFieldPO field : fields) {
+                String specialField = field.getSpecialField();
+                if(BoolConst.TRUE == field.getPrimaryKey()){
+                    pkCount++;
+                    if(StringUtils.isNotBlank(specialField)){
+                        throw new GenerateException("实体【"+entity.getTitle()+"】的主键【"+field.getFieldDesc()+"】不可以是特殊字段");
+                    }
+                }
+                if (Objects.equals(specialField, MetaSpecialField.DEL_SIGN)) {
+                    delSignCount++;
+                } else if (Objects.equals(specialField, MetaSpecialField.CREATE_BY)) {
+                    createByCount++;
+                } else if (Objects.equals(specialField, MetaSpecialField.CREATE_DATE)) {
+                    createDateCount++;
+                } else if (Objects.equals(specialField, MetaSpecialField.OPERATE_BY)) {
+                    operateByCount++;
+                } else if (Objects.equals(specialField, MetaSpecialField.OPERATE_DATE)) {
+                    operateDateCount++;
+                } else if (Objects.equals(specialField, MetaSpecialField.VERSION)) {
+                    versionCount++;
+                }
+            }
+            if(pkCount==0){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中未找到主键");
+            }
+            if(pkCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+pkCount+"个主键");
+            }
+            if(delSignCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+delSignCount+"个逻辑删除字段");
+            }
+            if(createByCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+createByCount+"个创建人员字段");
+            }
+            if(createDateCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+createDateCount+"个创建时间字段");
+            }
+            if(operateByCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+operateByCount+"个更新人员字段");
+            }
+            if(operateDateCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+operateDateCount+"个更新时间字段");
+            }
+            if(versionCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+versionCount+"个乐观锁版本字段");
+            }
+        }
+        if(checkConst) {
+
+        }
+
 
     }
 

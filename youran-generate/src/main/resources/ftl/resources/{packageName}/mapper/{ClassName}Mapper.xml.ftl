@@ -15,7 +15,7 @@
         and ${pk.fieldName} = ${r'#'}{arg0}
     </select>
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="${id}" parameterType="${CName}PO">
+    <insert id="save" <#if pk.autoIncrement==1>useGeneratedKeys="true" </#if>keyProperty="${id}" parameterType="${CName}PO">
         insert into ${tableName}(
     <#list fields as field>
         ${field.fieldName}<#if field_has_next>,</#if>
