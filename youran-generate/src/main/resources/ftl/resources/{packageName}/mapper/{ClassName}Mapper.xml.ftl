@@ -11,7 +11,10 @@
             ${field.fieldName}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${field.jfieldName}</#if><#if field_has_next>,</#if>
         </#list>
         from ${tableName}
-        where ${delField.fieldName}=0
+        where 1=1
+        <#if delField??>
+            and ${delField.fieldName}=0
+        </#if>
         and ${pk.fieldName} = ${r'#'}{arg0}
     </select>
 
