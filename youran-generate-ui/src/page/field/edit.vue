@@ -50,7 +50,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否自增" prop="autoIncrement">
-            <el-radio-group v-model="form.autoIncrement">
+            <el-radio-group :disabled="autoIncrementDisabled" v-model="form.autoIncrement">
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
@@ -197,6 +197,7 @@
         specialFieldOptions: options.specialFieldOptions,
         constList:null,
         notNullDisabled:false,
+        autoIncrementDisabled:true,
         specialFieldHidden:false,
         old: {
           ...fieldModel
@@ -277,9 +278,12 @@
           this.notNullDisabled=true
           this.form.specialField=''
           this.specialFieldHidden=true
+          this.autoIncrementDisabled=false
         }else{
           this.notNullDisabled=false
           this.specialFieldHidden=false
+          this.form.autoIncrement=0
+          this.autoIncrementDisabled=true
         }
       }
     },
