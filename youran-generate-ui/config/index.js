@@ -55,7 +55,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../../youran-generate/src/main/resources/ui'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/gen/ui',
+    assetsPublicPath: '/ui',
 
     /**
      * Source Maps
