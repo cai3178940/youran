@@ -36,7 +36,7 @@
       <el-table-column property="desc" label="描述"></el-table-column>
       <el-table-column
         label="操作"
-        width="150">
+        width="180">
         <template slot-scope="scope">
           <el-button @click="handleField(scope.row)" type="text" size="small">字段管理</el-button>
           <el-button @click="handleShow(scope.row)" type="text" size="small">查看</el-button>

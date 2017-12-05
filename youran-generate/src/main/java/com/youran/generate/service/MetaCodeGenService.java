@@ -79,7 +79,8 @@ public class MetaCodeGenService {
                 .collect(Collectors.toList());
 
         List<MetaManyToManyPO> manyToManies = metaManyToManyDAO.findByProjectId(projectId);
-        this.fillEntityHoldRefs(metaEntities, manyToManies);//填充多对多持有引用
+        //填充多对多持有引用
+        this.fillEntityHoldRefs(metaEntities, manyToManies);
         project.setMtms(manyToManies);
         project.setEntities(metaEntities);
         this.checkProject(project,false);
@@ -131,7 +132,7 @@ public class MetaCodeGenService {
         }
         List<Integer> entityIds = metaEntityDAO.findIdsByProject(projectId);
         if (CollectionUtils.isEmpty(entityIds)) {
-            return null;
+            throw new GenerateException("项目中没有实体");
         }
         String tmpDir = H2Util.getTmpDir(appName, true, true);
         logger.debug("------代码生成临时路径：" + tmpDir);
@@ -144,7 +145,8 @@ public class MetaCodeGenService {
                 .stream()
                 .map(metadataQueryService::getConstWithAll).collect(Collectors.toList());
         List<MetaManyToManyPO> manyToManies = metaManyToManyDAO.findByProjectId(projectId);
-        this.fillEntityHoldRefs(metaEntities, manyToManies);//填充多对多持有引用
+        //填充多对多持有引用
+        this.fillEntityHoldRefs(metaEntities, manyToManies);
         project.setMtms(manyToManies);
         project.setEntities(metaEntities);
         project.setConsts(metaConstPOS);
@@ -206,7 +208,6 @@ public class MetaCodeGenService {
     private void checkProject(MetaProjectPO project,boolean checkConst) {
         List<MetaEntityPO> entities = project.getEntities();
         List<MetaConstPO> consts = project.getConsts();
-
         for (MetaEntityPO entity : entities) {
             List<MetaFieldPO> fields = entity.getFields();
             int pkCount = 0;
