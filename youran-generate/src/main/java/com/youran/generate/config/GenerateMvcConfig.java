@@ -36,6 +36,8 @@ public class GenerateMvcConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController( "" ).setViewName( "forward:/ui/index.html" );
+        registry.addViewController( "/" ).setViewName( "forward:/ui/index.html" );
         registry.addViewController( "/ui" ).setViewName( "forward:/ui/index.html" );
         registry.addViewController( "/ui/" ).setViewName( "forward:/ui/index.html" );
         registry.setOrder( Ordered.HIGHEST_PRECEDENCE );
