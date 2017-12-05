@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_API_URL = 'http://localhost:8080'
+const BASE_API_URL = process.env.BASE_API_URL
 var ajax = axios.create({
   baseURL: BASE_API_URL,
   timeout: 60000,
