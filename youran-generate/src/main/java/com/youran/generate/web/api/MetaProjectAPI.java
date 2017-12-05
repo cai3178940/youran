@@ -1,6 +1,5 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectQueryDTO;
@@ -11,6 +10,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
 
 /**
  * Title:元数据项目api
@@ -45,15 +46,15 @@ public interface MetaProjectAPI {
     ReplyVO<Void> update(MetaProjectUpdateDTO metaProjectUpdateDTO);
 
     /**
-     * 分页查询项目
+     * 查询项目列表
      *
      * @param metaProjectQueryDTO
      */
-    @ApiOperation(value = "分页查询项目")
+    @ApiOperation(value = "查询项目列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectQueryDTO", dataType = "MetaProjectQueryDTO", value = "分页查询参数", paramType = "body"),
     })
-    ReplyVO<PageVO<MetaProjectListVO>> list(MetaProjectQueryDTO metaProjectQueryDTO);
+    ReplyVO<List<MetaProjectListVO>> list(MetaProjectQueryDTO metaProjectQueryDTO);
 
     /**
      * 查看项目详情

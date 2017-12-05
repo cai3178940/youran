@@ -78,7 +78,7 @@
       queryProject: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data.entities)
+          .then(result => this.projectList = result.data)
       },
       submit: function () {
         //校验表单

@@ -13,7 +13,7 @@
       </el-col>
     </el-row>
 
-    <el-table :data="page.entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
+    <el-table :data="entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column property="projectName" label="项目名称"></el-table-column>
       <el-table-column property="author" label="作者"></el-table-column>
@@ -32,17 +32,6 @@
       </el-table-column>
     </el-table>
 
-    <el-row type="flex" justify="end" style="padding:20px 0; ">
-      <el-pagination
-        @size-change="sizeChange"
-        @current-change="currentChange"
-        :current-page="page.pageNo"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="page.pageSize"
-        layout="sizes, prev, pager, next"
-        :total="page.entityCount">
-      </el-pagination>
-    </el-row>
   </div>
 </template>
 
@@ -55,12 +44,7 @@
         query: {},
         activeNum: 0,
         selectItems: [],
-        page: {
-          pageNo: 1,
-          entityCount: 0,
-          pageSize: 2,
-          entities: []
-        },
+        entities: [],
         loading:false
       }
     },
@@ -78,26 +62,12 @@
           .then(() => this.$ajax.post('/generate/meta_project/deleteBatch', this.selectItems.map(entity => entity.projectId)))
           .then(() => this.doQuery())
       },
-      sizeChange: function (pageSize) {
-        this.page.pageSize = pageSize
-        this.doQuery()
-      },
-      currentChange: function (pageNo) {
-        this.page.pageNo = pageNo
-        this.doQuery()
-      },
       // 列表查询
       doQuery: function () {
-        // 将查询参数和分页参数合并
-        const params = {
-          ...this.query,
-          pageNo: this.page.pageNo,
-          pageSize: this.page.pageSize
-        }
         this.loading = true
-        this.$ajax.post('/generate/meta_project/list', params)
+        this.$ajax.post('/generate/meta_project/list', this.query)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.page = result.data)
+          .then(result => this.entities = result.data)
           .catch(error => this.$common.showNotifyError(error))
           .finally(()=>this.loading = false)
       },

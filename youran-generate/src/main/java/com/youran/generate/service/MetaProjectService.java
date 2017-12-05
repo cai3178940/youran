@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Title:元数据项目增删改查服务
  * Description:
@@ -61,9 +63,8 @@ public class MetaProjectService {
      * @param metaProjectQueryDTO
      * @return
      */
-    public PageVO<MetaProjectListVO> list(MetaProjectQueryDTO metaProjectQueryDTO) {
-        PageVO<MetaProjectListVO> page = metaProjectDAO.findByPage(metaProjectQueryDTO);
-        return page;
+    public List<MetaProjectListVO> list(MetaProjectQueryDTO metaProjectQueryDTO) {
+        return metaProjectDAO.findByQuery(metaProjectQueryDTO);
     }
 
     /**

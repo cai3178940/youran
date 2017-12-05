@@ -1,6 +1,6 @@
 package com.youran.generate.pojo.dto;
 
-import com.youran.common.pojo.dto.PageQueryDTO;
+import com.youran.common.pojo.dto.AbstractDTO;
 import io.swagger.annotations.ApiModel;
 
 /**
@@ -9,8 +9,8 @@ import io.swagger.annotations.ApiModel;
  * Author: cbb
  * Create Time:2017/5/12 18:32
  */
-@ApiModel(description = "分页查询参数")
-public class MetaProjectQueryDTO extends PageQueryDTO {
+@ApiModel(description = "查询参数")
+public class MetaProjectQueryDTO extends AbstractDTO {
 
 
 }

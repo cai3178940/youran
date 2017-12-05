@@ -49,16 +49,8 @@
         and delSign=0
     </delete>
 
-    <select id="findCountByQuery" parameterType="MetaProjectQueryDTO" resultType="int">
-        select count(*) from (
-        select * from meta_project t
-        where t.delSign=0
-        ) as count_select_
-    </select>
-
     <select id="findListByQuery" parameterType="MetaProjectQueryDTO" resultType="MetaProjectListVO">
         select * from meta_project t
         where t.delSign=0
-        limit #{startIndex},#{pageSize}
     </select>
 </mapper>

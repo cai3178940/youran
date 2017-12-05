@@ -20,7 +20,7 @@ export default {
 
       //查询项目下拉列表
       getProjectOptions:function(){
-        return ajax.post('/generate/meta_project/list', {pageSize:1000,pageNo:1})
+        return ajax.post('/generate/meta_project/list', {})
       },
       //查询实体下拉列表
       getEntityOptions:function(projectId){

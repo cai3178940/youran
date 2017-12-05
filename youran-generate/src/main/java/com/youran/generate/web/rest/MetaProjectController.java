@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Title:元数据项目控制器
@@ -49,10 +49,10 @@ public class MetaProjectController implements MetaProjectAPI {
 
     @Override
     @PostMapping(value = "/list")
-    public ReplyVO<PageVO<MetaProjectListVO>> list(@Valid @RequestBody MetaProjectQueryDTO metaProjectQueryDTO) {
-        PageVO<MetaProjectListVO> page = metaProjectService.list(metaProjectQueryDTO);
-        ReplyVO<PageVO<MetaProjectListVO>> result = ReplyVO.success();
-        result.setData(page);
+    public ReplyVO<List<MetaProjectListVO>> list(@Valid @RequestBody MetaProjectQueryDTO metaProjectQueryDTO) {
+        List<MetaProjectListVO> list = metaProjectService.list(metaProjectQueryDTO);
+        ReplyVO<List<MetaProjectListVO>> result = ReplyVO.success();
+        result.setData(list);
         return result;
     }
 

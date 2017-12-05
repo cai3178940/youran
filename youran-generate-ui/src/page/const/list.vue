@@ -125,7 +125,7 @@
       queryProject: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data.entities)
+          .then(result => this.projectList = result.data)
       },
       handleQuery: function () {
         //将查询表单参数赋值给查询参数
