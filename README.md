@@ -33,9 +33,12 @@ mvn clean package
 java -jar youran-generate/target/youran-generate-1.0-SNAPSHOT.war
 
 ```
-
+### 项目管理页面
 ![image](https://github.com/cai3178940/youran/blob/master/image1.png)
+### 实体管理页面
 ![image](https://github.com/cai3178940/youran/blob/master/image2.png)
+### 字段管理页面
 ![image](https://github.com/cai3178940/youran/blob/master/image3.png)
+### 字段添加页面
 ![image](https://github.com/cai3178940/youran/blob/master/image4.png)
 
