@@ -49,3 +49,4 @@ bin
 .rules
 
 
+/youran-generate/src/main/resources/ui/*
