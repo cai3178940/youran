@@ -1,8 +1,10 @@
 package com.youran.common.dao;
 
 import com.youran.common.LoginContext;
+import com.youran.common.optimistic.OptimisticException;
 import com.youran.common.pojo.dto.PageQueryDTO;
 import com.youran.common.pojo.po.AbstractPO;
+import com.youran.common.pojo.po.Version;
 import com.youran.common.pojo.vo.PageVO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +63,11 @@ public abstract class AbstractDAO<PO extends AbstractPO> {
      */
     public int update(PO po) {
         po.preUpdate(loginContext.getCurrentOperatorId());
-        return sqlSession.update(getMybatisNamespace()+".update",po);
+        int update = sqlSession.update(getMybatisNamespace() + ".update", po);
+        if((po instanceof Version) && update<=0){
+            throw new OptimisticException("更新操作乐观锁异常");
+        }
+        return update;
     }
 
     /**
