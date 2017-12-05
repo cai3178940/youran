@@ -18,7 +18,6 @@
     <modules>
         <module>youran-parent</module>
         <module>youran-common</module>
-        <module>youran-sample</module>
         <module>youran-generate</module>
     </modules>
 
