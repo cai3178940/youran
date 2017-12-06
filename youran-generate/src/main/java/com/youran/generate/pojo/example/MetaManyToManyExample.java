@@ -1,12 +1,14 @@
 package com.youran.generate.pojo.example;
 
+import com.youran.common.pojo.example.AbstractExample;
+
 /**
  * Title:
  * Description:
  * Author: cbb
  * Create Time:2017/7/4 16:26
  */
-public class MetaManyToManyExample {
+public class MetaManyToManyExample extends AbstractExample {
 
     public static final String N_MTMID = "主键id";
     public static final String E_MTMID = "1";

@@ -1,12 +1,14 @@
 package com.youran.generate.pojo.example;
 
+import com.youran.common.pojo.example.AbstractExample;
+
 /**
  * Title:常量对象参数示例
  * Description:
  * Author: cbb
  * Create Time:2017/6/13 15:48
  */
-public class MetaConstExample {
+public class MetaConstExample extends AbstractExample {
 
     public static final String N_CONSTID = "常量类id";
     public static final String E_CONSTID = "1";

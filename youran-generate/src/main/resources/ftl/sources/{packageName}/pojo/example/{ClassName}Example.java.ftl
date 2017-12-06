@@ -3,8 +3,10 @@
 
 package ${packageName}.pojo.example;
 
+import ${commonPackage}.pojo.example.AbstractExample;
+
 <@classCom "【${title}】参数示例"></@classCom>
-public class ${CName}Example {
+public class ${CName}Example extends AbstractExample {
 
 <#list metaEntity.fields as field>
     public static final String N_${field.jfieldName?upper_case} = "${field.fieldComment}";

@@ -1,12 +1,14 @@
 package com.youran.generate.pojo.example;
 
+import com.youran.common.pojo.example.AbstractExample;
+
 /**
  * Title:元数据项目参数示例
  * Description:
  * Author: cbb
  * Create Time:2017/5/24
  */
-public class MetaProjectExample {
+public class MetaProjectExample extends AbstractExample {
 
     public static final String N_PROJECTID = "项目id";
     public static final String E_PROJECTID = "1";

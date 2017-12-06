@@ -1,12 +1,14 @@
 package com.youran.generate.pojo.example;
 
+import com.youran.common.pojo.example.AbstractExample;
+
 /**
  * Title:元数据实体参数示例
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 15:07
  */
-public class MetaEntityExample {
+public class MetaEntityExample extends AbstractExample {
 
     public static final String N_ENTITYID = "实体id";
     public static final String E_ENTITYID = "1";

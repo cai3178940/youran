@@ -1,12 +1,14 @@
 package com.youran.generate.pojo.example;
 
+import com.youran.common.pojo.example.AbstractExample;
+
 /**
  * Title:
  * Description:
  * Author: cbb
  * Create Time:2017/5/14 11:41
  */
-public class MetaFieldExample {
+public class MetaFieldExample extends AbstractExample {
 
     public static final String N_FIELDID = "主键";
     public static final String E_FIELDID = "1";

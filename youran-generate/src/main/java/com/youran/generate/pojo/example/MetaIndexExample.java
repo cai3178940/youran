@@ -1,12 +1,14 @@
 package com.youran.generate.pojo.example;
 
+import com.youran.common.pojo.example.AbstractExample;
+
 /**
  * Title:
  * Description:
  * Author: cbb
  * Create Time:2017/5/14 12:06
  */
-public class MetaIndexExample {
+public class MetaIndexExample extends AbstractExample {
 
     public static final String N_INDEXID = "主键";
     public static final String E_INDEXID = "1";
