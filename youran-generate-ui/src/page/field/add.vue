@@ -59,8 +59,8 @@
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item v-if="!specialFieldHidden" label="特殊字段类型" prop="specialField">
-            <el-select v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
+          <el-form-item label="特殊字段类型" prop="specialField">
+            <el-select :disabled="specialFieldDisabled" v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
               <el-option
                 v-for="item in specialFieldOptions"
                 :key="item.value"
@@ -88,7 +88,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="查询方式" prop="queryType">
-            <el-select v-model="form.queryType" style="width:100%;" filterable placeholder="请选择">
+            <el-select :disabled="queryTypeDisabled" v-model="form.queryType" style="width:100%;" filterable placeholder="请选择">
               <el-option
                 v-for="item in queryTypeOptions"
                 :key="item.value"
@@ -146,7 +146,8 @@
         constList:null,
         notNullDisabled:false,
         autoIncrementDisabled:true,
-        specialFieldHidden:false,
+        queryTypeDisabled:true,
+        specialFieldDisabled:false,
         form: {
           entityId: null,
           //java字段名
@@ -268,13 +269,21 @@
           this.form.notNull=1
           this.notNullDisabled=true
           this.form.specialField=''
-          this.specialFieldHidden=true
+          this.specialFieldDisabled=true
           this.autoIncrementDisabled=false
         }else{
           this.notNullDisabled=false
-          this.specialFieldHidden=false
+          this.specialFieldDisabled=false
           this.form.autoIncrement=0
           this.autoIncrementDisabled=true
+        }
+      },
+      'form.query':function (value) {
+        if(value==1){
+          this.queryTypeDisabled=false
+        }else{
+          this.queryTypeDisabled=true
+          this.queryType=''
         }
       }
     },
