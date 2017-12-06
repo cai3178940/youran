@@ -30,7 +30,7 @@ cd ../
 mvn clean package
 
 # 运行spring-boot项目
-java -jar youran-generate/target/youran-generate-1.0-SNAPSHOT.war
+java -jar youran-generate/target/youran-generate.war
 
 ```
 ### 项目管理页面
