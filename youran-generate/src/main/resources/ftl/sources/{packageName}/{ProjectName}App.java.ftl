@@ -26,6 +26,6 @@ public class ${ProjectName}App extends SpringBootServletInitializer {
      */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(GenerateApp.class);
+        return application.sources(${ProjectName}App.class);
     }
 }

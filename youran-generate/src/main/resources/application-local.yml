@@ -1,9 +1,14 @@
 spring:
     datasource:
-        url: jdbc:mysql://192.168.178.49:3358/youran?master=1&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&useSSL=false
-        username: ofcofw
-        password: ofc123
-#youran:
-#    generate:
-#        devMode: 1
-#        devProjectDir: D:\\workspace_cbb\\youran-sample
+        url: jdbc:mysql://localhost:3306/youran?master=1&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&useSSL=false
+        username: root
+        password: root
+#spring:
+#    datasource:
+#        url: jdbc:mysql://192.168.178.49:3358/youran?master=1&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&useSSL=false
+#        username: ofcofw
+#        password: ofc123
+youran:
+    generate:
+        devMode: 1
+        devProjectDir: D:\\workspace_cbb\\youran-sample
