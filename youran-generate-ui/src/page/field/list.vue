@@ -33,7 +33,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleQuery">查询</el-button>
-            <el-button @click.native="handleAdd" type="success">添加</el-button>
+            <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加</el-button>
             <el-button @click.native="handleDel" type="danger">删除</el-button>
           </el-form-item>
         </el-form>
@@ -76,17 +76,39 @@
       </el-table-column>
     </el-table>
 
+    <el-dialog title="请选择字段模板" :visible.sync="addTemplateFormVisible" width="30%">
+      <el-form :model="templateForm">
+        <el-form-item label="请选择：" label-width="100px">
+          <el-select v-model="templateForm.template">
+            <el-option label="不使用模板" value=""></el-option>
+            <el-option v-for="(value,key) in fieldTemplate"
+                       :key="key"
+                       :label="key"
+                       :value="key"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addTemplateFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleAdd">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import options from '@/components/options.js'
-
+  import fieldTemplate from '@/components/fieldTemplate.js'
   export default {
     name: 'fieldList',
     props: ['projectId', 'entityId'],
     data: function () {
       return {
+        addTemplateFormVisible: false,
+        fieldTemplate,
+        templateForm: {
+          template: '',
+        },
         //查询参数
         query: {
           projectId: null,
@@ -172,7 +194,8 @@
           .finally(() => this.loading = false)
       },
       handleAdd: function () {
-        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/add`)
+        this.addTemplateFormVisible = false
+        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/add?template=${this.templateForm.template}`)
       },
       handleEdit: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/edit/${row.fieldId}`)

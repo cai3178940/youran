@@ -76,7 +76,7 @@
             <el-input v-model="form.fieldComment" type="textarea" :rows="2" placeholder="字段备注，例如：年龄【整型】"></el-input>
           </el-form-item>
           <el-form-item label="枚举字典" prop="dicType">
-            <el-autocomplete style="width:100%;"
+            <el-autocomplete :disabled="dicTypeDisabled" style="width:100%;"
               v-model="form.dicType"
               :fetch-suggestions="queryDicType"
               placeholder="请输入枚举字典"
@@ -133,6 +133,7 @@
 
 <script>
   import options from '@/components/options.js'
+  import fieldTemplate from '@/components/fieldTemplate.js'
   export default {
     name: 'fieldAdd',
     props: ['projectId','entityId'],
@@ -263,6 +264,15 @@
         }
       }
     },
+    computed:{
+      dicTypeDisabled:function(){
+        if(this.form.primaryKey==1||this.form.specialField){
+          return true
+        }
+        return false
+      },
+    },
+
     watch: {
       'form.primaryKey':function (value) {
         if(value==1){
@@ -284,6 +294,11 @@
         }else{
           this.queryTypeDisabled=true
           this.queryType=''
+        }
+      },
+      'dicTypeDisabled':function (value) {
+        if(value){
+          this.form.dicType=''
         }
       }
     },
@@ -331,6 +346,10 @@
       }
     },
     created: function () {
+      const template = this.$router.currentRoute.query.template
+      if(template){
+        this.form = fieldTemplate[template]
+      }
       this.form.entityId = parseInt(this.entityId)
     }
   }
