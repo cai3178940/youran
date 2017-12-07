@@ -60,7 +60,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="特殊字段类型" prop="specialField">
-            <el-select :disabled="specialFieldDisabled" v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
+            <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
               <el-option
                 v-for="item in specialFieldOptions"
                 :key="item.value"
@@ -88,7 +88,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="查询方式" prop="queryType">
-            <el-select :disabled="queryTypeDisabled" v-model="form.queryType" style="width:100%;" filterable placeholder="请选择">
+            <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="width:100%;" filterable placeholder="请选择">
               <el-option
                 v-for="item in queryTypeOptions"
                 :key="item.value"
