@@ -60,7 +60,7 @@
 
 
     <el-dialog title="查看sql" :visible.sync="sqlPreviewVisible" width="50%">
-      <el-input v-model="sqlPreview" type="textarea" :rows="20"></el-input>
+      <el-input :readonly="true" v-model="sqlPreview" type="textarea" :rows="20"></el-input>
       <div slot="footer" class="dialog-footer">
         <el-button @click="sqlPreviewVisible = false">关 闭</el-button>
       </div>

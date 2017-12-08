@@ -3,7 +3,8 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity/${this.entityId}/field` }">字段管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity/${this.entityId}/field` }">字段管理
+      </el-breadcrumb-item>
       <el-breadcrumb-item>添加</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
@@ -39,28 +40,34 @@
             </el-select>
           </el-form-item>
           <el-form-item label="字段长度" prop="fieldLength">
-            <el-input-number v-model="form.fieldLength" style="width:100%;" :min="0" placeholder="字段长度，例如：10"></el-input-number>
+            <el-input-number v-model="form.fieldLength" style="width:100%;" :min="0"
+                             placeholder="字段长度，例如：10"></el-input-number>
           </el-form-item>
           <el-form-item v-if="form.fieldType=='decimal'" label="字段精度" prop="fieldScale">
-            <el-input-number v-model="form.fieldScale" style="width:100%;" :min="0" placeholder="字段精度，例如：2"></el-input-number>
+            <el-input-number v-model="form.fieldScale" style="width:100%;" :min="0"
+                             placeholder="字段精度，例如：2"></el-input-number>
           </el-form-item>
           <el-form-item label="是否主键" prop="primaryKey">
             <el-radio-group v-model="form.primaryKey">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+              </el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否自增" prop="autoIncrement">
             <el-radio-group :disabled="autoIncrementDisabled" v-model="form.autoIncrement">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+              </el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="不能为空" prop="notNull">
             <el-radio-group :disabled="notNullDisabled" v-model="form.notNull">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+              </el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="特殊字段类型" prop="specialField">
-            <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
+            <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField" style="width:100%;"
+                       filterable placeholder="请选择">
               <el-option
                 v-for="item in specialFieldOptions"
                 :key="item.value"
@@ -77,18 +84,20 @@
           </el-form-item>
           <el-form-item label="枚举字典" prop="dicType">
             <el-autocomplete :disabled="dicTypeDisabled" style="width:100%;"
-              v-model="form.dicType"
-              :fetch-suggestions="queryDicType"
-              placeholder="请输入枚举字典"
+                             v-model="form.dicType"
+                             :fetch-suggestions="queryDicType"
+                             placeholder="请输入枚举字典"
             ></el-autocomplete>
           </el-form-item>
           <el-form-item label="是否查询字段" prop="query">
             <el-radio-group v-model="form.query">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+              </el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="查询方式" prop="queryType">
-            <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="width:100%;" filterable placeholder="请选择">
+            <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="width:100%;" filterable
+                       placeholder="请选择">
               <el-option
                 v-for="item in queryTypeOptions"
                 :key="item.value"
@@ -99,22 +108,26 @@
           </el-form-item>
           <el-form-item label="是否新增字段" prop="insert">
             <el-radio-group v-model="form.insert">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+              </el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否编辑字段" prop="update">
             <el-radio-group v-model="form.update">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+              </el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否列表字段" prop="list">
             <el-radio-group v-model="form.list">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+              </el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否详情字段" prop="show">
             <el-radio-group v-model="form.show">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+              </el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="排序号" prop="orderNo">
@@ -134,9 +147,10 @@
 <script>
   import options from '@/components/options.js'
   import fieldTemplate from '@/components/fieldTemplate.js'
+
   export default {
     name: 'fieldAdd',
-    props: ['projectId','entityId'],
+    props: ['projectId', 'entityId'],
     data: function () {
       return {
         boolOptions: options.boolOptions,
@@ -144,11 +158,11 @@
         jfieldTypeOptions: options.jfieldTypeOptions,
         queryTypeOptions: options.queryTypeOptions,
         specialFieldOptions: options.specialFieldOptions,
-        constList:null,
-        notNullDisabled:false,
-        autoIncrementDisabled:true,
-        queryTypeDisabled:true,
-        specialFieldDisabled:false,
+        constList: null,
+        notNullDisabled: false,
+        autoIncrementDisabled: true,
+        queryTypeDisabled: true,
+        specialFieldDisabled: false,
         form: {
           entityId: null,
           //java字段名
@@ -170,7 +184,7 @@
           //是否自增
           autoIncrement: 0,
           //默认值(暂时不用)
-          defaultValue:'',
+          defaultValue: '',
           //不能为空
           notNull: 0,
           //特殊字段类型
@@ -212,10 +226,10 @@
             {max: 40, message: '长度不能超过40个字符', trigger: 'blur'}
           ],
           jfieldType: [
-            {required: true, type: 'string',message: '请选择java字段类型', trigger: 'change'}
+            {required: true, type: 'string', message: '请选择java字段类型', trigger: 'change'}
           ],
           fieldType: [
-            {required: true, type: 'string',message: '请选择mysql字段类型', trigger: 'change'}
+            {required: true, type: 'string', message: '请选择mysql字段类型', trigger: 'change'}
           ],
           fieldLength: [
             {required: true, message: '请输入字段长度', trigger: 'blur'},
@@ -264,9 +278,9 @@
         }
       }
     },
-    computed:{
-      dicTypeDisabled:function(){
-        if(this.form.primaryKey==1||this.form.specialField){
+    computed: {
+      dicTypeDisabled: function () {
+        if (this.form.primaryKey == 1 || this.form.specialField) {
           return true
         }
         return false
@@ -274,31 +288,31 @@
     },
 
     watch: {
-      'form.primaryKey':function (value) {
-        if(value==1){
-          this.form.notNull=1
-          this.notNullDisabled=true
-          this.form.specialField=''
-          this.specialFieldDisabled=true
-          this.autoIncrementDisabled=false
-        }else{
-          this.notNullDisabled=false
-          this.specialFieldDisabled=false
-          this.form.autoIncrement=0
-          this.autoIncrementDisabled=true
+      'form.primaryKey': function (value) {
+        if (value == 1) {
+          this.form.notNull = 1
+          this.notNullDisabled = true
+          this.form.specialField = ''
+          this.specialFieldDisabled = true
+          this.autoIncrementDisabled = false
+        } else {
+          this.notNullDisabled = false
+          this.specialFieldDisabled = false
+          this.form.autoIncrement = 0
+          this.autoIncrementDisabled = true
         }
       },
-      'form.query':function (value) {
-        if(value==1){
-          this.queryTypeDisabled=false
-        }else{
-          this.queryTypeDisabled=true
-          this.queryType=''
+      'form.query': function (value) {
+        if (value == 1) {
+          this.queryTypeDisabled = false
+        } else {
+          this.queryTypeDisabled = true
+          this.queryType = ''
         }
       },
-      'dicTypeDisabled':function (value) {
-        if(value){
-          this.form.dicType=''
+      'dicTypeDisabled': function (value) {
+        if (value) {
+          this.form.dicType = ''
         }
       }
     },
@@ -308,16 +322,16 @@
         //定义回调操作
         var action = function () {
           var results = queryString ? this.constList.filter(
-            c=>c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+            c => c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
           ) : this.constList;
-          cb(results.map(c=>({value:c.constName})));
+          cb(results.map(c => ({value: c.constName})));
         }.bind(this)
-        if(this.constList){
+        if (this.constList) {
           action()
-        }else{
+        } else {
           this.$common.getConstOptions(this.projectId)
             .then(response => this.$common.checkResult(response.data))
-            .then(result=>{
+            .then(result => {
               this.constList = result.data.entities
               action();
             })
@@ -325,8 +339,8 @@
       },
       submit: function () {
         //表单预处理
-        if(this.form.fieldType!='decimal'){
-          this.form.fieldScale=null
+        if (this.form.fieldType != 'decimal') {
+          this.form.fieldScale = null
         }
         //校验表单
         this.$refs.addForm.validate()
@@ -346,11 +360,21 @@
       }
     },
     created: function () {
+      this.form.entityId = parseInt(this.entityId)
+      const type = this.$router.currentRoute.query.type
       const template = this.$router.currentRoute.query.template
-      if(template){
+      if (!template) {
+        return
+      }
+      if (type == 'system') {
         this.form = fieldTemplate[template]
       }
-      this.form.entityId = parseInt(this.entityId)
+      if (type == 'temp') {
+        this.$ajax.get(`/generate/meta_field/${template}`)
+          .then(response => this.$common.checkResult(response.data))
+          .then(result => this.form = result.data)
+          .catch(error => this.$common.showNotifyError(error))
+      }
     }
   }
 </script>

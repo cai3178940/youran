@@ -35,6 +35,9 @@
             <el-button type="primary" @click="handleQuery">查询</el-button>
             <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加</el-button>
             <el-button @click.native="handleDel" type="danger">删除</el-button>
+            <el-badge :value="cacheTemplateCount" class="item">
+              <el-button @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>
+            </el-badge>
           </el-form-item>
         </el-form>
       </el-col>
@@ -80,11 +83,24 @@
       <el-form :model="templateForm">
         <el-form-item label="请选择：" label-width="100px">
           <el-select v-model="templateForm.template">
-            <el-option label="不使用模板" value=""></el-option>
-            <el-option v-for="(value,key) in fieldTemplate"
-                       :key="key"
-                       :label="key"
-                       :value="key"></el-option>
+            <el-option-group>
+              <el-option label="不使用模板" value=""></el-option>
+            </el-option-group>
+            <el-option-group v-if="cacheTemplateCount>0" label="临时模板">
+              <el-option v-for="value in cacheTemplate"
+                         :key="value.fieldId"
+                         :label="value.fieldDesc"
+                         :value="value.fieldId">
+                <span style="float: left">{{ value.fieldDesc }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px"><i @click.stop="handleRemoveTemplate(value.fieldId)" class="el-icon-delete"></i></span>
+              </el-option>
+            </el-option-group>
+            <el-option-group label="系统内置模板">
+              <el-option v-for="(value,key) in fieldTemplate"
+                         :key="key"
+                         :label="key"
+                         :value="key"></el-option>
+            </el-option-group>
           </el-select>
         </el-form-item>
       </el-form>
@@ -106,6 +122,8 @@
       return {
         addTemplateFormVisible: false,
         fieldTemplate,
+        cacheTemplateCount:0,
+        cacheTemplate:[],
         templateForm: {
           template: '',
         },
@@ -143,6 +161,13 @@
         this.selectItems = val
         this.activeNum = this.selectItems.length
       },
+      handleRemoveTemplate:function (fieldId) {
+        var index = this.cacheTemplate.findIndex(item=>item.fieldId==fieldId);
+        if(index>-1){
+          this.cacheTemplate.splice(index,1)
+          this.cacheTemplateCount--
+        }
+      },
       handleDel: function () {
         if (this.activeNum <= 0) {
           this.$common.showMsg('warning', '请选择字段')
@@ -151,6 +176,18 @@
         this.$common.confirm('是否确认删除')
           .then(() => this.$ajax.post('/generate/meta_field/deleteBatch', this.selectItems.map(field => field.fieldId)))
           .then(() => this.doQuery())
+      },
+      handleCopy:function () {
+        if (this.activeNum <= 0) {
+          this.$common.showMsg('warning', '请选择字段')
+          return
+        }
+        for(var item of this.selectItems){
+          if(!this.cacheTemplate.find(t=>t.fieldId==item.fieldId)){
+            this.cacheTemplate.push(item)
+          }
+        }
+        this.cacheTemplateCount = this.cacheTemplate.length
       },
       queryProject: function () {
         return this.$common.getProjectOptions()
@@ -195,7 +232,13 @@
       },
       handleAdd: function () {
         this.addTemplateFormVisible = false
-        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/add?template=${this.templateForm.template}`)
+        //默认类型是系统内置模板
+        var type = 'system'
+        //如果目标值是数字，则改为临时模板
+        if(typeof this.templateForm.template == 'number'){
+          type= 'temp'
+        }
+        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/add?type=${type}&template=${this.templateForm.template}`)
       },
       handleEdit: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/edit/${row.fieldId}`)
