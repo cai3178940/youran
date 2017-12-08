@@ -1,5 +1,6 @@
 package com.youran.generate.web.rest;
 
+import com.google.common.collect.Lists;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaProjectData;
 import com.youran.generate.help.GenerateHelper;
@@ -72,6 +73,16 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     public void del() throws Exception {
         MetaProjectPO metaProject = generateHelper.saveProjectExample();
         restMockMvc.perform(delete(getRootPath()+"/meta_project/{projectId}",metaProject.getProjectId()))
+                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.data").value(is(1)));
+    }
+
+    @Test
+    public void deleteBatch() throws Exception {
+        MetaProjectPO metaProject = generateHelper.saveProjectExample();
+        restMockMvc.perform(post(getRootPath()+"/meta_project/deleteBatch")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(JsonUtil.toJSONString(Lists.newArrayList(metaProject.getProjectId()))))
                 .andExpect(jsonPath("$.errorCode").value(is(0)))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }

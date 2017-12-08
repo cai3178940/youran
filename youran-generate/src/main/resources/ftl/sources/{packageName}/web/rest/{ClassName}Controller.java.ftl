@@ -55,6 +55,17 @@ public class ${CName}Controller implements ${CName}API {
         return replyVO;
     }
 
+    @Override
+    @PostMapping(value = "deleteBatch")
+    public ReplyVO<Integer> deleteBatch(@RequestBody ${type}[] id) {
+        if(ArrayUtils.isEmpty(id)){
+            return ReplyVO.fail("参数为空");
+        }
+        int count = ${cName}Service.delete(id);
+        ReplyVO<Integer> result = ReplyVO.success();
+        result.setData(count);
+        return result;
+    }
 
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
@@ -88,6 +99,7 @@ import ${packageName}.pojo.dto.${CName}UpdateDTO;
 import ${packageName}.pojo.vo.${CName}ShowVO;
 import ${packageName}.service.${CName}Service;
 import ${packageName}.web.api.${CName}API;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

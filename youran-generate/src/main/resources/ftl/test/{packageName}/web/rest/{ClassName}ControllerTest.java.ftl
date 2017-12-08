@@ -56,6 +56,16 @@ public class ${CName}ControllerTest extends AbstractWebTest {
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
+    @Test
+    public void deleteBatch() throws Exception {
+        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
+        restMockMvc.perform(post(getRootPath()+"/${cName}/deleteBatch")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(JsonUtil.toJSONString(Lists.newArrayList(${cName}.get${Id}()))))
+            .andExpect(jsonPath("$.errorCode").value(is(0)))
+            .andExpect(jsonPath("$.data").value(is(1)));
+    }
+
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherPk=otherEntity.pkField>
@@ -78,6 +88,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 <#--开始渲染代码-->
 package ${packageName}.web.rest;
 
+import com.google.common.collect.Lists;
 import ${commonPackage}.util.JsonUtil;
 import ${packageName}.help.${CName}Helper;
 import ${packageName}.pojo.dto.${CName}AddDTO;

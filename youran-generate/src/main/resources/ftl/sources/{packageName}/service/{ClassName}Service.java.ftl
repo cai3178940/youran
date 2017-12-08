@@ -69,16 +69,20 @@ public class ${CName}Service {
 
     /**
      * 删除【${title}】
-     * @param ${id}
+     * @param ${id}s
      * @return
      */
     @Transactional
-    public int delete(${type} ${id}) {
-    <#if metaEntity.delField??>
-        return ${cName}DAO.delete(${id});
-    <#else>
-        return ${cName}DAO.physicalDelete(${id});
-    </#if>
+    public int delete(${type}... ${id}s) {
+        int count = 0;
+        for (${type} ${id} : ${id}s) {
+        <#if metaEntity.delField??>
+            count += ${cName}DAO.delete(${id});
+        <#else>
+            count += ${cName}DAO.physicalDelete(${id});
+        </#if>
+        }
+        return count;
     }
 
 <#if metaEntity.mtmHoldRefers??>

@@ -6,40 +6,60 @@
 @Api(tags = "${CName}", description = "${title}")
 public interface ${CName}API {
 
-    /******************************新增【${title}】*****************************/
+    /**
+     * 新增【${title}】
+     */
     @ApiOperation(value="新增【${title}】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${cName}AddDTO", dataType = "${CName}AddDTO", value = "新增【${title}】参数", paramType = "body"),
     })
     ReplyVO<${type}> save(${CName}AddDTO ${cName}AddDTO);
 
-    /******************************修改【${title}】*****************************/
+    /**
+     * 修改【${title}】
+     */
     @ApiOperation(value="修改【${title}】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${cName}UpdateDTO", dataType = "${CName}UpdateDTO", value = "修改【${title}】参数", paramType = "body"),
     })
     ReplyVO<Void> update(${CName}UpdateDTO ${cName}UpdateDTO);
 
-    /******************************分页查询【${title}】*****************************/
+    /**
+     * 分页查询【${title}】
+     */
     @ApiOperation(value="分页查询【${title}】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${cName}QueryDTO", dataType = "${CName}QueryDTO", value = "分页查询【${title}】参数", paramType = "body"),
     })
     ReplyVO<PageVO<${CName}ListVO>> list(${CName}QueryDTO ${cName}QueryDTO);
 
-    /******************************查看【${title}】详情*****************************/
+    /**
+     * 查看【${title}】详情
+     */
     @ApiOperation(value="查看【${title}】详情")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),
     })
     ReplyVO<${CName}ShowVO> show(${type} ${id});
 
-    /******************************删除【${title}】*****************************/
+    /**
+     * 删除【${title}】
+     */
     @ApiOperation(value="删除【${title}】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),
     })
     ReplyVO<Integer> delete(${type} ${id});
+
+    /**
+     * 批量删除【${title}】
+     */
+    @ApiOperation(value = "批量删除【${title}】")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "id", dataType = "${type}", value = "id数组", paramType = "body"),
+    })
+    ReplyVO<Integer> deleteBatch(${type}[] id);
+
 
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
