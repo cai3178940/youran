@@ -46,6 +46,16 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
     }
 
     @Override
+    @GetMapping(value = "/sql_preview")
+    public ReplyVO<String> sqlPreview(Integer entityId) {
+        String text = metaCodeGenService.sqlPreview(entityId);
+        return ReplyVO.success().data(text);
+    }
+
+
+
+
+    @Override
     @GetMapping(value = "/genCode")
     public void genCode(Integer projectId, HttpServletResponse response) {
         try {

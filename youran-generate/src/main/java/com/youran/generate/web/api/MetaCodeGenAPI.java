@@ -1,5 +1,6 @@
 package com.youran.generate.web.api;
 
+import com.youran.common.pojo.vo.ReplyVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -34,4 +35,12 @@ public interface MetaCodeGenAPI {
     })
     void genCode(Integer projectId, HttpServletResponse response);
 
+    /**
+     * sql预览
+     */
+    @ApiOperation(value = "sql预览")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "query"),
+    })
+    ReplyVO<String> sqlPreview(Integer entityId);
 }

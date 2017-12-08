@@ -1,5 +1,6 @@
 package com.youran.generate.service;
 
+import com.google.common.collect.Lists;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.util.H2Util;
 import com.youran.generate.config.GenerateProperties;
@@ -437,4 +438,24 @@ public class MetaCodeGenService {
         }
     }
 
+    /**
+     * sql预览
+     * @param entityId
+     * @return
+     */
+    public String sqlPreview(Integer entityId) {
+        MetaEntityPO metaEntityPO = metaEntityDAO.findById(entityId);
+        if (metaEntityPO == null) {
+            throw new GenerateException("实体不存在");
+        }
+        MetaProjectPO project = metaProjectDAO.findById(metaEntityPO.getProjectId());
+        List<MetaEntityPO> metaEntities = Lists.newArrayList(metadataQueryService.fillEntity(metaEntityPO));
+        project.setEntities(metaEntities);
+        this.checkProject(project,false);
+        Map<String, Object> map = this.buildTemplateParamMap(project, null, null);
+        String text = FreeMakerUtil.writeToStr("test_resources/DB/{projectName}.sql.ftl", map);
+        logger.debug("------打印生成sql脚本-----");
+        logger.debug(text);
+        return text;
+    }
 }
