@@ -2,8 +2,12 @@ package com.youran.generate.util;
 
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MySqlType;
+import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Title:
@@ -13,6 +17,27 @@ import java.lang.reflect.Field;
  */
 public class MetadataUtil {
 
+    public static List<String> MYSQL_KEYWORD;
+
+    static{
+        try {
+            InputStream stream = MetadataUtil.class.getClassLoader().getResourceAsStream("mysql_keyword.txt");
+            MYSQL_KEYWORD = IOUtils.readLines(stream, "utf-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 将mysql中的关键字加``包裹
+     * @return
+     */
+    public static String wrapMysqlKeyword(String fieldName){
+        if(MYSQL_KEYWORD.contains(fieldName.toUpperCase())){
+            return "`"+fieldName+"`";
+        }
+        return fieldName;
+    }
 
     /**
      * 验证java字段和数据库字段是否默认匹配
@@ -55,6 +80,7 @@ public class MetadataUtil {
         }
         return null;
     }
+
 
 
 }

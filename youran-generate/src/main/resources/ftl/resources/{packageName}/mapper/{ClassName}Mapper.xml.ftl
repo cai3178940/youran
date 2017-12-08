@@ -8,20 +8,20 @@
     <select id="findById" resultType="${CName}PO">
         select
         <#list fields as field>
-            ${field.fieldName}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${field.jfieldName}</#if><#if field_has_next>,</#if>
+            ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
         </#list>
-        from ${tableName}
+        from ${MetadataUtil.wrapMysqlKeyword(tableName)}
         where 1=1
         <#if delField??>
-            and ${delField.fieldName}=0
+            and ${MetadataUtil.wrapMysqlKeyword(delField.fieldName)}=0
         </#if>
-        and ${pk.fieldName} = ${r'#'}{arg0}
+        and ${MetadataUtil.wrapMysqlKeyword(pk.fieldName)} = ${r'#'}{arg0}
     </select>
 
     <insert id="save" <#if pk.autoIncrement==1>useGeneratedKeys="true" </#if>keyProperty="${id}" parameterType="${CName}PO">
-        insert into ${tableName}(
+        insert into ${MetadataUtil.wrapMysqlKeyword(tableName)}(
     <#list fields as field>
-        ${field.fieldName}<#if field_has_next>,</#if>
+        ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field_has_next>,</#if>
     </#list>
         ) VALUES (
     <#list fields as field>
@@ -32,31 +32,31 @@
 
 
     <update id="update" parameterType="${CName}PO">
-        update ${tableName} set
+        update ${MetadataUtil.wrapMysqlKeyword(tableName)} set
         <#list fields as field>
             <#if field.specialField?? && field.specialField==MetaSpecialField.VERSION>
-            ${field.fieldName} = ${field.fieldName}+1<#if field_has_next>,</#if>
+            ${MetadataUtil.wrapMysqlKeyword(field.fieldName)} = ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}+1<#if field_has_next>,</#if>
             <#else>
-            ${field.fieldName}=${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>
+            ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}=${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>
             </#if>
         </#list>
-        where ${pk.fieldName}=${r'#'}{${id},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
+        where ${MetadataUtil.wrapMysqlKeyword(pk.fieldName)}=${r'#'}{${id},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
         <#if versionField??>
-        and ${versionField.fieldName}=${r'#'}{${versionField.jfieldName},jdbcType=${JFieldType.mapperJdbcType(versionField.jfieldType)}}
+        and ${MetadataUtil.wrapMysqlKeyword(versionField.fieldName)}=${r'#'}{${versionField.jfieldName},jdbcType=${JFieldType.mapperJdbcType(versionField.jfieldType)}}
         </#if>
         <#if delField??>
-        and ${delField.fieldName}=0
+        and ${MetadataUtil.wrapMysqlKeyword(delField.fieldName)}=0
         </#if>
     </update>
 
     <delete id="delete">
     <#if delField??>
-        update ${tableName} set ${delField.fieldName}=1
-        where ${pk.fieldName}=${r'#'}{arg0,jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
-        and ${delField.fieldName}=0
+        update ${MetadataUtil.wrapMysqlKeyword(tableName)} set ${MetadataUtil.wrapMysqlKeyword(delField.fieldName)}=1
+        where ${MetadataUtil.wrapMysqlKeyword(pk.fieldName)}=${r'#'}{arg0,jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
+        and ${MetadataUtil.wrapMysqlKeyword(delField.fieldName)}=0
     <#else>
-        delete from ${tableName}
-        where ${pk.fieldName}=${r'#'}{arg0,jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
+        delete from ${MetadataUtil.wrapMysqlKeyword(tableName)}
+        where ${MetadataUtil.wrapMysqlKeyword(pk.fieldName)}=${r'#'}{arg0,jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
     </#if>
     </delete>
 
@@ -66,15 +66,15 @@
         <#--非between类型查询-->
         <#if field.queryType!=QueryType.BETWEEN>
         <if test="${field.jfieldName} != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName} !=''</#if> ">
-            and t.${field.fieldName} ${QueryType.mapperQueryType(field.queryType)} ${r'#'}{${field.jfieldName}}
+            and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} ${QueryType.mapperQueryType(field.queryType)} ${r'#'}{${field.jfieldName}}
         </if>
         <#else>
         <#--between类型查询-->
         <if test="${field.jfieldName}Start != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName}Start !=''</#if> ">
-            and t.${field.fieldName} >= ${r'#'}{${field.jfieldName}Start}
+            and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} >= ${r'#'}{${field.jfieldName}Start}
         </if>
         <if test="${field.jfieldName}End != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName}End !=''</#if> ">
-            and t.${field.fieldName} &lt;= ${r'#'}{${field.jfieldName}End}
+            and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} &lt;= ${r'#'}{${field.jfieldName}End}
         </if>
         </#if>
     </#list>
@@ -82,20 +82,20 @@
 
     <select id="findCountByQuery" parameterType="${CName}QueryDTO" resultType="int">
         select count(*) from (
-        select * from ${tableName} t
+        select * from ${MetadataUtil.wrapMysqlKeyword(tableName)} t
         where 1=1
     <#if delField??>
-        and t.${delField.fieldName}=0
+        and t.${MetadataUtil.wrapMysqlKeyword(delField.fieldName)}=0
     </#if>
         <include refid="queryCondition"/>
         ) as count_select_
     </select>
 
     <select id="findListByQuery" parameterType="${CName}QueryDTO" resultType="${CName}ListVO">
-        select * from ${tableName} t
+        select * from ${MetadataUtil.wrapMysqlKeyword(tableName)} t
         where 1=1
     <#if delField??>
-        and t.${delField.fieldName}=0
+        and t.${MetadataUtil.wrapMysqlKeyword(delField.fieldName)}=0
     </#if>
         <include refid="queryCondition"/>
         limit ${r'#'}{startIndex},${r'#'}{pageSize}
