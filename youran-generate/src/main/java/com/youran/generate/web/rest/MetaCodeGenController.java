@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -46,13 +47,12 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
     }
 
     @Override
-    @GetMapping(value = "/sql_preview")
+    @GetMapping(value = "/sqlPreview")
+    @ResponseBody
     public ReplyVO<String> sqlPreview(Integer entityId) {
         String text = metaCodeGenService.sqlPreview(entityId);
         return ReplyVO.success().data(text);
     }
-
-
 
 
     @Override

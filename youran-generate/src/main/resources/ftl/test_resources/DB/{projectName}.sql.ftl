@@ -27,13 +27,14 @@ CREATE TABLE `${metaEntity.tableName}` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${metaEntity.desc?replace('\'','"')?replace('\n','\\n')}';
 
 </#list>
-<#list mtms as manyTomany>
-    <#assign field1=manyTomany.refer1.pkField>
-    <#assign field2=manyTomany.refer2.pkField>
-    <#assign length_holder1><#if field1.jfieldType!=JFieldType.DATE.getJavaType() && field1.fieldLength gt 0>(${field1.fieldLength}<#if field1.fieldScale??>,${field1.fieldScale}</#if>)</#if></#assign>
-    <#assign length_holder2><#if field2.jfieldType!=JFieldType.DATE.getJavaType() && field2.fieldLength gt 0>(${field2.fieldLength}<#if field2.fieldScale??>,${field2.fieldScale}</#if>)</#if></#assign>
-    <#assign comment_holder1><#if field1.fieldComment??> COMMENT '${field1.fieldComment?replace('\'','"')}'</#if></#assign>
-    <#assign comment_holder2><#if field2.fieldComment??> COMMENT '${field2.fieldComment?replace('\'','"')}'</#if></#assign>
+<#if mtms??>
+    <#list mtms as manyTomany>
+        <#assign field1=manyTomany.refer1.pkField>
+        <#assign field2=manyTomany.refer2.pkField>
+        <#assign length_holder1><#if field1.jfieldType!=JFieldType.DATE.getJavaType() && field1.fieldLength gt 0>(${field1.fieldLength}<#if field1.fieldScale??>,${field1.fieldScale}</#if>)</#if></#assign>
+        <#assign length_holder2><#if field2.jfieldType!=JFieldType.DATE.getJavaType() && field2.fieldLength gt 0>(${field2.fieldLength}<#if field2.fieldScale??>,${field2.fieldScale}</#if>)</#if></#assign>
+        <#assign comment_holder1><#if field1.fieldComment??> COMMENT '${field1.fieldComment?replace('\'','"')}'</#if></#assign>
+        <#assign comment_holder2><#if field2.fieldComment??> COMMENT '${field2.fieldComment?replace('\'','"')}'</#if></#assign>
 DROP TABLE IF EXISTS `${manyTomany.tableName}`;
 
 CREATE TABLE `${manyTomany.tableName}` (
@@ -43,4 +44,5 @@ CREATE TABLE `${manyTomany.tableName}` (
     KEY `i_${manyTomany.tableName}_2` (`${field2.fieldName}`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${manyTomany.desc?replace('\'','"')?replace('\n','\\n')}';
 
-</#list>
+    </#list>
+</#if>

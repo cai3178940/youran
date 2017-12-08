@@ -41,6 +41,7 @@
           <el-button @click="handleField(scope.row)" type="text" size="small">字段管理</el-button>
           <el-button @click="handleShow(scope.row)" type="text" size="small">查看</el-button>
           <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
+          <el-button @click="handleSqlPreview(scope.row)" type="text" size="small">sql预览</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -56,6 +57,15 @@
         :total="page.entityCount">
       </el-pagination>
     </el-row>
+
+
+    <el-dialog title="查看sql" :visible.sync="sqlPreviewVisible" width="50%">
+      <el-input v-model="sqlPreview" type="textarea" :rows="20"></el-input>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="sqlPreviewVisible = false">关 闭</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -66,6 +76,8 @@
     props: ['projectId'],
     data: function () {
       return {
+        sqlPreview:'',
+        sqlPreviewVisible:false,
         //查询参数
         query: {
           projectId: null
@@ -152,6 +164,15 @@
       },
       handleShow: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/show/${row.entityId}`)
+      },
+      handleSqlPreview: function (row) {
+        this.$ajax.get(`/generate/code_gen/sqlPreview?entityId=${row.entityId}`)
+          .then(response => this.$common.checkResult(response.data))
+          .then(result => {
+            this.sqlPreview = result.data
+            this.sqlPreviewVisible = true
+          })
+          .catch(error => this.$common.showNotifyError(error))
       }
     },
     activated: function () {
