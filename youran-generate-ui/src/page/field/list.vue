@@ -11,25 +11,13 @@
       </el-col>
       <el-col :span="20" style="text-align: right;">
         <el-form :inline="true" :model="queryForm" class="demo-form-inline">
-          <el-form-item label="项目">
-            <el-select v-model="queryForm.projectId" placeholder="请选择项目" @change="projectChange">
-              <el-option
-                v-for="item in projectList"
-                :key="item.projectId"
-                :label="item.projectName"
-                :value="item.projectId">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="实体">
-            <el-select v-model="queryForm.entityId" placeholder="请选择实体">
-              <el-option
-                v-for="item in entityList"
-                :key="item.entityId"
-                :label="item.title"
-                :value="item.entityId">
-              </el-option>
-            </el-select>
+          <el-form-item>
+            <el-cascader
+              placeholder="请选择实体"
+              :options="queryForm.projectEntityOptions"
+              v-model="queryForm.projectEntity"
+              @active-item-change="handleProjectChange">
+            </el-cascader>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleQuery">查询</el-button>
@@ -134,11 +122,9 @@
         },
         //查询表单参数
         queryForm: {
-          projectId: null,
-          entityId: null
+          projectEntityOptions:[],
+          projectEntity:[0,0]
         },
-        projectList: [],
-        entityList: [],
         activeNum: 0,
         selectItems: [],
         entities: [],
@@ -189,30 +175,30 @@
         }
         this.cacheTemplateCount = this.cacheTemplate.length
       },
-      queryProject: function () {
+      initProjectOptions: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data)
+          .then(result => this.queryForm.projectEntityOptions = result.data.map(project=>({value:project.projectId,label:project.projectName,children:[]})))
       },
-      queryEntity: function (projectId) {
+      handleProjectChange: function (optionArray) {
+        var projectId = optionArray[0]
+        //获取被激活的option
+        var project = this.queryForm.projectEntityOptions.find(option=>option.value==projectId)
+        if(project.children.length){
+          return
+        }
         return this.$common.getEntityOptions(projectId)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.entityList = result.data.entities)
-      },
-      //项目选择框修改时，清空实体选择框
-      projectChange: function () {
-        this.queryForm.entityId = null
-        this.queryEntity(this.queryForm.projectId)
+          .then(result => project.children = result.data.entities.map(entity=>({value:entity.entityId,label:entity.title})))
       },
       handleQuery: function () {
-        //将查询表单参数赋值给查询参数
-        this.query = {
-          ...this.queryForm
-        }
-        if (this.query.entityId == null) {
+        if (this.queryForm.projectEntity[1] == null) {
           this.$common.showNotifyError('请选择实体')
           return
         }
+        //将查询表单参数赋值给查询参数
+        this.query.projectId = this.queryForm.projectEntity[0]
+        this.query.entityId = this.queryForm.projectEntity[1]
         if (this.query.entityId != parseInt(this.entityId)) {
           this.$router.push(`/project/${this.query.projectId}/entity/${this.query.entityId}/field`)
         }
@@ -248,15 +234,14 @@
       }
     },
     activated: function () {
-      this.queryProject()
-        .then(this.queryEntity(this.projectId))
-        .then(() => {
-          this.queryForm.projectId = parseInt(this.projectId)
-          this.queryForm.entityId = parseInt(this.entityId)
-          this.query = {
-            ...this.queryForm
-          }
-        })
+      var projectId = parseInt(this.projectId);
+      var entityId = parseInt(this.entityId);
+      this.queryForm.projectEntity[0] = projectId
+      this.queryForm.projectEntity[1] = entityId
+      this.query.projectId = projectId
+      this.query.entityId = entityId
+      this.initProjectOptions()
+        .then(() => this.handleProjectChange([projectId]))
         .then(() => this.doQuery())
     }
   }

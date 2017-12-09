@@ -12,24 +12,12 @@
       <el-col :span="20" style="text-align: right;">
         <el-form :inline="true" :model="queryForm" class="demo-form-inline">
           <el-form-item label="项目">
-            <el-select v-model="queryForm.projectId" placeholder="请选择项目" @change="projectChange">
-              <el-option
-                v-for="item in projectList"
-                :key="item.projectId"
-                :label="item.projectName"
-                :value="item.projectId">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="枚举">
-            <el-select v-model="queryForm.constId" placeholder="请选择枚举">
-              <el-option
-                v-for="item in constList"
-                :key="item.constId"
-                :label="item.constRemark"
-                :value="item.constId">
-              </el-option>
-            </el-select>
+            <el-cascader
+              placeholder="请选择枚举"
+              :options="queryForm.projectConstOptions"
+              v-model="queryForm.projectConst"
+              @active-item-change="handleProjectChange">
+            </el-cascader>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleQuery">查询</el-button>
@@ -70,11 +58,9 @@
         },
         //查询表单参数
         queryForm: {
-          projectId: null,
-          constId: null
+          projectConstOptions:[],
+          projectConst:[0,0]
         },
-        projectList: [],
-        constList: [],
         activeNum: 0,
         selectItems: [],
         entities: [],
@@ -95,30 +81,30 @@
           .then(() => this.$ajax.post('/generate/meta_const_detail/deleteBatch', this.selectItems.map(constDetail => constDetail.constDetailId)))
           .then(() => this.doQuery())
       },
-      queryProject: function () {
+      initProjectOptions: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data)
+          .then(result => this.queryForm.projectConstOptions = result.data.map(project=>({value:project.projectId,label:project.projectName,children:[]})))
       },
-      queryConst: function (projectId) {
+      handleProjectChange: function (optionArray) {
+        var projectId = optionArray[0]
+        //获取被激活的option
+        var project = this.queryForm.projectConstOptions.find(option=>option.value==projectId)
+        if(project.children.length){
+          return
+        }
         return this.$common.getConstOptions(projectId)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.constList = result.data.entities)
-      },
-      //项目选择框修改时，清空枚举选择框
-      projectChange: function () {
-        this.queryForm.constId = null
-        this.queryConst(this.queryForm.projectId)
+          .then(result => project.children = result.data.entities.map(c=>({value:c.constId,label:c.constRemark})))
       },
       handleQuery: function () {
-        //将查询表单参数赋值给查询参数
-        this.query = {
-          ...this.queryForm
-        }
-        if (this.query.constId == null) {
+        if (this.queryForm.projectConst[1] == null) {
           this.$common.showNotifyError('请选择常量')
           return
         }
+        //将查询表单参数赋值给查询参数
+        this.query.projectId = this.queryForm.projectConst[0]
+        this.query.constId = this.queryForm.projectConst[1]
         if (this.query.constId != parseInt(this.constId)) {
           this.$router.push(`/project/${this.query.projectId}/const/${this.query.constId}/constDetail`)
         }
@@ -147,15 +133,14 @@
       }
     },
     activated: function () {
-      this.queryProject()
-        .then(this.queryConst(this.projectId))
-        .then(() => {
-          this.queryForm.projectId = parseInt(this.projectId)
-          this.queryForm.constId = parseInt(this.constId)
-          this.query = {
-            ...this.queryForm
-          }
-        })
+      var projectId = parseInt(this.projectId);
+      var constId = parseInt(this.constId);
+      this.queryForm.projectConst[0] = projectId
+      this.queryForm.projectConst[1] = constId
+      this.query.projectId = projectId
+      this.query.constId = constId
+      this.initProjectOptions()
+        .then(() => this.handleProjectChange([projectId]))
         .then(() => this.doQuery())
     }
   }

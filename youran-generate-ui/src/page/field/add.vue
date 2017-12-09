@@ -360,7 +360,8 @@
       }
     },
     created: function () {
-      this.form.entityId = parseInt(this.entityId)
+      var entityId = parseInt(this.entityId);
+      this.form.entityId = entityId
       const type = this.$router.currentRoute.query.type
       const template = this.$router.currentRoute.query.template
       if (!template) {
@@ -368,11 +369,15 @@
       }
       if (type == 'system') {
         this.form = fieldTemplate[template]
+        this.form.entityId = entityId
       }
       if (type == 'temp') {
         this.$ajax.get(`/generate/meta_field/${template}`)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.form = result.data)
+          .then(result => {
+            this.form = result.data
+            this.form.entityId = entityId
+          })
           .catch(error => this.$common.showNotifyError(error))
       }
     }
