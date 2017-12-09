@@ -11,7 +11,7 @@
       </el-col>
       <el-col :span="20" style="text-align: right;">
         <el-form :inline="true" :model="queryForm" class="demo-form-inline">
-          <el-form-item label="项目">
+          <el-form-item>
             <el-cascader
               placeholder="请选择枚举"
               :options="queryForm.projectConstOptions"
