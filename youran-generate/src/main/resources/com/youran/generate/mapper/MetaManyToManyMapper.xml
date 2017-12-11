@@ -19,7 +19,7 @@
     <insert id="save" useGeneratedKeys="true" keyProperty="mtmId" parameterType="MetaManyToManyPO">
         insert into meta_mtm (
           mtmId, projectId, tableName,
-          schemaName, desc, entityId1,
+          schemaName, `desc`, entityId1,
           entityId2, holdRefer1, holdRefer2,
           createDate, createBy, operateDate,
           operateBy, delSign, version
@@ -37,7 +37,7 @@
         set projectId = #{projectId,jdbcType=INTEGER},
         tableName = #{tableName,jdbcType=VARCHAR},
         schemaName = #{schemaName,jdbcType=VARCHAR},
-        desc = #{desc,jdbcType=VARCHAR},
+        `desc` = #{desc,jdbcType=VARCHAR},
         entityId1 = #{entityId1,jdbcType=INTEGER},
         entityId2 = #{entityId2,jdbcType=INTEGER},
         holdRefer1 = #{holdRefer1,jdbcType=SMALLINT},

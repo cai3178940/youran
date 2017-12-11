@@ -32,6 +32,12 @@ import constDetailAdd from '../page/constDetail/add.vue'
 import constDetailEdit from '../page/constDetail/edit.vue'
 import constDetailShow from '../page/constDetail/show.vue'
 
+import mtm from '../page/mtm/index.vue'
+import mtmList from '../page/mtm/list.vue'
+import mtmAdd from '../page/mtm/add.vue'
+import mtmEdit from '../page/mtm/edit.vue'
+import mtmShow from '../page/mtm/show.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -168,6 +174,33 @@ export default new Router({
         {
           path: 'show/:constDetailId',
           component: constDetailShow,
+          props: true
+        }
+      ]
+    },
+    {
+      path: '/project/:projectId/mtm',
+      component: mtm,
+      props: true,
+      children: [
+        {
+          path: '',
+          component: mtmList,
+          props: true
+        },
+        {
+          path: 'add',
+          component: mtmAdd,
+          props: true
+        },
+        {
+          path: 'edit/:mtmId',
+          component: mtmEdit,
+          props: true
+        },
+        {
+          path: 'show/:mtmId',
+          component: mtmShow,
           props: true
         }
       ]

@@ -57,6 +57,7 @@
     props: ['projectId', 'entityId'],
     data: function () {
       return {
+        projectList:[],
         form: {
           ...entityModel
         }
