@@ -49,5 +49,5 @@ bin
 .rules
 
 #ui编译目录
-/youran-generate/src/main/resources/ui
-/youran-generate/src/main/resources/ui/*
+#/youran-generate/src/main/resources/ui
+#/youran-generate/src/main/resources/ui/*
