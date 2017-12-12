@@ -21,10 +21,10 @@ public class ${CName}AddDTO extends AbstractDTO {
     </@if1>
     <#if field.dicType??>
         <#assign importConst=true>
-        <#if fetchPackageName(field.dicType)??>
-            <#assign importConstStr+="import "+field.dicType+";\n">
+        <#if isCommonPackage(field.dicType)>
+            <#assign importConstStr+="import ${commonPackage}.constant.${field.dicType};\n">
         <#else>
-            <#assign importConstStr+="import "+packageName+".constant."+field.dicType+";\n">
+            <#assign importConstStr+="import ${packageName}.constant.${field.dicType};\n">
         </#if>
     @Const(constClass = ${fetchClassName(field.dicType)}.class)
     <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>

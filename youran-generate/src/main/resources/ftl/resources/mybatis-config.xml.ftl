@@ -13,7 +13,7 @@
     </typeAliases>
     <mappers>
     <#list metaEntities as metaEntity>
-        <mapper resource="${packageName?replace('.','/')}/mapper/${metaEntity.className?cap_first}Mapper.xml"/>
+        <mapper resource="${packageName?replace('.','/')}/mapper/${metaEntity.className?capFirst}Mapper.xml"/>
     </#list>
     </mappers>
 </configuration>

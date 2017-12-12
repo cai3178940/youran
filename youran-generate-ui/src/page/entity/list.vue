@@ -92,7 +92,7 @@
         page: {
           pageNo: 1,
           entityCount: 0,
-          pageSize: 2,
+          pageSize: 20,
           entities: []
         },
         loading: false

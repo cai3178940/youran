@@ -88,13 +88,15 @@ public class ${CName}Service {
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherPk=otherEntity.pkField>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
     @Transactional
-    public int add${otherEntity.className}(${type} ${id}, ${otherPk.jfieldType} ${otherPk.jfieldName}) {
+    public int add${otherCName}(${type} ${id}, ${otherPk.jfieldType} ${MetadataUtil.getPkAlias(othercName,false)}) {
         ${CName}PO ${cName} = ${cName}DAO.findById(${id});
         if(${cName}==null){
             throw new ${ProjectName}Exception("未查询到记录");
         }
-        return ${cName}DAO.add${otherEntity.className}(${id},${otherPk.jfieldName});
+        return ${cName}DAO.add${otherCName}(${id},${MetadataUtil.getPkAlias(othercName,false)});
     }
     </#list>
 </#if>

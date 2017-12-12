@@ -10,6 +10,15 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 
     @Autowired
     private ${CName}Helper ${cName}Helper;
+<#if metaEntity.mtmHoldRefers??>
+    <#list metaEntity.mtmHoldRefers as otherEntity>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign importOtherStr+="import ${packageName}.help.${otherCName}Helper;\n">
+    @Autowired
+    private ${otherCName}Helper ${othercName}Helper;
+    </#list>
+</#if>
 
     @Test
     public void save() throws Exception {
@@ -69,13 +78,15 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherPk=otherEntity.pkField>
-        <#assign importOtherStr+="import ${packageName}.pojo.${otherEntity.className};\n">
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign importOtherStr+="import ${packageName}.pojo.po.${otherCName}PO;\n">
     @Test
     public void add${otherEntity.className}() throws Exception {
-        ${CName} ${cName} = ${cName}Helper.save${CName}Example();
-        ${otherEntity.className} ${otherEntity.className?uncapFirst} = ${cName}Helper.save${otherEntity.className}Example();
-        restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/add${otherEntity.className}/{${otherPk.jfieldName}}",
-            ${cName}.get${Id}(),${otherEntity.className?uncapFirst}.get${otherPk.jfieldName?capFirst}()))
+        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
+        ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
+        restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/add${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
+            ${cName}.get${Id}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(jsonPath("$.errorCode").value(is(0)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }

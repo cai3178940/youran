@@ -29,10 +29,10 @@
     </#if>
 </#function>
 
-<#-- 定义包名截取函数 -->
-<#function fetchPackageName dicType>
-    <#local index=dicType?lastIndexOf(".")/>
-    <#if index gt 0>
-        <#return dicType?substring(0,index)>
+<#-- 定义是否通用常量 -->
+<#function isCommonPackage dicType>
+    <#if dicType == "BoolConst">
+        <#return true>
     </#if>
+    <#return false>
 </#function>

@@ -40,6 +40,10 @@ export default  {
     {
       value: 'smallint',
       label: 'SMALLINT'
+    },
+    {
+      value: 'tinyint',
+      label: 'TINYINT'
     }
   ],
 

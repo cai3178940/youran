@@ -21,4 +21,6 @@ public class MySqlType {
 
 	public static final  String SMALLINT = "smallint";
 
+	public static final  String TINYINT = "tinyint";
+
 }

@@ -9,7 +9,7 @@ import ${commonPackage}.pojo.example.AbstractExample;
 public class ${CName}Example extends AbstractExample {
 
 <#list metaEntity.fields as field>
-    public static final String N_${field.jfieldName?upper_case} = "${field.fieldComment}";
-    public static final String E_${field.jfieldName?upper_case} = "${field.fieldExample?replace('\"','\\"')}";
+    public static final String N_${field.jfieldName?upperCase} = "${field.fieldComment}";
+    public static final String E_${field.jfieldName?upperCase} = "${field.fieldExample?replace('\"','\\"')}";
 </#list>
 }

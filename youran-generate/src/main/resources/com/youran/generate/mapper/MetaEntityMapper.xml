@@ -42,7 +42,7 @@
           commonCall = #{commonCall,jdbcType=SMALLINT},
           operateDate = #{operateDate,jdbcType=TIMESTAMP},
           operateBy = #{operateBy,jdbcType=VARCHAR},
-          version = #{version,jdbcType=INTEGER
+          version = #{version,jdbcType=INTEGER}
         where entityId = #{entityId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
         and delSign=0

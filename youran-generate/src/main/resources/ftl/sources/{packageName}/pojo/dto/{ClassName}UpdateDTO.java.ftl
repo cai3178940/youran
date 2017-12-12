@@ -27,8 +27,8 @@ public class ${CName}UpdateDTO extends AbstractDTO {
     </@if1>
     <#if field.dicType??>
         <#assign importConst=true>
-        <#if fetchPackageName(field.dicType)??>
-            <#assign importConstStr+="import ${field.dicType};\n">
+        <#if isCommonPackage(field.dicType)>
+            <#assign importConstStr+="import ${commonPackage}.constant.${field.dicType};\n">
         <#else>
             <#assign importConstStr+="import ${packageName}.constant.${field.dicType};\n">
         </#if>

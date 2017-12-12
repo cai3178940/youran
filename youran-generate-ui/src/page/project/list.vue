@@ -20,7 +20,7 @@
       <el-table-column property="packageName" label="包名"></el-table-column>
       <el-table-column
         label="操作"
-        width="180">
+        width="250">
         <template slot-scope="scope">
           <el-button @click="handleEntity(scope.row)" type="text" size="small">实体管理</el-button>
           <el-button @click="handleConst(scope.row)" type="text" size="small">枚举管理</el-button>

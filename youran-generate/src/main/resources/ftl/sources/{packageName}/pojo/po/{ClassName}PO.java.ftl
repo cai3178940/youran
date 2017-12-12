@@ -112,7 +112,7 @@ public class ${CName}PO extends AbstractPO${implementsStr} {
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign importList=true>
-    private List<${otherEntity.className}> ${otherEntity.className?uncapFirst}List;
+    private List<${otherEntity.className}PO> ${otherEntity.className?uncapFirst}POList;
 
     </#list>
 </#if>
@@ -196,12 +196,12 @@ public class ${CName}PO extends AbstractPO${implementsStr} {
 </#if>
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
-    public List<${otherEntity.className}> get${otherEntity.className}List() {
-        return ${otherEntity.className?uncapFirst}List;
+    public List<${otherEntity.className}PO> get${otherEntity.className}POList() {
+        return ${otherEntity.className?uncapFirst}POList;
     }
 
-    public void set${otherEntity.className}List(List<${otherEntity.className}> ${otherEntity.className?uncapFirst}List) {
-        this.${otherEntity.className?uncapFirst}List = ${otherEntity.className?uncapFirst}List;
+    public void set${otherEntity.className}POList(List<${otherEntity.className}PO> ${otherEntity.className?uncapFirst}POList) {
+        this.${otherEntity.className?uncapFirst}POList = ${otherEntity.className?uncapFirst}POList;
     }
 
     </#list>

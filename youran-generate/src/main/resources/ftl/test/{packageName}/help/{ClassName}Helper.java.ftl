@@ -1,18 +1,8 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-package ${packageName}.help;
-
-import ${packageName}.pojo.dto.*;
-import ${packageName}.pojo.po.*;
-import ${packageName}.service.*;
-import ${commonPackage}.util.DateUtil;
-import ${commonPackage}.util.SafeUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import static ${packageName}.pojo.example.UserExample.*;
-
-
+<#assign importDateKit=false>
+<#--定义主体代码-->
+<#assign code>
 @Component
 public class ${CName}Helper {
 
@@ -43,7 +33,7 @@ public class ${CName}Helper {
     * 生成update测试数据
     * @return
     */
-    public UserUpdateDTO getUserUpdateDTO(UserPO user){
+    public ${CName}UpdateDTO get${CName}UpdateDTO(${CName}PO ${cName}){
         ${CName}UpdateDTO dto = new ${CName}UpdateDTO();
         dto.set${Id}(${cName}.get${Id}());
         <#list metaEntity.updateFields as field>
@@ -64,3 +54,20 @@ public class ${CName}Helper {
 
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${packageName}.help;
+
+import ${packageName}.pojo.dto.*;
+import ${packageName}.pojo.po.*;
+import ${packageName}.service.*;
+<#if importDateKit>
+import ${commonPackage}.util.DateUtil;
+</#if>
+import ${commonPackage}.util.SafeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import static ${packageName}.pojo.example.${CName}Example.*;
+
+${code}

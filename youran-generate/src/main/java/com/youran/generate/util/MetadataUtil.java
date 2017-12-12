@@ -1,8 +1,10 @@
 package com.youran.generate.util;
 
+import com.google.common.base.Joiner;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MySqlType;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,5 +84,20 @@ public class MetadataUtil {
     }
 
 
+    /**
+     * 获取主键别名
+     * @param className
+     * @param forSql
+     * @return
+     */
+    public static String getPkAlias(String className,boolean forSql){
+        String alias = StringUtils.uncapitalize(className)+"Id";
+        if(forSql){
+            String[] split = StringUtils.splitByCharacterTypeCamelCase(alias);
+            String join = Joiner.on("_").join(split);
+            alias = join.toLowerCase();
+        }
+        return alias;
+    }
 
 }

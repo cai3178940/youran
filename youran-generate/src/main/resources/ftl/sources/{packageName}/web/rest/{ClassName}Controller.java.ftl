@@ -5,7 +5,7 @@
 <#assign code>
 <@classCom "【${title}】控制器"></@classCom>
 @RestController
-@RequestMapping(${ProjectName}Const.${projectName?upper_case}_ROOT_PATH+"/${cName}")
+@RequestMapping(${ProjectName}Const.${projectName?upperCase}_ROOT_PATH+"/${cName}")
 public class ${CName}Controller implements ${CName}API {
 
     @Autowired
@@ -70,11 +70,13 @@ public class ${CName}Controller implements ${CName}API {
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherPk=otherEntity.pkField>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
     @Override
-    @PutMapping(value = "/{${id}}/add${otherEntity.className}/{${otherPk.jfieldName}}")
-    public ReplyVO<Integer> add${otherEntity.className}(@PathVariable ${type} ${id},
-                                                       @PathVariable ${otherPk.jfieldType} ${otherPk.jfieldName}) {
-        int count = ${cName}Service.add${otherEntity.className}(${id}, ${otherPk.jfieldName});
+    @PutMapping(value = "/{${id}}/add${otherCName}/{${otherPk.jfieldName}}")
+    public ReplyVO<Integer> add${otherCName}(@PathVariable ${type} ${id},
+                                                       @PathVariable ${otherPk.jfieldType} ${MetadataUtil.getPkAlias(othercName,false)}) {
+        int count = ${cName}Service.add${otherCName}(${id}, ${MetadataUtil.getPkAlias(othercName,false)});
         ReplyVO<Integer> replyVO = ReplyVO.success();
         replyVO.setData(count);
         return replyVO;

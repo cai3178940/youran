@@ -116,8 +116,7 @@ CREATE TABLE `meta_const` (
   `delSign` smallint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
   `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
   PRIMARY KEY (`constId`),
-  KEY `i_meta_const_0` (`projectId`) USING BTREE,
-  UNIQUE KEY `i_meta_const_1` (`constName`) USING BTREE
+  KEY `i_meta_const_0` (`projectId`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_const';
 
 DROP TABLE IF EXISTS `meta_const_detail`;

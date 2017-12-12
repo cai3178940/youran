@@ -38,10 +38,10 @@ CREATE TABLE `${metaEntity.tableName}` (
 DROP TABLE IF EXISTS `${manyTomany.tableName}`;
 
 CREATE TABLE `${manyTomany.tableName}` (
-    `${field1.fieldName}` ${field1.fieldType}${length_holder1} NOT NULL ${comment_holder1},
-    `${field2.fieldName}` ${field2.fieldType}${length_holder2} NOT NULL ${comment_holder2},
-    KEY `i_${manyTomany.tableName}_1` (`${field1.fieldName}`),
-    KEY `i_${manyTomany.tableName}_2` (`${field2.fieldName}`)
+    `${MetadataUtil.getPkAlias(manyTomany.refer1.className,true)}` ${field1.fieldType}${length_holder1} NOT NULL ${comment_holder1},
+    `${MetadataUtil.getPkAlias(manyTomany.refer2.className,true)}` ${field2.fieldType}${length_holder2} NOT NULL ${comment_holder2},
+    KEY `i_${manyTomany.tableName}_1` (`${MetadataUtil.getPkAlias(manyTomany.refer1.className,true)}`),
+    KEY `i_${manyTomany.tableName}_2` (`${MetadataUtil.getPkAlias(manyTomany.refer2.className,true)}`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${manyTomany.desc?replace('\'','"')?replace('\n','\\n')}';
 
     </#list>

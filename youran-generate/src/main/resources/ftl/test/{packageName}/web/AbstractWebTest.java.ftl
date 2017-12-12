@@ -17,7 +17,7 @@ public abstract class AbstractWebTest extends AbstractTest {
     @Autowired
     protected MockMvc restMockMvc;
 
-    @Value(${ProjectName}Const.${projectName?upper_case}_ROOT_PATH)
+    @Value(${ProjectName}Const.${projectName?upperCase}_ROOT_PATH)
     protected String rootPath;
 
     protected String getRootPath(){
