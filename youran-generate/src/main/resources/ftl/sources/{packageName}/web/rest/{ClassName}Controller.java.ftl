@@ -72,11 +72,12 @@ public class ${CName}Controller implements ${CName}API {
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     @Override
-    @PutMapping(value = "/{${id}}/add${otherCName}/{${otherPk.jfieldName}}")
+    @PutMapping(value = "/{${id}}/add${otherCName}/{${otherPkId}}")
     public ReplyVO<Integer> add${otherCName}(@PathVariable ${type} ${id},
-                                                       @PathVariable ${otherPk.jfieldType} ${MetadataUtil.getPkAlias(othercName,false)}) {
-        int count = ${cName}Service.add${otherCName}(${id}, ${MetadataUtil.getPkAlias(othercName,false)});
+                                                       @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
+        int count = ${cName}Service.add${otherCName}(${id}, ${otherPkId});
         ReplyVO<Integer> replyVO = ReplyVO.success();
         replyVO.setData(count);
         return replyVO;

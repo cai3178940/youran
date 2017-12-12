@@ -5,6 +5,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${packageName}.mapper.${CName}Mapper">
+
     <select id="findById" resultType="${CName}PO">
         select
         <#list fields as field>
@@ -100,5 +101,64 @@
         <include refid="queryCondition"/>
         limit ${r'#'}{startIndex},${r'#'}{pageSize}
     </select>
+<#if metaEntity.mtmHoldRefers??>
+    <#list metaEntity.mtmHoldRefers as entity>
+        <#assign mtm=metaEntity.holdMtms[entity_index]/>
+        <#assign otherCName=entity.className?capFirst>
+        <#assign othercName=entity.className?uncapFirst>
+        <#assign otherPk=entity.pkField>
+        <#assign otherType=otherPk.jfieldType>
+        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
+        <#assign thePkId=MetadataUtil.getPkAlias(cName,false)>
+        <#assign other_pk_id=MetadataUtil.getPkAlias(othercName,true)>
+        <#assign the_pk_id=MetadataUtil.getPkAlias(cName,true)>
+
+    <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${CName}PO">
+        select
+        <#list fields as field>
+        t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
+        </#list>
+        from ${MetadataUtil.wrapMysqlKeyword(tableName)} t
+        inner join ${MetadataUtil.wrapMysqlKeyword(entity.tableName)} r
+            on t.${pk.fieldName}=r.${the_pk_id}
+        where
+            r.${other_pk_id}=${r'#'}{arg0}
+        <#if delField??>
+            and t.${MetadataUtil.wrapMysqlKeyword(delField.fieldName)}=0
+        </#if>
+    </select>
+
+    <insert id="add${otherCName}" parameterType="Map">
+        insert into ${mtm.tableName}(${the_pk_id},${other_pk_id})
+        values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}})
+    </insert>
+    </#list>
+</#if>
+<#if metaEntity.mtmUnHoldRefers??>
+    <#list metaEntity.mtmUnHoldRefers as entity>
+        <#assign mtm=metaEntity.unHoldMtms[entity_index]/>
+        <#assign otherCName=entity.className?capFirst>
+        <#assign othercName=entity.className?uncapFirst>
+        <#assign otherPk=entity.pkField>
+        <#assign otherType=otherPk.jfieldType>
+        <#assign other_pk_id=MetadataUtil.getPkAlias(othercName,true)>
+        <#assign the_pk_id=MetadataUtil.getPkAlias(cName,true)>
+
+    <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${CName}PO">
+        select
+        <#list fields as field>
+            t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
+        </#list>
+        from ${MetadataUtil.wrapMysqlKeyword(tableName)} t
+        inner join ${MetadataUtil.wrapMysqlKeyword(entity.tableName)} r
+        on t.${pk.fieldName}=r.${the_pk_id}
+        where
+        r.${other_pk_id}=${r'#'}{arg0}
+        <#if delField??>
+            and t.${MetadataUtil.wrapMysqlKeyword(delField.fieldName)}=0
+        </#if>
+    </select>
+    </#list>
+</#if>
 
 </mapper>

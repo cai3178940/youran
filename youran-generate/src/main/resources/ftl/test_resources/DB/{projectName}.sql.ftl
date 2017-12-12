@@ -35,13 +35,15 @@ CREATE TABLE `${metaEntity.tableName}` (
         <#assign length_holder2><#if field2.jfieldType!=JFieldType.DATE.getJavaType() && field2.fieldLength gt 0>(${field2.fieldLength}<#if field2.fieldScale??>,${field2.fieldScale}</#if>)</#if></#assign>
         <#assign comment_holder1><#if field1.fieldComment??> COMMENT '${field1.fieldComment?replace('\'','"')}'</#if></#assign>
         <#assign comment_holder2><#if field2.fieldComment??> COMMENT '${field2.fieldComment?replace('\'','"')}'</#if></#assign>
+        <#assign pkId1=MetadataUtil.getPkAlias(manyTomany.refer1.className,true)>
+        <#assign pkId2=MetadataUtil.getPkAlias(manyTomany.refer2.className,true)>
 DROP TABLE IF EXISTS `${manyTomany.tableName}`;
 
 CREATE TABLE `${manyTomany.tableName}` (
-    `${MetadataUtil.getPkAlias(manyTomany.refer1.className,true)}` ${field1.fieldType}${length_holder1} NOT NULL ${comment_holder1},
-    `${MetadataUtil.getPkAlias(manyTomany.refer2.className,true)}` ${field2.fieldType}${length_holder2} NOT NULL ${comment_holder2},
-    KEY `i_${manyTomany.tableName}_1` (`${MetadataUtil.getPkAlias(manyTomany.refer1.className,true)}`),
-    KEY `i_${manyTomany.tableName}_2` (`${MetadataUtil.getPkAlias(manyTomany.refer2.className,true)}`)
+    `${pkId1}` ${field1.fieldType}${length_holder1} NOT NULL ${comment_holder1},
+    `${pkId2}` ${field2.fieldType}${length_holder2} NOT NULL ${comment_holder2},
+    KEY `i_${manyTomany.tableName}_1` (`${pkId1}`),
+    KEY `i_${manyTomany.tableName}_2` (`${pkId2}`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${manyTomany.desc?replace('\'','"')?replace('\n','\\n')}';
 
     </#list>

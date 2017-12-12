@@ -66,13 +66,14 @@ public interface ${CName}API {
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     /******************************关联【${otherEntity.title}】*****************************/
     @ApiOperation(value="关联【${otherEntity.title}】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${MetadataUtil.getPkAlias(othercName,false)}", dataType = "${otherPk.jfieldType}", value = "【${otherEntity.title}】id列表,逗号分割", paramType = "query"),
+        @ApiImplicitParam(name = "${otherPkId}", dataType = "${otherPk.jfieldType}", value = "【${otherEntity.title}】id列表,逗号分割", paramType = "query"),
     })
-    ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType} ${MetadataUtil.getPkAlias(othercName,false)});
+    ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType} ${otherPkId});
 
     </#list>
 </#if>

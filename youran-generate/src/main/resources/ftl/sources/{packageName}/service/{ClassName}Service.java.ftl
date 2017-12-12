@@ -90,13 +90,14 @@ public class ${CName}Service {
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     @Transactional
-    public int add${otherCName}(${type} ${id}, ${otherPk.jfieldType} ${MetadataUtil.getPkAlias(othercName,false)}) {
+    public int add${otherCName}(${type} ${id}, ${otherPk.jfieldType} ${otherPkId}) {
         ${CName}PO ${cName} = ${cName}DAO.findById(${id});
         if(${cName}==null){
             throw new ${ProjectName}Exception("未查询到记录");
         }
-        return ${cName}DAO.add${otherCName}(${id},${MetadataUtil.getPkAlias(othercName,false)});
+        return ${cName}DAO.add${otherCName}(${id},${otherPkId});
     }
     </#list>
 </#if>

@@ -19,16 +19,16 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
         <#assign importMap=true>
         <#assign otherCName=entity.className?capFirst>
         <#assign othercName=entity.className?uncapFirst>
-        <#assign otherJid=entity.pkField.jfieldName>
         <#assign otherType=entity.pkField.jfieldType>
+        <#assign thePkId=MetadataUtil.getPkAlias(cName,false)>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
-    public List<${CName}PO> findBy${otherCName}(${otherType} ${otherJid}) {
-        return sqlSession.selectList(getMybatisNamespace()+".findBy${otherCName}", ${otherJid});
+    public List<${CName}PO> findBy${otherCName}(${otherType} ${otherPkId}) {
+        return sqlSession.selectList(getMybatisNamespace()+".findBy${otherCName}", ${otherPkId});
     }
 
-    public int add${otherCName}(${type} ${id},${otherType} ${otherPkId}) {
+    public int add${otherCName}(${type} ${thePkId},${otherType} ${otherPkId}) {
         Map<String,Object> params = new HashMap<>();
-        params.put("${id}",${id});
+        params.put("${thePkId}",${thePkId});
         params.put("${otherPkId}",${otherPkId});
         return sqlSession.insert(getMybatisNamespace()+".add${otherCName}",params);
     }
@@ -39,10 +39,10 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
     <#list metaEntity.mtmUnHoldRefers as entity>
         <#assign importList=true>
         <#assign otherCName=entity.className/>
-        <#assign otherJid=entity.pkField.jfieldName>
         <#assign otherType=entity.pkField.jfieldType>
-    public List<${CName}PO> findBy${otherCName}(${otherType} ${otherJid}) {
-        return sqlSession.selectList(getMybatisNamespace()+".findBy${otherCName}", ${otherJid});
+        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
+    public List<${CName}PO> findBy${otherCName}(${otherType} ${otherPkId}) {
+        return sqlSession.selectList(getMybatisNamespace()+".findBy${otherCName}", ${otherPkId});
     }
 
     </#list>
