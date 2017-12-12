@@ -26,7 +26,7 @@
     </#list>
         ) VALUES (
     <#list fields as field>
-    ${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>
+        ${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>
     </#list>
         )
     </insert>
