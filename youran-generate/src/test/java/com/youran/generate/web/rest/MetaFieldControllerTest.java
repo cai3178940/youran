@@ -45,7 +45,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_field/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
 
     }
 
@@ -56,7 +56,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/meta_field/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
     }
 
 
@@ -70,7 +70,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_field/list")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(queryDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }
 
@@ -79,7 +79,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
         MetaFieldPO metaField = generateHelper.saveFieldExample(metaEntity.getEntityId());
 
         restMockMvc.perform(get(getRootPath()+"/meta_field/{fieldId}",metaField.getFieldId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.fieldId").value(is(metaField.getFieldId())));
     }
 
@@ -88,7 +88,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
         MetaFieldPO metaField = generateHelper.saveFieldExample(metaEntity.getEntityId());
 
         restMockMvc.perform(delete(getRootPath()+"/meta_field/{fieldId}",metaField.getFieldId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
 

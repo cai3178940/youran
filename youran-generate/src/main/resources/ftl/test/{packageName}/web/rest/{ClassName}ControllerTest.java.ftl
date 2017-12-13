@@ -26,7 +26,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/${cName}/save")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(addDTO)))
-            .andExpect(jsonPath("$.errorCode").value(is(0)));
+            .andExpect(jsonPath("$.code").value(is("0")));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/${cName}/update")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(updateDTO)))
-            .andExpect(jsonPath("$.errorCode").value(is(0)));
+            .andExpect(jsonPath("$.code").value(is("0")));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/${cName}/list")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(queryDTO)))
-            .andExpect(jsonPath("$.errorCode").value(is(0)))
+            .andExpect(jsonPath("$.code").value(is("0")))
             .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
     }
 
@@ -54,14 +54,14 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
         restMockMvc.perform(get(getRootPath()+"/${cName}/{${id}}",${cName}.get${Id}()))
-            .andExpect(jsonPath("$.errorCode").value(is(0)));
+            .andExpect(jsonPath("$.code").value(is("0")));
     }
 
     @Test
     public void del() throws Exception {
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
         restMockMvc.perform(delete(getRootPath()+"/${cName}/{${id}}",${cName}.get${Id}()))
-            .andExpect(jsonPath("$.errorCode").value(is(0)))
+            .andExpect(jsonPath("$.code").value(is("0")))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
@@ -71,7 +71,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/${cName}/deleteBatch")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${cName}.get${Id}()))))
-            .andExpect(jsonPath("$.errorCode").value(is(0)))
+            .andExpect(jsonPath("$.code").value(is("0")))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
@@ -87,7 +87,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
         restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/add${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${cName}.get${Id}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
-            .andExpect(jsonPath("$.errorCode").value(is(0)))
+            .andExpect(jsonPath("$.code").value(is("0")))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 

@@ -49,7 +49,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_index/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
 
     }
 
@@ -61,7 +61,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/meta_index/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
     }
 
 
@@ -75,7 +75,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_index/list")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(queryDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }
 
@@ -84,7 +84,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         MetaIndexPO metaIndex = generateHelper.saveIndexExample(metaField.getFieldId());
 
         restMockMvc.perform(get(getRootPath()+"/meta_index/{indexId}",metaIndex.getIndexId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.indexId").value(is(metaIndex.getIndexId())));
     }
 
@@ -93,7 +93,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         MetaIndexPO metaIndex = generateHelper.saveIndexExample(metaField.getFieldId());
 
         restMockMvc.perform(delete(getRootPath()+"/meta_index/{indexId}",metaIndex.getIndexId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
 

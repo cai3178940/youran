@@ -45,7 +45,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_const_detail/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
 
     }
 
@@ -56,7 +56,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/meta_const_detail/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
     }
 
 
@@ -69,7 +69,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_const_detail/list")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(queryDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }
 
@@ -77,7 +77,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         MetaConstDetailPO metaConstDetail = generateHelper.saveConstDetailExample(metaConst.getConstId());
         restMockMvc.perform(get(getRootPath()+"/meta_const_detail/{constId}",metaConstDetail.getConstId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.constId").value(is(metaConstDetail.getConstId())));
     }
 
@@ -85,7 +85,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
     public void del() throws Exception {
         MetaConstDetailPO metaConstDetail = generateHelper.saveConstDetailExample(metaConst.getConstId());
         restMockMvc.perform(delete(getRootPath()+"/meta_const_detail/{constId}",metaConstDetail.getConstId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
 

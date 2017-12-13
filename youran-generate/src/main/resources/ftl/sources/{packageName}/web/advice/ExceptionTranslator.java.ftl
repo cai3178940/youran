@@ -55,8 +55,8 @@ public class ExceptionTranslator {
             errorVOList.add(new FieldErrorVO(fieldError.getObjectName(), fieldError.getField(), fieldError.getDefaultMessage()));
         }
         if(fieldErrors.size()>0){
-            dto.setErrorCode(ErrorCode.ERR_VALIDATION.getValue());
-            dto.setErrorMsg(fieldErrors.get(0).getDefaultMessage());
+            dto.setCode(ErrorCode.ERR_VALIDATION.getValue());
+            dto.setMessage(fieldErrors.get(0).getDefaultMessage());
             dto.setData(errorVOList);
         }
 
@@ -85,7 +85,7 @@ public class ExceptionTranslator {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ReplyVO processHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        return new ReplyVO(-1, "HttpMessageNotReadableException");
+        return new ReplyVO("-1", "HttpMessageNotReadableException");
     }
 
     /**
@@ -124,8 +124,8 @@ public class ExceptionTranslator {
     public ResponseEntity<ReplyVO> process${ProjectName}Exception(${ProjectName}Exception ex) {
         ex.printStackTrace();
         ResponseEntity.BodyBuilder builder = ResponseEntity.status(HttpStatus.OK);
-        ErrorCode errorCode = ex.getErrorCode();
-        ReplyVO replyVO = new ReplyVO(errorCode.getValue(), ex.getMessage());
+        ErrorCode code = ex.getErrorCode();
+        ReplyVO replyVO = new ReplyVO(code.getValue(), ex.getMessage());
         return builder.body(replyVO);
     }
 
@@ -145,7 +145,7 @@ public class ExceptionTranslator {
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
         if (responseStatus != null) {
             builder = ResponseEntity.status(responseStatus.value());
-            replyVO = new ReplyVO(responseStatus.value().value(), responseStatus.reason());
+            replyVO = new ReplyVO(responseStatus.value().value() + "", responseStatus.reason());
         } else {
             builder = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
             replyVO = new ReplyVO(ErrorCode.INTERNAL_SERVER_ERROR.getValue(), ErrorCode.INTERNAL_SERVER_ERROR.getDesc());

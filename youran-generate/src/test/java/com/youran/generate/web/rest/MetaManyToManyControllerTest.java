@@ -50,7 +50,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_mtm/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
 
     }
 
@@ -62,7 +62,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/meta_mtm/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
     }
 
 
@@ -77,7 +77,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_mtm/list")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(queryDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }
 
@@ -86,7 +86,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
         restMockMvc.perform(get(getRootPath()+"/meta_mtm/{fieldId}",metaManyToMany.getMtmId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.mtmId").value(is(metaManyToMany.getMtmId())));
     }
 
@@ -95,7 +95,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
         restMockMvc.perform(delete(getRootPath()+"/meta_mtm/{fieldId}",metaManyToMany.getMtmId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
 }

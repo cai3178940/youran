@@ -34,7 +34,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_project/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
 
     }
 
@@ -45,7 +45,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/meta_project/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
     }
 
 
@@ -57,7 +57,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_project/list")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(queryDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }
 
@@ -65,7 +65,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         MetaProjectPO metaProject = generateHelper.saveProjectExample();
         restMockMvc.perform(get(getRootPath()+"/meta_project/{projectId}",metaProject.getProjectId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.projectId").value(is(metaProject.getProjectId())));
     }
 
@@ -73,7 +73,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     public void del() throws Exception {
         MetaProjectPO metaProject = generateHelper.saveProjectExample();
         restMockMvc.perform(delete(getRootPath()+"/meta_project/{projectId}",metaProject.getProjectId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
 
@@ -83,7 +83,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_project/deleteBatch")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(Lists.newArrayList(metaProject.getProjectId()))))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
 

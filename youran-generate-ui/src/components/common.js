@@ -68,8 +68,8 @@ export default {
             }
           }
           //远程200返回结果中的异常
-          if (error.errorCode){
-            return this.showNotify('error', '出错了', error.errorMsg)
+          if (error.code && error.code!='0'){
+            return this.showNotify('error', '出错了', error.message)
           }
         }
         //未知异常
@@ -87,10 +87,10 @@ export default {
       checkResult: function (result) {
         return new Promise(function (resolve, reject) {
           if (result) {
-            if (result.errorCode === 0) {
+            if (result.code === "0") {
               return resolve(result);
             } else {
-              return reject(result.errorMsg)
+              return reject(result.message)
             }
           } else {
             return reject();

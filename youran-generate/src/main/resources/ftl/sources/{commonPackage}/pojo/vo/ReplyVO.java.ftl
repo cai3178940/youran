@@ -13,10 +13,10 @@ import java.util.Map;
 public class ReplyVO<T> extends AbstractVO {
 
     @ApiModelProperty(notes = "响应代码【0正确,非0错误】",example = "true",required = true)
-    private int errorCode;
+    private String code;
 
     @ApiModelProperty(notes = "结果描述",example = "执行成功！",required = true)
-    private String errorMsg;
+    private String message;
 
     @ApiModelProperty(notes = "返回数据")
     private T data;
@@ -28,17 +28,17 @@ public class ReplyVO<T> extends AbstractVO {
         this.data = data;
     }
 
-    public ReplyVO(int errorCode, String errorMsg) {
-        this.errorCode = errorCode;
-        this.errorMsg = errorMsg;
+    public ReplyVO(String code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
-    public static ReplyVO fail(String errorMsg) {
-        return new ReplyVO(-1, errorMsg);
+    public static ReplyVO fail(String message) {
+        return new ReplyVO("-1", message);
     }
 
     public static ReplyVO success() {
-        return new ReplyVO(0, "success");
+        return new ReplyVO("0", "success");
     }
 
 
@@ -112,20 +112,20 @@ public class ReplyVO<T> extends AbstractVO {
     }
 
 
-    public int getErrorCode() {
-        return errorCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public T getData() {

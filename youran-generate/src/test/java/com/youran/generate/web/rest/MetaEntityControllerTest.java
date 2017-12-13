@@ -42,7 +42,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_entity/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
 
     }
 
@@ -53,7 +53,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/meta_entity/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)));
+                .andExpect(jsonPath("$.code").value(is("0")));
     }
 
 
@@ -66,7 +66,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_entity/list")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(queryDTO)))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
     }
 
@@ -74,7 +74,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         MetaEntityPO metaEntity = generateHelper.saveEntityExample(metaProject.getProjectId(),0);
         restMockMvc.perform(get(getRootPath()+"/meta_entity/{entityId}",metaEntity.getEntityId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.entityId").value(is(metaEntity.getEntityId())));
     }
 
@@ -82,7 +82,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
     public void del() throws Exception {
         MetaEntityPO metaEntity = generateHelper.saveEntityExample(metaProject.getProjectId(),0);
         restMockMvc.perform(delete(getRootPath()+"/meta_entity/{entityId}",metaEntity.getEntityId()))
-                .andExpect(jsonPath("$.errorCode").value(is(0)))
+                .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
 
