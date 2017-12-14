@@ -321,17 +321,19 @@
       queryDicType: function (queryString, cb) {
         //定义回调操作
         var action = function () {
-          var results = queryString ? this.constList.filter(
-            c => c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-          ) : this.constList;
-          cb(results.map(c => ({value: c.constName})));
+          var constList = this.constList.slice(0)
+          constList.push(...options.defaultConstList)
+          var results = queryString ? constList.filter(
+            c=>c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+          ) : constList;
+          cb(results.map(c=>({value:c.constName})));
         }.bind(this)
-        if (this.constList) {
+        if(this.constList){
           action()
-        } else {
+        }else{
           this.$common.getConstOptions(this.projectId)
             .then(response => this.$common.checkResult(response.data))
-            .then(result => {
+            .then(result=>{
               this.constList = result.data.entities
               action();
             })

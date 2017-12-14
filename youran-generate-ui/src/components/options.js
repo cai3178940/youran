@@ -148,4 +148,11 @@ export default  {
     }
   ],
 
+  // 默认常量列表
+  defaultConstList:[
+    {
+      constName:'BoolConst'
+    }
+  ]
+
 }

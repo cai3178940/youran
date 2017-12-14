@@ -314,9 +314,11 @@
       queryDicType: function (queryString, cb) {
         //定义回调操作
         var action = function () {
-          var results = queryString ? this.constList.filter(
+          var constList = this.constList.slice(0)
+          constList.push(...options.defaultConstList)
+          var results = queryString ? constList.filter(
             c=>c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-          ) : this.constList;
+          ) : constList;
           cb(results.map(c=>({value:c.constName})));
         }.bind(this)
         if(this.constList){
