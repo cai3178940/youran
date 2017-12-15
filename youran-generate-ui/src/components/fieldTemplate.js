@@ -19,7 +19,7 @@ export default  {
     queryType: null,
     insert: 0,
     update: 0,
-    list: 0,
+    list: 1,
     show: 1,
     editType: null,
     orderNo: 1
@@ -44,7 +44,7 @@ export default  {
     queryType: null,
     insert: 0,
     update: 0,
-    list: 0,
+    list: 1,
     show: 1,
     editType: null,
     orderNo: 1
