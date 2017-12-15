@@ -20,7 +20,7 @@ export default  {
     insert: 0,
     update: 0,
     list: 0,
-    show: 0,
+    show: 1,
     editType: null,
     orderNo: 1
   },
@@ -45,7 +45,7 @@ export default  {
     insert: 0,
     update: 0,
     list: 0,
-    show: 0,
+    show: 1,
     editType: null,
     orderNo: 1
   },
