@@ -7,7 +7,7 @@
 <#assign code>
 <@classCom "【${title}】详情展示对象"></@classCom>
 @ApiModel(description = "【${title}】详情展示对象")
-public class ${CName}ShowVO {
+public class ${CName}ShowVO extends AbstractVO {
 
 <#list metaEntity.showFields as field>
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
@@ -36,6 +36,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
 import com.alibaba.fastjson.annotation.JSONField;
 import ${commonPackage}.constant.JsonFieldConst;
+import ${commonPackage}.pojo.vo.AbstractVO;
 </#if>
 <#if importBigDecimal>
 import java.math.BigDecimal;
