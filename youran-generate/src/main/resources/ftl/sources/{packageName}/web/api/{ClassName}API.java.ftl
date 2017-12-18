@@ -67,7 +67,9 @@ public interface ${CName}API {
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
-    /******************************关联【${otherEntity.title}】*****************************/
+    /**
+     * 关联【${otherEntity.title}】
+     */
     @ApiOperation(value="关联【${otherEntity.title}】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),

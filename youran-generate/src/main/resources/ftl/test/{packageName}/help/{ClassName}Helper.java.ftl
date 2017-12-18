@@ -10,9 +10,9 @@ public class ${CName}Helper {
     protected ${CName}Service ${cName}Service;
 
     /**
-    * 生成add测试数据
-    * @return
-    */
+     * 生成add测试数据
+     * @return
+     */
     public ${CName}AddDTO get${CName}AddDTO(){
         ${CName}AddDTO dto = new ${CName}AddDTO();
     <#list metaEntity.insertFields as field>
@@ -30,9 +30,9 @@ public class ${CName}Helper {
 
 
     /**
-    * 生成update测试数据
-    * @return
-    */
+     * 生成update测试数据
+     * @return
+     */
     public ${CName}UpdateDTO get${CName}UpdateDTO(${CName}PO ${cName}){
         ${CName}UpdateDTO dto = new ${CName}UpdateDTO();
         dto.set${Id}(${cName}.get${Id}());
@@ -43,9 +43,9 @@ public class ${CName}Helper {
     }
 
     /**
-    * 保存示例
-    * @return
-    */
+     * 保存示例
+     * @return
+     */
     public ${CName}PO save${CName}Example(){
         ${CName}AddDTO addDTO = this.get${CName}AddDTO();
         return ${cName}Service.save(addDTO);
