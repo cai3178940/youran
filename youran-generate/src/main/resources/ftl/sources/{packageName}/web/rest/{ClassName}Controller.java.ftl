@@ -15,44 +15,35 @@ public class ${CName}Controller implements ${CName}API {
     @PostMapping(value = "/save")
     public ReplyVO<${type}> save(@Valid @RequestBody ${CName}AddDTO ${cName}AddDTO) {
         ${CName}PO ${cName} = ${cName}Service.save(${cName}AddDTO);
-        ReplyVO<${type}> replyVO = ReplyVO.success();
-        replyVO.setData(${cName}.get${Id}());
-        return replyVO;
+        return ReplyVO.success().data(${cName}.get${Id}());
     }
 
     @Override
     @PutMapping(value = "/update")
     public ReplyVO<Void> update(@Valid @RequestBody ${CName}UpdateDTO ${cName}UpdateDTO) {
         ${cName}Service.update(${cName}UpdateDTO);
-        ReplyVO<Void> replyVO = ReplyVO.success();
-        return replyVO;
+        return ReplyVO.success();
     }
 
     @Override
     @PostMapping(value = "/list")
     public ReplyVO<PageVO<${CName}ListVO>> list(@Valid @RequestBody ${CName}QueryDTO ${cName}QueryDTO) {
         PageVO<${CName}ListVO> page = ${cName}Service.list(${cName}QueryDTO);
-        ReplyVO<PageVO<${CName}ListVO>> replyVO = ReplyVO.success();
-        replyVO.setData(page);
-        return replyVO;
+        return ReplyVO.success().data(page);
     }
 
     @Override
     @GetMapping(value = "/{${id}}")
     public ReplyVO<${CName}ShowVO> show(@PathVariable ${type} ${id}) {
         ${CName}ShowVO ${cName}ShowVO = ${cName}Service.show(${id});
-        ReplyVO<${CName}ShowVO> replyVO = ReplyVO.success();
-        replyVO.setData(${cName}ShowVO);
-        return replyVO;
+        return ReplyVO.success().data(${cName}ShowVO);
     }
 
     @Override
     @DeleteMapping(value = "/{${id}}")
     public ReplyVO<Integer> delete(@PathVariable ${type} ${id}) {
         int count = ${cName}Service.delete(${id});
-        ReplyVO<Integer> replyVO = ReplyVO.success();
-        replyVO.setData(count);
-        return replyVO;
+        return ReplyVO.success().data(count);
     }
 
     @Override
@@ -62,9 +53,7 @@ public class ${CName}Controller implements ${CName}API {
             return ReplyVO.fail("参数为空");
         }
         int count = ${cName}Service.delete(id);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(count);
-        return result;
+        return ReplyVO.success().data(count);
     }
 
 <#if metaEntity.mtmHoldRefers??>
@@ -78,9 +67,7 @@ public class ${CName}Controller implements ${CName}API {
     public ReplyVO<Integer> add${otherCName}(@PathVariable ${type} ${id},
                                                        @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
         int count = ${cName}Service.add${otherCName}(${id}, ${otherPkId});
-        ReplyVO<Integer> replyVO = ReplyVO.success();
-        replyVO.setData(count);
-        return replyVO;
+        return ReplyVO.success().data(count);
     }
     </#list>
 </#if>
