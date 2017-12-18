@@ -119,7 +119,7 @@
         t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
         </#list>
         from ${MetadataUtil.wrapMysqlKeyword(tableName)} t
-        inner join ${MetadataUtil.wrapMysqlKeyword(entity.tableName)} r
+        inner join ${MetadataUtil.wrapMysqlKeyword(mtm.tableName)} r
             on t.${pk.fieldName}=r.${the_pk_id}
         where
             r.${other_pk_id}=${r'#'}{arg0}
@@ -150,7 +150,7 @@
             t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
         </#list>
         from ${MetadataUtil.wrapMysqlKeyword(tableName)} t
-        inner join ${MetadataUtil.wrapMysqlKeyword(entity.tableName)} r
+        inner join ${MetadataUtil.wrapMysqlKeyword(mtm.tableName)} r
         on t.${pk.fieldName}=r.${the_pk_id}
         where
         r.${other_pk_id}=${r'#'}{arg0}
