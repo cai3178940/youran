@@ -68,14 +68,24 @@ public interface ${CName}API {
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     /**
-     * 关联【${otherEntity.title}】
+     * 关联单个【${otherEntity.title}】
      */
-    @ApiOperation(value="关联【${otherEntity.title}】")
+    @ApiOperation(value="关联单个【${otherEntity.title}】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${otherPkId}", dataType = "${otherPk.jfieldType}", value = "【${otherEntity.title}】id列表,逗号分割", paramType = "query"),
+        @ApiImplicitParam(name = "${otherPkId}", dataType = "${otherPk.jfieldType}", value = "【${otherEntity.title}】id", paramType = "path"),
     })
     ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType} ${otherPkId});
+
+    /**
+     * 关联多个【${otherEntity.title}】
+     */
+    @ApiOperation(value="关联多个【${otherEntity.title}】")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${otherPkId}", dataType = "${otherPk.jfieldType}", value = "【${otherEntity.title}】id数组", paramType = "body"),
+    })
+    ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType}[] ${otherPkId});
 
     </#list>
 </#if>

@@ -65,7 +65,15 @@ public class ${CName}Controller implements ${CName}API {
     @Override
     @PutMapping(value = "/{${id}}/add${otherCName}/{${otherPkId}}")
     public ReplyVO<Integer> add${otherCName}(@PathVariable ${type} ${id},
-                                                       @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
+                        @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
+        int count = ${cName}Service.add${otherCName}(${id}, ${otherPkId});
+        return ReplyVO.success().data(count);
+    }
+
+    @Override
+    @PutMapping(value = "/{${id}}/add${otherCName}")
+    public ReplyVO<Integer> add${otherCName}(@PathVariable ${type} ${id},
+                        @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
         int count = ${cName}Service.add${otherCName}(${id}, ${otherPkId});
         return ReplyVO.success().data(count);
     }

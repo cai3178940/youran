@@ -36,8 +36,8 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
 import com.alibaba.fastjson.annotation.JSONField;
 import ${commonPackage}.constant.JsonFieldConst;
-import ${commonPackage}.pojo.vo.AbstractVO;
 </#if>
+import ${commonPackage}.pojo.vo.AbstractVO;
 <#if importBigDecimal>
 import java.math.BigDecimal;
 </#if>

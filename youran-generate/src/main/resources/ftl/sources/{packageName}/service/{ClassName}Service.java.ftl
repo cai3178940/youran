@@ -2,6 +2,7 @@
 <#include "/entity_common.ftl">
 
 <#assign importOptimisticLock=false>
+<#assign importArrayUtils=false>
 <#--定义主体代码-->
 <#assign code>
 <@classCom "【${title}】删改查服务"></@classCom>
@@ -87,17 +88,27 @@ public class ${CName}Service {
 
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
+        <#assign importArrayUtils=true>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     @Transactional
-    public int add${otherCName}(${type} ${id}, ${otherPk.jfieldType} ${otherPkId}) {
+    public int add${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
         ${CName}PO ${cName} = ${cName}DAO.findById(${id});
         if(${cName}==null){
             throw new ${ProjectName}Exception("未查询到记录");
         }
-        return ${cName}DAO.add${otherCName}(${id},${otherPkId});
+        if(ArrayUtils.isEmpty(${otherPkId})){
+            throw new ${ProjectName}Exception("${otherEntity.title}id参数为空");
+        }
+        int count = 0;
+        for (Integer _id : ${otherPkId}) {
+            if(${cName}DAO.exist(_id)){
+                count += ${cName}DAO.add${otherCName}(${id},_id);
+            }
+        }
+        return count;
     }
     </#list>
 </#if>
@@ -108,6 +119,9 @@ public class ${CName}Service {
 <#--开始渲染代码-->
 package ${packageName}.service;
 
+<#if importOptimisticLock>
+import ${commonPackage}.optimistic.OptimisticLock;
+</#if>
 import ${commonPackage}.pojo.vo.PageVO;
 import ${packageName}.dao.${CName}DAO;
 import ${packageName}.pojo.dto.${CName}AddDTO;
@@ -118,11 +132,11 @@ import ${packageName}.pojo.mapper.${CName}Mapper;
 import ${packageName}.pojo.po.${CName}PO;
 import ${packageName}.pojo.vo.${CName}ShowVO;
 import ${packageName}.exception.${ProjectName}Exception;
+<#if importArrayUtils>
+import org.apache.commons.lang3.ArrayUtils;
+</#if>
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-<#if importOptimisticLock>
-import ${commonPackage}.optimistic.OptimisticLock;
-</#if>
 
 ${code}

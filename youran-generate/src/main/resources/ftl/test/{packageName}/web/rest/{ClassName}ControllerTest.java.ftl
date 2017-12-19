@@ -91,6 +91,18 @@ public class ${CName}ControllerTest extends AbstractWebTest {
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
+    @Test
+    public void add${otherEntity.className}2() throws Exception {
+        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
+        ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
+        restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/add${otherEntity.className}",
+            ${cName}.get${Id}())
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
+            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.data").value(is(1)));
+    }
+
     </#list>
 </#if>
 }
