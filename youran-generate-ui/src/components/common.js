@@ -20,15 +20,27 @@ export default {
 
       //查询项目下拉列表
       getProjectOptions:function(){
-        return ajax.post('/generate/meta_project/list', {})
+        return ajax.get('/generate/meta_project/list')
       },
       //查询实体下拉列表
       getEntityOptions:function(projectId){
-        return ajax.post('/generate/meta_entity/list', {projectId,pageSize:1000,pageNo:1})
+        return ajax.get('/generate/meta_entity/list', {
+          params:{
+            projectId,
+            pageSize:1000,
+            pageNo:1
+          }
+        })
       },
       //查询枚举下拉列表
       getConstOptions:function(projectId){
-        return ajax.post('/generate/meta_const/list', {projectId,pageSize:1000,pageNo:1})
+        return ajax.get('/generate/meta_const/list', {
+          params:{
+            projectId,
+            pageSize:1000,
+            pageNo:1
+          }
+        })
       },
 
       confirm: function (msg) {

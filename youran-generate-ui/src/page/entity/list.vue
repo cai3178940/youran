@@ -147,7 +147,7 @@
           pageSize: this.page.pageSize
         }
         this.loading = true
-        this.$ajax.post('/generate/meta_entity/list', params)
+        this.$ajax.get('/generate/meta_entity/list', {params:params})
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.page = result.data)
           .catch(error => this.$common.showNotifyError(error))

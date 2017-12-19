@@ -4,7 +4,6 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaFieldData;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
-import com.youran.generate.pojo.dto.MetaFieldQueryDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
@@ -63,13 +62,8 @@ public class MetaFieldControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         generateHelper.saveFieldExample(metaEntity.getEntityId());
-
-        MetaFieldQueryDTO queryDTO = new MetaFieldQueryDTO();
-        queryDTO.setEntityId(metaEntity.getEntityId());
-
-        restMockMvc.perform(post(getRootPath()+"/meta_field/list")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(JsonUtil.toJSONString(queryDTO)))
+        restMockMvc.perform(get(getRootPath()+"/meta_field/list")
+                .param("entityId",metaEntity.getEntityId()+""))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }

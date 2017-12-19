@@ -4,7 +4,6 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaManyToManyData;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
-import com.youran.generate.pojo.dto.MetaManyToManyQueryDTO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
@@ -70,13 +69,8 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
     public void list() throws Exception {
         generateHelper.saveManyToManyExample(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
-
-        MetaManyToManyQueryDTO queryDTO = new MetaManyToManyQueryDTO();
-        queryDTO.setProjectId(metaProject.getProjectId());
-
-        restMockMvc.perform(post(getRootPath()+"/meta_mtm/list")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(JsonUtil.toJSONString(queryDTO)))
+        restMockMvc.perform(get(getRootPath()+"/meta_mtm/list")
+                .param("projectId",metaProject.getProjectId()+""))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }

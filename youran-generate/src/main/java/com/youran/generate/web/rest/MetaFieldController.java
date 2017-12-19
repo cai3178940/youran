@@ -54,8 +54,8 @@ public class MetaFieldController implements MetaFieldAPI {
     }
 
     @Override
-    @PostMapping(value = "/list")
-    public ReplyVO<List<MetaFieldListVO>> list(@Valid @RequestBody MetaFieldQueryDTO metaFieldQueryDTO) {
+    @GetMapping(value = "/list")
+    public ReplyVO<List<MetaFieldListVO>> list(@Valid MetaFieldQueryDTO metaFieldQueryDTO) {
         List<MetaFieldListVO> list = metaFieldService.list(metaFieldQueryDTO);
         ReplyVO<List<MetaFieldListVO>> result = ReplyVO.success();
         result.setData(list);

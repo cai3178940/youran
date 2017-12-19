@@ -66,7 +66,7 @@
       // 列表查询
       doQuery: function () {
         this.loading = true
-        this.$ajax.post('/generate/meta_project/list', this.query)
+        this.$ajax.get('/generate/meta_project/list', {params:this.query})
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.entities = result.data)
           .catch(error => this.$common.showNotifyError(error))

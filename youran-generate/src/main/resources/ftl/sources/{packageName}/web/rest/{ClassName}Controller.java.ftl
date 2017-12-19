@@ -26,8 +26,8 @@ public class ${CName}Controller implements ${CName}API {
     }
 
     @Override
-    @PostMapping(value = "/list")
-    public ReplyVO<PageVO<${CName}ListVO>> list(@Valid @RequestBody ${CName}QueryDTO ${cName}QueryDTO) {
+    @GetMapping(value = "/list")
+    public ReplyVO<PageVO<${CName}ListVO>> list(@Valid ${CName}QueryDTO ${cName}QueryDTO) {
         PageVO<${CName}ListVO> page = ${cName}Service.list(${cName}QueryDTO);
         return ReplyVO.success().data(page);
     }

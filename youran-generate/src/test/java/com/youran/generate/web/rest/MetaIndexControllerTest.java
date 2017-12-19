@@ -4,7 +4,6 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaIndexData;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
-import com.youran.generate.pojo.dto.MetaIndexQueryDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
@@ -68,13 +67,8 @@ public class MetaIndexControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         generateHelper.saveIndexExample(metaField.getFieldId());
-
-        MetaIndexQueryDTO queryDTO = new MetaIndexQueryDTO();
-        queryDTO.setEntityId(metaEntity.getEntityId());
-
-        restMockMvc.perform(post(getRootPath()+"/meta_index/list")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(JsonUtil.toJSONString(queryDTO)))
+        restMockMvc.perform(get(getRootPath()+"/meta_index/list")
+                .param("entityId",metaEntity.getEntityId()+""))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }

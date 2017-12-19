@@ -210,7 +210,7 @@
           return
         }
         this.loading = true
-        this.$ajax.post('/generate/meta_field/list', this.query)
+        this.$ajax.get('/generate/meta_field/list', {params:this.query})
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.entities = result.data)
           .catch(error => this.$common.showNotifyError(error))

@@ -4,7 +4,6 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaEntityData;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
-import com.youran.generate.pojo.dto.MetaEntityQueryDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
@@ -60,12 +59,8 @@ public class MetaEntityControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         generateHelper.saveEntityExample(metaProject.getProjectId(),0);
-
-        MetaEntityQueryDTO queryDTO = new MetaEntityQueryDTO();
-        queryDTO.setProjectId(metaProject.getProjectId());
-        restMockMvc.perform(post(getRootPath()+"/meta_entity/list")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(JsonUtil.toJSONString(queryDTO)))
+        restMockMvc.perform(get(getRootPath()+"/meta_entity/list")
+                .param("projectId",metaProject.getProjectId()+""))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
     }

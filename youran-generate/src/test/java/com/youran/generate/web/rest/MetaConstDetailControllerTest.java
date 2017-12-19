@@ -4,7 +4,6 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaConstDetailData;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
-import com.youran.generate.pojo.dto.MetaConstDetailQueryDTO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
 import com.youran.generate.pojo.po.MetaConstPO;
@@ -63,12 +62,8 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         generateHelper.saveConstDetailExample(metaConst.getConstId());
-
-        MetaConstDetailQueryDTO queryDTO = new MetaConstDetailQueryDTO();
-        queryDTO.setConstId(metaConst.getConstId());
-        restMockMvc.perform(post(getRootPath()+"/meta_const_detail/list")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(JsonUtil.toJSONString(queryDTO)))
+        restMockMvc.perform(get(getRootPath()+"/meta_const_detail/list")
+                .param("constId",metaConst.getConstId()+""))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }

@@ -48,8 +48,8 @@ public class MetaConstDetailController implements MetaConstDetailAPI {
     }
 
     @Override
-    @PostMapping(value = "/list")
-    public ReplyVO<List<MetaConstDetailListVO>> list(@Valid @RequestBody MetaConstDetailQueryDTO metaConstDetailQueryDTO) {
+    @GetMapping(value = "/list")
+    public ReplyVO<List<MetaConstDetailListVO>> list(@Valid MetaConstDetailQueryDTO metaConstDetailQueryDTO) {
         List<MetaConstDetailListVO> list = metaConstDetailService.list(metaConstDetailQueryDTO);
         ReplyVO<List<MetaConstDetailListVO>> result = ReplyVO.success();
         result.setData(list);

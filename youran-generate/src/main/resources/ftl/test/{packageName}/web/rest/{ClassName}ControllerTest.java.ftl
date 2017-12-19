@@ -42,10 +42,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         ${cName}Helper.save${CName}Example();
-        ${CName}QueryDTO queryDTO = new ${CName}QueryDTO();
-        restMockMvc.perform(post(getRootPath()+"/${cName}/list")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .content(JsonUtil.toJSONString(queryDTO)))
+        restMockMvc.perform(get(getRootPath()+"/${cName}/list"))
             .andExpect(jsonPath("$.code").value(is("0")))
             .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
     }
@@ -115,7 +112,6 @@ import com.google.common.collect.Lists;
 import ${commonPackage}.util.JsonUtil;
 import ${packageName}.help.${CName}Helper;
 import ${packageName}.pojo.dto.${CName}AddDTO;
-import ${packageName}.pojo.dto.${CName}QueryDTO;
 import ${packageName}.pojo.dto.${CName}UpdateDTO;
 import ${packageName}.pojo.po.${CName}PO;
 ${importOtherStr}

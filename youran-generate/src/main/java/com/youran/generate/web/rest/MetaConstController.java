@@ -48,8 +48,8 @@ public class MetaConstController implements MetaConstAPI {
     }
 
     @Override
-    @PostMapping(value = "/list")
-    public ReplyVO<PageVO<MetaConstListVO>> list(@Valid @RequestBody MetaConstQueryDTO metaConstQueryDTO) {
+    @GetMapping(value = "/list")
+    public ReplyVO<PageVO<MetaConstListVO>> list(@Valid MetaConstQueryDTO metaConstQueryDTO) {
         PageVO<MetaConstListVO> page = metaConstService.list(metaConstQueryDTO);
         ReplyVO<PageVO<MetaConstListVO>> result = ReplyVO.success();
         result.setData(page);

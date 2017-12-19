@@ -55,8 +55,8 @@ public class MetaEntityController implements MetaEntityAPI {
     }
 
     @Override
-    @PostMapping(value = "/list")
-    public ReplyVO<PageVO<MetaEntityListVO>> list(@Valid @RequestBody MetaEntityQueryDTO metaEntityQueryDTO) {
+    @GetMapping(value = "/list")
+    public ReplyVO<PageVO<MetaEntityListVO>> list(@Valid MetaEntityQueryDTO metaEntityQueryDTO) {
         PageVO<MetaEntityListVO> page = metaEntityService.list(metaEntityQueryDTO);
         ReplyVO<PageVO<MetaEntityListVO>> result = ReplyVO.success();
         result.setData(page);

@@ -48,8 +48,8 @@ public class MetaIndexController implements MetaIndexAPI {
     }
 
     @Override
-    @PostMapping(value = "/list")
-    public ReplyVO<List<MetaIndexListVO>> list(@Valid @RequestBody MetaIndexQueryDTO metaIndexQueryDTO) {
+    @GetMapping(value = "/list")
+    public ReplyVO<List<MetaIndexListVO>> list(@Valid MetaIndexQueryDTO metaIndexQueryDTO) {
         List<MetaIndexListVO> list = metaIndexService.list(metaIndexQueryDTO);
         ReplyVO<List<MetaIndexListVO>> result = ReplyVO.success();
         result.setData(list);

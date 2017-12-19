@@ -48,8 +48,8 @@ public class MetaProjectController implements MetaProjectAPI {
     }
 
     @Override
-    @PostMapping(value = "/list")
-    public ReplyVO<List<MetaProjectListVO>> list(@Valid @RequestBody MetaProjectQueryDTO metaProjectQueryDTO) {
+    @GetMapping(value = "/list")
+    public ReplyVO<List<MetaProjectListVO>> list(@Valid MetaProjectQueryDTO metaProjectQueryDTO) {
         List<MetaProjectListVO> list = metaProjectService.list(metaProjectQueryDTO);
         ReplyVO<List<MetaProjectListVO>> result = ReplyVO.success();
         result.setData(list);

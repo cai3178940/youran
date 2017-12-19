@@ -48,8 +48,8 @@ public class MetaManyToManyController implements MetaManyToManyAPI {
     }
 
     @Override
-    @PostMapping(value = "/list")
-    public ReplyVO<List<MetaManyToManyListVO>> list(@Valid @RequestBody MetaManyToManyQueryDTO metaManyToManyQueryDTO) {
+    @GetMapping(value = "/list")
+    public ReplyVO<List<MetaManyToManyListVO>> list(@Valid MetaManyToManyQueryDTO metaManyToManyQueryDTO) {
         List<MetaManyToManyListVO> list = metaManyToManyService.list(metaManyToManyQueryDTO);
         ReplyVO<List<MetaManyToManyListVO>> result = ReplyVO.success();
         result.setData(list);

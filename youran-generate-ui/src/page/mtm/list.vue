@@ -131,7 +131,7 @@
           return
         }
         this.loading = true
-        this.$ajax.post('/generate/meta_mtm/list', this.query)
+        this.$ajax.get('/generate/meta_mtm/list', {params:this.query})
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.entities = result.data)
           .catch(error => this.$common.showNotifyError(error))

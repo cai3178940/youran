@@ -5,7 +5,6 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaProjectData;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
-import com.youran.generate.pojo.dto.MetaProjectQueryDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.web.AbstractWebTest;
@@ -52,11 +51,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         generateHelper.saveProjectExample();
-
-        MetaProjectQueryDTO queryDTO = new MetaProjectQueryDTO();
-        restMockMvc.perform(post(getRootPath()+"/meta_project/list")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(JsonUtil.toJSONString(queryDTO)))
+        restMockMvc.perform(get(getRootPath()+"/meta_project/list"))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }
