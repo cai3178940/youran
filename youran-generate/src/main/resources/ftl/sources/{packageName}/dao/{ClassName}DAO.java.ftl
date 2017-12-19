@@ -39,6 +39,7 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
     <#list metaEntity.mtmUnHoldRefers as entity>
         <#assign importList=true>
         <#assign otherCName=entity.className/>
+        <#assign othercName=entity.className?uncapFirst>
         <#assign otherType=entity.pkField.jfieldType>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     public List<${CName}PO> findBy${otherCName}(${otherType} ${otherPkId}) {
