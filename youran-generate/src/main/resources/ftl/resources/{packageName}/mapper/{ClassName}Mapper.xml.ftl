@@ -83,7 +83,12 @@
         <#--非between类型查询-->
         <#if field.queryType!=QueryType.BETWEEN>
         <if test="${field.jfieldName} != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName} !=''</#if> ">
+            <#if field.queryType==QueryType.LIKE>
+            <bind name="${field.jfieldName}_pattern" value="'%' + ${field.jfieldName} + '%'" />
+            and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} ${QueryType.mapperQueryType(field.queryType)} ${r'#'}{${field.jfieldName}_pattern}
+            <#else>
             and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} ${QueryType.mapperQueryType(field.queryType)} ${r'#'}{${field.jfieldName}}
+            </#if>
         </if>
         <#else>
         <#--between类型查询-->
