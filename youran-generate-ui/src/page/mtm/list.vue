@@ -10,7 +10,7 @@
       </el-col>
       <el-col :span="18" style="text-align: right;">
         <el-form :inline="true" :model="queryForm" class="demo-form-inline">
-          <el-form-item label="请选择多对多">
+          <el-form-item>
             <el-select v-model="queryForm.projectId" @change="handleQuery" placeholder="请选择项目">
               <el-option
                 v-for="item in projectList"
