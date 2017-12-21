@@ -16,11 +16,11 @@
               placeholder="请选择实体"
               :options="queryForm.projectEntityOptions"
               v-model="queryForm.projectEntity"
-              @active-item-change="handleProjectChange">
+              @active-item-change="handleProjectChange"
+              @change="handleQuery">
             </el-cascader>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleQuery">查询</el-button>
             <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加</el-button>
             <el-button @click.native="handleDel" type="danger">删除</el-button>
             <el-badge :value="cacheTemplateCount" class="item">

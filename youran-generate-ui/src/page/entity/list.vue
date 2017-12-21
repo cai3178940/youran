@@ -11,7 +11,7 @@
       <el-col :span="18" style="text-align: right;">
         <el-form :inline="true" :model="queryForm" class="demo-form-inline">
           <el-form-item label="请选择项目">
-            <el-select v-model="queryForm.projectId" placeholder="请选择项目">
+            <el-select v-model="queryForm.projectId" @change="handleQuery" placeholder="请选择项目">
               <el-option
                 v-for="item in projectList"
                 :key="item.projectId"
@@ -21,7 +21,6 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleQuery">查询</el-button>
             <el-button @click.native="handleAdd" type="success">添加</el-button>
             <el-button @click.native="handleDel" type="danger">删除</el-button>
           </el-form-item>

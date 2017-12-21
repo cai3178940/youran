@@ -16,11 +16,11 @@
               placeholder="请选择枚举"
               :options="queryForm.projectConstOptions"
               v-model="queryForm.projectConst"
-              @active-item-change="handleProjectChange">
+              @active-item-change="handleProjectChange"
+              @change="handleQuery">
             </el-cascader>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleQuery">查询</el-button>
             <el-button @click.native="handleAdd" type="success">添加</el-button>
             <el-button @click.native="handleDel" type="danger">删除</el-button>
           </el-form-item>
