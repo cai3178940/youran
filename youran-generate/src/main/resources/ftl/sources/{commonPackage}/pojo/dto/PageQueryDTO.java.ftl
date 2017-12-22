@@ -12,16 +12,23 @@ public class PageQueryDTO extends AbstractDTO {
     public static final int DEFAULT_PAGE_NO = 1;
     public static final int DEFAULT_PAGE_SIZE = 20;
 
+    /**
+     * 每页的条数
+     */
     @ApiModelProperty(notes = "分页参数，每页的条数", example = "20")
     @Max(value = 1000, message = "pageSize不能大于1000")
-    private Integer pageSize = 20;//默认20条每页
+    protected Integer pageSize;
 
+    /**
+     * 当前第几页
+     */
     @ApiModelProperty(notes = "分页参数，第几页", example = "1")
     @Min(value = 1, message = "pageNo不能小于1")
-    private Integer pageNo = 1;//默认第一页
+    protected Integer pageNo;
 
     public PageQueryDTO() {
-        this(null, null);
+        //默认第一页，每页20条
+        this(1, 20);
     }
 
     public PageQueryDTO(Integer pageNo, Integer pageSize) {
