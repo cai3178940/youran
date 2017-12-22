@@ -104,7 +104,7 @@ public class ${CName}Service {
         }
         int count = 0;
         for (Integer _id : ${otherPkId}) {
-            if(${cName}DAO.exist(_id)){
+            if(${othercName}DAO.exist(_id)){
                 count += ${cName}DAO.add${otherCName}(${id},_id);
             }
         }
