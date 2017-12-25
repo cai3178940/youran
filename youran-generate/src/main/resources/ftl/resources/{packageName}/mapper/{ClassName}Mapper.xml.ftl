@@ -11,17 +11,23 @@
     <#if delField??>
         <#assign wrapDelFieldName=MetadataUtil.wrapMysqlKeyword(delField.fieldName)>
     </#if>
+
+    <sql id="${cName}Columns">
+        <#list fields as field>
+        ${r'$'}{alias}.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
+        </#list>
+    </sql>
+
+
     <select id="findById" resultType="${CName}PO">
         select
-        <#list fields as field>
-            ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
-        </#list>
-        from ${wrapTableName}
+            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+        from ${wrapTableName} t
         <where>
         <#if delField??>
-            and ${wrapDelFieldName}=0
+            and t.${wrapDelFieldName}=0
         </#if>
-            and ${wrapPkFieldName} = ${r'#'}{arg0}
+            and t.${wrapPkFieldName} = ${r'#'}{arg0}
         </where>
     </select>
 
@@ -138,9 +144,7 @@
 
     <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${CName}PO">
         select
-        <#list fields as field>
-        t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
-        </#list>
+            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${MetadataUtil.wrapMysqlKeyword(mtm.tableName)} r
             on t.${pk.fieldName}=r.${the_pk_id}
@@ -169,9 +173,7 @@
 
     <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${CName}PO">
         select
-        <#list fields as field>
-            t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
-        </#list>
+            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${MetadataUtil.wrapMysqlKeyword(mtm.tableName)} r
         on t.${pk.fieldName}=r.${the_pk_id}
