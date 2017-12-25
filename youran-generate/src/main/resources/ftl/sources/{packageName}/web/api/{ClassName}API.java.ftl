@@ -28,9 +28,6 @@ public interface ${CName}API {
      * 分页查询【${title}】
      */
     @ApiOperation(value="分页查询【${title}】")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "${cName}QueryDTO", dataType = "${CName}QueryDTO", value = "分页查询【${title}】参数", paramType = "body"),
-    })
     ReplyVO<PageVO<${CName}ListVO>> list(${CName}QueryDTO ${cName}QueryDTO);
 
     /**
@@ -43,9 +40,9 @@ public interface ${CName}API {
     ReplyVO<${CName}ShowVO> show(${type} ${id});
 
     /**
-     * 删除【${title}】
+     * 删除单个【${title}】
      */
-    @ApiOperation(value="删除【${title}】")
+    @ApiOperation(value="删除单个【${title}】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),
     })
