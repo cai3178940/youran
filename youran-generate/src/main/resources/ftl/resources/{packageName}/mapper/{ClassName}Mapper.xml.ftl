@@ -162,7 +162,7 @@
 
     <delete id="remove${otherCName}" parameterType="Map">
         delete from ${mtm.tableName}
-        where ${the_pk_id}=${r'#'}{thePkId} and ${other_pk_id} in
+        where ${the_pk_id}=${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}} and ${other_pk_id} in
         <foreach collection="${otherPkId}" item="_id" open="(" separator="," close=")">
             ${r'#'}{_id}
         </foreach>

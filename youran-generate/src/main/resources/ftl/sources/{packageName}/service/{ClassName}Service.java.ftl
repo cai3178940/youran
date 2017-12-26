@@ -3,6 +3,7 @@
 
 <#assign importOptimisticLock=false>
 <#assign importArrayUtils=false>
+<#assign importOtherDAOStr="">
 <#--定义主体代码-->
 <#assign code>
 <@classCom "【${title}】删改查服务"></@classCom>
@@ -11,6 +12,15 @@ public class ${CName}Service {
 
     @Autowired
     private ${CName}DAO ${cName}DAO;
+<#if metaEntity.mtmHoldRefers??>
+    <#list metaEntity.mtmHoldRefers as otherEntity>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign importOtherDAOStr+="import ${packageName}.dao.${otherCName}DAO;\n">
+    @Autowired
+    private ${otherCName}DAO ${othercName}DAO;
+    </#list>
+</#if>
 
     /**
      * 新增【${title}】
@@ -157,7 +167,7 @@ public class ${CName}Service {
         if(${cName}==null){
             throw new ${ProjectName}Exception("未查询到记录");
         }
-        ${cName}DAO.removeAll${otherCName}(roleId);
+        ${cName}DAO.removeAll${otherCName}(${id});
         if(ArrayUtils.isEmpty(${otherPkId})){
             return 0;
         }
@@ -178,6 +188,7 @@ import ${commonPackage}.optimistic.OptimisticLock;
 </#if>
 import ${commonPackage}.pojo.vo.PageVO;
 import ${packageName}.dao.${CName}DAO;
+${importOtherDAOStr}
 import ${packageName}.pojo.dto.${CName}AddDTO;
 import ${packageName}.pojo.dto.${CName}QueryDTO;
 import ${packageName}.pojo.vo.${CName}ListVO;
