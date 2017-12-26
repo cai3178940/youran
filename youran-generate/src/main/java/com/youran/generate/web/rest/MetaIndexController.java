@@ -75,7 +75,7 @@ public class MetaIndexController implements MetaIndexAPI {
     }
 
     @Override
-    @PostMapping(value = "deleteBatch")
+    @PutMapping(value = "deleteBatch")
     public ReplyVO<Integer> deleteBatch(@RequestBody Integer[] indexId) {
         if(ArrayUtils.isEmpty(indexId)){
             return ReplyVO.fail("参数为空");

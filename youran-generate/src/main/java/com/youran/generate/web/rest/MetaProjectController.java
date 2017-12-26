@@ -75,7 +75,7 @@ public class MetaProjectController implements MetaProjectAPI {
     }
 
     @Override
-    @PostMapping(value = "deleteBatch")
+    @PutMapping(value = "deleteBatch")
     public ReplyVO<Integer> deleteBatch(@RequestBody Integer[] projectId) {
         if(ArrayUtils.isEmpty(projectId)){
             return ReplyVO.fail("参数为空");

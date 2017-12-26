@@ -82,7 +82,7 @@ public class MetaEntityController implements MetaEntityAPI {
     }
 
     @Override
-    @PostMapping(value = "deleteBatch")
+    @PutMapping(value = "deleteBatch")
     public ReplyVO<Integer> deleteBatch(@RequestBody Integer[] entityId) {
         if(ArrayUtils.isEmpty(entityId)){
             return ReplyVO.fail("参数为空");

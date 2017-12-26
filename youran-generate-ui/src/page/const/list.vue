@@ -110,7 +110,7 @@
           return
         }
         this.$common.confirm('是否确认删除')
-          .then(() => this.$ajax.post('/generate/meta_const/deleteBatch', this.selectItems.map(c => c.constId)))
+          .then(() => this.$ajax.put('/generate/meta_const/deleteBatch', this.selectItems.map(c => c.constId)))
           .then(() => this.doQuery())
       },
       sizeChange: function (pageSize) {

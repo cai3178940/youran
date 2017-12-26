@@ -108,7 +108,7 @@
           return
         }
         this.$common.confirm('是否确认删除')
-          .then(() => this.$ajax.post('/generate/meta_entity/deleteBatch', this.selectItems.map(entity => entity.entityId)))
+          .then(() => this.$ajax.put('/generate/meta_entity/deleteBatch', this.selectItems.map(entity => entity.entityId)))
           .then(() => this.doQuery())
       },
       sizeChange: function (pageSize) {

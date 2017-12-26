@@ -75,7 +75,7 @@ public class MetaManyToManyController implements MetaManyToManyAPI {
     }
 
     @Override
-    @PostMapping(value = "deleteBatch")
+    @PutMapping(value = "deleteBatch")
     public ReplyVO<Integer> deleteBatch(@RequestBody Integer[] mtmId) {
         if(ArrayUtils.isEmpty(mtmId)){
             return ReplyVO.fail("参数为空");

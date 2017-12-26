@@ -78,7 +78,7 @@
           return
         }
         this.$common.confirm('是否确认删除')
-          .then(() => this.$ajax.post('/generate/meta_const_detail/deleteBatch', this.selectItems.map(constDetail => constDetail.constDetailId)))
+          .then(() => this.$ajax.put('/generate/meta_const_detail/deleteBatch', this.selectItems.map(constDetail => constDetail.constDetailId)))
           .then(() => this.doQuery())
       },
       initProjectOptions: function () {

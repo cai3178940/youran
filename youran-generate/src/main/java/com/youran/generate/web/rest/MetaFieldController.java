@@ -82,7 +82,7 @@ public class MetaFieldController implements MetaFieldAPI {
 
 
     @Override
-    @PostMapping(value = "deleteBatch")
+    @PutMapping(value = "deleteBatch")
     public ReplyVO<Integer> deleteBatch(@RequestBody Integer[] fieldId) {
         if(ArrayUtils.isEmpty(fieldId)){
             return ReplyVO.fail("参数为空");

@@ -60,7 +60,7 @@
           return
         }
         this.$common.confirm('是否确认删除')
-          .then(() => this.$ajax.post('/generate/meta_project/deleteBatch', this.selectItems.map(entity => entity.projectId)))
+          .then(() => this.$ajax.put('/generate/meta_project/deleteBatch', this.selectItems.map(entity => entity.projectId)))
           .then(() => this.doQuery())
       },
       // 列表查询

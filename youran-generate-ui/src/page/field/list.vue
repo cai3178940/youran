@@ -160,7 +160,7 @@
           return
         }
         this.$common.confirm('是否确认删除')
-          .then(() => this.$ajax.post('/generate/meta_field/deleteBatch', this.selectItems.map(field => field.fieldId)))
+          .then(() => this.$ajax.put('/generate/meta_field/deleteBatch', this.selectItems.map(field => field.fieldId)))
           .then(() => this.doQuery())
       },
       handleCopy:function () {

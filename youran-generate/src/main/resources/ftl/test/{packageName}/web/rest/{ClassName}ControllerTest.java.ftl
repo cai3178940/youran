@@ -65,7 +65,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     @Test
     public void deleteBatch() throws Exception {
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
-        restMockMvc.perform(post(getRootPath()+"/${cName}/deleteBatch")
+        restMockMvc.perform(put(getRootPath()+"/${cName}/deleteBatch")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${cName}.get${Id}()))))
             .andExpect(jsonPath("$.code").value(is("0")))

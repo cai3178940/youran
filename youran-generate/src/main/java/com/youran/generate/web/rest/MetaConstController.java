@@ -75,7 +75,7 @@ public class MetaConstController implements MetaConstAPI {
     }
 
     @Override
-    @PostMapping(value = "deleteBatch")
+    @PutMapping(value = "deleteBatch")
     public ReplyVO<Integer> deleteBatch(@RequestBody Integer[] constId) {
         if(ArrayUtils.isEmpty(constId)){
             return ReplyVO.fail("参数为空");

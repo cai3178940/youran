@@ -75,7 +75,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     @Test
     public void deleteBatch() throws Exception {
         MetaProjectPO metaProject = generateHelper.saveProjectExample();
-        restMockMvc.perform(post(getRootPath()+"/meta_project/deleteBatch")
+        restMockMvc.perform(put(getRootPath()+"/meta_project/deleteBatch")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(Lists.newArrayList(metaProject.getProjectId()))))
                 .andExpect(jsonPath("$.code").value(is("0")))

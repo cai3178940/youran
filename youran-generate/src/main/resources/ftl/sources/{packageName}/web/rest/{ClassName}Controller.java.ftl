@@ -47,7 +47,7 @@ public class ${CName}Controller implements ${CName}API {
     }
 
     @Override
-    @PostMapping(value = "deleteBatch")
+    @PutMapping(value = "deleteBatch")
     public ReplyVO<Integer> deleteBatch(@RequestBody ${type}[] id) {
         if(ArrayUtils.isEmpty(id)){
             return ReplyVO.fail("参数为空");
