@@ -35,7 +35,7 @@ public interface ${CName}API {
      */
     @ApiOperation(value="查看【${title}】详情")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
     })
     ReplyVO<${CName}ShowVO> show(${type} ${id});
 
@@ -44,7 +44,7 @@ public interface ${CName}API {
      */
     @ApiOperation(value="删除单个【${title}】")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
     })
     ReplyVO<Integer> delete(${type} ${id});
 
@@ -53,7 +53,7 @@ public interface ${CName}API {
      */
     @ApiOperation(value = "批量删除【${title}】")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "id", dataType = "${type}", value = "id数组", paramType = "body"),
+        @ApiImplicitParam(name = "id", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "id数组", paramType = "body"),
     })
     ReplyVO<Integer> deleteBatch(${type}[] id);
 
@@ -69,8 +69,8 @@ public interface ${CName}API {
      */
     @ApiOperation(value="关联单个【${otherEntity.title}】")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${otherPkId}", dataType = "${otherPk.jfieldType}", value = "【${otherEntity.title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
     })
     ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType} ${otherPkId});
 
@@ -79,8 +79,8 @@ public interface ${CName}API {
      */
     @ApiOperation(value="关联多个【${otherEntity.title}】")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${type}", value = "【${title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${otherPkId}", dataType = "${otherPk.jfieldType}", value = "【${otherEntity.title}】id数组", paramType = "body"),
+        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
     })
     ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType}[] ${otherPkId});
 
