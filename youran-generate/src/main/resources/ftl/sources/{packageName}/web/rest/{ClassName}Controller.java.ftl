@@ -77,6 +77,14 @@ public class ${CName}Controller implements ${CName}API {
         int count = ${cName}Service.add${otherCName}(${id}, ${otherPkId});
         return ReplyVO.success().data(count);
     }
+
+    @Override
+    @PutMapping(value = "/{${id}}/set${otherCName}")
+    public ReplyVO<Integer> set${otherCName}(@PathVariable ${type} ${id},
+        @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
+        int count = ${cName}Service.set${otherCName}(${id}, ${otherPkId});
+        return ReplyVO.success().data(count);
+    }
     </#list>
 </#if>
 

@@ -30,7 +30,11 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
         Map<String,Object> params = new HashMap<>();
         params.put("${thePkId}",${thePkId});
         params.put("${otherPkId}",${otherPkId});
-        return sqlSession.insert(getMybatisNamespace()+".add${otherCName}",params);
+        return sqlSession.insert(getMybatisNamespace()+".add${otherCName}", params);
+    }
+
+    public int removeAll${otherCName}(${type} ${thePkId}) {
+        return sqlSession.delete(getMybatisNamespace()+".removeAll${otherCName}", ${thePkId});
     }
 
     </#list>

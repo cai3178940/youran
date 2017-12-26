@@ -159,6 +159,12 @@
         insert into ${mtm.tableName}(${the_pk_id},${other_pk_id})
         values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}})
     </insert>
+
+    <delete id="removeAll${otherCName}">
+        delete from ${mtm.tableName}
+        where ${the_pk_id}=${r'#'}{arg0}
+    </delete>
+
     </#list>
 </#if>
 <#if metaEntity.mtmUnHoldRefers??>

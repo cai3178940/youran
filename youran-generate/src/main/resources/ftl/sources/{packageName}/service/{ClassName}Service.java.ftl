@@ -93,6 +93,28 @@ public class ${CName}Service {
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
+    /**
+     * 执行【${otherEntity.title}】添加
+     * @param ${id}
+     * @param ${otherPkId}
+     * @return
+     */
+    private int doAdd${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
+        int count = 0;
+        for (Integer _id : ${otherPkId}) {
+            if(${othercName}DAO.exist(_id)){
+                count += ${cName}DAO.add${otherCName}(${id},_id);
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 添加【${otherEntity.title}】
+     * @param ${id}
+     * @param ${otherPkId}
+     * @return
+     */
     @Transactional
     public int add${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
         ${CName}PO ${cName} = ${cName}DAO.findById(${id});
@@ -102,14 +124,28 @@ public class ${CName}Service {
         if(ArrayUtils.isEmpty(${otherPkId})){
             throw new ${ProjectName}Exception("${otherEntity.title}id参数为空");
         }
-        int count = 0;
-        for (Integer _id : ${otherPkId}) {
-            if(${othercName}DAO.exist(_id)){
-                count += ${cName}DAO.add${otherCName}(${id},_id);
-            }
-        }
-        return count;
+        return doAdd${otherCName}(${id}, ${otherPkId});
     }
+
+    /**
+     * 设置【${otherEntity.title}】
+     * @param ${id}
+     * @param ${otherPkId}
+     * @return
+     */
+    @Transactional
+    public int set${otherCName}(${type} ${id}, ${otherPk.jfieldType}[] ${otherPkId}) {
+        ${CName}PO ${cName} = ${cName}DAO.findById(${id});
+        if(${cName}==null){
+            throw new ${ProjectName}Exception("未查询到记录");
+        }
+        ${cName}DAO.removeAll${otherCName}(roleId);
+        if(ArrayUtils.isEmpty(${otherPkId})){
+            return 0;
+        }
+        return doAdd${otherCName}(${id}, ${otherPkId});
+    }
+
     </#list>
 </#if>
 

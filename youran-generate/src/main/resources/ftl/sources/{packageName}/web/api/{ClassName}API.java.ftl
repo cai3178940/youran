@@ -65,9 +65,9 @@ public interface ${CName}API {
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     /**
-     * 关联单个【${otherEntity.title}】
+     * 添加单个【${otherEntity.title}】关联
      */
-    @ApiOperation(value="关联单个【${otherEntity.title}】")
+    @ApiOperation(value="添加单个【${otherEntity.title}】关联")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
         @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
@@ -75,14 +75,24 @@ public interface ${CName}API {
     ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType} ${otherPkId});
 
     /**
-     * 关联多个【${otherEntity.title}】
+     * 添加多个【${otherEntity.title}】关联
      */
-    @ApiOperation(value="关联多个【${otherEntity.title}】")
+    @ApiOperation(value="添加多个【${otherEntity.title}】关联")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
         @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
     })
     ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType}[] ${otherPkId});
+
+    /**
+     * 设置【${otherEntity.title}】关联
+     */
+    @ApiOperation(value="设置【${otherEntity.title}】关联")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
+    })
+    ReplyVO<Integer> set${otherCName}(${type} ${id},${otherPk.jfieldType}[] ${otherPkId});
 
     </#list>
 </#if>
