@@ -79,20 +79,30 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign importOtherStr+="import ${packageName}.pojo.po.${otherCName}PO;\n">
     @Test
-    public void add${otherEntity.className}() throws Exception {
+    public void addRemove${otherEntity.className}() throws Exception {
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
         restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/add${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${cName}.get${Id}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(jsonPath("$.code").value(is("0")))
             .andExpect(jsonPath("$.data").value(is(1)));
+        restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/remove${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
+            ${cName}.get${Id}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
+            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.data").value(is(1)));
     }
 
     @Test
-    public void add${otherEntity.className}2() throws Exception {
+    public void addRemove${otherEntity.className}2() throws Exception {
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
         restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/add${otherEntity.className}",
+            ${cName}.get${Id}())
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
+            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.data").value(is(1)));
+        restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/remove${otherEntity.className}",
             ${cName}.get${Id}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))

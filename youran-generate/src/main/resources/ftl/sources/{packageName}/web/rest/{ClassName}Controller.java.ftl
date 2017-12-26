@@ -79,6 +79,22 @@ public class ${CName}Controller implements ${CName}API {
     }
 
     @Override
+    @PutMapping(value = "/{${id}}/remove${otherCName}/{${otherPkId}}")
+    public ReplyVO<Integer> remove${otherCName}(@PathVariable ${type} ${id},
+                        @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
+        int count = ${cName}Service.remove${otherCName}(${id}, ${otherPkId});
+        return ReplyVO.success().data(count);
+    }
+
+    @Override
+    @PutMapping(value = "/{${id}}/remove${otherCName}")
+    public ReplyVO<Integer> remove${otherCName}(@PathVariable ${type} ${id},
+                        @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
+        int count = ${cName}Service.remove${otherCName}(${id}, ${otherPkId});
+        return ReplyVO.success().data(count);
+    }
+
+    @Override
     @PutMapping(value = "/{${id}}/set${otherCName}")
     public ReplyVO<Integer> set${otherCName}(@PathVariable ${type} ${id},
         @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {

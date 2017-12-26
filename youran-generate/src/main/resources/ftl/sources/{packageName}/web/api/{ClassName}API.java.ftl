@@ -85,6 +85,26 @@ public interface ${CName}API {
     ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType}[] ${otherPkId});
 
     /**
+     * 移除单个【${otherEntity.title}】关联
+     */
+    @ApiOperation(value="移除单个【${otherEntity.title}】关联")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
+    })
+    ReplyVO<Integer> remove${otherCName}(${type} ${id},${otherPk.jfieldType} ${otherPkId});
+
+    /**
+     * 移除多个【${otherEntity.title}】关联
+     */
+    @ApiOperation(value="移除多个【${otherEntity.title}】关联")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
+    })
+    ReplyVO<Integer> remove${otherCName}(${type} ${id},${otherPk.jfieldType}[] ${otherPkId});
+
+    /**
      * 设置【${otherEntity.title}】关联
      */
     @ApiOperation(value="设置【${otherEntity.title}】关联")

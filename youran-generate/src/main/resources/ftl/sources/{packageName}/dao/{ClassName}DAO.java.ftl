@@ -33,6 +33,13 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
         return sqlSession.insert(getMybatisNamespace()+".add${otherCName}", params);
     }
 
+    public int remove${otherCName}(${type} ${thePkId},${otherType}[] ${otherPkId}) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("${thePkId}",${thePkId});
+        params.put("${otherPkId}",${otherPkId});
+        return sqlSession.delete(getMybatisNamespace()+".remove${otherCName}", params);
+    }
+
     public int removeAll${otherCName}(${type} ${thePkId}) {
         return sqlSession.delete(getMybatisNamespace()+".removeAll${otherCName}", ${thePkId});
     }

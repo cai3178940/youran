@@ -128,6 +128,24 @@ public class ${CName}Service {
     }
 
     /**
+     * 移除【${otherEntity.title}】
+     * @param ${id}
+     * @param ${otherPkId}
+     * @return
+     */
+    @Transactional
+    public int remove${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
+        ${CName}PO ${cName} = ${cName}DAO.findById(${id});
+        if(${cName}==null){
+            throw new ${ProjectName}Exception("未查询到记录");
+        }
+        if(ArrayUtils.isEmpty(${otherPkId})){
+            throw new ${ProjectName}Exception("${otherEntity.title}id参数为空");
+        }
+        return ${cName}DAO.remove${otherCName}(${id}, ${otherPkId});
+    }
+
+    /**
      * 设置【${otherEntity.title}】
      * @param ${id}
      * @param ${otherPkId}
