@@ -20,7 +20,7 @@ public interface ${CName}Mapper {
     * @param ${cName}PO
     * @param ${cName}UpdateDTO
     */
-    void setUpdateDTO(${CName}PO ${cName}PO, @MappingTarget ${CName}UpdateDTO ${cName}UpdateDTO);
+    void setUpdateDTO(@MappingTarget ${CName}PO ${cName}PO, ${CName}UpdateDTO ${cName}UpdateDTO);
 
     /**
     * po映射showVO

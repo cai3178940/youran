@@ -17,7 +17,7 @@ import java.util.Map;
 public class ReplyVO<T> extends AbstractVO {
 
 
-    @ApiModelProperty(notes = "响应代码【0正确,非0错误】",example = "true",required = true)
+    @ApiModelProperty(notes = "响应代码【0正确,非0错误】",example = "0",required = true)
     private String code;
 
     @ApiModelProperty(notes = "结果描述",example = "执行成功！",required = true)
@@ -43,7 +43,7 @@ public class ReplyVO<T> extends AbstractVO {
     }
 
     public static ReplyVO success() {
-        return new ReplyVO("0", "success");
+        return new ReplyVO("0", "执行成功！");
     }
 
 
