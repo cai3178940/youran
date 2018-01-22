@@ -94,7 +94,8 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addTemplateFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleAdd">确 定</el-button>
+        <el-button type="primary" @click="handleAdd">开始编辑</el-button>
+        <el-button type="success" @click="handleAddImm">立即保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -225,6 +226,33 @@
           type= 'temp'
         }
         this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/add?type=${type}&template=${this.templateForm.template}`)
+      },
+      handleAddImm: function () {
+        this.addTemplateFormVisible = false
+        const template = this.templateForm.template;
+        var callback = function(form){
+          this.$ajax.post('/generate/meta_field/save', {
+              ...this.$common.removeBlankField(form),
+              entityId:this.entityId
+            })
+            .then(response => this.$common.checkResult(response.data))
+            //执行页面刷新
+            .then(() => {
+              this.$common.showMsg('success', '添加成功')
+              this.doQuery()
+            })
+            .catch(error => this.$common.showNotifyError(error))
+        }.bind(this)
+        //如果目标值是数字，则为临时模板
+        if(typeof this.templateForm.template == 'number'){
+          this.$ajax.get(`/generate/meta_field/${template}`)
+            .then(response => this.$common.checkResult(response.data))
+            .then(result => callback(result.data))
+            .catch(error => this.$common.showNotifyError(error))
+        }else{
+          //系统内置模板，直接保存
+          callback(fieldTemplate[template])
+        }
       },
       handleEdit: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/edit/${row.fieldId}`)
