@@ -26,7 +26,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/${cName}/save")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(addDTO)))
-            .andExpect(jsonPath("$.code").value(is("0")));
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
     }
 
     @Test
@@ -36,14 +36,14 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/${cName}/update")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(updateDTO)))
-            .andExpect(jsonPath("$.code").value(is("0")));
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
     }
 
     @Test
     public void list() throws Exception {
         ${cName}Helper.save${CName}Example();
         restMockMvc.perform(get(getRootPath()+"/${cName}/list"))
-            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
     }
 
@@ -51,14 +51,14 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
         restMockMvc.perform(get(getRootPath()+"/${cName}/{${id}}",${cName}.get${Id}()))
-            .andExpect(jsonPath("$.code").value(is("0")));
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
     }
 
     @Test
     public void del() throws Exception {
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
         restMockMvc.perform(delete(getRootPath()+"/${cName}/{${id}}",${cName}.get${Id}()))
-            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
@@ -68,7 +68,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/${cName}/deleteBatch")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${cName}.get${Id}()))))
-            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
@@ -84,11 +84,11 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
         restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/add${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${cName}.get${Id}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
-            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
         restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/remove${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${cName}.get${Id}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
-            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
@@ -100,13 +100,13 @@ public class ${CName}ControllerTest extends AbstractWebTest {
             ${cName}.get${Id}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
-            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
         restMockMvc.perform(put(getRootPath()+"/${cName}/{${id}}/remove${otherEntity.className}",
             ${cName}.get${Id}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
-            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
@@ -118,7 +118,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
             ${cName}.get${Id}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
-            .andExpect(jsonPath("$.code").value(is("0")))
+            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
@@ -131,6 +131,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 package ${packageName}.web.rest;
 
 import com.google.common.collect.Lists;
+import ${commonPackage}.pojo.vo.ReplyVO;
 import ${commonPackage}.util.JsonUtil;
 import ${packageName}.help.${CName}Helper;
 import ${packageName}.pojo.dto.${CName}AddDTO;

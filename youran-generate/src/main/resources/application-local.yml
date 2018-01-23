@@ -17,5 +17,5 @@ logging:
             youran: trace
 youran:
     generate:
-        devMode: 1
-        devProjectDir: D:\\workspace_cbb\\youran-sample
+        devMode: 2
+        devProjectDir: D:\\workspace\\optimize
