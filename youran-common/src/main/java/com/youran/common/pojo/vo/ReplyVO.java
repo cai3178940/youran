@@ -17,10 +17,15 @@ import java.util.Map;
 public class ReplyVO<T> extends AbstractVO {
 
 
-    @ApiModelProperty(notes = "响应代码【0正确,非0错误】",example = "0",required = true)
+    public static final String SUCCESS_CODE="0";
+    public static final String SUCCESS_MSG="执行成功！";
+    public static final String ERROR_CODE="-1";
+
+
+    @ApiModelProperty(notes = "响应代码【0正确,非0错误】",example = SUCCESS_CODE,required = true)
     private String code;
 
-    @ApiModelProperty(notes = "结果描述",example = "执行成功！",required = true)
+    @ApiModelProperty(notes = "结果描述",example = SUCCESS_MSG,required = true)
     private String message;
 
     @ApiModelProperty(notes = "返回数据")
@@ -38,12 +43,12 @@ public class ReplyVO<T> extends AbstractVO {
         this.message = message;
     }
 
-    public static ReplyVO fail(String errorMsg) {
-        return new ReplyVO("-1", errorMsg);
+    public static ReplyVO fail(String message) {
+        return new ReplyVO(ERROR_CODE, message);
     }
 
     public static ReplyVO success() {
-        return new ReplyVO("0", "执行成功！");
+        return new ReplyVO(SUCCESS_CODE, SUCCESS_MSG);
     }
 
 
