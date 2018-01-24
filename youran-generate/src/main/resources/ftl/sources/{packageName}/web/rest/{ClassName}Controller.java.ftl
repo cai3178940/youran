@@ -6,7 +6,7 @@
 <#assign code>
 <@classCom "【${title}】控制器"></@classCom>
 @RestController
-@RequestMapping(${ProjectName}Const.${projectName?upperCase}_ROOT_PATH+"/${cName}")
+@RequestMapping("/${cName}")
 public class ${CName}Controller implements ${CName}API {
 
     @Autowired
@@ -126,7 +126,6 @@ import ${commonPackage}.pojo.vo.ReplyVO;
 <#if importPageVO>
 import ${commonPackage}.pojo.vo.PageVO;
 </#if>
-import ${packageName}.constant.${ProjectName}Const;
 import ${packageName}.pojo.dto.${CName}AddDTO;
 import ${packageName}.pojo.po.${CName}PO;
 import ${packageName}.pojo.dto.${CName}QueryDTO;
