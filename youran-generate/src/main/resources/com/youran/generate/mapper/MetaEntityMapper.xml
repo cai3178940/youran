@@ -20,13 +20,13 @@
         insert into meta_entity (
           entityId, projectId, schemaName,
           className, tableName, title, `desc`,
-          commonCall, createDate, createBy,
+          commonCall,pageSign, createDate, createBy,
           operateDate, operateBy, delSign,
           version)
         values (#{entityId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{schemaName,jdbcType=VARCHAR},
           #{className,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
           #{desc,jdbcType=VARCHAR},
-          #{commonCall,jdbcType=SMALLINT}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
+          #{commonCall,jdbcType=SMALLINT},#{pageSign,jdbcType=SMALLINT}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
           #{operateDate,jdbcType=TIMESTAMP}, #{operateBy,jdbcType=VARCHAR}, #{delSign,jdbcType=SMALLINT},
           #{version,jdbcType=INTEGER})
     </insert>
@@ -40,6 +40,7 @@
           title = #{title,jdbcType=VARCHAR},
           `desc` = #{desc,jdbcType=VARCHAR},
           commonCall = #{commonCall,jdbcType=SMALLINT},
+          pageSign = #{pageSign,jdbcType=SMALLINT},
           operateDate = #{operateDate,jdbcType=TIMESTAMP},
           operateBy = #{operateBy,jdbcType=VARCHAR},
           version = #{version,jdbcType=INTEGER}

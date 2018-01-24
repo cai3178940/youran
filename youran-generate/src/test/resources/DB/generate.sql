@@ -26,6 +26,7 @@ CREATE TABLE `meta_entity` (
   `title` varchar(25) NOT NULL COMMENT '标题',
   `desc` varchar(250) DEFAULT NULL COMMENT '实体描述',
   `commonCall` smallint(1) NOT NULL COMMENT '是否支持通用服务调用',
+  `pageSign` smallint(1) DEFAULT NULL COMMENT '是否支持分页查询',
   `createDate` datetime DEFAULT NULL COMMENT '创建时间',
   `createBy` varchar(32) DEFAULT NULL COMMENT '创建人',
   `operateDate` datetime DEFAULT NULL COMMENT '操作时间',

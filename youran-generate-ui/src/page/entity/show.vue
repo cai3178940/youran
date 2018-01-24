@@ -27,6 +27,11 @@
           <el-form-item label="表名" prop="tableName">
             <el-input v-model="form.tableName" :disabled="true"></el-input>
           </el-form-item>
+          <el-form-item label="分页" prop="pageSign">
+            <el-radio-group :disabled="true" v-model="form.pageSign">
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="描述" prop="desc">
             <el-input v-model="form.desc" type="textarea" :rows="2" :disabled="true"></el-input>
           </el-form-item>
@@ -40,7 +45,7 @@
 </template>
 
 <script>
-
+  import options from '@/components/options.js'
   //实体模型
   const entityModel = {
     entityId: null,
@@ -49,7 +54,8 @@
     className: '',
     tableName: '',
     desc: '',
-    commonCall: true
+    commonCall: true,
+    pageSign: true
   }
 
   export default {
@@ -57,6 +63,7 @@
     props: ['projectId', 'entityId'],
     data: function () {
       return {
+        boolOptions: options.boolOptions,
         projectList:[],
         form: {
           ...entityModel

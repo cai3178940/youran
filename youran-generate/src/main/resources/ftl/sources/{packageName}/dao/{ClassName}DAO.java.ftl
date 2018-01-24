@@ -13,6 +13,15 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
         return "${packageName}.mapper.${CName}Mapper";
     }
 
+<#if pageSign != 1>
+    <#assign importList=true>
+    public List<${CName}ListVO> findListByQuery(${CName}QueryDTO ${cName}QueryDTO) {
+        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", ${cName}QueryDTO);
+    }
+</#if>
+
+
+
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as entity>
         <#assign importList=true>

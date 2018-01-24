@@ -56,6 +56,18 @@ public class MetaEntityAddDTO extends AbstractDTO {
     @Const(constClass = BoolConst.class)
     private Integer commonCall;
 
+    @ApiModelProperty(notes = N_PAGESIGN, example = E_PAGESIGN)
+    @Const(constClass = BoolConst.class)
+    private Integer pageSign;
+
+    public Integer getPageSign() {
+        return pageSign;
+    }
+
+    public void setPageSign(Integer pageSign) {
+        this.pageSign = pageSign;
+    }
+
     public Integer getCommonCall() {
         return commonCall;
     }

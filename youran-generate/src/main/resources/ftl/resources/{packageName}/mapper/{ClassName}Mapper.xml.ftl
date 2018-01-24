@@ -128,7 +128,9 @@
         </#if>
         <include refid="queryCondition"/>
         </where>
+    <#if pageSign == 1>
         limit ${r'#'}{startIndex},${r'#'}{pageSize}
+    </#if>
     </select>
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as entity>

@@ -3,6 +3,8 @@
 
 <#assign importOptimisticLock=false>
 <#assign importArrayUtils=false>
+<#assign importPageVO=false>
+<#assign importList=false>
 <#assign importOtherDAOStr="">
 <#--定义主体代码-->
 <#assign code>
@@ -53,7 +55,8 @@ public class ${CName}Service {
         ${CName}Mapper.INSTANCE.setUpdateDTO(${cName},${cName}UpdateDTO);
         ${cName}DAO.update(${cName});
     }
-
+<#if pageSign == 1>
+    <#assign importPageVO=true>
     /**
      * 查询分页列表
      * @param ${cName}QueryDTO
@@ -63,7 +66,18 @@ public class ${CName}Service {
         PageVO<${CName}ListVO> page = ${cName}DAO.findByPage(${cName}QueryDTO);
         return page;
     }
-
+<#else>
+    <#assign importList=true>
+    /**
+     * 查询列表
+     * @param ${cName}QueryDTO
+     * @return
+     */
+    public List<${CName}ListVO> list(${CName}QueryDTO ${cName}QueryDTO) {
+        List<${CName}ListVO> list = ${cName}DAO.findListByQuery(${cName}QueryDTO);
+        return list;
+    }
+</#if>
     /**
      * 查询【${title}】详情
      * @param ${id}
@@ -186,7 +200,9 @@ package ${packageName}.service;
 <#if importOptimisticLock>
 import ${commonPackage}.optimistic.OptimisticLock;
 </#if>
+<#if importPageVO>
 import ${commonPackage}.pojo.vo.PageVO;
+</#if>
 import ${packageName}.dao.${CName}DAO;
 ${importOtherDAOStr}
 import ${packageName}.pojo.dto.${CName}AddDTO;
@@ -203,5 +219,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+<#if importList>
+import java.util.List;
+</#if>
 
 ${code}

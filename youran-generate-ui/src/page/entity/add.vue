@@ -27,6 +27,11 @@
           <el-form-item label="表名" prop="tableName">
             <el-input v-model="form.tableName" placeholder="例如：t_user"></el-input>
           </el-form-item>
+          <el-form-item label="分页" prop="pageSign">
+            <el-radio-group v-model="form.pageSign">
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="描述" prop="desc">
             <el-input v-model="form.desc" type="textarea" :rows="2"></el-input>
           </el-form-item>
@@ -41,11 +46,13 @@
 </template>
 
 <script>
+  import options from '@/components/options.js'
   export default {
     name: 'entityAdd',
     props: ['projectId'],
     data: function () {
       return {
+        boolOptions: options.boolOptions,
         projectList: [],
         form: {
           projectId: null,
@@ -53,7 +60,8 @@
           className: '',
           tableName: '',
           desc: '',
-          commonCall: true
+          commonCall: true,
+          pageSign: true
         },
         rules: {
           projectId: [
@@ -70,6 +78,9 @@
           tableName: [
             {required: true, message: '请输入表名', trigger: 'blur'},
             {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
+          ],
+          pageSign: [
+            {required: true, type: 'number', message: '请选择是否支持分页', trigger: 'change'},
           ],
           desc: [
             {max: 250, message: '长度不能超过250个字符', trigger: 'blur'}

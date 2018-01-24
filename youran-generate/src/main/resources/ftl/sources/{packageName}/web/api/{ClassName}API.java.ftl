@@ -1,5 +1,7 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
+<#assign importPageVO=false>
+<#assign importList=false>
 <#--定义主体代码-->
 <#assign code>
 <@classCom "【${title}】API" "swagger接口文档"></@classCom>
@@ -23,13 +25,21 @@ public interface ${CName}API {
         @ApiImplicitParam(name = "${cName}UpdateDTO", dataType = "${CName}UpdateDTO", value = "修改【${title}】参数", paramType = "body"),
     })
     ReplyVO<Void> update(${CName}UpdateDTO ${cName}UpdateDTO);
-
+<#if pageSign == 1>
+    <#assign importPageVO=true>
     /**
      * 分页查询【${title}】
      */
     @ApiOperation(value="分页查询【${title}】")
     ReplyVO<PageVO<${CName}ListVO>> list(${CName}QueryDTO ${cName}QueryDTO);
-
+<#else>
+    <#assign importList=true>
+    /**
+     * 列表查询【${title}】
+     */
+    @ApiOperation(value="列表查询【${title}】")
+    ReplyVO<List<${CName}ListVO>> list(${CName}QueryDTO ${cName}QueryDTO);
+</#if>
     /**
      * 查看【${title}】详情
      */
@@ -123,7 +133,9 @@ public interface ${CName}API {
 package ${packageName}.web.api;
 
 import ${commonPackage}.pojo.vo.ReplyVO;
+<#if importPageVO>
 import ${commonPackage}.pojo.vo.PageVO;
+</#if>
 import ${packageName}.pojo.vo.${CName}ShowVO;
 import ${packageName}.pojo.dto.${CName}AddDTO;
 import ${packageName}.pojo.dto.${CName}QueryDTO;
@@ -133,4 +145,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+<#if importList>
+import java.util.List;
+</#if>
+
 ${code}

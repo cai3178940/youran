@@ -1,6 +1,7 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-
+<#assign importPageVO=false>
+<#assign importList=false>
 <#--定义主体代码-->
 <#assign code>
 <@classCom "【${title}】控制器"></@classCom>
@@ -25,12 +26,23 @@ public class ${CName}Controller implements ${CName}API {
         return ReplyVO.success();
     }
 
+<#if pageSign == 1>
+    <#assign importPageVO=true>
     @Override
     @GetMapping(value = "/list")
     public ReplyVO<PageVO<${CName}ListVO>> list(@Valid ${CName}QueryDTO ${cName}QueryDTO) {
         PageVO<${CName}ListVO> page = ${cName}Service.list(${cName}QueryDTO);
         return ReplyVO.success().data(page);
     }
+<#else>
+    <#assign importList=true>
+    @Override
+    @GetMapping(value = "/list")
+    public ReplyVO<List<${CName}ListVO>> list(@Valid ${CName}QueryDTO ${cName}QueryDTO) {
+        List<${CName}ListVO> list = ${cName}Service.list(${cName}QueryDTO);
+        return ReplyVO.success().data(list);
+    }
+</#if>
 
     @Override
     @GetMapping(value = "/{${id}}")
@@ -111,7 +123,9 @@ public class ${CName}Controller implements ${CName}API {
 package ${packageName}.web.rest;
 
 import ${commonPackage}.pojo.vo.ReplyVO;
+<#if importPageVO>
 import ${commonPackage}.pojo.vo.PageVO;
+</#if>
 import ${packageName}.constant.${ProjectName}Const;
 import ${packageName}.pojo.dto.${CName}AddDTO;
 import ${packageName}.pojo.po.${CName}PO;
@@ -125,6 +139,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+<#if importList>
+import java.util.List;
+</#if>
 import javax.validation.Valid;
 
 ${code}

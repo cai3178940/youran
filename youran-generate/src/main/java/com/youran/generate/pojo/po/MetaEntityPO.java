@@ -48,6 +48,10 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
      * 是否支持通用服务调用
      */
     private Integer commonCall;
+    /**
+     * 是否支持分页查询
+     */
+    private Integer pageSign;
 
 
     /**
@@ -181,6 +185,14 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
         }
         unHoldMtms.add(mtm);
         return this;
+    }
+
+    public Integer getPageSign() {
+        return pageSign;
+    }
+
+    public void setPageSign(Integer pageSign) {
+        this.pageSign = pageSign;
     }
 
     public List<MetaManyToManyPO> getHoldMtms() {

@@ -44,7 +44,11 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         ${cName}Helper.save${CName}Example();
         restMockMvc.perform(get(getRootPath()+"/${cName}/list"))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
+    <#if pageSign == 1>
             .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
+    <#else>
+            .andExpect(jsonPath("$.data.length()").value(is(1)));
+    </#if>
     }
 
     @Test

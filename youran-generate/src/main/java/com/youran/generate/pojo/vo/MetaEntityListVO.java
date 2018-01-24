@@ -36,6 +36,18 @@ public class MetaEntityListVO {
     @ApiModelProperty(notes = N_COMMONCALL, example = E_COMMONCALL)
     private Integer commonCall;
 
+    @ApiModelProperty(notes = N_PAGESIGN, example = E_PAGESIGN)
+    private Integer pageSign;
+
+    public Integer getPageSign() {
+        return pageSign;
+    }
+
+    public void setPageSign(Integer pageSign) {
+        this.pageSign = pageSign;
+    }
+
+
     public Integer getCommonCall() {
         return commonCall;
     }

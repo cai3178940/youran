@@ -10,6 +10,7 @@
 <#assign Id=metaEntity.pkField.jfieldName?capFirst><#--主键字段名称大写-->
 <#assign type=metaEntity.pkField.jfieldType><#--主键字段类型-->
 <#assign fields=metaEntity.fields><#--字段列表-->
+<#assign pageSign=metaEntity.pageSign><#--是否分页查询-->
 <#if metaEntity.versionField??>
     <#assign versionField=metaEntity.versionField><#--版本字段-->
 </#if>

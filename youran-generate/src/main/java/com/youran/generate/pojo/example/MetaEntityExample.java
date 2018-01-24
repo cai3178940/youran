@@ -26,5 +26,7 @@ public class MetaEntityExample extends AbstractExample {
     public static final String E_DESC = "动物";
     public static final String N_COMMONCALL = "是否支持通用服务调用";
     public static final String E_COMMONCALL = "1";
+    public static final String N_PAGESIGN = "是否支持分页查询";
+    public static final String E_PAGESIGN = "1";
 
 }
