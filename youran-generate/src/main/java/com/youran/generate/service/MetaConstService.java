@@ -5,7 +5,7 @@ import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.MetaConstDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaConstAddDTO;
-import com.youran.generate.pojo.dto.MetaConstQueryDTO;
+import com.youran.generate.pojo.qo.MetaConstQO;
 import com.youran.generate.pojo.dto.MetaConstUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaConstMapper;
 import com.youran.generate.pojo.po.MetaConstPO;
@@ -58,11 +58,11 @@ public class MetaConstService {
 
     /**
      * 查询分页列表
-     * @param metaConstQueryDTO
+     * @param metaConstQO
      * @return
      */
-    public PageVO<MetaConstListVO> list(MetaConstQueryDTO metaConstQueryDTO) {
-        PageVO<MetaConstListVO> page = metaConstDAO.findByPage(metaConstQueryDTO);
+    public PageVO<MetaConstListVO> list(MetaConstQO metaConstQO) {
+        PageVO<MetaConstListVO> page = metaConstDAO.findByPage(metaConstQO);
         return page;
     }
 

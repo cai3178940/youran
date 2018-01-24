@@ -3,7 +3,7 @@ package com.youran.generate.web.api;
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaConstAddDTO;
-import com.youran.generate.pojo.dto.MetaConstQueryDTO;
+import com.youran.generate.pojo.qo.MetaConstQO;
 import com.youran.generate.pojo.dto.MetaConstUpdateDTO;
 import com.youran.generate.pojo.vo.MetaConstListVO;
 import com.youran.generate.pojo.vo.MetaConstShowVO;
@@ -44,9 +44,9 @@ public interface MetaConstAPI {
      */
     @ApiOperation(value = "分页查询常量")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaConstQueryDTO", dataType = "MetaConstQueryDTO", value = "分页查询参数", paramType = "body"),
+            @ApiImplicitParam(name = "metaConstQO", dataType = "MetaConstQO", value = "分页查询参数", paramType = "body"),
     })
-    ReplyVO<PageVO<MetaConstListVO>> list(MetaConstQueryDTO metaConstQueryDTO);
+    ReplyVO<PageVO<MetaConstListVO>> list(MetaConstQO metaConstQO);
 
     /**
      * 查看常量详情

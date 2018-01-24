@@ -57,7 +57,7 @@
         and delSign=0
     </delete>
 
-    <select id="findListByQuery" parameterType="MetaManyToManyQueryDTO" resultType="MetaManyToManyListVO">
+    <select id="findListByQuery" parameterType="MetaManyToManyQO" resultType="MetaManyToManyListVO">
         select * from meta_mtm t
         where t.delSign=0
         and t.projectId = #{projectId,jdbcType=INTEGER}

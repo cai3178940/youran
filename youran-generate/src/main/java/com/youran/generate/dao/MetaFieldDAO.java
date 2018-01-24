@@ -1,7 +1,7 @@
 package com.youran.generate.dao;
 
 import com.youran.common.dao.AbstractDAO;
-import com.youran.generate.pojo.dto.MetaFieldQueryDTO;
+import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import org.springframework.stereotype.Repository;
@@ -36,11 +36,11 @@ public class MetaFieldDAO extends AbstractDAO<MetaFieldPO> {
 
     /**
      * 根据条件查询字段列表
-     * @param metaFieldQueryDTO
+     * @param metaFieldQO
      * @return
      */
-    public List<MetaFieldListVO> findByQuery(MetaFieldQueryDTO metaFieldQueryDTO) {
-        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaFieldQueryDTO);
+    public List<MetaFieldListVO> findByQuery(MetaFieldQO metaFieldQO) {
+        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaFieldQO);
     }
 
     /**

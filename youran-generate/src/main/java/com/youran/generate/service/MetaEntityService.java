@@ -5,7 +5,7 @@ import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
-import com.youran.generate.pojo.dto.MetaEntityQueryDTO;
+import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaEntityMapper;
 import com.youran.generate.pojo.po.MetaEntityPO;
@@ -58,11 +58,11 @@ public class MetaEntityService {
 
     /**
      * 查询分页列表
-     * @param metaEntityQueryDTO
+     * @param metaEntityQO
      * @return
      */
-    public PageVO<MetaEntityListVO> list(MetaEntityQueryDTO metaEntityQueryDTO) {
-        PageVO<MetaEntityListVO> page = metaEntityDAO.findByPage(metaEntityQueryDTO);
+    public PageVO<MetaEntityListVO> list(MetaEntityQO metaEntityQO) {
+        PageVO<MetaEntityListVO> page = metaEntityDAO.findByPage(metaEntityQO);
         return page;
     }
 

@@ -3,7 +3,7 @@ package com.youran.generate.web.rest;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
-import com.youran.generate.pojo.dto.MetaIndexQueryDTO;
+import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.vo.MetaIndexListVO;
@@ -49,8 +49,8 @@ public class MetaIndexController implements MetaIndexAPI {
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<List<MetaIndexListVO>> list(@Valid MetaIndexQueryDTO metaIndexQueryDTO) {
-        List<MetaIndexListVO> list = metaIndexService.list(metaIndexQueryDTO);
+    public ReplyVO<List<MetaIndexListVO>> list(@Valid MetaIndexQO metaIndexQO) {
+        List<MetaIndexListVO> list = metaIndexService.list(metaIndexQO);
         ReplyVO<List<MetaIndexListVO>> result = ReplyVO.success();
         result.setData(list);
         return result;

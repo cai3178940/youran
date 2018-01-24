@@ -31,14 +31,14 @@ public interface ${CName}API {
      * 分页查询【${title}】
      */
     @ApiOperation(value="分页查询【${title}】")
-    ReplyVO<PageVO<${CName}ListVO>> list(${CName}QueryDTO ${cName}QueryDTO);
+    ReplyVO<PageVO<${CName}ListVO>> list(${CName}QO ${cName}QO);
 <#else>
     <#assign importList=true>
     /**
      * 列表查询【${title}】
      */
     @ApiOperation(value="列表查询【${title}】")
-    ReplyVO<List<${CName}ListVO>> list(${CName}QueryDTO ${cName}QueryDTO);
+    ReplyVO<List<${CName}ListVO>> list(${CName}QO ${cName}QO);
 </#if>
     /**
      * 查看【${title}】详情
@@ -138,7 +138,7 @@ import ${commonPackage}.pojo.vo.PageVO;
 </#if>
 import ${packageName}.pojo.vo.${CName}ShowVO;
 import ${packageName}.pojo.dto.${CName}AddDTO;
-import ${packageName}.pojo.dto.${CName}QueryDTO;
+import ${packageName}.pojo.qo.${CName}QO;
 import ${packageName}.pojo.vo.${CName}ListVO;
 import ${packageName}.pojo.dto.${CName}UpdateDTO;
 import io.swagger.annotations.Api;

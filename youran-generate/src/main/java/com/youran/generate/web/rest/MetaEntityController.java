@@ -5,7 +5,7 @@ import com.youran.common.pojo.vo.PageVO;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
-import com.youran.generate.pojo.dto.MetaEntityQueryDTO;
+import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
@@ -56,8 +56,8 @@ public class MetaEntityController implements MetaEntityAPI {
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<PageVO<MetaEntityListVO>> list(@Valid MetaEntityQueryDTO metaEntityQueryDTO) {
-        PageVO<MetaEntityListVO> page = metaEntityService.list(metaEntityQueryDTO);
+    public ReplyVO<PageVO<MetaEntityListVO>> list(@Valid MetaEntityQO metaEntityQO) {
+        PageVO<MetaEntityListVO> page = metaEntityService.list(metaEntityQO);
         ReplyVO<PageVO<MetaEntityListVO>> result = ReplyVO.success();
         result.setData(page);
         return result;

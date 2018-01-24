@@ -3,7 +3,7 @@ package com.youran.generate.web.api;
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
-import com.youran.generate.pojo.dto.MetaEntityQueryDTO;
+import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
@@ -44,9 +44,9 @@ public interface MetaEntityAPI {
      */
     @ApiOperation(value = "分页查询实体")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaEntityQueryDTO", dataType = "MetaEntityQueryDTO", value = "分页查询参数", paramType = "body"),
+            @ApiImplicitParam(name = "metaEntityQO", dataType = "MetaEntityQO", value = "分页查询参数", paramType = "body"),
     })
-    ReplyVO<PageVO<MetaEntityListVO>> list(MetaEntityQueryDTO metaEntityQueryDTO);
+    ReplyVO<PageVO<MetaEntityListVO>> list(MetaEntityQO metaEntityQO);
 
     /**
      * 查看实体详情

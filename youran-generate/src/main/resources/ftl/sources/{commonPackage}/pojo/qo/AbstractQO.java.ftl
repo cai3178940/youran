@@ -6,8 +6,8 @@ import ${commonPackage}.util.JsonUtil;
 
 import java.io.Serializable;
 
-<@classCom "数据传输对象超类"></@classCom>
-public abstract class AbstractDTO implements Serializable {
+<@classCom "数据查询参数对象超类"></@classCom>
+public abstract class AbstractQO implements Serializable {
 
     @Override
     public String toString() {

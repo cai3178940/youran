@@ -2,7 +2,7 @@ package com.youran.common.dao;
 
 import com.youran.common.LoginContext;
 import com.youran.common.optimistic.OptimisticException;
-import com.youran.common.pojo.dto.PageQueryDTO;
+import com.youran.common.pojo.qo.PageQO;
 import com.youran.common.pojo.po.AbstractPO;
 import com.youran.common.pojo.po.Version;
 import com.youran.common.pojo.vo.PageVO;
@@ -36,13 +36,13 @@ public abstract class AbstractDAO<PO extends AbstractPO> {
 
     /**
      * 分页查询
-     * @param dto
+     * @param qo
      * @return
      */
-    public <VO,DTO extends PageQueryDTO> PageVO<VO> findByPage(DTO dto) {
-        int count = sqlSession.selectOne(getMybatisNamespace()+".findCountByQuery",dto);
-        List<VO> list = sqlSession.selectList(getMybatisNamespace()+".findListByQuery", dto);
-        PageVO<VO> pageVO = new PageVO<>(list,dto.getPageNo(),dto.getPageSize(),count);
+    public <VO, QO extends PageQO> PageVO<VO> findByPage(QO qo) {
+        int count = sqlSession.selectOne(getMybatisNamespace()+".findCountByQuery",qo);
+        List<VO> list = sqlSession.selectList(getMybatisNamespace()+".findListByQuery", qo);
+        PageVO<VO> pageVO = new PageVO<>(list,qo.getPageNo(),qo.getPageSize(),count);
         return pageVO;
     }
 

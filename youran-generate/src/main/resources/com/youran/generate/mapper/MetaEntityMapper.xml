@@ -56,7 +56,7 @@
         and delSign=0
     </delete>
 
-    <select id="findCountByQuery" parameterType="MetaEntityQueryDTO" resultType="int">
+    <select id="findCountByQuery" parameterType="MetaEntityQO" resultType="int">
         select count(*) from (
         select * from meta_entity t
         where t.delSign=0
@@ -64,7 +64,7 @@
         ) as count_select_
     </select>
 
-    <select id="findListByQuery" parameterType="MetaEntityQueryDTO" resultType="MetaEntityListVO">
+    <select id="findListByQuery" parameterType="MetaEntityQO" resultType="MetaEntityListVO">
         select * from meta_entity t
         where t.delSign=0
         and t.projectId = #{projectId,jdbcType=INTEGER}

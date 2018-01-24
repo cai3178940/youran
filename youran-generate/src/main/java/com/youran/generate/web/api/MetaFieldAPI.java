@@ -2,7 +2,7 @@ package com.youran.generate.web.api;
 
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
-import com.youran.generate.pojo.dto.MetaFieldQueryDTO;
+import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
@@ -45,9 +45,9 @@ public interface MetaFieldAPI {
      */
     @ApiOperation(value = "字段列表查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaFieldQueryDTO", dataType = "MetaFieldQueryDTO", value = "查询参数", paramType = "body"),
+            @ApiImplicitParam(name = "metaFieldQO", dataType = "MetaFieldQO", value = "查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaFieldListVO>> list(MetaFieldQueryDTO metaFieldQueryDTO);
+    ReplyVO<List<MetaFieldListVO>> list(MetaFieldQO metaFieldQO);
 
     /**
      * 查看字段详情

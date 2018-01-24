@@ -15,8 +15,13 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
 
 <#if pageSign != 1>
     <#assign importList=true>
-    public List<${CName}ListVO> findListByQuery(${CName}QueryDTO ${cName}QueryDTO) {
-        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", ${cName}QueryDTO);
+    /**
+     * 根据条件查询【${title}】列表
+     * @param ${cName}QO
+     * @return
+     */
+    public List<${CName}ListVO> findListByQuery(${CName}QO ${cName}QO) {
+        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", ${cName}QO);
     }
 </#if>
 
@@ -76,7 +81,7 @@ package ${packageName}.dao;
 
 import ${packageName}.pojo.po.${CName}PO;
 <#if importList>
-import ${packageName}.pojo.dto.${CName}QueryDTO;
+import ${packageName}.pojo.qo.${CName}QO;
 import ${packageName}.pojo.vo.${CName}ListVO;
 </#if>
 import ${commonPackage}.dao.AbstractDAO;

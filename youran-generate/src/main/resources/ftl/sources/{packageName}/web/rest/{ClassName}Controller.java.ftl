@@ -30,16 +30,16 @@ public class ${CName}Controller implements ${CName}API {
     <#assign importPageVO=true>
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<PageVO<${CName}ListVO>> list(@Valid ${CName}QueryDTO ${cName}QueryDTO) {
-        PageVO<${CName}ListVO> page = ${cName}Service.list(${cName}QueryDTO);
+    public ReplyVO<PageVO<${CName}ListVO>> list(@Valid ${CName}QO ${cName}QO) {
+        PageVO<${CName}ListVO> page = ${cName}Service.list(${cName}QO);
         return ReplyVO.success().data(page);
     }
 <#else>
     <#assign importList=true>
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<List<${CName}ListVO>> list(@Valid ${CName}QueryDTO ${cName}QueryDTO) {
-        List<${CName}ListVO> list = ${cName}Service.list(${cName}QueryDTO);
+    public ReplyVO<List<${CName}ListVO>> list(@Valid ${CName}QO ${cName}QO) {
+        List<${CName}ListVO> list = ${cName}Service.list(${cName}QO);
         return ReplyVO.success().data(list);
     }
 </#if>
@@ -128,7 +128,7 @@ import ${commonPackage}.pojo.vo.PageVO;
 </#if>
 import ${packageName}.pojo.dto.${CName}AddDTO;
 import ${packageName}.pojo.po.${CName}PO;
-import ${packageName}.pojo.dto.${CName}QueryDTO;
+import ${packageName}.pojo.qo.${CName}QO;
 import ${packageName}.pojo.vo.${CName}ListVO;
 import ${packageName}.pojo.dto.${CName}UpdateDTO;
 import ${packageName}.pojo.vo.${CName}ShowVO;

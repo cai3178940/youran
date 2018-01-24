@@ -1,12 +1,13 @@
-package com.youran.generate.pojo.dto;
+package com.youran.generate.pojo.qo;
 
-import com.youran.common.pojo.dto.AbstractDTO;
+import com.youran.common.pojo.qo.AbstractQO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
-import static com.youran.generate.pojo.example.MetaFieldExample.*;
+import static com.youran.generate.pojo.example.MetaFieldExample.E_ENTITYID;
+import static com.youran.generate.pojo.example.MetaFieldExample.N_ENTITYID;
 
 /**
  * Title:
@@ -15,7 +16,7 @@ import static com.youran.generate.pojo.example.MetaFieldExample.*;
  * Create Time:2017/5/12 18:32
  */
 @ApiModel(description = "查询参数")
-public class MetaFieldQueryDTO extends AbstractDTO {
+public class MetaFieldQO extends AbstractQO {
 
     @ApiModelProperty(notes = N_ENTITYID, example = E_ENTITYID)
     @NotNull

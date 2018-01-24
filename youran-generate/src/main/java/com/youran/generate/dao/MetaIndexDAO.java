@@ -1,7 +1,7 @@
 package com.youran.generate.dao;
 
 import com.youran.common.dao.AbstractDAO;
-import com.youran.generate.pojo.dto.MetaIndexQueryDTO;
+import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.vo.MetaIndexListVO;
 import org.springframework.stereotype.Repository;
@@ -33,10 +33,10 @@ public class MetaIndexDAO extends AbstractDAO<MetaIndexPO> {
 
     /**
      * 根据条件查询索引列表
-     * @param metaIndexQueryDTO
+     * @param metaIndexQO
      * @return
      */
-    public List<MetaIndexListVO> findByQuery(MetaIndexQueryDTO metaIndexQueryDTO) {
-        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaIndexQueryDTO);
+    public List<MetaIndexListVO> findByQuery(MetaIndexQO metaIndexQO) {
+        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaIndexQO);
     }
 }

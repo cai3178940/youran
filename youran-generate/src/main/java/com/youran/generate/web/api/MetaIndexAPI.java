@@ -2,7 +2,7 @@ package com.youran.generate.web.api;
 
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
-import com.youran.generate.pojo.dto.MetaIndexQueryDTO;
+import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.vo.MetaIndexListVO;
 import com.youran.generate.pojo.vo.MetaIndexShowVO;
@@ -45,9 +45,9 @@ public interface MetaIndexAPI {
      */
     @ApiOperation(value = "索引列表查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaIndexQueryDTO", dataType = "MetaIndexQueryDTO", value = "查询参数", paramType = "body"),
+            @ApiImplicitParam(name = "metaIndexQO", dataType = "MetaIndexQO", value = "查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaIndexListVO>> list(MetaIndexQueryDTO metaIndexQueryDTO);
+    ReplyVO<List<MetaIndexListVO>> list(MetaIndexQO metaIndexQO);
 
     /**
      * 查看索引详情

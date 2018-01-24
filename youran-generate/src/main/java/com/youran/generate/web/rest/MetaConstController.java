@@ -4,7 +4,7 @@ import com.youran.common.pojo.vo.PageVO;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaConstAddDTO;
-import com.youran.generate.pojo.dto.MetaConstQueryDTO;
+import com.youran.generate.pojo.qo.MetaConstQO;
 import com.youran.generate.pojo.dto.MetaConstUpdateDTO;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.vo.MetaConstListVO;
@@ -49,8 +49,8 @@ public class MetaConstController implements MetaConstAPI {
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<PageVO<MetaConstListVO>> list(@Valid MetaConstQueryDTO metaConstQueryDTO) {
-        PageVO<MetaConstListVO> page = metaConstService.list(metaConstQueryDTO);
+    public ReplyVO<PageVO<MetaConstListVO>> list(@Valid MetaConstQO metaConstQO) {
+        PageVO<MetaConstListVO> page = metaConstService.list(metaConstQO);
         ReplyVO<PageVO<MetaConstListVO>> result = ReplyVO.success();
         result.setData(page);
         return result;

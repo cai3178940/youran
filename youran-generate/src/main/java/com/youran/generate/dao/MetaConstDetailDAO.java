@@ -1,7 +1,7 @@
 package com.youran.generate.dao;
 
 import com.youran.common.dao.AbstractDAO;
-import com.youran.generate.pojo.dto.MetaConstDetailQueryDTO;
+import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
 import org.springframework.stereotype.Repository;
@@ -33,10 +33,10 @@ public class MetaConstDetailDAO extends AbstractDAO<MetaConstDetailPO> {
 
     /**
      * 根据条件查询常量值列表
-     * @param metaConstDetailQueryDTO
+     * @param metaConstDetailQO
      * @return
      */
-    public List<MetaConstDetailListVO> findByQuery(MetaConstDetailQueryDTO metaConstDetailQueryDTO) {
-        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaConstDetailQueryDTO);
+    public List<MetaConstDetailListVO> findByQuery(MetaConstDetailQO metaConstDetailQO) {
+        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaConstDetailQO);
     }
 }

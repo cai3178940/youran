@@ -95,7 +95,7 @@
         and delSign=0
     </delete>
 
-    <select id="findListByQuery" parameterType="MetaFieldQueryDTO" resultType="MetaFieldListVO">
+    <select id="findListByQuery" parameterType="MetaFieldQO" resultType="MetaFieldListVO">
         select * from meta_field t
         where t.delSign=0
         and t.entityId = #{entityId,jdbcType=INTEGER}

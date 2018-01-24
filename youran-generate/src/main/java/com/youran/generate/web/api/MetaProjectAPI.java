@@ -2,7 +2,7 @@ package com.youran.generate.web.api;
 
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
-import com.youran.generate.pojo.dto.MetaProjectQueryDTO;
+import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
@@ -48,13 +48,13 @@ public interface MetaProjectAPI {
     /**
      * 查询项目列表
      *
-     * @param metaProjectQueryDTO
+     * @param metaProjectQO
      */
     @ApiOperation(value = "查询项目列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaProjectQueryDTO", dataType = "MetaProjectQueryDTO", value = "分页查询参数", paramType = "body"),
+            @ApiImplicitParam(name = "metaProjectQO", dataType = "MetaProjectQO", value = "分页查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaProjectListVO>> list(MetaProjectQueryDTO metaProjectQueryDTO);
+    ReplyVO<List<MetaProjectListVO>> list(MetaProjectQO metaProjectQO);
 
     /**
      * 查看项目详情

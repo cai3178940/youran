@@ -1,19 +1,20 @@
-package com.youran.generate.pojo.dto;
+package com.youran.generate.pojo.qo;
 
+import com.youran.common.pojo.qo.PageQO;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
-import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
-
-
+import static com.youran.generate.pojo.example.MetaConstExample.*;
 /**
  * Title:
  * Description:
  * Author: cbb
- * Create Time:2017/7/4 16:42
+ * Create Time:2017/6/14 9:32
  */
-public class MetaManyToManyQueryDTO {
+@ApiModel(description = "分页查询参数")
+public class MetaConstQO extends PageQO {
 
     @ApiModelProperty(notes = N_PROJECTID, example = E_PROJECTID)
     @NotNull
@@ -26,4 +27,5 @@ public class MetaManyToManyQueryDTO {
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
+
 }

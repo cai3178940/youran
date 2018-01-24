@@ -2,7 +2,7 @@ package com.youran.generate.web.api;
 
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
-import com.youran.generate.pojo.dto.MetaConstDetailQueryDTO;
+import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
 import com.youran.generate.pojo.vo.MetaConstDetailShowVO;
@@ -45,9 +45,9 @@ public interface MetaConstDetailAPI {
      */
     @ApiOperation(value = "查询常量值列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaConstDetailQueryDTO", dataType = "MetaConstDetailQueryDTO", value = "分页查询参数", paramType = "body"),
+            @ApiImplicitParam(name = "metaConstDetailQO", dataType = "MetaConstDetailQO", value = "分页查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaConstDetailListVO>> list(MetaConstDetailQueryDTO metaConstDetailQueryDTO);
+    ReplyVO<List<MetaConstDetailListVO>> list(MetaConstDetailQO metaConstDetailQO);
 
     /**
      * 查看常量值详情

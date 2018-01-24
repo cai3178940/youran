@@ -5,7 +5,7 @@ import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
-import com.youran.generate.pojo.dto.MetaFieldQueryDTO;
+import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaFieldMapper;
 import com.youran.generate.pojo.po.MetaFieldPO;
@@ -68,11 +68,11 @@ public class MetaFieldService {
 
     /**
      * 查询列表
-     * @param metaFieldQueryDTO
+     * @param metaFieldQO
      * @return
      */
-    public List<MetaFieldListVO> list(MetaFieldQueryDTO metaFieldQueryDTO) {
-        List<MetaFieldListVO> list = metaFieldDAO.findByQuery(metaFieldQueryDTO);
+    public List<MetaFieldListVO> list(MetaFieldQO metaFieldQO) {
+        List<MetaFieldListVO> list = metaFieldDAO.findByQuery(metaFieldQO);
         return list;
     }
 

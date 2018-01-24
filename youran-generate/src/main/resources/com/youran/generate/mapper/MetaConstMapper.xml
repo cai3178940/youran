@@ -51,7 +51,7 @@
         and delSign=0
     </delete>
 
-    <select id="findCountByQuery" parameterType="MetaConstQueryDTO" resultType="int">
+    <select id="findCountByQuery" parameterType="MetaConstQO" resultType="int">
         select count(*) from (
         select * from meta_const t
         where t.delSign=0
@@ -59,7 +59,7 @@
         ) as count_select_
     </select>
 
-    <select id="findListByQuery" parameterType="MetaConstQueryDTO" resultType="MetaConstListVO">
+    <select id="findListByQuery" parameterType="MetaConstQO" resultType="MetaConstListVO">
         select * from meta_const t
         where t.delSign=0
         and t.projectId = #{projectId,jdbcType=INTEGER}

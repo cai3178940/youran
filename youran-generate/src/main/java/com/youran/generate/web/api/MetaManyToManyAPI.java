@@ -2,7 +2,7 @@ package com.youran.generate.web.api;
 
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
-import com.youran.generate.pojo.dto.MetaManyToManyQueryDTO;
+import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.vo.MetaManyToManyListVO;
 import com.youran.generate.pojo.vo.MetaManyToManyShowVO;
@@ -45,9 +45,9 @@ public interface MetaManyToManyAPI {
      */
     @ApiOperation(value = "多对多关联列表查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaManyToManyQueryDTO", dataType = "MetaManyToManyQueryDTO", value = "查询参数", paramType = "body"),
+            @ApiImplicitParam(name = "metaManyToManyQO", dataType = "MetaManyToManyQO", value = "查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaManyToManyListVO>> list(MetaManyToManyQueryDTO metaManyToManyQueryDTO);
+    ReplyVO<List<MetaManyToManyListVO>> list(MetaManyToManyQO metaManyToManyQO);
 
     /**
      * 查看多对多关联详情

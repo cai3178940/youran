@@ -7,7 +7,7 @@
 <#assign code>
 <@classCom "新增【${title}】的参数"></@classCom>
 @ApiModel(description = "新增【${title}】的参数")
-public class ${CName}QueryDTO extends <#if pageSign == 1>PageQueryDTO<#else>AbstractDTO</#if> {
+public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if> {
 
 <#macro queryField field suffix>
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
@@ -52,11 +52,11 @@ public class ${CName}QueryDTO extends <#if pageSign == 1>PageQueryDTO<#else>Abst
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.pojo.dto;
+package ${packageName}.pojo.qo;
 <#if pageSign == 1>
-import ${commonPackage}.pojo.dto.PageQueryDTO;
+import ${commonPackage}.pojo.qo.PageQO;
 <#else>
-import ${commonPackage}.pojo.dto.AbstractDTO;
+import ${commonPackage}.pojo.qo.AbstractQO;
 </#if>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

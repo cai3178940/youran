@@ -1,11 +1,10 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.MetaProjectDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
-import com.youran.generate.pojo.dto.MetaProjectQueryDTO;
+import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
 import com.youran.generate.pojo.po.MetaProjectPO;
@@ -60,11 +59,11 @@ public class MetaProjectService {
 
     /**
      * 查询分页列表
-     * @param metaProjectQueryDTO
+     * @param metaProjectQO
      * @return
      */
-    public List<MetaProjectListVO> list(MetaProjectQueryDTO metaProjectQueryDTO) {
-        return metaProjectDAO.findByQuery(metaProjectQueryDTO);
+    public List<MetaProjectListVO> list(MetaProjectQO metaProjectQO) {
+        return metaProjectDAO.findByQuery(metaProjectQO);
     }
 
     /**

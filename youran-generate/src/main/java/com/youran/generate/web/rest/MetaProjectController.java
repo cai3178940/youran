@@ -3,7 +3,7 @@ package com.youran.generate.web.rest;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
-import com.youran.generate.pojo.dto.MetaProjectQueryDTO;
+import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
@@ -49,8 +49,8 @@ public class MetaProjectController implements MetaProjectAPI {
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<List<MetaProjectListVO>> list(@Valid MetaProjectQueryDTO metaProjectQueryDTO) {
-        List<MetaProjectListVO> list = metaProjectService.list(metaProjectQueryDTO);
+    public ReplyVO<List<MetaProjectListVO>> list(@Valid MetaProjectQO metaProjectQO) {
+        List<MetaProjectListVO> list = metaProjectService.list(metaProjectQO);
         ReplyVO<List<MetaProjectListVO>> result = ReplyVO.success();
         result.setData(list);
         return result;

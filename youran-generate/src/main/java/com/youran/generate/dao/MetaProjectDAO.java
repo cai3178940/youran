@@ -1,7 +1,7 @@
 package com.youran.generate.dao;
 
 import com.youran.common.dao.AbstractDAO;
-import com.youran.generate.pojo.dto.MetaProjectQueryDTO;
+import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
 import org.springframework.stereotype.Repository;
@@ -23,10 +23,10 @@ public class MetaProjectDAO extends AbstractDAO<MetaProjectPO> {
     }
     /**
      * 根据条件查询项目列表
-     * @param metaProjectQueryDTO
+     * @param metaProjectQO
      * @return
      */
-    public List<MetaProjectListVO> findByQuery(MetaProjectQueryDTO metaProjectQueryDTO) {
-        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaProjectQueryDTO);
+    public List<MetaProjectListVO> findByQuery(MetaProjectQO metaProjectQO) {
+        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaProjectQO);
     }
 }

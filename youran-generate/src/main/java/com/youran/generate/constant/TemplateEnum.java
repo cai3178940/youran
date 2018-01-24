@@ -88,9 +88,13 @@ public enum TemplateEnum {
      */
     AbstractDTO(COMMON,"sources/{commonPackage}/pojo/dto/AbstractDTO.java.ftl"),
     /**
-     * 分页查询dto
+     * 抽象qo
      */
-    PageQueryDTO(COMMON,"sources/{commonPackage}/pojo/dto/PageQueryDTO.java.ftl"),
+    AbstractQO(COMMON,"sources/{commonPackage}/pojo/qo/AbstractQO.java.ftl"),
+    /**
+     * 分页查询qo
+     */
+    PageQO(COMMON,"sources/{commonPackage}/pojo/qo/PageQO.java.ftl"),
     /**
      * 字段示例
      */
@@ -234,13 +238,13 @@ public enum TemplateEnum {
      */
     AddDTO(ENTITY, "sources/{packageName}/pojo/dto/{ClassName}AddDTO.java.ftl"),
     /**
-     * 查询参数模版
-     */
-    QueryDTO(ENTITY, "sources/{packageName}/pojo/dto/{ClassName}QueryDTO.java.ftl"),
-    /**
      * 修改参数模版
      */
     UpdateDTO(ENTITY, "sources/{packageName}/pojo/dto/{ClassName}UpdateDTO.java.ftl"),
+    /**
+     * 查询参数模版
+     */
+    QO(ENTITY, "sources/{packageName}/pojo/qo/{ClassName}QO.java.ftl"),
     /**
      * 示例说明模版
      */

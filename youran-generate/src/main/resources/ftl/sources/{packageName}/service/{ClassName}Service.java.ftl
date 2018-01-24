@@ -86,22 +86,22 @@ public class ${CName}Service {
     <#assign importPageVO=true>
     /**
      * 查询分页列表
-     * @param ${cName}QueryDTO
+     * @param ${cName}QO
      * @return
      */
-    public PageVO<${CName}ListVO> list(${CName}QueryDTO ${cName}QueryDTO) {
-        PageVO<${CName}ListVO> page = ${cName}DAO.findByPage(${cName}QueryDTO);
+    public PageVO<${CName}ListVO> list(${CName}QO ${cName}QO) {
+        PageVO<${CName}ListVO> page = ${cName}DAO.findByPage(${cName}QO);
         return page;
     }
 <#else>
     <#assign importList=true>
     /**
      * 查询列表
-     * @param ${cName}QueryDTO
+     * @param ${cName}QO
      * @return
      */
-    public List<${CName}ListVO> list(${CName}QueryDTO ${cName}QueryDTO) {
-        List<${CName}ListVO> list = ${cName}DAO.findListByQuery(${cName}QueryDTO);
+    public List<${CName}ListVO> list(${CName}QO ${cName}QO) {
+        List<${CName}ListVO> list = ${cName}DAO.findListByQuery(${cName}QO);
         return list;
     }
 </#if>
@@ -233,7 +233,7 @@ import ${commonPackage}.pojo.vo.PageVO;
 import ${packageName}.dao.${CName}DAO;
 ${importOtherDAOStr}
 import ${packageName}.pojo.dto.${CName}AddDTO;
-import ${packageName}.pojo.dto.${CName}QueryDTO;
+import ${packageName}.pojo.qo.${CName}QO;
 import ${packageName}.pojo.vo.${CName}ListVO;
 import ${packageName}.pojo.dto.${CName}UpdateDTO;
 import ${packageName}.pojo.mapper.${CName}Mapper;

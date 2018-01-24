@@ -5,7 +5,7 @@ import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaManyToManyDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
-import com.youran.generate.pojo.dto.MetaManyToManyQueryDTO;
+import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaManyToManyMapper;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
@@ -74,11 +74,11 @@ public class MetaManyToManyService {
 
     /**
      * 查询列表
-     * @param metaManyToManyQueryDTO
+     * @param metaManyToManyQO
      * @return
      */
-    public List<MetaManyToManyListVO> list(MetaManyToManyQueryDTO metaManyToManyQueryDTO) {
-        List<MetaManyToManyListVO> list = metaManyToManyDAO.findByQuery(metaManyToManyQueryDTO);
+    public List<MetaManyToManyListVO> list(MetaManyToManyQO metaManyToManyQO) {
+        List<MetaManyToManyListVO> list = metaManyToManyDAO.findByQuery(metaManyToManyQO);
         return list;
     }
 

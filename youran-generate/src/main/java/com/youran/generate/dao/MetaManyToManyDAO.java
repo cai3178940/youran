@@ -1,7 +1,7 @@
 package com.youran.generate.dao;
 
 import com.youran.common.dao.AbstractDAO;
-import com.youran.generate.pojo.dto.MetaManyToManyQueryDTO;
+import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.vo.MetaManyToManyListVO;
 import org.springframework.stereotype.Repository;
@@ -24,11 +24,11 @@ public class MetaManyToManyDAO extends AbstractDAO<MetaManyToManyPO> {
 
     /**
      * 根据条件查询多对多关联列表
-     * @param metaManyToManyQueryDTO
+     * @param metaManyToManyQO
      * @return
      */
-    public List<MetaManyToManyListVO> findByQuery(MetaManyToManyQueryDTO metaManyToManyQueryDTO) {
-        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaManyToManyQueryDTO);
+    public List<MetaManyToManyListVO> findByQuery(MetaManyToManyQO metaManyToManyQO) {
+        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaManyToManyQO);
     }
 
     /**

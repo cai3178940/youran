@@ -1,17 +1,13 @@
-package com.youran.common.pojo.dto;
+<#include "/common.ftl">
+package ${commonPackage}.pojo.qo;
 
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-/**
- * Title:分页查询dto
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 21:26
- */
-public class PageQueryDTO extends AbstractDTO {
+<@classCom "分页查询dto"></@classCom>
+public class PageQO extends AbstractQO {
 
     public static final int DEFAULT_PAGE_NO = 1;
     public static final int DEFAULT_PAGE_SIZE = 20;
@@ -30,12 +26,12 @@ public class PageQueryDTO extends AbstractDTO {
     @Min(value = 1, message = "pageNo不能小于1")
     protected Integer pageNo;
 
-    public PageQueryDTO() {
+    public PageQO() {
         //默认第一页，每页20条
         this(1, 20);
     }
 
-    public PageQueryDTO(Integer pageNo, Integer pageSize) {
+    public PageQO(Integer pageNo, Integer pageSize) {
         if (pageNo == null) {
             pageNo = DEFAULT_PAGE_NO;
         }

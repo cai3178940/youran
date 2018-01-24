@@ -3,7 +3,7 @@ package com.youran.generate.web.rest;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
-import com.youran.generate.pojo.dto.MetaManyToManyQueryDTO;
+import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.vo.MetaManyToManyListVO;
@@ -49,8 +49,8 @@ public class MetaManyToManyController implements MetaManyToManyAPI {
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<List<MetaManyToManyListVO>> list(@Valid MetaManyToManyQueryDTO metaManyToManyQueryDTO) {
-        List<MetaManyToManyListVO> list = metaManyToManyService.list(metaManyToManyQueryDTO);
+    public ReplyVO<List<MetaManyToManyListVO>> list(@Valid MetaManyToManyQO metaManyToManyQO) {
+        List<MetaManyToManyListVO> list = metaManyToManyService.list(metaManyToManyQO);
         ReplyVO<List<MetaManyToManyListVO>> result = ReplyVO.success();
         result.setData(list);
         return result;

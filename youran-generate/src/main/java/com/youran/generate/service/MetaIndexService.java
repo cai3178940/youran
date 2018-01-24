@@ -9,7 +9,7 @@ import com.youran.generate.dao.MetaIndexDAO;
 import com.youran.generate.dao.MetaIndexFieldDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
-import com.youran.generate.pojo.dto.MetaIndexQueryDTO;
+import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaIndexMapper;
 import com.youran.generate.pojo.po.MetaIndexPO;
@@ -107,11 +107,11 @@ public class MetaIndexService {
 
     /**
      * 查询列表
-     * @param metaIndexQueryDTO
+     * @param metaIndexQO
      * @return
      */
-    public List<MetaIndexListVO> list(MetaIndexQueryDTO metaIndexQueryDTO) {
-        List<MetaIndexListVO> list = metaIndexDAO.findByQuery(metaIndexQueryDTO);
+    public List<MetaIndexListVO> list(MetaIndexQO metaIndexQO) {
+        List<MetaIndexListVO> list = metaIndexDAO.findByQuery(metaIndexQO);
         if (CollectionUtils.isNotEmpty(list)) {
             for (MetaIndexListVO metaIndexListVO : list) {
                 List<Integer> fieldIds = metaIndexFieldDAO.findByIndexId(metaIndexListVO.getIndexId());

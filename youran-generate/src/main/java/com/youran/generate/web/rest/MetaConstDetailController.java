@@ -3,7 +3,7 @@ package com.youran.generate.web.rest;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
-import com.youran.generate.pojo.dto.MetaConstDetailQueryDTO;
+import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
@@ -49,8 +49,8 @@ public class MetaConstDetailController implements MetaConstDetailAPI {
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<List<MetaConstDetailListVO>> list(@Valid MetaConstDetailQueryDTO metaConstDetailQueryDTO) {
-        List<MetaConstDetailListVO> list = metaConstDetailService.list(metaConstDetailQueryDTO);
+    public ReplyVO<List<MetaConstDetailListVO>> list(@Valid MetaConstDetailQO metaConstDetailQO) {
+        List<MetaConstDetailListVO> list = metaConstDetailService.list(metaConstDetailQO);
         ReplyVO<List<MetaConstDetailListVO>> result = ReplyVO.success();
         result.setData(list);
         return result;

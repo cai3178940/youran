@@ -4,7 +4,7 @@ import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaConstDetailDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
-import com.youran.generate.pojo.dto.MetaConstDetailQueryDTO;
+import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaConstDetailMapper;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
@@ -59,11 +59,11 @@ public class MetaConstDetailService {
 
     /**
      * 查询分页列表
-     * @param metaConstDetailQueryDTO
+     * @param metaConstDetailQO
      * @return
      */
-    public List<MetaConstDetailListVO> list(MetaConstDetailQueryDTO metaConstDetailQueryDTO) {
-        return metaConstDetailDAO.findByQuery(metaConstDetailQueryDTO);
+    public List<MetaConstDetailListVO> list(MetaConstDetailQO metaConstDetailQO) {
+        return metaConstDetailDAO.findByQuery(metaConstDetailQO);
     }
 
     /**

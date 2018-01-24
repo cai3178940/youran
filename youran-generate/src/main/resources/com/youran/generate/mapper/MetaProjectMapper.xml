@@ -49,7 +49,7 @@
         and delSign=0
     </delete>
 
-    <select id="findListByQuery" parameterType="MetaProjectQueryDTO" resultType="MetaProjectListVO">
+    <select id="findListByQuery" parameterType="MetaProjectQO" resultType="MetaProjectListVO">
         select * from meta_project t
         where t.delSign=0
     </select>

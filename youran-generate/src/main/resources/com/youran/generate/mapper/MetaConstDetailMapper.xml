@@ -65,7 +65,7 @@
     </delete>
 
 
-    <select id="findListByQuery" parameterType="MetaConstDetailQueryDTO" resultType="MetaConstDetailListVO">
+    <select id="findListByQuery" parameterType="MetaConstDetailQO" resultType="MetaConstDetailListVO">
         select * from meta_const_detail t
         where t.delSign=0
         and t.constId = #{constId,jdbcType=INTEGER}

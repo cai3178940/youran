@@ -108,7 +108,7 @@
     </#list>
     </sql>
 
-    <select id="findCountByQuery" parameterType="${CName}QueryDTO" resultType="int">
+    <select id="findCountByQuery" parameterType="${CName}QO" resultType="int">
         select count(*) from (
         select * from ${wrapTableName} t
         <where>
@@ -120,7 +120,7 @@
         ) as count_select_
     </select>
 
-    <select id="findListByQuery" parameterType="${CName}QueryDTO" resultType="${CName}ListVO">
+    <select id="findListByQuery" parameterType="${CName}QO" resultType="${CName}ListVO">
         select * from ${wrapTableName} t
         <where>
         <#if delField??>

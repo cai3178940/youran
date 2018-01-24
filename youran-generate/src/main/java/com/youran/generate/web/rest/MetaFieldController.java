@@ -3,7 +3,7 @@ package com.youran.generate.web.rest;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
-import com.youran.generate.pojo.dto.MetaFieldQueryDTO;
+import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
@@ -55,8 +55,8 @@ public class MetaFieldController implements MetaFieldAPI {
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<List<MetaFieldListVO>> list(@Valid MetaFieldQueryDTO metaFieldQueryDTO) {
-        List<MetaFieldListVO> list = metaFieldService.list(metaFieldQueryDTO);
+    public ReplyVO<List<MetaFieldListVO>> list(@Valid MetaFieldQO metaFieldQO) {
+        List<MetaFieldListVO> list = metaFieldService.list(metaFieldQO);
         ReplyVO<List<MetaFieldListVO>> result = ReplyVO.success();
         result.setData(list);
         return result;

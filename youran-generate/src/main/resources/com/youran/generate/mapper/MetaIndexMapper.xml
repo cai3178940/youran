@@ -48,7 +48,7 @@
         and delSign=0
     </delete>
 
-    <select id="findListByQuery" parameterType="MetaIndexQueryDTO" resultType="MetaIndexListVO">
+    <select id="findListByQuery" parameterType="MetaIndexQO" resultType="MetaIndexListVO">
         select * from meta_index t
         where t.delSign=0
         and t.entityId = #{entityId,jdbcType=INTEGER}
