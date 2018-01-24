@@ -32,6 +32,17 @@
 
 </#macro>
 
+<#macro getterSetterList name type>
+    public List<${type}> get${name?capFirst}List() {
+        return ${name?uncapFirst}List;
+    }
+
+    public void set${name?capFirst}List(List<${type}> ${name?uncapFirst}List) {
+        this.${name?uncapFirst}List = ${name?uncapFirst}List;
+    }
+
+</#macro>
+
 <#-- 定义常量查找函数 -->
 <#function getConst list name>
     <#list list as const>

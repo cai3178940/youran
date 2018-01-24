@@ -1,6 +1,7 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
 <#--定义是否引入某些依赖-->
+<#assign importList=false>
 <#assign importLength=false>
 <#assign importDate=false>
 <#assign importConst=false>
@@ -44,10 +45,27 @@ public class ${CName}UpdateDTO extends AbstractDTO {
 
 </#list>
 
+<#if metaEntity.mtmHoldRefers??>
+    <#list metaEntity.mtmHoldRefers as otherEntity>
+        <#assign importList=true>
+        <#assign otherPk=otherEntity.pkField>
+        <#assign othercName=otherEntity.className?uncapFirst>
+    private List<${otherPk.jfieldType}> ${othercName}List;
+    </#list>
+</#if>
+
     <@getterSetter pkField/>
 <#list metaEntity.updateFields as field>
     <@getterSetter field/>
 </#list>
+
+<#if metaEntity.mtmHoldRefers??>
+    <#list metaEntity.mtmHoldRefers as otherEntity>
+        <#assign otherPk=otherEntity.pkField>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <@getterSetterList othercName otherPk.jfieldType/>
+    </#list>
+</#if>
 
 }
 </#assign>
@@ -60,6 +78,9 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotNull;
 <#if importLength>
 import org.hibernate.validator.constraints.Length;
+</#if>
+<#if importList>
+import java.util.List;
 </#if>
 <#if importDate>
 import java.util.Date;

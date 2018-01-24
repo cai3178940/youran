@@ -5,6 +5,7 @@
 <#assign importArrayUtils=false>
 <#assign importPageVO=false>
 <#assign importList=false>
+<#assign importCollectionUtils=false>
 <#assign importOtherDAOStr="">
 <#--定义主体代码-->
 <#assign code>
@@ -33,6 +34,19 @@ public class ${CName}Service {
     public ${CName}PO save(${CName}AddDTO ${cName}DTO) {
         ${CName}PO ${cName} = ${CName}Mapper.INSTANCE.fromAddDTO(${cName}DTO);
         ${cName}DAO.save(${cName});
+<#if metaEntity.mtmHoldRefers??>
+    <#list metaEntity.mtmHoldRefers as otherEntity>
+        <#assign importList=true>
+        <#assign importCollectionUtils=true>
+        <#assign otherPk=otherEntity.pkField>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        List<${otherPk.jfieldType}> ${othercName}List = ${cName}DTO.get${otherCName}List();
+        if(CollectionUtils.isNotEmpty(${othercName}List)) {
+            this.doAdd${otherCName}(${cName}.get${Id}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
+        }
+    </#list>
+</#if>
         return ${cName};
     }
 
@@ -54,6 +68,19 @@ public class ${CName}Service {
         }
         ${CName}Mapper.INSTANCE.setUpdateDTO(${cName},${cName}UpdateDTO);
         ${cName}DAO.update(${cName});
+<#if metaEntity.mtmHoldRefers??>
+    <#list metaEntity.mtmHoldRefers as otherEntity>
+        <#assign importList=true>
+        <#assign importCollectionUtils=true>
+        <#assign otherPk=otherEntity.pkField>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        List<${otherPk.jfieldType}> ${othercName}List = ${cName}UpdateDTO.get${otherCName}List();
+        if(${othercName}List != null) {
+            this.set${otherCName}(${cName}.get${Id}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
+        }
+    </#list>
+</#if>
     }
 <#if pageSign == 1>
     <#assign importPageVO=true>
@@ -213,6 +240,9 @@ import ${packageName}.pojo.mapper.${CName}Mapper;
 import ${packageName}.pojo.po.${CName}PO;
 import ${packageName}.pojo.vo.${CName}ShowVO;
 import ${packageName}.exception.${ProjectName}Exception;
+<#if importCollectionUtils>
+import org.apache.commons.collections.CollectionUtils;
+</#if>
 <#if importArrayUtils>
 import org.apache.commons.lang3.ArrayUtils;
 </#if>
