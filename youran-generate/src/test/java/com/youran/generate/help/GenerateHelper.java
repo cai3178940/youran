@@ -515,6 +515,7 @@ public class GenerateHelper{
         dto.setTableName(tableName);
         dto.setTitle(title);
         dto.setDesc(title);
+        dto.setPageSign(1);
         MetaEntityPO metaEntity = metaEntityService.save(dto);
         project.addEntity(metaEntity);
         return metaEntity;

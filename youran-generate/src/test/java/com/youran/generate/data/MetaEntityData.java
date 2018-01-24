@@ -26,6 +26,7 @@ public class MetaEntityData {
         dto.setSchemaName(E_SCHEMANAME);
         dto.setClassName(E_CLASSNAME+i);
         dto.setTableName(E_TABLENAME+i);
+        dto.setPageSign(SafeUtil.getInteger(E_PAGESIGN));
         dto.setDesc(E_DESC+i);
         dto.setTitle(E_TITLE+i);
         dto.setCommonCall(SafeUtil.getInteger(E_COMMONCALL));
@@ -47,6 +48,7 @@ public class MetaEntityData {
         dto.setTitle(metaEntity.getTitle()+"1");
         dto.setDesc(metaEntity.getDesc()+"1");
         dto.setCommonCall(metaEntity.getCommonCall());
+        dto.setPageSign(metaEntity.getPageSign());
         return dto;
     }
 

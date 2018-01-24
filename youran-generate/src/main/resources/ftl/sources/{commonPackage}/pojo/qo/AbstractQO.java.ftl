@@ -1,5 +1,5 @@
 <#include "/common.ftl">
-package ${commonPackage}.pojo.dto;
+package ${commonPackage}.pojo.qo;
 
 
 import ${commonPackage}.util.JsonUtil;
