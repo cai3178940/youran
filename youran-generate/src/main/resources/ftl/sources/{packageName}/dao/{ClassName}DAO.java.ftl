@@ -75,6 +75,10 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
 package ${packageName}.dao;
 
 import ${packageName}.pojo.po.${CName}PO;
+<#if importList>
+import ${packageName}.pojo.dto.${CName}QueryDTO;
+import ${packageName}.pojo.vo.${CName}ListVO;
+</#if>
 import ${commonPackage}.dao.AbstractDAO;
 import org.springframework.stereotype.Repository;
 
