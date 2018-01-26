@@ -18,4 +18,4 @@ logging:
 youran:
     generate:
         devMode: 2
-        devProjectDir: D:\\workspace\\optimize
+        devProjectDir: D:\\workspace\\optimize-auto
