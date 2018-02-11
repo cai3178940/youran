@@ -161,12 +161,12 @@
         </#if>
     </select>
 
-    <insert id="add${otherCName}" parameterType="Map">
+    <insert id="add${otherCName}" parameterType="map">
         insert into ${mtm.tableName}(${the_pk_id},${other_pk_id})
         values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}})
     </insert>
 
-    <delete id="remove${otherCName}" parameterType="Map">
+    <delete id="remove${otherCName}" parameterType="map">
         delete from ${mtm.tableName}
         where ${the_pk_id}=${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}} and ${other_pk_id} in
         <foreach collection="${otherPkId}" item="_id" open="(" separator="," close=")">
