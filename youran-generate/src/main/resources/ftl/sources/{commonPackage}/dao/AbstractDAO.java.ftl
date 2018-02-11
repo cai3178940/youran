@@ -61,7 +61,7 @@ public abstract class AbstractDAO<PO extends AbstractPO> {
         po.preUpdate(loginContext.getCurrentOperatorId());
         int update = sqlSession.update(getMybatisNamespace() + ".update", po);
         if((po instanceof Version) && update<=0){
-        throw new OptimisticException("更新操作乐观锁异常");
+            throw new OptimisticException("更新操作乐观锁异常");
         }
         return update;
     }

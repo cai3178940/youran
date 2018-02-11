@@ -62,10 +62,7 @@ public class ${CName}Service {
     </#if>
     public void update(${CName}UpdateDTO ${cName}UpdateDTO) {
         ${type} ${id} = ${cName}UpdateDTO.get${Id}();
-        ${CName}PO ${cName} = ${cName}DAO.findById(${id});
-        if(${cName}==null){
-            throw new ${ProjectName}Exception("${id}有误");
-        }
+        ${CName}PO ${cName} = this.get${CName}(${id}, true);
         ${CName}Mapper.INSTANCE.setUpdateDTO(${cName},${cName}UpdateDTO);
         ${cName}DAO.update(${cName});
 <#if metaEntity.mtmHoldRefers??>
@@ -105,16 +102,30 @@ public class ${CName}Service {
         return list;
     }
 </#if>
+
+
+    /**
+     * 根据主键获取【${title}】
+     * @param ${id}
+     * @param force
+     * @return
+     */
+    public ${CName}PO get${CName}(${type} ${id}, boolean force){
+        ${CName}PO ${cName} = ${cName}DAO.findById(${id});
+        if (force && ${cName} == null) {
+            throw new ${ProjectName}Exception("未查询到记录");
+        }
+        return ${cName};
+    }
+
+
     /**
      * 查询【${title}】详情
      * @param ${id}
      * @return
      */
     public ${CName}ShowVO show(${type} ${id}) {
-        ${CName}PO ${cName} = ${cName}DAO.findById(${id});
-        if(${cName}==null){
-            throw new ${ProjectName}Exception("未查询到记录");
-        }
+        ${CName}PO ${cName} = this.get${CName}(${id}, true);
         ${CName}ShowVO showVO = ${CName}Mapper.INSTANCE.toShowVO(${cName});
         return showVO;
     }
@@ -168,10 +179,7 @@ public class ${CName}Service {
      */
     @Transactional
     public int add${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
-        ${CName}PO ${cName} = ${cName}DAO.findById(${id});
-        if(${cName}==null){
-            throw new ${ProjectName}Exception("未查询到记录");
-        }
+        ${CName}PO ${cName} = this.get${CName}(${id}, true);
         if(ArrayUtils.isEmpty(${otherPkId})){
             throw new ${ProjectName}Exception("${otherEntity.title}id参数为空");
         }
@@ -186,10 +194,7 @@ public class ${CName}Service {
      */
     @Transactional
     public int remove${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
-        ${CName}PO ${cName} = ${cName}DAO.findById(${id});
-        if(${cName}==null){
-            throw new ${ProjectName}Exception("未查询到记录");
-        }
+        ${CName}PO ${cName} = this.get${CName}(${id}, true);
         if(ArrayUtils.isEmpty(${otherPkId})){
             throw new ${ProjectName}Exception("${otherEntity.title}id参数为空");
         }
@@ -204,10 +209,7 @@ public class ${CName}Service {
      */
     @Transactional
     public int set${otherCName}(${type} ${id}, ${otherPk.jfieldType}[] ${otherPkId}) {
-        ${CName}PO ${cName} = ${cName}DAO.findById(${id});
-        if(${cName}==null){
-            throw new ${ProjectName}Exception("未查询到记录");
-        }
+        ${CName}PO ${cName} = this.get${CName}(${id}, true);
         ${cName}DAO.removeAll${otherCName}(${id});
         if(ArrayUtils.isEmpty(${otherPkId})){
             return 0;
