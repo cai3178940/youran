@@ -128,6 +128,10 @@
         </#if>
         <include refid="queryCondition"/>
         </where>
+    <#--如果有创建日期，则按创建日期排序-->
+    <#if createDateField??>
+        order by t.${MetadataUtil.wrapMysqlKeyword(createDateField.fieldName)}
+    </#if>
     <#if pageSign == 1>
         limit ${r'#'}{startIndex},${r'#'}{pageSize}
     </#if>

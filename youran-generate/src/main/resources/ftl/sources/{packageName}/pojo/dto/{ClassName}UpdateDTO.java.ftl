@@ -10,7 +10,7 @@
 <#--定义主体代码-->
 <#assign code>
 <@classCom "修改【${title}】的参数"></@classCom>
-@ApiModel(description = "新增【${title}】的参数")
+@ApiModel(description = "修改【${title}】的参数")
 public class ${CName}UpdateDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_${pkField.jfieldName?upperCase},example = E_${pkField.jfieldName?upperCase})

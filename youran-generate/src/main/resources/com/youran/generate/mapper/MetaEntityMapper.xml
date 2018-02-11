@@ -68,6 +68,7 @@
         select * from meta_entity t
         where t.delSign=0
         and t.projectId = #{projectId,jdbcType=INTEGER}
+        order by t.createDate
         limit #{startIndex},#{pageSize}
     </select>
 

@@ -52,5 +52,6 @@
     <select id="findListByQuery" parameterType="MetaProjectQO" resultType="MetaProjectListVO">
         select * from meta_project t
         where t.delSign=0
+        order by t.createDate
     </select>
 </mapper>
