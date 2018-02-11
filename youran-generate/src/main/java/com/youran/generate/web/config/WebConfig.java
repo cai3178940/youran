@@ -1,29 +1,34 @@
-<#include "/common.ftl">
-package ${commonPackage}.config;
+package com.youran.generate.web.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
+import org.apache.commons.io.IOUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 
-<@classCom "通用自动配置"></@classCom>
-public class CommonAutoConfiguration {
+/**
+ * Title:
+ * Description:
+ * Author: cbb
+ * Create Time: 2018/2/11 16:21
+ */
+@Configuration
+public class WebConfig {
 
-    @Bean
-    public StartLogCommandLineRunner startLogCommandLineRunner(Environment env){
-        return new StartLogCommandLineRunner(env);
-    }
 
     /**
      * 解决直接返回字符串带引号的bug
@@ -33,6 +38,7 @@ public class CommonAutoConfiguration {
     @ConditionalOnMissingBean(FastJsonHttpMessageConverter4.class)
     public FastJsonHttpMessageConverter4 fastJsonHttpMessageConverter() {
         FastJsonHttpMessageConverter4 fastConverter = new FastJsonHttpMessageConverter4(){
+            @Override
             protected void writeInternal(Object obj, Type type, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
                 HttpHeaders headers = outputMessage.getHeaders();
                 OutputStream out = outputMessage.getBody();
@@ -49,6 +55,17 @@ public class CommonAutoConfiguration {
 
                 outnew.writeTo(out);
                 outnew.close();
+            }
+
+            @Override
+            public Object read(Type type, Class<?> contextClass, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+                if(type!=null && type.equals(String.class)){
+                    InputStream is = inputMessage.getBody();
+                    String input = IOUtils.toString(is, "UTF-8");
+                    return input;
+
+                }
+                return super.read(type, contextClass, inputMessage);
             }
         };
         FastJsonConfig fastJsonConfig = new FastJsonConfig();

@@ -1,4 +1,5 @@
-package com.youran.common.util;
+<#include "/common.ftl">
+package ${packageName}.web.util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
@@ -8,12 +9,7 @@ import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Title: IP工具
- * Description:
- * Author: cbb
- * Create Time:2017/5/20 12:59
- */
+<@classCom "IP工具"></@classCom>
 public class IpUtil {
 
     /**

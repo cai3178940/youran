@@ -25,10 +25,6 @@ public enum TemplateEnum {
      */
     MybatisConfig(COMMON, "resources/mybatis-config.xml.ftl"),
     /**
-     * spring boot自动配置文件
-     */
-    SpringFactories(COMMON,"resources/META-INF/spring.factories.ftl"),
-    /**
      * mybatis的SQL脚本文件
      */
     MybatisMapper(ENTITY, "resources/{packageName}/mapper/{ClassName}Mapper.xml.ftl"),
@@ -39,14 +35,6 @@ public enum TemplateEnum {
      * 登录上下文接口
      */
     CommonLoginContext(COMMON,"sources/{commonPackage}/LoginContext.java.ftl"),
-    /**
-     * 通用自动配置
-     */
-    CommonAutoConfiguration(COMMON,"sources/{commonPackage}/config/CommonAutoConfiguration.java.ftl"),
-    /**
-     * 打印启动日志
-     */
-    StartLogCommandLineRunner(COMMON,"sources/{commonPackage}/config/StartLogCommandLineRunner.java.ftl"),
     /**
      * 布尔常量
      */
@@ -174,10 +162,6 @@ public enum TemplateEnum {
      */
     H2Util(COMMON,"sources/{commonPackage}/util/H2Util.java.ftl"),
     /**
-     * IP工具
-     */
-    IpUtil(COMMON,"sources/{commonPackage}/util/IpUtil.java.ftl"),
-    /**
      * 封装json操作
      */
     JsonUtil(COMMON,"sources/{commonPackage}/util/JsonUtil.java.ftl"),
@@ -278,14 +262,25 @@ public enum TemplateEnum {
      */
     API(ENTITY, "sources/{packageName}/web/api/{ClassName}API.java.ftl"),
     /**
+     * 打印启动日志
+     */
+    StartLogCommandLineRunner(COMMON,"sources/{packageName}/web/config/StartLogCommandLineRunner.java.ftl"),
+    /**
      * swagger配置开关
      */
     SwaggerConfig(COMMON, "sources/{packageName}/web/config/SwaggerConfig.java.ftl"),
     /**
+     * web相关配置
+     */
+    WebConfig(COMMON,"sources/{packageName}/web/config/WebConfig.java.ftl"),
+    /**
      * controller模版
      */
     Controller(ENTITY, "sources/{packageName}/web/rest/{ClassName}Controller.java.ftl"),
-
+    /**
+     * IP工具
+     */
+    IpUtil(COMMON, "sources/{packageName}/web/util/IpUtil.java.ftl"),
 
 
 

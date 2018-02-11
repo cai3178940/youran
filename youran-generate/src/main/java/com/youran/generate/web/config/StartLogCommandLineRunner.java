@@ -1,17 +1,21 @@
-package com.youran.common.config;
+package com.youran.generate.web.config;
 
-import com.youran.common.util.IpUtil;
+import com.youran.generate.util.IpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 /**
- * 打印启动日志
- * @author cbb
+ * Title: 打印启动日志
+ * Description:
+ * Author: cbb
+ * Create Time: 2018/1/16 09:32
  */
+@Component
 public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
 
     private static final Logger LOG = LoggerFactory.getLogger(StartLogCommandLineRunner.class);
