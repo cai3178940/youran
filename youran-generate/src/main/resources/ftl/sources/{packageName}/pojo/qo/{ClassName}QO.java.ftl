@@ -16,7 +16,7 @@ public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if>
     @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
         <#assign importDate=true>
-    @JSONField(format = JsonFieldConst.DEFAULT_DATE_FORMAT)
+    @JSONField(format = JsonFieldConst.DEFAULT_DATETIME_FORMAT)
     </#if>
     private ${field.jfieldType} ${field.jfieldName}${suffix};
 

@@ -7,7 +7,7 @@
 <@classCom "【${title}】控制器"></@classCom>
 @RestController
 @RequestMapping("/${cName}")
-public class ${CName}Controller implements ${CName}API {
+public class ${CName}Controller extends AbstractController implements ${CName}API {
 
     @Autowired
     private ${CName}Service ${cName}Service;
@@ -133,6 +133,7 @@ import ${packageName}.pojo.vo.${CName}ListVO;
 import ${packageName}.pojo.dto.${CName}UpdateDTO;
 import ${packageName}.pojo.vo.${CName}ShowVO;
 import ${packageName}.service.${CName}Service;
+import ${packageName}.web.AbstractController;
 import ${packageName}.web.api.${CName}API;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;

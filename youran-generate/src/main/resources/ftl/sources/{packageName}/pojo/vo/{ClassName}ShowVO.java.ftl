@@ -13,7 +13,7 @@ public class ${CName}ShowVO extends AbstractVO {
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
         <#assign importDate=true>
-    @JSONField(format = JsonFieldConst.DEFAULT_DATE_FORMAT)
+    @JSONField(format = JsonFieldConst.DEFAULT_DATETIME_FORMAT)
     <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
         <#assign importBigDecimal=true>
     </#if>

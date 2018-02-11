@@ -254,6 +254,10 @@ public enum TemplateEnum {
      */
     Service(ENTITY, "sources/{packageName}/service/{ClassName}Service.java.ftl"),
     /**
+     * AbstractController模版
+     */
+    AbstractController(COMMON, "sources/{packageName}/web/AbstractController.java.ftl"),
+    /**
      * 异常信息展示
      */
     ExceptionTranslator(COMMON, "sources/{packageName}/web/advice/ExceptionTranslator.java.ftl"),
