@@ -278,6 +278,10 @@ public enum TemplateEnum {
      */
     API(ENTITY, "sources/{packageName}/web/api/{ClassName}API.java.ftl"),
     /**
+     * swagger配置开关
+     */
+    SwaggerConfig(COMMON, "sources/{packageName}/web/config/SwaggerConfig.java.ftl"),
+    /**
      * controller模版
      */
     Controller(ENTITY, "sources/{packageName}/web/rest/{ClassName}Controller.java.ftl"),

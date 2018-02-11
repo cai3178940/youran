@@ -1,6 +1,5 @@
 package com.youran.generate;
 
-import com.didispace.swagger.EnableSwagger2Doc;
 import com.youran.common.optimistic.EnableOptimisticLock;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +13,6 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  * Create Time:2017/9/20 18:00
  */
 @SpringBootApplication
-@EnableSwagger2Doc
 @EnableOptimisticLock
 public class GenerateApp extends SpringBootServletInitializer {
 
