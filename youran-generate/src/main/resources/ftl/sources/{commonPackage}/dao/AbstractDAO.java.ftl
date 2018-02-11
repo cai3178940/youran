@@ -1,7 +1,7 @@
 <#include "/common.ftl">
 package ${commonPackage}.dao;
 
-import ${commonPackage}.LoginContext;
+import ${commonPackage}.context.LoginContext;
 import ${commonPackage}.optimistic.OptimisticException;
 import ${commonPackage}.pojo.qo.PageQO;
 import ${commonPackage}.pojo.po.AbstractPO;

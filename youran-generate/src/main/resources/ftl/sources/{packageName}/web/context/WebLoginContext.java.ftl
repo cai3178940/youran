@@ -1,12 +1,12 @@
 <#include "/common.ftl">
-package ${packageName}.config;
+package ${packageName}.web.context;
 
-import ${commonPackage}.LoginContext;
+import ${commonPackage}.context.LoginContext;
 import org.springframework.stereotype.Component;
 
-<@classCom "登录用户上下文"></@classCom>
+<@classCom "web登录用户上下文"></@classCom>
 @Component
-public class ${ProjectName}LoginContext implements LoginContext{
+public class WebLoginContext implements LoginContext{
 
     /**
      * 获取当前操作员id

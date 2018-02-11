@@ -32,10 +32,6 @@ public enum TemplateEnum {
 
 
     /**
-     * 登录上下文接口
-     */
-    CommonLoginContext(COMMON,"sources/{commonPackage}/LoginContext.java.ftl"),
-    /**
      * 布尔常量
      */
     BoolConst(COMMON,"sources/{commonPackage}/constant/BoolConst.java.ftl"),
@@ -47,6 +43,10 @@ public enum TemplateEnum {
      * json常量
      */
     JsonFieldConst(COMMON,"sources/{commonPackage}/constant/JsonFieldConst.java.ftl"),
+    /**
+     * 登录上下文接口
+     */
+    CommonLoginContext(COMMON,"sources/{commonPackage}/context/LoginContext.java.ftl"),
     /**
      * DAO超类
      */
@@ -194,10 +194,6 @@ public enum TemplateEnum {
      */
     Configuration(COMMON, "sources/{packageName}/config/{ProjectName}Configuration.java.ftl"),
     /**
-     * loginContext模版
-     */
-    LoginContext(COMMON, "sources/{packageName}/config/{ProjectName}LoginContext.java.ftl"),
-    /**
      * 属性配置类模版
      */
     Properties(COMMON, "sources/{packageName}/config/{ProjectName}Properties.java.ftl"),
@@ -277,6 +273,10 @@ public enum TemplateEnum {
      * web相关配置
      */
     WebConfig(COMMON,"sources/{packageName}/web/config/WebConfig.java.ftl"),
+    /**
+     * WebloginContext模版
+     */
+    WebLoginContext(COMMON, "sources/{packageName}/web/context/WebLoginContext.java.ftl"),
     /**
      * controller模版
      */
