@@ -24,7 +24,15 @@ public class ${CName}Service {
     private ${otherCName}DAO ${othercName}DAO;
     </#list>
 </#if>
-
+<#if metaEntity.mtmUnHoldRefers??>
+    <#list metaEntity.mtmUnHoldRefers as otherEntity>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign importOtherDAOStr+="import ${packageName}.dao.${otherCName}DAO;\n">
+    @Autowired
+    private ${otherCName}DAO ${othercName}DAO;
+    </#list>
+</#if>
     /**
      * 新增【${title}】
      * @param ${cName}DTO
@@ -139,6 +147,13 @@ public class ${CName}Service {
     public int delete(${type}... ${id}s) {
         int count = 0;
         for (${type} ${id} : ${id}s) {
+    <#if metaEntity.mtmUnHoldRefers??>
+        <#list metaEntity.mtmUnHoldRefers as otherEntity>
+            <#assign otherCName=otherEntity.className?capFirst>
+            //校验是否存在【${otherEntity.title}】绑定
+            this.check${otherCName}(${id});
+        </#list>
+    </#if>
         <#if metaEntity.delField??>
             count += ${cName}DAO.delete(${id});
         <#else>
@@ -147,6 +162,23 @@ public class ${CName}Service {
         }
         return count;
     }
+
+<#if metaEntity.mtmUnHoldRefers??>
+    <#list metaEntity.mtmUnHoldRefers as otherEntity>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+    /**
+     * 校验是否存在【${otherEntity.title}】绑定
+     * @param ${id}
+     */
+    private void check${otherCName}(${type} ${id}) {
+        int count = ${othercName}DAO.getCountBy${CName}(${id});
+        if(count>0){
+            throw new ${ProjectName}Exception("${title}和${otherEntity.title}存在依赖关系，请先解除依赖");
+        }
+    }
+    </#list>
+</#if>
 
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>

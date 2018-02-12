@@ -147,12 +147,13 @@
         <#assign thePkId=MetadataUtil.getPkAlias(cName,false)>
         <#assign other_pk_id=MetadataUtil.getPkAlias(othercName,true)>
         <#assign the_pk_id=MetadataUtil.getPkAlias(cName,true)>
+        <#assign wrapMtmTableName=MetadataUtil.wrapMysqlKeyword(mtm.tableName)>
 
     <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${CName}PO">
         select
             <include refid="${cName}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
-        inner join ${MetadataUtil.wrapMysqlKeyword(mtm.tableName)} r
+        inner join ${wrapMtmTableName} r
             on t.${pk.fieldName}=r.${the_pk_id}
         where
             r.${other_pk_id}=${r'#'}{arg0}
@@ -175,9 +176,21 @@
     </delete>
 
     <delete id="removeAll${otherCName}">
-        delete from ${mtm.tableName}
+        delete from ${wrapMtmTableName}
         where ${the_pk_id}=${r'#'}{arg0}
     </delete>
+
+    <select id="getCountBy${otherCName}" parameterType="${otherType}" resultType="int">
+        select count(1)
+        from ${wrapTableName} t
+        inner join ${wrapMtmTableName} r
+            on t.${pk.fieldName}=r.${the_pk_id}
+        where
+            r.${other_pk_id}=${r'#'}{arg0}
+        <#if delField??>
+            and t.${wrapDelFieldName}=0
+        </#if>
+    </select>
 
     </#list>
 </#if>
@@ -190,12 +203,13 @@
         <#assign otherType=otherPk.jfieldType>
         <#assign other_pk_id=MetadataUtil.getPkAlias(othercName,true)>
         <#assign the_pk_id=MetadataUtil.getPkAlias(cName,true)>
+        <#assign wrapMtmTableName=MetadataUtil.wrapMysqlKeyword(mtm.tableName)>
 
     <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${CName}PO">
         select
             <include refid="${cName}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
-        inner join ${MetadataUtil.wrapMysqlKeyword(mtm.tableName)} r
+        inner join ${wrapMtmTableName} r
         on t.${pk.fieldName}=r.${the_pk_id}
         where
         r.${other_pk_id}=${r'#'}{arg0}

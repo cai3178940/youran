@@ -58,6 +58,10 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
         return sqlSession.delete(getMybatisNamespace()+".removeAll${otherCName}", ${thePkId});
     }
 
+    public int getCountBy${otherCName}(${otherType} ${otherPkId}) {
+        return sqlSession.selectOne(getMybatisNamespace()+".getCountBy${otherCName}", ${otherPkId});
+    }
+
     </#list>
 </#if>
 <#if metaEntity.mtmUnHoldRefers??>
