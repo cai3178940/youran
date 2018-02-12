@@ -36,8 +36,16 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
         <#assign otherType=entity.pkField.jfieldType>
         <#assign thePkId=MetadataUtil.getPkAlias(cName,false)>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
+    public int getCountBy${otherCName}(${otherType} ${otherPkId}) {
+        return sqlSession.selectOne(getMybatisNamespace()+".getCountBy${otherCName}", ${otherPkId});
+    }
+
     public List<${CName}PO> findBy${otherCName}(${otherType} ${otherPkId}) {
         return sqlSession.selectList(getMybatisNamespace()+".findBy${otherCName}", ${otherPkId});
+    }
+
+    public List<${CName}ListVO> findVOBy${otherCName}(${otherType} ${otherPkId}) {
+        return sqlSession.selectList(getMybatisNamespace()+".findVOBy${otherCName}", ${otherPkId});
     }
 
     public int add${otherCName}(${type} ${thePkId},${otherType} ${otherPkId}) {
@@ -58,10 +66,6 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
         return sqlSession.delete(getMybatisNamespace()+".removeAll${otherCName}", ${thePkId});
     }
 
-    public int getCountBy${otherCName}(${otherType} ${otherPkId}) {
-        return sqlSession.selectOne(getMybatisNamespace()+".getCountBy${otherCName}", ${otherPkId});
-    }
-
     </#list>
 </#if>
 <#if metaEntity.mtmUnHoldRefers??>
@@ -73,6 +77,10 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     public List<${CName}PO> findBy${otherCName}(${otherType} ${otherPkId}) {
         return sqlSession.selectList(getMybatisNamespace()+".findBy${otherCName}", ${otherPkId});
+    }
+
+    public List<${CName}ListVO> findVOBy${otherCName}(${otherType} ${otherPkId}) {
+        return sqlSession.selectList(getMybatisNamespace()+".findVOBy${otherCName}", ${otherPkId});
     }
 
     </#list>

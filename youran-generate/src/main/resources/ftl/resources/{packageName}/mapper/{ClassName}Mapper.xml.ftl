@@ -149,7 +149,32 @@
         <#assign the_pk_id=MetadataUtil.getPkAlias(cName,true)>
         <#assign wrapMtmTableName=MetadataUtil.wrapMysqlKeyword(mtm.tableName)>
 
+    <select id="getCountBy${otherCName}" parameterType="${otherType}" resultType="int">
+        select count(1)
+        from ${wrapTableName} t
+        inner join ${wrapMtmTableName} r
+            on t.${pk.fieldName}=r.${the_pk_id}
+        where
+            r.${other_pk_id}=${r'#'}{arg0}
+        <#if delField??>
+            and t.${wrapDelFieldName}=0
+        </#if>
+    </select>
+
     <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${CName}PO">
+        select
+            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+        from ${wrapTableName} t
+        inner join ${wrapMtmTableName} r
+            on t.${pk.fieldName}=r.${the_pk_id}
+        where
+            r.${other_pk_id}=${r'#'}{arg0}
+        <#if delField??>
+            and t.${wrapDelFieldName}=0
+        </#if>
+    </select>
+
+    <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${CName}ListVO">
         select
             <include refid="${cName}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
@@ -180,18 +205,6 @@
         where ${the_pk_id}=${r'#'}{arg0}
     </delete>
 
-    <select id="getCountBy${otherCName}" parameterType="${otherType}" resultType="int">
-        select count(1)
-        from ${wrapTableName} t
-        inner join ${wrapMtmTableName} r
-            on t.${pk.fieldName}=r.${the_pk_id}
-        where
-            r.${other_pk_id}=${r'#'}{arg0}
-        <#if delField??>
-            and t.${wrapDelFieldName}=0
-        </#if>
-    </select>
-
     </#list>
 </#if>
 <#if metaEntity.mtmUnHoldRefers??>
@@ -206,6 +219,19 @@
         <#assign wrapMtmTableName=MetadataUtil.wrapMysqlKeyword(mtm.tableName)>
 
     <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${CName}PO">
+        select
+            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+        from ${wrapTableName} t
+        inner join ${wrapMtmTableName} r
+        on t.${pk.fieldName}=r.${the_pk_id}
+        where
+        r.${other_pk_id}=${r'#'}{arg0}
+        <#if delField??>
+            and t.${wrapDelFieldName}=0
+        </#if>
+    </select>
+
+    <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${CName}ListVO">
         select
             <include refid="${cName}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t

@@ -135,6 +135,14 @@ public class ${CName}Service {
     public ${CName}ShowVO show(${type} ${id}) {
         ${CName}PO ${cName} = this.get${CName}(${id}, true);
         ${CName}ShowVO showVO = ${CName}Mapper.INSTANCE.toShowVO(${cName});
+<#if metaEntity.mtmHoldRefers??>
+    <#list metaEntity.mtmHoldRefers as otherEntity>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        //设置【${otherEntity.title}】列表
+        showVO.set${otherCName}List(${othercName}DAO.findVOBy${CName}(${id}));
+    </#list>
+</#if>
         return showVO;
     }
 
