@@ -1,5 +1,6 @@
 package com.youran.generate.web.advice;
 
+import com.alibaba.fastjson.JSONException;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.pojo.vo.FieldErrorVO;
 import com.youran.common.pojo.vo.ReplyVO;
@@ -117,6 +118,17 @@ public class ExceptionTranslator {
         return new ReplyVO(ErrorCode.INTERNAL_SERVER_ERROR.getValue(), "重复操作");
     }
 
+    /**
+     * json解析异常
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(JSONException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ReplyVO processJSONException(JSONException ex) {
+        return new ReplyVO(ErrorCode.INTERNAL_SERVER_ERROR.getValue(), "参数格式有误："+ex.getMessage());
+    }
 
     /**
      * 自定义异常捕获

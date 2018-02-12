@@ -1,6 +1,7 @@
 <#include "/common.ftl">
 package ${packageName}.web.advice;
 
+import com.alibaba.fastjson.JSONException;
 import ${commonPackage}.constant.ErrorCode;
 import ${commonPackage}.pojo.vo.FieldErrorVO;
 import ${commonPackage}.pojo.vo.ReplyVO;
@@ -113,6 +114,17 @@ public class ExceptionTranslator {
         return new ReplyVO(ErrorCode.INTERNAL_SERVER_ERROR.getValue(), "重复操作");
     }
 
+    /**
+     * json解析异常
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(JSONException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ReplyVO processJSONException(JSONException ex) {
+        return new ReplyVO(ErrorCode.INTERNAL_SERVER_ERROR.getValue(), "参数格式有误："+ex.getMessage());
+    }
 
     /**
      * 自定义异常捕获
