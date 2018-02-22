@@ -32,6 +32,14 @@ export default {
           }
         })
       },
+      //查询字段下拉列表
+      getFieldOptions:function(entityId){
+        return ajax.get('/generate/meta_field/list', {
+          params:{
+            entityId
+          }
+        })
+      },
       //查询枚举下拉列表
       getConstOptions:function(projectId){
         return ajax.get('/generate/meta_const/list', {

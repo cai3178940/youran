@@ -38,7 +38,7 @@
       </el-table-column>
       <el-table-column label="字段">
         <template slot-scope="scope">
-            {{scope.fields | renderFields}}
+            {{scope.row.fields | renderFields}}
         </template>
       </el-table-column>
       <el-table-column
