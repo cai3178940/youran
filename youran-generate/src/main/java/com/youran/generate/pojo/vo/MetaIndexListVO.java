@@ -2,6 +2,8 @@ package com.youran.generate.pojo.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 import static com.youran.generate.pojo.example.MetaIndexExample.*;
 
 /**
@@ -24,8 +26,8 @@ public class MetaIndexListVO {
     @ApiModelProperty(notes = N_UNIQUE, example = E_UNIQUE)
     private Integer unique;
 
-    @ApiModelProperty(notes = N_FIELDIDS, example = E_FIELDIDS)
-    private String fieldIds;
+    @ApiModelProperty(notes = "字段列表")
+    private List<MetaFieldListVO> fields;
 
     public Integer getIndexId() {
         return indexId;
@@ -59,11 +61,11 @@ public class MetaIndexListVO {
         this.unique = unique;
     }
 
-    public String getFieldIds() {
-        return fieldIds;
+    public List<MetaFieldListVO> getFields() {
+        return fields;
     }
 
-    public void setFieldIds(String fieldIds) {
-        this.fieldIds = fieldIds;
+    public void setFields(List<MetaFieldListVO> fields) {
+        this.fields = fields;
     }
 }

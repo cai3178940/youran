@@ -4,6 +4,11 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.youran.generate.mapper.MetaIndexMapper">
 
+    <resultMap type="MetaIndexListVO" id="metaIndexListResultMap">
+        <id column="indexId" property="indexId"></id>
+        <collection property="fields" javaType="ArrayList" column="indexId" ofType="MetaFieldListVO" select="com.youran.generate.mapper.MetaIndexFieldMapper.findByIndexId"/>
+    </resultMap>
+
     <select id="findById" resultType="MetaIndexPO">
         select * from meta_index
         where delSign=0
@@ -48,7 +53,7 @@
         and delSign=0
     </delete>
 
-    <select id="findListByQuery" parameterType="MetaIndexQO" resultType="MetaIndexListVO">
+    <select id="findListByQuery" parameterType="MetaIndexQO"  resultMap="metaIndexListResultMap">
         select * from meta_index t
         where t.delSign=0
         and t.entityId = #{entityId,jdbcType=INTEGER}

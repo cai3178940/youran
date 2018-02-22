@@ -18,7 +18,14 @@
         where indexId = #{indexId,jdbcType=INTEGER}
     </delete>
 
-    <select id="findByIndexId" resultType="int">
+    <select id="findByIndexId" resultType="MetaFieldListVO">
+        select t.*
+        from meta_field t
+            inner join meta_index_field r on t.fieldId=r.fieldId
+        where r.indexId = #{indexId,jdbcType=INTEGER}
+    </select>
+
+    <select id="findIdsByIndexId" resultType="int">
         select fieldId from meta_index_field
         where indexId = #{indexId,jdbcType=INTEGER}
     </select>

@@ -1,6 +1,5 @@
 package com.youran.generate.service;
 
-import com.google.common.base.Joiner;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.ConvertUtil;
 import com.youran.generate.dao.MetaEntityDAO;
@@ -9,13 +8,13 @@ import com.youran.generate.dao.MetaIndexDAO;
 import com.youran.generate.dao.MetaIndexFieldDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
-import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaIndexMapper;
 import com.youran.generate.pojo.po.MetaIndexPO;
+import com.youran.generate.pojo.qo.MetaIndexQO;
+import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaIndexListVO;
 import com.youran.generate.pojo.vo.MetaIndexShowVO;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,12 +111,6 @@ public class MetaIndexService {
      */
     public List<MetaIndexListVO> list(MetaIndexQO metaIndexQO) {
         List<MetaIndexListVO> list = metaIndexDAO.findByQuery(metaIndexQO);
-        if (CollectionUtils.isNotEmpty(list)) {
-            for (MetaIndexListVO metaIndexListVO : list) {
-                List<Integer> fieldIds = metaIndexFieldDAO.findByIndexId(metaIndexListVO.getIndexId());
-                metaIndexListVO.setFieldIds(Joiner.on(",").join(fieldIds));
-            }
-        }
         return list;
     }
 
@@ -132,8 +125,8 @@ public class MetaIndexService {
             throw new GenerateException("未查询到记录");
         }
         MetaIndexShowVO showVO = MetaIndexMapper.INSTANCE.toShowVO(metaIndex);
-        List<Integer> fieldIds = metaIndexFieldDAO.findByIndexId(showVO.getIndexId());
-        showVO.setFieldIds(Joiner.on(",").join(fieldIds));
+        List<MetaFieldListVO> fields = metaIndexFieldDAO.findByIndexId(showVO.getIndexId());
+        showVO.setFields(fields);
         return showVO;
     }
 

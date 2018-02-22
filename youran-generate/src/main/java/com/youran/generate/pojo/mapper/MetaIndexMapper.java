@@ -5,6 +5,7 @@ import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.vo.MetaIndexShowVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
@@ -38,6 +39,7 @@ public interface MetaIndexMapper {
      * @param metaIndexPO
      * @return
      */
+    @Mapping(target = "fields",ignore = true)
     MetaIndexShowVO toShowVO(MetaIndexPO metaIndexPO);
 
 }

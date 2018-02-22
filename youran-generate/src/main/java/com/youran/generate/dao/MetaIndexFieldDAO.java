@@ -2,6 +2,7 @@ package com.youran.generate.dao;
 
 import com.youran.common.dao.AbstractDAO;
 import com.youran.generate.pojo.po.MetaIndexFieldPO;
+import com.youran.generate.pojo.vo.MetaFieldListVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -23,12 +24,21 @@ public class MetaIndexFieldDAO extends AbstractDAO<MetaIndexFieldPO> {
     }
 
     /**
+     * 根据索引id查询字段列表
+     * @param indexId
+     * @return
+     */
+    public List<MetaFieldListVO> findByIndexId(Integer indexId) {
+        return sqlSession.selectList(getMybatisNamespace()+".findByIndexId",indexId);
+    }
+
+    /**
      * 根据索引id查询关联列表
      * @param indexId
      * @return
      */
-    public List<Integer> findByIndexId(Integer indexId) {
-        return sqlSession.selectList(getMybatisNamespace()+".findByIndexId",indexId);
+    public List<Integer> findIdsByIndexId(Integer indexId) {
+        return sqlSession.selectList(getMybatisNamespace()+".findIdsByIndexId",indexId);
     }
 
     /**

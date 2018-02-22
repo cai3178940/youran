@@ -128,7 +128,7 @@ public class MetadataQueryService {
         //索引中填充字段对象
         if (CollectionUtils.isNotEmpty(metaIndices)) {
             for (MetaIndexPO metaIndex : metaIndices) {
-                List<Integer> fieldIds = metaIndexFieldDAO.findByIndexId(metaIndex.getIndexId());
+                List<Integer> fieldIds = metaIndexFieldDAO.findIdsByIndexId(metaIndex.getIndexId());
                 if (CollectionUtils.isEmpty(fieldIds)) {
                     throw new GenerateException("索引有误，缺少索引字段，entityId=" + entityId + ",indexId=" + metaIndex.getIndexId());
                 }

@@ -46,6 +46,7 @@
           <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
           <el-button @click="handleField(scope.row)" type="text" size="medium">字段管理</el-button>
+          <el-button @click="handleIndex(scope.row)" type="text" size="medium">索引管理</el-button>
           <el-button @click="handleSqlPreview(scope.row)" type="text" size="medium">sql预览</el-button>
         </template>
       </el-table-column>
@@ -163,6 +164,9 @@
       },
       handleField: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/${row.entityId}/field`)
+      },
+      handleIndex: function (row) {
+        this.$router.push(`/project/${this.projectId}/entity/${row.entityId}/index`)
       },
       handleEdit: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/edit/${row.entityId}`)
