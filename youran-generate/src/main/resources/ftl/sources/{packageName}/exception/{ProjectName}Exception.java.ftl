@@ -13,7 +13,7 @@ public class ${ProjectName}Exception extends RuntimeException{
     }
 
     public ${ProjectName}Exception(String message) {
-    super(message);
+        super(message);
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
