@@ -38,13 +38,12 @@
           {{ scope.row.jfieldName }} / {{ scope.row.fieldName }}
         </template>
       </el-table-column>
-      <el-table-column label="字段类型" width="150px">
+      <el-table-column label="字段类型" width="200px">
         <template slot-scope="scope">
           {{ scope.row.jfieldType | optionLabel('jfieldTypeOptions')}}
-          / {{ scope.row.fieldType | optionLabel('fieldTypeOptions') }}
+          / {{ scope.row.fieldType | optionLabel('fieldTypeOptions') }}({{ scope.row.fieldLength }}<template v-if="scope.row.fieldType=='decimal'">,{{ scope.row.fieldScale }}</template>)
         </template>
       </el-table-column>
-      <el-table-column property="fieldLength" label="字段长度" width="80px"></el-table-column>
       <el-table-column label="非空" width="50px">
         <template slot-scope="scope">
           <icon v-if="scope.row.notNull==1" name="check" class="color-success"></icon>
