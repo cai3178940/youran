@@ -40,9 +40,9 @@
         label="操作"
         width="180">
         <template slot-scope="scope">
-          <el-button @click="handleConstDetail(scope.row)" type="text" size="small">枚举值管理</el-button>
-          <el-button @click="handleShow(scope.row)" type="text" size="small">查看</el-button>
-          <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
+          <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
+          <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
+          <el-button @click="handleConstDetail(scope.row)" type="text" size="medium">枚举值管理</el-button>
         </template>
       </el-table-column>
     </el-table>

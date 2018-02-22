@@ -22,13 +22,30 @@
         label="操作"
         width="250">
         <template slot-scope="scope">
-          <el-button @click="handleEntity(scope.row)" type="text" size="small">实体管理</el-button>
-          <el-button @click="handleConst(scope.row)" type="text" size="small">枚举管理</el-button>
-          <el-button @click="handleMtm(scope.row)" type="text" size="small">多对多管理</el-button>
-          <el-button @click="handleShow(scope.row)" type="text" size="small">查看</el-button>
-          <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
-          <el-button @click="handleGenCode(scope.row)" type="text" size="small">生成代码</el-button>
-          <el-button @click="handleGenSql(scope.row)" type="text" size="small">生成sql</el-button>
+          <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
+          <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
+          <el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">
+            <span class="el-dropdown-link">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :command="{method:'handleEntity',arg:scope.row}" >
+                <icon name="cubes" scale="0.8" ></icon> 实体管理
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleConst',arg:scope.row}" >
+                <icon name="navicon" scale="0.8" ></icon> 枚举管理
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleMtm',arg:scope.row}" >
+                <icon name="th-list" scale="0.8" ></icon> 多对多管理
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
+                <icon name="file-zip-o" scale="0.8" ></icon> 生成代码
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleGenSql',arg:scope.row}" >
+                <icon name="file-code-o" scale="0.8" ></icon> 生成sql
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -95,6 +112,9 @@
       },
       handleGenCode: function (row) {
         window.open(`${this.$common.BASE_API_URL}/generate/code_gen/genCode?projectId=${row.projectId}`)
+      },
+      handleCommand: function (command) {
+        this[command.method](command.arg);
       }
     },
     activated: function () {

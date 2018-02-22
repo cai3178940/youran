@@ -10,3 +10,7 @@
 .color-warning{
   color:#eb9e05;
 }
+.el-dropdown-link{
+  cursor:pointer;
+  color:#409EFF
+}
