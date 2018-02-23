@@ -59,6 +59,20 @@
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="是否外键" prop="foreignKey">
+            <el-radio-group v-model="form.foreignKey">
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="外键字段">
+            <el-cascader
+              :disabled="foreignFieldDisabled"
+              placeholder="请选择"
+              :options="entityFieldOptions"
+              v-model="foreignField"
+              @active-item-change="handleForeignEntityChange">
+            </el-cascader>
+          </el-form-item>
           <el-form-item label="特殊字段类型" prop="specialField">
             <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
               <el-option
@@ -164,6 +178,12 @@
     defaultValue:'',
     //不能为空
     notNull: 0,
+    //是否外键
+    foreignKey: 0,
+    //外键实体id
+    foreignEntityId: null,
+    //外键字段id
+    foreignFieldId: null,
     //特殊字段类型
     specialField: '',
     //字段示例
@@ -202,11 +222,14 @@
         jfieldTypeOptions: options.jfieldTypeOptions,
         queryTypeOptions: options.queryTypeOptions,
         specialFieldOptions: options.specialFieldOptions,
+        entityFieldOptions:[],
         constList:null,
         notNullDisabled:false,
         autoIncrementDisabled:true,
         queryTypeDisabled:true,
         specialFieldDisabled:false,
+        foreignField:[0,0],
+        foreignFieldDisabled: false,
         old: {
           ...fieldModel
         },
@@ -246,6 +269,9 @@
           ],
           notNull: [
             {required: true, type: 'number', message: '请选择不能为空', trigger: 'change'},
+          ],
+          foreignKey: [
+            {required: true, type: 'number', message: '请选择是否外键', trigger: 'change'},
           ],
           fieldExample: [
             {required: true, message: '请输入字段示例', trigger: 'blur'},
@@ -305,6 +331,13 @@
           this.autoIncrementDisabled=true
         }
       },
+      'form.foreignKey':function (value) {
+        if(value==1){
+          this.foreignFieldDisabled=false
+        }else{
+          this.foreignFieldDisabled=true
+        }
+      },
       'form.query':function (value) {
         if(value==1){
           this.queryTypeDisabled=false
@@ -320,6 +353,22 @@
       }
     },
     methods: {
+      initForeignEntityOptions: function () {
+        return this.$common.getEntityOptions(this.projectId)
+          .then(response => this.$common.checkResult(response.data))
+          .then(result => this.entityFieldOptions = result.data.entities.map(entity=>({value:entity.entityId,label:entity.title,children:[]})))
+      },
+      handleForeignEntityChange: function (optionArray) {
+        var entityId = optionArray[0]
+        //获取被激活的option
+        var entity = this.entityFieldOptions.find(option=>option.value==entityId)
+        if(entity.children.length){
+          return
+        }
+        return this.$common.getFieldOptions(entityId)
+          .then(response => this.$common.checkResult(response.data))
+          .then(result => entity.children = result.data.map(field=>({value:field.fieldId,label:field.fieldDesc})))
+      },
       //查询可用枚举字典
       queryDicType: function (queryString, cb) {
         //定义回调操作
@@ -358,6 +407,8 @@
         if(this.form.fieldType!='decimal'){
           this.form.fieldScale=null
         }
+        this.form.foreignEntityId = this.foreignField[0]
+        this.form.foreignFieldId = this.foreignField[1]
         //校验表单
         this.$refs.editForm.validate()
         //提交表单
@@ -376,8 +427,12 @@
       }
     },
     created: function () {
-      this.getField()
+      Promise.all([this.getField(),this.initForeignEntityOptions()])
         .then(() => this.reset())
+        .then(()=>this.handleForeignEntityChange([this.form.foreignEntityId]))
+        .then(()=>{
+          this.foreignField = [this.form.foreignEntityId,this.form.foreignFieldId]
+        })
     }
   }
 </script>

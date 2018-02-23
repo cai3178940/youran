@@ -41,6 +41,7 @@ public class MetaFieldData {
         dto.setNotNull(SafeUtil.getInteger(E_NOTNULL));
         dto.setOrderNo(SafeUtil.getInteger(E_ORDERNO));
         dto.setPrimaryKey(SafeUtil.getInteger(E_PRIMARYKEY));
+        dto.setForeignKey(SafeUtil.getInteger(E_FOREIGNKEY));
         dto.setQuery(SafeUtil.getInteger(E_QUERY));
         dto.setQueryType(SafeUtil.getInteger(E_QUERYTYPE));
         dto.setShow(SafeUtil.getInteger(E_SHOW));
@@ -82,6 +83,9 @@ public class MetaFieldData {
         metaFieldUpdateDTO.setShow(metaField.getShow());
         metaFieldUpdateDTO.setUpdate(metaField.getUpdate());
         metaFieldUpdateDTO.setSpecialField(metaField.getSpecialField());
+        metaFieldUpdateDTO.setForeignKey(metaField.getForeignKey());
+        metaFieldUpdateDTO.setForeignEntityId(metaField.getForeignEntityId());
+        metaFieldUpdateDTO.setForeignFieldId(metaField.getForeignFieldId());
         return metaFieldUpdateDTO;
     }
 

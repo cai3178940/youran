@@ -50,9 +50,14 @@
           <icon v-if="scope.row.notNull!=1" name="close" class="color-danger"></icon>
         </template>
       </el-table-column>
-      <el-table-column label="主键" width="50px">
+      <el-table-column label="主外键" width="70px">
         <template slot-scope="scope">
-          <icon v-if="scope.row.primaryKey==1" name="key" class="color-warning"></icon>
+          <el-tooltip class="item" effect="dark" content="主键" placement="right">
+            <icon v-if="scope.row.primaryKey==1" name="key" class="color-warning"></icon>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="外键" placement="right">
+            <icon v-if="scope.row.foreignKey==1" name="key" class="color-primary"></icon>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column property="fieldExample" label="字段示例"></el-table-column>

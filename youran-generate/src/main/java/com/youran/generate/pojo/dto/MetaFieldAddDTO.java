@@ -119,6 +119,17 @@ public class MetaFieldAddDTO extends AbstractDTO {
     @Const(constClass = BoolConst.class)
     private Integer primaryKey;
 
+    @ApiModelProperty(notes = N_FOREIGNKEY, example = E_FOREIGNKEY)
+    @NotNull
+    @Const(constClass = BoolConst.class)
+    private Integer foreignKey;
+
+    @ApiModelProperty(notes = N_FOREIGNENTITYID, example = E_FOREIGNENTITYID)
+    private Integer foreignEntityId;
+
+    @ApiModelProperty(notes = N_FOREIGNFIELDID, example = E_FOREIGNFIELDID)
+    private Integer foreignFieldId;
+
     @ApiModelProperty(notes = N_QUERY, example = E_QUERY)
     @NotNull
     @Const(constClass = BoolConst.class)
@@ -141,6 +152,30 @@ public class MetaFieldAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_SPECIALFIELD, example = E_SPECIALFIELD)
     @Const(constClass = MetaSpecialField.class)
     private String specialField;
+
+    public Integer getForeignEntityId() {
+        return foreignEntityId;
+    }
+
+    public void setForeignEntityId(Integer foreignEntityId) {
+        this.foreignEntityId = foreignEntityId;
+    }
+
+    public Integer getForeignKey() {
+        return foreignKey;
+    }
+
+    public void setForeignKey(Integer foreignKey) {
+        this.foreignKey = foreignKey;
+    }
+
+    public Integer getForeignFieldId() {
+        return foreignFieldId;
+    }
+
+    public void setForeignFieldId(Integer foreignFieldId) {
+        this.foreignFieldId = foreignFieldId;
+    }
 
     public String getFieldExample() {
         return fieldExample;

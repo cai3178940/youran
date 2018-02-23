@@ -52,6 +52,12 @@ public class MetaFieldExample extends AbstractExample {
     public static final String E_ORDERNO = "1";
     public static final String N_PRIMARYKEY = "是否主键";
     public static final String E_PRIMARYKEY = "1";
+    public static final String N_FOREIGNKEY = "是否外键";
+    public static final String E_FOREIGNKEY = "0";
+    public static final String N_FOREIGNENTITYID = "外键实体id";
+    public static final String E_FOREIGNENTITYID = "";
+    public static final String N_FOREIGNFIELDID = "外键字段id";
+    public static final String E_FOREIGNFIELDID = "";
     public static final String N_QUERY = "是否查询字段";
     public static final String E_QUERY = "1";
     public static final String N_QUERYTYPE = "查询方式";

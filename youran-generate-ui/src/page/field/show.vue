@@ -59,6 +59,20 @@
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="是否外键" prop="foreignKey">
+            <el-radio-group :disabled="true" v-model="form.foreignKey">
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="外键字段">
+            <el-cascader
+              :disabled="true"
+              placeholder="请选择"
+              :options="entityFieldOptions"
+              v-model="foreignField"
+              @active-item-change="handleForeignEntityChange">
+            </el-cascader>
+          </el-form-item>
           <el-form-item label="特殊字段类型" prop="specialField">
             <el-select :disabled="true" v-model="form.specialField" style="width:100%;" filterable>
               <el-option
@@ -160,6 +174,12 @@
     defaultValue:'',
     //不能为空
     notNull: 0,
+    //是否外键
+    foreignKey: 0,
+    //外键实体id
+    foreignEntityId: null,
+    //外键字段id
+    foreignFieldId: null,
     //特殊字段类型
     specialField: '',
     //字段示例
@@ -198,12 +218,30 @@
         jfieldTypeOptions: options.jfieldTypeOptions,
         queryTypeOptions: options.queryTypeOptions,
         specialFieldOptions: options.specialFieldOptions,
+        entityFieldOptions:[],
+        foreignField:[0,0],
         form: {
           ...fieldModel
         }
       }
     },
     methods: {
+      initForeignEntityOptions: function () {
+        return this.$common.getEntityOptions(this.projectId)
+          .then(response => this.$common.checkResult(response.data))
+          .then(result => this.entityFieldOptions = result.data.entities.map(entity=>({value:entity.entityId,label:entity.title,children:[]})))
+      },
+      handleForeignEntityChange: function (optionArray) {
+        var entityId = optionArray[0]
+        //获取被激活的option
+        var entity = this.entityFieldOptions.find(option=>option.value==entityId)
+        if(entity.children.length){
+          return
+        }
+        return this.$common.getFieldOptions(entityId)
+          .then(response => this.$common.checkResult(response.data))
+          .then(result => entity.children = result.data.map(field=>({value:field.fieldId,label:field.fieldDesc})))
+      },
       getField: function () {
         return this.$ajax.get(`/generate/meta_field/${this.fieldId}`)
           .then(response => this.$common.checkResult(response.data))
@@ -215,7 +253,11 @@
       }
     },
     created: function () {
-      this.getField()
+      Promise.all([this.getField(),this.initForeignEntityOptions()])
+        .then(()=>this.handleForeignEntityChange([this.form.foreignEntityId]))
+        .then(()=>{
+          this.foreignField = [this.form.foreignEntityId,this.form.foreignFieldId]
+        })
     }
   }
 </script>

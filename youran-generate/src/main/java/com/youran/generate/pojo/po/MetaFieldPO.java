@@ -28,6 +28,9 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
     private Integer autoIncrement;
     private Integer notNull;
     private String defaultValue;
+    private Integer foreignKey;
+    private Integer foreignEntityId;
+    private Integer foreignFieldId;
     private Integer editType;
     private String dicType;
     private Integer insert;
@@ -51,6 +54,30 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
     private Integer version;
 
     private Integer delSign;
+
+    public Integer getForeignEntityId() {
+        return foreignEntityId;
+    }
+
+    public void setForeignEntityId(Integer foreignEntityId) {
+        this.foreignEntityId = foreignEntityId;
+    }
+
+    public Integer getForeignKey() {
+        return foreignKey;
+    }
+
+    public void setForeignKey(Integer foreignKey) {
+        this.foreignKey = foreignKey;
+    }
+
+    public Integer getForeignFieldId() {
+        return foreignFieldId;
+    }
+
+    public void setForeignFieldId(Integer foreignFieldId) {
+        this.foreignFieldId = foreignFieldId;
+    }
 
     public String getFieldExample() {
         return fieldExample;
