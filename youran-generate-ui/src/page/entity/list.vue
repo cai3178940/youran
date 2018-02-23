@@ -45,9 +45,22 @@
         <template slot-scope="scope">
           <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
-          <el-button @click="handleField(scope.row)" type="text" size="medium">字段管理</el-button>
-          <el-button @click="handleIndex(scope.row)" type="text" size="medium">索引管理</el-button>
-          <el-button @click="handleSqlPreview(scope.row)" type="text" size="medium">sql预览</el-button>
+          <el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">
+            <span class="el-dropdown-link">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :command="{method:'handleField',arg:scope.row}" >
+                <icon name="table" scale="0.8" ></icon> 字段管理
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleIndex',arg:scope.row}" >
+                <icon name="rocket" scale="0.8" ></icon> 索引管理
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleSqlPreview',arg:scope.row}" >
+                <icon name="file-o" scale="0.8" ></icon> sql预览
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -65,7 +78,7 @@
     </el-row>
 
 
-    <el-dialog title="查看sql" :visible.sync="sqlPreviewVisible" width="50%">
+    <el-dialog title="sql预览" :visible.sync="sqlPreviewVisible" width="50%">
       <el-input :readonly="true" v-model="sqlPreview" type="textarea" :rows="20"></el-input>
       <div slot="footer" class="dialog-footer">
         <el-button @click="sqlPreviewVisible = false">关 闭</el-button>
@@ -182,6 +195,9 @@
             this.sqlPreviewVisible = true
           })
           .catch(error => this.$common.showNotifyError(error))
+      },
+      handleCommand: function (command) {
+        this[command.method](command.arg);
       }
     },
     activated: function () {
