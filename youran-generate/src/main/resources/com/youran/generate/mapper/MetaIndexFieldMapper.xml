@@ -6,10 +6,10 @@
 
     <insert id="saveBatch">
         insert into meta_index_field (
-        indexId, fieldId)
+        indexId, fieldId, orderNo)
         values
         <foreach collection="fieldIdList" index="index" item="fieldId" separator=",">
-            (#{indexId},#{fieldId})
+            (#{indexId},#{fieldId},#{index})
         </foreach>
     </insert>
 
@@ -23,10 +23,12 @@
         from meta_field t
             inner join meta_index_field r on t.fieldId=r.fieldId
         where r.indexId = #{indexId,jdbcType=INTEGER}
+        order by r.orderNo
     </select>
 
     <select id="findIdsByIndexId" resultType="int">
         select fieldId from meta_index_field
         where indexId = #{indexId,jdbcType=INTEGER}
+        order by orderNo
     </select>
 </mapper>

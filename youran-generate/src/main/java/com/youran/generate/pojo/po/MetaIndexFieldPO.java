@@ -14,6 +14,8 @@ public class MetaIndexFieldPO extends AbstractPO {
 
     private Integer fieldId;
 
+    private Integer orderNo;
+
     public Integer getFieldId() {
         return fieldId;
     }
@@ -28,5 +30,13 @@ public class MetaIndexFieldPO extends AbstractPO {
 
     public void setIndexId(Integer indexId) {
         this.indexId = indexId;
+    }
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
     }
 }

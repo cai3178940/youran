@@ -97,6 +97,7 @@ DROP TABLE IF EXISTS `meta_index_field`;
 CREATE TABLE `meta_index_field` (
   `indexId` int(11) NOT NULL COMMENT '索引id',
   `fieldId` int(11) NOT NULL COMMENT '字段id',
+  `orderNo` int(11) NOT NULL COMMENT '排序号',
   PRIMARY KEY (`indexId`,`fieldId`),
   KEY `i_meta_index_field_0` (`indexId`) USING BTREE,
   KEY `i_meta_index_field_1` (`fieldId`) USING BTREE
