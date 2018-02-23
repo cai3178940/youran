@@ -1,8 +1,8 @@
 # youran-generate-ui
 
-> A Vue.js project
+> 本系统前端页面采用Vue.js+element-ui开发
 
-## Build Setup
+## 构建步骤
 
 ``` bash
 # 安装依赖
@@ -11,7 +11,7 @@ npm install
 # 开发模式热部署启动：localhost:80
 npm run dev
 
-# 生产环境打包，打包目录为/youran-generate/src/main/resources/ui
+# 生产环境打包，发布目录为/youran-generate/src/main/resources/ui
 npm run build
 
 ```
