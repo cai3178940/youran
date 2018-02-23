@@ -109,6 +109,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setJfieldName("id");
         dto.setJfieldType(JFieldType.INTEGER.getJavaType());
         dto.setList(1);
+        dto.setListSort(1);
         dto.setNotNull(1);
         dto.setOrderNo(1);
         dto.setPrimaryKey(1);
@@ -139,6 +140,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setJfieldName("userName");
         dto.setJfieldType(JFieldType.STRING.getJavaType());
         dto.setList(1);
+        dto.setListSort(0);
         dto.setNotNull(1);
         dto.setOrderNo(2);
         dto.setPrimaryKey(0);
@@ -169,6 +171,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setJfieldName("sex");
         dto.setJfieldType(JFieldType.INTEGER.getJavaType());
         dto.setList(1);
+        dto.setListSort(1);
         dto.setNotNull(1);
         dto.setOrderNo(3);
         dto.setPrimaryKey(0);
@@ -199,6 +202,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setJfieldName("birthday");
         dto.setJfieldType(JFieldType.DATE.getJavaType());
         dto.setList(1);
+        dto.setListSort(1);
         dto.setNotNull(0);
         dto.setOrderNo(4);
         dto.setPrimaryKey(0);

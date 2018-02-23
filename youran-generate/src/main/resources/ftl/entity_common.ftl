@@ -20,6 +20,15 @@
 <#if metaEntity.queryFields??>
     <#assign queryFields=metaEntity.queryFields><#--查询字段-->
 </#if>
+<#if metaEntity.showFields??>
+    <#assign showFields=metaEntity.showFields><#--展示字段-->
+</#if>
+<#if metaEntity.listFields??>
+    <#assign listFields=metaEntity.listFields><#--列表字段-->
+</#if>
+<#if metaEntity.listSortFields??>
+    <#assign listSortFields=metaEntity.listSortFields><#--排序字段-->
+</#if>
 <#if metaEntity.createDateField??>
     <#assign createDateField=metaEntity.createDateField><#--创建日期字段-->
 </#if>

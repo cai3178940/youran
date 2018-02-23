@@ -99,6 +99,11 @@ public class MetaFieldAddDTO extends AbstractDTO {
     @Const(constClass = BoolConst.class)
     private Integer list;
 
+    @ApiModelProperty(notes = N_LIST_SORT, example = E_LIST_SORT)
+    @NotNull
+    @Const(constClass = BoolConst.class)
+    private Integer listSort;
+
     @ApiModelProperty(notes = N_NOTNULL, example = E_NOTNULL)
     @NotNull
     @Const(constClass = BoolConst.class)
@@ -271,6 +276,14 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     public void setList(Integer list) {
         this.list = list;
+    }
+
+    public Integer getListSort() {
+        return listSort;
+    }
+
+    public void setListSort(Integer listSort) {
+        this.listSort = listSort;
     }
 
     public Integer getNotNull() {

@@ -33,6 +33,7 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
     private Integer insert;
     private Integer update;
     private Integer list;
+    private Integer listSort;
     private Integer show;
     private Integer query;
     private Integer queryType;
@@ -225,6 +226,14 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
 
     public void setList(Integer list) {
         this.list = list;
+    }
+
+    public Integer getListSort() {
+        return listSort;
+    }
+
+    public void setListSort(Integer listSort) {
+        this.listSort = listSort;
     }
 
     public Integer getQuery() {

@@ -10,7 +10,7 @@
 @ApiModel(description = "【${title}】详情展示对象")
 public class ${CName}ShowVO extends AbstractVO {
 
-<#list metaEntity.showFields as field>
+<#list showFields as field>
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
         <#assign importDate=true>
@@ -34,7 +34,7 @@ public class ${CName}ShowVO extends AbstractVO {
     </#list>
 </#if>
 
-<#list metaEntity.showFields as field>
+<#list showFields as field>
     <@getterSetter field/>
 </#list>
 

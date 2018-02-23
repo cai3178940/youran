@@ -37,6 +37,7 @@ public class MetaFieldData {
         dto.setJfieldName(E_JFIELDNAME);
         dto.setJfieldType(E_JFIELDTYPE);
         dto.setList(SafeUtil.getInteger(E_LIST));
+        dto.setListSort(SafeUtil.getInteger(E_LIST_SORT));
         dto.setNotNull(SafeUtil.getInteger(E_NOTNULL));
         dto.setOrderNo(SafeUtil.getInteger(E_ORDERNO));
         dto.setPrimaryKey(SafeUtil.getInteger(E_PRIMARYKEY));
@@ -72,6 +73,7 @@ public class MetaFieldData {
         metaFieldUpdateDTO.setJfieldName(metaField.getJfieldName());
         metaFieldUpdateDTO.setJfieldType(metaField.getJfieldType());
         metaFieldUpdateDTO.setList(metaField.getList());
+        metaFieldUpdateDTO.setListSort(metaField.getListSort());
         metaFieldUpdateDTO.setNotNull(metaField.getNotNull());
         metaFieldUpdateDTO.setOrderNo(metaField.getOrderNo());
         metaFieldUpdateDTO.setPrimaryKey(metaField.getPrimaryKey());

@@ -82,6 +82,7 @@ public class MetadataQueryService {
         List<MetaFieldPO> insertFields = new ArrayList<>();
         List<MetaFieldPO> updateFields = new ArrayList<>();
         List<MetaFieldPO> listFields = new ArrayList<>();
+        List<MetaFieldPO> listSortFields = new ArrayList<>();
         List<MetaFieldPO> showFields = new ArrayList<>();
         for (MetaFieldPO metaField : fieldList) {
             String specialField = metaField.getSpecialField();
@@ -112,6 +113,9 @@ public class MetadataQueryService {
             if (BoolConst.TRUE == metaField.getList()) {
                 listFields.add(metaField);
             }
+            if (BoolConst.TRUE == metaField.getListSort()) {
+                listSortFields.add(metaField);
+            }
             if (BoolConst.TRUE == metaField.getShow()) {
                 showFields.add(metaField);
             }
@@ -123,6 +127,7 @@ public class MetadataQueryService {
         metaEntity.setInsertFields(insertFields);
         metaEntity.setUpdateFields(updateFields);
         metaEntity.setListFields(listFields);
+        metaEntity.setListSortFields(listSortFields);
         metaEntity.setShowFields(showFields);
         List<MetaIndexPO> metaIndices = metaIndexDAO.findByEntityId(entityId);
         //索引中填充字段对象

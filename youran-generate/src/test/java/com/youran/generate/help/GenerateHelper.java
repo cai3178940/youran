@@ -119,6 +119,7 @@ public class GenerateHelper{
         dto.setQuery(0);
         dto.setQueryType(null);
         dto.setList(1);
+        dto.setListSort(1);
         dto.setShow(1);
         dto.setUpdate(0);
         dto.setSpecialField(MetaSpecialField.CREATE_DATE);
@@ -144,6 +145,7 @@ public class GenerateHelper{
         dto.setQuery(0);
         dto.setQueryType(null);
         dto.setList(1);
+        dto.setListSort(0);
         dto.setShow(1);
         dto.setUpdate(0);
         dto.setSpecialField(MetaSpecialField.CREATE_BY);
@@ -169,6 +171,7 @@ public class GenerateHelper{
         dto.setQuery(0);
         dto.setQueryType(null);
         dto.setList(1);
+        dto.setListSort(1);
         dto.setShow(1);
         dto.setUpdate(0);
         dto.setSpecialField(MetaSpecialField.OPERATE_DATE);
@@ -194,6 +197,7 @@ public class GenerateHelper{
         dto.setQuery(0);
         dto.setQueryType(null);
         dto.setList(1);
+        dto.setListSort(0);
         dto.setShow(1);
         dto.setUpdate(0);
         dto.setSpecialField(MetaSpecialField.OPERATE_BY);
@@ -221,6 +225,7 @@ public class GenerateHelper{
         dto.setQuery(0);
         dto.setQueryType(null);
         dto.setList(0);
+        dto.setListSort(0);
         dto.setShow(0);
         dto.setUpdate(0);
         dto.setSpecialField(MetaSpecialField.VERSION);
@@ -248,6 +253,7 @@ public class GenerateHelper{
         dto.setQuery(0);
         dto.setQueryType(null);
         dto.setList(0);
+        dto.setListSort(0);
         dto.setShow(0);
         dto.setUpdate(0);
         dto.setSpecialField(MetaSpecialField.DEL_SIGN);
@@ -278,6 +284,7 @@ public class GenerateHelper{
             throw new RuntimeException("jfieldType error");
         }
         dto.setList(1);
+        dto.setListSort(1);
         dto.setNotNull(1);
         dto.setOrderNo(1);
         dto.setPrimaryKey(1);
@@ -305,6 +312,7 @@ public class GenerateHelper{
         dto.setQuery(1);
         dto.setQueryType(QueryType.EQ);
         dto.setList(1);
+        dto.setListSort(0);
         dto.setShow(1);
         dto.setUpdate(1);
         dto.setSpecialField(null);

@@ -77,6 +77,10 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
      */
     private List<MetaFieldPO> listFields;
     /**
+     * 排序字段列表
+     */
+    private List<MetaFieldPO> listSortFields;
+    /**
      * 详情字段列表
      */
     private List<MetaFieldPO> showFields;
@@ -265,6 +269,14 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
 
     public void setListFields(List<MetaFieldPO> listFields) {
         this.listFields = listFields;
+    }
+
+    public List<MetaFieldPO> getListSortFields() {
+        return listSortFields;
+    }
+
+    public void setListSortFields(List<MetaFieldPO> listSortFields) {
+        this.listSortFields = listSortFields;
     }
 
     public List<MetaFieldPO> getShowFields() {

@@ -9,6 +9,7 @@
 @ApiModel(description = "新增【${title}】的参数")
 public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if> {
 
+<#--定义宏-查询字段申明模块-->
 <#macro queryField field suffix>
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
     <#if field.jfieldType==JFieldType.STRING.getJavaType()>
@@ -21,6 +22,7 @@ public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if>
     private ${field.jfieldType} ${field.jfieldName}${suffix};
 
 </#macro>
+<#--定义宏-查询字段getter-setter模块-->
 <#macro queryMethod field suffix>
     public ${field.jfieldType} get${field.jfieldName?capFirst}${suffix}() {
         return ${field.jfieldName}${suffix};
@@ -40,6 +42,13 @@ public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if>
     </#if>
 </#list>
 
+<#list listSortFields as field>
+    @ApiModelProperty(notes = "${field.fieldDesc}排序标识【1升序,-1降序,0不排序】",example = "1")
+    private Integer ${field.jfieldName}SortSign;
+
+</#list>
+
+
 <#list queryFields as field>
     <#if field.queryType!=QueryType.BETWEEN>
         <@queryMethod field ""></@queryMethod>
@@ -48,7 +57,9 @@ public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if>
         <@queryMethod field "End"></@queryMethod>
     </#if>
 </#list>
-
+<#list listSortFields as field>
+    <@getterSetter2 "${field.jfieldName}SortSign" "Integer"/>
+</#list>
 }
 </#assign>
 <#--开始渲染代码-->

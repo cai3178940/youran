@@ -20,7 +20,7 @@
  */
 </#macro>
 
-<#-- 定义getter setter方法 -->
+<#-- 定义getter setter模板（根据field） -->
 <#macro getterSetter field>
     public ${field.jfieldType} get${field.jfieldName?capFirst}() {
         return ${field.jfieldName};
@@ -31,7 +31,18 @@
     }
 
 </#macro>
+<#-- 定义getter setter模板（指定name、type） -->
+<#macro getterSetter2 name type>
+    public ${type} get${name?capFirst}() {
+        return ${name?uncapFirst};
+    }
 
+    public void set${name?capFirst}(${type} ${name?uncapFirst}) {
+        this.${name?uncapFirst} = ${name?uncapFirst};
+    }
+
+</#macro>
+<#-- 定义getter setter模板（list格式） -->
 <#macro getterSetterList name type>
     public List<${type}> get${name?capFirst}List() {
         return ${name?uncapFirst}List;

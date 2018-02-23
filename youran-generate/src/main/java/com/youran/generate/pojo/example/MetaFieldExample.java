@@ -44,6 +44,8 @@ public class MetaFieldExample extends AbstractExample {
     public static final String E_JFIELDTYPE = "Integer";
     public static final String N_LIST = "是否列表字段";
     public static final String E_LIST = "1";
+    public static final String N_LIST_SORT = "是否支持排序";
+    public static final String E_LIST_SORT = "1";
     public static final String N_NOTNULL = "是否不能为空";
     public static final String E_NOTNULL = "1";
     public static final String N_ORDERNO = "排序号";
