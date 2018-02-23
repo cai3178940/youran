@@ -48,6 +48,10 @@ public enum TemplateEnum {
      */
     CommonLoginContext(COMMON,"sources/{commonPackage}/context/LoginContext.java.ftl"),
     /**
+     * 自定义日期装换
+     */
+    MyCustomDateEditor(COMMON,"sources/{commonPackage}/convert/MyCustomDateEditor.java.ftl"),
+    /**
      * DAO超类
      */
     AbstractDAO(COMMON,"sources/{commonPackage}/dao/AbstractDAO.java.ftl"),

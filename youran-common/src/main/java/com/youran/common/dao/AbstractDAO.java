@@ -1,6 +1,6 @@
 package com.youran.common.dao;
 
-import com.youran.common.LoginContext;
+import com.youran.common.context.LoginContext;
 import com.youran.common.optimistic.OptimisticException;
 import com.youran.common.pojo.qo.PageQO;
 import com.youran.common.pojo.po.AbstractPO;
