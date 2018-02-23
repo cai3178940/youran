@@ -63,6 +63,9 @@ public class MetaFieldListVO {
     @ApiModelProperty(notes = N_LIST, example = E_LIST)
     private Integer list;
 
+    @ApiModelProperty(notes = N_LIST_SORT, example = E_LIST_SORT)
+    private Integer listSort;
+
     @ApiModelProperty(notes = N_NOTNULL, example = E_NOTNULL)
     private Integer notNull;
 
@@ -86,6 +89,14 @@ public class MetaFieldListVO {
 
     @ApiModelProperty(notes = N_SPECIALFIELD, example = E_SPECIALFIELD)
     private String specialField;
+
+    public Integer getListSort() {
+        return listSort;
+    }
+
+    public void setListSort(Integer listSort) {
+        this.listSort = listSort;
+    }
 
     public String getFieldExample() {
         return fieldExample;

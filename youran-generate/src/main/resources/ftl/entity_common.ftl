@@ -32,6 +32,9 @@
 <#if metaEntity.createDateField??>
     <#assign createDateField=metaEntity.createDateField><#--创建日期字段-->
 </#if>
+<#if metaEntity.operateDateField??>
+    <#assign operateDateField=metaEntity.operateDateField><#--操作日期字段-->
+</#if>
 <#-- 定义类名截取函数 -->
 <#function fetchClassName dicType>
     <#local index=dicType?lastIndexOf(".")/>

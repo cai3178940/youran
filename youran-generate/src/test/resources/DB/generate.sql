@@ -61,6 +61,7 @@ CREATE TABLE `meta_field` (
   `insert` smallint(1) NOT NULL COMMENT '是否手动插入字段',
   `update` smallint(1) NOT NULL COMMENT '是否手动更新字段',
   `list` smallint(1) NOT NULL COMMENT '是否列表展示字段',
+  `listSort` smallint(1) NOT NULL COMMENT '是否支持排序',
   `show` smallint(1) NOT NULL COMMENT '是否详情展示字段',
   `query` smallint(1) NOT NULL COMMENT '是否查询字段',
   `queryType` int(4) DEFAULT NULL COMMENT '查询方式',

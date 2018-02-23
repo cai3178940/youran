@@ -108,6 +108,23 @@
     </#list>
     </sql>
 
+    <sql id="orderCondition">
+        order by
+        <#list listSortFields as field>
+        <if test="${field.jfieldName}SortSign != null and ${field.jfieldName}SortSign!=0">
+            t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} <if test="${field.jfieldName}SortSign > 0">asc</if><if test="${field.jfieldName}SortSign &lt; 0">desc</if>,
+        </if>
+        </#list>
+        <#--默认按【操作日期/创建日期/主键】降序排序-->
+        <#if operateDateField??>
+            t.${MetadataUtil.wrapMysqlKeyword(operateDateField.fieldName)} desc
+        <#elseIf createDateField??>
+            t.${MetadataUtil.wrapMysqlKeyword(createDateField.fieldName)} desc
+        <#else>
+            t.${wrapPkFieldName} desc
+        </#if>
+    </sql>
+
     <select id="findCountByQuery" parameterType="${CName}QO" resultType="int">
         select count(*) from (
         select * from ${wrapTableName} t
@@ -128,10 +145,7 @@
         </#if>
         <include refid="queryCondition"/>
         </where>
-    <#--如果有创建日期，则按创建日期排序-->
-    <#if createDateField??>
-        order by t.${MetadataUtil.wrapMysqlKeyword(createDateField.fieldName)}
-    </#if>
+        <include refid="orderCondition"/>
     <#if pageSign == 1>
         limit ${r'#'}{startIndex},${r'#'}{pageSize}
     </#if>

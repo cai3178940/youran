@@ -108,6 +108,11 @@
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="是否支持排序" prop="listSort">
+            <el-radio-group :disabled="true" v-model="form.listSort">
+              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="是否详情字段" prop="show">
             <el-radio-group :disabled="true" v-model="form.show">
               <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
@@ -173,6 +178,8 @@
     update: 1,
     //是否列表字段
     list: 1,
+    //是否支持排序
+    listSort: 0,
     //是否详情字段
     show: 1,
     //编辑方式(暂时不用)

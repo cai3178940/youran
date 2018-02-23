@@ -5,17 +5,15 @@
 ## Build Setup
 
 ``` bash
-# install dependencies
+# 安装依赖
 npm install
 
-# serve with hot reload at localhost:8080
+# 开发模式热部署启动：localhost:80
 npm run dev
 
-# build for production with minification
+# 生产环境打包，打包目录为/youran-generate/src/main/resources/ui
 npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
