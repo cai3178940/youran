@@ -45,8 +45,8 @@
         label="操作"
         width="200">
         <template slot-scope="scope">
-          <el-button @click="handleShow(scope.row)" type="text" size="small">查看</el-button>
-          <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
+          <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
+          <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
