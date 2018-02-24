@@ -1,9 +1,18 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-<#assign importPageVO=false>
-<#assign importList=false>
+<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "${commonPackage}.pojo.vo.ReplyVO"/>
+<@import "${packageName}.pojo.vo.${CName}ShowVO"/>
+<@import "${packageName}.pojo.dto.${CName}AddDTO"/>
+<@import "${packageName}.pojo.qo.${CName}QO"/>
+<@import "${packageName}.pojo.vo.${CName}ListVO"/>
+<@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
+<@import "io.swagger.annotations.Api"/>
+<@import "io.swagger.annotations.ApiImplicitParam"/>
+<@import "io.swagger.annotations.ApiImplicitParams"/>
+<@import "io.swagger.annotations.ApiOperation"/>
 <@classCom "【${title}】API" "swagger接口文档"/>
 @Api(tags = "${CName}", description = "${title}")
 public interface ${CName}API {
@@ -26,14 +35,14 @@ public interface ${CName}API {
     })
     ReplyVO<Void> update(${CName}UpdateDTO ${cName}UpdateDTO);
 <#if pageSign == 1>
-    <#assign importPageVO=true>
+    <@import "${commonPackage}.pojo.vo.PageVO"/>
     /**
      * 分页查询【${title}】
      */
     @ApiOperation(value="分页查询【${title}】")
     ReplyVO<PageVO<${CName}ListVO>> list(${CName}QO ${cName}QO);
 <#else>
-    <#assign importList=true>
+    <@import "java.util.List"/>
     /**
      * 列表查询【${title}】
      */
@@ -132,21 +141,6 @@ public interface ${CName}API {
 <#--开始渲染代码-->
 package ${packageName}.web.api;
 
-import ${commonPackage}.pojo.vo.ReplyVO;
-<#if importPageVO>
-import ${commonPackage}.pojo.vo.PageVO;
-</#if>
-import ${packageName}.pojo.vo.${CName}ShowVO;
-import ${packageName}.pojo.dto.${CName}AddDTO;
-import ${packageName}.pojo.qo.${CName}QO;
-import ${packageName}.pojo.vo.${CName}ListVO;
-import ${packageName}.pojo.dto.${CName}UpdateDTO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-<#if importList>
-import java.util.List;
-</#if>
+<@printImport/>
 
 ${code}

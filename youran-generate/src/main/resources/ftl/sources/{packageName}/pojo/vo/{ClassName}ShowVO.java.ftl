@@ -1,11 +1,12 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-<#--定义是否引入某依赖-->
-<#assign importDate=false>
-<#assign importList=false>
-<#assign importBigDecimal=false>
+<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "io.swagger.annotations.ApiModel"/>
+<@import "io.swagger.annotations.ApiModelProperty"/>
+<@import "${commonPackage}.pojo.vo.AbstractVO"/>
+<@importStatic "${packageName}.pojo.example.${CName}Example.*"/>
 <@classCom "【${title}】详情展示对象"/>
 @ApiModel(description = "【${title}】详情展示对象")
 public class ${CName}ShowVO extends AbstractVO {
@@ -13,10 +14,12 @@ public class ${CName}ShowVO extends AbstractVO {
 <#list showFields as field>
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
-        <#assign importDate=true>
+        <@import "java.util.Date"/>
+        <@import "com.alibaba.fastjson.annotation.JSONField"/>
+        <@import "${commonPackage}.constant.JsonFieldConst"/>
     @JSONField(format = JsonFieldConst.DEFAULT_DATETIME_FORMAT)
     <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-        <#assign importBigDecimal=true>
+        <@import "java.math.BigDecimal"/>
     </#if>
     private ${field.jfieldType} ${field.jfieldName};
 
@@ -24,7 +27,7 @@ public class ${CName}ShowVO extends AbstractVO {
 
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
-        <#assign importList=true>
+        <@import "java.util.List"/>
         <#assign otherCName=otherEntity.className/>
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign otherType=otherEntity.pkField.jfieldType>
@@ -52,21 +55,6 @@ public class ${CName}ShowVO extends AbstractVO {
 <#--开始渲染代码-->
 package ${packageName}.pojo.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-<#if importBigDecimal>
-import java.math.BigDecimal;
-</#if>
-<#if importList>
-import java.util.List;
-</#if>
-<#if importDate>
-import java.util.Date;
-import com.alibaba.fastjson.annotation.JSONField;
-import ${commonPackage}.constant.JsonFieldConst;
-</#if>
-import ${commonPackage}.pojo.vo.AbstractVO;
-
-import static ${packageName}.pojo.example.${CName}Example.*;
+<@printImport/>
 
 ${code}

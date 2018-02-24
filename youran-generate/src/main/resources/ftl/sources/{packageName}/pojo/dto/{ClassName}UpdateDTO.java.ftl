@@ -1,25 +1,24 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-<#--定义是否引入某些依赖-->
-<#assign importList=false>
-<#assign importLength=false>
-<#assign importDate=false>
-<#assign importConst=false>
-<#assign importConstStr="">
-<#assign pkField=metaEntity.pkField>
+<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "${commonPackage}.pojo.dto.AbstractDTO"/>
+<@import "io.swagger.annotations.ApiModel"/>
+<@import "io.swagger.annotations.ApiModelProperty"/>
+<@import "javax.validation.constraints.NotNull"/>
+<@importStatic "${packageName}.pojo.example.${CName}Example.*"/>
 <@classCom "修改【${title}】的参数"/>
 @ApiModel(description = "修改【${title}】的参数")
 public class ${CName}UpdateDTO extends AbstractDTO {
 
-    @ApiModelProperty(notes = N_${pkField.jfieldName?upperCase},example = E_${pkField.jfieldName?upperCase})
+    @ApiModelProperty(notes = N_${pk.jfieldName?upperCase},example = E_${pk.jfieldName?upperCase})
     @NotNull
-    <#if pkField.jfieldType==JFieldType.STRING.getJavaType()>
-        <#assign importLength=true>
-    @Length(max = ${pkField.fieldLength},message = "${pkField.jfieldName}最大长度不能超过{max}")
+    <#if pk.jfieldType==JFieldType.STRING.getJavaType()>
+        <@import "org.hibernate.validator.constraints.Length"/>
+    @Length(max = ${pk.fieldLength},message = "${pk.jfieldName}最大长度不能超过{max}")
     </#if>
-    private ${pkField.jfieldType} ${pkField.jfieldName};
+    private ${pk.jfieldType} ${pk.jfieldName};
 
 <#list metaEntity.updateFields as field>
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
@@ -27,18 +26,20 @@ public class ${CName}UpdateDTO extends AbstractDTO {
     @NotNull
     </@if1>
     <#if field.dicType??>
-        <#assign importConst=true>
+        <@import "${commonPackage}.validator.Const"/>
         <#if isCommonPackage(field.dicType)>
-            <#assign importConstStr+="import ${commonPackage}.constant.${field.dicType};\n">
+            <@import "${commonPackage}.constant.${field.dicType}"/>
         <#else>
-            <#assign importConstStr+="import ${packageName}.constant.${field.dicType};\n">
+            <@import "${packageName}.constant.${field.dicType}"/>
         </#if>
     @Const(constClass = ${fetchClassName(field.dicType)}.class)
     <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
-        <#assign importLength=true>
+        <@import "org.hibernate.validator.constraints.Length"/>
     @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
-        <#assign importDate=true>
+        <@import "java.util.Date"/>
+        <@import "com.alibaba.fastjson.annotation.JSONField"/>
+        <@import "${commonPackage}.constant.JsonFieldConst"/>
     @JSONField(format = JsonFieldConst.DEFAULT_DATE_FORMAT)
     </#if>
     private ${field.jfieldType} ${field.jfieldName};
@@ -47,14 +48,14 @@ public class ${CName}UpdateDTO extends AbstractDTO {
 
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
-        <#assign importList=true>
+        <@import "java.util.List"/>
         <#assign otherPk=otherEntity.pkField>
         <#assign othercName=otherEntity.className?uncapFirst>
     private List<${otherPk.jfieldType}> ${othercName}List;
     </#list>
 </#if>
 
-    <@getterSetter pkField/>
+    <@getterSetter pk/>
 <#list metaEntity.updateFields as field>
     <@getterSetter field/>
 </#list>
@@ -72,25 +73,6 @@ public class ${CName}UpdateDTO extends AbstractDTO {
 <#--开始渲染代码-->
 package ${packageName}.pojo.dto;
 
-import ${commonPackage}.pojo.dto.AbstractDTO;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.NotNull;
-<#if importLength>
-import org.hibernate.validator.constraints.Length;
-</#if>
-<#if importList>
-import java.util.List;
-</#if>
-<#if importDate>
-import java.util.Date;
-import com.alibaba.fastjson.annotation.JSONField;
-import ${commonPackage}.constant.JsonFieldConst;
-</#if>
-<#if importConst>
-import ${commonPackage}.validator.Const;
-${importConstStr}
-</#if>
-import static ${packageName}.pojo.example.${CName}Example.*;
+<@printImport/>
 
 ${code}

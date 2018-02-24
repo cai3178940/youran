@@ -1,7 +1,15 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-<#--定义是否引入某依赖-->
+<#include "/import.ftl">
+<#--定义主体代码-->
 <#assign code>
+<@import "${packageName}.pojo.dto.${CName}AddDTO"/>
+<@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
+<@import "${packageName}.pojo.po.${CName}PO"/>
+<@import "${packageName}.pojo.vo.${CName}ShowVO"/>
+<@import "org.mapstruct.Mapper"/>
+<@import "org.mapstruct.MappingTarget"/>
+<@import "org.mapstruct.factory.Mappers"/>
 <@classCom "【${title}】映射"/>
 @Mapper
 public interface ${CName}Mapper {
@@ -34,13 +42,6 @@ public interface ${CName}Mapper {
 <#--开始渲染代码-->
 package ${packageName}.pojo.mapper;
 
-import ${packageName}.pojo.dto.${CName}AddDTO;
-import ${packageName}.pojo.dto.${CName}UpdateDTO;
-import ${packageName}.pojo.po.${CName}PO;
-import ${packageName}.pojo.vo.${CName}ShowVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
-
+<@printImport/>
 
 ${code}

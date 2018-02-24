@@ -1,10 +1,12 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-<#--定义是否引入某依赖-->
-<#assign importDate=false>
-<#assign importBigDecimal=false>
+<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "io.swagger.annotations.ApiModel"/>
+<@import "io.swagger.annotations.ApiModelProperty"/>
+<@import "${commonPackage}.pojo.vo.AbstractVO"/>
+<@importStatic "${packageName}.pojo.example.${CName}Example.*"/>
 <@classCom "【${title}】列表展示对象"/>
 @ApiModel(description = "【${title}】列表展示对象")
 public class ${CName}ListVO extends AbstractVO {
@@ -12,10 +14,12 @@ public class ${CName}ListVO extends AbstractVO {
 <#list listFields as field>
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
-        <#assign importDate=true>
+        <@import "java.util.Date"/>
+        <@import "com.alibaba.fastjson.annotation.JSONField"/>
+        <@import "${commonPackage}.constant.JsonFieldConst"/>
     @JSONField(format = JsonFieldConst.DEFAULT_DATE_FORMAT)
     <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-        <#assign importBigDecimal=true>
+        <@import "java.math.BigDecimal"/>
     </#if>
     private ${field.jfieldType} ${field.jfieldName};
 
@@ -30,17 +34,6 @@ public class ${CName}ListVO extends AbstractVO {
 <#--开始渲染代码-->
 package ${packageName}.pojo.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-<#if importDate>
-import java.util.Date;
-import com.alibaba.fastjson.annotation.JSONField;
-import ${commonPackage}.constant.JsonFieldConst;
-</#if>
-import ${commonPackage}.pojo.vo.AbstractVO;
-<#if importBigDecimal>
-import java.math.BigDecimal;
-</#if>
-import static ${packageName}.pojo.example.${CName}Example.*;
+<@printImport/>
 
 ${code}

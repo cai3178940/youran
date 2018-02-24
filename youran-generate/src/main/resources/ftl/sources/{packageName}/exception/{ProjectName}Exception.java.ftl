@@ -1,8 +1,8 @@
 <#include "/common.ftl">
-package ${packageName}.exception;
-
-import ${commonPackage}.constant.ErrorCode;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "${commonPackage}.constant.ErrorCode"/>
 <@classCom "自定义异常"/>
 public class ${ProjectName}Exception extends RuntimeException{
 
@@ -40,3 +40,10 @@ public class ${ProjectName}Exception extends RuntimeException{
         this.code = code;
     }
 }
+</#assign>
+<#--开始渲染代码-->
+package ${packageName}.exception;
+
+<@printImport/>
+
+${code}

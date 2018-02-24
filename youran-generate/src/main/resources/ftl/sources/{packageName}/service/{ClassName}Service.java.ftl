@@ -1,14 +1,20 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-
-<#assign importOptimisticLock=false>
-<#assign importArrayUtils=false>
-<#assign importPageVO=false>
-<#assign importList=false>
-<#assign importCollectionUtils=false>
-<#assign importOtherDAOStr="">
+<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "${packageName}.dao.${CName}DAO"/>
+<@import "${packageName}.pojo.dto.${CName}AddDTO"/>
+<@import "${packageName}.pojo.qo.${CName}QO"/>
+<@import "${packageName}.pojo.vo.${CName}ListVO"/>
+<@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
+<@import "${packageName}.pojo.mapper.${CName}Mapper"/>
+<@import "${packageName}.pojo.po.${CName}PO"/>
+<@import "${packageName}.pojo.vo.${CName}ShowVO"/>
+<@import "${packageName}.exception.${ProjectName}Exception"/>
+<@import "org.springframework.beans.factory.annotation.Autowired"/>
+<@import "org.springframework.stereotype.Service"/>
+<@import "org.springframework.transaction.annotation.Transactional"/>
 <@classCom "【${title}】删改查服务"/>
 @Service
 public class ${CName}Service {
@@ -19,7 +25,7 @@ public class ${CName}Service {
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign importOtherDAOStr+="import ${packageName}.dao.${otherCName}DAO;\n">
+        <@import "${packageName}.dao.${otherCName}DAO"/>
     @Autowired
     private ${otherCName}DAO ${othercName}DAO;
     </#list>
@@ -28,7 +34,7 @@ public class ${CName}Service {
     <#list metaEntity.mtmUnHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign importOtherDAOStr+="import ${packageName}.dao.${otherCName}DAO;\n">
+        <@import "${packageName}.dao.${otherCName}DAO"/>
     @Autowired
     private ${otherCName}DAO ${othercName}DAO;
     </#list>
@@ -44,8 +50,8 @@ public class ${CName}Service {
         ${cName}DAO.save(${cName});
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
-        <#assign importList=true>
-        <#assign importCollectionUtils=true>
+        <@import "java.util.List"/>
+        <@import "org.apache.commons.collections.CollectionUtils"/>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
@@ -65,7 +71,7 @@ public class ${CName}Service {
      */
     @Transactional
     <#if metaEntity.versionField??>
-        <#assign importOptimisticLock=true>
+        <@import "${commonPackage}.optimistic.OptimisticLock"/>
     @OptimisticLock
     </#if>
     public void update(${CName}UpdateDTO ${cName}UpdateDTO) {
@@ -75,8 +81,8 @@ public class ${CName}Service {
         ${cName}DAO.update(${cName});
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
-        <#assign importList=true>
-        <#assign importCollectionUtils=true>
+        <@import "java.util.List"/>
+        <@import "org.apache.commons.collections.CollectionUtils"/>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
@@ -88,7 +94,7 @@ public class ${CName}Service {
 </#if>
     }
 <#if pageSign == 1>
-    <#assign importPageVO=true>
+    <@import "${commonPackage}.pojo.vo.PageVO"/>
     /**
      * 查询分页列表
      * @param ${cName}QO
@@ -99,7 +105,7 @@ public class ${CName}Service {
         return page;
     }
 <#else>
-    <#assign importList=true>
+    <@import "java.util.List"/>
     /**
      * 查询列表
      * @param ${cName}QO
@@ -190,7 +196,7 @@ public class ${CName}Service {
 
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
-        <#assign importArrayUtils=true>
+        <@import "org.apache.commons.lang3.ArrayUtils"/>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
@@ -266,33 +272,6 @@ public class ${CName}Service {
 <#--开始渲染代码-->
 package ${packageName}.service;
 
-<#if importOptimisticLock>
-import ${commonPackage}.optimistic.OptimisticLock;
-</#if>
-<#if importPageVO>
-import ${commonPackage}.pojo.vo.PageVO;
-</#if>
-import ${packageName}.dao.${CName}DAO;
-${importOtherDAOStr}
-import ${packageName}.pojo.dto.${CName}AddDTO;
-import ${packageName}.pojo.qo.${CName}QO;
-import ${packageName}.pojo.vo.${CName}ListVO;
-import ${packageName}.pojo.dto.${CName}UpdateDTO;
-import ${packageName}.pojo.mapper.${CName}Mapper;
-import ${packageName}.pojo.po.${CName}PO;
-import ${packageName}.pojo.vo.${CName}ShowVO;
-import ${packageName}.exception.${ProjectName}Exception;
-<#if importCollectionUtils>
-import org.apache.commons.collections.CollectionUtils;
-</#if>
-<#if importArrayUtils>
-import org.apache.commons.lang3.ArrayUtils;
-</#if>
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-<#if importList>
-import java.util.List;
-</#if>
+<@printImport/>
 
 ${code}

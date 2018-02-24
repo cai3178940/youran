@@ -1,10 +1,9 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-<#--定义是否引入某依赖-->
-<#assign importDate=false>
-<#assign importBigDecimal=false>
-<#assign importList=false>
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "${commonPackage}.pojo.po.AbstractPO"/>
 
 <#--判断是否继承特殊接口-->
 <#assign implementsVersion=false>
@@ -52,58 +51,54 @@
 </#if>
 
 <#assign implementsStr=""><#--构建继承串-->
-<#assign importStr=""><#--构建导包串-->
 <#if implementsCreateOperateDeleteVersion>
     <#assign implementsStr+=" CreateOperateDeleteVersion,">
-    <#assign importStr+="import ${commonPackage}.pojo.po.CreateOperateDeleteVersion;\n">
+    <@import "${commonPackage}.pojo.po.CreateOperateDeleteVersion"/>
 <#elseIf implementsCreateOperateDelete>
     <#assign implementsStr+=" CreateOperateDelete,">
-    <#assign importStr+="import ${commonPackage}.pojo.po.CreateOperateDelete;\n">
+    <@import "${commonPackage}.pojo.po.CreateOperateDelete"/>
 <#else>
     <#if implementsCreateByDate>
         <#assign implementsStr+=" CreateByDate,">
-        <#assign importStr+="import ${commonPackage}.pojo.po.CreateByDate;\n">
+        <@import "${commonPackage}.pojo.po.CreateByDate"/>
     <#elseIf implementsCreateBy>
         <#assign implementsStr+=" CreateBy,">
-        <#assign importStr+="import ${commonPackage}.pojo.po.CreateBy;\n">
+        <@import "${commonPackage}.pojo.po.CreateBy"/>
     <#elseIf implementsCreateDate>
         <#assign implementsStr+=" CreateDate,">
-        <#assign importStr+="import ${commonPackage}.pojo.po.CreateDate;\n">
+        <@import "${commonPackage}.pojo.po.CreateDate"/>
     </#if>
     <#if implementsOperateByDate>
         <#assign implementsStr+=" OperateByDate,">
-        <#assign importStr+="import ${commonPackage}.pojo.po.OperateByDate;\n">
+        <@import "${commonPackage}.pojo.po.OperateByDate"/>
     <#elseIf implementsOperateBy>
         <#assign implementsStr+=" OperateBy,">
-        <#assign importStr+="import ${commonPackage}.pojo.po.OperateBy;\n">
+        <@import "${commonPackage}.pojo.po.OperateBy"/>
     <#elseIf implementsOperateDate>
         <#assign implementsStr+=" OperateDate,">
-        <#assign importStr+="import ${commonPackage}.pojo.po.OperateDate;\n">
+        <@import "${commonPackage}.pojo.po.OperateDate"/>
     </#if>
     <#if implementsDeleteSign>
         <#assign implementsStr+=" DelSign,">
-        <#assign importStr+="import ${commonPackage}.pojo.po.DelSign;\n">
+        <@import "${commonPackage}.pojo.po.DelSign"/>
     </#if>
     <#if implementsVersion>
         <#assign implementsStr+=" Version,">
-        <#assign importStr+="import ${commonPackage}.pojo.po.Version;\n">
+        <@import "${commonPackage}.pojo.po.Version"/>
     </#if>
 </#if>
 <#if implementsStr!="">
     <#assign implementsStr=" implements"+implementsStr?removeEnding(",")>
 </#if>
 
-
-<#--定义主体代码-->
-<#assign code>
 <@classCom "${title}" "${desc}"/>
 public class ${CName}PO extends AbstractPO${implementsStr} {
 
 <#list fields as field>
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
-        <#assign importDate=true>
+        <@import "java.util.Date"/>
     <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-        <#assign importBigDecimal=true>
+        <@import "java.math.BigDecimal"/>
     </#if>
 
     private ${field.jfieldType} ${field.jfieldName};
@@ -111,7 +106,7 @@ public class ${CName}PO extends AbstractPO${implementsStr} {
 </#list>
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
-        <#assign importList=true>
+        <@import "java.util.List"/>
     private List<${otherEntity.className}PO> ${otherEntity.className?uncapFirst}POList;
 
     </#list>
@@ -212,16 +207,6 @@ public class ${CName}PO extends AbstractPO${implementsStr} {
 <#--开始渲染代码-->
 package ${packageName}.pojo.po;
 
-${importStr}
-import ${commonPackage}.pojo.po.AbstractPO;
-<#if importDate>
-import java.util.Date;
-</#if>
-<#if importList>
-import java.util.List;
-</#if>
-<#if importBigDecimal>
-import java.math.BigDecimal;
-</#if>
+<@printImport/>
 
 ${code}
