@@ -1,6 +1,7 @@
 <#include "/common.ftl">
-package ${commonPackage}.optimistic;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
 <@classCom "乐观锁异常"/>
 public class OptimisticException extends RuntimeException{
 
@@ -12,3 +13,10 @@ public class OptimisticException extends RuntimeException{
         super(message);
     }
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.optimistic;
+
+<@printImport/>
+
+${code}

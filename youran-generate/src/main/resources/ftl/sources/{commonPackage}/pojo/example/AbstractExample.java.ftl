@@ -1,6 +1,7 @@
 <#include "/common.ftl">
-package ${commonPackage}.pojo.example;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
 <@classCom "字段示例"/>
 public abstract class AbstractExample {
 
@@ -14,3 +15,10 @@ public abstract class AbstractExample {
     public static final String E_OPERATEBY = "admin";
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.pojo.example;
+
+<@printImport/>
+
+${code}

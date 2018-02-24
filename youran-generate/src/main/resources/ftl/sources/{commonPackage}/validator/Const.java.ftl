@@ -1,28 +1,25 @@
 <#include "/common.ftl">
-package ${commonPackage}.validator;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.validation.Constraint;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.Payload;
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
-
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "org.apache.commons.collections.CollectionUtils"/>
+<@import "org.apache.commons.lang3.StringUtils"/>
+<@import "org.apache.commons.lang3.reflect.MethodUtils"/>
+<@import "org.slf4j.Logger"/>
+<@import "org.slf4j.LoggerFactory"/>
+<@import "javax.validation.Constraint"/>
+<@import "javax.validation.ConstraintValidator"/>
+<@import "javax.validation.ConstraintValidatorContext"/>
+<@import "javax.validation.Payload"/>
+<@import "java.lang.annotation.Documented"/>
+<@import "java.lang.annotation.Retention"/>
+<@import "java.lang.annotation.Target"/>
+<@import "java.lang.reflect.InvocationTargetException"/>
+<@import "java.lang.reflect.Method"/>
+<@import "java.util.List"/>
+<@importStatic "java.lang.annotation.ElementType.FIELD"/>
+<@importStatic "java.lang.annotation.ElementType.METHOD"/>
+<@importStatic "java.lang.annotation.RetentionPolicy.RUNTIME"/>
 <@classCom "自定义校验注解：常量校验" "校验常量值是否合法"/>
 @Target({FIELD, METHOD})
 @Retention(RUNTIME)
@@ -91,3 +88,10 @@ public @interface Const {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.validator;
+
+<@printImport/>
+
+${code}

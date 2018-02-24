@@ -1,10 +1,9 @@
 <#include "/common.ftl">
-package ${commonPackage}.util;
-
-import com.alibaba.fastjson.JSON;
-
-import java.util.List;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "com.alibaba.fastjson.JSON"/>
+<@import "java.util.List"/>
 <@classCom "封装json操作"/>
 public class JsonUtil {
 
@@ -31,3 +30,10 @@ public class JsonUtil {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.util;
+
+<@printImport/>
+
+${code}

@@ -1,13 +1,12 @@
 <#include "/common.ftl">
-package ${commonPackage}.util;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
-
-import java.text.ParseException;
-import java.util.Date;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "org.apache.commons.lang3.StringUtils"/>
+<@import "org.apache.commons.lang3.time.DateFormatUtils"/>
+<@import "org.apache.commons.lang3.time.DateUtils"/>
+<@import "java.text.ParseException"/>
+<@import "java.util.Date"/>
 <@classCom "日期工具"/>
 public class DateUtil {
 
@@ -73,3 +72,10 @@ public class DateUtil {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.util;
+
+<@printImport/>
+
+${code}

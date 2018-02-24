@@ -1,6 +1,7 @@
 <#include "/common.ftl">
-package ${commonPackage}.util;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
 <@classCom "空指针安全的类型转换工具"/>
 public class SafeUtil {
 
@@ -99,3 +100,10 @@ public class SafeUtil {
 
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.util;
+
+<@printImport/>
+
+${code}

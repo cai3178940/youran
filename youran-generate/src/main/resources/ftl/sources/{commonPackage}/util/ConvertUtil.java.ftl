@@ -1,16 +1,15 @@
 <#include "/common.ftl">
-package ${commonPackage}.util;
-
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
-import java.util.Map;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "com.google.common.base.Function"/>
+<@import "com.google.common.base.Joiner"/>
+<@import "com.google.common.base.Splitter"/>
+<@import "com.google.common.collect.Iterables"/>
+<@import "com.google.common.collect.Lists"/>
+<@import "org.apache.commons.lang3.StringUtils"/>
+<@import "java.util.List"/>
+<@import "java.util.Map"/>
 <@classCom "各种形式的转换工具类"/>
 public class ConvertUtil {
 
@@ -98,3 +97,10 @@ public class ConvertUtil {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.util;
+
+<@printImport/>
+
+${code}
