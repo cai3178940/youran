@@ -1,9 +1,11 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-<#assign importList=false>
-<#assign importMap=false>
+<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "${packageName}.pojo.po.${CName}PO"/>
+<@import "${commonPackage}.dao.AbstractDAO"/>
+<@import "org.springframework.stereotype.Repository"/>
 <@classCom "【${title}】数据库操作"/>
 @Repository
 public class ${CName}DAO extends AbstractDAO<${CName}PO> {
@@ -14,7 +16,9 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
     }
 
 <#if pageSign != 1>
-    <#assign importList=true>
+    <@import "${packageName}.pojo.qo.${CName}QO"/>
+    <@import "${packageName}.pojo.vo.${CName}ListVO"/>
+    <@import "java.util.List"/>
     /**
      * 根据条件查询【${title}】列表
      * @param ${cName}QO
@@ -29,8 +33,10 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
 
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as entity>
-        <#assign importList=true>
-        <#assign importMap=true>
+        <@import "${packageName}.pojo.vo.${CName}ListVO"/>
+        <@import "java.util.List"/>
+        <@import "java.util.HashMap"/>
+        <@import "java.util.Map"/>
         <#assign otherCName=entity.className?capFirst>
         <#assign othercName=entity.className?uncapFirst>
         <#assign otherType=entity.pkField.jfieldType>
@@ -70,7 +76,8 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
 </#if>
 <#if metaEntity.mtmUnHoldRefers??>
     <#list metaEntity.mtmUnHoldRefers as entity>
-        <#assign importList=true>
+        <@import "${packageName}.pojo.vo.${CName}ListVO"/>
+        <@import "java.util.List"/>
         <#assign otherCName=entity.className/>
         <#assign othercName=entity.className?uncapFirst>
         <#assign otherType=entity.pkField.jfieldType>
@@ -91,19 +98,8 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
 <#--开始渲染代码-->
 package ${packageName}.dao;
 
-import ${packageName}.pojo.po.${CName}PO;
-<#if importList>
-import ${packageName}.pojo.qo.${CName}QO;
-import ${packageName}.pojo.vo.${CName}ListVO;
-</#if>
-import ${commonPackage}.dao.AbstractDAO;
-import org.springframework.stereotype.Repository;
+<@printImport/>
 
-<#if importMap>
-import java.util.HashMap;
-import java.util.Map;
-</#if>
-<#if importList>
-import java.util.List;
-</#if>
 ${code}
+
+

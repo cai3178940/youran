@@ -1,12 +1,11 @@
 <#include "/common.ftl">
 <#include "/const_common.ftl">
-package ${packageName}.constant;
-
-import ${commonPackage}.validator.Check;
-
-import java.util.HashMap;
-import java.util.Map;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "${commonPackage}.validator.Check"/>
+<@import "java.util.HashMap"/>
+<@import "java.util.Map"/>
 <@classCom "枚举【${remark}】"/>
 public enum ${CName} {
 
@@ -74,3 +73,10 @@ public enum ${CName} {
 
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${packageName}.constant;
+
+<@printImport/>
+
+${code}

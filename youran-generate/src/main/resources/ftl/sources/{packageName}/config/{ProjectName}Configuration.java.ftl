@@ -1,8 +1,8 @@
 <#include "/common.ftl">
-package ${packageName}.config;
-
-import org.springframework.context.annotation.*;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "org.springframework.context.annotation.*"/>
 <@classCom "配置类"/>
 @Configuration
 public class ${ProjectName}Configuration {
@@ -15,3 +15,10 @@ public class ${ProjectName}Configuration {
 
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${packageName}.config;
+
+<@printImport/>
+
+${code}
