@@ -113,6 +113,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setNotNull(1);
         dto.setOrderNo(1);
         dto.setPrimaryKey(1);
+        dto.setForeignKey(0);
         dto.setQuery(0);
         dto.setQueryType(null);
         dto.setShow(1);
@@ -144,6 +145,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setNotNull(1);
         dto.setOrderNo(2);
         dto.setPrimaryKey(0);
+        dto.setForeignKey(0);
         dto.setQuery(1);
         dto.setQueryType(QueryType.LIKE);
         dto.setShow(1);
@@ -175,6 +177,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setNotNull(1);
         dto.setOrderNo(3);
         dto.setPrimaryKey(0);
+        dto.setForeignKey(0);
         dto.setQuery(1);
         dto.setQueryType(QueryType.EQ);
         dto.setShow(1);
@@ -206,6 +209,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setNotNull(0);
         dto.setOrderNo(4);
         dto.setPrimaryKey(0);
+        dto.setForeignKey(0);
         dto.setQuery(1);
         dto.setQueryType(QueryType.BETWEEN);
         dto.setShow(1);

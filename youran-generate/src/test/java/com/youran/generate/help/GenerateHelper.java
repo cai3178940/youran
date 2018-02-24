@@ -302,6 +302,7 @@ public class GenerateHelper{
         MetaFieldAddDTO dto = new MetaFieldAddDTO();
         dto.setEntityId(entity.getEntityId());
         dto.setPrimaryKey(0);//默认非主键
+        dto.setForeignKey(0);
         dto.setAutoIncrement(0);//默认非自动递增
         dto.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);//默认值为null
         dto.setNotNull(0);//默认可为空
