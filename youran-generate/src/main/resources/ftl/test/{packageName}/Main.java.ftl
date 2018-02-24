@@ -1,10 +1,10 @@
 <#include "/common.ftl">
-package ${packageName};
-
-import ${packageName}.web.rest.*;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "${packageName}.web.rest.*"/>
+<@import "org.junit.runner.RunWith"/>
+<@import "org.junit.runners.Suite"/>
 <@classCom "合并测试类"/>
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -17,3 +17,10 @@ public class Main {
 
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${packageName};
+
+<@printImport/>
+
+${code}

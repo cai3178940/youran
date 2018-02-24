@@ -1,10 +1,22 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-
-<#assign importOtherStr="">
+<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-
+<@import "com.google.common.collect.Lists"/>
+<@import "${commonPackage}.pojo.vo.ReplyVO"/>
+<@import "${commonPackage}.util.JsonUtil"/>
+<@import "${packageName}.help.${CName}Helper"/>
+<@import "${packageName}.pojo.dto.${CName}AddDTO"/>
+<@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
+<@import "${packageName}.pojo.po.${CName}PO"/>
+<@import "${packageName}.web.AbstractWebTest"/>
+<@import "org.junit.Test"/>
+<@import "org.springframework.beans.factory.annotation.Autowired"/>
+<@import "org.springframework.http.MediaType"/>
+<@importStatic "org.hamcrest.Matchers.is"/>
+<@importStatic "org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*"/>
+<@importStatic "org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath"/>
 <@classCom "【${title}】单元测试"/>
 public class ${CName}ControllerTest extends AbstractWebTest {
 
@@ -14,7 +26,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign importOtherStr+="import ${packageName}.help.${otherCName}Helper;\n">
+        <@import "${packageName}.help.${otherCName}Helper"/>
     @Autowired
     private ${otherCName}Helper ${othercName}Helper;
     </#list>
@@ -81,7 +93,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign importOtherStr+="import ${packageName}.pojo.po.${otherCName}PO;\n">
+        <@import "${packageName}.pojo.po.${otherCName}PO"/>
     @Test
     public void addRemove${otherEntity.className}() throws Exception {
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
@@ -134,21 +146,6 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 <#--开始渲染代码-->
 package ${packageName}.web.rest;
 
-import com.google.common.collect.Lists;
-import ${commonPackage}.pojo.vo.ReplyVO;
-import ${commonPackage}.util.JsonUtil;
-import ${packageName}.help.${CName}Helper;
-import ${packageName}.pojo.dto.${CName}AddDTO;
-import ${packageName}.pojo.dto.${CName}UpdateDTO;
-import ${packageName}.pojo.po.${CName}PO;
-${importOtherStr}
-import ${packageName}.web.AbstractWebTest;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+<@printImport/>
 
 ${code}

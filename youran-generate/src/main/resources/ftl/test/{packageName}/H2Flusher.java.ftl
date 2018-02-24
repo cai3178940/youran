@@ -1,14 +1,13 @@
 <#include "/common.ftl">
-package ${packageName};
-
-import ${commonPackage}.util.H2Util;
-import org.h2.engine.Mode;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "${commonPackage}.util.H2Util"/>
+<@import "org.h2.engine.Mode"/>
+<@import "org.springframework.beans.factory.InitializingBean"/>
+<@import "org.springframework.jdbc.core.JdbcTemplate"/>
+<@import "java.util.HashMap"/>
+<@import "java.util.Map"/>
 <@classCom "启动运行H2数据库脚本"/>
 public class H2Flusher implements InitializingBean {
 
@@ -40,3 +39,10 @@ public class H2Flusher implements InitializingBean {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${packageName};
+
+<@printImport/>
+
+${code}

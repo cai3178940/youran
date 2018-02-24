@@ -1,9 +1,22 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-<#assign importPageVO=false>
-<#assign importList=false>
+<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "${commonPackage}.pojo.vo.ReplyVO"/>
+<@import "${packageName}.pojo.dto.${CName}AddDTO"/>
+<@import "${packageName}.pojo.po.${CName}PO"/>
+<@import "${packageName}.pojo.qo.${CName}QO"/>
+<@import "${packageName}.pojo.vo.${CName}ListVO"/>
+<@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
+<@import "${packageName}.pojo.vo.${CName}ShowVO"/>
+<@import "${packageName}.service.${CName}Service"/>
+<@import "${packageName}.web.AbstractController"/>
+<@import "${packageName}.web.api.${CName}API"/>
+<@import "org.apache.commons.lang3.ArrayUtils"/>
+<@import "org.springframework.beans.factory.annotation.Autowired"/>
+<@import "org.springframework.web.bind.annotation.*"/>
+<@import "javax.validation.Valid"/>
 <@classCom "【${title}】控制器"/>
 @RestController
 @RequestMapping("/${cName}")
@@ -27,7 +40,7 @@ public class ${CName}Controller extends AbstractController implements ${CName}AP
     }
 
 <#if pageSign == 1>
-    <#assign importPageVO=true>
+    <@import "${commonPackage}.pojo.vo.PageVO"/>
     @Override
     @GetMapping(value = "/list")
     public ReplyVO<PageVO<${CName}ListVO>> list(@Valid ${CName}QO ${cName}QO) {
@@ -35,7 +48,7 @@ public class ${CName}Controller extends AbstractController implements ${CName}AP
         return ReplyVO.success().data(page);
     }
 <#else>
-    <#assign importList=true>
+    <@import "java.util.List"/>
     @Override
     @GetMapping(value = "/list")
     public ReplyVO<List<${CName}ListVO>> list(@Valid ${CName}QO ${cName}QO) {
@@ -122,26 +135,6 @@ public class ${CName}Controller extends AbstractController implements ${CName}AP
 <#--开始渲染代码-->
 package ${packageName}.web.rest;
 
-import ${commonPackage}.pojo.vo.ReplyVO;
-<#if importPageVO>
-import ${commonPackage}.pojo.vo.PageVO;
-</#if>
-import ${packageName}.pojo.dto.${CName}AddDTO;
-import ${packageName}.pojo.po.${CName}PO;
-import ${packageName}.pojo.qo.${CName}QO;
-import ${packageName}.pojo.vo.${CName}ListVO;
-import ${packageName}.pojo.dto.${CName}UpdateDTO;
-import ${packageName}.pojo.vo.${CName}ShowVO;
-import ${packageName}.service.${CName}Service;
-import ${packageName}.web.AbstractController;
-import ${packageName}.web.api.${CName}API;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-<#if importList>
-import java.util.List;
-</#if>
-import javax.validation.Valid;
+<@printImport/>
 
 ${code}

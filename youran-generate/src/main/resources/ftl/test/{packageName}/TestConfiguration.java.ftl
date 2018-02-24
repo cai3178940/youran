@@ -1,10 +1,10 @@
 <#include "/common.ftl">
-package ${packageName};
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "org.springframework.context.annotation.Bean"/>
+<@import "org.springframework.context.annotation.Configuration"/>
+<@import "org.springframework.jdbc.core.JdbcTemplate"/>
 <@classCom "测试配置类"/>
 @Configuration
 public class TestConfiguration {
@@ -15,3 +15,10 @@ public class TestConfiguration {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${packageName};
+
+<@printImport/>
+
+${code}

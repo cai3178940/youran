@@ -1,15 +1,15 @@
 <#include "/common.ftl">
-package ${packageName}.web.config;
-
-import ${packageName}.web.util.IpUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.Ordered;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "${packageName}.web.util.IpUtil"/>
+<@import "org.slf4j.Logger"/>
+<@import "org.slf4j.LoggerFactory"/>
+<@import "org.springframework.boot.CommandLineRunner"/>
+<@import "org.springframework.core.Ordered"/>
+<@import "org.springframework.core.env.Environment"/>
+<@import "org.springframework.core.io.ClassPathResource"/>
+<@import "org.springframework.stereotype.Component"/>
 <@classCom "打印启动日志"/>
 @Component
 public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
@@ -46,3 +46,10 @@ public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
         return Ordered.LOWEST_PRECEDENCE;
     }
 }
+</#assign>
+<#--开始渲染代码-->
+package ${packageName}.web.config;
+
+<@printImport/>
+
+${code}

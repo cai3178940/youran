@@ -1,8 +1,15 @@
 <#include "/common.ftl">
 <#include "/entity_common.ftl">
-<#assign importDateKit=false>
+<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "${packageName}.pojo.dto.*"/>
+<@import "${packageName}.pojo.po.*"/>
+<@import "${packageName}.service.*"/>
+<@import "${commonPackage}.util.SafeUtil"/>
+<@import "org.springframework.beans.factory.annotation.Autowired"/>
+<@import "org.springframework.stereotype.Component"/>
+<@importStatic "${packageName}.pojo.example.${CName}Example.*"/>
 @Component
 public class ${CName}Helper {
 
@@ -19,7 +26,7 @@ public class ${CName}Helper {
         <#if field.jfieldType==JFieldType.STRING.getJavaType()>
         dto.set${field.jfieldName?capFirst}(E_${field.jfieldName?upperCase});
         <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
-            <#assign importDateKit=true>
+            <@import "${commonPackage}.util.DateUtil"/>
         dto.set${field.jfieldName?capFirst}(DateUtil.parseDate(E_${field.jfieldName?upperCase}));
         <#else>
         dto.set${field.jfieldName?capFirst}(SafeUtil.get${field.jfieldType}(E_${field.jfieldName?upperCase}));
@@ -58,16 +65,6 @@ public class ${CName}Helper {
 <#--开始渲染代码-->
 package ${packageName}.help;
 
-import ${packageName}.pojo.dto.*;
-import ${packageName}.pojo.po.*;
-import ${packageName}.service.*;
-<#if importDateKit>
-import ${commonPackage}.util.DateUtil;
-</#if>
-import ${commonPackage}.util.SafeUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import static ${packageName}.pojo.example.${CName}Example.*;
+<@printImport/>
 
 ${code}

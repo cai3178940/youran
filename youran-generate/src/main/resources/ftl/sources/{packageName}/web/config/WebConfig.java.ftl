@@ -1,26 +1,25 @@
 <#include "/common.ftl">
-package ${packageName}.web.config;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
-import org.apache.commons.io.IOUtils;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpInputMessage;
-import org.springframework.http.HttpOutputMessage;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Type;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "com.alibaba.fastjson.JSON"/>
+<@import "com.alibaba.fastjson.serializer.SerializerFeature"/>
+<@import "com.alibaba.fastjson.support.config.FastJsonConfig"/>
+<@import "com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4"/>
+<@import "org.apache.commons.io.IOUtils"/>
+<@import "org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean"/>
+<@import "org.springframework.context.annotation.Bean"/>
+<@import "org.springframework.context.annotation.Configuration"/>
+<@import "org.springframework.http.HttpHeaders"/>
+<@import "org.springframework.http.HttpInputMessage"/>
+<@import "org.springframework.http.HttpOutputMessage"/>
+<@import "org.springframework.http.converter.HttpMessageNotReadableException"/>
+<@import "org.springframework.http.converter.HttpMessageNotWritableException"/>
+<@import "java.io.ByteArrayOutputStream"/>
+<@import "java.io.IOException"/>
+<@import "java.io.InputStream"/>
+<@import "java.io.OutputStream"/>
+<@import "java.lang.reflect.Type"/>
 <@classCom "web相关配置"/>
 @Configuration
 public class WebConfig {
@@ -74,3 +73,10 @@ public class WebConfig {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${packageName}.web.config;
+
+<@printImport/>
+
+${code}

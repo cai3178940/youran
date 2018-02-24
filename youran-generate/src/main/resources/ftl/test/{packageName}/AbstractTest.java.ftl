@@ -1,13 +1,13 @@
 <#include "/common.ftl">
-package ${packageName};
-
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "org.junit.Before"/>
+<@import "org.junit.runner.RunWith"/>
+<@import "org.springframework.beans.factory.annotation.Autowired"/>
+<@import "org.springframework.beans.factory.annotation.Value"/>
+<@import "org.springframework.boot.test.context.SpringBootTest"/>
+<@import "org.springframework.test.context.junit4.SpringRunner"/>
 <@classCom "单元测试抽象类"/>
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ${ProjectName}App.class)
@@ -32,3 +32,10 @@ public class AbstractTest {
 
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${packageName};
+
+<@printImport/>
+
+${code}
