@@ -1,12 +1,10 @@
 <#include "/common.ftl">
-package ${commonPackage}.pojo.qo;
-
-
-import ${commonPackage}.util.JsonUtil;
-
-import java.io.Serializable;
-
-<@classCom "数据查询参数对象超类"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "${commonPackage}.util.JsonUtil"/>
+<@import "java.io.Serializable"/>
+<@classCom "数据查询参数对象超类"/>
 public abstract class AbstractQO implements Serializable {
 
     @Override
@@ -15,3 +13,10 @@ public abstract class AbstractQO implements Serializable {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.pojo.qo;
+
+<@printImport/>
+
+${code}

@@ -1,7 +1,7 @@
 <#include "/common.ftl">
 package ${commonPackage}.pojo.example;
 
-<@classCom "字段示例"></@classCom>
+<@classCom "字段示例"/>
 public abstract class AbstractExample {
 
     public static final String N_CREATEDATE = "创建日期";

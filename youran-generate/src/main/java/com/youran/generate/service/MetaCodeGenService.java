@@ -377,6 +377,7 @@ public class MetaCodeGenService {
         map.put("QueryType", FreeMakerUtil.getStaticModel(QueryType.class));
         //注入常量类
         map.put("MetaSpecialField", FreeMakerUtil.getStaticModel(MetaSpecialField.class));
+        //注意：此处添加新变量时，请在freemarker_implicit.ftl中也添加上对应变量，可以防止idea下的ftl文件有错误提示
         return map;
     }
 

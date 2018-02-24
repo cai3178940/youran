@@ -1,11 +1,10 @@
 <#include "/common.ftl">
-package ${commonPackage}.pojo.vo;
-
-import ${commonPackage}.util.JsonUtil;
-
-import java.io.Serializable;
-
-<@classCom "抽象VO"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "${commonPackage}.util.JsonUtil"/>
+<@import "java.io.Serializable"/>
+<@classCom "抽象VO"/>
 public abstract class AbstractVO implements Serializable {
 
     private static final long serialVersionUID = -1417748095004687576L;
@@ -16,3 +15,10 @@ public abstract class AbstractVO implements Serializable {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.pojo.vo;
+
+<@printImport/>
+
+${code}

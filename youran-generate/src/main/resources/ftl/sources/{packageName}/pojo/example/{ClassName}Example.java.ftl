@@ -5,7 +5,7 @@ package ${packageName}.pojo.example;
 
 import ${commonPackage}.pojo.example.AbstractExample;
 
-<@classCom "【${title}】参数示例"></@classCom>
+<@classCom "【${title}】参数示例"/>
 public class ${CName}Example extends AbstractExample {
 
 <#list metaEntity.fields as field>

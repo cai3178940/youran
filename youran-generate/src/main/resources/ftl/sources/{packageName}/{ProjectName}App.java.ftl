@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
-<@classCom "启动类"></@classCom>
+<@classCom "启动类"/>
 @SpringBootApplication
 @EnableSwagger2Doc
 @EnableOptimisticLock

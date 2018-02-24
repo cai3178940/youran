@@ -1,7 +1,7 @@
 <#include "/common.ftl">
 package ${commonPackage}.constant;
 
-<@classCom "json常量"></@classCom>
+<@classCom "json常量"/>
 public class JsonFieldConst {
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";

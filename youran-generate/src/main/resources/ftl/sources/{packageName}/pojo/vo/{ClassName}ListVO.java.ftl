@@ -5,7 +5,7 @@
 <#assign importBigDecimal=false>
 <#--定义主体代码-->
 <#assign code>
-<@classCom "【${title}】列表展示对象"></@classCom>
+<@classCom "【${title}】列表展示对象"/>
 @ApiModel(description = "【${title}】列表展示对象")
 public class ${CName}ListVO extends AbstractVO {
 

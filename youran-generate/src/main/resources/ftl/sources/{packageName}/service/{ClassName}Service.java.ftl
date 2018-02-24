@@ -9,7 +9,7 @@
 <#assign importOtherDAOStr="">
 <#--定义主体代码-->
 <#assign code>
-<@classCom "【${title}】删改查服务"></@classCom>
+<@classCom "【${title}】删改查服务"/>
 @Service
 public class ${CName}Service {
 

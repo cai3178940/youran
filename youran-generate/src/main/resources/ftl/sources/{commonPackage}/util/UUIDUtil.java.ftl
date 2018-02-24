@@ -3,7 +3,7 @@ package ${commonPackage}.util;
 
 import java.util.UUID;
 
-<@classCom "获取UUID"></@classCom>
+<@classCom "获取UUID"/>
 public class UUIDUtil {
 
     public static String getUUID() {

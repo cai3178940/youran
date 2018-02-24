@@ -1,12 +1,11 @@
 <#include "/common.ftl">
-package ${commonPackage}.pojo.qo;
-
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
-<@classCom "分页查询dto"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "io.swagger.annotations.ApiModelProperty"/>
+<@import "javax.validation.constraints.Max"/>
+<@import "javax.validation.constraints.Min"/>
+<@classCom "分页查询dto"/>
 public class PageQO extends AbstractQO {
 
     public static final int DEFAULT_PAGE_NO = 1;
@@ -66,3 +65,10 @@ public class PageQO extends AbstractQO {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.pojo.qo;
+
+<@printImport/>
+
+${code}

@@ -3,7 +3,7 @@ package ${packageName}.config;
 
 import org.springframework.context.annotation.*;
 
-<@classCom "配置类"></@classCom>
+<@classCom "配置类"/>
 @Configuration
 public class ${ProjectName}Configuration {
 

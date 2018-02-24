@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-<@classCom "测试配置类"></@classCom>
+<@classCom "测试配置类"/>
 @Configuration
 public class TestConfiguration {
 

@@ -5,7 +5,7 @@
 <#assign importDate=false>
 <#--定义主体代码-->
 <#assign code>
-<@classCom "新增【${title}】的参数"></@classCom>
+<@classCom "新增【${title}】的参数"/>
 @ApiModel(description = "新增【${title}】的参数")
 public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if> {
 

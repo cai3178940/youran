@@ -96,7 +96,7 @@
 
 <#--定义主体代码-->
 <#assign code>
-<@classCom "${title}" "${desc}"></@classCom>
+<@classCom "${title}" "${desc}"/>
 public class ${CName}PO extends AbstractPO${implementsStr} {
 
 <#list fields as field>

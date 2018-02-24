@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 
-<@classCom "web相关配置"></@classCom>
+<@classCom "web相关配置"/>
 @Configuration
 public class WebConfig {
 

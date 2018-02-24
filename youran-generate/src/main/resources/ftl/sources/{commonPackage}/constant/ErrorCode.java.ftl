@@ -1,11 +1,10 @@
 <#include "/common.ftl">
-package ${commonPackage}.constant;
-
-
-import java.util.HashMap;
-import java.util.Map;
-
-<@classCom "错误代码枚举"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "java.util.HashMap"/>
+<@import "java.util.Map"/>
+<@classCom "错误代码枚举"/>
 public enum ErrorCode {
 
     /**
@@ -65,5 +64,11 @@ public enum ErrorCode {
     }
 
 
-
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.constant;
+
+<@printImport/>
+
+${code}

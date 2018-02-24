@@ -7,7 +7,7 @@ import ${commonPackage}.validator.Check;
 import java.util.HashMap;
 import java.util.Map;
 
-<@classCom "枚举【${remark}】"></@classCom>
+<@classCom "枚举【${remark}】"/>
 public enum ${CName} {
 
 <#if constType==1>

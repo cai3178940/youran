@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.MockMvc;
 
 
-<@classCom "web单元测试抽象类"></@classCom>
+<@classCom "web单元测试抽象类"/>
 @AutoConfigureMockMvc(printOnlyOnFailure=false)
 public abstract class AbstractWebTest extends AbstractTest {
 

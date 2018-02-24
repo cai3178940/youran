@@ -2,7 +2,7 @@
 <#include "/entity_common.ftl">
 <#--定义是否引入某依赖-->
 <#assign code>
-<@classCom "【${title}】映射"></@classCom>
+<@classCom "【${title}】映射"/>
 @Mapper
 public interface ${CName}Mapper {
 

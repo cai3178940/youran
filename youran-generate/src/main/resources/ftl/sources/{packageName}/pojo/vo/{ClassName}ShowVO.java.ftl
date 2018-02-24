@@ -6,7 +6,7 @@
 <#assign importBigDecimal=false>
 <#--定义主体代码-->
 <#assign code>
-<@classCom "【${title}】详情展示对象"></@classCom>
+<@classCom "【${title}】详情展示对象"/>
 @ApiModel(description = "【${title}】详情展示对象")
 public class ${CName}ShowVO extends AbstractVO {
 

@@ -5,7 +5,7 @@ import ${packageName}.web.rest.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-<@classCom "合并测试类"></@classCom>
+<@classCom "合并测试类"/>
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 <#list metaEntities as metaEntity>

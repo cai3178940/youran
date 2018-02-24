@@ -23,7 +23,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 
-<@classCom "自定义校验注解：常量校验" "校验常量值是否合法"></@classCom>
+<@classCom "自定义校验注解：常量校验" "校验常量值是否合法"/>
 @Target({FIELD, METHOD})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {Const.Checker.class})

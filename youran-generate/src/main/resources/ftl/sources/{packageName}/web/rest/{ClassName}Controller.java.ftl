@@ -4,7 +4,7 @@
 <#assign importList=false>
 <#--定义主体代码-->
 <#assign code>
-<@classCom "【${title}】控制器"></@classCom>
+<@classCom "【${title}】控制器"/>
 @RestController
 @RequestMapping("/${cName}")
 public class ${CName}Controller extends AbstractController implements ${CName}API {

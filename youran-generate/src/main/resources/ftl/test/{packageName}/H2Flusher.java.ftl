@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
-<@classCom "启动运行H2数据库脚本"></@classCom>
+<@classCom "启动运行H2数据库脚本"/>
 public class H2Flusher implements InitializingBean {
 
     private final Map<String,String> scriptFilePath;

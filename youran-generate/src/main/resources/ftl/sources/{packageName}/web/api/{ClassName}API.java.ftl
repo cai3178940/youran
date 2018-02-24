@@ -4,7 +4,7 @@
 <#assign importList=false>
 <#--定义主体代码-->
 <#assign code>
-<@classCom "【${title}】API" "swagger接口文档"></@classCom>
+<@classCom "【${title}】API" "swagger接口文档"/>
 @Api(tags = "${CName}", description = "${title}")
 public interface ${CName}API {
 

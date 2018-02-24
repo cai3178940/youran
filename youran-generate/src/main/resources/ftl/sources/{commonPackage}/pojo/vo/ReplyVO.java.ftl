@@ -1,14 +1,13 @@
 <#include "/common.ftl">
-package ${commonPackage}.pojo.vo;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-
-<@classCom "通用响应对象"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "io.swagger.annotations.ApiModel"/>
+<@import "io.swagger.annotations.ApiModelProperty"/>
+<@import "org.apache.commons.lang3.StringUtils"/>
+<@import "java.util.HashMap"/>
+<@import "java.util.Map"/>
+<@classCom "通用响应对象"/>
 @ApiModel
 public class ReplyVO<T> extends AbstractVO {
 
@@ -140,3 +139,10 @@ public class ReplyVO<T> extends AbstractVO {
         this.data = data;
     }
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.pojo.vo;
+
+<@printImport/>
+
+${code}

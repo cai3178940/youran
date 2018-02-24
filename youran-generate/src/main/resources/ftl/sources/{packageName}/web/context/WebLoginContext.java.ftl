@@ -4,7 +4,7 @@ package ${packageName}.web.context;
 import ${commonPackage}.context.LoginContext;
 import org.springframework.stereotype.Component;
 
-<@classCom "web登录用户上下文"></@classCom>
+<@classCom "web登录用户上下文"/>
 @Component
 public class WebLoginContext implements LoginContext{
 

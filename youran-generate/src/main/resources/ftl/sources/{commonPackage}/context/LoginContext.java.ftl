@@ -1,7 +1,7 @@
 <#include "/common.ftl">
 package ${commonPackage}.context;
 
-<@classCom "登录上下文接口"></@classCom>
+<@classCom "登录上下文接口"/>
 public interface LoginContext {
 
     /**

@@ -3,7 +3,7 @@ package ${packageName}.exception;
 
 import ${commonPackage}.constant.ErrorCode;
 
-<@classCom "自定义异常"></@classCom>
+<@classCom "自定义异常"/>
 public class ${ProjectName}Exception extends RuntimeException{
 
     private ErrorCode code;

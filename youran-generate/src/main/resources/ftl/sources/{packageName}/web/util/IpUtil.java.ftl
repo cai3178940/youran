@@ -9,7 +9,7 @@ import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-<@classCom "IP工具"></@classCom>
+<@classCom "IP工具"/>
 public class IpUtil {
 
     /**

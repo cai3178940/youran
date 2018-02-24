@@ -1,9 +1,9 @@
 <#include "/common.ftl">
-package ${commonPackage}.optimistic;
-
-import java.lang.annotation.*;
-
-<@classCom "乐观锁注解"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "java.lang.annotation.*"/>
+<@classCom "乐观锁注解"/>
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
@@ -22,3 +22,10 @@ public @interface OptimisticLock {
     int retry() default 3;
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.optimistic;
+
+<@printImport/>
+
+${code}

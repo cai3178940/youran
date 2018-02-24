@@ -1,7 +1,7 @@
 <#include "/common.ftl">
 package ${commonPackage}.pojo.po;
 
-<@classCom "操作人接口"></@classCom>
+<@classCom "操作人接口"/>
 public interface OperateBy {
 
     String getOperateBy();

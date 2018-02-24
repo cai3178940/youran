@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-<@classCom "异常信息展示"></@classCom>
+<@classCom "异常信息展示"/>
 @ControllerAdvice
 public class ExceptionTranslator {
 

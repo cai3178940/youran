@@ -4,7 +4,7 @@
 <#assign importMap=false>
 <#--定义主体代码-->
 <#assign code>
-<@classCom "【${title}】数据库操作"></@classCom>
+<@classCom "【${title}】数据库操作"/>
 @Repository
 public class ${CName}DAO extends AbstractDAO<${CName}PO> {
 

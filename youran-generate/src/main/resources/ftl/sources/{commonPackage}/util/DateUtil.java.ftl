@@ -8,7 +8,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import java.text.ParseException;
 import java.util.Date;
 
-<@classCom "日期工具"></@classCom>
+<@classCom "日期工具"/>
 public class DateUtil {
 
     public static final String DATE_FORMAT_1 = "yyyy-MM-dd";

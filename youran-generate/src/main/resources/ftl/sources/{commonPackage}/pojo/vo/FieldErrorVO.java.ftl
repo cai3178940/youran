@@ -1,9 +1,9 @@
 <#include "/common.ftl">
-package ${commonPackage}.pojo.vo;
-
-import com.alibaba.fastjson.JSONObject;
-
-<@classCom "参数错误-错误字段信息"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "com.alibaba.fastjson.JSONObject"/>
+<@classCom "参数错误-错误字段信息"/>
 public class FieldErrorVO {
 
     private final String objectName;
@@ -35,3 +35,10 @@ public class FieldErrorVO {
         return JSONObject.toJSONString(this);
     }
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.pojo.vo;
+
+<@printImport/>
+
+${code}

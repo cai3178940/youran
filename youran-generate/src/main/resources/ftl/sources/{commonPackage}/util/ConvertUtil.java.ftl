@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.Map;
 
-<@classCom "各种形式的转换工具类"></@classCom>
+<@classCom "各种形式的转换工具类"/>
 public class ConvertUtil {
 
     //整型数组转字符串

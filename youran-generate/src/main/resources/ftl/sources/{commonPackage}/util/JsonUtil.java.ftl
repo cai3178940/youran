@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.List;
 
-<@classCom "封装json操作"></@classCom>
+<@classCom "封装json操作"/>
 public class JsonUtil {
 
 

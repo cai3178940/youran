@@ -1,11 +1,11 @@
 <#include "/common.ftl">
-package ${commonPackage}.optimistic;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-
-<@classCom "乐观锁配置"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "org.slf4j.Logger"/>
+<@import "org.slf4j.LoggerFactory"/>
+<@import "org.springframework.context.annotation.Bean"/>
+<@classCom "乐观锁配置"/>
 public class OptimisticLockConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(OptimisticLockConfiguration.class);
@@ -17,3 +17,10 @@ public class OptimisticLockConfiguration {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.optimistic;
+
+<@printImport/>
+
+${code}

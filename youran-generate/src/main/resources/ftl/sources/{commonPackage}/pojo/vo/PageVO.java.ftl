@@ -1,13 +1,12 @@
 <#include "/common.ftl">
-package ${commonPackage}.pojo.vo;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
-import java.util.ArrayList;
-import java.util.List;
-
-<@classCom "分页结果对象"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "io.swagger.annotations.ApiModel"/>
+<@import "io.swagger.annotations.ApiModelProperty"/>
+<@import "java.util.ArrayList"/>
+<@import "java.util.List"/>
+<@classCom "分页结果对象"/>
 @ApiModel
 public class PageVO<T> extends AbstractVO {
 
@@ -172,3 +171,10 @@ public class PageVO<T> extends AbstractVO {
         this.pageSize = pageSize;
     }
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.pojo.vo;
+
+<@printImport/>
+
+${code}

@@ -10,7 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-<@classCom "打印启动日志"></@classCom>
+<@classCom "打印启动日志"/>
 @Component
 public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
 

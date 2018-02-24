@@ -5,7 +5,7 @@
 <#--定义主体代码-->
 <#assign code>
 
-<@classCom "【${title}】单元测试"></@classCom>
+<@classCom "【${title}】单元测试"/>
 public class ${CName}ControllerTest extends AbstractWebTest {
 
     @Autowired

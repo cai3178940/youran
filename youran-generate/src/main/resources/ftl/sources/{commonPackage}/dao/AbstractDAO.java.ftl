@@ -1,18 +1,17 @@
 <#include "/common.ftl">
-package ${commonPackage}.dao;
-
-import ${commonPackage}.context.LoginContext;
-import ${commonPackage}.optimistic.OptimisticException;
-import ${commonPackage}.pojo.qo.PageQO;
-import ${commonPackage}.pojo.po.AbstractPO;
-import ${commonPackage}.pojo.po.Version;
-import ${commonPackage}.pojo.vo.PageVO;
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
-<@classCom "DAO超类"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "${commonPackage}.context.LoginContext"/>
+<@import "${commonPackage}.optimistic.OptimisticException"/>
+<@import "${commonPackage}.pojo.qo.PageQO"/>
+<@import "${commonPackage}.pojo.po.AbstractPO"/>
+<@import "${commonPackage}.pojo.po.Version"/>
+<@import "${commonPackage}.pojo.vo.PageVO"/>
+<@import "org.apache.ibatis.session.SqlSession"/>
+<@import "org.springframework.beans.factory.annotation.Autowired"/>
+<@import "java.util.List"/>
+<@classCom "DAO超类"/>
 public abstract class AbstractDAO<PO extends AbstractPO> {
 
     @Autowired
@@ -92,3 +91,10 @@ public abstract class AbstractDAO<PO extends AbstractPO> {
     protected abstract String getMybatisNamespace();
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.dao;
+
+<@printImport/>
+
+${code}

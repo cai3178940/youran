@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 
-<@classCom "H2数据库工具类"></@classCom>
+<@classCom "H2数据库工具类"/>
 public class H2Util {
 
 

@@ -1,9 +1,9 @@
 <#include "/common.ftl">
-package ${commonPackage}.pojo.po;
-
-import java.util.Date;
-
-<@classCom "抽象PO"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "java.util.Date"/>
+<@classCom "抽象PO"/>
 public abstract class AbstractPO{
 
     public void preInsert(String createBy){
@@ -37,3 +37,10 @@ public abstract class AbstractPO{
         }
     }
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.pojo.po;
+
+<@printImport/>
+
+${code}

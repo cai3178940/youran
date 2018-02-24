@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 
 import java.util.Date;
 
-<@classCom "抽象controller"></@classCom>
+<@classCom "抽象controller"/>
 public abstract class AbstractController {
 
     @InitBinder

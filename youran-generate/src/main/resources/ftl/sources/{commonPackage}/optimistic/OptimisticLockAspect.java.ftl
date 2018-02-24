@@ -1,19 +1,18 @@
 <#include "/common.ftl">
-package ${commonPackage}.optimistic;
-
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
-
-import java.lang.reflect.Method;
-
-<@classCom "乐观锁AOP"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "org.aspectj.lang.ProceedingJoinPoint"/>
+<@import "org.aspectj.lang.Signature"/>
+<@import "org.aspectj.lang.annotation.Around"/>
+<@import "org.aspectj.lang.annotation.Aspect"/>
+<@import "org.aspectj.lang.annotation.Pointcut"/>
+<@import "org.aspectj.lang.reflect.MethodSignature"/>
+<@import "org.slf4j.Logger"/>
+<@import "org.slf4j.LoggerFactory"/>
+<@import "org.springframework.core.annotation.Order"/>
+<@import "java.lang.reflect.Method"/>
+<@classCom "乐观锁AOP"/>
 @Aspect
 @Order(-1000)
 public class OptimisticLockAspect {
@@ -67,3 +66,10 @@ public class OptimisticLockAspect {
     }
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.optimistic;
+
+<@printImport/>
+
+${code}

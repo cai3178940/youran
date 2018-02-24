@@ -1,9 +1,9 @@
 <#include "/common.ftl">
-package ${commonPackage}.pojo.po;
-
-import java.util.Date;
-
-<@classCom "创建日期接口"></@classCom>
+<#include "/import.ftl">
+<#--定义主体代码-->
+<#assign code>
+<@import "java.util.Date"/>
+<@classCom "创建日期接口"/>
 public interface CreateDate {
 
     Date getCreateDate();
@@ -11,3 +11,10 @@ public interface CreateDate {
     void setCreateDate(Date createDate);
 
 }
+</#assign>
+<#--开始渲染代码-->
+package ${commonPackage}.pojo.po;
+
+<@printImport/>
+
+${code}

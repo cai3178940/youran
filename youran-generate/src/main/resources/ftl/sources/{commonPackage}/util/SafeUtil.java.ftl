@@ -1,7 +1,7 @@
 <#include "/common.ftl">
 package ${commonPackage}.util;
 
-<@classCom "空指针安全的类型转换工具"></@classCom>
+<@classCom "空指针安全的类型转换工具"/>
 public class SafeUtil {
 
     /**
