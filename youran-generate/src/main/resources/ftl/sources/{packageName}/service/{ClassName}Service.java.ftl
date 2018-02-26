@@ -24,21 +24,17 @@ public class ${CName}Service {
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
-        <@import "${packageName}.dao.${otherCName}DAO"/>
-    @Autowired
-    private ${otherCName}DAO ${othercName}DAO;
+        <@autowired "${packageName}.dao" "${otherCName}DAO"/>
     </#list>
 </#if>
 <#if metaEntity.mtmUnHoldRefers??>
     <#list metaEntity.mtmUnHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
-        <@import "${packageName}.dao.${otherCName}DAO"/>
-    @Autowired
-    private ${otherCName}DAO ${othercName}DAO;
+        <@autowired "${packageName}.dao" "${otherCName}DAO"/>
     </#list>
 </#if>
+
+
     /**
      * 新增【${title}】
      * @param ${cName}DTO

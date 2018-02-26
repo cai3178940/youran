@@ -25,10 +25,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
-        <@import "${packageName}.help.${otherCName}Helper"/>
-    @Autowired
-    private ${otherCName}Helper ${othercName}Helper;
+        <@autowired "${packageName}.help" "${otherCName}Helper"/>
     </#list>
 </#if>
 
