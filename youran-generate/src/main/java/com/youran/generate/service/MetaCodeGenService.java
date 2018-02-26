@@ -78,8 +78,6 @@ public class MetaCodeGenService {
                 .stream()
                 .map(metadataQueryService::getEntityWithAll)
                 .collect(Collectors.toList());
-        //填充外键相关属性
-        this.fillForeign(metaEntities);
         List<MetaManyToManyPO> manyToManies = metaManyToManyDAO.findByProjectId(projectId);
         //填充多对多持有引用
         this.fillEntityHoldRefs(metaEntities, manyToManies);
@@ -189,7 +187,8 @@ public class MetaCodeGenService {
         List<MetaEntityPO> metaEntities = entityIds
                 .stream()
                 .map(metadataQueryService::getEntityWithAll).collect(Collectors.toList());
-
+        //填充外键相关属性
+        this.fillForeign(metaEntities);
         List<Integer> constIds = metaConstDAO.findIdsByProject(projectId);
         List<MetaConstPO> metaConstPOS = constIds
                 .stream()

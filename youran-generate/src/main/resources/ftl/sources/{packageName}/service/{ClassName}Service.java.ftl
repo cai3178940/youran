@@ -3,7 +3,6 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@import "${packageName}.dao.${CName}DAO"/>
 <@import "${packageName}.pojo.dto.${CName}AddDTO"/>
 <@import "${packageName}.pojo.qo.${CName}QO"/>
 <@import "${packageName}.pojo.vo.${CName}ListVO"/>
@@ -19,8 +18,7 @@
 @Service
 public class ${CName}Service {
 
-    @Autowired
-    private ${CName}DAO ${cName}DAO;
+    <@autowired "${packageName}.dao" "${CName}DAO"/>
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
@@ -51,11 +49,11 @@ public class ${CName}Service {
 <#macro checkForeignKeys fields>
     <#list fields as field>
         <#if field.foreignKey==1>
-            <@import "com.jd.jim.cli.driver.util.Assert"/>
-            <#assign foreignCName=field.foreignEntity.className?capFirst>
+            <@import "org.springframework.util.Assert"/>
+            <#assign foreigncName=field.foreignEntity.className?uncapFirst>
             <#if field.foreignField.primaryKey==1>
         if(${cName}.get${field.jfieldName?capFirst}() != null){
-            Assert.isTrue(${foreignCName}DAO.exist(${cName}.get${field.jfieldName?capFirst}()),"${field.fieldDesc}有误");
+            Assert.isTrue(${foreigncName}DAO.exist(${cName}.get${field.jfieldName?capFirst}()),"${field.fieldDesc}有误");
         }
             <#else>
             <#-- // TODO 校验非主键是否存在 -->
