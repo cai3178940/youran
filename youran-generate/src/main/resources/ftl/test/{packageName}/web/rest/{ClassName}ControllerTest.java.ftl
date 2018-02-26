@@ -43,8 +43,9 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         <#local foreignArg="">
         <#list foreignEntity.insertFields as _field>
             <#if _field.foreignKey==1>
+                <#assign _foreigncName="${_field.foreignEntity.className?uncapFirst}">
                 <#if _field.notNull==1>
-                    <#local foreignArg=foreignArg+"${foreigncName}.get${_field.jfieldName?capFirst}(), ">
+                    <#local foreignArg=foreignArg+"${_foreigncName}.get${_field.jfieldName?capFirst}(), ">
                 <#else>
                     <#local foreignArg=foreignArg+"null, ">
                 </#if>
