@@ -33,7 +33,36 @@ public class ${CName}Service {
         <@autowired "${packageName}.dao" "${otherCName}DAO"/>
     </#list>
 </#if>
+<#-- 引入外键对应的DAO -->
+<#list insertFields as field>
+    <#if field.foreignKey==1>
+        <#assign foreignCName=field.foreignEntity.className?capFirst>
+        <@autowired "${packageName}.dao" "${foreignCName}DAO"/>
+    </#if>
+</#list>
+<#list updateFields as field>
+    <#if field.foreignKey==1>
+        <#assign foreignCName=field.foreignEntity.className?capFirst>
+        <@autowired "${packageName}.dao" "${foreignCName}DAO"/>
+    </#if>
+</#list>
 
+
+<#macro checkForeignKeys fields>
+    <#list fields as field>
+        <#if field.foreignKey==1>
+            <@import "com.jd.jim.cli.driver.util.Assert"/>
+            <#assign foreignCName=field.foreignEntity.className?capFirst>
+            <#if field.foreignField.primaryKey==1>
+        if(${cName}.get${field.jfieldName?capFirst}() != null){
+            Assert.isTrue(${foreignCName}DAO.exist(${cName}.get${field.jfieldName?capFirst}()),"${field.fieldDesc}有误");
+        }
+            <#else>
+            <#-- // TODO 校验非主键是否存在 -->
+            </#if>
+        </#if>
+    </#list>
+</#macro>
 
     /**
      * 新增【${title}】
@@ -43,6 +72,7 @@ public class ${CName}Service {
     @Transactional
     public ${CName}PO save(${CName}AddDTO ${cName}DTO) {
         ${CName}PO ${cName} = ${CName}Mapper.INSTANCE.fromAddDTO(${cName}DTO);
+        <@checkForeignKeys insertFields/>
         ${cName}DAO.save(${cName});
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
@@ -74,6 +104,7 @@ public class ${CName}Service {
         ${type} ${id} = ${cName}UpdateDTO.get${Id}();
         ${CName}PO ${cName} = this.get${CName}(${id}, true);
         ${CName}Mapper.INSTANCE.setUpdateDTO(${cName},${cName}UpdateDTO);
+        <@checkForeignKeys updateFields/>
         ${cName}DAO.update(${cName});
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>

@@ -20,7 +20,7 @@ public class ${CName}UpdateDTO extends AbstractDTO {
     </#if>
     private ${pk.jfieldType} ${pk.jfieldName};
 
-<#list metaEntity.updateFields as field>
+<#list updateFields as field>
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
     <@if1 field.notNull>
     @NotNull
@@ -56,7 +56,7 @@ public class ${CName}UpdateDTO extends AbstractDTO {
 </#if>
 
     <@getterSetter pk/>
-<#list metaEntity.updateFields as field>
+<#list updateFields as field>
     <@getterSetter field/>
 </#list>
 

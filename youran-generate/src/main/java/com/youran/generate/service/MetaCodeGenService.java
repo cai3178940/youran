@@ -78,7 +78,8 @@ public class MetaCodeGenService {
                 .stream()
                 .map(metadataQueryService::getEntityWithAll)
                 .collect(Collectors.toList());
-
+        //填充外键相关属性
+        this.fillForeign(metaEntities);
         List<MetaManyToManyPO> manyToManies = metaManyToManyDAO.findByProjectId(projectId);
         //填充多对多持有引用
         this.fillEntityHoldRefs(metaEntities, manyToManies);
@@ -91,6 +92,54 @@ public class MetaCodeGenService {
         logger.debug(text);
         return text;
     }
+
+    /**
+     * 填充外键实体和外键字段
+     */
+    private void fillForeign(List<MetaEntityPO> metaEntities){
+        for (MetaEntityPO metaEntity : metaEntities) {
+            for (MetaFieldPO metaFieldPO : metaEntity.getFields()) {
+                if(BoolConst.TRUE != metaFieldPO.getForeignKey()){
+                    continue;
+                }
+                MetaEntityPO foreignEntity = this.findMetaEntityById(metaEntities, metaFieldPO.getForeignEntityId());
+                metaFieldPO.setForeignEntity(foreignEntity);
+                MetaFieldPO foreignField = this.findMetaFieldById(foreignEntity.getFields(), metaFieldPO.getForeignFieldId());
+                metaFieldPO.setForeignField(foreignField);
+            }
+        }
+    }
+
+    /**
+     * 从list中查找实体
+     * @param metaEntities
+     * @param entityId
+     * @return
+     */
+    private MetaEntityPO findMetaEntityById(List<MetaEntityPO> metaEntities,Integer entityId){
+        Optional<MetaEntityPO> first = metaEntities.stream().filter(entityPO -> entityPO.getEntityId().equals(entityId)).findFirst();
+        if(first.isPresent()){
+            return first.get();
+        }
+        throw new GenerateException("实体id有误，entityId="+entityId);
+    }
+
+    /**
+     * 从list中查找字段
+     * @param metaFields
+     * @param fieldId
+     * @return
+     */
+    private MetaFieldPO findMetaFieldById(List<MetaFieldPO> metaFields,Integer fieldId){
+        Optional<MetaFieldPO> first = metaFields.stream().filter(entityPO -> entityPO.getFieldId().equals(fieldId)).findFirst();
+        if(first.isPresent()){
+            return first.get();
+        }
+        throw new GenerateException("字段id有误，fieldId="+fieldId);
+    }
+
+
+
 
     private void fillEntityHoldRefs(List<MetaEntityPO> metaEntities, List<MetaManyToManyPO> manyToManies) {
         if (CollectionUtils.isEmpty(manyToManies) || CollectionUtils.isEmpty(metaEntities)) {

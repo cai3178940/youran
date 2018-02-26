@@ -17,6 +17,12 @@
 <#if metaEntity.delField??>
     <#assign delField=metaEntity.delField><#--逻辑删除字段-->
 </#if>
+<#if metaEntity.insertFields??>
+    <#assign insertFields=metaEntity.insertFields><#--添加字段-->
+</#if>
+<#if metaEntity.updateFields??>
+    <#assign updateFields=metaEntity.updateFields><#--修改字段-->
+</#if>
 <#if metaEntity.queryFields??>
     <#assign queryFields=metaEntity.queryFields><#--查询字段-->
 </#if>

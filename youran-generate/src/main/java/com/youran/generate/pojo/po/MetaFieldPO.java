@@ -55,6 +55,31 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
 
     private Integer delSign;
 
+    /**
+     * 外键对应实体
+     */
+    private MetaEntityPO foreignEntity;
+    /**
+     * 外键对应字段
+     */
+    private MetaFieldPO foreignField;
+
+    public MetaEntityPO getForeignEntity() {
+        return foreignEntity;
+    }
+
+    public void setForeignEntity(MetaEntityPO foreignEntity) {
+        this.foreignEntity = foreignEntity;
+    }
+
+    public MetaFieldPO getForeignField() {
+        return foreignField;
+    }
+
+    public void setForeignField(MetaFieldPO foreignField) {
+        this.foreignField = foreignField;
+    }
+
     public Integer getForeignEntityId() {
         return foreignEntityId;
     }

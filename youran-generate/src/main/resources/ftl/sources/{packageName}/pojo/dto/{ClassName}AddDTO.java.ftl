@@ -11,7 +11,7 @@
 @ApiModel(description = "新增【${title}】的参数")
 public class ${CName}AddDTO extends AbstractDTO {
 
-<#list metaEntity.insertFields as field>
+<#list insertFields as field>
 
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
     <@if1 field.notNull>
@@ -48,7 +48,7 @@ public class ${CName}AddDTO extends AbstractDTO {
     </#list>
 </#if>
 
-<#list metaEntity.insertFields as field>
+<#list insertFields as field>
     <@getterSetter field/>
 </#list>
 
