@@ -29,9 +29,65 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     </#list>
 </#if>
 
+<#--定义包含所有"保存外键实体"的代码列表-->
+<#assign saveForeignList=[]>
+<#macro saveForeign field>
+    <#--只添加非空外键-->
+    <#if field.foreignKey==1 && field.notNull==1>
+        <#local foreignEntity=field.foreignEntity>
+        <#local foreignCName="${foreignEntity.className?capFirst}">
+        <#local foreigncName="${foreignEntity.className?uncapFirst}">
+        <#--引入help依赖-->
+        <@autowired "${packageName}.help" "${foreignCName}Helper"/>
+        <#--定义参数串-->
+        <#local foreignArg="">
+        <#list foreignEntity.insertFields as _field>
+            <#if _field.foreignKey==1>
+                <#if _field.notNull==1>
+                    <#local foreignArg=foreignArg+"${foreigncName}.get${_field.jfieldName?capFirst}(), ">
+                <#else>
+                    <#local foreignArg=foreignArg+"null, ">
+                </#if>
+            </#if>
+        </#list>
+        <#if foreignArg?length gt 0>
+            <#local foreignArg=foreignArg?substring(0,foreignArg?length-2)>
+        </#if>
+        <#--定义保存外键实体的代码串-->
+        <#local tmp="${foreignCName}PO ${foreigncName} = ${foreigncName}Helper.save${foreignCName}Example(${foreignArg});">
+        <#if !saveForeignList?seqContains(tmp)>
+            <#list foreignEntity.insertFields as _field>
+                <#--递归调用宏-->
+                <@saveForeign _field/>
+            </#list>
+            <@import "${packageName}.pojo.po.${foreignCName}PO"/>
+            <#assign saveForeignList = saveForeignList + [ tmp ] />
+        </#if>
+    </#if>
+</#macro>
+<#assign foreignArg="">
+<#list insertFields as field>
+    <#if field.foreignKey==1>
+        <#assign foreigncName="${field.foreignEntity.className?uncapFirst}">
+        <#if field.notNull==1>
+            <#assign foreignArg=foreignArg+"${foreigncName}.get${field.jfieldName?capFirst}(), ">
+        <#else>
+            <#assign foreignArg=foreignArg+"null, ">
+        </#if>
+        <@saveForeign field/>
+    </#if>
+</#list>
+<#if foreignArg?length gt 0>
+    <#assign foreignArg=foreignArg?substring(0,foreignArg?length-2)>
+</#if>
+
+
     @Test
     public void save() throws Exception {
-        ${CName}AddDTO addDTO = ${cName}Helper.get${CName}AddDTO();
+    <#list saveForeignList as saveForeign>
+        ${saveForeign}
+    </#list>
+        ${CName}AddDTO addDTO = ${cName}Helper.get${CName}AddDTO(${foreignArg});
         restMockMvc.perform(post("/${cName}/save")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(addDTO)))
@@ -40,7 +96,10 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 
     @Test
     public void update() throws Exception {
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
+    <#list saveForeignList as saveForeign>
+        ${saveForeign}
+    </#list>
+        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
         ${CName}UpdateDTO updateDTO = ${cName}Helper.get${CName}UpdateDTO(${cName});
         restMockMvc.perform(put("/${cName}/update")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -50,7 +109,10 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 
     @Test
     public void list() throws Exception {
-        ${cName}Helper.save${CName}Example();
+    <#list saveForeignList as saveForeign>
+        ${saveForeign}
+    </#list>
+        ${cName}Helper.save${CName}Example(${foreignArg});
         restMockMvc.perform(get("/${cName}/list"))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
     <#if pageSign == 1>
@@ -62,14 +124,20 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 
     @Test
     public void show() throws Exception {
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
+    <#list saveForeignList as saveForeign>
+        ${saveForeign}
+    </#list>
+        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
         restMockMvc.perform(get("/${cName}/{${id}}",${cName}.get${Id}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
     }
 
     @Test
     public void del() throws Exception {
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
+    <#list saveForeignList as saveForeign>
+        ${saveForeign}
+    </#list>
+        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
         restMockMvc.perform(delete("/${cName}/{${id}}",${cName}.get${Id}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
@@ -77,7 +145,10 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 
     @Test
     public void deleteBatch() throws Exception {
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
+    <#list saveForeignList as saveForeign>
+        ${saveForeign}
+    </#list>
+        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
         restMockMvc.perform(put("/${cName}/deleteBatch")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${cName}.get${Id}()))))
@@ -93,7 +164,10 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         <@import "${packageName}.pojo.po.${otherCName}PO"/>
     @Test
     public void addRemove${otherEntity.className}() throws Exception {
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
+        <#list saveForeignList as saveForeign>
+            ${saveForeign}
+        </#list>
+        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
         restMockMvc.perform(put("/${cName}/{${id}}/add${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${cName}.get${Id}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
@@ -107,7 +181,10 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 
     @Test
     public void addRemove${otherEntity.className}2() throws Exception {
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
+        <#list saveForeignList as saveForeign>
+            ${saveForeign}
+        </#list>
+        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
         restMockMvc.perform(put("/${cName}/{${id}}/add${otherEntity.className}",
             ${cName}.get${Id}())
@@ -125,7 +202,10 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 
     @Test
     public void set${otherEntity.className}() throws Exception {
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example();
+        <#list saveForeignList as saveForeign>
+            ${saveForeign}
+        </#list>
+        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
         restMockMvc.perform(put("/${cName}/{${id}}/set${otherEntity.className}",
             ${cName}.get${Id}())

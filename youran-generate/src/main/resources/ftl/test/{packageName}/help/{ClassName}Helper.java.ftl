@@ -5,32 +5,46 @@
 <#assign code>
 <@import "${packageName}.pojo.dto.*"/>
 <@import "${packageName}.pojo.po.*"/>
-<@import "${packageName}.service.*"/>
-<@import "${commonPackage}.util.SafeUtil"/>
-<@import "org.springframework.beans.factory.annotation.Autowired"/>
 <@import "org.springframework.stereotype.Component"/>
 <@importStatic "${packageName}.pojo.example.${CName}Example.*"/>
 @Component
 public class ${CName}Helper {
 
-    @Autowired
-    protected ${CName}Service ${cName}Service;
+    <@autowired "${packageName}.service" "${CName}Service"/>
 
+    <#--定义外键字段参数串-->
+    <#assign foreignArg="">
+    <#assign foreignArg2="">
+    <#list insertFields as field>
+        <#if field.foreignKey==1>
+            <#assign foreignArg=foreignArg+"${field.jfieldType} ${field.jfieldName}, ">
+            <#assign foreignArg2=foreignArg2+"${field.jfieldName}, ">
+        </#if>
+    </#list>
+    <#if foreignArg?length gt 0>
+        <#assign foreignArg=foreignArg?substring(0,foreignArg?length-2)>
+        <#assign foreignArg2=foreignArg2?substring(0,foreignArg2?length-2)>
+    </#if>
     /**
      * 生成add测试数据
      * @return
      */
-    public ${CName}AddDTO get${CName}AddDTO(){
+    public ${CName}AddDTO get${CName}AddDTO(${foreignArg}){
         ${CName}AddDTO dto = new ${CName}AddDTO();
     <#list metaEntity.insertFields as field>
-        <#if field.jfieldType==JFieldType.STRING.getJavaType()>
-        dto.set${field.jfieldName?capFirst}(E_${field.jfieldName?upperCase});
+        <#assign arg="">
+        <#if field.foreignKey==1>
+            <#assign arg="${field.jfieldName}">
+        <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
+            <#assign arg="E_${field.jfieldName?upperCase}">
         <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
             <@import "${commonPackage}.util.DateUtil"/>
-        dto.set${field.jfieldName?capFirst}(DateUtil.parseDate(E_${field.jfieldName?upperCase}));
+            <#assign arg="DateUtil.parseDate(E_${field.jfieldName?upperCase})">
         <#else>
-        dto.set${field.jfieldName?capFirst}(SafeUtil.get${field.jfieldType}(E_${field.jfieldName?upperCase}));
+            <@import "${commonPackage}.util.SafeUtil"/>
+            <#assign arg="SafeUtil.get${field.jfieldType}(E_${field.jfieldName?upperCase})">
         </#if>
+        dto.set${field.jfieldName?capFirst}(${arg});
     </#list>
         return dto;
     }
@@ -53,8 +67,8 @@ public class ${CName}Helper {
      * 保存示例
      * @return
      */
-    public ${CName}PO save${CName}Example(){
-        ${CName}AddDTO addDTO = this.get${CName}AddDTO();
+    public ${CName}PO save${CName}Example(${foreignArg}){
+        ${CName}AddDTO addDTO = this.get${CName}AddDTO(${foreignArg2});
         return ${cName}Service.save(addDTO);
     }
 
