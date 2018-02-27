@@ -103,7 +103,13 @@ public class MetaCodeGenService {
                 MetaEntityPO foreignEntity = this.findMetaEntityById(metaEntities, metaFieldPO.getForeignEntityId());
                 metaFieldPO.setForeignEntity(foreignEntity);
                 MetaFieldPO foreignField = this.findMetaFieldById(foreignEntity.getFields(), metaFieldPO.getForeignFieldId());
+                if(BoolConst.TRUE != foreignField.getPrimaryKey()){
+                    throw new GenerateException("外键【"+metaEntity.getClassName()+"."+metaFieldPO.getJfieldName()+
+                        "】对应的字段【"+foreignEntity.getClassName()+"."+foreignField.getJfieldName()+"】不是主键！");
+                }
                 metaFieldPO.setForeignField(foreignField);
+                foreignEntity.addForeignField(metaFieldPO);
+                foreignEntity.addForeignEntity(metaEntity);
             }
         }
     }

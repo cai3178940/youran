@@ -186,7 +186,7 @@
         queryTypeDisabled: true,
         specialFieldDisabled: false,
         foreignField:[0,0],
-        foreignFieldDisabled: false,
+        foreignFieldDisabled: true,
         form: {
           entityId: null,
           //java字段名

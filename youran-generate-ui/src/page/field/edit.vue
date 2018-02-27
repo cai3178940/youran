@@ -229,7 +229,7 @@
         queryTypeDisabled:true,
         specialFieldDisabled:false,
         foreignField:[0,0],
-        foreignFieldDisabled: false,
+        foreignFieldDisabled: true,
         old: {
           ...fieldModel
         },

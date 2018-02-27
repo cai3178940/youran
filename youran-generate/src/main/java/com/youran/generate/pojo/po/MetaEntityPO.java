@@ -3,9 +3,7 @@ package com.youran.generate.pojo.po;
 import com.youran.common.pojo.po.AbstractPO;
 import com.youran.common.pojo.po.CreateOperateDeleteVersion;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Title:元数据实体
@@ -133,6 +131,16 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
      */
     private List<MetaEntityPO> mtmUnHoldRefers;
 
+    /**
+     * 对应的外键列表(其他实体的外键字段)
+     */
+    private List<MetaFieldPO> foreignFields;
+    /**
+     * 对应的外键实体集合(其他实体)
+     */
+    private Set<MetaEntityPO> foreignEntities;
+
+
     private Date createDate;
 
     private String createBy;
@@ -152,6 +160,27 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
         fields.add(metaFieldPO);
         return this;
     }
+
+    public MetaEntityPO addForeignField(MetaFieldPO metaFieldPO){
+        if(foreignFields==null){
+            foreignFields = new ArrayList<>();
+        }
+        foreignFields.add(metaFieldPO);
+        return this;
+    }
+
+
+    public MetaEntityPO addForeignEntity(MetaEntityPO foreignEntity){
+        if(foreignEntities==null){
+            foreignEntities = new HashSet<>();
+        }
+        foreignEntities.add(foreignEntity);
+        return this;
+    }
+
+
+
+
 
     public MetaEntityPO addIndex(MetaIndexPO metaIndexPO){
         if(indices==null){
@@ -189,6 +218,22 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
         }
         unHoldMtms.add(mtm);
         return this;
+    }
+
+    public List<MetaFieldPO> getForeignFields() {
+        return foreignFields;
+    }
+
+    public void setForeignFields(List<MetaFieldPO> foreignFields) {
+        this.foreignFields = foreignFields;
+    }
+
+    public Set<MetaEntityPO> getForeignEntities() {
+        return foreignEntities;
+    }
+
+    public void setForeignEntities(Set<MetaEntityPO> foreignEntities) {
+        this.foreignEntities = foreignEntities;
     }
 
     public Integer getPageSign() {

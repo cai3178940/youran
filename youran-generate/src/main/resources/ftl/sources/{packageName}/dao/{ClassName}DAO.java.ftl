@@ -29,7 +29,13 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
     }
 </#if>
 
-
+<#list fields as field>
+    <#if field.foreignKey==1>
+    public int getCountBy${field.jfieldName?capFirst}(${field.jfieldType} ${field.jfieldName}) {
+        return sqlSession.selectOne(getMybatisNamespace()+".getCountBy${field.jfieldName?capFirst}", ${field.jfieldName});
+    }
+    </#if>
+</#list>
 
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as entity>

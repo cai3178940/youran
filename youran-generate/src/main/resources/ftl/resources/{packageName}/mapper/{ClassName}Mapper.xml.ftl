@@ -150,6 +150,27 @@
         limit ${r'#'}{startIndex},${r'#'}{pageSize}
     </#if>
     </select>
+
+<#list fields as field>
+    <#if field.foreignKey==1>
+        <#assign foreignEntity=field.foreignEntity>
+        <#assign foreignField=field.foreignField>
+        <#assign wrapForeignTableName=MetadataUtil.wrapMysqlKeyword(foreignEntity.tableName)>
+        <#assign wrapForeignFieldName=MetadataUtil.wrapMysqlKeyword(foreignField.fieldName)>
+        <#assign foreignDelField=foreignEntity.delField>
+        <#assign wrapForeignDelFieldName=MetadataUtil.wrapMysqlKeyword(foreignDelField.fieldName)>
+    <select id="getCountBy${field.jfieldName?capFirst}" parameterType="${field.jfieldType}" resultType="int">
+        select count(1)
+        from ${wrapForeignTableName} t
+        where
+            t.${wrapForeignFieldName}=${r'#'}{arg0}
+        <#if foreignDelField??>
+            and t.${wrapForeignDelFieldName}=0
+        </#if>
+    </select>
+
+    </#if>
+</#list>
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as entity>
         <#assign mtm=metaEntity.holdMtms[entity_index]/>
@@ -162,7 +183,6 @@
         <#assign other_pk_id=MetadataUtil.getPkAlias(othercName,true)>
         <#assign the_pk_id=MetadataUtil.getPkAlias(cName,true)>
         <#assign wrapMtmTableName=MetadataUtil.wrapMysqlKeyword(mtm.tableName)>
-
     <select id="getCountBy${otherCName}" parameterType="${otherType}" resultType="int">
         select count(1)
         from ${wrapTableName} t
