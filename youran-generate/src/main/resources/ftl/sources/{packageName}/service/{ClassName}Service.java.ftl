@@ -193,11 +193,7 @@ public class ${CName}Service {
             this.check${otherCName}(${id});
         </#list>
     </#if>
-        <#if metaEntity.delField??>
             count += ${cName}DAO.delete(${id});
-        <#else>
-            count += ${cName}DAO.physicalDelete(${id});
-        </#if>
         }
         return count;
     }
