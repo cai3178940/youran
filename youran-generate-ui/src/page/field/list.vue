@@ -73,7 +73,14 @@
 
     <el-dialog title="请选择字段模板" :visible.sync="addTemplateFormVisible" width="30%">
       <el-form :model="templateForm">
-        <el-form-item label="请选择：" label-width="100px">
+
+        <el-form-item label="模式：" label-width="100px">
+          <el-radio-group v-model="templateForm.multiple">
+            <el-radio border label="0">表单编辑</el-radio>
+            <el-radio border label="1">批量保存</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item v-show="templateForm.multiple=='0'" label="模板：" label-width="100px">
           <el-select v-model="templateForm.template">
             <el-option-group>
               <el-option label="不使用模板" value=""></el-option>
@@ -95,11 +102,31 @@
             </el-option-group>
           </el-select>
         </el-form-item>
+        <el-form-item v-show="templateForm.multiple=='1'" label="模板：" label-width="100px">
+          <el-select
+            v-model="templateForm.templates"
+            multiple
+            collapse-tags>
+            <el-option-group v-if="cacheTemplateCount>0" label="临时模板">
+              <el-option v-for="value in cacheTemplate"
+                         :key="value.fieldId"
+                         :label="value.fieldDesc"
+                         :value="value.fieldId">
+              </el-option>
+            </el-option-group>
+            <el-option-group label="系统内置模板">
+              <el-option v-for="(value,key) in fieldTemplate"
+                         :key="key"
+                         :label="key"
+                         :value="key"></el-option>
+            </el-option-group>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addTemplateFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleAdd">开始编辑</el-button>
-        <el-button type="success" @click="handleAddImm">立即保存</el-button>
+        <el-button v-if="templateForm.multiple=='0'" type="primary" @click="handleAdd">开始编辑</el-button>
+        <el-button v-if="templateForm.multiple=='1'" type="success" @click="handleAddImm">立即保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -118,7 +145,9 @@
         cacheTemplateCount:0,
         cacheTemplate:[],
         templateForm: {
+          multiple: '0',
           template: '',
+          templates: [],
         },
         //查询参数
         query: {
@@ -233,29 +262,44 @@
       },
       handleAddImm: function () {
         this.addTemplateFormVisible = false
+        const multiple = this.templateForm.multiple;
+        const templates = this.templateForm.templates;
         const template = this.templateForm.template;
-        var callback = function(form){
-          this.$ajax.post('/generate/meta_field/save', {
+        var callback = function(form,refresh){
+          return this.$ajax.post('/generate/meta_field/save', {
               ...this.$common.removeBlankField(form),
               entityId:this.entityId
             })
             .then(response => this.$common.checkResult(response.data))
             //执行页面刷新
             .then(() => {
-              this.$common.showMsg('success', '添加成功')
-              this.doQuery()
+              if(refresh){
+                this.$common.showMsg('success', '添加成功')
+                this.doQuery()
+              }
             })
             .catch(error => this.$common.showNotifyError(error))
         }.bind(this)
-        //如果目标值是数字，则为临时模板
-        if(typeof this.templateForm.template == 'number'){
-          this.$ajax.get(`/generate/meta_field/${template}`)
-            .then(response => this.$common.checkResult(response.data))
-            .then(result => callback(result.data))
-            .catch(error => this.$common.showNotifyError(error))
+        var doAddImm = function (temp,refresh) {
+          //如果目标值是数字，则为临时模板
+          if(typeof temp == 'number'){
+            return this.$ajax.get(`/generate/meta_field/${temp}`)
+              .then(response => this.$common.checkResult(response.data))
+              .then(result => callback(result.data,refresh))
+              .catch(error => this.$common.showNotifyError(error))
+          }else{
+            //系统内置模板，直接保存
+            return callback(fieldTemplate[temp],refresh)
+          }
+        }.bind(this)
+        if(multiple=='0'){
+          doAddImm(template,true)
         }else{
-          //系统内置模板，直接保存
-          callback(fieldTemplate[template])
+          Promise.all(templates.map(temp=>doAddImm(temp)))
+            .then(()=>{
+              this.$common.showMsg('success', '添加成功')
+              this.doQuery()
+            })
         }
       },
       handleEdit: function (row) {
