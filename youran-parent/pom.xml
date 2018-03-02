@@ -27,6 +27,8 @@
         <commons-io.version>2.5</commons-io.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <org.mapstruct.version>1.1.0.Final</org.mapstruct.version>
+        <servlet-api.version>3.1.0</servlet-api.version>
+        <jsoup.version>1.11.2</jsoup.version>
     </properties>
 
     <dependencies>
@@ -112,6 +114,17 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${org.mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+            </dependency>
+            <!-- jsoup HTML parser library @ https://jsoup.org/ -->
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

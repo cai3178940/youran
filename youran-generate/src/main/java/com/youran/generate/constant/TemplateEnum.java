@@ -333,6 +333,10 @@ public enum TemplateEnum {
      * sql脚本模版
      */
     SQL(COMMON, "test_resources/DB/{projectName}.sql.ftl"),
+    /**
+     * sql脚本模版
+     */
+    SQLMarkdown(COMMON, "test_resources/DB/{projectName}.md.ftl"),
 
     /**
      * pom模版
