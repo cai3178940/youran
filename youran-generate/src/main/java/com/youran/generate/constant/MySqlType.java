@@ -15,6 +15,10 @@ public class MySqlType {
 
 	public static final  String DATETIME = "datetime";
 
+	public static final  String FLOAT = "float";
+
+	public static final  String DOUBLE = "double";
+
 	public static final  String DECIMAL = "decimal";
 
 	public static final  String BIGINT = "bigint";

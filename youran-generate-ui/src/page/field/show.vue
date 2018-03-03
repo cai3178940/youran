@@ -41,7 +41,7 @@
           <el-form-item label="字段长度" prop="fieldLength">
             <el-input-number :disabled="true" v-model="form.fieldLength" style="width:100%;" :min="0"></el-input-number>
           </el-form-item>
-          <el-form-item label="字段精度" prop="fieldScale">
+          <el-form-item v-if="fieldScaleVisible" label="字段精度" prop="fieldScale">
             <el-input-number :disabled="true" v-model="form.fieldScale" style="width:100%;" :min="0"></el-input-number>
           </el-form-item>
           <el-form-item label="是否主键" prop="primaryKey">
@@ -223,6 +223,11 @@
         form: {
           ...fieldModel
         }
+      }
+    },
+    computed: {
+      fieldScaleVisible:function () {
+        return options.showFieldScale(this.form.fieldType)
       }
     },
     methods: {

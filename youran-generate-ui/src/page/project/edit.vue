@@ -76,6 +76,7 @@
         }
       },
       submit: function () {
+        const loading = this.$loading()
         //校验表单
         this.$refs.editForm.validate()
         //提交表单
@@ -88,6 +89,7 @@
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
+          .finally(()=>loading.close())
       },
       goBack: function () {
         this.$router.push('/project')

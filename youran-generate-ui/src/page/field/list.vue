@@ -41,7 +41,7 @@
       <el-table-column label="字段类型" width="200px">
         <template slot-scope="scope">
           {{ scope.row.jfieldType | optionLabel('jfieldTypeOptions')}}
-          / {{ scope.row.fieldType | optionLabel('fieldTypeOptions') }}({{ scope.row.fieldLength }}<template v-if="scope.row.fieldType=='decimal'">,{{ scope.row.fieldScale }}</template>)
+          / {{ scope.row.fieldType | optionLabel('fieldTypeOptions') }}{{scope.row | lengthAndScale}}
         </template>
       </el-table-column>
       <el-table-column label="非空" width="50px">
@@ -60,6 +60,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
+      <el-table-column property="orderNo" label="排序" width="50px"></el-table-column>
       <el-table-column property="fieldExample" label="字段示例"></el-table-column>
       <el-table-column
         label="操作"
@@ -174,6 +175,17 @@
           }
         }
         return null
+      },
+      lengthAndScale: function (row) {
+        let rel = ''
+        if(options.showFieldLength(row.fieldType)){
+          rel+='('+row.fieldLength
+          if(options.showFieldScale(row.fieldType)){
+            rel+=','+row.fieldScale
+          }
+          rel+=')'
+        }
+        return rel
       }
     },
     methods: {
@@ -292,15 +304,18 @@
             return callback(fieldTemplate[temp],refresh)
           }
         }.bind(this)
+        const loading = this.$loading()
+        let promise = null
         if(multiple=='0'){
-          doAddImm(template,true)
+          promise = doAddImm(template,true)
         }else{
-          Promise.all(templates.map(temp=>doAddImm(temp)))
+          promise = Promise.all(templates.map(temp=>doAddImm(temp)))
             .then(()=>{
               this.$common.showMsg('success', '添加成功')
               this.doQuery()
             })
         }
+        promise.finally(()=>loading.close())
       },
       handleEdit: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/edit/${row.fieldId}`)

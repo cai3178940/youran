@@ -80,6 +80,7 @@
           ...this.form
         }
         params.fieldIds = this.form.fieldIds.join(",");
+        const loading = this.$loading()
         //校验表单
         this.$refs.addForm.validate()
           //提交表单
@@ -92,6 +93,7 @@
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
+          .finally(()=>loading.close())
       },
       goBack: function () {
         this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/index`)

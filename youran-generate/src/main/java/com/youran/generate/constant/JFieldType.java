@@ -18,8 +18,8 @@ public enum JFieldType {
     LONG("Long",MySqlType.BIGINT,"BIGINT"),
     STRING("String",MySqlType.VARCHAR,"VARCHAR"),
     DATE("Date",MySqlType.DATETIME,"TIMESTAMP"),
-    DOUBLE("Double",MySqlType.DECIMAL,"DECIMAL"),
-    FLOAT("Float",MySqlType.DECIMAL,"DECIMAL"),
+    DOUBLE("Double",MySqlType.DOUBLE,"DOUBLE"),
+    FLOAT("Float",MySqlType.FLOAT,"FLOAT"),
     BIGDECIMAL("BigDecimal",MySqlType.DECIMAL,"DECIMAL");
 
     private final String javaType;

@@ -30,7 +30,7 @@
 <#if metaEntity.operateByField??>
     <#assign implementsOperateBy=true>
 </#if>
-<#if metaEntity.operateByField??>
+<#if metaEntity.operateDateField??>
     <#assign implementsOperateDate=true>
 </#if>
 <#if metaEntity.versionField??>

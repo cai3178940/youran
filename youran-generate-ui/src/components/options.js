@@ -30,6 +30,14 @@ export default  {
       label: 'DATETIME'
     },
     {
+      value: 'float',
+      label: 'FLOAT'
+    },
+    {
+      value: 'double',
+      label: 'DOUBLE'
+    },
+    {
       value: 'decimal',
       label: 'DECIMAL'
     },
@@ -46,6 +54,22 @@ export default  {
       label: 'TINYINT'
     }
   ],
+  /**
+   * 根据字段类型判断是否需要显示长度
+   * @param fieldType
+   * @returns {boolean}
+   */
+  showFieldLength:function (fieldType) {
+    return fieldType!='datetime'&&fieldType!='text'
+  },
+  /**
+   * 根据字段类型判断是否需要显示精度
+   * @param fieldType
+   * @returns {boolean}
+   */
+  showFieldScale:function (fieldType) {
+    return fieldType=='decimal'||fieldType=='double'||fieldType=='float'
+  },
 
   jfieldTypeOptions:[
     {

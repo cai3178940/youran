@@ -95,6 +95,7 @@
           .then(result => this.projectList = result.data)
       },
       submit: function () {
+        const loading = this.$loading()
         //校验表单
         this.$refs.addForm.validate()
         //提交表单
@@ -107,6 +108,7 @@
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
+          .finally(()=>loading.close())
       },
       goBack: function () {
         this.$router.push(`/project/${this.projectId}/entity`)
