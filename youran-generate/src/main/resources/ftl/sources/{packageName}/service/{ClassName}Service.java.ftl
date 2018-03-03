@@ -44,20 +44,21 @@ public class ${CName}Service {
         <@autowired "${packageName}.dao" "${foreignCName}DAO"/>
     </#if>
 </#list>
-
+<#if metaEntity.foreignEntities??>
+    <#list metaEntity.foreignEntities as foreignEntity>
+        <#assign foreignCName=foreignEntity.className?capFirst>
+        <@autowired "${packageName}.dao" "${foreignCName}DAO"/>
+    </#list>
+</#if>
 
 <#macro checkForeignKeys fields>
     <#list fields as field>
         <#if field.foreignKey==1>
             <@import "org.springframework.util.Assert"/>
             <#assign foreigncName=field.foreignEntity.className?uncapFirst>
-            <#if field.foreignField.primaryKey==1>
         if(${cName}.get${field.jfieldName?capFirst}() != null){
             Assert.isTrue(${foreigncName}DAO.exist(${cName}.get${field.jfieldName?capFirst}()),"${field.fieldDesc}有误");
         }
-            <#else>
-            <#-- // TODO 校验非主键是否存在 -->
-            </#if>
         </#if>
     </#list>
 </#macro>
@@ -186,11 +187,17 @@ public class ${CName}Service {
     public int delete(${type}... ${id}s) {
         int count = 0;
         for (${type} ${id} : ${id}s) {
+    <#if metaEntity.foreignEntities??>
+        <#list metaEntity.foreignEntities as foreignEntity>
+            <#assign foreignCName=foreignEntity.className?capFirst>
+            this.checkDeleteBy${foreignCName}(${id});
+        </#list>
+    </#if>
     <#if metaEntity.mtmUnHoldRefers??>
         <#list metaEntity.mtmUnHoldRefers as otherEntity>
             <#assign otherCName=otherEntity.className?capFirst>
-            //校验是否存在【${otherEntity.title}】绑定
-            this.check${otherCName}(${id});
+            //校验是否存在【${otherEntity.title}】关联
+            this.checkDeleteBy${otherCName}(${id});
         </#list>
     </#if>
             count += ${cName}DAO.delete(${id});
@@ -198,24 +205,46 @@ public class ${CName}Service {
         return count;
     }
 
+<#if metaEntity.foreignEntities??>
+    <#list metaEntity.foreignEntities as foreignEntity>
+        <#assign foreignCName=foreignEntity.className?capFirst>
+        <#assign foreigncName=foreignEntity.className?uncapFirst>
+        <#assign alreadyFind=false>
+    /**
+     * 校验是否存在【${foreignEntity.title}】关联
+     * @param ${id}
+     */
+    private void checkDeleteBy${foreignCName}(${type} ${id}) {
+        <#list metaEntity.foreignFields as foreignField>
+            <#if foreignField.entityId==foreignEntity.entityId>
+        <#if !alreadyFind>int </#if>count = ${foreigncName}DAO.getCountBy${foreignField.jfieldName?capFirst}(${id});
+        if(count>0){
+            throw new ${ProjectName}Exception("${title}和${foreignEntity.title}存在关联关系，删除失败");
+        }
+                <#assign alreadyFind=true>
+            </#if>
+        </#list>
+    }
 
+    </#list>
+</#if>
 <#if metaEntity.mtmUnHoldRefers??>
     <#list metaEntity.mtmUnHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
     /**
-     * 校验是否存在【${otherEntity.title}】绑定
+     * 校验是否存在【${otherEntity.title}】关联
      * @param ${id}
      */
-    private void check${otherCName}(${type} ${id}) {
+    private void checkDeleteBy${otherCName}(${type} ${id}) {
         int count = ${othercName}DAO.getCountBy${CName}(${id});
         if(count>0){
-            throw new ${ProjectName}Exception("${title}和${otherEntity.title}存在依赖关系，请先解除依赖");
+            throw new ${ProjectName}Exception("${title}和${otherEntity.title}存在关联关系，删除失败");
         }
     }
+
     </#list>
 </#if>
-
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <@import "org.apache.commons.lang3.ArrayUtils"/>

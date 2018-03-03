@@ -153,19 +153,14 @@
 
 <#list fields as field>
     <#if field.foreignKey==1>
-        <#assign foreignEntity=field.foreignEntity>
-        <#assign foreignField=field.foreignField>
-        <#assign wrapForeignTableName=MetadataUtil.wrapMysqlKeyword(foreignEntity.tableName)>
-        <#assign wrapForeignFieldName=MetadataUtil.wrapMysqlKeyword(foreignField.fieldName)>
-        <#assign foreignDelField=foreignEntity.delField>
-        <#assign wrapForeignDelFieldName=MetadataUtil.wrapMysqlKeyword(foreignDelField.fieldName)>
+        <#assign wrapFieldName=MetadataUtil.wrapMysqlKeyword(field.fieldName)>
     <select id="getCountBy${field.jfieldName?capFirst}" parameterType="${field.jfieldType}" resultType="int">
         select count(1)
-        from ${wrapForeignTableName} t
+        from ${wrapTableName} t
         where
-            t.${wrapForeignFieldName}=${r'#'}{arg0}
-        <#if foreignDelField??>
-            and t.${wrapForeignDelFieldName}=0
+            t.${wrapFieldName}=${r'#'}{arg0}
+        <#if delField??>
+            and t.${wrapDelFieldName}=0
         </#if>
     </select>
 

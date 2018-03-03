@@ -100,13 +100,11 @@ public class MetaCodeGenService {
                 if(BoolConst.TRUE != metaFieldPO.getForeignKey()){
                     continue;
                 }
+                //查找当前外键字段对应的外键实体
                 MetaEntityPO foreignEntity = this.findMetaEntityById(metaEntities, metaFieldPO.getForeignEntityId());
                 metaFieldPO.setForeignEntity(foreignEntity);
-                MetaFieldPO foreignField = this.findMetaFieldById(foreignEntity.getFields(), metaFieldPO.getForeignFieldId());
-                if(BoolConst.TRUE != foreignField.getPrimaryKey()){
-                    throw new GenerateException("外键【"+metaEntity.getClassName()+"."+metaFieldPO.getJfieldName()+
-                        "】对应的字段【"+foreignEntity.getClassName()+"."+foreignField.getJfieldName()+"】不是主键！");
-                }
+                //获取外键关联的主键字段
+                MetaFieldPO foreignField = foreignEntity.getPkField();
                 metaFieldPO.setForeignField(foreignField);
                 foreignEntity.addForeignField(metaFieldPO);
                 foreignEntity.addForeignEntity(metaEntity);
@@ -127,22 +125,6 @@ public class MetaCodeGenService {
         }
         throw new GenerateException("实体id有误，entityId="+entityId);
     }
-
-    /**
-     * 从list中查找字段
-     * @param metaFields
-     * @param fieldId
-     * @return
-     */
-    private MetaFieldPO findMetaFieldById(List<MetaFieldPO> metaFields,Integer fieldId){
-        Optional<MetaFieldPO> first = metaFields.stream().filter(entityPO -> entityPO.getFieldId().equals(fieldId)).findFirst();
-        if(first.isPresent()){
-            return first.get();
-        }
-        throw new GenerateException("字段id有误，fieldId="+fieldId);
-    }
-
-
 
 
     private void fillEntityHoldRefs(List<MetaEntityPO> metaEntities, List<MetaManyToManyPO> manyToManies) {

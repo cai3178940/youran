@@ -132,7 +132,7 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
     private List<MetaEntityPO> mtmUnHoldRefers;
 
     /**
-     * 对应的外键列表(其他实体的外键字段)
+     * 对应的外键列表(当前主键对应的其他实体外键字段)
      */
     private List<MetaFieldPO> foreignFields;
     /**
