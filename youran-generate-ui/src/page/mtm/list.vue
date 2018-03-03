@@ -122,7 +122,8 @@
         if (this.query.projectId != parseInt(this.projectId)) {
           this.$router.push(`/project/${this.query.projectId}/mtm`)
         }
-        this.doQuery()
+        this.queryEntity(this.queryForm.projectId)
+          .then(() => this.doQuery())
       },
       // 列表查询
       doQuery: function () {
