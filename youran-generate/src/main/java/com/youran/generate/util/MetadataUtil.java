@@ -2,6 +2,7 @@ package com.youran.generate.util;
 
 import com.google.common.base.Joiner;
 import com.youran.generate.constant.JFieldType;
+import com.youran.generate.constant.MySqlType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -72,4 +73,14 @@ public class MetadataUtil {
         return alias;
     }
 
+    /**
+     * 是否需要展示字段精度
+     * @param fieldType
+     * @return
+     */
+    public static boolean showFieldScale(String fieldType){
+        return MySqlType.DECIMAL.equals(fieldType)
+            ||MySqlType.DOUBLE.equals(fieldType)
+            ||MySqlType.FLOAT.equals(fieldType);
+    }
 }

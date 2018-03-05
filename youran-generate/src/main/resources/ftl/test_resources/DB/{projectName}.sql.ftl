@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS `${metaEntity.tableName}`;
 
 CREATE TABLE `${metaEntity.tableName}` (
     <#list metaEntity.fields as field>
-        <#assign length_holder><#if field.jfieldType!=JFieldType.DATE.getJavaType() && field.fieldLength gt 0>(${field.fieldLength}<#if field.fieldType=='decimal' && field.fieldScale??>,${field.fieldScale}</#if>)</#if></#assign>
+        <#assign length_holder><#if field.jfieldType!=JFieldType.DATE.getJavaType() && field.fieldLength gt 0>(${field.fieldLength}<#if MetadataUtil.showFieldScale(field.fieldType)>,${field.fieldScale}</#if>)</#if></#assign>
         <#assign autoIncrement_holder><#if field.autoIncrement==1> AUTO_INCREMENT</#if></#assign>
         <#assign notNull_holder><#if field.notNull==1> NOT NULL<#elseif field.defaultValue=='NULL'> DEFAULT NULL</#if></#assign>
         <#assign default_holder><#if field.defaultValue!='NULL'> DEFAULT ${field.defaultValue}</#if></#assign>
