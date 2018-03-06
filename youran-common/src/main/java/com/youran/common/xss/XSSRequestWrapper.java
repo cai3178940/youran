@@ -1,8 +1,5 @@
 package com.youran.common.xss;
 
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.HashMap;
@@ -56,7 +53,7 @@ public class XSSRequestWrapper  extends HttpServletRequestWrapper {
     }
 
     private String clean(String value){
-        return Jsoup.clean(value, Whitelist.basicWithImages());
+        return XSSUtil.clean(value);
     }
 
 }

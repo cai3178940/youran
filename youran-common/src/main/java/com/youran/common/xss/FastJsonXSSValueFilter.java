@@ -1,8 +1,6 @@
 package com.youran.common.xss;
 
 import com.alibaba.fastjson.serializer.ValueFilter;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 /**
  * Title:XSS过滤
@@ -16,7 +14,7 @@ public class FastJsonXSSValueFilter implements ValueFilter {
     @Override
     public Object process(Object obj, String name, Object value) {
         if(value instanceof String) {
-            return Jsoup.clean((String)value, Whitelist.basicWithImages());
+            return XSSUtil.clean((String)value);
         }
         return value;
     }
