@@ -28,6 +28,10 @@ public class MetaProjectService {
     @Autowired
     private MetaProjectDAO metaProjectDAO;
 
+    public String getNormalProjectName(Integer projectId){
+        MetaProjectPO projectPO = metaProjectDAO.findById(projectId);
+        return projectPO.fetchNormalProjectName();
+    }
     /**
      * 新增项目
      * @param metaProjectDTO

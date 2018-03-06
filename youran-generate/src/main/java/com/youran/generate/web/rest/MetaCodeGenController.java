@@ -1,9 +1,11 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.ReplyVO;
+import com.youran.common.util.DateUtil;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.service.MetaCodeGenService;
+import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.web.api.MetaCodeGenAPI;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Title:代码生成controller
@@ -30,6 +33,8 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
 
     @Autowired
     private MetaCodeGenService metaCodeGenService;
+    @Autowired
+    private MetaProjectService metaProjectService;
 
     @Override
     @GetMapping(value = "/genSql")
@@ -68,7 +73,8 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
             }
             response.setContentType("application/octet-stream");
             String headerKey = "Content-Disposition";
-            String headerValue = String.format("attachment; filename=\"%s\"", "code.zip");
+            String normalProjectName = metaProjectService.getNormalProjectName(projectId);
+            String headerValue = String.format("attachment; filename=\"%s\"", normalProjectName+ DateUtil.getDateStr(new Date(),"yyyyMMddHHmmss")+".zip");
             response.setHeader(headerKey, headerValue);
             byte[] bytes = FileUtils.readFileToByteArray(zipFile);
             IOUtils.write(bytes, response.getOutputStream());
