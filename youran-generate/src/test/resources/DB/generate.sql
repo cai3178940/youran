@@ -43,8 +43,8 @@ DROP TABLE IF EXISTS `meta_field`;
 CREATE TABLE `meta_field` (
   `fieldId` int(11) AUTO_INCREMENT COMMENT '主键',
   `entityId` int(11) NOT NULL COMMENT '所属实体id',
-  `jfieldName` varchar(20) NOT NULL COMMENT '实体字段名称',
-  `fieldName` varchar(20) NOT NULL COMMENT '表字段名称',
+  `jfieldName` varchar(50) NOT NULL COMMENT '实体字段名称',
+  `fieldName` varchar(64) NOT NULL COMMENT '表字段名称',
   `jfieldType` varchar(10) NOT NULL COMMENT '实体字段类型',
   `fieldType` varchar(10) NOT NULL COMMENT '表字段类型',
   `fieldDesc` varchar(40) NOT NULL COMMENT '字段描述（中文名）',
