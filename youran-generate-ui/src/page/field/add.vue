@@ -247,11 +247,11 @@
         rules: {
           jfieldName: [
             {required: true, message: '请输入java字段名', trigger: 'blur'},
-            {max: 20, message: '长度不能超过20个字符', trigger: 'blur'}
+            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
           ],
           fieldName: [
             {required: true, message: '请输入mysql字段名', trigger: 'blur'},
-            {max: 20, message: '长度不能超过20个字符', trigger: 'blur'}
+            {max: 64, message: '长度不能超过64个字符', trigger: 'blur'}
           ],
           fieldDesc: [
             {required: true, message: '请输入字段描述', trigger: 'blur'},
