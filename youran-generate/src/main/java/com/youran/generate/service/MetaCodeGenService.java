@@ -105,6 +105,14 @@ public class MetaCodeGenService {
                 metaFieldPO.setForeignEntity(foreignEntity);
                 //获取外键关联的主键字段
                 MetaFieldPO foreignField = foreignEntity.getPkField();
+                if(!Objects.equals(foreignField.getFieldType(),metaFieldPO.getFieldType())){
+                    throw new GenerateException("外键字段"+metaEntity.getTableName()+"."+metaFieldPO.getFieldName()+"与"
+                            +foreignEntity.getTableName()+"."+foreignField.getFieldName()+"字段类型不一致");
+                }
+                if(!Objects.equals(foreignField.getJfieldType(),metaFieldPO.getJfieldType())){
+                    throw new GenerateException("java字段"+metaEntity.getClassName()+"."+metaFieldPO.getJfieldName()+"与"
+                            +foreignEntity.getClassName()+"."+foreignField.getJfieldName()+"字段类型不一致");
+                }
                 metaFieldPO.setForeignField(foreignField);
                 foreignEntity.addForeignField(metaFieldPO);
                 foreignEntity.addForeignEntity(metaEntity);

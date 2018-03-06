@@ -370,7 +370,7 @@
         }
         return this.$common.getFieldOptions(entityId)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => entity.children = result.data.map(field=>({value:field.fieldId,label:field.fieldDesc})))
+          .then(result => entity.children = result.data.filter(field=>field.primaryKey==1).map(field=>({value:field.fieldId,label:field.fieldDesc})))
       },
       //查询可用枚举字典
       queryDicType: function (queryString, cb) {

@@ -245,7 +245,7 @@
         }
         return this.$common.getFieldOptions(entityId)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => entity.children = result.data.map(field=>({value:field.fieldId,label:field.fieldDesc})))
+          .then(result => entity.children = result.data.filter(field=>field.primaryKey==1).map(field=>({value:field.fieldId,label:field.fieldDesc})))
       },
       getField: function () {
         return this.$ajax.get(`/generate/meta_field/${this.fieldId}`)
