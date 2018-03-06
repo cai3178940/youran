@@ -64,10 +64,11 @@
       <el-table-column property="fieldExample" label="字段示例"></el-table-column>
       <el-table-column
         label="操作"
-        width="100">
+        width="140">
         <template slot-scope="scope">
           <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
+          <el-button @click="handleCopyOne(scope.row)" type="text" size="medium">复制</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -220,6 +221,12 @@
           }
         }
         this.cacheTemplateCount = this.cacheTemplate.length
+      },
+      handleCopyOne:function (row) {
+        if(!this.cacheTemplate.find(t=>t.fieldId==row.fieldId)){
+          this.cacheTemplate.push(row)
+          this.cacheTemplateCount = this.cacheTemplate.length
+        }
       },
       initProjectOptions: function () {
         return this.$common.getProjectOptions()
