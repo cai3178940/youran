@@ -74,6 +74,15 @@ public class MetadataUtil {
     }
 
     /**
+     * 是否需要展示字段长度
+     * @param fieldType
+     * @return
+     */
+    public static boolean showFieldLength(String fieldType){
+        return MySqlType.DATETIME.equals(fieldType)
+            ||MySqlType.TEXT.equals(fieldType);
+    }
+    /**
      * 是否需要展示字段精度
      * @param fieldType
      * @return

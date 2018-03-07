@@ -2,7 +2,7 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@import "com.alibaba.fastjson.JSONObject"/>
+<@import "${commonPackage}.util.JsonUtil"/>
 <@classCom "参数错误-错误字段信息"/>
 public class FieldErrorVO {
 
@@ -32,7 +32,7 @@ public class FieldErrorVO {
 
     @Override
     public String toString() {
-        return JSONObject.toJSONString(this);
+        return JsonUtil.toJSONString(this);
     }
 }
 </#assign>

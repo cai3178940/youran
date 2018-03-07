@@ -15,9 +15,9 @@ public class ${CName}ShowVO extends AbstractVO {
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
         <@import "java.util.Date"/>
-        <@import "com.alibaba.fastjson.annotation.JSONField"/>
+        <@import "com.fasterxml.jackson.annotation.JsonFormat"/>
         <@import "${commonPackage}.constant.JsonFieldConst"/>
-    @JSONField(format = JsonFieldConst.DEFAULT_DATETIME_FORMAT)
+    @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
     <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
         <@import "java.math.BigDecimal"/>
     </#if>

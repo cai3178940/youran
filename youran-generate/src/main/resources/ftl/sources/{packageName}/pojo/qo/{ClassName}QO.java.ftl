@@ -23,9 +23,9 @@ public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if>
     @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
         <@import "java.util.Date"/>
-        <@import "com.alibaba.fastjson.annotation.JSONField"/>
+        <@import "com.fasterxml.jackson.annotation.JsonFormat"/>
         <@import "${commonPackage}.constant.JsonFieldConst"/>
-    @JSONField(format = JsonFieldConst.DEFAULT_DATETIME_FORMAT)
+    @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
     </#if>
     private ${field.jfieldType} ${field.jfieldName}${suffix};
 

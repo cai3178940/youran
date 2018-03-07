@@ -185,7 +185,18 @@ public enum TemplateEnum {
      * 自定义校验注解
      */
     ConstAnno(COMMON,"sources/{commonPackage}/validator/Const.java.ftl"),
-
+    /**
+     * XSS过滤器
+     */
+    WebXSSFilter(COMMON,"sources/{commonPackage}/xss/WebXSSFilter.java.ftl"),
+    /**
+     * XSS包装HttpServletRequest
+     */
+    XSSRequestWrapper(COMMON,"sources/{commonPackage}/xss/XSSRequestWrapper.java.ftl"),
+    /**
+     * 过滤XSS工具
+     */
+    XSSUtil(COMMON,"sources/{commonPackage}/xss/XSSUtil.java.ftl"),
 
 
 

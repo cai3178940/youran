@@ -1,6 +1,6 @@
 package com.youran.common.pojo.vo;
 
-import com.alibaba.fastjson.JSONObject;
+import com.youran.common.util.JsonUtil;
 
 /**
  * Title: 参数错误-错误字段信息
@@ -36,6 +36,6 @@ public class FieldErrorVO {
 
     @Override
     public String toString() {
-        return JSONObject.toJSONString(this);
+        return JsonUtil.toJSONString(this);
     }
 }

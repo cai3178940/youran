@@ -18,23 +18,17 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <servlet.version>3.1.0</servlet.version>
-        <fastjson.version>1.2.29</fastjson.version>
         <mybatis-spring-boot.version>1.3.1</mybatis-spring-boot.version>
         <springfox.version>2.7.0</springfox.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <commons-io.version>2.5</commons-io.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <org.mapstruct.version>1.1.0.Final</org.mapstruct.version>
+        <jsoup.version>1.11.2</jsoup.version>
     </properties>
 
     <dependencies>
 
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${r'$'}{fastjson.version}</version>
-        </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -125,7 +119,12 @@
             <artifactId>spring-boot-starter-swagger</artifactId>
             <version>1.3.0.RELEASE</version>
         </dependency>
-
+        <dependency>
+            <!-- jsoup HTML parser library @ https://jsoup.org/ -->
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${r'$'}{jsoup.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

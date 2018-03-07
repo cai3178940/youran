@@ -38,9 +38,9 @@ public class ${CName}UpdateDTO extends AbstractDTO {
     @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
         <@import "java.util.Date"/>
-        <@import "com.alibaba.fastjson.annotation.JSONField"/>
+        <@import "com.fasterxml.jackson.annotation.JsonFormat"/>
         <@import "${commonPackage}.constant.JsonFieldConst"/>
-    @JSONField(format = JsonFieldConst.DEFAULT_DATE_FORMAT)
+    @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATE_FORMAT,timezone="GMT+8")
     </#if>
     private ${field.jfieldType} ${field.jfieldName};
 
