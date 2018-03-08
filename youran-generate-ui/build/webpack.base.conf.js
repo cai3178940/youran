@@ -45,6 +45,10 @@ module.exports = {
         options: vueLoaderConfig
       },
       {
+        test: /\.md$/,
+        loader: 'raw-loader'
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test')]

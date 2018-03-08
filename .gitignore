@@ -5,6 +5,7 @@ target/*
 
 # node
 node_modules
+node_modules/*
 
 # Package Files #
 *.jar
