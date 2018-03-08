@@ -40,6 +40,9 @@ public class ${CName}Helper {
         <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
             <@import "${commonPackage}.util.DateUtil"/>
             <#assign arg="DateUtil.parseDate(E_${field.jfieldName?upperCase})">
+        <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
+            <@import "java.math.BigDecimal"/>
+            <#assign arg="SafeUtil.get${field.jfieldType}(E_${field.jfieldName?upperCase})">
         <#else>
             <@import "${commonPackage}.util.SafeUtil"/>
             <#assign arg="SafeUtil.get${field.jfieldType}(E_${field.jfieldName?upperCase})">

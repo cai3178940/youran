@@ -85,7 +85,7 @@ public class MetaCodeGenService {
         project.setEntities(metaEntities);
         this.checkProject(project,false);
         Map<String, Object> map = this.buildTemplateParamMap(project, null, null);
-        String text = FreeMakerUtil.writeToStr("test_resources/DB/{projectName}.sql.ftl", map);
+        String text = FreeMakerUtil.writeToStr("root/{webModule}/src/test/resources/DB/{projectName}.sql.ftl", map);
         logger.debug("------打印生成sql脚本-----");
         logger.debug(text);
         return text;

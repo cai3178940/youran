@@ -34,6 +34,8 @@ public class ${CName}AddDTO extends AbstractDTO {
         <@import "com.fasterxml.jackson.annotation.JsonFormat"/>
         <@import "${commonPackage}.constant.JsonFieldConst"/>
     @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATE_FORMAT,timezone="GMT+8")
+    <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
+        <@import "java.math.BigDecimal"/>
     </#if>
     private ${field.jfieldType} ${field.jfieldName};
 

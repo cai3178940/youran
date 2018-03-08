@@ -1,5 +1,7 @@
 package com.youran.common.util;
 
+import java.math.BigDecimal;
+
 /**
  * Title: 空指针安全的类型转换工具
  * Description:
@@ -61,6 +63,20 @@ public class SafeUtil {
         }
         try {
             return Double.valueOf(obj.toString());
+        }catch (Exception e){}
+        return null;
+    }
+    /**
+     * 对象转BigDecimal
+     * @param obj
+     * @return
+     */
+    public static BigDecimal getBigDecimal(Object obj){
+        if(obj==null){
+            return null;
+        }
+        try {
+            return new BigDecimal(obj.toString());
         }catch (Exception e){}
         return null;
     }
