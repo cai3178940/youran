@@ -17,8 +17,6 @@
 
     <modules>
         <module>youran-parent</module>
-        <module>youran-common</module>
-        <module>youran-generate</module>
     </modules>
 
 </project>

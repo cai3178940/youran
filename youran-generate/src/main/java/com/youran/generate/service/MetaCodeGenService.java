@@ -227,16 +227,14 @@ public class MetaCodeGenService {
                     throw new GenerateException("请配置本地开发工程路径youran.generate.devProjectDir");
                 }
                 logger.debug("------全部替换开发工程：" + devProjectDir);
-                FileUtils.deleteDirectory(new File(devProjectDir + File.separator + "src"));
-                FileUtils.deleteQuietly(new File(devProjectDir + File.separator + "pom.xml"));
-                FileUtils.copyFile(new File(tmpDir + File.separator + "pom.xml"), new File(devProjectDir + File.separator + "pom.xml"));
-                FileUtils.copyDirectory(new File(tmpDir + File.separator + "src"), new File(devProjectDir + File.separator + "src"));
+                FileUtils.deleteDirectory(new File(devProjectDir));
+                FileUtils.copyDirectory(new File(tmpDir), new File(devProjectDir));
             } else if (generateProperties.getDevMode() == 2) {
                 if (StringUtils.isBlank(devProjectDir)) {
                     throw new GenerateException("请配置本地开发工程路径youran.generate.devProjectDir");
                 }
                 logger.debug("------部分替换开发工程：" + devProjectDir);
-                this.compareAndCoverFile(new File(tmpDir + File.separator + "src"), new File(devProjectDir + File.separator + "src"));
+                this.compareAndCoverFile(new File(tmpDir), new File(devProjectDir));
             }
             if (generateProperties.isDelTemp()) {
                 logger.debug("------删除临时目录：" + tmpDir);
@@ -380,7 +378,7 @@ public class MetaCodeGenService {
     private void renderFTL(MetaProjectPO project, String outDir, TemplateEnum templateEnum, MetaEntityPO singleEntity, MetaConstPO singleConst) {
         Map<String, Object> map = buildTemplateParamMap(project, singleEntity, singleConst);
         logger.debug("------开始渲染" + templateEnum.name() + "------");
-        String text = FreeMakerUtil.writeToStr(templateEnum.getTemplate(), map);
+        String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), map);
         logger.debug(text);
         this.writeToFile(project, text, outDir, templateEnum.getTemplate(), singleEntity, singleConst);
     }
@@ -431,17 +429,19 @@ public class MetaCodeGenService {
      * @param project      项目
      * @param text         渲染出的文本
      * @param outDir       代码输出临时目录
-     * @param templateFile 模版文件
+     * @param templatePath 模版文件路径
      * @param metaEntityPO   元数据实体
      */
-    private void writeToFile(MetaProjectPO project, String text, String outDir, String templateFile, MetaEntityPO metaEntityPO, MetaConstPO singleConst) {
+    private void writeToFile(MetaProjectPO project, String text, String outDir, String templatePath, MetaEntityPO metaEntityPO, MetaConstPO singleConst) {
         String packageName = project.getPackageName();
         if (StringUtils.isBlank(packageName)) {
             throw new GenerateException("包名未设置");
         }
-        String root = templateFile.substring(0, templateFile.indexOf("/"));
-        String templatePath = templateFile.substring(templateFile.indexOf("/") + 1);
-        templatePath = templatePath.replace("{packageName}", packageName.replaceAll("\\.", "/"))
+        templatePath = templatePath
+                .replace("{commonModule}",project.getProjectName()+"-common")
+                .replace("{coreModule}",project.getProjectName()+"-core")
+                .replace("{webModule}",project.getProjectName()+"-web")
+                .replace("{packageName}", packageName.replaceAll("\\.", "/"))
                 .replace("{commonPackage}",project.fetchCommonPackageName().replaceAll("\\.", "/"))
                 .replace("{ProjectName}", StringUtils.capitalize(project.fetchNormalProjectName()))
                 .replace("{projectName}", StringUtils.uncapitalize(project.fetchNormalProjectName()));
@@ -453,23 +453,9 @@ public class MetaCodeGenService {
                     .replace("{EnumName}", singleConst.getConstName());
         }
         templatePath = templatePath.substring(0, templatePath.lastIndexOf("."));
-        String rootPath;
-        if (root.equals(TemplateRoot.SOURCES)) {
-            rootPath = "/src/main/java/";
-        } else if (root.equals(TemplateRoot.RESOURCES)) {
-            rootPath = "/src/main/resources/";
-        } else if (root.equals(TemplateRoot.TEST)) {
-            rootPath = "/src/test/java/";
-        } else if (root.equals(TemplateRoot.TEST_RESOURCES)) {
-            rootPath = "/src/test/resources/";
-        } else if (root.equals(TemplateRoot.POM)) {
-            rootPath = "/";
-        } else {
-            throw new GenerateException("模版文件路径不合法，templateFile=" + templateFile);
-        }
 
 
-        String filePath = outDir + rootPath + templatePath;
+        String filePath = outDir + "/" + templatePath;
         File file = new File(filePath);
         File parentFile = file.getParentFile();
         if (!parentFile.exists()) {
