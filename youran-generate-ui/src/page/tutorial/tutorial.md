@@ -41,3 +41,5 @@ java -jar youran-generate/target/youran-generate.war
 #### 2018-03-07
 - 移除fastjson依赖，统一换成jackson
 - 修改下载代码压缩包文件名（带上项目名称）
+#### 2018-03-08
+- 生成模块化代码
