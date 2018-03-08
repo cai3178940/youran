@@ -1,12 +1,13 @@
-# 欢迎访问youran代码自动化平台
+## 项目介绍
 
 > 通过维护元数据，一键生成java后端基础架构，同时还能生成增删改查代码和单元测试。
 生成的项目是基于spring-boot+mybatis架构；其他附属技术栈包括：
-- hibernate-validator
+- hibernate-validator字段校验框架
 - swagger(API文档自动生成)
 - mapstruct(属性映射)
-- 基于H2内存数据库的单元测试
+- 基于H2内存数据库+MockMVC的单元测试
 
+> 源码地址：[http://git.jd.com/cbb/youran](http://git.jd.com/cbb/youran)
 
 ## 创建本地数据库
 1. 先修改数据库配置：youran-generate\src\main\resources\application-local.yml
@@ -14,7 +15,7 @@
 
 ## 安装部署
 
-```
+```bash
 # 安装前端项目npm依赖
 cd youran-generate-ui
 npm install
