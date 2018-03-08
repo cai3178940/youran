@@ -15,6 +15,7 @@ public enum TemplateEnum {
 
     /******** 根Pom *********/
     RootPom(COMMON, "pom.xml.ftl"),
+    README(COMMON, "README.md.ftl"),
     /******** Common模块 Pom *********/
     CommonPom(COMMON, "{commonModule}/pom.xml.ftl"),
     /******** Common模块 源码 *********/
@@ -116,8 +117,7 @@ public enum TemplateEnum {
 
     /******** Web模块单元测试配置 *********/
     ApplicationTestYml(COMMON, "{webModule}/src/test/resources/application-local.yml.ftl"),
-    SQL(COMMON, "{webModule}/src/test/resources/DB/{projectName}.sql.ftl"),
-    SQLMarkdown(COMMON, "{webModule}/src/test/resources/DB/{projectName}.md.ftl");
+    SQL(COMMON, "{webModule}/src/test/resources/DB/{projectName}.sql.ftl");
 
     private final int type;
     private final String template;
