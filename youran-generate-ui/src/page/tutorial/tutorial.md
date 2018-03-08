@@ -1,3 +1,5 @@
+
+
 ## 项目介绍
 
 > 通过维护元数据，一键生成java后端基础架构，同时还能生成增删改查代码和单元测试。
@@ -8,33 +10,19 @@
 - 基于H2内存数据库+MockMVC的单元测试
 
 > 源码地址：[http://git.jd.com/cbb/youran](http://git.jd.com/cbb/youran)
+> 开发本平台的主要目的是减少java后端程序员的重复性工作，将没有技术含量的增删改查等重复性工作，
+> 通过简单的系统录入工作即可实现，减少不必要的加班，劲量还是多陪陪家人。
 
-## 创建本地数据库
-1. 先修改数据库配置：youran-generate\src\main\resources\application-local.yml
-2. 建表语句参考：youran-generate\src\test\resources\DB\generate.sql
+## 术语解析
+1. 项目：项目就是一个独立的应用系统，可以基于一个项目生成一整套JavaWeb后端服务系统。
+2. 实体：一个实体对应数据库里一张业务表，同时对应后端一整套增删改查服务，同时实体之间也可以有‘一对多’，‘多对多’等关联关系。
+3. 字段：这里的字段既是数据库业务表中的字段，也是java实体类中的字段，一个字段有非常多的属性可以配置。
+4. 枚举：建议将不常变化的一类常量数据创建成枚举，会在java代码中生成对应的enum类。
+5. 枚举值：枚举类中的字段，有值(value)和描述(desc)两个属性
+6. 索引：就是mysql业务表中的索引
+7. 多对多：两个实体之间的关联关系，会在mysql中生成一张关联表，可以设置两个实体之间是否持有对方引用，持有引用的一方会自动生成维护关联关系的rest服务。
+8. 外键关联：在添加字段的时候，可以设置该字段是否外键，外键字段需要关联某个实体的主键，从而可以实现‘一对一’或‘一对多’关联
 
-## 安装部署
-
-```bash
-# 安装前端项目npm依赖
-cd youran-generate-ui
-npm install
-
-# 开发模式启动前端环境
-# npm run dev
-
-# 将前端资源编译到后端项目中
-# 编译目标路径：youran-generate/src/main/resources/ui
-npm run build
-
-# 后端代码编译打包
-cd ../
-mvn clean package
-
-# 运行spring-boot项目
-java -jar youran-generate/target/youran-generate.war
-
-```
 
 ## 升级日志
 
