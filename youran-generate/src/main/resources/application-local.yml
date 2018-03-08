@@ -19,5 +19,5 @@ swagger:
     enable: true
 youran:
     generate:
-        devMode: 1
+        devMode: 2
         devProjectDir: D:\\workspace\\optimize-auto

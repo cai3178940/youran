@@ -80,11 +80,14 @@
           ...this.form
         }
         params.fieldIds = this.form.fieldIds.join(",");
-        const loading = this.$loading()
+        var loading = null
         //校验表单
         this.$refs.addForm.validate()
           //提交表单
-          .then(() => this.$ajax.post('/generate/meta_index/save', this.$common.removeBlankField(params)))
+          .then(() => {
+            loading = this.$loading()
+            return this.$ajax.post('/generate/meta_index/save', this.$common.removeBlankField(params))
+          })
           //校验返回结果
           .then(response => this.$common.checkResult(response.data))
           //执行页面跳转
@@ -93,7 +96,11 @@
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>loading.close())
+          .finally(()=>{
+            if(loading){
+              loading.close()
+            }
+          })
       },
       goBack: function () {
         this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/index`)
