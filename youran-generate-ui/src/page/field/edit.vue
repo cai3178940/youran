@@ -10,134 +10,182 @@
       <el-col :span="12">
         <el-form ref="editForm" class="editForm" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="java字段名" prop="jfieldName">
-            <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age"></el-input>
+            <help-popover name="field.jfieldName">
+              <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="mysql字段名" prop="fieldName">
-            <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age"></el-input>
+            <help-popover name="field.fieldName">
+              <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="字段描述" prop="fieldDesc">
-            <el-input v-model="form.fieldDesc" placeholder="字段描述，例如：年龄"></el-input>
+            <help-popover name="field.fieldDesc">
+              <el-input v-model="form.fieldDesc" placeholder="字段描述，例如：年龄"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="java字段类型" prop="jfieldType">
-            <el-select v-model="form.jfieldType" style="width:100%;" filterable placeholder="请选择">
-              <el-option
-                v-for="item in jfieldTypeOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+            <help-popover name="field.jfieldType">
+              <el-select v-model="form.jfieldType" style="width:100%;" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in jfieldTypeOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </help-popover>
           </el-form-item>
           <el-form-item label="mysql字段类型" prop="fieldType">
-            <el-select v-model="form.fieldType" style="width:100%;" filterable placeholder="请选择">
-              <el-option
-                v-for="item in fieldTypeOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+            <help-popover name="field.fieldType">
+              <el-select v-model="form.fieldType" style="width:100%;" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in fieldTypeOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </help-popover>
           </el-form-item>
           <el-form-item label="字段长度" prop="fieldLength">
-            <el-input-number v-model="form.fieldLength" style="width:100%;" :min="0" placeholder="字段长度，例如：10"></el-input-number>
+            <help-popover name="field.fieldLength">
+              <el-input-number v-model="form.fieldLength" style="width:100%;" :min="0" placeholder="字段长度，例如：10"></el-input-number>
+            </help-popover>
           </el-form-item>
           <el-form-item v-if="fieldScaleVisible" label="字段精度" prop="fieldScale">
-            <el-input-number v-model="form.fieldScale" style="width:100%;" :min="0" placeholder="字段精度，例如：2"></el-input-number>
+            <help-popover name="field.fieldScale">
+              <el-input-number v-model="form.fieldScale" style="width:100%;" :min="0" placeholder="字段精度，例如：2"></el-input-number>
+            </help-popover>
           </el-form-item>
           <el-form-item label="是否主键" prop="primaryKey">
-            <el-radio-group v-model="form.primaryKey">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="field.primaryKey">
+              <el-radio-group v-model="form.primaryKey">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item label="是否自增" prop="autoIncrement">
-            <el-radio-group :disabled="autoIncrementDisabled" v-model="form.autoIncrement">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="field.autoIncrement">
+              <el-radio-group :disabled="autoIncrementDisabled" v-model="form.autoIncrement">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item label="不能为空" prop="notNull">
-            <el-radio-group :disabled="notNullDisabled" v-model="form.notNull">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="field.notNull">
+              <el-radio-group :disabled="notNullDisabled" v-model="form.notNull">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item label="是否外键" prop="foreignKey">
-            <el-radio-group v-model="form.foreignKey">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="field.foreignKey">
+              <el-radio-group v-model="form.foreignKey">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item label="外键字段">
-            <el-cascader
-              :disabled="foreignFieldDisabled"
-              placeholder="请选择"
-              :options="entityFieldOptions"
-              v-model="foreignField"
-              @active-item-change="handleForeignEntityChange">
-            </el-cascader>
+            <help-popover name="field.foreignField">
+              <el-cascader
+                :disabled="foreignFieldDisabled"
+                placeholder="请选择"
+                :options="entityFieldOptions"
+                v-model="foreignField"
+                @active-item-change="handleForeignEntityChange">
+              </el-cascader>
+            </help-popover>
           </el-form-item>
           <el-form-item label="特殊字段类型" prop="specialField">
-            <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
-              <el-option
-                v-for="item in specialFieldOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+            <help-popover name="field.specialField">
+              <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in specialFieldOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </help-popover>
           </el-form-item>
           <el-form-item label="字段示例" prop="fieldExample">
-            <el-input v-model="form.fieldExample" placeholder="字段示例，例如年龄字段：21"></el-input>
+            <help-popover name="field.fieldExample">
+              <el-input v-model="form.fieldExample" placeholder="字段示例，例如年龄字段：21"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="字段备注" prop="fieldComment">
-            <el-input v-model="form.fieldComment" type="textarea" :rows="2" placeholder="字段备注，例如：年龄【整型】"></el-input>
+            <help-popover name="field.fieldComment">
+              <el-input v-model="form.fieldComment" type="textarea" :rows="2" placeholder="字段备注，例如：年龄【整型】"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="枚举字典" prop="dicType">
-            <el-autocomplete :disabled="dicTypeDisabled" style="width:100%;"
-                             v-model="form.dicType"
-                             :fetch-suggestions="queryDicType"
-                             placeholder="请输入枚举字典"
-            ></el-autocomplete>
+            <help-popover name="field.dicType">
+              <el-autocomplete :disabled="dicTypeDisabled" style="width:100%;"
+                               v-model="form.dicType"
+                               :fetch-suggestions="queryDicType"
+                               placeholder="请输入枚举字典"
+              ></el-autocomplete>
+            </help-popover>
           </el-form-item>
           <el-form-item label="是否查询字段" prop="query">
-            <el-radio-group v-model="form.query">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="field.query">
+              <el-radio-group v-model="form.query">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item label="查询方式" prop="queryType">
-            <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="width:100%;" filterable placeholder="请选择">
-              <el-option
-                v-for="item in queryTypeOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+            <help-popover name="field.queryType">
+              <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="width:100%;" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in queryTypeOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </help-popover>
           </el-form-item>
           <el-form-item label="是否新增字段" prop="insert">
-            <el-radio-group v-model="form.insert">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="field.insert">
+              <el-radio-group v-model="form.insert">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item label="是否编辑字段" prop="update">
-            <el-radio-group v-model="form.update">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="field.update">
+              <el-radio-group v-model="form.update">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item label="是否列表字段" prop="list">
-            <el-radio-group v-model="form.list">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="field.list">
+              <el-radio-group v-model="form.list">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item label="是否支持排序" prop="listSort">
-            <el-radio-group v-model="form.listSort">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="field.listSort">
+              <el-radio-group v-model="form.listSort">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item label="是否详情字段" prop="show">
-            <el-radio-group v-model="form.show">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="field.show">
+              <el-radio-group v-model="form.show">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item label="排序号" prop="orderNo">
-            <el-input-number v-model="form.orderNo" style="width:100%;" :min="1"></el-input-number>
+            <help-popover name="field.orderNo">
+              <el-input-number v-model="form.orderNo" style="width:100%;" :min="1"></el-input-number>
+            </help-popover>
           </el-form-item>
 
           <el-form-item>

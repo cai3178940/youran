@@ -9,13 +9,19 @@
       <el-col :span="12" >
         <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="80px">
           <el-form-item label="项目名称" prop="projectName">
-            <el-input v-model="form.projectName" placeholder="例如：bbs"></el-input>
+            <help-popover name="project.projectName">
+              <el-input v-model="form.projectName" placeholder="例如：bbs"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="包名" prop="packageName">
-            <el-input v-model="form.packageName" placeholder="例如：com.cbb.bbs"></el-input>
+            <help-popover name="project.packageName">
+              <el-input v-model="form.packageName" placeholder="例如：com.cbb.bbs"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="作者" prop="author">
-            <el-input v-model="form.author" placeholder="例如：菜小哥"></el-input>
+            <help-popover name="project.author">
+              <el-input v-model="form.author" placeholder="例如：菜小哥"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
