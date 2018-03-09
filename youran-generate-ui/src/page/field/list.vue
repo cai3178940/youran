@@ -21,11 +21,13 @@
             </el-cascader>
           </el-form-item>
           <el-form-item>
-            <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加</el-button>
-            <el-button @click.native="handleDel" type="danger">删除</el-button>
-            <el-badge :value="cacheTemplateCount" class="item">
-              <el-button @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>
-            </el-badge>
+            <help-popover name="fieldListHelp">
+              <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加</el-button>
+              <el-button @click.native="handleDel" type="danger">删除</el-button>
+              <el-badge :value="cacheTemplateCount" class="item">
+                <el-button @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>
+              </el-badge>
+            </help-popover>
           </el-form-item>
         </el-form>
       </el-col>

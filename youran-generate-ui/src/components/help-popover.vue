@@ -11,7 +11,7 @@
       <slot></slot>
     </el-col>
     <el-col :span="2">
-      <icon name="question-circle-o" class="color-primary" v-popover:popover></icon>
+      <icon name="question-circle-o" class="question-circle-o" v-popover:popover></icon>
     </el-col>
   </div>
 </template>
@@ -34,3 +34,9 @@
 
 </script>
 
+<style>
+.help-popover .question-circle-o{
+  cursor:pointer;
+  color:#409EFF
+}
+</style>

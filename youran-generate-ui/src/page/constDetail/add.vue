@@ -10,13 +10,19 @@
       <el-col :span="12">
         <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="枚举字段名" prop="detailName">
-            <el-input v-model="form.detailName" placeholder="枚举字段名，例如：WOMAN"></el-input>
+            <help-popover name="constDetail.detailName">
+              <el-input v-model="form.detailName" placeholder="枚举字段名，例如：WOMAN"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="枚举值" prop="detailValue">
-            <el-input v-model="form.detailValue" placeholder="枚举值，例如：2"></el-input>
+            <help-popover name="constDetail.detailValue">
+              <el-input v-model="form.detailValue" placeholder="枚举值，例如：2"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="备注" prop="detailRemark">
-            <el-input v-model="form.detailRemark" placeholder="备注，例如：女"></el-input>
+            <help-popover name="constDetail.detailRemark">
+              <el-input v-model="form.detailRemark" placeholder="备注，例如：女"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>

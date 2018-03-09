@@ -9,25 +9,33 @@
       <el-col :span="12">
         <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="80px">
           <el-form-item label="项目" prop="projectId">
-            <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
-              <el-option
-                v-for="item in projectList"
-                :key="item.projectId"
-                :label="item.projectName"
-                :value="item.projectId">
-              </el-option>
-            </el-select>
+            <help-popover name="const.projectId">
+              <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
+                <el-option
+                  v-for="item in projectList"
+                  :key="item.projectId"
+                  :label="item.projectName"
+                  :value="item.projectId">
+                </el-option>
+              </el-select>
+            </help-popover>
           </el-form-item>
           <el-form-item label="枚举名称" prop="constRemark">
-            <el-input v-model="form.constRemark" placeholder="例如：性别"></el-input>
+            <help-popover name="const.constRemark">
+              <el-input v-model="form.constRemark" placeholder="例如：性别"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="枚举类名" prop="constName">
-            <el-input v-model="form.constName" placeholder="例如：Sex"></el-input>
+            <help-popover name="const.constName">
+              <el-input v-model="form.constName" placeholder="例如：Sex"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="类型" prop="constType">
-            <el-radio-group v-model="form.constType">
-              <el-radio border v-for="item in constTypeOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-            </el-radio-group>
+            <help-popover name="const.constType">
+              <el-radio-group v-model="form.constType">
+                <el-radio border v-for="item in constTypeOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>

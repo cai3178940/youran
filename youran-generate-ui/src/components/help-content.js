@@ -183,7 +183,101 @@ private Integer publishSignSortSign;
 **排序号**：只影响当前字段在实体中的先后顺序，将功能接近的字段放在一起，会比较美观。
 > 强迫症忍不了 :rage:
     `
-  }
+  },
+  'const':{
+    projectId: `
+**项目**：当前枚举所属项目
+    `,
+    constRemark: `
+**枚举名称**：枚举的中文名称
+    `,
+    constName: `
+**枚举类名**：Java枚举类的类名，请一定要符合类名规范。
+    `,
+    constType: `
+**类型**：指定下属枚举值的字段类型
+    `
+  },
+  constDetail:{
+    detailName: `
+**枚举字段名**：Java枚举类中的字段名称，请符合Java字段命名规范
+    `,
+    detailValue: `
+**枚举值**：枚举字段的值，如果枚举类型是整数，这里就请老老实实输入数字。
+    `,
+    detailRemark: `
+**备注**：枚举的中文描述，对应枚举类中desc属性的值
+#### 生成的枚举类会包含两个属性，请看下面示例：
+\`\`\`
+/**
+ * Title: 枚举【开发者类型】
+ * Description: 
+ * Project: optimize
+ * Author: cbb
+ * Create Time: 2018-03-09 17:51
+ */
+public enum DevType {
+
+    PERSONAL(1,"个人"),
+    COMPANY(2,"公司");
+
+    private final Integer value;
+    private final String desc;
+
+    private static final Map<Integer, DevType> lookup = new HashMap<>();
+
+    static {
+        for (DevType e : DevType.values()) {
+            lookup.put(e.value, e);
+        }
+    }
+    
+    ......
+}
+\`\`\`
+
+    `
+  },
+  mtm:{
+    projectId: `
+**项目**：当前多对多所属项目
+    `,
+    tableName: `
+**关联表名**：由于一个多对多关系会生成一张关联表，此处填写该关联表表名。
+    `,
+    desc: `
+**描述**：用于生成关联表的备注信息
+    `,
+    entityId1: `
+**实体1**：多对多的其中一方
+    `,
+    entityId2: `
+**实体2**：多对多的另一方
+    `,
+    holdRefer1: `
+**实体1持有引用**：持有引用的一方可以主动维护多对多关联关系，包括添加、删除关联等操作
+    `,
+    holdRefer2: `
+**实体2持有引用**：持有引用的一方可以主动维护多对多关联关系，包括添加、删除关联等操作
+    `
+  },
+  index: {
+    indexName: `
+**索引名**：生成数据库索引的名称
+    `,
+    fieldIds: `
+**字段**：生成索引的表字段
+    `,
+    unique: `
+**是否唯一**：唯一索引可以从数据库层面限制字段唯一性
+> 注意：如果实体同时添加了唯一索引和逻辑删除字段，则需要特别注意，请自己想办法解决删除后无法重复添加的问题
+    `
+  },
+  fieldListHelp:`
+**快速复制字段攻略**
+> [点击查看动图](/ui/static/camel.gif)
+
+`
 
 
 }

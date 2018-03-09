@@ -260,7 +260,7 @@ public class ${CName}Service {
      */
     private int doAdd${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
         int count = 0;
-        for (Integer _id : ${otherPkId}) {
+        for (${otherPk.jfieldType} _id : ${otherPkId}) {
             if(${othercName}DAO.exist(_id)){
                 count += ${cName}DAO.add${otherCName}(${id},_id);
             }

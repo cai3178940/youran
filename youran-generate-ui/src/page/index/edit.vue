@@ -10,23 +10,29 @@
       <el-col :span="12">
         <el-form ref="editForm" class="editForm" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="索引名" prop="indexName">
-            <el-input v-model="form.indexName" placeholder="索引名，例如：IDX_ORDER_1"></el-input>
+            <help-popover name="index.indexName">
+              <el-input v-model="form.indexName" placeholder="索引名，例如：IDX_ORDER_1"></el-input>
+            </help-popover>
           </el-form-item>
           <el-form-item label="字段" prop="fieldIds">
-            <el-select v-model="form.fieldIds" multiple placeholder="请选择">
-              <el-option
-                v-for="item in fieldList"
-                :key="item.fieldId"
-                :label="item.fieldName"
-                :value="item.fieldId">
-              </el-option>
-            </el-select>
+            <help-popover name="index.fieldIds">
+              <el-select v-model="form.fieldIds" multiple placeholder="请选择">
+                <el-option
+                  v-for="item in fieldList"
+                  :key="item.fieldId"
+                  :label="item.fieldName"
+                  :value="item.fieldId">
+                </el-option>
+              </el-select>
+            </help-popover>
           </el-form-item>
           <el-form-item label="是否唯一" prop="unique">
-            <el-radio-group v-model="form.unique">
-              <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-              </el-radio>
-            </el-radio-group>
+            <help-popover name="index.unique">
+              <el-radio-group v-model="form.unique">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+                </el-radio>
+              </el-radio-group>
+            </help-popover>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
