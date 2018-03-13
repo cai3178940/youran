@@ -275,10 +275,12 @@ public enum DevType {
   },
   fieldListHelp:`
 **快速复制字段攻略**
-> [点击查看动图](/ui/static/camel.gif)
+> 注意：离开“实体管理”页面，复制的内容会清空！
+
+![image]({copyField})
+
 
 `
-
 
 }
 

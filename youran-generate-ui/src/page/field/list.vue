@@ -21,7 +21,7 @@
             </el-cascader>
           </el-form-item>
           <el-form-item>
-            <help-popover name="fieldListHelp">
+            <help-popover name="fieldListHelp" :pic="{copyField:copyFieldUrl}">
               <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加</el-button>
               <el-button @click.native="handleDel" type="danger">删除</el-button>
               <el-badge :value="cacheTemplateCount" class="item">
@@ -139,11 +139,13 @@
 <script>
   import options from '@/components/options.js'
   import fieldTemplate from '@/components/fieldTemplate.js'
+  import copyFieldUrl from '@/assets/copyField.gif'
   export default {
     name: 'fieldList',
     props: ['projectId', 'entityId'],
     data: function () {
       return {
+        copyFieldUrl:copyFieldUrl,
         addTemplateFormVisible: false,
         fieldTemplate,
         cacheTemplateCount:0,
