@@ -69,7 +69,7 @@
         select * from meta_const_detail t
         where t.delSign=0
         and t.constId = #{constId,jdbcType=INTEGER}
-        order by t.detailName
+        order by t.detailValue
     </select>
 
     <select id="findByConstId" resultType="MetaConstDetailPO">

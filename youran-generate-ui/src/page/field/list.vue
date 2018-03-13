@@ -145,7 +145,8 @@
     props: ['projectId', 'entityId'],
     data: function () {
       return {
-        copyFieldUrl:copyFieldUrl,
+        //此处不知为何，生产编译时，图片路径有误。本来应该是ui/static变成了uistatic
+        copyFieldUrl:copyFieldUrl.replace('uistatic','ui/static'),
         addTemplateFormVisible: false,
         fieldTemplate,
         cacheTemplateCount:0,
