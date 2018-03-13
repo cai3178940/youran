@@ -67,8 +67,8 @@
     className: '',
     tableName: '',
     desc: '',
-    commonCall: true,
-    pageSign: true
+    commonCall: 1,
+    pageSign: 1
   }
 
   export default {
