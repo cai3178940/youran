@@ -37,6 +37,18 @@ public class GenerateProperties {
      * 系统版本
      */
     private String version;
+    /**
+     * aes对称加密Key
+     */
+    private String aesKey;
+
+    public String getAesKey() {
+        return aesKey;
+    }
+
+    public void setAesKey(String aesKey) {
+        this.aesKey = aesKey;
+    }
 
     public String getVersion() {
         return version;

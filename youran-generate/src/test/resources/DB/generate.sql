@@ -8,7 +8,7 @@ CREATE TABLE `meta_project` (
   `remote` smallint(1) NOT NULL COMMENT '启用Git仓库',
   `remoteUrl` varchar(256) DEFAULT NULL COMMENT 'Git仓库地址',
   `username` varchar(32) DEFAULT NULL COMMENT 'Git用户名',
-  `password` varchar(32) DEFAULT NULL COMMENT 'Git密码',
+  `password` varchar(256) DEFAULT NULL COMMENT 'Git密码',
   `lastHistoryId` int(11) DEFAULT NULL COMMENT '最后提交历史id',
   `projectVersion` int(11) NOT NULL COMMENT '项目版本号',
   `createDate` datetime DEFAULT NULL COMMENT '创建时间',

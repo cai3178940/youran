@@ -1,16 +1,20 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
+import com.youran.common.util.AESSecurityUtil;
+import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.dao.MetaProjectDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
-import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
 import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +30,13 @@ import java.util.List;
 @Service
 public class MetaProjectService {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(MetaProjectService.class);
+
     @Autowired
     private MetaProjectDAO metaProjectDAO;
+
+    @Autowired
+    private GenerateProperties generateProperties;
 
     public String getNormalProjectName(Integer projectId){
         MetaProjectPO projectPO = metaProjectDAO.findById(projectId);
@@ -41,6 +50,17 @@ public class MetaProjectService {
     @Transactional
     public MetaProjectPO save(MetaProjectAddDTO metaProjectDTO) {
         MetaProjectPO metaProject = MetaProjectMapper.INSTANCE.fromAddDTO(metaProjectDTO);
+        String password = metaProject.getPassword();
+        if(StringUtils.isNotBlank(password)){
+            String encrypt;
+            try {
+                encrypt = AESSecurityUtil.encrypt(password, generateProperties.getAesKey());
+            } catch (Exception e) {
+                LOGGER.error("密码加密异常",e);
+                throw new GenerateException("密码加密异常");
+            }
+            metaProject.setPassword(encrypt);
+        }
         metaProjectDAO.save(metaProject);
         return metaProject;
     }
@@ -60,7 +80,14 @@ public class MetaProjectService {
         }
         MetaProjectMapper.INSTANCE.setPO(metaProject, metaProjectUpdateDTO);
         if(StringUtils.isNotBlank(metaProjectUpdateDTO.getPassword())){
-            metaProject.setPassword(metaProjectUpdateDTO.getPassword());
+            String encrypt;
+            try {
+                encrypt = AESSecurityUtil.encrypt(metaProjectUpdateDTO.getPassword(), generateProperties.getAesKey());
+            } catch (Exception e) {
+                LOGGER.error("密码加密异常",e);
+                throw new GenerateException("密码加密异常");
+            }
+            metaProject.setPassword(encrypt);
         }
         metaProjectDAO.update(metaProject);
         this.updateProjectVersion(metaProject.getProjectId());
