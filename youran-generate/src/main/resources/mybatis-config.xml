@@ -19,5 +19,6 @@
         <mapper resource="com/youran/generate/mapper/MetaIndexMapper.xml"/>
         <mapper resource="com/youran/generate/mapper/MetaManyToManyMapper.xml"/>
         <mapper resource="com/youran/generate/mapper/MetaProjectMapper.xml"/>
+        <mapper resource="com/youran/generate/mapper/GenHistoryMapper.xml"/>
     </mappers>
 </configuration>

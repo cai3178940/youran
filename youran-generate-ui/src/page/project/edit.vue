@@ -6,7 +6,7 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="editForm" class="editForm" :rules="rules" :model="form" label-width="80px">
+        <el-form ref="editForm" class="editForm" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="项目名称" prop="projectName">
             <help-popover name="project.projectName">
               <el-input v-model="form.projectName" placeholder="例如：bbs"></el-input>
