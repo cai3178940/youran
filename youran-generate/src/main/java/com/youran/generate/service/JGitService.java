@@ -3,7 +3,6 @@ package com.youran.generate.service;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -55,11 +53,12 @@ public class JGitService {
 
             CloneCommand cloneCommand = Git.cloneRepository()
                 .setURI(remoteUrl)
+                .setCloneAllBranches(true)
                 .setDirectory(repoDir);
             //如果指定了旧分支，则只clone该分支
-            if(StringUtils.isNotBlank(oldBranchName)){
+            /*if(StringUtils.isNotBlank(oldBranchName)){
                 cloneCommand.setBranchesToClone(Arrays.asList(oldBranchName));
-            }
+            }*/
             //认证
             CredentialsProvider credentialsProvider = null;
             if(credential!=null) {
@@ -79,7 +78,12 @@ public class JGitService {
                         .setMessage("首次提交")
                         .call();
                 }else{
-                    //checkout老分支
+                    //创建本地老分支
+                    git.branchCreate()
+                        .setForce(true)
+                        .setName(oldBranchName)
+                        .setStartPoint("origin/" + oldBranchName).call();
+                    //check到老分支
                     git.checkout().setName(oldBranchName).call();
                 }
                 //创建分支
