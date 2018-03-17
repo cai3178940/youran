@@ -44,12 +44,14 @@ public class JGitService {
      */
     public String cloneRemoteRepository(String projectName, String remoteUrl,GitCredentialDTO credential,
                                         String oldBranchName, String newBranchName){
+
         try {
             File repoDir = File.createTempFile(projectName, "");
             if(!repoDir.delete()) {
                 throw new IOException("Could not delete temporary file " + repoDir);
             }
-            LOGGER.info("Cloning from " + remoteUrl + " to " + repoDir);
+            LOGGER.info("从远程仓库clone,仓库地址=" + remoteUrl + " , 目录=" + repoDir +
+                "老分支="+oldBranchName+"新分支="+newBranchName);
 
             CloneCommand cloneCommand = Git.cloneRepository()
                 .setURI(remoteUrl)
@@ -76,6 +78,9 @@ public class JGitService {
                         .setAll(true)
                         .setMessage("首次提交")
                         .call();
+                }else{
+                    //checkout老分支
+                    git.checkout().setName(oldBranchName).call();
                 }
                 //创建分支
                 git.branchCreate()
