@@ -562,7 +562,7 @@ public class MetaCodeGenService {
         }
         String password;
         try {
-            password = AESSecurityUtil.encrypt(project.getPassword(), generateProperties.getAesKey());
+            password = AESSecurityUtil.decrypt(project.getPassword(), generateProperties.getAesKey());
         } catch (Exception e) {
             logger.error("密码解密异常",e);
             throw new GenerateException("密码解密异常");
