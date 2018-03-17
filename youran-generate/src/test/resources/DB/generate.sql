@@ -177,7 +177,7 @@ CREATE TABLE `gen_history` (
     `historyId` int(11) AUTO_INCREMENT COMMENT '主键id',
     `projectId` int(11) NOT NULL COMMENT '所属项目id',
     `remoteUrl` varchar(256) NOT NULL COMMENT 'Git仓库地址',
-    `commit` varchar(32) NOT NULL COMMENT 'commit号',
+    `commit` varchar(64) NOT NULL COMMENT 'commit号',
     `branch` varchar(32) NOT NULL COMMENT '分支名称',
     `sysVersion` varchar(20) NOT NULL COMMENT '系统版本号',
     `projectVersion` int(11) NOT NULL COMMENT '项目版本号',
