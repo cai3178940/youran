@@ -416,6 +416,8 @@ public class MetaCodeGenService {
         map.put("originProjectName", project.getProjectName());
         //作者
         map.put("author", project.getAuthor());
+        //作者
+        map.put("createDate", project.getCreateDate());
         //多对多关联
         map.put("mtms", project.getMtms());
         //注入静态类

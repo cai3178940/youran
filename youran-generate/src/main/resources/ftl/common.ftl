@@ -16,7 +16,7 @@
  * Description: ${desc}
  * Project: ${projectName}
  * Author: ${author}
- * Create Time: ${.now?string("yyyy-MM-dd HH:mm")}
+ * Create Time: ${createDate?string("yyyy-MM-dd HH:mm")}
  */
 </#macro>
 
