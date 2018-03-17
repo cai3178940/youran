@@ -1,11 +1,10 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.ReplyVO;
-import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
-import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
+import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.vo.MetaManyToManyListVO;
 import com.youran.generate.pojo.vo.MetaManyToManyShowVO;
 import com.youran.generate.service.MetaManyToManyService;
@@ -24,7 +23,7 @@ import java.util.List;
  * Create Time:2017/5/12 13:42
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH + "/meta_mtm")
+@RequestMapping("/meta_mtm")
 public class MetaManyToManyController implements MetaManyToManyAPI {
 
     @Autowired

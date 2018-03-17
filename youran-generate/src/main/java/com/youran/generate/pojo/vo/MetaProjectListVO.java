@@ -2,8 +2,6 @@ package com.youran.generate.pojo.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
-
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
 /**
@@ -15,7 +13,6 @@ import static com.youran.generate.pojo.example.MetaProjectExample.*;
 public class MetaProjectListVO {
 
     @ApiModelProperty(notes = N_PROJECTID, example = E_PROJECTID)
-    @NotNull
     private Integer projectId;
 
     @ApiModelProperty(notes = N_PACKAGENAME, example = E_PACKAGENAME)
@@ -26,6 +23,39 @@ public class MetaProjectListVO {
 
     @ApiModelProperty(notes = N_AUTHOR, example = E_AUTHOR)
     private String author;
+
+    @ApiModelProperty(notes = N_REMOTE, example = E_REMOTE)
+    private Integer remote;
+
+    @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
+    private String remoteUrl;
+
+    @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME)
+    private String username;
+
+    public Integer getRemote() {
+        return remote;
+    }
+
+    public void setRemote(Integer remote) {
+        this.remote = remote;
+    }
+
+    public String getRemoteUrl() {
+        return remoteUrl;
+    }
+
+    public void setRemoteUrl(String remoteUrl) {
+        this.remoteUrl = remoteUrl;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Integer getProjectId() {
         return projectId;

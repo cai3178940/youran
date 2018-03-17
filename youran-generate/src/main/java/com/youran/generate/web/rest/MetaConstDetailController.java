@@ -1,11 +1,10 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.ReplyVO;
-import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
-import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
+import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
 import com.youran.generate.pojo.vo.MetaConstDetailShowVO;
 import com.youran.generate.service.MetaConstDetailService;
@@ -24,7 +23,7 @@ import java.util.List;
  * Create Time:2017/5/12 13:42
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH + "/meta_const_detail")
+@RequestMapping("/meta_const_detail")
 public class MetaConstDetailController implements MetaConstDetailAPI {
 
     @Autowired

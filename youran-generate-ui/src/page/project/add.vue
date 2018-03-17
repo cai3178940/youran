@@ -23,6 +23,31 @@
               <el-input v-model="form.author" placeholder="例如：菜小哥"></el-input>
             </help-popover>
           </el-form-item>
+          <el-form-item label="启用Git仓库" prop="remote">
+            <help-popover name="project.remote">
+              <el-radio-group v-model="form.remote">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+                </el-radio>
+              </el-radio-group>
+            </help-popover>
+          </el-form-item>
+          <template v-if="form.remote==1">
+            <el-form-item label="Git仓库地址" prop="remoteUrl">
+              <help-popover name="project.remoteUrl">
+                <el-input v-model="form.remoteUrl" placeholder="例如：https://github.com/github/testrepo.git"></el-input>
+              </help-popover>
+            </el-form-item>
+            <el-form-item label="Git用户名" prop="username">
+              <help-popover name="project.username">
+                <el-input v-model="form.username" placeholder="例如：zhangsan"></el-input>
+              </help-popover>
+            </el-form-item>
+            <el-form-item label="Git密码" prop="password">
+              <help-popover name="project.password">
+                <el-input v-model="form.password" placeholder="例如：123456"></el-input>
+              </help-popover>
+            </el-form-item>
+          </template>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
             <el-button @click="goBack()">返回</el-button>
@@ -41,7 +66,11 @@
         form: {
           projectName: '',
           packageName: '',
-          author: ''
+          author: '',
+          remote: 0,
+          remoteUrl: '',
+          username: '',
+          password: ''
         },
         rules: {
           projectName: [
@@ -61,6 +90,18 @@
           author: [
             {required: true, message: '请输入作者', trigger: 'blur'},
             {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
+          ],
+          remote: [
+            {required: true, type: 'number', message: '请选择是否启用', trigger: 'change'},
+          ],
+          remoteUrl: [
+            {max: 256, message: '长度不能超过256个字符', trigger: 'blur'}
+          ],
+          username: [
+            {max: 32, message: '长度不能超过32个字符', trigger: 'blur'}
+          ],
+          password: [
+            {max: 32, message: '长度不能超过32个字符', trigger: 'blur'}
           ]
         }
       }

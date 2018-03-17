@@ -16,6 +16,26 @@
           <el-form-item label="作者" prop="author">
             <el-input v-model="form.author" :disabled="true"></el-input>
           </el-form-item>
+          <el-form-item label="启用Git仓库">
+            <help-popover name="project.remote">
+              <el-radio-group v-model="form.remote" :disabled="true">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+                </el-radio>
+              </el-radio-group>
+            </help-popover>
+          </el-form-item>
+          <template v-if="form.remote==1">
+            <el-form-item label="Git仓库地址">
+              <help-popover name="project.remoteUrl">
+                <el-input v-model="form.remoteUrl" placeholder="例如：https://github.com/github/testrepo.git" :disabled="true"></el-input>
+              </help-popover>
+            </el-form-item>
+            <el-form-item label="Git用户名">
+              <help-popover name="project.username">
+                <el-input v-model="form.username" placeholder="例如：zhangsan" :disabled="true"></el-input>
+              </help-popover>
+            </el-form-item>
+          </template>
           <el-form-item>
             <el-button @click="goBack()">返回</el-button>
           </el-form-item>
@@ -32,7 +52,11 @@
     projectId: null,
     projectName: '',
     packageName: '',
-    author: ''
+    author: '',
+    remote: 0,
+    remoteUrl: '',
+    username: '',
+    password: ''
   }
 
   export default {

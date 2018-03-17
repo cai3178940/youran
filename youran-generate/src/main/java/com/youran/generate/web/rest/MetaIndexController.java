@@ -1,11 +1,10 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.ReplyVO;
-import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
-import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.po.MetaIndexPO;
+import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.vo.MetaIndexListVO;
 import com.youran.generate.pojo.vo.MetaIndexShowVO;
 import com.youran.generate.service.MetaIndexService;
@@ -24,7 +23,7 @@ import java.util.List;
  * Create Time:2017/5/12 13:42
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH + "/meta_index")
+@RequestMapping("/meta_index")
 public class MetaIndexController implements MetaIndexAPI {
 
     @Autowired

@@ -18,6 +18,12 @@
       <el-table-column property="projectName" label="项目名称"></el-table-column>
       <el-table-column property="author" label="作者"></el-table-column>
       <el-table-column property="packageName" label="包名"></el-table-column>
+      <el-table-column label="启用Git仓库" width="80px">
+        <template slot-scope="scope">
+          <icon v-if="scope.row.remote==1" name="check" class="color-success"></icon>
+          <icon v-if="scope.row.remote!=1" name="close" class="color-danger"></icon>
+        </template>
+      </el-table-column>
       <el-table-column
         label="操作"
         width="250">
@@ -43,6 +49,9 @@
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleGenSql',arg:scope.row}" >
                 <icon name="file-code-o" scale="0.8" ></icon> 生成sql
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleCommit',arg:scope.row}" >
+                <icon name="mail-forward" scale="0.8" ></icon> 提交到仓库
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -112,6 +121,9 @@
       },
       handleGenCode: function (row) {
         window.open(`${this.$common.BASE_API_URL}/generate/code_gen/genCode?projectId=${row.projectId}`)
+      },
+      handleCommit: function (row) {
+        window.open(`${this.$common.BASE_API_URL}/generate/code_gen/gitCommit?projectId=${row.projectId}`)
       },
       handleCommand: function (command) {
         this[command.method](command.arg);

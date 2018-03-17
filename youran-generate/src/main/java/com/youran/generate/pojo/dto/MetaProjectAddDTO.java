@@ -1,6 +1,8 @@
 package com.youran.generate.pojo.dto;
 
+import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.dto.AbstractDTO;
+import com.youran.common.validator.Const;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -31,6 +33,55 @@ public class MetaProjectAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_AUTHOR, example = E_AUTHOR)
     @Length(min=1, max = 50, message = "author最大长度不能超过50")
     private String author;
+
+    @ApiModelProperty(notes = N_REMOTE, example = E_REMOTE)
+    @NotNull
+    @Const(constClass = BoolConst.class)
+    private Integer remote;
+
+    @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
+    @Length(min=1, max = 256, message = "remoteUrl最大长度不能超过256")
+    private String remoteUrl;
+
+    @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME)
+    @Length(min=1, max = 32, message = "username最大长度不能超过32")
+    private String username;
+
+    @ApiModelProperty(notes = N_PASSWORD, example = E_PASSWORD)
+    @Length(min=1, max = 32, message = "password最大长度不能超过32")
+    private String password;
+
+    public Integer getRemote() {
+        return remote;
+    }
+
+    public void setRemote(Integer remote) {
+        this.remote = remote;
+    }
+
+    public String getRemoteUrl() {
+        return remoteUrl;
+    }
+
+    public void setRemoteUrl(String remoteUrl) {
+        this.remoteUrl = remoteUrl;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getAuthor() {
         return author;

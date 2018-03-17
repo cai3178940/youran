@@ -43,4 +43,13 @@ public interface MetaCodeGenAPI {
         @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "query"),
     })
     ReplyVO<String> sqlPreview(Integer entityId);
+
+    /**
+     * 提交到仓库
+     */
+    @ApiOperation(value = "提交到仓库")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
+    })
+    ReplyVO<String> gitCommit(Integer entityId);
 }

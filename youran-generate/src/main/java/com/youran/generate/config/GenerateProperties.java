@@ -33,6 +33,19 @@ public class GenerateProperties {
      */
     private String devProjectDir;
 
+    /**
+     * 系统版本
+     */
+    private String version;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
     public Boolean getEnable() {
         return enable;
     }

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.mapper.GenHistoryMapper">
+
+    <sql id="genHistoryColumns">
+        ${alias}.historyId,
+        ${alias}.projectId,
+        ${alias}.remoteUrl,
+        ${alias}.`commit`,
+        ${alias}.branch,
+        ${alias}.sysVersion,
+        ${alias}.projectVersion,
+        ${alias}.createDate,
+        ${alias}.createBy,
+        ${alias}.operateDate,
+        ${alias}.operateBy,
+        ${alias}.version,
+        ${alias}.delSign
+    </sql>
+
+
+    <select id="findById" resultType="GenHistoryPO">
+        select
+        <include refid="genHistoryColumns"><property name="alias" value="t"/></include>
+        from gen_history t
+        <where>
+            and t.delSign=0
+            and t.historyId = #{arg0}
+        </where>
+    </select>
+
+    <select id="exist" resultType="int">
+        select count(1) from gen_history
+        <where>
+            and delSign=0
+            and historyId = #{arg0}
+        </where>
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="historyId" parameterType="GenHistoryPO">
+        insert into gen_history(
+        historyId,
+        projectId,
+        remoteUrl,
+        `commit`,
+        branch,
+        sysVersion,
+        projectVersion,
+        createDate,
+        createBy,
+        operateDate,
+        operateBy,
+        version,
+        delSign
+        ) VALUES (
+        #{historyId,jdbcType=INTEGER},
+        #{projectId,jdbcType=INTEGER},
+        #{remoteUrl,jdbcType=VARCHAR},
+        #{commit,jdbcType=VARCHAR},
+        #{branch,jdbcType=VARCHAR},
+        #{sysVersion,jdbcType=VARCHAR},
+        #{projectVersion,jdbcType=INTEGER},
+        #{createDate,jdbcType=TIMESTAMP},
+        #{createBy,jdbcType=VARCHAR},
+        #{operateDate,jdbcType=TIMESTAMP},
+        #{operateBy,jdbcType=VARCHAR},
+        #{version,jdbcType=INTEGER},
+        #{delSign,jdbcType=INTEGER}
+        )
+    </insert>
+
+
+    <update id="update" parameterType="GenHistoryPO">
+        update gen_history set
+        historyId=#{historyId,jdbcType=INTEGER},
+        projectId=#{projectId,jdbcType=INTEGER},
+        remoteUrl=#{remoteUrl,jdbcType=VARCHAR},
+        `commit`=#{commit,jdbcType=VARCHAR},
+        branch=#{branch,jdbcType=VARCHAR},
+        sysVersion=#{sysVersion,jdbcType=VARCHAR},
+        projectVersion=#{projectVersion,jdbcType=INTEGER},
+        createDate=#{createDate,jdbcType=TIMESTAMP},
+        createBy=#{createBy,jdbcType=VARCHAR},
+        operateDate=#{operateDate,jdbcType=TIMESTAMP},
+        operateBy=#{operateBy,jdbcType=VARCHAR},
+        version = version+1,
+        delSign=#{delSign,jdbcType=INTEGER}
+        where historyId=#{historyId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and delSign=0
+    </update>
+
+    <delete id="delete">
+        update gen_history set delSign=1
+        where historyId=#{arg0,jdbcType=INTEGER}
+        and delSign=0
+    </delete>
+
+
+    <sql id="queryCondition">
+        <if test="projectId != null  ">
+            and t.projectId = #{projectId}
+        </if>
+    </sql>
+
+
+    <select id="findCountByQuery" parameterType="GenHistoryQO" resultType="int">
+        select count(*) from (
+        select * from gen_history t
+        <where>
+            and t.delSign=0
+            <include refid="queryCondition"/>
+        </where>
+        ) as count_select_
+    </select>
+
+    <select id="findListByQuery" parameterType="GenHistoryQO" resultType="GenHistoryListVO">
+        select * from gen_history t
+        <where>
+            and t.delSign=0
+            <include refid="queryCondition"/>
+        </where>
+        order by t.createDate desc
+        limit #{startIndex},#{pageSize}
+    </select>
+</mapper>

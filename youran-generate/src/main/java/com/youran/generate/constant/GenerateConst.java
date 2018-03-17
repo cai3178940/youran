@@ -9,8 +9,6 @@ package com.youran.generate.constant;
  */
 public class GenerateConst {
 
-    public static final String GENERATE_ROOT_PATH = "${youran.generate.rootPath:}";
-
     //元数据字段空值常量
     public static final String METAFIELD_NULL_VALUE = "NULL";
 

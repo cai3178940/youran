@@ -5,6 +5,12 @@ CREATE TABLE `meta_project` (
   `packageName` varchar(100) NOT NULL COMMENT '主包名',
   `projectName` varchar(50) NOT NULL COMMENT '项目名简称',
   `author` varchar(50) DEFAULT NULL COMMENT '开发者',
+  `remote` smallint(1) NOT NULL COMMENT '启用Git仓库',
+  `remote_url` varchar(256) DEFAULT NULL COMMENT 'Git仓库地址',
+  `username` varchar(32) DEFAULT NULL COMMENT 'Git用户名',
+  `password` varchar(32) DEFAULT NULL COMMENT 'Git密码',
+  `lastHistoryId` int(11) DEFAULT NULL COMMENT '最后提交历史id',
+  `projectVersion` int(11) NOT NULL COMMENT '项目版本号',
   `createDate` datetime DEFAULT NULL COMMENT '创建时间',
   `createBy` varchar(32) DEFAULT NULL COMMENT '创建人',
   `operateDate` datetime DEFAULT NULL COMMENT '操作时间',
@@ -167,3 +173,20 @@ CREATE TABLE `meta_mtm` (
   KEY `i_meta_mtm_2` (`entityId2`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_mtm';
 
+CREATE TABLE `gen_history` (
+    `historyId` int(11) AUTO_INCREMENT COMMENT '主键id',
+    `projectId` int(11) NOT NULL COMMENT '所属项目id',
+    `remoteUrl` varchar(256) NOT NULL COMMENT 'Git仓库地址',
+    `commit` varchar(32) NOT NULL COMMENT 'commit号',
+    `branch` varchar(32) NOT NULL COMMENT '分支名称',
+    `sysVersion` varchar(20) NOT NULL COMMENT '系统版本号',
+    `projectVersion` int(11) NOT NULL COMMENT '项目版本号',
+    `createDate` datetime DEFAULT NULL COMMENT '创建时间',
+    `createBy` varchar(32) DEFAULT NULL COMMENT '创建人',
+    `operateDate` datetime DEFAULT NULL COMMENT '操作时间',
+    `operateBy` varchar(32) DEFAULT NULL COMMENT '操作人',
+    `delSign` smallint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+    `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
+    PRIMARY KEY (`historyId`),
+    KEY `i_gen_history_0` (`projectId`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='gen_history';

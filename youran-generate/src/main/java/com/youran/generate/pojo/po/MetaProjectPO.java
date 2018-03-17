@@ -26,6 +26,18 @@ public class MetaProjectPO extends AbstractPO implements CreateOperateDeleteVers
 
     private String author;
 
+    private Integer remote;
+
+    private String remoteUrl;
+
+    private String username;
+
+    private String password;
+
+    private Integer lastHistoryId;
+
+    private Integer projectVersion;
+
     private Date createDate;
 
     private String createBy;
@@ -201,5 +213,53 @@ public class MetaProjectPO extends AbstractPO implements CreateOperateDeleteVers
 
     public void setDelSign(Integer delSign) {
         this.delSign = delSign;
+    }
+
+    public Integer getRemote() {
+        return remote;
+    }
+
+    public void setRemote(Integer remote) {
+        this.remote = remote;
+    }
+
+    public String getRemoteUrl() {
+        return remoteUrl;
+    }
+
+    public void setRemoteUrl(String remoteUrl) {
+        this.remoteUrl = remoteUrl;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getLastHistoryId() {
+        return lastHistoryId;
+    }
+
+    public void setLastHistoryId(Integer lastHistoryId) {
+        this.lastHistoryId = lastHistoryId;
+    }
+
+    public Integer getProjectVersion() {
+        return projectVersion;
+    }
+
+    public void setProjectVersion(Integer projectVersion) {
+        this.projectVersion = projectVersion;
     }
 }

@@ -2,6 +2,7 @@ package com.youran.generate.service;
 
 import com.google.common.collect.Lists;
 import com.youran.common.constant.BoolConst;
+import com.youran.common.util.DateUtil;
 import com.youran.common.util.H2Util;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.constant.*;
@@ -10,6 +11,7 @@ import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaManyToManyDAO;
 import com.youran.generate.dao.MetaProjectDAO;
 import com.youran.generate.exception.GenerateException;
+import com.youran.generate.pojo.dto.GitCredentialDTO;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.util.FreeMakerUtil;
 import com.youran.generate.util.MetadataUtil;
@@ -42,24 +44,22 @@ public class MetaCodeGenService {
 
     @Autowired
     private MetadataQueryService metadataQueryService;
-
     @Autowired
     private MetaEntityDAO metaEntityDAO;
-
     @Autowired
     private MetaProjectDAO metaProjectDAO;
-
     @Autowired
     private MetaManyToManyDAO metaManyToManyDAO;
-
     @Autowired
     private MetaConstDAO metaConstDAO;
-
+    @Autowired
+    private JGitService jGitService;
     @Value("${spring.application.name}")
     private String appName;
-
     @Autowired
     private GenerateProperties generateProperties;
+    @Autowired
+    private GenHistoryService genHistoryService;
 
     /**
      * 输出建表语句
@@ -170,50 +170,8 @@ public class MetaCodeGenService {
      * @return
      */
     public File genCodeZip(Integer projectId) {
-        MetaProjectPO project = metaProjectDAO.findById(projectId);
-        if (project == null) {
-            throw new GenerateException("项目不存在");
-        }
-        List<Integer> entityIds = metaEntityDAO.findIdsByProject(projectId);
-        if (CollectionUtils.isEmpty(entityIds)) {
-            throw new GenerateException("项目中没有实体");
-        }
-        String tmpDir = H2Util.getTmpDir(appName, true, true);
-        logger.debug("------代码生成临时路径：" + tmpDir);
-        List<MetaEntityPO> metaEntities = entityIds
-                .stream()
-                .map(metadataQueryService::getEntityWithAll).collect(Collectors.toList());
-        //填充外键相关属性
-        this.fillForeign(metaEntities);
-        List<Integer> constIds = metaConstDAO.findIdsByProject(projectId);
-        List<MetaConstPO> metaConstPOS = constIds
-                .stream()
-                .map(metadataQueryService::getConstWithAll).collect(Collectors.toList());
-        List<MetaManyToManyPO> manyToManies = metaManyToManyDAO.findByProjectId(projectId);
-        //填充多对多持有引用
-        this.fillEntityHoldRefs(metaEntities, manyToManies);
-        project.setMtms(manyToManies);
-        project.setEntities(metaEntities);
-        project.setConsts(metaConstPOS);
 
-        this.checkProject(project,true);
-
-        for (TemplateEnum templateEnum : TemplateEnum.values()) {
-            //生成全局文件
-            if (templateEnum.getType() == TemplateType.COMMON) {
-                this.renderFTL(project, tmpDir, templateEnum, null, null);
-            } else if (templateEnum.getType() == TemplateType.ENTITY) {
-                //生成实体模版文件
-                for (MetaEntityPO metaEntityPO : metaEntities) {
-                    this.renderFTL(project, tmpDir, templateEnum, metaEntityPO, null);
-                }
-            } else if (templateEnum.getType() == TemplateType.CONST) {
-                //生成实体模版文件
-                for (MetaConstPO metaConstPO : metaConstPOS) {
-                    this.renderFTL(project, tmpDir, templateEnum, null, metaConstPO);
-                }
-            }
-        }
+        String tmpDir = this.doGenCode(projectId);
         //压缩src目录到zip文件
         String outFilePath = tmpDir + ".zip";
         Zip4jUtil.compressFolder(tmpDir, outFilePath);
@@ -245,6 +203,55 @@ public class MetaCodeGenService {
         }
         //返回zip文件
         return new File(outFilePath);
+    }
+
+
+    private String doGenCode(Integer projectId){
+        MetaProjectPO project = metaProjectDAO.findById(projectId);
+        if (project == null) {
+            throw new GenerateException("项目不存在");
+        }
+        List<Integer> entityIds = metaEntityDAO.findIdsByProject(projectId);
+        if (CollectionUtils.isEmpty(entityIds)) {
+            throw new GenerateException("项目中没有实体");
+        }
+        String tmpDir = H2Util.getTmpDir(appName, true, true);
+        logger.debug("------代码生成临时路径：" + tmpDir);
+        List<MetaEntityPO> metaEntities = entityIds
+            .stream()
+            .map(metadataQueryService::getEntityWithAll).collect(Collectors.toList());
+        //填充外键相关属性
+        this.fillForeign(metaEntities);
+        List<Integer> constIds = metaConstDAO.findIdsByProject(projectId);
+        List<MetaConstPO> metaConstPOS = constIds
+            .stream()
+            .map(metadataQueryService::getConstWithAll).collect(Collectors.toList());
+        List<MetaManyToManyPO> manyToManies = metaManyToManyDAO.findByProjectId(projectId);
+        //填充多对多持有引用
+        this.fillEntityHoldRefs(metaEntities, manyToManies);
+        project.setMtms(manyToManies);
+        project.setEntities(metaEntities);
+        project.setConsts(metaConstPOS);
+
+        this.checkProject(project,true);
+
+        for (TemplateEnum templateEnum : TemplateEnum.values()) {
+            //生成全局文件
+            if (templateEnum.getType() == TemplateType.COMMON) {
+                this.renderFTL(project, tmpDir, templateEnum, null, null);
+            } else if (templateEnum.getType() == TemplateType.ENTITY) {
+                //生成实体模版文件
+                for (MetaEntityPO metaEntityPO : metaEntities) {
+                    this.renderFTL(project, tmpDir, templateEnum, metaEntityPO, null);
+                }
+            } else if (templateEnum.getType() == TemplateType.CONST) {
+                //生成实体模版文件
+                for (MetaConstPO metaConstPO : metaConstPOS) {
+                    this.renderFTL(project, tmpDir, templateEnum, null, metaConstPO);
+                }
+            }
+        }
+        return tmpDir;
     }
 
     //校验项目完整性
@@ -489,4 +496,50 @@ public class MetaCodeGenService {
         logger.debug(text);
         return text;
     }
+
+    /**
+     * 提交到仓库
+     * @param projectId
+     * @return
+     */
+    public void gitCommit(Integer projectId) {
+        MetaProjectPO project = metaProjectDAO.findById(projectId);
+        Integer remote = project.getRemote();
+        if(BoolConst.TRUE!=remote){
+            throw new GenerateException("当前项目未开启Git仓库");
+        }
+        Date now = new Date();
+        String genDir = this.doGenCode(projectId);
+        Integer lastHistoryId = project.getLastHistoryId();
+        String oldBranchName = null;
+        if(lastHistoryId!=null){
+            GenHistoryPO genHistory = genHistoryService.getGenHistory(lastHistoryId, true);
+            oldBranchName = genHistory.getBranch();
+        }
+        String newBranchName = "auto"+ DateUtil.getDateStr(now,"yyyyMMddHHmmss");
+        GitCredentialDTO credential = new GitCredentialDTO(project.getUsername(), project.getPassword());
+        String repository = jGitService.cloneRemoteRepository(project.getProjectName(), project.getRemoteUrl(),
+            credential, oldBranchName, newBranchName);
+        File repoDir = new File(repository);
+        File[] oldFiles = repoDir.listFiles((dir, name) -> !name.equals(".git"));
+        try {
+            for (File oldFile : oldFiles) {
+                FileUtils.forceDelete(oldFile);
+            }
+            FileUtils.copyDirectory(new File(genDir), repoDir);
+        } catch (IOException e) {
+            logger.error("IO异常",e);
+            throw new GenerateException("操作失败");
+        }
+        String commit = jGitService.commitAll(repository,
+            DateUtil.getDateStr(now,"yyyy-MM-dd HH:mm:ss")+"自动生成代码",
+            credential);
+
+        GenHistoryPO history = genHistoryService.save(project, commit, newBranchName);
+
+        project.setLastHistoryId(history.getHistoryId());
+        metaProjectDAO.update(project);
+
+    }
+
 }

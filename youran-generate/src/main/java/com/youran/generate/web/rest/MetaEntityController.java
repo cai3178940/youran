@@ -3,11 +3,10 @@ package com.youran.generate.web.rest;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.common.pojo.vo.ReplyVO;
-import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
-import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
+import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
 import com.youran.generate.service.MetaEntityService;
@@ -25,7 +24,7 @@ import javax.validation.Valid;
  * Create Time:2017/5/12 13:42
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH + "/meta_entity")
+@RequestMapping("/meta_entity")
 public class MetaEntityController implements MetaEntityAPI {
 
     @Autowired

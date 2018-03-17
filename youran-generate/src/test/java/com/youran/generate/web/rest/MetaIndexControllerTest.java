@@ -45,7 +45,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
     public void save() throws Exception {
         MetaFieldPO metaField2 = generateHelper.saveFieldExample(metaEntity.getEntityId());
         MetaIndexAddDTO addDTO = MetaIndexData.getAddDTO(metaField.getFieldId(),metaField2.getFieldId());
-        restMockMvc.perform(post(getRootPath()+"/meta_index/save")
+        restMockMvc.perform(post("/meta_index/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
                 .andExpect(jsonPath("$.code").value(is("0")));
@@ -57,7 +57,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         MetaFieldPO metaField2 = generateHelper.saveFieldExample(metaEntity.getEntityId());
         MetaIndexPO metaIndex = generateHelper.saveIndexExample(metaField.getFieldId(),metaField2.getFieldId());
         MetaIndexUpdateDTO updateDTO = MetaIndexData.getUpdateDTO(metaIndex,metaField.getFieldId());
-        restMockMvc.perform(put(getRootPath()+"/meta_index/update")
+        restMockMvc.perform(put("/meta_index/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
                 .andExpect(jsonPath("$.code").value(is("0")));
@@ -67,7 +67,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         generateHelper.saveIndexExample(metaField.getFieldId());
-        restMockMvc.perform(get(getRootPath()+"/meta_index/list")
+        restMockMvc.perform(get("/meta_index/list")
                 .param("entityId",metaEntity.getEntityId()+""))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
@@ -77,7 +77,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         MetaIndexPO metaIndex = generateHelper.saveIndexExample(metaField.getFieldId());
 
-        restMockMvc.perform(get(getRootPath()+"/meta_index/{indexId}",metaIndex.getIndexId()))
+        restMockMvc.perform(get("/meta_index/{indexId}",metaIndex.getIndexId()))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.indexId").value(is(metaIndex.getIndexId())));
     }
@@ -86,7 +86,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
     public void del() throws Exception {
         MetaIndexPO metaIndex = generateHelper.saveIndexExample(metaField.getFieldId());
 
-        restMockMvc.perform(delete(getRootPath()+"/meta_index/{indexId}",metaIndex.getIndexId()))
+        restMockMvc.perform(delete("/meta_index/{indexId}",metaIndex.getIndexId()))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
