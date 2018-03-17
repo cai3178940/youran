@@ -2,6 +2,7 @@ package com.youran.generate.service;
 
 import com.google.common.collect.Lists;
 import com.youran.common.constant.BoolConst;
+import com.youran.common.util.AESSecurityUtil;
 import com.youran.common.util.DateUtil;
 import com.youran.common.util.H2Util;
 import com.youran.generate.config.GenerateProperties;
@@ -523,7 +524,7 @@ public class MetaCodeGenService {
             oldBranchName = genHistory.getBranch();
         }
         String newBranchName = "auto"+ DateUtil.getDateStr(now,"yyyyMMddHHmmss");
-        GitCredentialDTO credential = new GitCredentialDTO(project.getUsername(), project.getPassword());
+        GitCredentialDTO credential = this.getCredentialDTO(project);
         String repository = jGitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
             credential, oldBranchName, newBranchName);
         File repoDir = new File(repository);
@@ -548,6 +549,25 @@ public class MetaCodeGenService {
         project.setLastHistoryId(history.getHistoryId());
         metaProjectDAO.update(project);
 
+    }
+
+    /**
+     * 获取认证DTO
+     * @param project
+     * @return
+     */
+    private GitCredentialDTO getCredentialDTO(MetaProjectPO project){
+        if(StringUtils.isBlank(project.getUsername())||StringUtils.isBlank(project.getPassword())){
+            return null;
+        }
+        String password;
+        try {
+            password = AESSecurityUtil.encrypt(project.getPassword(), generateProperties.getAesKey());
+        } catch (Exception e) {
+            logger.error("密码解密异常",e);
+            throw new GenerateException("密码解密异常");
+        }
+        return new GitCredentialDTO(project.getUsername(), password);
     }
 
 }
