@@ -18,7 +18,7 @@
       <el-table-column property="projectName" label="项目名称"></el-table-column>
       <el-table-column property="author" label="作者"></el-table-column>
       <el-table-column property="packageName" label="包名"></el-table-column>
-      <el-table-column label="启用Git仓库" width="80px">
+      <el-table-column label="启用Git仓库" width="150px">
         <template slot-scope="scope">
           <icon v-if="scope.row.remote==1" name="check" class="color-success"></icon>
           <icon v-if="scope.row.remote!=1" name="close" class="color-danger"></icon>

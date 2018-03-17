@@ -1,5 +1,6 @@
 package com.youran.generate.service;
 
+import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -86,10 +87,11 @@ public class JGitService {
             }
         } catch (IOException e) {
             LOGGER.error("clone仓库异常",e);
+            throw new GenerateException("clone仓库异常");
         } catch (GitAPIException e) {
             LOGGER.error("clone仓库异常",e);
+            throw new GenerateException("clone仓库异常");
         }
-        return null;
     }
 
     /**
@@ -122,8 +124,8 @@ public class JGitService {
             return commit.getName();
         }catch (GitAPIException e) {
             LOGGER.error("提交仓库异常",e);
+            throw new GenerateException("提交仓库异常");
         }
-        return null;
     }
 
     /**
@@ -135,7 +137,7 @@ public class JGitService {
         File _gitDir = new File(repoDir,".git");
         // now open the resulting repository with a FileRepositoryBuilder
         FileRepositoryBuilder builder = new FileRepositoryBuilder();
-        Repository repository = null;
+        Repository repository;
         try {
             repository = builder.setGitDir(_gitDir)
                 .readEnvironment() // scan environment GIT_* variables
@@ -143,6 +145,7 @@ public class JGitService {
                 .build();
         } catch (IOException e) {
             LOGGER.error("打开仓库异常",e);
+            throw new GenerateException("打开仓库异常");
         }
         return repository;
     }
