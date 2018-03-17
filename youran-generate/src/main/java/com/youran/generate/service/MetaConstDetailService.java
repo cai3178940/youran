@@ -1,13 +1,15 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
+import com.youran.generate.dao.MetaConstDAO;
 import com.youran.generate.dao.MetaConstDetailDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
-import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaConstDetailMapper;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
+import com.youran.generate.pojo.po.MetaConstPO;
+import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
 import com.youran.generate.pojo.vo.MetaConstDetailShowVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,10 @@ public class MetaConstDetailService {
 
     @Autowired
     private MetaConstDetailDAO metaConstDetailDAO;
-
+    @Autowired
+    private MetaConstDAO metaConstDAO;
+    @Autowired
+    private MetaProjectService metaProjectService;
     /**
      * 新增常量值
      * @param metaConstDetailDTO
@@ -35,8 +40,13 @@ public class MetaConstDetailService {
      */
     @Transactional
     public MetaConstDetailPO save(MetaConstDetailAddDTO metaConstDetailDTO) {
+        MetaConstPO metaConst = metaConstDAO.findById(metaConstDetailDTO.getConstId());
+        if (metaConst==null) {
+            throw new GenerateException("constId参数有误");
+        }
         MetaConstDetailPO metaConstDetail = MetaConstDetailMapper.INSTANCE.fromAddDTO(metaConstDetailDTO);
         metaConstDetailDAO.save(metaConstDetail);
+        metaProjectService.updateProjectVersion(metaConst.getProjectId());
         return metaConstDetail;
     }
 
@@ -48,13 +58,14 @@ public class MetaConstDetailService {
     @Transactional
     @OptimisticLock
     public void update(MetaConstDetailUpdateDTO metaConstDetailUpdateDTO) {
-        Integer constDetailId = metaConstDetailUpdateDTO.getConstDetailId();
-        MetaConstDetailPO metaConstDetail = metaConstDetailDAO.findById(constDetailId);
+        MetaConstDetailPO metaConstDetail = metaConstDetailDAO.findById(metaConstDetailUpdateDTO.getConstDetailId());
         if (metaConstDetail == null) {
             throw new GenerateException("constDetailId有误");
         }
         MetaConstDetailMapper.INSTANCE.setPO(metaConstDetail, metaConstDetailUpdateDTO);
         metaConstDetailDAO.update(metaConstDetail);
+        MetaConstPO metaConst = metaConstDAO.findById(metaConstDetail.getConstId());
+        metaProjectService.updateProjectVersion(metaConst.getProjectId());
     }
 
     /**
@@ -88,8 +99,18 @@ public class MetaConstDetailService {
     @Transactional
     public int delete(Integer... constDetailId) {
         int count = 0;
+        Integer constId = null;
         for (Integer id : constDetailId) {
+            MetaConstDetailPO metaConstDetail = metaConstDetailDAO.findById(id);
+            if(metaConstDetail==null){
+                continue;
+            }
+            constId = metaConstDetail.getConstId();
             count += metaConstDetailDAO.delete(id);
+        }
+        if(count>0) {
+            MetaConstPO metaConst = metaConstDAO.findById(constId);
+            metaProjectService.updateProjectVersion(metaConst.getProjectId());
         }
         return count;
     }

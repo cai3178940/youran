@@ -10,6 +10,7 @@ import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaIndexMapper;
+import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
@@ -38,7 +39,8 @@ public class MetaIndexService {
     private MetaIndexDAO metaIndexDAO;
     @Autowired
     private MetaIndexFieldDAO metaIndexFieldDAO;
-
+    @Autowired
+    private MetaProjectService metaProjectService;
     /**
      * 新增索引
      * @param metaIndexAddDTO
@@ -46,7 +48,8 @@ public class MetaIndexService {
      */
     @Transactional
     public MetaIndexPO save(MetaIndexAddDTO metaIndexAddDTO) {
-        if (!metaEntityDAO.exist(metaIndexAddDTO.getEntityId())) {
+        MetaEntityPO entityPO = metaEntityDAO.findById(metaIndexAddDTO.getEntityId());
+        if (entityPO==null) {
             throw new GenerateException("entityId参数有误");
         }
         //校验字段id是否是本实体下存在的字段
@@ -65,6 +68,7 @@ public class MetaIndexService {
         if (count == 0 || fieldIdList.size() != count) {
             throw new GenerateException("索引保存异常");
         }
+        metaProjectService.updateProjectVersion(entityPO.getProjectId());
         return metaIndex;
     }
 
@@ -76,7 +80,8 @@ public class MetaIndexService {
     @Transactional
     @OptimisticLock
     public void update(MetaIndexUpdateDTO metaIndexUpdateDTO) {
-        if (!metaEntityDAO.exist(metaIndexUpdateDTO.getEntityId())) {
+        MetaEntityPO entityPO = metaEntityDAO.findById(metaIndexUpdateDTO.getEntityId());
+        if (entityPO==null) {
             throw new GenerateException("entityId参数有误");
         }
         Integer indexId = metaIndexUpdateDTO.getIndexId();
@@ -102,6 +107,8 @@ public class MetaIndexService {
         if (count == 0 || fieldIdList.size() != count) {
             throw new GenerateException("索引更新异常");
         }
+
+        metaProjectService.updateProjectVersion(entityPO.getProjectId());
     }
 
     /**
@@ -138,9 +145,19 @@ public class MetaIndexService {
     @Transactional
     public int delete(Integer... indexId) {
         int count = 0;
+        Integer entityId = null;
         for (Integer id : indexId) {
+            MetaIndexPO metaIndex = metaIndexDAO.findById(id);
+            if(metaIndex==null){
+                continue;
+            }
+            entityId = metaIndex.getEntityId();
             metaIndexFieldDAO.delete(id);
             count += metaIndexDAO.delete(id);
+        }
+        if(count>0) {
+            MetaEntityPO entityPO = metaEntityDAO.findById(entityId);
+            metaProjectService.updateProjectVersion(entityPO.getProjectId());
         }
         return count;
     }

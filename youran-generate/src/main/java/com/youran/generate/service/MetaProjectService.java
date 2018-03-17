@@ -63,6 +63,7 @@ public class MetaProjectService {
             metaProject.setPassword(metaProjectUpdateDTO.getPassword());
         }
         metaProjectDAO.update(metaProject);
+        this.updateProjectVersion(metaProject.getProjectId());
     }
 
     /**
@@ -100,5 +101,16 @@ public class MetaProjectService {
             count += metaProjectDAO.delete(id);
         }
         return count;
+    }
+
+
+    /**
+     * 更新项目版本号
+     * @param projectId
+     */
+    public void updateProjectVersion(Integer projectId){
+        MetaProjectPO projectPO = metaProjectDAO.findById(projectId);
+        projectPO.setProjectVersion(projectPO.getProjectVersion()+1);
+        metaProjectDAO.update(projectPO);
     }
 }

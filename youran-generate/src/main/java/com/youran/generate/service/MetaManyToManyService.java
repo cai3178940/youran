@@ -5,10 +5,10 @@ import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaManyToManyDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
-import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaManyToManyMapper;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
+import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.vo.MetaManyToManyListVO;
 import com.youran.generate.pojo.vo.MetaManyToManyShowVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,8 @@ public class MetaManyToManyService {
     private MetaManyToManyDAO metaManyToManyDAO;
     @Autowired
     private MetaEntityDAO metaEntityDAO;
+    @Autowired
+    private MetaProjectService metaProjectService;
 
     /**
      * 新增多对多关联
@@ -46,6 +48,7 @@ public class MetaManyToManyService {
         }
         MetaManyToManyPO metaManyToMany = MetaManyToManyMapper.INSTANCE.fromAddDTO(metaManyToManyDTO);
         metaManyToManyDAO.save(metaManyToMany);
+        metaProjectService.updateProjectVersion(metaManyToMany.getProjectId());
         return metaManyToMany;
     }
 
@@ -70,6 +73,7 @@ public class MetaManyToManyService {
         }
         MetaManyToManyMapper.INSTANCE.setPO(metaManyToMany, metaManyToManyUpdateDTO);
         metaManyToManyDAO.update(metaManyToMany);
+        metaProjectService.updateProjectVersion(metaManyToMany.getProjectId());
     }
 
     /**
@@ -104,8 +108,17 @@ public class MetaManyToManyService {
     @Transactional
     public int delete(Integer... mtmId) {
         int count = 0;
+        Integer projectId = null;
         for (Integer id : mtmId) {
+            MetaManyToManyPO manyToMany = metaManyToManyDAO.findById(id);
+            if(manyToMany==null){
+                continue;
+            }
+            projectId = manyToMany.getProjectId();
             count += metaManyToManyDAO.delete(id);
+        }
+        if(count>0) {
+            metaProjectService.updateProjectVersion(projectId);
         }
         return count;
     }

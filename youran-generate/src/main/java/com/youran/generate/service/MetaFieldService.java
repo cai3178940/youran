@@ -5,6 +5,7 @@ import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
+import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaFieldMapper;
@@ -30,7 +31,8 @@ public class MetaFieldService {
     private MetaFieldDAO metaFieldDAO;
     @Autowired
     private MetaEntityDAO metaEntityDAO;
-
+    @Autowired
+    private MetaProjectService metaProjectService;
     /**
      * 新增字段
      * @param metaFieldDTO
@@ -38,11 +40,13 @@ public class MetaFieldService {
      */
     @Transactional
     public MetaFieldPO save(MetaFieldAddDTO metaFieldDTO) {
-        if (!metaEntityDAO.exist(metaFieldDTO.getEntityId())) {
+        MetaEntityPO entityPO = metaEntityDAO.findById(metaFieldDTO.getEntityId());
+        if (entityPO==null) {
             throw new GenerateException("entityId参数有误");
         }
         MetaFieldPO metaField = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
         metaFieldDAO.save(metaField);
+        metaProjectService.updateProjectVersion(entityPO.getProjectId());
         return metaField;
     }
 
@@ -54,9 +58,6 @@ public class MetaFieldService {
     @Transactional
     @OptimisticLock
     public void update(MetaFieldUpdateDTO metaFieldUpdateDTO) {
-        if (!metaEntityDAO.exist(metaFieldUpdateDTO.getEntityId())) {
-            throw new GenerateException("entityId参数有误");
-        }
         Integer fieldId = metaFieldUpdateDTO.getFieldId();
         MetaFieldPO metaField = metaFieldDAO.findById(fieldId);
         if (metaField == null) {
@@ -64,6 +65,8 @@ public class MetaFieldService {
         }
         MetaFieldMapper.INSTANCE.setPO(metaField, metaFieldUpdateDTO);
         metaFieldDAO.update(metaField);
+        MetaEntityPO entityPO = metaEntityDAO.findById(metaField.getEntityId());
+        metaProjectService.updateProjectVersion(entityPO.getProjectId());
     }
 
     /**
@@ -98,8 +101,18 @@ public class MetaFieldService {
     @Transactional
     public int delete(Integer... fieldId) {
         int count = 0;
+        Integer entityId = null;
         for (Integer id : fieldId) {
+            MetaFieldPO metaField = metaFieldDAO.findById(fieldId);
+            if(metaField==null){
+                continue;
+            }
+            entityId = metaField.getEntityId();
             count += metaFieldDAO.delete(id);
+        }
+        if(count>0) {
+            MetaEntityPO entityPO = metaEntityDAO.findById(entityId);
+            metaProjectService.updateProjectVersion(entityPO.getProjectId());
         }
         return count;
     }

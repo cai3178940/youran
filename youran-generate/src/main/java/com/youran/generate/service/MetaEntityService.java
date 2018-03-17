@@ -26,6 +26,8 @@ public class MetaEntityService {
 
     @Autowired
     private MetaEntityDAO metaEntityDAO;
+    @Autowired
+    private MetaProjectService metaProjectService;
 
     /**
      * 新增实体
@@ -36,6 +38,7 @@ public class MetaEntityService {
     public MetaEntityPO save(MetaEntityAddDTO metaEntityDTO) {
         MetaEntityPO metaEntity = MetaEntityMapper.INSTANCE.fromAddDTO(metaEntityDTO);
         metaEntityDAO.save(metaEntity);
+        metaProjectService.updateProjectVersion(metaEntityDTO.getProjectId());
         return metaEntity;
     }
 
@@ -54,6 +57,7 @@ public class MetaEntityService {
         }
         MetaEntityMapper.INSTANCE.setPO(metaEntity, metaEntityUpdateDTO);
         metaEntityDAO.update(metaEntity);
+        metaProjectService.updateProjectVersion(metaEntity.getProjectId());
     }
 
     /**
@@ -88,8 +92,17 @@ public class MetaEntityService {
     @Transactional
     public int delete(Integer... entityId) {
         int count = 0;
+        Integer projectId = null;
         for (Integer id : entityId) {
+            MetaEntityPO entityPO = metaEntityDAO.findById(id);
+            if(entityPO==null){
+                continue;
+            }
+            projectId = entityPO.getProjectId();
             count += metaEntityDAO.delete(id);
+        }
+        if(count>0) {
+            metaProjectService.updateProjectVersion(projectId);
         }
         return count;
     }

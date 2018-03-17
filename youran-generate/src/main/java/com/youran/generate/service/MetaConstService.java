@@ -5,10 +5,10 @@ import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.MetaConstDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaConstAddDTO;
-import com.youran.generate.pojo.qo.MetaConstQO;
 import com.youran.generate.pojo.dto.MetaConstUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaConstMapper;
 import com.youran.generate.pojo.po.MetaConstPO;
+import com.youran.generate.pojo.qo.MetaConstQO;
 import com.youran.generate.pojo.vo.MetaConstListVO;
 import com.youran.generate.pojo.vo.MetaConstShowVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,8 @@ public class MetaConstService {
 
     @Autowired
     private MetaConstDAO metaConstDAO;
-
+    @Autowired
+    private MetaProjectService metaProjectService;
     /**
      * 新增常量
      * @param metaConstDTO
@@ -36,6 +37,7 @@ public class MetaConstService {
     public MetaConstPO save(MetaConstAddDTO metaConstDTO) {
         MetaConstPO metaConst = MetaConstMapper.INSTANCE.fromAddDTO(metaConstDTO);
         metaConstDAO.save(metaConst);
+        metaProjectService.updateProjectVersion(metaConst.getProjectId());
         return metaConst;
     }
 
@@ -54,6 +56,7 @@ public class MetaConstService {
         }
         MetaConstMapper.INSTANCE.setPO(metaConst, metaConstUpdateDTO);
         metaConstDAO.update(metaConst);
+        metaProjectService.updateProjectVersion(metaConst.getProjectId());
     }
 
     /**
@@ -88,8 +91,17 @@ public class MetaConstService {
     @Transactional
     public int delete(Integer... constId) {
         int count = 0;
+        Integer projectId = null;
         for (Integer id : constId) {
+            MetaConstPO metaConst = metaConstDAO.findById(id);
+            if(metaConst==null){
+                continue;
+            }
+            projectId = metaConst.getProjectId();
             count += metaConstDAO.delete(id);
+        }
+        if(count>0) {
+            metaProjectService.updateProjectVersion(projectId);
         }
         return count;
     }
