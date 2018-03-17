@@ -1,6 +1,7 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.ReplyVO;
+import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
@@ -23,7 +24,7 @@ import java.util.List;
  * Create Time:2017/5/12 13:42
  */
 @RestController
-@RequestMapping("/meta_mtm")
+@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/meta_mtm")
 public class MetaManyToManyController implements MetaManyToManyAPI {
 
     @Autowired

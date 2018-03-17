@@ -24,7 +24,7 @@ import java.util.List;
  * Create Time:2017/5/12 13:42
  */
 @RestController
-@RequestMapping("/meta_field")
+@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/meta_field")
 public class MetaFieldController implements MetaFieldAPI {
 
     @Autowired

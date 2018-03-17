@@ -1,6 +1,7 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.ReplyVO;
+import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
@@ -23,7 +24,7 @@ import java.util.List;
  * Create Time:2017/5/24
  */
 @RestController
-@RequestMapping("/meta_project")
+@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/meta_project")
 public class MetaProjectController implements MetaProjectAPI {
 
     @Autowired

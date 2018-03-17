@@ -38,7 +38,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
     @Test
     public void save() throws Exception {
         MetaConstAddDTO addDTO = MetaConstData.getAddDTO(metaProject.getProjectId());
-        restMockMvc.perform(post("/meta_const/save")
+        restMockMvc.perform(post(getRootPath()+"/meta_const/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
                 .andExpect(jsonPath("$.code").value(is("0")));
@@ -49,7 +49,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
     public void update() throws Exception {
         MetaConstPO metaConst = generateHelper.saveConstExample(metaProject.getProjectId());
         MetaConstUpdateDTO updateDTO = MetaConstData.getUpdateDTO(metaConst);
-        restMockMvc.perform(put("/meta_const/update")
+        restMockMvc.perform(put(getRootPath()+"/meta_const/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
                 .andExpect(jsonPath("$.code").value(is("0")));
@@ -59,7 +59,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         generateHelper.saveConstExample(metaProject.getProjectId());
-        restMockMvc.perform(get("/meta_const/list")
+        restMockMvc.perform(get(getRootPath()+"/meta_const/list")
                 .param("projectId",metaProject.getProjectId()+""))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
@@ -68,7 +68,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
     @Test
     public void show() throws Exception {
         MetaConstPO metaConst = generateHelper.saveConstExample(metaProject.getProjectId());
-        restMockMvc.perform(get("/meta_const/{constId}",metaConst.getConstId()))
+        restMockMvc.perform(get(getRootPath()+"/meta_const/{constId}",metaConst.getConstId()))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.constId").value(is(metaConst.getConstId())));
     }
@@ -76,7 +76,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
     @Test
     public void del() throws Exception {
         MetaConstPO metaConst = generateHelper.saveConstExample(metaProject.getProjectId());
-        restMockMvc.perform(delete("/meta_const/{constId}",metaConst.getConstId()))
+        restMockMvc.perform(delete(getRootPath()+"/meta_const/{constId}",metaConst.getConstId()))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }

@@ -3,6 +3,7 @@ package com.youran.generate.web.rest;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.DateUtil;
 import com.youran.common.util.JsonUtil;
+import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.service.MetaCodeGenService;
 import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.web.api.MetaCodeGenAPI;
@@ -27,7 +28,7 @@ import java.util.Date;
  * Create Time:2017/5/13 23:00
  */
 @Controller
-@RequestMapping("/code_gen")
+@RequestMapping(GenerateConst.GENERATE_ROOT_PATH + "/code_gen")
 public class MetaCodeGenController implements MetaCodeGenAPI {
 
     @Autowired

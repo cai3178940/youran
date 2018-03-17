@@ -2,6 +2,7 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.common.pojo.vo.ReplyVO;
+import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.qo.GenHistoryQO;
 import com.youran.generate.pojo.vo.GenHistoryListVO;
 import com.youran.generate.service.GenHistoryService;
@@ -22,7 +23,7 @@ import javax.validation.Valid;
  * Create Time: 2018-03-17 16:47
  */
 @RestController
-@RequestMapping("/gen_history")
+@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/gen_history")
 public class GenHistoryController implements GenHistoryAPI {
 
     @Autowired

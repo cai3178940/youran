@@ -41,7 +41,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
     @Test
     public void save() throws Exception {
         MetaConstDetailAddDTO addDTO = MetaConstDetailData.getAddDTO(metaConst.getConstId());
-        restMockMvc.perform(post("/meta_const_detail/save")
+        restMockMvc.perform(post(getRootPath()+"/meta_const_detail/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
                 .andExpect(jsonPath("$.code").value(is("0")));
@@ -52,7 +52,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
     public void update() throws Exception {
         MetaConstDetailPO metaConstDetail = generateHelper.saveConstDetailExample(metaConst.getConstId());
         MetaConstDetailUpdateDTO updateDTO = MetaConstDetailData.getUpdateDTO(metaConstDetail);
-        restMockMvc.perform(put("/meta_const_detail/update")
+        restMockMvc.perform(put(getRootPath()+"/meta_const_detail/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
                 .andExpect(jsonPath("$.code").value(is("0")));
@@ -62,7 +62,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         generateHelper.saveConstDetailExample(metaConst.getConstId());
-        restMockMvc.perform(get("/meta_const_detail/list")
+        restMockMvc.perform(get(getRootPath()+"/meta_const_detail/list")
                 .param("constId",metaConst.getConstId()+""))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
@@ -71,7 +71,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
     @Test
     public void show() throws Exception {
         MetaConstDetailPO metaConstDetail = generateHelper.saveConstDetailExample(metaConst.getConstId());
-        restMockMvc.perform(get("/meta_const_detail/{constId}",metaConstDetail.getConstId()))
+        restMockMvc.perform(get(getRootPath()+"/meta_const_detail/{constId}",metaConstDetail.getConstId()))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.constId").value(is(metaConstDetail.getConstId())));
     }
@@ -79,7 +79,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
     @Test
     public void del() throws Exception {
         MetaConstDetailPO metaConstDetail = generateHelper.saveConstDetailExample(metaConst.getConstId());
-        restMockMvc.perform(delete("/meta_const_detail/{constId}",metaConstDetail.getConstId()))
+        restMockMvc.perform(delete(getRootPath()+"/meta_const_detail/{constId}",metaConstDetail.getConstId()))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }

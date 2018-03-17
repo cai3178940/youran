@@ -30,7 +30,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     @Test
     public void save() throws Exception {
         MetaProjectAddDTO addDTO = MetaProjectData.getAddDTO();
-        restMockMvc.perform(post("/meta_project/save")
+        restMockMvc.perform(post(getRootPath()+"/meta_project/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
                 .andExpect(jsonPath("$.code").value(is("0")));
@@ -41,7 +41,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     public void update() throws Exception {
         MetaProjectPO metaProject = generateHelper.saveProjectExample();
         MetaProjectUpdateDTO updateDTO = MetaProjectData.getUpdateDTO(metaProject);
-        restMockMvc.perform(put("/meta_project/update")
+        restMockMvc.perform(put(getRootPath()+"/meta_project/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
                 .andExpect(jsonPath("$.code").value(is("0")));
@@ -51,7 +51,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         generateHelper.saveProjectExample();
-        restMockMvc.perform(get("/meta_project/list"))
+        restMockMvc.perform(get(getRootPath()+"/meta_project/list"))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
     }
@@ -59,7 +59,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     @Test
     public void show() throws Exception {
         MetaProjectPO metaProject = generateHelper.saveProjectExample();
-        restMockMvc.perform(get("/meta_project/{projectId}",metaProject.getProjectId()))
+        restMockMvc.perform(get(getRootPath()+"/meta_project/{projectId}",metaProject.getProjectId()))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data.projectId").value(is(metaProject.getProjectId())));
     }
@@ -67,7 +67,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     @Test
     public void del() throws Exception {
         MetaProjectPO metaProject = generateHelper.saveProjectExample();
-        restMockMvc.perform(delete("/meta_project/{projectId}",metaProject.getProjectId()))
+        restMockMvc.perform(delete(getRootPath()+"/meta_project/{projectId}",metaProject.getProjectId()))
                 .andExpect(jsonPath("$.code").value(is("0")))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
@@ -75,7 +75,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     @Test
     public void deleteBatch() throws Exception {
         MetaProjectPO metaProject = generateHelper.saveProjectExample();
-        restMockMvc.perform(put("/meta_project/deleteBatch")
+        restMockMvc.perform(put(getRootPath()+"/meta_project/deleteBatch")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(Lists.newArrayList(metaProject.getProjectId()))))
                 .andExpect(jsonPath("$.code").value(is("0")))
