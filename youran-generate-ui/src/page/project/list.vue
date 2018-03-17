@@ -50,7 +50,7 @@
               <el-dropdown-item :command="{method:'handleGenSql',arg:scope.row}" >
                 <icon name="file-code-o" scale="0.8" ></icon> 生成sql
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleCommit',arg:scope.row}" >
+              <el-dropdown-item v-if="scope.row.remote==1" :command="{method:'handleCommit',arg:scope.row}" >
                 <icon name="mail-forward" scale="0.8" ></icon> 提交到仓库
               </el-dropdown-item>
             </el-dropdown-menu>

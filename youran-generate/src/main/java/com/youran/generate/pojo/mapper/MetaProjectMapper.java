@@ -5,6 +5,7 @@ import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
@@ -31,6 +32,7 @@ public interface MetaProjectMapper {
      * @param metaProjectPO
      * @param metaProjectUpdateDTO
      */
+    @Mapping(target = "password", ignore=true)
     void setPO(@MappingTarget MetaProjectPO metaProjectPO, MetaProjectUpdateDTO metaProjectUpdateDTO);
 
     /**

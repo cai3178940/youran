@@ -10,6 +10,7 @@ import com.youran.generate.pojo.mapper.MetaProjectMapper;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,9 @@ public class MetaProjectService {
             throw new GenerateException("projectId有误");
         }
         MetaProjectMapper.INSTANCE.setPO(metaProject, metaProjectUpdateDTO);
+        if(StringUtils.isNotBlank(metaProjectUpdateDTO.getPassword())){
+            metaProject.setPassword(metaProjectUpdateDTO.getPassword());
+        }
         metaProjectDAO.update(metaProject);
     }
 

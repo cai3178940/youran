@@ -19,11 +19,15 @@
     <insert id="save" useGeneratedKeys="true" keyProperty="projectId" parameterType="MetaProjectPO">
         insert into meta_project (
           projectId, packageName, projectName,
-          author, createDate, createBy,
+          author,remote,remoteUrl,username,
+          password,lastHistoryId,projectVersion,
+          createDate, createBy,
           operateDate, operateBy, delSign,
           version)
         values (#{projectId,jdbcType=INTEGER}, #{packageName,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
-          #{author,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
+          #{author,jdbcType=VARCHAR},#{remote,jdbcType=INTEGER},#{remoteUrl,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},
+          #{password,jdbcType=VARCHAR},#{lastHistoryId,jdbcType=INTEGER},#{projectVersion,jdbcType=INTEGER},
+          #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
           #{operateDate,jdbcType=TIMESTAMP}, #{operateBy,jdbcType=VARCHAR}, #{delSign,jdbcType=SMALLINT},
           #{version,jdbcType=INTEGER})
     </insert>
@@ -31,12 +35,18 @@
     <update id="update" parameterType="MetaProjectPO">
         update meta_project
         set
-          packageName = #{packageName,jdbcType=VARCHAR},
-          projectName = #{projectName,jdbcType=VARCHAR},
-          author = #{author,jdbcType=VARCHAR},
-          operateDate = #{operateDate,jdbcType=TIMESTAMP},
-          operateBy = #{operateBy,jdbcType=VARCHAR},
-          version = #{version,jdbcType=INTEGER}
+            packageName = #{packageName,jdbcType=VARCHAR},
+            projectName = #{projectName,jdbcType=VARCHAR},
+            author = #{author,jdbcType=VARCHAR},
+            remote = #{remote,jdbcType=INTEGER},
+            remoteUrl = #{remoteUrl,jdbcType=VARCHAR},
+            username = #{username,jdbcType=VARCHAR},
+            password = #{password,jdbcType=VARCHAR},
+            lastHistoryId = #{lastHistoryId,jdbcType=INTEGER},
+            projectVersion = #{projectVersion,jdbcType=INTEGER},
+            operateDate = #{operateDate,jdbcType=TIMESTAMP},
+            operateBy = #{operateBy,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER}
         where projectId = #{projectId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
         and delSign=0

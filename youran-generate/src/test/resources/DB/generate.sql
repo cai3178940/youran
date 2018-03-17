@@ -6,7 +6,7 @@ CREATE TABLE `meta_project` (
   `projectName` varchar(50) NOT NULL COMMENT '项目名简称',
   `author` varchar(50) DEFAULT NULL COMMENT '开发者',
   `remote` smallint(1) NOT NULL COMMENT '启用Git仓库',
-  `remote_url` varchar(256) DEFAULT NULL COMMENT 'Git仓库地址',
+  `remoteUrl` varchar(256) DEFAULT NULL COMMENT 'Git仓库地址',
   `username` varchar(32) DEFAULT NULL COMMENT 'Git用户名',
   `password` varchar(32) DEFAULT NULL COMMENT 'Git密码',
   `lastHistoryId` int(11) DEFAULT NULL COMMENT '最后提交历史id',

@@ -59,10 +59,12 @@
 </template>
 
 <script>
+  import options from '@/components/options.js'
   export default {
     name: 'projectAdd',
     data: function () {
       return {
+        boolOptions: options.boolOptions,
         form: {
           projectName: '',
           packageName: '',

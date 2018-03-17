@@ -58,6 +58,7 @@
 </template>
 
 <script>
+  import options from '@/components/options.js'
   //项目模型
   const projectModel = {
     projectId: null,
@@ -75,6 +76,7 @@
     props: ['projectId'],
     data: function () {
       return {
+        boolOptions: options.boolOptions,
         old: {
           ...projectModel
         },
