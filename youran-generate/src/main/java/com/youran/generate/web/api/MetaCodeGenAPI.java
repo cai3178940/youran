@@ -51,5 +51,5 @@ public interface MetaCodeGenAPI {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
     })
-    ReplyVO<String> gitCommit(Integer entityId);
+    ReplyVO<Void> gitCommit(Integer entityId);
 }

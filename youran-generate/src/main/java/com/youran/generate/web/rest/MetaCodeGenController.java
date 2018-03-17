@@ -85,7 +85,7 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
 
     @Override
     @GetMapping(value = "/gitCommit")
-    public ReplyVO gitCommit(Integer projectId) {
+    public ReplyVO<Void> gitCommit(Integer projectId) {
         metaCodeGenService.gitCommit(projectId);
         return ReplyVO.success();
     }
