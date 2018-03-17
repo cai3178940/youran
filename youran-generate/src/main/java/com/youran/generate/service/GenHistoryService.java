@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 
 /**
  * Title: 【生成历史】删改查服务
@@ -86,6 +88,17 @@ public class GenHistoryService {
     }
 
 
+    /**
+     * 校验提交版本
+     * @param project
+     * @param genHistory
+     */
+    public void checkVersion(MetaProjectPO project, GenHistoryPO genHistory) {
+        if(Objects.equals(genHistory.getProjectVersion(),project.getProjectVersion())
+            && Objects.equals(genHistory.getSysVersion(),generateProperties.getVersion())){
+            throw new GenerateException("远程仓库分支【"+genHistory.getBranch()+"】已经是最新版本");
+        }
+    }
 }
 
 

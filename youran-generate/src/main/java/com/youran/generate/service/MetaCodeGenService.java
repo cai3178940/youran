@@ -508,17 +508,21 @@ public class MetaCodeGenService {
         if(BoolConst.TRUE!=remote){
             throw new GenerateException("当前项目未开启Git仓库");
         }
+        String remoteUrl = project.getRemoteUrl();
+        if(StringUtils.isBlank(remoteUrl)){
+            throw new GenerateException("仓库地址为空");
+        }
         Date now = new Date();
-        String genDir = this.doGenCode(projectId);
         Integer lastHistoryId = project.getLastHistoryId();
         String oldBranchName = null;
         if(lastHistoryId!=null){
             GenHistoryPO genHistory = genHistoryService.getGenHistory(lastHistoryId, true);
+            genHistoryService.checkVersion(project,genHistory);
             oldBranchName = genHistory.getBranch();
         }
         String newBranchName = "auto"+ DateUtil.getDateStr(now,"yyyyMMddHHmmss");
         GitCredentialDTO credential = new GitCredentialDTO(project.getUsername(), project.getPassword());
-        String repository = jGitService.cloneRemoteRepository(project.getProjectName(), project.getRemoteUrl(),
+        String repository = jGitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
             credential, oldBranchName, newBranchName);
         File repoDir = new File(repository);
         File[] oldFiles = repoDir.listFiles((dir, name) -> !name.equals(".git"));
@@ -526,6 +530,8 @@ public class MetaCodeGenService {
             for (File oldFile : oldFiles) {
                 FileUtils.forceDelete(oldFile);
             }
+            //生成代码
+            String genDir = this.doGenCode(projectId);
             FileUtils.copyDirectory(new File(genDir), repoDir);
         } catch (IOException e) {
             logger.error("IO异常",e);
