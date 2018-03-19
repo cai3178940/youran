@@ -103,7 +103,7 @@ public class MetaFieldService {
         int count = 0;
         Integer entityId = null;
         for (Integer id : fieldId) {
-            MetaFieldPO metaField = metaFieldDAO.findById(fieldId);
+            MetaFieldPO metaField = metaFieldDAO.findById(id);
             if(metaField==null){
                 continue;
             }
