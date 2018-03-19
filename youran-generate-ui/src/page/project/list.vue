@@ -51,7 +51,7 @@
                 <icon name="file-code-o" scale="0.8" ></icon> 生成sql
               </el-dropdown-item>
               <el-dropdown-item v-if="scope.row.remote==1" :command="{method:'handleCommit',arg:scope.row}" >
-                <icon name="mail-forward" scale="0.8" ></icon> 提交到仓库
+                <icon name="git" scale="0.8" ></icon> 提交Git
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -123,7 +123,12 @@
         window.open(`${this.$common.BASE_API_URL}/generate/code_gen/genCode?projectId=${row.projectId}`)
       },
       handleCommit: function (row) {
-        window.open(`${this.$common.BASE_API_URL}/generate/code_gen/gitCommit?projectId=${row.projectId}`)
+        this.loading = true
+        this.$ajax.get(`/generate/code_gen/gitCommit?projectId=${row.projectId}`)
+          .then(response => this.$common.checkResult(response.data))
+          .then(()=>this.$common.showMsg('success', '提交成功'))
+          .catch(error => this.$common.showNotifyError(error))
+          .finally(()=>this.loading = false)
       },
       handleCommand: function (command) {
         this[command.method](command.arg);
