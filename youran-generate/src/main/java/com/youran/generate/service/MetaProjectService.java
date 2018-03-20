@@ -61,6 +61,7 @@ public class MetaProjectService {
             }
             metaProject.setPassword(encrypt);
         }
+        metaProject.setProjectVersion(1);
         metaProjectDAO.save(metaProject);
         return metaProject;
     }
