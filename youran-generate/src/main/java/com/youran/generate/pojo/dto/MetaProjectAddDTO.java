@@ -40,15 +40,15 @@ public class MetaProjectAddDTO extends AbstractDTO {
     private Integer remote;
 
     @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
-    @Length(min=1, max = 256, message = "remoteUrl最大长度不能超过256")
+    @Length(max = 256, message = "remoteUrl最大长度不能超过256")
     private String remoteUrl;
 
     @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME)
-    @Length(min=1, max = 32, message = "username最大长度不能超过32")
+    @Length(max = 32, message = "username最大长度不能超过32")
     private String username;
 
     @ApiModelProperty(notes = N_PASSWORD, example = E_PASSWORD)
-    @Length(min=1, max = 32, message = "password最大长度不能超过32")
+    @Length(max = 32, message = "password最大长度不能超过32")
     private String password;
 
     public Integer getRemote() {
