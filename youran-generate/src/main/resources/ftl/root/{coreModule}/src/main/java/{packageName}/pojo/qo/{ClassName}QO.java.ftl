@@ -11,7 +11,7 @@
     <@import "${commonPackage}.pojo.qo.AbstractQO"/>
 </#if>
 <@importStatic "${packageName}.pojo.example.${CName}Example.*"/>
-<@classCom "新增【${title}】的参数"/>
+<@classCom "查询【${title}】的参数"/>
 @ApiModel(description = "新增【${title}】的参数")
 public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if> {
 
