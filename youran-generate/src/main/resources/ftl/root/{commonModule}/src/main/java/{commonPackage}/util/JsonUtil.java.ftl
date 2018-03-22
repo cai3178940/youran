@@ -4,6 +4,7 @@
 <#assign code>
 <@import "com.fasterxml.jackson.core.JsonParseException"/>
 <@import "com.fasterxml.jackson.core.JsonProcessingException"/>
+<@import "com.fasterxml.jackson.databind.DeserializationFeature"/>
 <@import "com.fasterxml.jackson.databind.JavaType"/>
 <@import "com.fasterxml.jackson.databind.JsonMappingException"/>
 <@import "com.fasterxml.jackson.databind.ObjectMapper"/>
@@ -22,6 +23,7 @@ public class JsonUtil {
     private static ObjectMapper mapper = new ObjectMapper();
     static{
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
 
