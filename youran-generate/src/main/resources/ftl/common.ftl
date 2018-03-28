@@ -14,7 +14,6 @@
 /**
  * Title: ${title}
  * Description: ${desc}
- * Project: ${projectName}
  * Author: ${author}
  * Create Time: ${createDate?string("yyyy-MM-dd HH:mm")}
  */
