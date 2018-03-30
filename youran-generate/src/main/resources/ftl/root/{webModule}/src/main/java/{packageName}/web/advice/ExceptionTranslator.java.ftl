@@ -15,6 +15,7 @@
 <@import "org.springframework.http.HttpStatus"/>
 <@import "org.springframework.http.ResponseEntity"/>
 <@import "org.springframework.http.converter.HttpMessageNotReadableException"/>
+<@import "org.springframework.validation.BindException;"/>
 <@import "org.springframework.validation.BindingResult"/>
 <@import "org.springframework.validation.FieldError"/>
 <@import "org.springframework.web.HttpRequestMethodNotSupportedException"/>
@@ -34,7 +35,7 @@ public class ExceptionTranslator {
     private final static Logger LOGGER = LoggerFactory.getLogger(ExceptionTranslator.class);
 
     /**
-     * 参数校验失败
+     * body参数校验失败
      * @param ex
      * @return
      */
@@ -43,12 +44,24 @@ public class ExceptionTranslator {
     @ResponseBody
     public ReplyVO processValidationError(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
-        List<FieldError> fieldErrors = result.getFieldErrors();
-        LOGGER.warn(JsonUtil.toJSONString(fieldErrors));
-        return processFieldErrors(fieldErrors);
+        return processBindingResult(result);
+    }
+    /**
+     * param参数校验失败
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(BindException.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ReplyVO processValidationError(BindException ex) {
+        BindingResult result = ex.getBindingResult();
+        return processBindingResult(result);
     }
 
-    private ReplyVO processFieldErrors(List<FieldError> fieldErrors) {
+    private ReplyVO processBindingResult(BindingResult result) {
+        List<FieldError> fieldErrors = result.getFieldErrors();
+        LOGGER.warn(JsonUtil.toJSONString(fieldErrors));
         ReplyVO dto = new ReplyVO();
         List<FieldErrorVO> errorVOList = new ArrayList<>();
         for (FieldError fieldError : fieldErrors) {
