@@ -25,6 +25,16 @@
               <el-input v-model="form.fieldDesc" placeholder="字段描述，例如：年龄"></el-input>
             </help-popover>
           </el-form-item>
+          <el-form-item label="字段备注" prop="fieldComment">
+            <help-popover name="field.fieldComment">
+              <el-input v-model="form.fieldComment" type="textarea" :rows="2" placeholder="字段备注，例如：年龄【整型】"></el-input>
+            </help-popover>
+          </el-form-item>
+          <el-form-item label="字段示例" prop="fieldExample">
+            <help-popover name="field.fieldExample">
+              <el-input v-model="form.fieldExample" placeholder="字段示例，例如年龄字段：21"></el-input>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="java字段类型" prop="jfieldType">
             <help-popover name="field.jfieldType">
               <el-select v-model="form.jfieldType" style="width:100%;" filterable placeholder="请选择">
@@ -115,16 +125,6 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="字段示例" prop="fieldExample">
-            <help-popover name="field.fieldExample">
-              <el-input v-model="form.fieldExample" placeholder="字段示例，例如年龄字段：21"></el-input>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="字段备注" prop="fieldComment">
-            <help-popover name="field.fieldComment">
-              <el-input v-model="form.fieldComment" type="textarea" :rows="2" placeholder="字段备注，例如：年龄【整型】"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="枚举字典" prop="dicType">

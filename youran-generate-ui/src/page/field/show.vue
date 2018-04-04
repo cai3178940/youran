@@ -18,6 +18,12 @@
           <el-form-item label="字段描述" prop="fieldDesc">
             <el-input :disabled="true" v-model="form.fieldDesc"></el-input>
           </el-form-item>
+          <el-form-item label="字段备注" prop="fieldComment">
+            <el-input :disabled="true" v-model="form.fieldComment" type="textarea" :rows="2"></el-input>
+          </el-form-item>
+          <el-form-item label="字段示例" prop="fieldExample">
+            <el-input :disabled="true" v-model="form.fieldExample"></el-input>
+          </el-form-item>
           <el-form-item label="java字段类型" prop="jfieldType">
             <el-select :disabled="true" v-model="form.jfieldType" style="width:100%;" filterable>
               <el-option
@@ -82,12 +88,6 @@
                 :value="item.value">
               </el-option>
             </el-select>
-          </el-form-item>
-          <el-form-item label="字段示例" prop="fieldExample">
-            <el-input :disabled="true" v-model="form.fieldExample"></el-input>
-          </el-form-item>
-          <el-form-item label="字段备注" prop="fieldComment">
-            <el-input :disabled="true" v-model="form.fieldComment" type="textarea" :rows="2"></el-input>
           </el-form-item>
           <el-form-item label="枚举字典" prop="dicType">
             <el-input :disabled="true" style="width:100%;" v-model="form.dicType"></el-input>
