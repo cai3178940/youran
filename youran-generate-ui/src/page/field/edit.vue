@@ -264,6 +264,13 @@
     name: 'fieldEdit',
     props: ['projectId','entityId','fieldId'],
     data: function () {
+      var checkQueryType = (rule, value, callback) => {
+        if (!value && this.form.query==1) {
+          callback(new Error('请选择查询方式'));
+        } else {
+          callback();
+        }
+      }
       return {
         boolOptions: options.boolOptions,
         fieldTypeOptions: options.fieldTypeOptions,
@@ -334,6 +341,9 @@
           ],
           query: [
             {required: true, type: 'number', message: '请选择是否查询字段', trigger: 'change'},
+          ],
+          queryType: [
+            {validator: checkQueryType, trigger: 'change'},
           ],
           insert: [
             {required: true, type: 'number', message: '请选择是否新增字段', trigger: 'change'},
