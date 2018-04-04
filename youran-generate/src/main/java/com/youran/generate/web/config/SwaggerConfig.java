@@ -1,6 +1,6 @@
 package com.youran.generate.web.config;
 
-import com.didispace.swagger.EnableSwagger2Doc;
+import com.spring4all.swagger.EnableSwagger2Doc;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 

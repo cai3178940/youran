@@ -33,7 +33,7 @@
         <org.mapstruct.version>1.1.0.Final</org.mapstruct.version>
         <jsoup.version>1.11.2</jsoup.version>
         <h2.version>1.4.193</h2.version>
-        <spring-boot-swagger.version>1.3.0.RELEASE</spring-boot-swagger.version>
+        <spring-boot-swagger.version>1.6.0.RELEASE</spring-boot-swagger.version>
     </properties>
 
     <dependencyManagement>
@@ -115,8 +115,8 @@
 
             <!-- swagger依赖 -->
             <dependency>
-                <groupId>com.didispace</groupId>
-                <artifactId>spring-boot-starter-swagger</artifactId>
+                <groupId>com.spring4all</groupId>
+                <artifactId>swagger-spring-boot-starter</artifactId>
                 <version>${r'$'}{spring-boot-swagger.version}</version>
             </dependency>
             <dependency>

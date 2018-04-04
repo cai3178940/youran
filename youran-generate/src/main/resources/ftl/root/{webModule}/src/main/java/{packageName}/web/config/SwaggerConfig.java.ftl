@@ -2,7 +2,7 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@import "com.didispace.swagger.EnableSwagger2Doc"/>
+<@import "com.spring4all.swagger.EnableSwagger2Doc"/>
 <@import "org.springframework.boot.autoconfigure.condition.ConditionalOnProperty"/>
 <@import "org.springframework.context.annotation.Configuration"/>
 <@classCom "swagger配置开关"/>

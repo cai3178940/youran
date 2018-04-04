@@ -49,8 +49,8 @@
 
         <!-- swagger依赖 -->
         <dependency>
-            <groupId>com.didispace</groupId>
-            <artifactId>spring-boot-starter-swagger</artifactId>
+            <groupId>com.spring4all</groupId>
+            <artifactId>swagger-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
     <build>
