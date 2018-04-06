@@ -29,6 +29,7 @@
         </#if>
             and t.${wrapPkFieldName} = ${r'#'}{arg0}
         </where>
+        limit 1
     </select>
 
     <select id="exist" resultType="int">
