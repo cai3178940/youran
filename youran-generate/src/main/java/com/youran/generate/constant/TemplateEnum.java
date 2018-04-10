@@ -57,6 +57,7 @@ public enum TemplateEnum {
     UUIDUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/UUIDUtil.java.ftl"),
     Check(COMMON,"{commonModule}/src/main/java/{commonPackage}/validator/Check.java.ftl"),
     ConstAnno(COMMON,"{commonModule}/src/main/java/{commonPackage}/validator/Const.java.ftl"),
+    JacksonXssDeserializer(COMMON,"{commonModule}/src/main/java/{commonPackage}/xss/JacksonXssDeserializer.java.ftl"),
     WebXSSFilter(COMMON,"{commonModule}/src/main/java/{commonPackage}/xss/WebXSSFilter.java.ftl"),
     XSSRequestWrapper(COMMON,"{commonModule}/src/main/java/{commonPackage}/xss/XSSRequestWrapper.java.ftl"),
     XSSUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/xss/XSSUtil.java.ftl"),
