@@ -22,17 +22,19 @@
 
 <#--定义宏：打印依赖-->
 <#macro printImport>
+    <#local needPrintBlankLine=false>
     <#--首先打印外部依赖-->
     <#list importList?sort as package>
         <#if !package?string?startsWith("java.")&&!package?string?startsWith("javax.")>
+            <#local needPrintBlankLine=true>
 import ${package};
         </#if>
     </#list>
-    <#local printlnBuildInImport=false>
     <#--再打印java内建依赖-->
     <#list importList?sort as package>
-        <#if !printlnBuildInImport>
-            <#local printlnBuildInImport=true>
+        <#--判断是否需要打印空行-->
+        <#if needPrintBlankLine>
+            <#local needPrintBlankLine=false>
 
         </#if>
         <#if package?string?startsWith("java.")||package?string?startsWith("javax.")>
