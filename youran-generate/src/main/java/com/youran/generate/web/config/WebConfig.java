@@ -1,6 +1,8 @@
 package com.youran.generate.web.config;
 
+import com.youran.common.xss.JacksonXssDeserializer;
 import com.youran.common.xss.WebXSSFilter;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,4 +34,16 @@ public class WebConfig {
         registrationBean.setUrlPatterns(urlPatterns);
         return registrationBean;
     }
+
+    /**
+     * 防止通过body传入XSS脚本
+     * @return
+     */
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer jacksonXssCustomizer(){
+        return jacksonObjectMapperBuilder ->
+            jacksonObjectMapperBuilder.deserializerByType(String.class,new JacksonXssDeserializer());
+    }
+
+
 }

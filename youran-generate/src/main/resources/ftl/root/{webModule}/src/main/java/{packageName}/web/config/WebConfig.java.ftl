@@ -2,7 +2,9 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "${commonPackage}.xss.JacksonXssDeserializer"/>
 <@import "${commonPackage}.xss.WebXSSFilter"/>
+<@import "org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer"/>
 <@import "org.springframework.boot.web.servlet.FilterRegistrationBean"/>
 <@import "org.springframework.context.annotation.Bean"/>
 <@import "org.springframework.context.annotation.Configuration"/>
@@ -26,6 +28,17 @@ public class WebConfig {
         registrationBean.setUrlPatterns(urlPatterns);
         return registrationBean;
     }
+
+    /**
+     * 防止通过body传入XSS脚本
+     * @return
+     */
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer jacksonXssCustomizer(){
+        return jacksonObjectMapperBuilder ->
+            jacksonObjectMapperBuilder.deserializerByType(String.class,new JacksonXssDeserializer());
+    }
+
 
 }
 </#assign>
