@@ -18,13 +18,13 @@
 
     <insert id="save" useGeneratedKeys="true" keyProperty="projectId" parameterType="MetaProjectPO">
         insert into meta_project (
-          projectId, packageName, projectName,
+          projectId, packageName, projectName, groupId,
           author,remote,remoteUrl,username,
           password,lastHistoryId,projectVersion,
           createDate, createBy,
           operateDate, operateBy, delSign,
           version)
-        values (#{projectId,jdbcType=INTEGER}, #{packageName,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
+        values (#{projectId,jdbcType=INTEGER}, #{packageName,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR},
           #{author,jdbcType=VARCHAR},#{remote,jdbcType=INTEGER},#{remoteUrl,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},
           #{password,jdbcType=VARCHAR},#{lastHistoryId,jdbcType=INTEGER},#{projectVersion,jdbcType=INTEGER},
           #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
@@ -37,6 +37,7 @@
         set
             packageName = #{packageName,jdbcType=VARCHAR},
             projectName = #{projectName,jdbcType=VARCHAR},
+            groupId = #{groupId,jdbcType=VARCHAR},
             author = #{author,jdbcType=VARCHAR},
             remote = #{remote,jdbcType=INTEGER},
             remoteUrl = #{remoteUrl,jdbcType=VARCHAR},

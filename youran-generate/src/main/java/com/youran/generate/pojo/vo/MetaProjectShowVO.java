@@ -21,6 +21,9 @@ public class MetaProjectShowVO {
     @ApiModelProperty(notes = N_PROJECTNAME, example = E_PROJECTNAME)
     private String projectName;
 
+    @ApiModelProperty(notes = N_GROUPID, example = E_GROUPID)
+    private String groupId;
+
     @ApiModelProperty(notes = N_AUTHOR, example = E_AUTHOR)
     private String author;
 
@@ -32,6 +35,14 @@ public class MetaProjectShowVO {
 
     @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME)
     private String username;
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
     public Integer getRemote() {
         return remote;

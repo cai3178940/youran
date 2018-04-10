@@ -9,6 +9,7 @@
 [#-- @ftlvariable name="commonPackage" type="java.lang.String"--]
 [#-- @ftlvariable name="projectName" type="java.lang.String"--]
 [#-- @ftlvariable name="originProjectName" type="java.lang.String"--]
+[#-- @ftlvariable name="groupId" type="java.lang.String"--]
 [#-- @ftlvariable name="author" type="java.lang.String"--]
 [#-- @ftlvariable name="createDate" type="java.util.Date"--]
 [#-- @ftlvariable name="mtms" type="java.util.List<com.youran.generate.pojo.po.MetaManyToManyPO>"--]

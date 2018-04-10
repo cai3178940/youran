@@ -415,6 +415,8 @@ public class MetaCodeGenService {
         map.put("projectName", project.fetchNormalProjectName());
         //原始模块名
         map.put("originProjectName", project.getProjectName());
+        //groupId
+        map.put("groupId", project.getGroupId());
         //作者
         map.put("author", project.getAuthor());
         //作者

@@ -9,7 +9,7 @@
         <version>1.5.8.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.myGroup</groupId>
+    <groupId>${groupId}</groupId>
     <artifactId>${originProjectName}</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -40,17 +40,17 @@
         <dependencies>
 
             <dependency>
-                <groupId>com.myGroup</groupId>
+                <groupId>${groupId}</groupId>
                 <artifactId>${originProjectName}-common</artifactId>
                 <version>${r'$'}{project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.myGroup</groupId>
+                <groupId>${groupId}</groupId>
                 <artifactId>${originProjectName}-core</artifactId>
                 <version>${r'$'}{project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.myGroup</groupId>
+                <groupId>${groupId}</groupId>
                 <artifactId>${originProjectName}-web</artifactId>
                 <version>${r'$'}{project.version}</version>
             </dependency>

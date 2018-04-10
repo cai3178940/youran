@@ -1,6 +1,9 @@
 export default {
 
   project: {
+    groupId: `
+**groupId**：maven项目的groupId，主要影响pom文件
+    `,
     projectName: `
 **项目名称**：整个项目的唯一标识
 > 注意：只允许输入英文小写字母 “a-z”或短横杠 “-”

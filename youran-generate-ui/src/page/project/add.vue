@@ -8,6 +8,11 @@
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12" >
         <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="120px">
+          <el-form-item label="groupId" prop="groupId">
+            <help-popover name="project.groupId">
+              <el-input v-model="form.groupId" placeholder="例如：com.myGroup"></el-input>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="项目名称" prop="projectName">
             <help-popover name="project.projectName">
               <el-input v-model="form.projectName" placeholder="例如：bbs"></el-input>
@@ -66,6 +71,7 @@
       return {
         boolOptions: options.boolOptions,
         form: {
+          groupId: '',
           projectName: '',
           packageName: '',
           author: '',
@@ -75,6 +81,10 @@
           password: ''
         },
         rules: {
+          groupId: [
+            {required: true, message: '请输入groupId', trigger: 'blur'},
+            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
+          ],
           projectName: [
             {required: true, message: '请输入项目名称', trigger: 'blur'},
             {max: 50, message: '长度不能超过50个字符', trigger: 'blur'},

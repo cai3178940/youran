@@ -15,6 +15,7 @@
 
     <el-table :data="entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
+      <el-table-column property="groupId" label="groupId"></el-table-column>
       <el-table-column property="projectName" label="项目名称"></el-table-column>
       <el-table-column property="author" label="作者"></el-table-column>
       <el-table-column property="packageName" label="包名"></el-table-column>

@@ -30,6 +30,11 @@ public class MetaProjectAddDTO extends AbstractDTO {
     @Length(min=1, max = 50, message = "projectName最大长度不能超过50")
     private String projectName;
 
+    @ApiModelProperty(notes = N_GROUPID, example = E_GROUPID)
+    @NotNull
+    @Length(min=1, max = 50, message = "groupId最大长度不能超过50")
+    private String groupId;
+
     @ApiModelProperty(notes = N_AUTHOR, example = E_AUTHOR)
     @Length(min=1, max = 50, message = "author最大长度不能超过50")
     private String author;
@@ -50,6 +55,14 @@ public class MetaProjectAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_PASSWORD, example = E_PASSWORD)
     @Length(max = 32, message = "password最大长度不能超过32")
     private String password;
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
     public Integer getRemote() {
         return remote;

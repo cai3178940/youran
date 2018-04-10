@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>${originProjectName}</artifactId>
-        <groupId>com.myGroup</groupId>
+        <groupId>${groupId}</groupId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -18,7 +18,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.myGroup</groupId>
+            <groupId>${groupId}</groupId>
             <artifactId>${originProjectName}-core</artifactId>
         </dependency>
 

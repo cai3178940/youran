@@ -16,6 +16,8 @@ public class MetaProjectExample extends AbstractExample {
     public static final String E_PACKAGENAME = "com.cbb.bbs";
     public static final String N_PROJECTNAME = "项目名简称";
     public static final String E_PROJECTNAME = "bbs";
+    public static final String N_GROUPID = "groupId";
+    public static final String E_GROUPID = "com.myGroup";
     public static final String N_AUTHOR = "开发者";
     public static final String E_AUTHOR = "cbb";
     public static final String N_REMOTE = "启用Git仓库";

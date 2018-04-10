@@ -24,6 +24,8 @@ public class MetaProjectPO extends AbstractPO implements CreateOperateDeleteVers
 
     private String projectName;
 
+    private String groupId;
+
     private String author;
 
     private Integer remote;
@@ -55,7 +57,6 @@ public class MetaProjectPO extends AbstractPO implements CreateOperateDeleteVers
     private List<MetaConstPO> consts;
 
     private List<MetaManyToManyPO> mtms;
-
 
 
     public void addEntity(MetaEntityPO entity){
@@ -261,5 +262,13 @@ public class MetaProjectPO extends AbstractPO implements CreateOperateDeleteVers
 
     public void setProjectVersion(Integer projectVersion) {
         this.projectVersion = projectVersion;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }
