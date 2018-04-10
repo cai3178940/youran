@@ -4,6 +4,7 @@ CREATE TABLE `meta_project` (
   `projectId` int(11) AUTO_INCREMENT COMMENT '项目id',
   `packageName` varchar(100) NOT NULL COMMENT '主包名',
   `projectName` varchar(50) NOT NULL COMMENT '项目名简称',
+  `groupId` varchar(50) NOT NULL COMMENT 'groupId',
   `author` varchar(50) DEFAULT NULL COMMENT '开发者',
   `remote` smallint(1) NOT NULL COMMENT '启用Git仓库',
   `remoteUrl` varchar(256) DEFAULT NULL COMMENT 'Git仓库地址',

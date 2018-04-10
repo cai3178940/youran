@@ -58,7 +58,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
      */
     @Before
     public void buildMetadata(){
-        this.bbsProject = generateHelper.saveProject("bbs","com.cbb.bbs","cbb");
+        this.bbsProject = generateHelper.saveProject("com.cbb","bbs","com.cbb.bbs","cbb");
         this.userEntity = this.saveUserEntity(this.bbsProject);
         this.idField = this.saveIdField(this.userEntity);
         this.userNameField = this.saveUserNameField(this.userEntity);

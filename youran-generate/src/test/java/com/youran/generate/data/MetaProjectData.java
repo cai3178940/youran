@@ -1,6 +1,7 @@
 package com.youran.generate.data;
 
 
+import com.youran.common.util.SafeUtil;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
@@ -24,6 +25,8 @@ public class MetaProjectData {
         metaProjectAddDTO.setAuthor(E_AUTHOR);
         metaProjectAddDTO.setProjectName(E_PROJECTNAME);
         metaProjectAddDTO.setPackageName(E_PACKAGENAME);
+        metaProjectAddDTO.setGroupId(E_GROUPID);
+        metaProjectAddDTO.setRemote(SafeUtil.getInteger(E_REMOTE));
         return metaProjectAddDTO;
     }
 
@@ -38,6 +41,8 @@ public class MetaProjectData {
         metaProjectUpdateDTO.setAuthor(metaProject.getAuthor()+1);
         metaProjectUpdateDTO.setProjectName(metaProject.getProjectName()+1);
         metaProjectUpdateDTO.setPackageName(metaProject.getPackageName()+1);
+        metaProjectUpdateDTO.setGroupId(metaProject.getGroupId()+1);
+        metaProjectUpdateDTO.setRemote(metaProject.getRemote());
         return metaProjectUpdateDTO;
     }
 

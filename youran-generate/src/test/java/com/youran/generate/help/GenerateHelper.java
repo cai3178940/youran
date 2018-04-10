@@ -1,5 +1,6 @@
 package com.youran.generate.help;
 
+import com.youran.common.constant.BoolConst;
 import com.youran.generate.constant.*;
 import com.youran.generate.data.*;
 import com.youran.generate.pojo.dto.*;
@@ -498,11 +499,13 @@ public class GenerateHelper{
     }
 
 
-    public MetaProjectPO saveProject(String projectName, String packageName, String author) {
+    public MetaProjectPO saveProject(String groupId,String projectName, String packageName, String author) {
         MetaProjectAddDTO dto = new MetaProjectAddDTO();
+        dto.setGroupId(groupId);
         dto.setPackageName(packageName);
         dto.setProjectName(projectName);
         dto.setAuthor(author);
+        dto.setRemote(BoolConst.FALSE);
         return metaProjectService.save(dto);
     }
 

@@ -21,7 +21,7 @@ public class MetaProjectExample extends AbstractExample {
     public static final String N_AUTHOR = "开发者";
     public static final String E_AUTHOR = "cbb";
     public static final String N_REMOTE = "启用Git仓库";
-    public static final String E_REMOTE = "1";
+    public static final String E_REMOTE = "0";
     public static final String N_REMOTEURL = "Git仓库地址";
     public static final String E_REMOTEURL = "https://github.com/github/testrepo.git";
     public static final String N_USERNAME = "Git用户名";
