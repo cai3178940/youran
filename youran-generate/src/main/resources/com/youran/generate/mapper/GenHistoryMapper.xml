@@ -108,7 +108,7 @@
 
     <select id="findCountByQuery" parameterType="GenHistoryQO" resultType="int">
         select count(*) from (
-        select * from gen_history t
+        select 1 from gen_history t
         <where>
             and t.delSign=0
             <include refid="queryCondition"/>

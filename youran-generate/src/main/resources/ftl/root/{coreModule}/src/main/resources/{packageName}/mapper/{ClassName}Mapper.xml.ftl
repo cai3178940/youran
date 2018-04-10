@@ -128,7 +128,7 @@
 
     <select id="findCountByQuery" parameterType="${CName}QO" resultType="int">
         select count(*) from (
-        select * from ${wrapTableName} t
+        select 1 from ${wrapTableName} t
         <where>
         <#if delField??>
             and t.${wrapDelFieldName}=0

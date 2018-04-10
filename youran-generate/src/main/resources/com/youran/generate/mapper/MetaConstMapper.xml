@@ -53,7 +53,7 @@
 
     <select id="findCountByQuery" parameterType="MetaConstQO" resultType="int">
         select count(*) from (
-        select * from meta_const t
+        select 1 from meta_const t
         where t.delSign=0
         and t.projectId = #{projectId,jdbcType=INTEGER}
         ) as count_select_
