@@ -12,7 +12,7 @@
 
     <groupId>com.cbb.youran</groupId>
     <artifactId>youran</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>

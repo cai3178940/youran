@@ -5,13 +5,12 @@
     <parent>
         <artifactId>youran-parent</artifactId>
         <groupId>com.cbb.youran</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
         <relativePath>../youran-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>youran-generate</artifactId>
-    <version>1.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <properties>
         <!-- The main class to start by executing java -jar -->
