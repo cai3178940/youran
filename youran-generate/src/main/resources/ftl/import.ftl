@@ -12,16 +12,32 @@
         <#assign importList = importList + [ package ] />
     </#if>
 </#macro>
+
 <#--定义宏：静态引入依赖包-->
 <#macro importStatic package>
     <#if !importStaticList?seqContains(package)>
         <#assign importStaticList = importStaticList + [ package ] />
     </#if>
 </#macro>
+
 <#--定义宏：打印依赖-->
 <#macro printImport>
+    <#--首先打印外部依赖-->
     <#list importList?sort as package>
+        <#if !package?string?startsWith("java.")&&!package?string?startsWith("javax.")>
 import ${package};
+        </#if>
+    </#list>
+    <#local printlnBuildInImport=false>
+    <#--再打印java内建依赖-->
+    <#list importList?sort as package>
+        <#if !printlnBuildInImport>
+            <#local printlnBuildInImport=true>
+
+        </#if>
+        <#if package?string?startsWith("java.")||package?string?startsWith("javax.")>
+import ${package};
+        </#if>
     </#list>
 
     <#list importStaticList?sort as package>
