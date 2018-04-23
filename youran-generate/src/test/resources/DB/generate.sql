@@ -137,8 +137,8 @@ DROP TABLE IF EXISTS `meta_const_detail`;
 CREATE TABLE `meta_const_detail` (
   `constDetailId` int(11) AUTO_INCREMENT COMMENT '常量值id',
   `constId` int(11) NOT NULL COMMENT '常量类id',
-  `detailName` varchar(20) NOT NULL COMMENT '常量字段名称',
-  `detailValue` varchar(20) NOT NULL COMMENT '常量值',
+  `detailName` varchar(50) NOT NULL COMMENT '常量字段名称',
+  `detailValue` varchar(50) NOT NULL COMMENT '常量值',
   `detailRemark` varchar(100) DEFAULT NULL COMMENT '常量值备注',
   `createDate` datetime DEFAULT NULL COMMENT '创建时间',
   `createBy` varchar(32) DEFAULT NULL COMMENT '创建人',

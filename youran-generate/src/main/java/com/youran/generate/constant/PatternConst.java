@@ -23,7 +23,7 @@ public class PatternConst {
     public static final String CLASS_NAME = "^[A-Z](\\w*(_|\\$)*\\w*)*$";
     public static final String CLASS_NAME_MSG = "不符合类名规范";
 
-    public static final String CONST_NAME = "^[A-Z]([A-Z|0-9]+_?)+[A-Z|0-9]+$";
+    public static final String CONST_NAME = "^[A-Z]([A-Z|0-9]*_?)+[A-Z|0-9]+$";
     public static final String CONST_NAME_MSG = "不符合java常量命名规范";
 
     public static final String FIELD_NAME = "^(\\w*(_|\\$)*\\w*)*$";

@@ -52,11 +52,11 @@
         rules: {
           detailName: [
             {required: true, message: '请输入枚举字段名', trigger: 'blur'},
-            {max: 20, message: '长度不能超过20个字符', trigger: 'blur'}
+            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
           ],
           detailValue: [
             {required: true, message: '请输入枚举值', trigger: 'blur'},
-            {max: 20, message: '长度不能超过20个字符', trigger: 'blur'}
+            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
           ],
           detailRemark: [
             {required: true, message: '请输入备注', trigger: 'blur'},
