@@ -497,7 +497,7 @@
     created: function () {
       var entityId = parseInt(this.entityId);
       this.form.entityId = entityId
-      this.initForeignEntityOptions()
+      var promise = this.initForeignEntityOptions()
       const type = this.$router.currentRoute.query.type
       const template = this.$router.currentRoute.query.template
       if (!template) {
@@ -508,14 +508,20 @@
         this.form.entityId = entityId
       }
       if (type == 'temp') {
-        this.$ajax.get(`/generate/meta_field/${template}`)
+        var promise2 = this.$ajax.get(`/generate/meta_field/${template}`)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => {
+          .then(result => new Promise((resolve, reject)=>{
             this.form = result.data
             this.form.entityId = entityId
-            if(this.form.foreignFieldId){
-              this.foreignField[0] = this.form.foreignEntityId
-              this.foreignField[1] = this.form.foreignFieldId
+            return resolve()
+          }))
+        Promise.all([promise,promise2])
+          .then(()=>{
+            if(this.form.foreignFieldId && this.form.foreignEntityId){
+              return this.handleForeignEntityChange([this.form.foreignEntityId])
+                .then(() => {
+                  this.foreignField = [this.form.foreignEntityId,this.form.foreignFieldId]
+                })
             }
           })
           .catch(error => this.$common.showNotifyError(error))
