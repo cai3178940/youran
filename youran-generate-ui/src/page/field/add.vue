@@ -513,6 +513,10 @@
           .then(result => {
             this.form = result.data
             this.form.entityId = entityId
+            if(this.form.foreignFieldId){
+              this.foreignField[0] = this.form.foreignEntityId
+              this.foreignField[1] = this.form.foreignFieldId
+            }
           })
           .catch(error => this.$common.showNotifyError(error))
       }
