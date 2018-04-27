@@ -127,15 +127,13 @@
     </sql>
 
     <select id="findCountByQuery" parameterType="${CName}QO" resultType="int">
-        select count(*) from (
-        select 1 from ${wrapTableName} t
+        select count(1) from ${wrapTableName} t
         <where>
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
         <include refid="queryCondition"/>
         </where>
-        ) as count_select_
     </select>
 
     <select id="findListByQuery" parameterType="${CName}QO" resultType="${CName}ListVO">

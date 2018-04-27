@@ -107,13 +107,11 @@
 
 
     <select id="findCountByQuery" parameterType="GenHistoryQO" resultType="int">
-        select count(*) from (
-        select 1 from gen_history t
+        select count(1) from gen_history t
         <where>
             and t.delSign=0
             <include refid="queryCondition"/>
         </where>
-        ) as count_select_
     </select>
 
     <select id="findListByQuery" parameterType="GenHistoryQO" resultType="GenHistoryListVO">

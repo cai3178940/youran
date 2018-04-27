@@ -57,11 +57,9 @@
     </delete>
 
     <select id="findCountByQuery" parameterType="MetaEntityQO" resultType="int">
-        select count(*) from (
-        select 1 from meta_entity t
+        select count(1) from meta_entity t
         where t.delSign=0
         and t.projectId = #{projectId,jdbcType=INTEGER}
-        ) as count_select_
     </select>
 
     <select id="findListByQuery" parameterType="MetaEntityQO" resultType="MetaEntityListVO">
