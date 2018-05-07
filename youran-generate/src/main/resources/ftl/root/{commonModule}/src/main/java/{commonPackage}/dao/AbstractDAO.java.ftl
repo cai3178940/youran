@@ -11,6 +11,7 @@
 <@import "org.apache.ibatis.session.SqlSession"/>
 <@import "org.springframework.beans.factory.annotation.Autowired"/>
 <@import "java.util.List"/>
+<@import "java.util.ArrayList"/>
 <@classCom "DAO超类"/>
 public abstract class AbstractDAO<PO extends AbstractPO> {
 
@@ -36,7 +37,12 @@ public abstract class AbstractDAO<PO extends AbstractPO> {
      */
     public <VO,QO extends PageQO> PageVO<VO> findByPage(QO qo) {
         int count = sqlSession.selectOne(getMybatisNamespace()+".findCountByQuery",qo);
-        List<VO> list = sqlSession.selectList(getMybatisNamespace()+".findListByQuery", qo);
+        List<VO> list;
+        if(count > 0){
+            list = sqlSession.selectList(getMybatisNamespace()+".findListByQuery", qo);
+        }else{
+            list = new ArrayList<>();
+        }
         PageVO<VO> pageVO = new PageVO<>(list,qo.getPageNo(),qo.getPageSize(),count);
         return pageVO;
     }
