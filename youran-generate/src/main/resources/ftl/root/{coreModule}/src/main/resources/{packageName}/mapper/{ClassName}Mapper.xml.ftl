@@ -200,6 +200,7 @@
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
+        order by r.create_date
     </select>
 
     <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${CName}ListVO">
@@ -213,11 +214,12 @@
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
+        order by r.create_date
     </select>
 
     <insert id="add${otherCName}" parameterType="map">
-        insert into ${mtm.tableName}(${the_pk_id},${other_pk_id})
-        values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}})
+        insert into ${mtm.tableName}(${the_pk_id},${other_pk_id},create_date)
+        values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}},${r'#'}{createDate,jdbcType=TIMESTAMP})
     </insert>
 
     <delete id="remove${otherCName}" parameterType="map">
@@ -251,12 +253,13 @@
             <include refid="${cName}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-        on t.${pk.fieldName}=r.${the_pk_id}
+            on t.${pk.fieldName}=r.${the_pk_id}
         where
-        r.${other_pk_id}=${r'#'}{arg0}
+            r.${other_pk_id}=${r'#'}{arg0}
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
+        order by r.create_date
     </select>
 
     <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${CName}ListVO">
@@ -264,12 +267,13 @@
             <include refid="${cName}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-        on t.${pk.fieldName}=r.${the_pk_id}
+            on t.${pk.fieldName}=r.${the_pk_id}
         where
-        r.${other_pk_id}=${r'#'}{arg0}
+            r.${other_pk_id}=${r'#'}{arg0}
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
+        order by r.create_date
     </select>
     </#list>
 </#if>

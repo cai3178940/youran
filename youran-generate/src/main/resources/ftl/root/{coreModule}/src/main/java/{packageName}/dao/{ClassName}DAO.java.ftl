@@ -43,6 +43,7 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
         <@import "java.util.List"/>
         <@import "java.util.HashMap"/>
         <@import "java.util.Map"/>
+        <@import "java.util.Date"/>
         <#assign otherCName=entity.className?capFirst>
         <#assign othercName=entity.className?uncapFirst>
         <#assign otherType=entity.pkField.jfieldType>
@@ -64,6 +65,7 @@ public class ${CName}DAO extends AbstractDAO<${CName}PO> {
         Map<String,Object> params = new HashMap<>();
         params.put("${thePkId}",${thePkId});
         params.put("${otherPkId}",${otherPkId});
+        params.put("createDate",new Date());
         return sqlSession.insert(getMybatisNamespace()+".add${otherCName}", params);
     }
 

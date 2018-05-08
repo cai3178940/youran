@@ -42,6 +42,7 @@ DROP TABLE IF EXISTS `${manyTomany.tableName}`;
 CREATE TABLE `${manyTomany.tableName}` (
     `${pkId1}` ${field1.fieldType}${length_holder1} NOT NULL ${comment_holder1},
     `${pkId2}` ${field2.fieldType}${length_holder2} NOT NULL ${comment_holder2},
+    `create_date` datetime DEFAULT NULL COMMENT '创建时间',
     KEY `i_${manyTomany.tableName}_1` (`${pkId1}`),
     KEY `i_${manyTomany.tableName}_2` (`${pkId2}`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${manyTomany.desc?replace('\'','"')?replace('\n','\\n')}';
