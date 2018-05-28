@@ -36,30 +36,20 @@
       </el-table-column>
       <el-table-column label="是否在列表中展示" width="150px">
         <template slot-scope="scope">
-          <span v-if="!scope.row.editFlag">
-            <icon v-if="scope.row.list==1" name="check" class="color-success"></icon>
-            <icon v-if="scope.row.list!=1" name="close" class="color-danger"></icon>
-          </span>
-          <span v-if="scope.row.editFlag">
-            <el-switch v-model="scope.row.list"
-              :active-value="1"
-              :inactive-value="0">
-            </el-switch>
-          </span>
+          <el-switch v-model="scope.row.list"
+                     :active-value="1"
+                     :inactive-value="0"
+                     :disabled="!scope.row.editFlag">
+          </el-switch>
         </template>
       </el-table-column>
       <el-table-column label="是否在详情中展示" width="150px">
         <template slot-scope="scope">
-          <span v-if="!scope.row.editFlag">
-            <icon v-if="scope.row.show==1" name="check" class="color-success"></icon>
-            <icon v-if="scope.row.show!=1" name="close" class="color-danger"></icon>
-          </span>
-          <span v-if="scope.row.editFlag">
-            <el-switch v-model="scope.row.show"
-                       :active-value="1"
-                       :inactive-value="0">
-            </el-switch>
-          </span>
+          <el-switch v-model="scope.row.show"
+                     :active-value="1"
+                     :inactive-value="0"
+                      :disabled="!scope.row.editFlag">
+          </el-switch>
         </template>
       </el-table-column>
       <el-table-column

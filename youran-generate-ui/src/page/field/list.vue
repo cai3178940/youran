@@ -136,7 +136,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="级联扩展" :visible.sync="cascadeExtListVisible" width="50%">
+    <el-dialog title="级联扩展" :visible.sync="cascadeExtListVisible" width="60%">
       <cascade-ext-list ref="cascadeExtList"></cascade-ext-list>
     </el-dialog>
 
