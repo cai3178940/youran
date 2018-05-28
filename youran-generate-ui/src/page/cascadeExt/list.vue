@@ -15,7 +15,7 @@
         <template slot-scope="scope">
           <span v-if="!scope.row.editFlag">{{ scope.row.jfieldName }}</span>
           <span v-if="scope.row.editFlag">
-            <el-select v-model="scope.row.cascadeFieldId" placeholder="请选择级联字段">
+            <el-select v-model="scope.row.cascadeFieldId" @change="handleCascadeFieldChange(scope.row)" placeholder="请选择级联字段">
               <el-option
                 v-for="item in cascadeFieldList"
                 :key="item.fieldId"
@@ -130,6 +130,13 @@
           cascadeEntityId:this.cascadeEntityId,
         })
         this.entities.unshift(newRow)
+      },
+      handleCascadeFieldChange: function (row) {
+        var cascadeField = this.cascadeFieldList.find(field=>field.fieldId==row.cascadeFieldId)
+        row.alias = cascadeField.fieldName
+      },
+      handleSave: function (row) {
+
       }
 
     }
