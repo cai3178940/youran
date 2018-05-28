@@ -151,8 +151,8 @@
       }
     },
     activated: function () {
-      var projectId = parseInt(this.projectId);
-      var entityId = parseInt(this.entityId);
+      var projectId = parseInt(this.projectId)
+      var entityId = parseInt(this.entityId)
       this.queryForm.projectEntity[0] = projectId
       this.queryForm.projectEntity[1] = entityId
       this.query.projectId = projectId

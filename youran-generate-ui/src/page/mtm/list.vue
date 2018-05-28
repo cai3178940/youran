@@ -83,7 +83,7 @@
     },
     filters:{
       renderEntity:function (entityId,entityList) {
-        var entity = entityList.find(entity=>entity.entityId==entityId);
+        var entity = entityList.find(entity=>entity.entityId==entityId)
         if(entity){
           return entity.title
         }

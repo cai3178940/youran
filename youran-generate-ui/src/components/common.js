@@ -6,13 +6,13 @@ var ajax = axios.create({
   timeout: 60000,
   responseType: 'json',
   headers: {'Content-Type': 'application/json; charset=utf-8'}
-});
+})
 
 export default {
 
   install: function (Vue, options) {
 
-    Vue.prototype.$ajax = ajax;
+    Vue.prototype.$ajax = ajax
 
     Vue.prototype.$common = {
 
@@ -108,14 +108,14 @@ export default {
         return new Promise(function (resolve, reject) {
           if (result) {
             if (result.code === "0") {
-              return resolve(result);
+              return resolve(result)
             } else {
               return reject(result.message)
             }
           } else {
-            return reject();
+            return reject()
           }
-        });
+        })
       },
       //trim+移除空串字段
       removeBlankField: function (form) {

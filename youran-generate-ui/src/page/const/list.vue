@@ -90,7 +90,7 @@
     },
     filters: {
       optionLabel: function (value, optionType) {
-        var ops = options[optionType];
+        var ops = options[optionType]
         for (var op of ops) {
           if (op.value == value) {
             return op.label

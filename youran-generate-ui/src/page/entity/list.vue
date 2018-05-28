@@ -197,7 +197,7 @@
           .catch(error => this.$common.showNotifyError(error))
       },
       handleCommand: function (command) {
-        this[command.method](command.arg);
+        this[command.method](command.arg)
       }
     },
     activated: function () {

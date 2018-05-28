@@ -85,7 +85,7 @@
         var params = {
           ...this.form
         }
-        params.fieldIds = this.form.fieldIds.join(",");
+        params.fieldIds = this.form.fieldIds.join(",")
         var loading = null
         //校验表单
         this.$refs.addForm.validate()

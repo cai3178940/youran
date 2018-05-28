@@ -133,8 +133,8 @@
       }
     },
     activated: function () {
-      var projectId = parseInt(this.projectId);
-      var constId = parseInt(this.constId);
+      var projectId = parseInt(this.projectId)
+      var constId = parseInt(this.constId)
       this.queryForm.projectConst[0] = projectId
       this.queryForm.projectConst[1] = constId
       this.query.projectId = projectId

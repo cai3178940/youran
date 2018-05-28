@@ -223,9 +223,9 @@
     data: function () {
       var checkQueryType = (rule, value, callback) => {
         if (!value && this.form.query==1) {
-          callback(new Error('请选择查询方式'));
+          callback(new Error('请选择查询方式'))
         } else {
-          callback();
+          callback()
         }
       }
       return {
@@ -447,8 +447,8 @@
           constList.push(...options.defaultConstList)
           var results = queryString ? constList.filter(
             c=>c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-          ) : constList;
-          cb(results.map(c=>({value:c.constName})));
+          ) : constList
+          cb(results.map(c=>({value:c.constName})))
         }.bind(this)
         if(this.constList){
           action()
@@ -457,7 +457,7 @@
             .then(response => this.$common.checkResult(response.data))
             .then(result=>{
               this.constList = result.data.entities
-              action();
+              action()
             })
         }
       },
@@ -495,7 +495,7 @@
       }
     },
     created: function () {
-      var entityId = parseInt(this.entityId);
+      var entityId = parseInt(this.entityId)
       this.form.entityId = entityId
       var promise = this.initForeignEntityOptions()
       const type = this.$router.currentRoute.query.type

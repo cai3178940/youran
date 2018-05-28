@@ -54,11 +54,13 @@
       </el-table-column>
       <el-table-column label="主外键" width="70px">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="主键" placement="right">
-            <icon v-if="scope.row.primaryKey==1" name="key" class="color-warning"></icon>
+          <el-tooltip v-if="scope.row.primaryKey==1" class="item" effect="dark" content="主键" placement="right">
+            <icon name="key" class="color-warning"></icon>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="外键" placement="right">
-            <icon v-if="scope.row.foreignKey==1" name="key" class="color-primary"></icon>
+          <el-tooltip v-if="scope.row.foreignKey==1" class="item" effect="dark" content="外键(点击扩展级联展示字段)" placement="right">
+            <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium">
+              <icon name="key" class="color-primary"></icon>
+            </el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -133,16 +135,26 @@
         <el-button v-if="templateForm.multiple=='1'" type="success" @click="handleAddImm">立即保存</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="级联扩展" :visible.sync="cascadeExtListVisible" width="50%">
+      <cascade-ext-list ref="cascadeExtList"></cascade-ext-list>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
+  import Vue from 'vue'
+  import cascadeExtList from '../cascadeExt/list.vue'
   import options from '@/components/options.js'
   import fieldTemplate from '@/components/fieldTemplate.js'
   import copyFieldUrl from '@/assets/copyField.gif'
   export default {
     name: 'fieldList',
     props: ['projectId', 'entityId'],
+    components:{
+      'cascade-ext-list' : cascadeExtList
+    },
     data: function () {
       return {
         //此处不知为何，生产编译时，图片路径有误。本来应该是ui/static变成了uistatic
@@ -169,12 +181,13 @@
         activeNum: 0,
         selectItems: [],
         entities: [],
-        loading: false
+        loading: false,
+        cascadeExtListVisible: false
       }
     },
     filters: {
       optionLabel: function (value, optionType) {
-        var ops = options[optionType];
+        var ops = options[optionType]
         for (var op of ops) {
           if (op.value == value) {
             return op.label
@@ -200,7 +213,7 @@
         this.activeNum = this.selectItems.length
       },
       handleRemoveTemplate:function (fieldId) {
-        var index = this.cacheTemplate.findIndex(item=>item.fieldId==fieldId);
+        var index = this.cacheTemplate.findIndex(item=>item.fieldId==fieldId)
         if(index>-1){
           this.cacheTemplate.splice(index,1)
           this.cacheTemplateCount--
@@ -286,9 +299,9 @@
       },
       handleAddImm: function () {
         this.addTemplateFormVisible = false
-        const multiple = this.templateForm.multiple;
-        const templates = this.templateForm.templates;
-        const template = this.templateForm.template;
+        const multiple = this.templateForm.multiple
+        const templates = this.templateForm.templates
+        const template = this.templateForm.template
         var callback = function(form,refresh){
           return this.$ajax.post('/generate/meta_field/save', {
               ...this.$common.removeBlankField(form),
@@ -334,11 +347,15 @@
       },
       handleShow: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/show/${row.fieldId}`)
+      },
+      handleShowCascadeExt: function (row) {
+        this.cascadeExtListVisible = true
+        Vue.nextTick(()=>this.$refs.cascadeExtList.init(row.entityId, row.fieldId, row.foreignEntityId))
       }
     },
     activated: function () {
-      var projectId = parseInt(this.projectId);
-      var entityId = parseInt(this.entityId);
+      var projectId = parseInt(this.projectId)
+      var entityId = parseInt(this.entityId)
       this.queryForm.projectEntity[0] = projectId
       this.queryForm.projectEntity[1] = entityId
       this.query.projectId = projectId
