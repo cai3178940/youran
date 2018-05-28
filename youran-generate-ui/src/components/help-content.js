@@ -23,10 +23,10 @@ export default {
 > 注意：最好是一个空库，否则出现意外情况概不负责。
     `,
     username: `
-**Git用户名**：请填写一个有代码提交权限的用户
+**Git用户名/oauth2**：请填写一个有代码提交权限的用户名,如果使用access token则填入oauth2
     `,
     password: `
-**Git密码**：密码不会回显，如果不想修改密码请置空
+**Git密码/token**：密码/token不会回显，如果不想修改请置空
     `
   },
   entity: {

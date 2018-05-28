@@ -559,8 +559,11 @@ public class MetaCodeGenService {
      * @return
      */
     private GitCredentialDTO getCredentialDTO(MetaProjectPO project){
-        if(StringUtils.isBlank(project.getUsername())||StringUtils.isBlank(project.getPassword())){
+        if(StringUtils.isBlank(project.getUsername())){
             return null;
+        }
+        if(StringUtils.isBlank(project.getPassword())){
+            return new GitCredentialDTO(project.getUsername(), "");
         }
         String password;
         try {
