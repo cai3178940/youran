@@ -174,6 +174,30 @@ CREATE TABLE `meta_mtm` (
   KEY `i_meta_mtm_2` (`entityId2`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_mtm';
 
+DROP TABLE IF EXISTS `meta_cascade_ext`;
+
+CREATE TABLE `meta_cascade_ext` (
+    `cascadeExtId` int(11) NOT NULL COMMENT '主键id',
+    `fieldId` int(11) NOT NULL COMMENT '所属字段id',
+    `entityId` int(11) NOT NULL COMMENT '所属实体id',
+    `alias` varchar(255) NOT NULL COMMENT '展示字段别名',
+    `list` smallint(1) NOT NULL COMMENT '是否在列表中展示',
+    `show` smallint(1) NOT NULL COMMENT '是否在详情中展示',
+    `cascadeEntityId` int(11) NOT NULL COMMENT '级联实体的id',
+    `cascadeFieldId` int(11) NOT NULL COMMENT '级联展示字段的id',
+    `createDate` datetime DEFAULT NULL COMMENT '创建时间',
+    `createBy` varchar(32) DEFAULT NULL COMMENT '创建人',
+    `operateDate` datetime DEFAULT NULL COMMENT '操作时间',
+    `operateBy` varchar(32) DEFAULT NULL COMMENT '操作人',
+    `delSign` smallint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+    `version` int(11) NOT NULL DEFAULT '0' COMMENT '乐观锁版本号',
+    PRIMARY KEY (`cascadeExtId`),
+    KEY `i_meta_cascade_ext_0` (`fieldId`) USING BTREE,
+    KEY `i_meta_cascade_ext_1` (`entityId`) USING BTREE,
+    KEY `i_meta_cascade_ext_2` (`cascadeFieldId`) USING BTREE,
+    KEY `i_meta_cascade_ext_3` (`cascadeEntityId`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='级联扩展';
+
 CREATE TABLE `gen_history` (
     `historyId` int(11) AUTO_INCREMENT COMMENT '主键id',
     `projectId` int(11) NOT NULL COMMENT '所属项目id',
