@@ -74,5 +74,6 @@
         select entityId from meta_entity
         where delSign=0
         and projectId = #{projectId,jdbcType=INTEGER}
+        order by entityId
     </select>
 </mapper>
