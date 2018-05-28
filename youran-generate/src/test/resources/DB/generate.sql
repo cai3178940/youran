@@ -177,7 +177,7 @@ CREATE TABLE `meta_mtm` (
 DROP TABLE IF EXISTS `meta_cascade_ext`;
 
 CREATE TABLE `meta_cascade_ext` (
-    `cascadeExtId` int(11) NOT NULL COMMENT '主键id',
+    `cascadeExtId` int(11) AUTO_INCREMENT COMMENT '主键id',
     `fieldId` int(11) NOT NULL COMMENT '所属字段id',
     `entityId` int(11) NOT NULL COMMENT '所属实体id',
     `alias` varchar(255) NOT NULL COMMENT '展示字段别名',

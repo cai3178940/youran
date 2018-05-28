@@ -1,5 +1,6 @@
 package com.youran.generate.web.rest;
 
+import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaEntityData;
 import com.youran.generate.help.GenerateHelper;
@@ -41,7 +42,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_entity/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.code").value(is("0")));
+                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
 
     }
 
@@ -52,7 +53,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/meta_entity/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.code").value(is("0")));
+                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
     }
 
 
@@ -61,7 +62,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         generateHelper.saveEntityExample(metaProject.getProjectId(),0);
         restMockMvc.perform(get(getRootPath()+"/meta_entity/list")
                 .param("projectId",metaProject.getProjectId()+""))
-                .andExpect(jsonPath("$.code").value(is("0")))
+                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
     }
 
@@ -69,7 +70,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         MetaEntityPO metaEntity = generateHelper.saveEntityExample(metaProject.getProjectId(),0);
         restMockMvc.perform(get(getRootPath()+"/meta_entity/{entityId}",metaEntity.getEntityId()))
-                .andExpect(jsonPath("$.code").value(is("0")))
+                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data.entityId").value(is(metaEntity.getEntityId())));
     }
 
@@ -77,7 +78,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
     public void del() throws Exception {
         MetaEntityPO metaEntity = generateHelper.saveEntityExample(metaProject.getProjectId(),0);
         restMockMvc.perform(delete(getRootPath()+"/meta_entity/{entityId}",metaEntity.getEntityId()))
-                .andExpect(jsonPath("$.code").value(is("0")))
+                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
 

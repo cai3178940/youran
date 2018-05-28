@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.mapper.MetaCascadeExtMapper">
+
+
+    <select id="findById" resultType="MetaCascadeExtPO">
+        select * from meta_cascade_ext
+        where delSign=0
+              and cascadeExtId = #{cascadeExtId,jdbcType=INTEGER}
+    </select>
+
+    <select id="exist" resultType="int">
+        select count(*) from meta_cascade_ext
+        where delSign=0
+              and cascadeExtId = #{cascadeExtId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="cascadeExtId" parameterType="MetaCascadeExtPO">
+        insert into `meta_cascade_ext`(
+            `cascadeExtId`,
+            `fieldId`,
+            `entityId`,
+            `alias`,
+            `list`,
+            `show`,
+            `cascadeEntityId`,
+            `cascadeFieldId`,
+            `createDate`,
+            `createBy`,
+            `operateDate`,
+            `operateBy`,
+            `delSign`,
+            `version`
+        ) VALUES (
+            #{cascadeExtId,jdbcType=INTEGER},
+            #{fieldId,jdbcType=INTEGER},
+            #{entityId,jdbcType=INTEGER},
+            #{alias,jdbcType=VARCHAR},
+            #{list,jdbcType=INTEGER},
+            #{show,jdbcType=INTEGER},
+            #{cascadeEntityId,jdbcType=INTEGER},
+            #{cascadeFieldId,jdbcType=INTEGER},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=VARCHAR},
+            #{operateDate,jdbcType=TIMESTAMP},
+            #{operateBy,jdbcType=VARCHAR},
+            #{delSign,jdbcType=SMALLINT},
+            #{version,jdbcType=INTEGER}
+        )
+    </insert>
+
+
+    <update id="update" parameterType="MetaCascadeExtPO">
+        update meta_cascade_ext
+        set
+            `fieldId` = #{fieldId,jdbcType=INTEGER},
+            `entityId` = #{entityId,jdbcType=INTEGER},
+            `alias` = #{alias,jdbcType=VARCHAR},
+            `list` = #{list,jdbcType=INTEGER},
+            `show` = #{show,jdbcType=INTEGER},
+            `cascadeEntityId` = #{cascadeEntityId,jdbcType=INTEGER},
+            `cascadeFieldId` = #{cascadeFieldId,jdbcType=INTEGER},
+            operateDate = #{operateDate,jdbcType=TIMESTAMP},
+            operateBy = #{operateBy,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER}
+        where cascadeExtId = #{cascadeExtId,jdbcType=INTEGER}
+              and version=#{version,jdbcType=INTEGER}
+              and delSign=0
+    </update>
+
+
+    <delete id="delete">
+        update meta_cascade_ext set
+            delSign=1
+        where cascadeExtId = #{cascadeExtId,jdbcType=INTEGER}
+              and delSign=0
+    </delete>
+
+
+
+    <select id="findListByQuery" parameterType="MetaCascadeExtQO" resultType="MetaCascadeExtListVO">
+        select * from meta_cascade_ext t
+        where t.delSign=0
+              and t.fieldId = #{fieldId,jdbcType=INTEGER}
+        order by t.createDate
+    </select>
+
+</mapper>

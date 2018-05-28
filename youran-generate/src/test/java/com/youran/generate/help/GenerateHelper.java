@@ -35,6 +35,8 @@ public class GenerateHelper{
     private MetaManyToManyService metaManyToManyService;
     @Autowired
     private MetaConstDetailService metaConstDetailService;
+    @Autowired
+    private MetaCascadeExtService metaCascadeExtService;
 
 
     /**
@@ -62,6 +64,16 @@ public class GenerateHelper{
         MetaFieldAddDTO addDTO = MetaFieldData.getAddDTO(entityId);
         return metaFieldService.save(addDTO);
     }
+
+    /**
+     * 保存级联扩展示例
+     * @return
+     */
+    public MetaCascadeExtPO saveCascadeExtExample(Integer fieldId, Integer entityId,Integer cascadeFieldId, Integer cascadeEntityId){
+        MetaCascadeExtAddDTO addDTO = MetaCascadeExtData.getAddDTO(fieldId,entityId,cascadeFieldId,cascadeEntityId);
+        return metaCascadeExtService.save(addDTO);
+    }
+
     /**
      * 保存多对多关联示例
      * @return

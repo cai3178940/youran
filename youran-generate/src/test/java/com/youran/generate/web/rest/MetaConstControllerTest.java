@@ -1,5 +1,6 @@
 package com.youran.generate.web.rest;
 
+import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaConstData;
 import com.youran.generate.help.GenerateHelper;
@@ -41,7 +42,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getRootPath()+"/meta_const/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.code").value(is("0")));
+                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
 
     }
 
@@ -52,7 +53,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getRootPath()+"/meta_const/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.code").value(is("0")));
+                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
     }
 
 
@@ -61,7 +62,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
         generateHelper.saveConstExample(metaProject.getProjectId());
         restMockMvc.perform(get(getRootPath()+"/meta_const/list")
                 .param("projectId",metaProject.getProjectId()+""))
-                .andExpect(jsonPath("$.code").value(is("0")))
+                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
     }
 
@@ -69,7 +70,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         MetaConstPO metaConst = generateHelper.saveConstExample(metaProject.getProjectId());
         restMockMvc.perform(get(getRootPath()+"/meta_const/{constId}",metaConst.getConstId()))
-                .andExpect(jsonPath("$.code").value(is("0")))
+                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data.constId").value(is(metaConst.getConstId())));
     }
 
@@ -77,7 +78,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
     public void del() throws Exception {
         MetaConstPO metaConst = generateHelper.saveConstExample(metaProject.getProjectId());
         restMockMvc.perform(delete(getRootPath()+"/meta_const/{constId}",metaConst.getConstId()))
-                .andExpect(jsonPath("$.code").value(is("0")))
+                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }
 
