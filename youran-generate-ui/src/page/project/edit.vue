@@ -46,7 +46,7 @@
                 <el-input v-model="form.username" placeholder="例如：zhangsan"></el-input>
               </help-popover>
             </el-form-item>
-            <el-form-item label="Git密码" prop="password">
+            <el-form-item label="Git密码/token" prop="password">
               <help-popover name="project.password">
                 <el-input v-model="form.password" placeholder="例如：123456"></el-input>
               </help-popover>
