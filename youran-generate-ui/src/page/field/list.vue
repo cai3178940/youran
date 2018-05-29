@@ -142,7 +142,7 @@
     </el-dialog>
 
     <el-dialog class="cascadeExtDialog" title="级联扩展" :visible.sync="cascadeExtListVisible" width="60%">
-      <cascade-ext-list ref="cascadeExtList"></cascade-ext-list>
+      <cascade-ext-list ref="cascadeExtList" @cascadeFieldNumChange="resetCascadeFieldNum" @cascadeFieldNumAdd="addCascadeFieldNum"></cascade-ext-list>
     </el-dialog>
 
   </div>
@@ -357,6 +357,14 @@
       handleShowCascadeExt: function (row) {
         this.cascadeExtListVisible = true
         Vue.nextTick(()=>this.$refs.cascadeExtList.init(row.entityId, row.fieldId, row.foreignEntityId))
+      },
+      resetCascadeFieldNum: function(fieldId,cascadeFieldNum){
+        const field = this.entities.find(field=>field.fieldId==fieldId);
+        field.cascadeFieldNum = cascadeFieldNum
+      },
+      addCascadeFieldNum: function(fieldId,num){
+        const field = this.entities.find(field=>field.fieldId==fieldId);
+        field.cascadeFieldNum += num
       }
     },
     activated: function () {

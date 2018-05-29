@@ -121,7 +121,10 @@
         this.loading = true
         this.$ajax.get('/generate/meta_cascade_ext/list', {params:{fieldId:this.fieldId}})
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.entities = result.data)
+          .then(result => {
+            this.entities = result.data
+            this.$emit('cascadeFieldNumChange',this.fieldId,this.entities.length);
+          })
           .catch(error => this.$common.showNotifyError(error))
           .finally(() => this.loading = false)
       },
@@ -157,6 +160,7 @@
             this.$common.showMsg('success', '保存成功')
             if(!row.cascadeExtId){
               row.cascadeExtId=result.data
+              this.$emit('cascadeFieldNumAdd',this.fieldId,1);
             }
             return this.$ajax.get(`/generate/meta_cascade_ext/${row.cascadeExtId}`)
           })
