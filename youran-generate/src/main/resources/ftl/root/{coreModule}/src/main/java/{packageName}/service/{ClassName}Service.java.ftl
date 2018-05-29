@@ -31,6 +31,7 @@ public class ${CName}Service {
         <@autowired "${packageName}.dao" "${otherCName}DAO"/>
     </#list>
 </#if>
+
 <#-- 引入外键对应的DAO -->
 <#list insertFields as field>
     <#if field.foreignKey==1>
@@ -50,6 +51,16 @@ public class ${CName}Service {
         <@autowired "${packageName}.dao" "${foreignCName}DAO"/>
     </#list>
 </#if>
+<#list fields as field>
+    <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
+        <#list field.cascadeExts as cascadeExt>
+            <#if cascadeExt.list==1>
+                <@autowired "${packageName}.dao" "${field.foreignEntity.className?capFirst}DAO"/>
+                <#break>
+            </#if>
+        </#list>
+    </#if>
+</#list>
 
 <#macro checkForeignKeys fields>
     <#list fields as field>
@@ -167,6 +178,31 @@ public class ${CName}Service {
     public ${CName}ShowVO show(${type} ${id}) {
         ${CName}PO ${cName} = this.get${CName}(${id}, true);
         ${CName}ShowVO showVO = ${CName}Mapper.INSTANCE.toShowVO(${cName});
+<#list fields as field>
+    <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
+        <#assign ifBreak=true>
+        <#list field.cascadeExts as cascadeExt>
+            <#if cascadeExt.show==1>
+                <#assign ifBreak=false>
+                <#break>
+            </#if>
+        </#list>
+        <#if ifBreak>
+            <#break>
+        </#if>
+        <#assign otherCName=field.foreignEntity.className?capFirst>
+        <#assign othercName=field.foreignEntity.className?uncapFirst>
+        <@import "${packageName}.pojo.po.${otherCName}PO"/>
+        if(${cName}.get${field.jfieldName?capFirst}()!=null){
+            ${otherCName}PO _${othercName}PO = ${othercName}DAO.findById(${cName}.get${field.jfieldName?capFirst}());
+        <#list field.cascadeExts as cascadeExt>
+            <#if cascadeExt.show==1>
+            showVO.set${cascadeExt.alias?capFirst}(_${othercName}PO.get${cascadeExt.cascadeField.jfieldName?capFirst}());
+            </#if>
+        </#list>
+        }
+    </#if>
+</#list>
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
