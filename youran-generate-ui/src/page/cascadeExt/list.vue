@@ -1,6 +1,6 @@
 <template>
   <div class="cascadeExtList">
-    <el-row type="flex" align="middle" :gutter="20" style="padding:10px 0;">
+    <el-row type="flex" align="middle" :gutter="20" style="padding:0px;">
       <el-col :span="4" class="activeNum">
         已选择{{ activeNum }}个字段
       </el-col>

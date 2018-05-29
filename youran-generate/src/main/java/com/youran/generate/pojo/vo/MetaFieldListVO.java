@@ -99,6 +99,17 @@ public class MetaFieldListVO {
     @ApiModelProperty(notes = N_SPECIALFIELD, example = E_SPECIALFIELD)
     private String specialField;
 
+    @ApiModelProperty(notes = "级联字段数量", example = "0")
+    private Integer cascadeFieldNum;
+
+    public Integer getCascadeFieldNum() {
+        return cascadeFieldNum;
+    }
+
+    public void setCascadeFieldNum(Integer cascadeFieldNum) {
+        this.cascadeFieldNum = cascadeFieldNum;
+    }
+
     public Integer getForeignEntityId() {
         return foreignEntityId;
     }

@@ -22,6 +22,17 @@ public class MetaFieldQO extends AbstractQO {
     @NotNull
     private Integer entityId;
 
+    @ApiModelProperty(notes = "是否携带级联字段数量", example = "1")
+    private Integer withCascadeFieldNum;
+
+    public Integer getWithCascadeFieldNum() {
+        return withCascadeFieldNum;
+    }
+
+    public void setWithCascadeFieldNum(Integer withCascadeFieldNum) {
+        this.withCascadeFieldNum = withCascadeFieldNum;
+    }
+
     public Integer getEntityId() {
         return entityId;
     }

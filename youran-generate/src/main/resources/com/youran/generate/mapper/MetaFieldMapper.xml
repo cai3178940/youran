@@ -102,7 +102,15 @@
     </delete>
 
     <select id="findListByQuery" parameterType="MetaFieldQO" resultType="MetaFieldListVO">
-        select * from meta_field t
+        select
+            t.*
+        <if test="withCascadeFieldNum != null  and withCascadeFieldNum == 1 ">
+            ,
+            case when t.foreignKey=1
+            then (select count(1) from meta_cascade_ext c where c.fieldId=t.fieldId and c.delSign=0)
+            else 0 end as cascadeFieldNum
+        </if>
+        from meta_field t
         where t.delSign=0
         and t.entityId = #{entityId,jdbcType=INTEGER}
         order by t.orderNo, t.fieldId

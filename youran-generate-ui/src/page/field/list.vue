@@ -34,7 +34,11 @@
     </el-row>
     <el-table :data="entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column property="fieldDesc" label="字段描述"></el-table-column>
+      <el-table-column label="字段描述">
+        <template slot-scope="scope">
+          {{ scope.row.fieldDesc }}
+        </template>
+      </el-table-column>
       <el-table-column label="字段名">
         <template slot-scope="scope">
           {{ scope.row.jfieldName }} / {{ scope.row.fieldName }}
@@ -57,10 +61,8 @@
           <el-tooltip v-if="scope.row.primaryKey==1" class="item" effect="dark" content="主键" placement="right">
             <icon name="key" class="color-warning"></icon>
           </el-tooltip>
-          <el-tooltip v-if="scope.row.foreignKey==1" class="item" effect="dark" content="外键(点击扩展级联展示字段)" placement="right">
-            <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium">
-              <icon name="key" class="color-primary"></icon>
-            </el-button>
+          <el-tooltip v-if="scope.row.foreignKey==1" class="item" effect="dark" content="外键" placement="right">
+            <icon name="key" class="color-primary"></icon>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -68,11 +70,14 @@
       <el-table-column property="fieldExample" label="字段示例"></el-table-column>
       <el-table-column
         label="操作"
-        width="140">
+        width="170">
         <template slot-scope="scope">
           <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
-          <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
-          <el-button @click="handleCopyOne(scope.row)" type="text" size="medium">复制</el-button>
+          <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
+          <el-button @click="handleCopyOne(scope.row)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
+          <el-badge :value="scope.row.cascadeFieldNum" class="cascadeBadge">
+            <el-button v-if="scope.row.foreignKey==1" @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
+          </el-badge>
         </template>
       </el-table-column>
     </el-table>
@@ -136,7 +141,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="级联扩展" :visible.sync="cascadeExtListVisible" width="60%">
+    <el-dialog class="cascadeExtDialog" title="级联扩展" :visible.sync="cascadeExtListVisible" width="60%">
       <cascade-ext-list ref="cascadeExtList"></cascade-ext-list>
     </el-dialog>
 
@@ -170,6 +175,7 @@
         },
         //查询参数
         query: {
+          withCascadeFieldNum: 1,
           projectId: null,
           entityId: null
         },
@@ -379,5 +385,15 @@
 
   .demo-form-inline .el-form-item {
     margin-bottom: 0px;
+  }
+  .cascadeExtDialog .el-dialog__body {
+    padding-top: 10px;
+  }
+  .cascadeBadge .el-badge__content{
+    transform: translateY(-5%) translateX(120%);
+    font-size: 10px;
+    height: 12px;
+    line-height: 13px;
+    padding: 0 3px;
   }
 </style>
