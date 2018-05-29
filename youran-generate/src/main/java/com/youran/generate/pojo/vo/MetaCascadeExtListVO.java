@@ -63,6 +63,19 @@ public class MetaCascadeExtListVO {
     @ApiModelProperty(notes = N_CASCADEFIELDID, example = E_CASCADEFIELDID)
     private Integer cascadeFieldId;
 
+    /**
+     * 级联展示字段的字段名
+     */
+    @ApiModelProperty(notes = N_CASCADEFIELDNAME, example = E_CASCADEFIELDNAME)
+    private String cascadeFieldName;
+
+    /**
+     * 级联展示字段的字段描述
+     */
+    @ApiModelProperty(notes = N_CASCADEFIELDDESC, example = E_CASCADEFIELDDESC)
+    private String cascadeFieldDesc;
+
+
 
     @ApiModelProperty(notes = N_CREATEDATE, example = E_CREATEDATE)
     private Date createDate;
@@ -138,5 +151,21 @@ public class MetaCascadeExtListVO {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public String getCascadeFieldName() {
+        return cascadeFieldName;
+    }
+
+    public void setCascadeFieldName(String cascadeFieldName) {
+        this.cascadeFieldName = cascadeFieldName;
+    }
+
+    public String getCascadeFieldDesc() {
+        return cascadeFieldDesc;
+    }
+
+    public void setCascadeFieldDesc(String cascadeFieldDesc) {
+        this.cascadeFieldDesc = cascadeFieldDesc;
     }
 }

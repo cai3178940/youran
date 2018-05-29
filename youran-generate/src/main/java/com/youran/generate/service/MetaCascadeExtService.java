@@ -2,11 +2,13 @@ package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaCascadeExtDAO;
+import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaCascadeExtUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaCascadeExtMapper;
 import com.youran.generate.pojo.po.MetaCascadeExtPO;
+import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.qo.MetaCascadeExtQO;
 import com.youran.generate.pojo.vo.MetaCascadeExtListVO;
 import com.youran.generate.pojo.vo.MetaCascadeExtShowVO;
@@ -31,6 +33,8 @@ public class MetaCascadeExtService {
 
     @Autowired
     private MetaCascadeExtDAO metaCascadeExtDAO;
+    @Autowired
+    private MetaFieldDAO metaFieldDAO;
 
 
     /**
@@ -81,6 +85,9 @@ public class MetaCascadeExtService {
             throw new GenerateException("未查询到记录");
         }
         MetaCascadeExtShowVO showVO = MetaCascadeExtMapper.INSTANCE.toShowVO(metaCascadeExt);
+        MetaFieldPO cascadeField = metaFieldDAO.findById(metaCascadeExt.getCascadeFieldId());
+        showVO.setCascadeFieldDesc(cascadeField.getFieldDesc());
+        showVO.setCascadeFieldName(cascadeField.getFieldName());
         return showVO;
     }
 

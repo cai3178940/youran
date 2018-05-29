@@ -27,5 +27,9 @@ public class MetaCascadeExtExample extends AbstractExample {
     public static final String E_CASCADEENTITYID = "2";
     public static final String N_CASCADEFIELDID = "级联展示字段的id";
     public static final String E_CASCADEFIELDID = "2";
+    public static final String N_CASCADEFIELDNAME = "级联展示字段的字段名";
+    public static final String E_CASCADEFIELDNAME = "name";
+    public static final String N_CASCADEFIELDDESC = "级联展示字段的字段描述";
+    public static final String E_CASCADEFIELDDESC = "名称";
 
 }

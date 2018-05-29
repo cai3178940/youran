@@ -13,13 +13,13 @@
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="展示字段">
         <template slot-scope="scope">
-          <span v-if="!scope.row.editFlag">{{ scope.row.jfieldName }}</span>
+          <span v-if="!scope.row.editFlag">{{ scope.row.cascadeFieldDesc+'('+scope.row.cascadeFieldName+')' }}</span>
           <span v-if="scope.row.editFlag">
             <el-select v-model="scope.row.cascadeFieldId" @change="handleCascadeFieldChange(scope.row)" placeholder="请选择级联字段">
               <el-option
                 v-for="item in cascadeFieldList"
                 :key="item.fieldId"
-                :label="item.fieldName"
+                :label="item.fieldDesc+'('+item.fieldName+')'"
                 :value="item.fieldId">
               </el-option>
             </el-select>
@@ -58,14 +58,13 @@
         <template slot-scope="scope">
           <el-button v-if="!scope.row.editFlag" @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
           <el-button v-if="scope.row.editFlag" @click="handleSave(scope.row)" type="text" size="medium">保存</el-button>
-          <el-button v-if="scope.row.editFlag" @click="handleCancel(scope.row)" type="text" size="medium">取消</el-button>
         </template>
       </el-table-column>
     </el-table>
   </div>
 </template>
 <script>
-
+  import Vue from 'vue'
   //记录扩展模型
   const cascadeExtModel = {
     cascadeExtId: null,
@@ -81,6 +80,8 @@
     cascadeEntityId: null,
     //级联展示字段的id
     cascadeFieldId: null,
+    cascadeFieldName: null,
+    cascadeFieldDesc: null,
     editFlag:true
   }
 
@@ -117,6 +118,7 @@
           .catch(error => this.$common.showNotifyError(error))
       },
       doQuery:function () {
+        this.loading = true
         this.$ajax.get('/generate/meta_cascade_ext/list', {params:{fieldId:this.fieldId}})
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.entities = result.data)
@@ -124,19 +126,67 @@
           .finally(() => this.loading = false)
       },
       handleAdd: function () {
-        var newRow = Object.assign(cascadeExtModel,{
+        var newRow = Object.assign({},cascadeExtModel,{
           entityId:this.entityId,
           fieldId:this.fieldId,
           cascadeEntityId:this.cascadeEntityId,
         })
         this.entities.unshift(newRow)
       },
+      handleEdit: function (row){
+        Vue.set(row,'editFlag',true)
+      },
       handleCascadeFieldChange: function (row) {
         var cascadeField = this.cascadeFieldList.find(field=>field.fieldId==row.cascadeFieldId)
         row.alias = cascadeField.fieldName
       },
       handleSave: function (row) {
+        var saveURL = '/generate/meta_cascade_ext/save'
+        var method = 'post'
+        if(row.cascadeExtId){
+          saveURL = '/generate/meta_cascade_ext/update'
+          method = 'put'
+        }
+        var loading = this.$loading()
+        // 提交
+        this.$ajax[method](saveURL, row)
+          //校验返回结果
+          .then(response => this.$common.checkResult(response.data))
+          //执行页面跳转
+          .then(result => {
+            this.$common.showMsg('success', '保存成功')
+            if(!row.cascadeExtId){
+              row.cascadeExtId=result.data
+            }
+            return this.$ajax.get(`/generate/meta_cascade_ext/${row.cascadeExtId}`)
+          })
+          .then(response => this.$common.checkResult(response.data))
+          .then(result => {
+            Object.assign(row,result.data,{
+              editFlag:false
+            })
+          })
+          .catch(error => this.$common.showNotifyError(error))
+          .finally(()=>{
+            if(loading){
+              loading.close()
+            }
+          })
 
+      },
+      handleDel: function () {
+        if (this.activeNum <= 0) {
+          this.$common.showMsg('warning', '请选择字段')
+          return
+        }
+        const params = this.selectItems.map(cascadeExt => cascadeExt.cascadeExtId).filter(id=>id!=null)
+        this.$common.confirm('是否确认删除')
+          .then(() => {
+            if(params.length>0){
+              return this.$ajax.put('/generate/meta_cascade_ext/deleteBatch', params)
+            }
+          })
+          .then(() => this.doQuery())
       }
 
     }
