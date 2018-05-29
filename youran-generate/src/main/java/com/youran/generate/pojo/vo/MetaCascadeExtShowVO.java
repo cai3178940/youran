@@ -64,17 +64,16 @@ public class MetaCascadeExtShowVO {
     private Integer cascadeFieldId;
 
     /**
-     * 级联展示字段的字段名
+     * 级联展示字段名
      */
-    @ApiModelProperty(notes = N_CASCADEFIELDNAME, example = E_CASCADEFIELDNAME)
-    private String cascadeFieldName;
+    @ApiModelProperty(notes = "级联展示字段名", example = "name")
+    private String cascadeJfieldName;
 
     /**
-     * 级联展示字段的字段描述
+     * 级联展示字段描述
      */
-    @ApiModelProperty(notes = N_CASCADEFIELDDESC, example = E_CASCADEFIELDDESC)
+    @ApiModelProperty(notes = "级联展示字段描述", example = "名称")
     private String cascadeFieldDesc;
-
 
     @ApiModelProperty(notes = N_CREATEDATE, example = E_CREATEDATE)
     private Date createDate;
@@ -160,11 +159,11 @@ public class MetaCascadeExtShowVO {
         this.cascadeFieldDesc = cascadeFieldDesc;
     }
 
-    public String getCascadeFieldName() {
-        return cascadeFieldName;
+    public String getCascadeJfieldName() {
+        return cascadeJfieldName;
     }
 
-    public void setCascadeFieldName(String cascadeFieldName) {
-        this.cascadeFieldName = cascadeFieldName;
+    public void setCascadeJfieldName(String cascadeJfieldName) {
+        this.cascadeJfieldName = cascadeJfieldName;
     }
 }

@@ -32,4 +32,7 @@ public class MetaCascadeExtDAO extends AbstractDAO<MetaCascadeExtPO> {
     }
 
 
+    public List<MetaCascadeExtPO> findByFieldId(Integer fieldId) {
+        return sqlSession.selectList(getMybatisNamespace()+".findByFieldId", fieldId);
+    }
 }

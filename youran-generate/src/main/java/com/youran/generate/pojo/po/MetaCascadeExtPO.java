@@ -66,6 +66,20 @@ public class MetaCascadeExtPO extends AbstractPO implements CreateOperateDeleteV
 
     private Integer delSign;
 
+
+    /**
+     * 级联字段
+     */
+    private MetaFieldPO cascadeField;
+
+    public MetaFieldPO getCascadeField() {
+        return cascadeField;
+    }
+
+    public void setCascadeField(MetaFieldPO cascadeField) {
+        this.cascadeField = cascadeField;
+    }
+
     public Integer getCascadeExtId() {
         return cascadeExtId;
     }

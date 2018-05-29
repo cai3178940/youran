@@ -87,7 +87,7 @@ public class MetaCascadeExtService {
         MetaCascadeExtShowVO showVO = MetaCascadeExtMapper.INSTANCE.toShowVO(metaCascadeExt);
         MetaFieldPO cascadeField = metaFieldDAO.findById(metaCascadeExt.getCascadeFieldId());
         showVO.setCascadeFieldDesc(cascadeField.getFieldDesc());
-        showVO.setCascadeFieldName(cascadeField.getFieldName());
+        showVO.setCascadeJfieldName(cascadeField.getJfieldName());
         return showVO;
     }
 
@@ -104,5 +104,6 @@ public class MetaCascadeExtService {
         }
         return count;
     }
+
 
 }

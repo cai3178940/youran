@@ -83,7 +83,7 @@
     <select id="findListByQuery" parameterType="MetaCascadeExtQO" resultType="MetaCascadeExtListVO">
         select
             t.*,
-            f.fieldName as cascadeFieldName,
+            f.jfieldName as cascadeJfieldName,
             f.fieldDesc as cascadeFieldDesc
         from meta_cascade_ext t
         left outer join meta_field f
@@ -91,6 +91,16 @@
         where
             t.delSign=0
             and t.fieldId = #{fieldId,jdbcType=INTEGER}
+        order by t.createDate
+    </select>
+
+    <select id="findByFieldId" parameterType="int" resultType="MetaCascadeExtPO">
+        select
+            t.*
+        from meta_cascade_ext t
+        where
+            t.delSign=0
+            and t.fieldId = #{arg0}
         order by t.createDate
     </select>
 

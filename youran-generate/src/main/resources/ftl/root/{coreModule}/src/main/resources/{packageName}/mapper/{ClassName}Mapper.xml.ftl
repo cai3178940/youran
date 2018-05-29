@@ -137,7 +137,51 @@
     </select>
 
     <select id="findListByQuery" parameterType="${CName}QO" resultType="${CName}ListVO">
-        select * from ${wrapTableName} t
+        <#assign cascadeIndex=0>
+        select
+            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+        <#list fields as field>
+            <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
+                <#assign ifBreak=true>
+                <#list field.cascadeExts as cascadeExt>
+                    <#if cascadeExt.list==1>
+                        <#assign ifBreak=false>
+                        <#break>
+                    </#if>
+                </#list>
+                <#if ifBreak>
+                    <#break>
+                </#if>
+                <#assign cascadeIndex=cascadeIndex+1>
+                <#list field.cascadeExts as cascadeExt>
+                    <#if cascadeExt.list==1>
+            ,c${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(cascadeExt.cascadeField.fieldName)} as ${cascadeExt.alias}
+                    </#if>
+                </#list>
+            </#if>
+        </#list>
+        from ${wrapTableName} t
+        <#assign cascadeIndex=0>
+        <#list fields as field>
+            <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
+                <#assign ifBreak=true>
+                <#list field.cascadeExts as cascadeExt>
+                    <#if cascadeExt.list==1>
+                        <#assign ifBreak=false>
+                        <#break>
+                    </#if>
+                </#list>
+                <#if ifBreak>
+                    <#break>
+                </#if>
+                <#assign cascadeIndex=cascadeIndex+1>
+        left outer join ${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.tableName)} c${cascadeIndex}
+            on c${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.pkField.fieldName)} = t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}
+                <#if field.foreignEntity.delField??>
+            and c${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.delField.fieldName)}=0
+                </#if>
+            </#if>
+        </#list>
         <where>
         <#if delField??>
             and t.${wrapDelFieldName}=0

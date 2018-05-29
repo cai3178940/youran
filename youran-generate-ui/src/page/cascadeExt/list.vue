@@ -13,13 +13,13 @@
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="展示字段">
         <template slot-scope="scope">
-          <span v-if="!scope.row.editFlag">{{ scope.row.cascadeFieldDesc+'('+scope.row.cascadeFieldName+')' }}</span>
+          <span v-if="!scope.row.editFlag">{{ scope.row.cascadeFieldDesc+'('+scope.row.cascadeJfieldName+')' }}</span>
           <span v-if="scope.row.editFlag">
             <el-select v-model="scope.row.cascadeFieldId" @change="handleCascadeFieldChange(scope.row)" placeholder="请选择级联字段">
               <el-option
                 v-for="item in cascadeFieldList"
                 :key="item.fieldId"
-                :label="item.fieldDesc+'('+item.fieldName+')'"
+                :label="item.fieldDesc+'('+item.jfieldName+')'"
                 :value="item.fieldId">
               </el-option>
             </el-select>
@@ -80,7 +80,7 @@
     cascadeEntityId: null,
     //级联展示字段的id
     cascadeFieldId: null,
-    cascadeFieldName: null,
+    cascadeJfieldName: null,
     cascadeFieldDesc: null,
     editFlag:true
   }
@@ -141,7 +141,7 @@
       },
       handleCascadeFieldChange: function (row) {
         var cascadeField = this.cascadeFieldList.find(field=>field.fieldId==row.cascadeFieldId)
-        row.alias = cascadeField.fieldName
+        row.alias = cascadeField.jfieldName
       },
       handleSave: function (row) {
         var saveURL = '/generate/meta_cascade_ext/save'

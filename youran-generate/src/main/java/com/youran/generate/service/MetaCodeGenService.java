@@ -7,10 +7,7 @@ import com.youran.common.util.DateUtil;
 import com.youran.common.util.H2Util;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.constant.*;
-import com.youran.generate.dao.MetaConstDAO;
-import com.youran.generate.dao.MetaEntityDAO;
-import com.youran.generate.dao.MetaManyToManyDAO;
-import com.youran.generate.dao.MetaProjectDAO;
+import com.youran.generate.dao.*;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import com.youran.generate.pojo.po.*;
@@ -61,6 +58,8 @@ public class MetaCodeGenService {
     private GenerateProperties generateProperties;
     @Autowired
     private GenHistoryService genHistoryService;
+    @Autowired
+    private MetaCascadeExtDAO metaCascadeExtDAO;
 
     /**
      * 输出建表语句
@@ -115,10 +114,29 @@ public class MetaCodeGenService {
                             +foreignEntity.getClassName()+"."+foreignField.getJfieldName()+"字段类型不一致");
                 }
                 metaFieldPO.setForeignField(foreignField);
+                // 填充级联扩展列表
+                this.fillMetaCascadeExtList(metaFieldPO,foreignEntity.getFields());
                 foreignEntity.addForeignField(metaFieldPO);
                 foreignEntity.addForeignEntity(metaEntity);
             }
         }
+    }
+
+    /**
+     * 填充级联扩展列表
+     */
+    private void fillMetaCascadeExtList(MetaFieldPO metaFieldPO,List<MetaFieldPO> foreignFields) {
+        List<MetaCascadeExtPO> cascadeExts = metaCascadeExtDAO.findByFieldId(metaFieldPO.getFieldId());
+        for (MetaCascadeExtPO cascadeExt : cascadeExts) {
+            Optional<MetaFieldPO> first = foreignFields.stream()
+                .filter(field -> field.getFieldId().equals(cascadeExt.getCascadeFieldId()))
+                .findFirst();
+            if(!first.isPresent()) {
+                throw new GenerateException(metaFieldPO.getFieldDesc()+"的级联扩展字段有误");
+            }
+            cascadeExt.setCascadeField(first.get());
+        }
+        metaFieldPO.setCascadeExts(cascadeExts);
     }
 
     /**

@@ -24,6 +24,24 @@ public class ${CName}ShowVO extends AbstractVO {
     private ${field.jfieldType} ${field.jfieldName};
 
 </#list>
+<#list fields as field>
+    <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
+        <#list field.cascadeExts as cascadeExt>
+            <#if cascadeExt.show==1>
+                <#assign cascadeField=cascadeExt.cascadeField>
+                <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
+                    <@import "java.util.Date"/>
+                    <@import "com.fasterxml.jackson.annotation.JsonFormat"/>
+                    <@import "${commonPackage}.constant.JsonFieldConst"/>
+    @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
+                <#elseIf cascadeField.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
+                    <@import "java.math.BigDecimal"/>
+                </#if>
+    private ${cascadeField.jfieldType} ${cascadeExt.alias};
+            </#if>
+        </#list>
+    </#if>
+</#list>
 
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
@@ -39,6 +57,16 @@ public class ${CName}ShowVO extends AbstractVO {
 
 <#list showFields as field>
     <@getterSetter field/>
+</#list>
+
+<#list fields as field>
+    <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
+        <#list field.cascadeExts as cascadeExt>
+            <#if cascadeExt.show==1>
+                <@getterSetter2 cascadeExt.alias cascadeExt.cascadeField.jfieldType/>
+            </#if>
+        </#list>
+    </#if>
 </#list>
 
 <#if metaEntity.mtmHoldRefers??>

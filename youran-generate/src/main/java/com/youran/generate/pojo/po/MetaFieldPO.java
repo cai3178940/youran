@@ -4,6 +4,7 @@ import com.youran.common.pojo.po.AbstractPO;
 import com.youran.common.pojo.po.CreateOperateDeleteVersion;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Title:元数据字段
@@ -63,6 +64,19 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
      * 外键对应字段
      */
     private MetaFieldPO foreignField;
+
+    /**
+     * 外键对应级联扩展
+     */
+    private List<MetaCascadeExtPO> cascadeExts;
+
+    public List<MetaCascadeExtPO> getCascadeExts() {
+        return cascadeExts;
+    }
+
+    public void setCascadeExts(List<MetaCascadeExtPO> cascadeExts) {
+        this.cascadeExts = cascadeExts;
+    }
 
     public MetaEntityPO getForeignEntity() {
         return foreignEntity;
