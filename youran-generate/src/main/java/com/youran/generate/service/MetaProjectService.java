@@ -43,7 +43,7 @@ public class MetaProjectService {
     private GenerateProperties generateProperties;
 
     public String getNormalProjectName(Integer projectId){
-        MetaProjectPO projectPO = metaProjectDAO.findById(projectId);
+        MetaProjectPO projectPO = this.getProject(projectId,true);
         return projectPO.fetchNormalProjectName();
     }
     /**
@@ -79,10 +79,7 @@ public class MetaProjectService {
     @OptimisticLock
     public void update(MetaProjectUpdateDTO metaProjectUpdateDTO) {
         Integer projectId = metaProjectUpdateDTO.getProjectId();
-        MetaProjectPO metaProject = metaProjectDAO.findById(projectId);
-        if (metaProject == null) {
-            throw new GenerateException("projectId有误");
-        }
+        MetaProjectPO metaProject = this.getProject(projectId,true);
         MetaProjectMapper.INSTANCE.setPO(metaProject, metaProjectUpdateDTO);
         if(StringUtils.isNotBlank(metaProjectUpdateDTO.getPassword())){
             String encrypt;
@@ -96,6 +93,16 @@ public class MetaProjectService {
         }
         metaProjectDAO.update(metaProject);
         this.updateProjectVersion(metaProject.getProjectId());
+    }
+
+
+    public MetaProjectPO getProject(Integer projectId, boolean force) {
+        MetaProjectPO metaProject = metaProjectDAO.findById(projectId);
+        if (force && metaProject == null) {
+            throw new GenerateException("未查询到项目");
+        }
+
+        return metaProject;
     }
 
     /**
@@ -113,10 +120,7 @@ public class MetaProjectService {
      * @return
      */
     public MetaProjectShowVO show(Integer projectId) {
-        MetaProjectPO metaProject = metaProjectDAO.findById(projectId);
-        if (metaProject == null) {
-            throw new GenerateException("未查询到记录");
-        }
+        MetaProjectPO metaProject = this.getProject(projectId,true);
         MetaProjectShowVO showVO = MetaProjectMapper.INSTANCE.toShowVO(metaProject);
         return showVO;
     }
@@ -141,7 +145,7 @@ public class MetaProjectService {
      * @param projectId
      */
     public void updateProjectVersion(Integer projectId){
-        MetaProjectPO projectPO = metaProjectDAO.findById(projectId);
+        MetaProjectPO projectPO = this.getProject(projectId,true);
         projectPO.setProjectVersion(projectPO.getProjectVersion()+1);
         metaProjectDAO.update(projectPO);
     }
@@ -153,4 +157,6 @@ public class MetaProjectService {
         MetaEntityPO entityPO = metaEntityDAO.findById(entityId);
         this.updateProjectVersion(entityPO.getProjectId());
     }
+
+
 }

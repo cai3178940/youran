@@ -8,7 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Title:
@@ -92,4 +94,19 @@ public class MetadataUtil {
             ||MySqlType.DOUBLE.equals(fieldType)
             ||MySqlType.FLOAT.equals(fieldType);
     }
+
+
+
+    public static String underlineToCamelCase(String name,boolean capFirst){
+        String[] split = StringUtils.split(name,"_");
+        String value = Arrays.stream(split)
+            .map(s -> StringUtils.capitalize(s.toLowerCase()))
+            .collect(Collectors.joining(""));
+        if(!capFirst){
+            return StringUtils.uncapitalize(value);
+        }
+        return value;
+    }
+
+
 }
