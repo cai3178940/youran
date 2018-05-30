@@ -82,6 +82,7 @@ public enum TemplateEnum {
     Service(ENTITY, "{coreModule}/src/main/java/{packageName}/service/{ClassName}Service.java.ftl"),
     /******** Core模块配置 *********/
     MybatisConfig(COMMON, "{coreModule}/src/main/resources/mybatis-config.xml.ftl"),
+    DefaultProperties(COMMON, "{coreModule}/src/main/resources/config/{project-name}-default.properties.ftl"),
     MybatisMapper(ENTITY, "{coreModule}/src/main/resources/{packageName}/mapper/{ClassName}Mapper.xml.ftl"),
 
 

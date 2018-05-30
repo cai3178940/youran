@@ -5,6 +5,7 @@
 <@import "org.springframework.context.annotation.*"/>
 <@classCom "配置类"/>
 @Configuration
+@PropertySources(value = @PropertySource("classpath:/config/${projectNameSplit}-default.properties"))
 public class ${ProjectName}Configuration {
 
 

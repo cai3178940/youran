@@ -15,6 +15,4 @@ spring:
 swagger:
     basePackage: ${packageName}
 
-mybatis:
-    config-location: classpath:mybatis-config.xml
 

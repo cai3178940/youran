@@ -429,8 +429,12 @@ public class MetaCodeGenService {
         map.put("packageName", project.getPackageName());
         //通用模块名
         map.put("commonPackage", project.fetchCommonPackageName());
-        //模块名
+        //项目名：驼峰格式-首字母小写
         map.put("projectName", project.fetchNormalProjectName());
+        //项目名：驼峰格式-首字母大写
+        map.put("ProjectName", StringUtils.capitalize(project.fetchNormalProjectName()));
+        //项目名：短横杠分割
+        map.put("projectNameSplit", project.getProjectName());
         //原始模块名
         map.put("originProjectName", project.getProjectName());
         //groupId
@@ -474,7 +478,8 @@ public class MetaCodeGenService {
                 .replace("{packageName}", packageName.replaceAll("\\.", "/"))
                 .replace("{commonPackage}",project.fetchCommonPackageName().replaceAll("\\.", "/"))
                 .replace("{ProjectName}", StringUtils.capitalize(project.fetchNormalProjectName()))
-                .replace("{projectName}", StringUtils.uncapitalize(project.fetchNormalProjectName()));
+                .replace("{projectName}", StringUtils.uncapitalize(project.fetchNormalProjectName()))
+                .replace("{project-name}", project.getProjectName());
         if (metaEntityPO != null) {
             templatePath = templatePath.replace("{ClassName}", StringUtils.capitalize(metaEntityPO.getClassName()));
         }

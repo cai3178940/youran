@@ -1,6 +1,3 @@
-<#assign projectName=projectName?uncapFirst><#--系统名称小写-->
-<#assign ProjectName=projectName?capFirst><#--系统名称大写-->
-
 <#-- 定义基本宏:if1 判断如果属性等于1，则显示内嵌元素-->
 <#macro if1 property>
     <#if property?? && property == 1>
