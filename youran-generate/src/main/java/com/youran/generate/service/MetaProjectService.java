@@ -3,11 +3,13 @@ package com.youran.generate.service;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.generate.config.GenerateProperties;
+import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaProjectDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
+import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
@@ -32,6 +34,8 @@ public class MetaProjectService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MetaProjectService.class);
 
+    @Autowired
+    private MetaEntityDAO metaEntityDAO;
     @Autowired
     private MetaProjectDAO metaProjectDAO;
 
@@ -140,5 +144,13 @@ public class MetaProjectService {
         MetaProjectPO projectPO = metaProjectDAO.findById(projectId);
         projectPO.setProjectVersion(projectPO.getProjectVersion()+1);
         metaProjectDAO.update(projectPO);
+    }
+    /**
+     * 通过entityId更新项目版本号
+     * @param entityId
+     */
+    public void updateProjectVersionByEntityId(Integer entityId) {
+        MetaEntityPO entityPO = metaEntityDAO.findById(entityId);
+        this.updateProjectVersion(entityPO.getProjectId());
     }
 }

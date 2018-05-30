@@ -34,6 +34,8 @@ public class MetaCascadeExtService {
     @Autowired
     private MetaCascadeExtDAO metaCascadeExtDAO;
     @Autowired
+    private MetaProjectService metaProjectService;
+    @Autowired
     private MetaFieldDAO metaFieldDAO;
 
 
@@ -46,6 +48,7 @@ public class MetaCascadeExtService {
     public MetaCascadeExtPO save(MetaCascadeExtAddDTO addDTO) {
         MetaCascadeExtPO metaCascadeExt = MetaCascadeExtMapper.INSTANCE.fromAddDTO(addDTO);
         metaCascadeExtDAO.save(metaCascadeExt);
+        metaProjectService.updateProjectVersionByEntityId(metaCascadeExt.getEntityId());
         return metaCascadeExt;
     }
 
@@ -63,6 +66,7 @@ public class MetaCascadeExtService {
         }
         MetaCascadeExtMapper.INSTANCE.setPO(metaCascadeExt, updateDTO);
         metaCascadeExtDAO.update(metaCascadeExt);
+        metaProjectService.updateProjectVersionByEntityId(metaCascadeExt.getEntityId());
     }
 
     /**
@@ -92,15 +96,24 @@ public class MetaCascadeExtService {
     }
 
     /**
-     * 删除项目
+     * 删除级联扩展
      * @param cascadeExtId
      * @return
      */
     @Transactional
     public int delete(Integer... cascadeExtId) {
         int count = 0;
+        Integer entityId = null;
         for (Integer id : cascadeExtId) {
+            MetaCascadeExtPO cascadeExtPO = metaCascadeExtDAO.findById(id);
+            if(cascadeExtPO==null){
+                continue;
+            }
+            entityId = cascadeExtPO.getEntityId();
             count += metaCascadeExtDAO.delete(id);
+        }
+        if(count>0) {
+            metaProjectService.updateProjectVersionByEntityId(entityId);
         }
         return count;
     }
