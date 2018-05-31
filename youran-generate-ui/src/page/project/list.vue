@@ -46,7 +46,7 @@
                 <icon name="th-list" scale="0.8" ></icon> 多对多管理
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" >
-                <icon name="object-group" scale="0.8" ></icon> 反向工程
+                <icon name="object-group" scale="0.8" ></icon> 反向工程(内测中)
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
                 <icon name="file-zip-o" scale="0.8" ></icon> 生成代码
@@ -65,13 +65,13 @@
 
 
     <el-dialog title="反向工程" :visible.sync="reverseEngineeringFormVisible" width="60%">
-      <el-form :model="templateForm">
+      <el-form ref="reverseEngineeringForm" :model="reverseEngineeringForm" :rules="reverseEngineeringFormRules">
         <el-form-item label="脚本语言：" label-width="100px">
           <el-radio-group v-model="reverseEngineeringForm.dbType">
             <el-radio border label="mysql">MySql</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="DDL脚本：" label-width="100px">
+        <el-form-item label="DDL脚本：" label-width="100px" prop="ddl">
           <el-input v-model="reverseEngineeringForm.ddl" type="textarea" :rows="10"></el-input>
         </el-form-item>
       </el-form>
@@ -101,6 +101,12 @@
           projectId: null,
           dbType: 'mysql',
           ddl: ''
+        },
+        reverseEngineeringFormRules: {
+          ddl: [
+            {required: true, message: '请输入DDL脚本', trigger: 'blur'},
+            {max: 10000, message: '长度不能超过10000个字符', trigger: 'blur'}
+          ]
         }
       }
     },
@@ -157,9 +163,14 @@
         this.reverseEngineeringForm.ddl = ''
       },
       handleReverseEngineeringCheck: function(){
-        var loading = this.$loading()
-        //校验
-        this.$ajax.post('/generate/reverse_engineering/check', this.reverseEngineeringForm)
+        var loading = null
+        //校验表单
+        this.$refs.reverseEngineeringForm.validate()
+        //提交表单
+          .then(()=>{
+            loading = this.$loading()
+            return this.$ajax.post('/generate/reverse_engineering/check', this.reverseEngineeringForm)
+          })
           //校验返回结果
           .then(response => this.$common.checkResult(response.data))
           .then(() => {
@@ -173,9 +184,14 @@
           })
       },
       handleReverseEngineeringSubmit: function(){
-        var loading = this.$loading()
-        //校验
-        this.$ajax.post('/generate/reverse_engineering/execute', this.reverseEngineeringForm)
+        var loading = null
+        //校验表单
+        this.$refs.reverseEngineeringForm.validate()
+        //提交表单
+          .then(()=>{
+            loading = this.$loading()
+            return this.$ajax.post('/generate/reverse_engineering/execute', this.reverseEngineeringForm)
+          })
         //校验返回结果
           .then(response => this.$common.checkResult(response.data))
           .then(() => {

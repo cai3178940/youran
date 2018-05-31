@@ -36,7 +36,7 @@ public class ReverseEngineeringController implements ReverseEngineeringAPI {
         try {
             reverseEngineeringService.parse(dto);
         } catch (GenerateException e) {
-            ReplyVO.fail(e.getMessage());
+            return ReplyVO.fail(e.getMessage());
         }
         return ReplyVO.success();
     }
@@ -47,7 +47,7 @@ public class ReverseEngineeringController implements ReverseEngineeringAPI {
         try {
             reverseEngineeringService.execute(dto);
         } catch (GenerateException e) {
-            ReplyVO.fail(e.getMessage());
+            return ReplyVO.fail(e.getMessage());
         }
         return ReplyVO.success();
     }
