@@ -45,6 +45,9 @@
               <el-dropdown-item :command="{method:'handleMtm',arg:scope.row}" >
                 <icon name="th-list" scale="0.8" ></icon> 多对多管理
               </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" >
+                <icon name="object-group" scale="0.8" ></icon> 反向工程
+              </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
                 <icon name="file-zip-o" scale="0.8" ></icon> 生成代码
               </el-dropdown-item>
@@ -60,6 +63,25 @@
       </el-table-column>
     </el-table>
 
+
+    <el-dialog title="反向工程" :visible.sync="reverseEngineeringFormVisible" width="60%">
+      <el-form :model="templateForm">
+        <el-form-item label="脚本语言：" label-width="100px">
+          <el-radio-group v-model="reverseEngineeringForm.dbType">
+            <el-radio border label="mysql">MySql</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="DDL脚本：" label-width="100px">
+          <el-input v-model="reverseEngineeringForm.ddl" type="textarea" :rows="10"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="reverseEngineeringFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleReverseEngineeringCheck">校 验</el-button>
+        <el-button type="success" @click="handleReverseEngineeringSubmit">反向生成</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -73,7 +95,13 @@
         activeNum: 0,
         selectItems: [],
         entities: [],
-        loading:false
+        loading:false,
+        reverseEngineeringFormVisible: false,
+        reverseEngineeringForm:{
+          projectId: null,
+          dbType: 'mysql',
+          ddl: ''
+        }
       }
     },
     methods: {
@@ -122,6 +150,44 @@
       },
       handleGenCode: function (row) {
         window.open(`${this.$common.BASE_API_URL}/generate/code_gen/genCode?projectId=${row.projectId}`)
+      },
+      handleReverseEngineering: function (row) {
+        this.reverseEngineeringFormVisible = true
+        this.reverseEngineeringForm.projectId = row.projectId
+        this.reverseEngineeringForm.ddl = ''
+      },
+      handleReverseEngineeringCheck: function(){
+        var loading = this.$loading()
+        //校验
+        this.$ajax.post('/generate/reverse_engineering/check', this.reverseEngineeringForm)
+          //校验返回结果
+          .then(response => this.$common.checkResult(response.data))
+          .then(() => {
+            this.$common.showMsg('success', '校验通过')
+          })
+          .catch(error => this.$common.showNotifyError(error))
+          .finally(()=>{
+            if(loading){
+              loading.close()
+            }
+          })
+      },
+      handleReverseEngineeringSubmit: function(){
+        var loading = this.$loading()
+        //校验
+        this.$ajax.post('/generate/reverse_engineering/execute', this.reverseEngineeringForm)
+        //校验返回结果
+          .then(response => this.$common.checkResult(response.data))
+          .then(() => {
+            this.$common.showMsg('success', '执行成功')
+            this.reverseEngineeringFormVisible = false
+          })
+          .catch(error => this.$common.showNotifyError(error))
+          .finally(()=>{
+            if(loading){
+              loading.close()
+            }
+          })
       },
       handleCommit: function (row) {
         this.loading = true

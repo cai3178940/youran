@@ -236,7 +236,7 @@ public class ReverseEngineeringService {
         metaFieldDTO.setFieldScale(fieldScale);
         metaFieldDTO.setFieldType(fieldType);
         metaFieldDTO.setInsert(autoIncrement?BoolConst.FALSE:BoolConst.TRUE);
-        metaFieldDTO.setJfieldName(MetadataUtil.underlineToCamelCase(fieldName,true));
+        metaFieldDTO.setJfieldName(MetadataUtil.underlineToCamelCase(fieldName,false));
         metaFieldDTO.setJfieldType(jFieldType.getJavaType());
         metaFieldDTO.setList(BoolConst.TRUE);
         metaFieldDTO.setListSort(BoolConst.TRUE);
@@ -281,13 +281,17 @@ public class ReverseEngineeringService {
      * @param value
      * @return
      */
-    private String cleanQuote(String value){
+    private static String cleanQuote(String value){
         if(StringUtils.isBlank(value)){
             return value;
         }
-        return value.replaceAll("`","");
+        if((value.startsWith("`")&&value.endsWith("`"))
+            ||
+            (value.startsWith("'")&&value.endsWith("'"))){
+            return value.substring(1,value.length()-1);
+        }
+        return value;
     }
-
 
 
 }
