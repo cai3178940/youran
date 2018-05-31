@@ -1,17 +1,26 @@
 package com.youran.generate.service;
 
 import com.alibaba.druid.sql.SQLUtils;
+import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.ast.statement.SQLCreateTableStatement;
+import com.alibaba.druid.sql.ast.statement.*;
+import com.alibaba.druid.sql.dialect.mysql.ast.MySqlKey;
+import com.alibaba.druid.sql.dialect.mysql.ast.MySqlPrimaryKey;
+import com.alibaba.druid.sql.dialect.mysql.ast.MySqlUnique;
 import com.alibaba.druid.sql.parser.ParserException;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.util.SafeUtil;
+import com.youran.generate.constant.JFieldType;
+import com.youran.generate.constant.MySqlType;
+import com.youran.generate.constant.QueryType;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
+import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.ReverseEngineeringDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
+import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.util.MetadataUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -21,7 +30,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Title: 反向工程Service
@@ -73,12 +86,13 @@ public class ReverseEngineeringService {
         return sqlStatements;
     }
 
+    /**
+     * 执行反向工程
+     * @param dto
+     */
     public void execute(ReverseEngineeringDTO dto) {
-
-
         MetaProjectPO project = metaProjectService.getProject(dto.getProjectId(),true);
-
-
+        //MetaProjectPO project = null;
 
         List<SQLStatement> list = this.parse(dto);
 
@@ -91,15 +105,71 @@ public class ReverseEngineeringService {
             String comment = cleanQuote(SafeUtil.getString(createTableStatement.getComment()));
 
             MetaEntityPO entity = createEntity(project, tableName, comment);
+            //MetaEntityPO entity = null;
 
+            SQLPrimaryKey primaryKey = createTableStatement.findPrimaryKey();
+            if(primaryKey==null){
+                throw new GenerateException("表【"+tableName+"】不存在主键");
+            }
+            if(primaryKey.getColumns().size()>1){
+                throw new GenerateException("表【"+tableName+"】存在联合主键，反向工程暂不支持联合主键");
+            }
+            String pkFieldName = cleanQuote(primaryKey.getColumns().get(0).getExpr().toString());
 
-            createTableStatement.forEachColumn(sqlColumnDefinition -> {
+            List<SQLTableElement> tableElementList = createTableStatement.getTableElementList();
 
+            int orderNo = 0;
+            Map<String,MetaFieldPO> fieldMap = new HashMap<>();
+            for (SQLTableElement element : tableElementList) {
+                if (element instanceof SQLColumnDefinition) {
+                    orderNo+=10;
+                    SQLColumnDefinition sqlColumnDefinition = (SQLColumnDefinition) element;
+                    String fieldName = cleanQuote(sqlColumnDefinition.getNameAsString());
+                    boolean pk = fieldName.equals(pkFieldName);
+                    String fieldType = sqlColumnDefinition.getDataType().getName();
+                    int fieldLength = 0;
+                    int fieldScale = 0;
+                    List<SQLExpr> arguments = sqlColumnDefinition.getDataType().getArguments();
+                    if(CollectionUtils.isNotEmpty(arguments)){
+                        fieldLength = SafeUtil.getInteger(arguments.get(0));
+                        if(arguments.size()>=2){
+                            fieldScale = SafeUtil.getInteger(arguments.get(1));
+                        }
+                    }
+                    boolean autoIncrement = sqlColumnDefinition.isAutoIncrement();
+                    boolean notNull = sqlColumnDefinition.containsNotNullConstaint();
+                    String defaultValue = sqlColumnDefinition.getDefaultExpr()==null?"":sqlColumnDefinition.getDefaultExpr().toString();
+                    String desc = sqlColumnDefinition.getComment()==null?"":sqlColumnDefinition.getComment().toString();
 
+                   MetaFieldPO field = this.createField(entity, fieldName, fieldType,
+                        fieldLength, fieldScale, pk,
+                        autoIncrement, notNull, orderNo,
+                        defaultValue, desc);
+                    //MetaFieldPO field = null;
 
+                    fieldMap.put(fieldName,field);
+                    continue;
+                }
+                if (element instanceof MySqlPrimaryKey) {
+                    continue;
+                }
+                if (element instanceof MySqlKey) {
 
-            });
+                    boolean unique = (element instanceof MySqlUnique);
+                    MySqlKey sqlKey = (MySqlKey) element;
+                    System.out.println(sqlKey);
+                    String indexName = sqlKey.getName().toString();
 
+                    List<MetaFieldPO> fields = new ArrayList<>();
+                    for (SQLSelectOrderByItem item : sqlKey.getColumns()) {
+                        String columnName = cleanQuote(item.getExpr().toString());
+                        fields.add(fieldMap.get(columnName));
+                    }
+
+                    this.createIndex(entity,indexName,unique,fields);
+
+                }
+            }
 
 
 
@@ -107,6 +177,13 @@ public class ReverseEngineeringService {
 
     }
 
+    /**
+     * 创建实体
+     * @param project
+     * @param tableName
+     * @param comment
+     * @return
+     */
     private MetaEntityPO createEntity(MetaProjectPO project, String tableName, String comment) {
         MetaEntityAddDTO metaEntityDTO = new MetaEntityAddDTO();
         metaEntityDTO.setProjectId(project.getProjectId());
@@ -120,45 +197,90 @@ public class ReverseEngineeringService {
         return metaEntityService.save(metaEntityDTO);
     }
 
+    /**
+     * 创建字段
+     * @param entity
+     * @param fieldName
+     * @param fieldType
+     * @param fieldLength
+     * @param fieldScale
+     * @param pk
+     * @param autoIncrement
+     * @param notNull
+     * @param orderNo
+     * @param defaultValue
+     * @param desc
+     * @return
+     */
+    private MetaFieldPO createField(MetaEntityPO entity,
+                                    String fieldName, String fieldType,
+                                    int fieldLength,int fieldScale,
+                                    boolean pk,boolean autoIncrement,
+                                    boolean notNull,int orderNo,
+                                    String defaultValue,String desc){
 
-    private MetaFieldPO createField(MetaEntityPO entity){
+        JFieldType jFieldType = MySqlType.mapperJFieldType(fieldType);
 
         MetaFieldAddDTO metaFieldDTO =  new MetaFieldAddDTO();
 
-        metaFieldDTO.setEntityId();
-        metaFieldDTO.setAutoIncrement();
-        metaFieldDTO.setDefaultValue();
-        metaFieldDTO.setDicType();
-        metaFieldDTO.setEditType();
-        metaFieldDTO.setFieldComment();
-        metaFieldDTO.setFieldDesc();
-        metaFieldDTO.setFieldExample();
-        metaFieldDTO.setFieldLength();
-        metaFieldDTO.setFieldName();
-        metaFieldDTO.setFieldScale();
-        metaFieldDTO.setFieldType();
-        metaFieldDTO.setInsert();
-        metaFieldDTO.setJfieldName();
-        metaFieldDTO.setJfieldType();
-        metaFieldDTO.setList();
-        metaFieldDTO.setListSort();
-        metaFieldDTO.setNotNull();
-        metaFieldDTO.setOrderNo();
-        metaFieldDTO.setPrimaryKey();
-        metaFieldDTO.setForeignKey();
-        metaFieldDTO.setForeignEntityId();
-        metaFieldDTO.setForeignFieldId();
-        metaFieldDTO.setQuery();
-        metaFieldDTO.setQueryType();
-        metaFieldDTO.setShow();
-        metaFieldDTO.setUpdate();
-        metaFieldDTO.setSpecialField();
-
+        metaFieldDTO.setEntityId(entity.getEntityId());
+        metaFieldDTO.setAutoIncrement(autoIncrement?BoolConst.TRUE:BoolConst.FALSE);
+        metaFieldDTO.setDefaultValue(defaultValue);
+        metaFieldDTO.setDicType(null);
+        metaFieldDTO.setEditType(null);
+        metaFieldDTO.setFieldComment(desc);
+        metaFieldDTO.setFieldDesc(desc);
+        metaFieldDTO.setFieldExample("");
+        metaFieldDTO.setFieldLength(fieldLength);
+        metaFieldDTO.setFieldName(fieldName);
+        metaFieldDTO.setFieldScale(fieldScale);
+        metaFieldDTO.setFieldType(fieldType);
+        metaFieldDTO.setInsert(autoIncrement?BoolConst.FALSE:BoolConst.TRUE);
+        metaFieldDTO.setJfieldName(MetadataUtil.underlineToCamelCase(fieldName,true));
+        metaFieldDTO.setJfieldType(jFieldType.getJavaType());
+        metaFieldDTO.setList(BoolConst.TRUE);
+        metaFieldDTO.setListSort(BoolConst.TRUE);
+        metaFieldDTO.setNotNull(notNull?BoolConst.TRUE:BoolConst.FALSE);
+        metaFieldDTO.setOrderNo(orderNo);
+        metaFieldDTO.setPrimaryKey(pk?BoolConst.TRUE:BoolConst.FALSE);
+        metaFieldDTO.setForeignKey(BoolConst.FALSE);
+        metaFieldDTO.setForeignEntityId(null);
+        metaFieldDTO.setForeignFieldId(null);
+        metaFieldDTO.setQuery(pk?BoolConst.FALSE:BoolConst.TRUE);
+        metaFieldDTO.setQueryType(QueryType.guessQueryType(jFieldType,fieldLength));
+        metaFieldDTO.setShow(BoolConst.TRUE);
+        metaFieldDTO.setUpdate(pk?BoolConst.FALSE:BoolConst.TRUE);
+        metaFieldDTO.setSpecialField(null);
 
         return metaFieldService.save(metaFieldDTO);
     }
 
 
+    /**
+     * 创建索引
+     * @param entity
+     * @param indexName
+     * @param unique
+     * @param fields
+     * @return
+     */
+    public MetaIndexPO createIndex(MetaEntityPO entity, String indexName, boolean unique, List<MetaFieldPO> fields){
+        MetaIndexAddDTO metaIndexAddDTO = new MetaIndexAddDTO();
+        metaIndexAddDTO.setIndexName(indexName);
+        metaIndexAddDTO.setEntityId(entity.getEntityId());
+        metaIndexAddDTO.setUnique(unique?BoolConst.TRUE:BoolConst.FALSE);
+        String fieldIds = fields.stream()
+            .map(field -> field.getFieldId().toString())
+            .collect(Collectors.joining(","));
+        metaIndexAddDTO.setFieldIds(fieldIds);
+        return metaIndexService.save(metaIndexAddDTO);
+    }
+
+    /**
+     * 清理反引号
+     * @param value
+     * @return
+     */
     private String cleanQuote(String value){
         if(StringUtils.isBlank(value)){
             return value;
@@ -166,32 +288,6 @@ public class ReverseEngineeringService {
         return value.replaceAll("`","");
     }
 
-    public static void main(String[] args) {
-        ReverseEngineeringService service = new ReverseEngineeringService();
-        ReverseEngineeringDTO dto = new ReverseEngineeringDTO();
-        dto.setDdl("CREATE TABLE `meta_entity` (\n" +
-            "  `entityId` int(11) AUTO_INCREMENT COMMENT '实体id',\n" +
-            "  `projectId` int(11) NOT NULL COMMENT '所属项目id',\n" +
-            "  `schemaName` varchar(20) DEFAULT NULL COMMENT '模式名',\n" +
-            "  `className` varchar(50) NOT NULL COMMENT '类名',\n" +
-            "  `tableName` varchar(50) NOT NULL COMMENT '表名',\n" +
-            "  `title` varchar(25) NOT NULL COMMENT '标题',\n" +
-            "  `desc` varchar(250) DEFAULT NULL COMMENT '实体描述',\n" +
-            "  `commonCall` smallint(1) NOT NULL COMMENT '是否支持通用服务调用',\n" +
-            "  `pageSign` smallint(1) DEFAULT NULL COMMENT '是否支持分页查询',\n" +
-            "  `createDate` datetime DEFAULT NULL COMMENT '创建时间',\n" +
-            "  `createBy` varchar(32) DEFAULT NULL COMMENT '创建人',\n" +
-            "  `operateDate` datetime DEFAULT NULL COMMENT '操作时间',\n" +
-            "  `operateBy` varchar(32) DEFAULT NULL COMMENT '操作人',\n" +
-            "  `delSign` smallint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',\n" +
-            "  `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',\n" +
-            "  PRIMARY KEY (`entityId`),\n" +
-            "  KEY `i_meta_entity_0` (`projectId`) USING BTREE,\n" +
-            "  UNIQUE KEY `i_meta_entity_1` (`projectId`,`className`) USING BTREE\n" +
-            ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_entity';");
-        dto.setDbType("mysql");
 
-        service.execute(dto);
-    }
 
 }
