@@ -139,7 +139,7 @@ public class ReverseEngineeringService {
                     boolean autoIncrement = sqlColumnDefinition.isAutoIncrement();
                     boolean notNull = sqlColumnDefinition.containsNotNullConstaint();
                     String defaultValue = sqlColumnDefinition.getDefaultExpr()==null?"":sqlColumnDefinition.getDefaultExpr().toString();
-                    String desc = sqlColumnDefinition.getComment()==null?"":sqlColumnDefinition.getComment().toString();
+                    String desc = sqlColumnDefinition.getComment()==null?"":cleanQuote(sqlColumnDefinition.getComment().toString());
 
                    MetaFieldPO field = this.createField(entity, fieldName, fieldType,
                         fieldLength, fieldScale, pk,
