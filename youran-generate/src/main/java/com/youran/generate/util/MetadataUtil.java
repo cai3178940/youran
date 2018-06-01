@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Title:
@@ -106,6 +107,17 @@ public class MetadataUtil {
             return StringUtils.uncapitalize(value);
         }
         return value;
+    }
+
+    public static String camelCaseToUnderline(String name,boolean upCase){
+        String[] split = StringUtils.splitByCharacterTypeCamelCase(name);
+        Stream<String> stream = Arrays.stream(split);
+        if(upCase){
+            stream = stream.map(String::toUpperCase);
+        }else{
+            stream = stream.map(String::toLowerCase);
+        }
+        return stream.collect(Collectors.joining("_"));
     }
 
 

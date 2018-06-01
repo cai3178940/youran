@@ -69,6 +69,11 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
      * 外键对应级联扩展
      */
     private List<MetaCascadeExtPO> cascadeExts;
+    private List<MetaCascadeExtPO> cascadeQueryExts;
+    private List<MetaCascadeExtPO> cascadeShowExts;
+    private List<MetaCascadeExtPO> cascadeListExts;
+
+
 
     public List<MetaCascadeExtPO> getCascadeExts() {
         return cascadeExts;
@@ -372,5 +377,29 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
 
     public void setDelSign(Integer delSign) {
         this.delSign = delSign;
+    }
+
+    public List<MetaCascadeExtPO> getCascadeQueryExts() {
+        return cascadeQueryExts;
+    }
+
+    public void setCascadeQueryExts(List<MetaCascadeExtPO> cascadeQueryExts) {
+        this.cascadeQueryExts = cascadeQueryExts;
+    }
+
+    public List<MetaCascadeExtPO> getCascadeShowExts() {
+        return cascadeShowExts;
+    }
+
+    public void setCascadeShowExts(List<MetaCascadeExtPO> cascadeShowExts) {
+        this.cascadeShowExts = cascadeShowExts;
+    }
+
+    public List<MetaCascadeExtPO> getCascadeListExts() {
+        return cascadeListExts;
+    }
+
+    public void setCascadeListExts(List<MetaCascadeExtPO> cascadeListExts) {
+        this.cascadeListExts = cascadeListExts;
     }
 }

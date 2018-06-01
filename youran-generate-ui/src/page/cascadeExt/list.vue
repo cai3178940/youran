@@ -34,7 +34,16 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="是否在列表中展示" width="150px">
+      <el-table-column label="查询条件" width="120px">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.query"
+                     :active-value="1"
+                     :inactive-value="0"
+                     :disabled="!scope.row.editFlag">
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column label="列表展示" width="120px">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.list"
                      :active-value="1"
@@ -43,7 +52,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="是否在详情中展示" width="150px">
+      <el-table-column label="详情展示" width="120px">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.show"
                      :active-value="1"
@@ -76,6 +85,8 @@
     list: 1,
     //是否在详情中展示
     show: 1,
+    //是否为查询条件
+    query: 1,
     //级联实体的id
     cascadeEntityId: null,
     //级联展示字段的id

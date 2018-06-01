@@ -25,24 +25,27 @@ public class ${CName}ShowVO extends AbstractVO {
 
 </#list>
 <#list fields as field>
-    <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
-        <#list field.cascadeExts as cascadeExt>
-            <#if cascadeExt.show==1>
-                <#assign cascadeField=cascadeExt.cascadeField>
-                <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
-                    <@import "java.util.Date"/>
-                    <@import "com.fasterxml.jackson.annotation.JsonFormat"/>
-                    <@import "${commonPackage}.constant.JsonFieldConst"/>
-    @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
-                <#elseIf cascadeField.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-                    <@import "java.math.BigDecimal"/>
-                </#if>
-    private ${cascadeField.jfieldType} ${cascadeExt.alias};
+    <#if field.cascadeShowExts?? && field.cascadeShowExts?size &gt; 0>
+        <#list field.cascadeShowExts as cascadeExt>
+            <#assign cascadeField=cascadeExt.cascadeField>
+            <#assign examplePackage="">
+            <#if field.foreignEntity!=metaEntity>
+                <#assign examplePackage="${packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example.">
             </#if>
+    @ApiModelProperty(notes = ${examplePackage}N_${cascadeField.jfieldName?upperCase},example = ${examplePackage}E_${cascadeField.jfieldName?upperCase})
+            <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
+                <@import "java.util.Date"/>
+                <@import "com.fasterxml.jackson.annotation.JsonFormat"/>
+                <@import "${commonPackage}.constant.JsonFieldConst"/>
+    @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
+            <#elseIf cascadeField.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
+                <@import "java.math.BigDecimal"/>
+            </#if>
+    private ${cascadeField.jfieldType} ${cascadeExt.alias};
+
         </#list>
     </#if>
 </#list>
-
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
         <@import "java.util.List"/>
@@ -60,11 +63,9 @@ public class ${CName}ShowVO extends AbstractVO {
 </#list>
 
 <#list fields as field>
-    <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
-        <#list field.cascadeExts as cascadeExt>
-            <#if cascadeExt.show==1>
-                <@getterSetter2 cascadeExt.alias cascadeExt.cascadeField.jfieldType/>
-            </#if>
+    <#if field.cascadeShowExts?? && field.cascadeShowExts?size &gt; 0>
+        <#list field.cascadeShowExts as cascadeExt>
+            <@getterSetter2 cascadeExt.alias cascadeExt.cascadeField.jfieldType/>
         </#list>
     </#if>
 </#list>

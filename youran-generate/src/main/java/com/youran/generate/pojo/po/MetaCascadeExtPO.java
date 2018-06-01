@@ -44,6 +44,11 @@ public class MetaCascadeExtPO extends AbstractPO implements CreateOperateDeleteV
     private Integer show;
 
     /**
+     * 是否为列表查询条件
+     */
+    private Integer query;
+
+    /**
      * 级联实体的id
      */
     private Integer cascadeEntityId;
@@ -126,6 +131,14 @@ public class MetaCascadeExtPO extends AbstractPO implements CreateOperateDeleteV
 
     public void setShow(Integer show) {
         this.show = show;
+    }
+
+    public Integer getQuery() {
+        return query;
+    }
+
+    public void setQuery(Integer query) {
+        this.query = query;
     }
 
     public Integer getCascadeEntityId() {

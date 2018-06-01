@@ -23,6 +23,8 @@ public class MetaCascadeExtExample extends AbstractExample {
     public static final String E_LIST = "1";
     public static final String N_SHOW = "是否在详情中展示";
     public static final String E_SHOW = "1";
+    public static final String N_QUERY = "是否为查询条件";
+    public static final String E_QUERY = "1";
     public static final String N_CASCADEENTITYID = "级联实体的id";
     public static final String E_CASCADEENTITYID = "2";
     public static final String N_CASCADEFIELDID = "级联展示字段的id";

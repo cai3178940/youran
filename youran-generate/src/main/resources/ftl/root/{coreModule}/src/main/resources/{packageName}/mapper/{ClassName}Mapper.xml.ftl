@@ -107,6 +107,63 @@
         </if>
         </#if>
     </#list>
+    <#assign cascadeIndex=0>
+    <#list fields as field>
+        <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
+            <#assign cascadeIndex=cascadeIndex+1>
+            <#assign con_ex_arr=[]>
+            <#list field.cascadeQueryExts as cascadeExt>
+                <#assign cascadeField=cascadeExt.cascadeField>
+                <#--非between类型-->
+                <#if cascadeField.queryType!=QueryType.BETWEEN>
+                    <#assign con_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_con_ex">
+                    <#assign con_ex_arr = con_ex_arr + [ con_ex ] >
+        <bind name="${con_ex}" value="${cascadeExt.alias} != null <#if cascadeField.jfieldType==JFieldType.STRING.getJavaType()> and ${cascadeExt.alias} !=''</#if>" />
+                <#else>
+                <#--between类型-->
+                    <#assign con_start_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_start_con_ex">
+                    <#assign con_end_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_end_con_ex">
+                    <#assign con_ex_arr = con_ex_arr + [ con_start_ex,con_end_ex ] >
+        <bind name="${con_start_ex}" value="${cascadeExt.alias}Start != null <#if cascadeField.jfieldType==JFieldType.STRING.getJavaType()> and ${cascadeExt.alias}Start !=''</#if>" />
+        <bind name="${con_end_ex}" value="${cascadeExt.alias}End != null <#if cascadeField.jfieldType==JFieldType.STRING.getJavaType()> and ${cascadeExt.alias}End !=''</#if>" />
+                </#if>
+            </#list>
+        <if test="${con_ex_arr?join(' or ')} ">
+            and exists(
+                select 1 from ${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.tableName)} e${cascadeIndex}
+                where e${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.pkField.fieldName)} = t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}
+            <#if field.foreignEntity.delField??>
+                and e${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.delField.fieldName)}=0
+            </#if>
+            <#list field.cascadeQueryExts as cascadeExt>
+                <#assign cascadeField=cascadeExt.cascadeField>
+                <#--非between类型-->
+                <#if cascadeField.queryType!=QueryType.BETWEEN>
+                    <#assign con_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_con_ex">
+            <if test="${con_ex}">
+                    <#if cascadeField.queryType==QueryType.LIKE>
+                <bind name="${cascadeExt.alias}_pattern" value="'%' + ${cascadeExt.alias} + '%'" />
+                and e${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(cascadeField.fieldName)} ${QueryType.mapperSymbol(cascadeField.queryType)} ${r'#'}{${cascadeExt.alias}_pattern}
+                    <#else>
+                and e${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(cascadeField.fieldName)} ${QueryType.mapperSymbol(cascadeField.queryType)} ${r'#'}{${cascadeExt.alias}}
+                    </#if>
+            </if>
+                <#else>
+                <#--between类型-->
+                    <#assign con_start_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_start_con_ex">
+                    <#assign con_end_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_end_con_ex">
+            <if test="${con_start_ex}">
+                and e${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(cascadeField.fieldName)} >= ${r'#'}{${cascadeExt.alias}Start}
+            </if>
+            <if test="${con_end_ex}">
+                and e${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(cascadeField.fieldName)} &lt;= ${r'#'}{${cascadeExt.alias}End}
+            </if>
+                </#if>
+            </#list>
+            )
+        </if>
+        </#if>
+    </#list>
     </sql>
 
     <sql id="orderCondition">
@@ -137,43 +194,21 @@
     </select>
 
     <select id="findListByQuery" parameterType="${CName}QO" resultType="${CName}ListVO">
-        <#assign cascadeIndex=0>
         select
             <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+        <#assign cascadeIndex=0>
         <#list fields as field>
-            <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
-                <#assign ifBreak=true>
-                <#list field.cascadeExts as cascadeExt>
-                    <#if cascadeExt.list==1>
-                        <#assign ifBreak=false>
-                        <#break>
-                    </#if>
-                </#list>
-                <#if ifBreak>
-                    <#break>
-                </#if>
+            <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
                 <#assign cascadeIndex=cascadeIndex+1>
-                <#list field.cascadeExts as cascadeExt>
-                    <#if cascadeExt.list==1>
+                <#list field.cascadeListExts as cascadeExt>
             ,c${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(cascadeExt.cascadeField.fieldName)} as ${cascadeExt.alias}
-                    </#if>
                 </#list>
             </#if>
         </#list>
         from ${wrapTableName} t
         <#assign cascadeIndex=0>
         <#list fields as field>
-            <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
-                <#assign ifBreak=true>
-                <#list field.cascadeExts as cascadeExt>
-                    <#if cascadeExt.list==1>
-                        <#assign ifBreak=false>
-                        <#break>
-                    </#if>
-                </#list>
-                <#if ifBreak>
-                    <#break>
-                </#if>
+            <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
                 <#assign cascadeIndex=cascadeIndex+1>
         left outer join ${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.tableName)} c${cascadeIndex}
             on c${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.pkField.fieldName)} = t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}

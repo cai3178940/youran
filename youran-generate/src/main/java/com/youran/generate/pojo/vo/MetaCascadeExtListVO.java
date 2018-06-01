@@ -52,6 +52,12 @@ public class MetaCascadeExtListVO {
     private Integer show;
 
     /**
+     * 是否为查询条件
+     */
+    @ApiModelProperty(notes = N_QUERY, example = E_QUERY)
+    private Integer query;
+
+    /**
      * 级联实体的id
      */
     @ApiModelProperty(notes = N_CASCADEENTITYID, example = E_CASCADEENTITYID)
@@ -127,6 +133,14 @@ public class MetaCascadeExtListVO {
 
     public void setShow(Integer show) {
         this.show = show;
+    }
+
+    public Integer getQuery() {
+        return query;
+    }
+
+    public void setQuery(Integer query) {
+        this.query = query;
     }
 
     public Integer getCascadeEntityId() {

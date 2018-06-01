@@ -127,6 +127,9 @@ public class MetaCodeGenService {
      */
     private void fillMetaCascadeExtList(MetaFieldPO metaFieldPO,List<MetaFieldPO> foreignFields) {
         List<MetaCascadeExtPO> cascadeExts = metaCascadeExtDAO.findByFieldId(metaFieldPO.getFieldId());
+        List<MetaCascadeExtPO> cascadeQueryExts = new ArrayList<>();
+        List<MetaCascadeExtPO> cascadeShowExts = new ArrayList<>();
+        List<MetaCascadeExtPO> cascadeListExts = new ArrayList<>();
         for (MetaCascadeExtPO cascadeExt : cascadeExts) {
             Optional<MetaFieldPO> first = foreignFields.stream()
                 .filter(field -> field.getFieldId().equals(cascadeExt.getCascadeFieldId()))
@@ -135,8 +138,20 @@ public class MetaCodeGenService {
                 throw new GenerateException(metaFieldPO.getFieldDesc()+"的级联扩展字段有误");
             }
             cascadeExt.setCascadeField(first.get());
+            if(BoolConst.TRUE==cascadeExt.getQuery()){
+                cascadeQueryExts.add(cascadeExt);
+            }
+            if(BoolConst.TRUE==cascadeExt.getShow()){
+                cascadeShowExts.add(cascadeExt);
+            }
+            if(BoolConst.TRUE==cascadeExt.getList()){
+                cascadeListExts.add(cascadeExt);
+            }
         }
         metaFieldPO.setCascadeExts(cascadeExts);
+        metaFieldPO.setCascadeQueryExts(cascadeQueryExts);
+        metaFieldPO.setCascadeShowExts(cascadeShowExts);
+        metaFieldPO.setCascadeListExts(cascadeListExts);
     }
 
     /**

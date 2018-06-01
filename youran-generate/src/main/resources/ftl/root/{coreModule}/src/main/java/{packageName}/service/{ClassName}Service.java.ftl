@@ -52,13 +52,8 @@ public class ${CName}Service {
     </#list>
 </#if>
 <#list fields as field>
-    <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
-        <#list field.cascadeExts as cascadeExt>
-            <#if cascadeExt.list==1>
-                <@autowired "${packageName}.dao" "${field.foreignEntity.className?capFirst}DAO"/>
-                <#break>
-            </#if>
-        </#list>
+    <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
+        <@autowired "${packageName}.dao" "${field.foreignEntity.className?capFirst}DAO"/>
     </#if>
 </#list>
 
@@ -179,26 +174,14 @@ public class ${CName}Service {
         ${CName}PO ${cName} = this.get${CName}(${id}, true);
         ${CName}ShowVO showVO = ${CName}Mapper.INSTANCE.toShowVO(${cName});
 <#list fields as field>
-    <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
-        <#assign ifBreak=true>
-        <#list field.cascadeExts as cascadeExt>
-            <#if cascadeExt.show==1>
-                <#assign ifBreak=false>
-                <#break>
-            </#if>
-        </#list>
-        <#if ifBreak>
-            <#break>
-        </#if>
+    <#if field.cascadeShowExts?? && field.cascadeShowExts?size &gt; 0>
         <#assign otherCName=field.foreignEntity.className?capFirst>
         <#assign othercName=field.foreignEntity.className?uncapFirst>
         <@import "${packageName}.pojo.po.${otherCName}PO"/>
         if(${cName}.get${field.jfieldName?capFirst}()!=null){
             ${otherCName}PO _${othercName}PO = ${othercName}DAO.findById(${cName}.get${field.jfieldName?capFirst}());
-        <#list field.cascadeExts as cascadeExt>
-            <#if cascadeExt.show==1>
+        <#list field.cascadeShowExts as cascadeExt>
             showVO.set${cascadeExt.alias?capFirst}(_${othercName}PO.get${cascadeExt.cascadeField.jfieldName?capFirst}());
-            </#if>
         </#list>
         }
     </#if>

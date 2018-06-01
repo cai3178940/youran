@@ -25,20 +25,24 @@ public class ${CName}ListVO extends AbstractVO {
 
 </#list>
 <#list fields as field>
-    <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
-        <#list field.cascadeExts as cascadeExt>
-            <#if cascadeExt.list==1>
-                <#assign cascadeField=cascadeExt.cascadeField>
-                <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
-                    <@import "java.util.Date"/>
-                    <@import "com.fasterxml.jackson.annotation.JsonFormat"/>
-                    <@import "${commonPackage}.constant.JsonFieldConst"/>
-    @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
-                <#elseIf cascadeField.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-                    <@import "java.math.BigDecimal"/>
-                </#if>
-    private ${cascadeField.jfieldType} ${cascadeExt.alias};
+    <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
+        <#list field.cascadeListExts as cascadeExt>
+            <#assign cascadeField=cascadeExt.cascadeField>
+            <#assign examplePackage="">
+            <#if field.foreignEntity!=metaEntity>
+                <#assign examplePackage="${packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example.">
             </#if>
+    @ApiModelProperty(notes = ${examplePackage}N_${cascadeField.jfieldName?upperCase},example = ${examplePackage}E_${cascadeField.jfieldName?upperCase})
+            <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
+                <@import "java.util.Date"/>
+                <@import "com.fasterxml.jackson.annotation.JsonFormat"/>
+                <@import "${commonPackage}.constant.JsonFieldConst"/>
+    @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
+            <#elseIf cascadeField.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
+                <@import "java.math.BigDecimal"/>
+            </#if>
+    private ${cascadeField.jfieldType} ${cascadeExt.alias};
+
         </#list>
     </#if>
 </#list>
@@ -47,11 +51,9 @@ public class ${CName}ListVO extends AbstractVO {
     <@getterSetter field/>
 </#list>
 <#list fields as field>
-    <#if field.foreignKey==1 && field.cascadeExts?size &gt; 0>
-        <#list field.cascadeExts as cascadeExt>
-            <#if cascadeExt.list==1>
-                <@getterSetter2 cascadeExt.alias cascadeExt.cascadeField.jfieldType/>
-            </#if>
+    <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
+        <#list field.cascadeListExts as cascadeExt>
+            <@getterSetter2 cascadeExt.alias cascadeExt.cascadeField.jfieldType/>
         </#list>
     </#if>
 </#list>

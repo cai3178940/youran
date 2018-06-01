@@ -183,6 +183,7 @@ CREATE TABLE `meta_cascade_ext` (
     `alias` varchar(255) NOT NULL COMMENT '展示字段别名',
     `list` smallint(1) NOT NULL COMMENT '是否在列表中展示',
     `show` smallint(1) NOT NULL COMMENT '是否在详情中展示',
+    `query` smallint(1) NOT NULL COMMENT '是否为查询条件',
     `cascadeEntityId` int(11) NOT NULL COMMENT '级联实体的id',
     `cascadeFieldId` int(11) NOT NULL COMMENT '级联展示字段的id',
     `createDate` datetime DEFAULT NULL COMMENT '创建时间',

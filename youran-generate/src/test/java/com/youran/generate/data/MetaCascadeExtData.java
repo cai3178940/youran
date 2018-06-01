@@ -24,6 +24,7 @@ public class MetaCascadeExtData {
         dto.setAlias("alias"+fieldId);
         dto.setList(1);
         dto.setShow(1);
+        dto.setQuery(1);
         dto.setCascadeEntityId(cascadeEntityId);
         dto.setCascadeFieldId(cascadeFieldId);
         return dto;
@@ -42,6 +43,7 @@ public class MetaCascadeExtData {
         dto.setAlias(metaCascadeExt.getAlias()+"s");
         dto.setList(metaCascadeExt.getList());
         dto.setShow(metaCascadeExt.getShow());
+        dto.setQuery(metaCascadeExt.getQuery());
         dto.setCascadeEntityId(metaCascadeExt.getCascadeEntityId());
         dto.setCascadeFieldId(metaCascadeExt.getCascadeFieldId());
         return dto;
