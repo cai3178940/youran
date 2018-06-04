@@ -9,10 +9,20 @@
   height: 100%;
 }
 
-.el-breadcrumb__inner{
-  color: #409EFF;
+.el-breadcrumb {
+  font-size: 14px;
+  line-height: 1.2;
+  padding-bottom: 20px;
 }
 
-.el-breadcrumb{
-  padding-bottom: 20px;
+
+.el-breadcrumb__inner.is-link{
+  cursor:pointer;
+  color:#409EFF
+}
+
+
+.el-dropdown-link{
+  cursor:pointer;
+  color:#409EFF
 }

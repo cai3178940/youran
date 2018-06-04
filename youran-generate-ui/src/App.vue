@@ -1,9 +1,14 @@
 <template>
   <el-container class="wrapper">
     <el-header
-      height="60px"
+      height="80px"
       style="background-color: #409EFF;">
-          <h2 align="left" style="color:#FFFFFF;margin: 10px 0;">youran代码自动化平台</h2>
+      <div class="header-logo">
+        <img src="./assets/logo.png" alt="element-logo" style="width: 60px; height: 60px;">
+      </div>
+      <div class="header-title">
+        <h2 align="left" style="color:#FFFFFF;margin: 10px 0;">youran代码自动化平台</h2>
+      </div>
     </el-header>
     <el-container>
       <!-- 左侧导航 -->
@@ -51,31 +56,4 @@
   }
 </script>
 
-<style>
 
-  .slide-fade-enter-active {
-    animation: fade-in .2s;
-  }
-  .slide-fade-leave-active {
-    animation: fade-out .4s;
-  }
-  @keyframes fade-in {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 100;
-    }
-  }
-  @keyframes fade-out {
-    0% {
-      /*transform: translateX(0%);*/
-      opacity: 100;
-    }
-    100% {
-      /*transform: translateX(90%);*/
-      opacity: 0;
-    }
-  }
-
-</style>
