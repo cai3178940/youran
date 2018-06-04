@@ -1,0 +1,18 @@
+/**
+ * 调整表格行高
+ */
+.el-table td{
+  padding: 6px 0;
+}
+
+.el-menu {
+  height: 100%;
+}
+
+.el-breadcrumb__inner{
+  color: #409EFF;
+}
+
+.el-breadcrumb{
+  padding-bottom: 20px;
+}

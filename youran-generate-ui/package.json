@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "element-ui": "^2.2.1",
+    "element-ui": "^2.4.0",
     "github-markdown-css": "^2.10.0",
     "showdown": "^1.8.6",
-    "vue": "^2.5.15",
+    "vue": "^2.5.16",
     "vue-awesome": "^2.3.5",
     "vue-router": "^3.0.1"
   },

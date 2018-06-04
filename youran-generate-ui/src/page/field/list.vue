@@ -24,7 +24,7 @@
             <help-popover name="fieldListHelp" :pic="{copyField:copyFieldUrl}">
               <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加</el-button>
               <el-button @click.native="handleDel" type="danger">删除</el-button>
-              <el-badge :value="cacheTemplateCount" class="item">
+              <el-badge :value="cacheTemplateCount" :hidden="!cacheTemplateCount" class="item">
                 <el-button @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>
               </el-badge>
             </help-popover>
@@ -75,8 +75,8 @@
           <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
           <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
           <el-button @click="handleCopyOne(scope.row)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
-          <el-badge :value="scope.row.cascadeFieldNum" class="cascadeBadge">
-            <el-button v-if="scope.row.foreignKey==1" @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
+          <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
+            <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
           </el-badge>
         </template>
       </el-table-column>
