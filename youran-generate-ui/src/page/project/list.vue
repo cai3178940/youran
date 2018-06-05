@@ -8,7 +8,7 @@
         已选择{{ activeNum }}个项目
       </el-col>
       <el-col :span="18" style="text-align: right;">
-        <el-button @click.native="handleAdd" type="success">添加</el-button>
+        <el-button @click.native="handleAdd" type="success">创建项目</el-button>
         <el-button @click.native="handleDel" type="danger">删除</el-button>
       </el-col>
     </el-row>
