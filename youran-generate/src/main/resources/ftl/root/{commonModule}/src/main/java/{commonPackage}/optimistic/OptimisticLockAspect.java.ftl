@@ -2,6 +2,7 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import " ${commonPackage}.pojo.po.Version"/>
 <@import "org.aspectj.lang.ProceedingJoinPoint"/>
 <@import "org.aspectj.lang.Signature"/>
 <@import "org.aspectj.lang.annotation.Around"/>
@@ -19,12 +20,34 @@ public class OptimisticLockAspect {
 
     private final static Logger logger = LoggerFactory.getLogger(OptimisticLockAspect.class);
 
-    //拦截任何方法上添加了@Tx注解的方法
-    @Pointcut("execution(@${commonPackage}.optimistic.OptimisticLock * *(..))")
-    public void pointcut(){}
 
-    @Around("pointcut()")
-    public Object doAround(final ProceedingJoinPoint thisJoinPoint) throws Throwable {
+    /**
+     * 拦截AbstractDAO的update方法
+     * 用于抛出乐观锁冲突时的异常
+     */
+    @Pointcut("execution(int ${commonPackage}.dao.DAO.update(${commonPackage}.pojo.po.AbstractPO))")
+    public void daoPointcut(){}
+
+    @Around("daoPointcut()")
+    public Object doDAOAround(final ProceedingJoinPoint thisJoinPoint) throws Throwable {
+        Object[] args = thisJoinPoint.getArgs();
+        int count = (int)thisJoinPoint.proceed();
+        if((args[0] instanceof Version) && count<=0){
+            throw new OptimisticException("更新操作乐观锁异常");
+        }
+        return count;
+    }
+
+
+    /**
+     * 拦截任何添加了@Tx注解的Service方法
+     * 捕获乐观锁冲突异常，并重试
+     */
+    @Pointcut("execution(@${commonPackage}.optimistic.OptimisticLock * *(..))")
+    public void servicePointcut(){}
+
+    @Around("servicePointcut()")
+    public Object doServiceAround(final ProceedingJoinPoint thisJoinPoint) throws Throwable {
         Signature signature = thisJoinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature)signature;
         final Method targetMethod = methodSignature.getMethod();
@@ -38,11 +61,11 @@ public class OptimisticLockAspect {
             throw new RuntimeException("乐观锁aop异常");
         }
         int retry = optimisticLock.retry();
-        Object object = tryProceed(thisJoinPoint, catchTypes, retry);
+        Object object = tryServiceProceed(thisJoinPoint, catchTypes, retry);
         return object;
     }
 
-    private Object tryProceed(ProceedingJoinPoint thisJoinPoint, Class<? extends Exception>[] catchTypes,int retry) throws Throwable {
+    private Object tryServiceProceed(ProceedingJoinPoint thisJoinPoint, Class<? extends Exception>[] catchTypes, int retry) throws Throwable {
         Object object = null;
         try {
             object = thisJoinPoint.proceed();
@@ -56,7 +79,7 @@ public class OptimisticLockAspect {
                             e.printStackTrace();
                         }
                         logger.warn("乐观锁重试,retry="+retry+",method="+thisJoinPoint.getSignature().getName());
-                        return tryProceed(thisJoinPoint,catchTypes,--retry);
+                        return tryServiceProceed(thisJoinPoint,catchTypes,--retry);
                     }
                 }
             }
@@ -64,6 +87,7 @@ public class OptimisticLockAspect {
         }
         return object;
     }
+
 
 }
 </#assign>

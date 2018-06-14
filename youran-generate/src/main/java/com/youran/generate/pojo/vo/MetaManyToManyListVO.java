@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
@@ -10,7 +11,7 @@ import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
  * Author: cbb
  * Create Time:2017/7/4 16:44
  */
-public class MetaManyToManyListVO {
+public class MetaManyToManyListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_MTMID, example = E_MTMID)
     private Integer mtmId;

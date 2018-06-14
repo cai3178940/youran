@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.youran.generate.mapper.MetaEntityMapper">
+<mapper namespace="com.youran.generate.dao.MetaEntityDAO">
 
     <select id="findById" resultType="MetaEntityPO">
         select * from meta_entity
@@ -10,7 +10,7 @@
         and entityId = #{entityId,jdbcType=INTEGER}
     </select>
 
-    <select id="exist" resultType="int">
+    <select id="exist" resultType="boolean">
         select count(*) from meta_entity
         where delSign=0
         and entityId = #{entityId,jdbcType=INTEGER}

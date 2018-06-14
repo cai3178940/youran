@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 import static com.youran.generate.pojo.example.MetaEntityExample.*;
@@ -10,7 +11,7 @@ import static com.youran.generate.pojo.example.MetaEntityExample.*;
  * Author: cbb
  * Create Time:2017/5/12 17:54
  */
-public class MetaEntityListVO {
+public class MetaEntityListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_ENTITYID, example = E_ENTITYID)
     private Integer entityId;

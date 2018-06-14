@@ -1,13 +1,12 @@
 package com.youran.generate.dao;
 
-import com.youran.common.dao.AbstractDAO;
+import com.youran.common.dao.DAO;
 import com.youran.generate.pojo.po.MetaIndexFieldPO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Title:元数据索引字段关联表操作
@@ -15,31 +14,23 @@ import java.util.Map;
  * Author: cbb
  * Create Time:2017/5/12 10:27
  */
-@Repository
-public class MetaIndexFieldDAO extends AbstractDAO<MetaIndexFieldPO> {
+@Mapper
+public interface MetaIndexFieldDAO extends DAO<MetaIndexFieldPO> {
 
-    @Override
-    protected String getMybatisNamespace() {
-        return "com.youran.generate.mapper.MetaIndexFieldMapper";
-    }
 
     /**
      * 根据索引id查询字段列表
      * @param indexId
      * @return
      */
-    public List<MetaFieldListVO> findByIndexId(Integer indexId) {
-        return sqlSession.selectList(getMybatisNamespace()+".findByIndexId",indexId);
-    }
+    List<MetaFieldListVO> findByIndexId(Integer indexId);
 
     /**
      * 根据索引id查询关联列表
      * @param indexId
      * @return
      */
-    public List<Integer> findIdsByIndexId(Integer indexId) {
-        return sqlSession.selectList(getMybatisNamespace()+".findIdsByIndexId",indexId);
-    }
+    List<Integer> findIdsByIndexId(Integer indexId) ;
 
     /**
      * 批量插入关联关系
@@ -47,11 +38,7 @@ public class MetaIndexFieldDAO extends AbstractDAO<MetaIndexFieldPO> {
      * @param fieldIdList
      * @return
      */
-    public int saveBatch(Integer indexId, List<Integer> fieldIdList) {
-        Map<String,Object> param = new HashMap<>();
-        param.put("indexId",indexId);
-        param.put("fieldIdList",fieldIdList);
-        return sqlSession.insert(getMybatisNamespace()+".saveBatch",param);
-    }
+    int saveBatch(@Param("indexId")Integer indexId, @Param("fieldIdList")List<Integer> fieldIdList);
+
 
 }

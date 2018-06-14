@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import static com.youran.generate.pojo.example.MetaIndexExample.*;
  * Author: cbb
  * Create Time:2017/5/16 22:34
  */
-public class MetaIndexShowVO {
+public class MetaIndexShowVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_INDEXID, example = E_INDEXID)
     private Integer indexId;

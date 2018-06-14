@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 import static com.youran.generate.pojo.example.MetaFieldExample.*;
@@ -10,7 +11,7 @@ import static com.youran.generate.pojo.example.MetaFieldExample.*;
  * Author: cbb
  * Create Time:2017/5/12 17:54
  */
-public class MetaFieldListVO {
+public class MetaFieldListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_FIELDID, example = E_FIELDID)
     private Integer fieldId;

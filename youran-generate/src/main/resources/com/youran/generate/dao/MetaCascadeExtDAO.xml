@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.youran.generate.mapper.MetaCascadeExtMapper">
+<mapper namespace="com.youran.generate.dao.MetaCascadeExtDAO">
 
 
     <select id="findById" resultType="MetaCascadeExtPO">
@@ -11,7 +11,7 @@
               and cascadeExtId = #{cascadeExtId,jdbcType=INTEGER}
     </select>
 
-    <select id="exist" resultType="int">
+    <select id="exist" resultType="boolean">
         select count(*) from meta_cascade_ext
         where delSign=0
               and cascadeExtId = #{cascadeExtId,jdbcType=INTEGER}

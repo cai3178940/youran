@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ import static com.youran.generate.pojo.example.MetaCascadeExtExample.*;
  * Author: cbb
  * Create Time: 2018/5/28 15:31
  */
-public class MetaCascadeExtListVO {
+public class MetaCascadeExtListVO extends AbstractVO {
 
 
     /**

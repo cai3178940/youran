@@ -2,6 +2,7 @@ package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.pojo.vo.PageVO;
+import com.youran.common.service.AbstractService;
 import com.youran.generate.dao.MetaConstDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaConstAddDTO;
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Create Time:2017/5/12 11:17
  */
 @Service
-public class MetaConstService {
+public class MetaConstService extends AbstractService {
 
     @Autowired
     private MetaConstDAO metaConstDAO;
@@ -36,6 +37,7 @@ public class MetaConstService {
     @Transactional
     public MetaConstPO save(MetaConstAddDTO metaConstDTO) {
         MetaConstPO metaConst = MetaConstMapper.INSTANCE.fromAddDTO(metaConstDTO);
+        metaConst.preInsert(loginContext.getCurrentOperatorId());
         metaConstDAO.save(metaConst);
         metaProjectService.updateProjectVersion(metaConst.getProjectId());
         return metaConst;
@@ -55,6 +57,7 @@ public class MetaConstService {
             throw new GenerateException("constId有误");
         }
         MetaConstMapper.INSTANCE.setPO(metaConst, metaConstUpdateDTO);
+        metaConst.preUpdate(loginContext.getCurrentOperatorId());
         metaConstDAO.update(metaConst);
         metaProjectService.updateProjectVersion(metaConst.getProjectId());
     }

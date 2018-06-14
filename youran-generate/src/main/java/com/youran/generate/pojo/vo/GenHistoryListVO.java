@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ import static com.youran.generate.pojo.example.GenHistoryExample.*;
  * Author: cbb
  * Create Time: 2018/3/17 15:39
  */
-public class GenHistoryListVO {
+public class GenHistoryListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_HISTORYID, example = E_HISTORYID)
     private Integer historyId;

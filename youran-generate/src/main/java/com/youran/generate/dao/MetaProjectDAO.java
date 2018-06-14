@@ -1,12 +1,8 @@
 package com.youran.generate.dao;
 
-import com.youran.common.dao.AbstractDAO;
-import com.youran.generate.pojo.qo.MetaProjectQO;
+import com.youran.common.dao.DAO;
 import com.youran.generate.pojo.po.MetaProjectPO;
-import com.youran.generate.pojo.vo.MetaProjectListVO;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * Title:元数据项目数据库操作
@@ -14,19 +10,8 @@ import java.util.List;
  * Author: cbb
  * Create Time:2017/5/24
  */
-@Repository
-public class MetaProjectDAO extends AbstractDAO<MetaProjectPO> {
+@Mapper
+public interface MetaProjectDAO extends DAO<MetaProjectPO> {
 
-    @Override
-    protected String getMybatisNamespace() {
-        return "com.youran.generate.mapper.MetaProjectMapper";
-    }
-    /**
-     * 根据条件查询项目列表
-     * @param metaProjectQO
-     * @return
-     */
-    public List<MetaProjectListVO> findByQuery(MetaProjectQO metaProjectQO) {
-        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaProjectQO);
-    }
+
 }

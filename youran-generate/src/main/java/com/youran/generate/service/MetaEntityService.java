@@ -2,6 +2,7 @@ package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.pojo.vo.PageVO;
+import com.youran.common.service.AbstractService;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Create Time:2017/5/12 11:17
  */
 @Service
-public class MetaEntityService {
+public class MetaEntityService extends AbstractService {
 
     @Autowired
     private MetaEntityDAO metaEntityDAO;
@@ -37,6 +38,7 @@ public class MetaEntityService {
     @Transactional
     public MetaEntityPO save(MetaEntityAddDTO metaEntityDTO) {
         MetaEntityPO metaEntity = MetaEntityMapper.INSTANCE.fromAddDTO(metaEntityDTO);
+        metaEntity.preInsert(loginContext.getCurrentOperatorId());
         metaEntityDAO.save(metaEntity);
         metaProjectService.updateProjectVersion(metaEntityDTO.getProjectId());
         return metaEntity;
@@ -56,6 +58,7 @@ public class MetaEntityService {
             throw new GenerateException("entityId有误");
         }
         MetaEntityMapper.INSTANCE.setPO(metaEntity, metaEntityUpdateDTO);
+        metaEntity.preUpdate(loginContext.getCurrentOperatorId());
         metaEntityDAO.update(metaEntity);
         metaProjectService.updateProjectVersion(metaEntity.getProjectId());
     }

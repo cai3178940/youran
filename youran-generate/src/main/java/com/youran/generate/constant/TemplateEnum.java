@@ -24,7 +24,7 @@ public enum TemplateEnum {
     JsonFieldConst(COMMON,"{commonModule}/src/main/java/{commonPackage}/constant/JsonFieldConst.java.ftl"),
     CommonLoginContext(COMMON,"{commonModule}/src/main/java/{commonPackage}/context/LoginContext.java.ftl"),
     MyCustomDateEditor(COMMON,"{commonModule}/src/main/java/{commonPackage}/convert/MyCustomDateEditor.java.ftl"),
-    AbstractDAO(COMMON,"{commonModule}/src/main/java/{commonPackage}/dao/AbstractDAO.java.ftl"),
+    DAO(COMMON,"{commonModule}/src/main/java/{commonPackage}/dao/DAO.java.ftl"),
     EnableOptimisticLock(COMMON,"{commonModule}/src/main/java/{commonPackage}/optimistic/EnableOptimisticLock.java.ftl"),
     OptimisticException(COMMON,"{commonModule}/src/main/java/{commonPackage}/optimistic/OptimisticException.java.ftl"),
     OptimisticLock(COMMON,"{commonModule}/src/main/java/{commonPackage}/optimistic/OptimisticLock.java.ftl"),
@@ -49,6 +49,7 @@ public enum TemplateEnum {
     FieldErrorVO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/FieldErrorVO.java.ftl"),
     PageVO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/PageVO.java.ftl"),
     ReplyVO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/ReplyVO.java.ftl"),
+    AbstractService(COMMON,"{commonModule}/src/main/java/{commonPackage}/service/AbstractService.java.ftl"),
     ConvertUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/ConvertUtil.java.ftl"),
     DateUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/DateUtil.java.ftl"),
     H2Util(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/H2Util.java.ftl"),
@@ -69,7 +70,7 @@ public enum TemplateEnum {
     Properties(COMMON, "{coreModule}/src/main/java/{packageName}/config/{ProjectName}Properties.java.ftl"),
     Const(COMMON, "{coreModule}/src/main/java/{packageName}/constant/{ProjectName}Const.java.ftl"),
     EnumClass(CONST, "{coreModule}/src/main/java/{packageName}/constant/{EnumName}.java.ftl"),
-    DAO(ENTITY, "{coreModule}/src/main/java/{packageName}/dao/{ClassName}DAO.java.ftl"),
+    CoreDAO(ENTITY, "{coreModule}/src/main/java/{packageName}/dao/{ClassName}DAO.java.ftl"),
     Exception(COMMON, "{coreModule}/src/main/java/{packageName}/exception/{ProjectName}Exception.java.ftl"),
     AddDTO(ENTITY, "{coreModule}/src/main/java/{packageName}/pojo/dto/{ClassName}AddDTO.java.ftl"),
     UpdateDTO(ENTITY, "{coreModule}/src/main/java/{packageName}/pojo/dto/{ClassName}UpdateDTO.java.ftl"),
@@ -83,7 +84,7 @@ public enum TemplateEnum {
     /******** Core模块配置 *********/
     MybatisConfig(COMMON, "{coreModule}/src/main/resources/mybatis-config.xml.ftl"),
     DefaultProperties(COMMON, "{coreModule}/src/main/resources/config/{project-name}-default.properties.ftl"),
-    MybatisMapper(ENTITY, "{coreModule}/src/main/resources/{packageName}/mapper/{ClassName}Mapper.xml.ftl"),
+    MybatisMapper(ENTITY, "{coreModule}/src/main/resources/{packageName}/dao/{ClassName}DAO.xml.ftl"),
 
 
 

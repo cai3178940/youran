@@ -1,6 +1,7 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
+import com.youran.common.service.AbstractService;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.exception.GenerateException;
@@ -25,7 +26,7 @@ import java.util.List;
  * Create Time:2017/5/12 11:17
  */
 @Service
-public class MetaFieldService {
+public class MetaFieldService extends AbstractService {
 
     @Autowired
     private MetaFieldDAO metaFieldDAO;
@@ -45,6 +46,7 @@ public class MetaFieldService {
             throw new GenerateException("entityId参数有误");
         }
         MetaFieldPO metaField = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
+        metaField.preInsert(loginContext.getCurrentOperatorId());
         metaFieldDAO.save(metaField);
         metaProjectService.updateProjectVersion(entityPO.getProjectId());
         return metaField;
@@ -64,6 +66,7 @@ public class MetaFieldService {
             throw new GenerateException("fieldId有误");
         }
         MetaFieldMapper.INSTANCE.setPO(metaField, metaFieldUpdateDTO);
+        metaField.preUpdate(loginContext.getCurrentOperatorId());
         metaFieldDAO.update(metaField);
         MetaEntityPO entityPO = metaEntityDAO.findById(metaField.getEntityId());
         metaProjectService.updateProjectVersion(entityPO.getProjectId());
@@ -75,7 +78,7 @@ public class MetaFieldService {
      * @return
      */
     public List<MetaFieldListVO> list(MetaFieldQO metaFieldQO) {
-        List<MetaFieldListVO> list = metaFieldDAO.findByQuery(metaFieldQO);
+        List<MetaFieldListVO> list = metaFieldDAO.findListByQuery(metaFieldQO);
         return list;
     }
 

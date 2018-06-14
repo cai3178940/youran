@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 import static com.youran.generate.pojo.example.MetaConstDetailExample.*;
@@ -11,7 +12,7 @@ import static com.youran.generate.pojo.example.MetaConstDetailExample.*;
  * Author: cbb
  * Create Time:2017/5/12 17:54
  */
-public class MetaConstDetailListVO {
+public class MetaConstDetailListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_CONSTDETAILID, example = E_CONSTDETAILID)
     private Integer constDetailId;

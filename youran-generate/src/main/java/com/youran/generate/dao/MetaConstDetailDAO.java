@@ -1,10 +1,8 @@
 package com.youran.generate.dao;
 
-import com.youran.common.dao.AbstractDAO;
-import com.youran.generate.pojo.qo.MetaConstDetailQO;
+import com.youran.common.dao.DAO;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
-import com.youran.generate.pojo.vo.MetaConstDetailListVO;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -14,29 +12,14 @@ import java.util.List;
  * Author: cbb
  * Create Time:2017/5/12 10:27
  */
-@Repository
-public class MetaConstDetailDAO extends AbstractDAO<MetaConstDetailPO> {
-
-    @Override
-    protected String getMybatisNamespace() {
-        return "com.youran.generate.mapper.MetaConstDetailMapper";
-    }
+@Mapper
+public interface MetaConstDetailDAO extends DAO<MetaConstDetailPO> {
 
     /**
      * 根据常量id查询常量值列表
      * @param constId
      * @return
      */
-    public List<MetaConstDetailPO> findByConstId(Integer constId) {
-        return sqlSession.selectList(getMybatisNamespace()+".findByConstId", constId);
-    }
+    List<MetaConstDetailPO> findByConstId(Integer constId) ;
 
-    /**
-     * 根据条件查询常量值列表
-     * @param metaConstDetailQO
-     * @return
-     */
-    public List<MetaConstDetailListVO> findByQuery(MetaConstDetailQO metaConstDetailQO) {
-        return sqlSession.selectList(getMybatisNamespace()+".findListByQuery", metaConstDetailQO);
-    }
 }

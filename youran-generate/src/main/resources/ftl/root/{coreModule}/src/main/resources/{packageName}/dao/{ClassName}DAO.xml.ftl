@@ -4,7 +4,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${packageName}.mapper.${CName}Mapper">
+<mapper namespace="${packageName}.dao.${CName}DAO">
 
     <#assign wrapTableName=MetadataUtil.wrapMysqlKeyword(tableName)>
     <#assign wrapPkFieldName=MetadataUtil.wrapMysqlKeyword(pk.fieldName)>
@@ -32,7 +32,7 @@
         limit 1
     </select>
 
-    <select id="exist" resultType="int">
+    <select id="exist" resultType="boolean">
         select count(1) from ${wrapTableName}
         <where>
         <#if delField??>
@@ -298,7 +298,7 @@
 
     <insert id="add${otherCName}" parameterType="map">
         insert into ${mtm.tableName}(${the_pk_id},${other_pk_id},create_date)
-        values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}},${r'#'}{createDate,jdbcType=TIMESTAMP})
+        values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}},now())
     </insert>
 
     <delete id="remove${otherCName}" parameterType="map">

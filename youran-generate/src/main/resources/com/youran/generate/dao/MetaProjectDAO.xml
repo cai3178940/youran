@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.youran.generate.mapper.MetaProjectMapper">
+<mapper namespace="com.youran.generate.dao.MetaProjectDAO">
 
     <select id="findById" resultType="MetaProjectPO">
         select * from meta_project
@@ -10,7 +10,7 @@
         and projectId = #{projectId,jdbcType=INTEGER}
     </select>
 
-    <select id="exist" resultType="int">
+    <select id="exist" resultType="boolean">
         select count(*) from meta_project
         where delSign=0
         and projectId = #{projectId,jdbcType=INTEGER}

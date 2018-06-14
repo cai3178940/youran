@@ -11,15 +11,15 @@
         <package name="com.youran.generate.pojo"/>
     </typeAliases>
     <mappers>
-        <mapper resource="com/youran/generate/mapper/MetaConstDetailMapper.xml"/>
-        <mapper resource="com/youran/generate/mapper/MetaConstMapper.xml"/>
-        <mapper resource="com/youran/generate/mapper/MetaEntityMapper.xml"/>
-        <mapper resource="com/youran/generate/mapper/MetaFieldMapper.xml"/>
-        <mapper resource="com/youran/generate/mapper/MetaIndexFieldMapper.xml"/>
-        <mapper resource="com/youran/generate/mapper/MetaIndexMapper.xml"/>
-        <mapper resource="com/youran/generate/mapper/MetaManyToManyMapper.xml"/>
-        <mapper resource="com/youran/generate/mapper/MetaProjectMapper.xml"/>
-        <mapper resource="com/youran/generate/mapper/MetaCascadeExtMapper.xml"/>
-        <mapper resource="com/youran/generate/mapper/GenHistoryMapper.xml"/>
+        <mapper resource="com/youran/generate/dao/MetaConstDetailDAO.xml"/>
+        <mapper resource="com/youran/generate/dao/MetaConstDAO.xml"/>
+        <mapper resource="com/youran/generate/dao/MetaEntityDAO.xml"/>
+        <mapper resource="com/youran/generate/dao/MetaFieldDAO.xml"/>
+        <mapper resource="com/youran/generate/dao/MetaIndexFieldDAO.xml"/>
+        <mapper resource="com/youran/generate/dao/MetaIndexDAO.xml"/>
+        <mapper resource="com/youran/generate/dao/MetaManyToManyDAO.xml"/>
+        <mapper resource="com/youran/generate/dao/MetaProjectDAO.xml"/>
+        <mapper resource="com/youran/generate/dao/MetaCascadeExtDAO.xml"/>
+        <mapper resource="com/youran/generate/dao/GenHistoryDAO.xml"/>
     </mappers>
 </configuration>

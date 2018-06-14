@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
@@ -10,7 +11,7 @@ import static com.youran.generate.pojo.example.MetaProjectExample.*;
  * Author: cbb
  * Create Time:2017/5/24
  */
-public class MetaProjectListVO {
+public class MetaProjectListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_PROJECTID, example = E_PROJECTID)
     private Integer projectId;

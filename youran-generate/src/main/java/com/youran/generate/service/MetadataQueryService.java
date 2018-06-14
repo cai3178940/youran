@@ -1,6 +1,7 @@
 package com.youran.generate.service;
 
 import com.youran.common.constant.BoolConst;
+import com.youran.common.service.AbstractService;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.dao.*;
 import com.youran.generate.exception.GenerateException;
@@ -18,7 +19,7 @@ import java.util.*;
  * Create Time:2017/5/14 10:45
  */
 @Service
-public class MetadataQueryService {
+public class MetadataQueryService extends AbstractService {
 
     @Autowired
     private MetaEntityDAO metaEntityDAO;

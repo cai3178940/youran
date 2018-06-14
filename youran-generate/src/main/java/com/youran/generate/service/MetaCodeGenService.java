@@ -2,6 +2,7 @@ package com.youran.generate.service;
 
 import com.google.common.collect.Lists;
 import com.youran.common.constant.BoolConst;
+import com.youran.common.service.AbstractService;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.common.util.DateUtil;
 import com.youran.common.util.H2Util;
@@ -36,9 +37,9 @@ import java.util.stream.Collectors;
  * Create Time:2017/5/14 10:29
  */
 @Service
-public class MetaCodeGenService {
+public class MetaCodeGenService extends AbstractService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MetaCodeGenService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetaCodeGenService.class);
 
     @Autowired
     private MetadataQueryService metadataQueryService;
@@ -86,8 +87,8 @@ public class MetaCodeGenService {
         this.checkProject(project,false);
         Map<String, Object> map = this.buildTemplateParamMap(project, null, null);
         String text = FreeMakerUtil.writeToStr("root/{webModule}/src/test/resources/DB/{projectName}.sql.ftl", map);
-        logger.debug("------打印生成sql脚本-----");
-        logger.debug(text);
+        LOGGER.debug("------打印生成sql脚本-----");
+        LOGGER.debug(text);
         return text;
     }
 
@@ -218,22 +219,22 @@ public class MetaCodeGenService {
                 if (StringUtils.isBlank(devProjectDir)) {
                     throw new GenerateException("请配置本地开发工程路径youran.generate.devProjectDir");
                 }
-                logger.debug("------全部替换开发工程：" + devProjectDir);
+                LOGGER.debug("------全部替换开发工程：" + devProjectDir);
                 FileUtils.deleteDirectory(new File(devProjectDir));
                 FileUtils.copyDirectory(new File(tmpDir), new File(devProjectDir));
             } else if (generateProperties.getDevMode() == 2) {
                 if (StringUtils.isBlank(devProjectDir)) {
                     throw new GenerateException("请配置本地开发工程路径youran.generate.devProjectDir");
                 }
-                logger.debug("------部分替换开发工程：" + devProjectDir);
+                LOGGER.debug("------部分替换开发工程：" + devProjectDir);
                 this.compareAndCoverFile(new File(tmpDir), new File(devProjectDir));
             }
             if (generateProperties.isDelTemp()) {
-                logger.debug("------删除临时目录：" + tmpDir);
+                LOGGER.debug("------删除临时目录：" + tmpDir);
                 FileUtils.deleteDirectory(new File(tmpDir));
             }
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
         //返回zip文件
         return new File(outFilePath);
@@ -250,7 +251,7 @@ public class MetaCodeGenService {
             throw new GenerateException("项目中没有实体");
         }
         String tmpDir = H2Util.getTmpDir(appName, true, true);
-        logger.debug("------代码生成临时路径：" + tmpDir);
+        LOGGER.debug("------代码生成临时路径：" + tmpDir);
         List<MetaEntityPO> metaEntities = entityIds
             .stream()
             .map(metadataQueryService::getEntityWithAll).collect(Collectors.toList());
@@ -360,20 +361,20 @@ public class MetaCodeGenService {
     private void compareAndCoverFile(File sourceDir, File targetDir) throws IOException {
         String sourcePath = sourceDir.getPath();
         String targetPath = targetDir.getPath();
-        logger.debug("sourcePath={}", sourcePath);
-        logger.debug("targetPath={}", targetPath);
+        LOGGER.debug("sourcePath={}", sourcePath);
+        LOGGER.debug("targetPath={}", targetPath);
         Iterator<File> fileIterator = FileUtils.iterateFiles(sourceDir, null, true);
         while (fileIterator.hasNext()) {
             File file = fileIterator.next();
             String path = file.getPath();
             String relativePath = path.substring(sourcePath.length());
-            //logger.debug("relativePath={}",relativePath);
+            //LOGGER.debug("relativePath={}",relativePath);
             File targetFile = new File(targetPath + relativePath);
             if (!targetFile.exists()) {
-                logger.debug("目标文件不存在={}", targetPath + relativePath);
+                LOGGER.debug("目标文件不存在={}", targetPath + relativePath);
                 this.doCover(targetFile, file);
             } else if (!compareFile(targetFile, file)) {
-                logger.debug("文件内容不相等={}", targetPath + relativePath);
+                LOGGER.debug("文件内容不相等={}", targetPath + relativePath);
                 this.doCover(targetFile, file);
             }
         }
@@ -404,7 +405,7 @@ public class MetaCodeGenService {
     }
 
     private void doCover(File targetFile, File file) throws IOException {
-        logger.debug("进行文件覆盖={}", targetFile.getPath());
+        LOGGER.debug("进行文件覆盖={}", targetFile.getPath());
         FileUtils.copyFile(file, targetFile);
     }
 
@@ -418,9 +419,9 @@ public class MetaCodeGenService {
      */
     private void renderFTL(MetaProjectPO project, String outDir, TemplateEnum templateEnum, MetaEntityPO singleEntity, MetaConstPO singleConst) {
         Map<String, Object> map = buildTemplateParamMap(project, singleEntity, singleConst);
-        logger.debug("------开始渲染" + templateEnum.name() + "------");
+        LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
         String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), map);
-        logger.debug(text);
+        LOGGER.debug(text);
         this.writeToFile(project, text, outDir, templateEnum.getTemplate(), singleEntity, singleConst);
     }
 
@@ -514,7 +515,7 @@ public class MetaCodeGenService {
         try {
             FileUtils.write(file, text,"UTF-8");
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             throw new GenerateException("写文件异常");
         }
     }
@@ -535,8 +536,8 @@ public class MetaCodeGenService {
         this.checkProject(project,false);
         Map<String, Object> map = this.buildTemplateParamMap(project, null, null);
         String text = FreeMakerUtil.writeToStr("root/{webModule}/src/test/resources/DB/{projectName}.sql.ftl", map);
-        logger.debug("------打印生成sql脚本-----");
-        logger.debug(text);
+        LOGGER.debug("------打印生成sql脚本-----");
+        LOGGER.debug(text);
         return text;
     }
 
@@ -577,7 +578,7 @@ public class MetaCodeGenService {
             String genDir = this.doGenCode(projectId);
             FileUtils.copyDirectory(new File(genDir), repoDir);
         } catch (IOException e) {
-            logger.error("IO异常",e);
+            LOGGER.error("IO异常",e);
             throw new GenerateException("操作失败");
         }
         String commit = jGitService.commitAll(repository,
@@ -587,6 +588,7 @@ public class MetaCodeGenService {
         GenHistoryPO history = genHistoryService.save(project, commit, newBranchName);
 
         project.setLastHistoryId(history.getHistoryId());
+        project.preUpdate(loginContext.getCurrentOperatorId());
         metaProjectDAO.update(project);
 
     }
@@ -607,7 +609,7 @@ public class MetaCodeGenService {
         try {
             password = AESSecurityUtil.decrypt(project.getPassword(), generateProperties.getAesKey());
         } catch (Exception e) {
-            logger.error("密码解密异常",e);
+            LOGGER.error("密码解密异常",e);
             throw new GenerateException("密码解密异常");
         }
         return new GitCredentialDTO(project.getUsername(), password);

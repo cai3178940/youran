@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.youran.generate.mapper.MetaFieldMapper">
+<mapper namespace="com.youran.generate.dao.MetaFieldDAO">
 
     <select id="findCount" resultType="int">
         select count(1) from meta_field
@@ -22,7 +22,7 @@
         and fieldId = #{fieldId,jdbcType=INTEGER}
     </select>
 
-    <select id="exist" resultType="int">
+    <select id="exist" resultType="boolean">
         select count(*) from meta_field
         where delSign=0
         and fieldId = #{fieldId,jdbcType=INTEGER}

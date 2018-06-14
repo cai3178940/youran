@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.youran.generate.mapper.MetaIndexFieldMapper">
+<mapper namespace="com.youran.generate.dao.MetaIndexFieldDAO">
 
     <insert id="saveBatch">
         insert into meta_index_field (
@@ -18,15 +18,15 @@
         where indexId = #{indexId,jdbcType=INTEGER}
     </delete>
 
-    <select id="findByIndexId" resultType="MetaFieldListVO">
+    <select id="findByIndexId"  parameterType="java.lang.Integer"  resultType="MetaFieldListVO">
         select t.*
         from meta_field t
             inner join meta_index_field r on t.fieldId=r.fieldId
-        where r.indexId = #{indexId,jdbcType=INTEGER}
+        where r.indexId = #{arg0,jdbcType=INTEGER}
         order by r.orderNo
     </select>
 
-    <select id="findIdsByIndexId" resultType="int">
+    <select id="findIdsByIndexId" resultType="java.lang.Integer">
         select fieldId from meta_index_field
         where indexId = #{indexId,jdbcType=INTEGER}
         order by orderNo

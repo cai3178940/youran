@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.youran.generate.mapper.MetaIndexMapper">
+<mapper namespace="com.youran.generate.dao.MetaIndexDAO">
 
     <resultMap type="MetaIndexListVO" id="metaIndexListResultMap">
         <id column="indexId" property="indexId"></id>
-        <collection property="fields" javaType="ArrayList" column="indexId" ofType="MetaFieldListVO" select="com.youran.generate.mapper.MetaIndexFieldMapper.findByIndexId"/>
+        <collection property="fields" javaType="ArrayList" column="indexId" ofType="MetaFieldListVO" select="com.youran.generate.dao.MetaIndexFieldDAO.findByIndexId"/>
     </resultMap>
 
     <select id="findById" resultType="MetaIndexPO">
@@ -15,7 +15,7 @@
         and indexId = #{indexId,jdbcType=INTEGER}
     </select>
 
-    <select id="exist" resultType="int">
+    <select id="exist" resultType="boolean">
         select count(*) from meta_index
         where delSign=0
         and indexId = #{indexId,jdbcType=INTEGER}

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.youran.generate.mapper.GenHistoryMapper">
+<mapper namespace="com.youran.generate.dao.GenHistoryDAO">
 
     <sql id="genHistoryColumns">
         ${alias}.historyId,
@@ -31,7 +31,7 @@
         </where>
     </select>
 
-    <select id="exist" resultType="int">
+    <select id="exist" resultType="boolean">
         select count(1) from gen_history
         <where>
             and delSign=0

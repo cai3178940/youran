@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.youran.generate.mapper.MetaManyToManyMapper">
+<mapper namespace="com.youran.generate.dao.MetaManyToManyDAO">
 
     <select id="findById" resultType="MetaManyToManyPO">
         select * from meta_mtm
@@ -10,7 +10,7 @@
         and mtmId = #{mtmId,jdbcType=INTEGER}
     </select>
 
-    <select id="exist" resultType="int">
+    <select id="exist" resultType="boolean">
         select count(*) from meta_mtm
         where delSign=0
         and mtmId = #{mtmId,jdbcType=INTEGER}

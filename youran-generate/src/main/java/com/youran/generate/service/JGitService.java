@@ -1,5 +1,6 @@
 package com.youran.generate.service;
 
+import com.youran.common.service.AbstractService;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import org.apache.commons.collections.CollectionUtils;
@@ -27,7 +28,7 @@ import java.util.Collection;
  * Create Time:3/16/2018 21:43
  */
 @Service
-public class JGitService {
+public class JGitService extends AbstractService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(JGitService.class);
 
