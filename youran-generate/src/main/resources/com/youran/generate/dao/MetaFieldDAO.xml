@@ -28,7 +28,7 @@
         and fieldId = #{fieldId,jdbcType=INTEGER}
     </select>
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="fieldId" parameterType="MetaFieldPO">
+    <insert id="_save" useGeneratedKeys="true" keyProperty="fieldId" parameterType="MetaFieldPO">
         insert into meta_field (
             fieldId, entityId, jfieldName,
             fieldName, jfieldType, fieldType,
@@ -56,7 +56,7 @@
             #{delSign,jdbcType=SMALLINT}, #{version,jdbcType=INTEGER})
     </insert>
 
-    <update id="update" parameterType="MetaFieldPO">
+    <update id="_update" parameterType="MetaFieldPO">
         update meta_field
         set entityId = #{entityId,jdbcType=INTEGER},
             jfieldName = #{jfieldName,jdbcType=VARCHAR},

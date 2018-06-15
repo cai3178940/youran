@@ -66,18 +66,18 @@ public class ExceptionTranslator {
     private ReplyVO processBindingResult(BindingResult result) {
         List<FieldError> fieldErrors = result.getFieldErrors();
         LOGGER.warn(JsonUtil.toJSONString(fieldErrors));
-        ReplyVO dto = new ReplyVO();
+        ReplyVO replyVO = new ReplyVO();
         List<FieldErrorVO> errorVOList = new ArrayList<>();
         for (FieldError fieldError : fieldErrors) {
             errorVOList.add(new FieldErrorVO(fieldError.getObjectName(), fieldError.getField(), fieldError.getDefaultMessage()));
         }
         if(fieldErrors.size()>0){
-            dto.setCode(ErrorCode.ERR_VALIDATION.getValue());
-            dto.setMessage(fieldErrors.get(0).getDefaultMessage());
-            dto.setData(errorVOList);
+            replyVO.setCode(ErrorCode.ERR_VALIDATION.getValue());
+            replyVO.setMessage(fieldErrors.get(0).getDefaultMessage());
+            replyVO.setData(errorVOList);
         }
 
-        return dto;
+        return replyVO;
     }
 
 

@@ -1,7 +1,6 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.service.AbstractService;
 import com.youran.generate.dao.MetaConstDAO;
 import com.youran.generate.dao.MetaConstDetailDAO;
 import com.youran.generate.exception.GenerateException;
@@ -26,7 +25,7 @@ import java.util.List;
  * Create Time:2017/5/12 11:17
  */
 @Service
-public class MetaConstDetailService extends AbstractService {
+public class MetaConstDetailService {
 
     @Autowired
     private MetaConstDetailDAO metaConstDetailDAO;
@@ -46,7 +45,6 @@ public class MetaConstDetailService extends AbstractService {
             throw new GenerateException("constId参数有误");
         }
         MetaConstDetailPO metaConstDetail = MetaConstDetailMapper.INSTANCE.fromAddDTO(metaConstDetailDTO);
-        metaConstDetail.preInsert(loginContext.getCurrentOperatorId());
         metaConstDetailDAO.save(metaConstDetail);
         metaProjectService.updateProjectVersion(metaConst.getProjectId());
         return metaConstDetail;
@@ -65,7 +63,6 @@ public class MetaConstDetailService extends AbstractService {
             throw new GenerateException("constDetailId有误");
         }
         MetaConstDetailMapper.INSTANCE.setPO(metaConstDetail, metaConstDetailUpdateDTO);
-        metaConstDetail.preUpdate(loginContext.getCurrentOperatorId());
         metaConstDetailDAO.update(metaConstDetail);
         MetaConstPO metaConst = metaConstDAO.findById(metaConstDetail.getConstId());
         metaProjectService.updateProjectVersion(metaConst.getProjectId());

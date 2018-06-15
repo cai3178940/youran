@@ -1,7 +1,6 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.service.AbstractService;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.dao.MetaEntityDAO;
@@ -31,7 +30,7 @@ import java.util.List;
  * Create Time:2017/5/24
  */
 @Service
-public class MetaProjectService extends AbstractService {
+public class MetaProjectService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MetaProjectService.class);
 
@@ -67,7 +66,6 @@ public class MetaProjectService extends AbstractService {
             metaProject.setPassword(encrypt);
         }
         metaProject.setProjectVersion(1);
-        metaProject.preInsert(loginContext.getCurrentOperatorId());
         metaProjectDAO.save(metaProject);
         return metaProject;
     }
@@ -93,7 +91,6 @@ public class MetaProjectService extends AbstractService {
             }
             metaProject.setPassword(encrypt);
         }
-        metaProject.preUpdate(loginContext.getCurrentOperatorId());
         metaProjectDAO.update(metaProject);
         this.updateProjectVersion(metaProject.getProjectId());
     }
@@ -150,7 +147,6 @@ public class MetaProjectService extends AbstractService {
     public void updateProjectVersion(Integer projectId){
         MetaProjectPO projectPO = this.getProject(projectId,true);
         projectPO.setProjectVersion(projectPO.getProjectVersion()+1);
-        projectPO.preUpdate(loginContext.getCurrentOperatorId());
         metaProjectDAO.update(projectPO);
     }
     /**

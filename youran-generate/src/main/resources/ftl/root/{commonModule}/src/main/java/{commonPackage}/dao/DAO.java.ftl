@@ -2,11 +2,13 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "${commonPackage}.context.LoginContext"/>
 <@import "${commonPackage}.pojo.po.AbstractPO"/>
 <@import "${commonPackage}.pojo.qo.AbstractQO"/>
 <@import "${commonPackage}.pojo.qo.PageQO"/>
 <@import "${commonPackage}.pojo.vo.AbstractVO"/>
 <@import "${commonPackage}.pojo.vo.PageVO"/>
+<@import "${commonPackage}.util.SpringUtil"/>
 <@import "java.util.List"/>
 <@import "java.util.ArrayList"/>
 <@classCom "DAO父接口"/>
@@ -57,19 +59,42 @@ public interface DAO<PO extends AbstractPO> {
 
 
     /**
-     * 插入记录
+     * 执行插入记录
      * @param po
      * @return
      */
-    int save(PO po);
+    int _save(PO po);
 
     /**
-     * 修改记录
+     * 先填充附加字段，再插入记录
+     * @param po
+     * @return
+     */
+    default int save(PO po){
+        LoginContext loginContext = SpringUtil.getBean(LoginContext.class);
+        po.preInsert(loginContext.getCurrentOperatorId());
+        return this._save(po);
+    }
+
+    /**
+     * 执行修改记录
      *
      * @param po
      * @return
      */
-    int update(PO po);
+    int _update(PO po);
+
+    /**
+     * 先填充附加字段，再修改记录
+     *
+     * @param po
+     * @return
+     */
+    default int update(PO po){
+        LoginContext loginContext = SpringUtil.getBean(LoginContext.class);
+        po.preUpdate(loginContext.getCurrentOperatorId());
+        return this._update(po);
+    }
 
 
     /**

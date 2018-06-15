@@ -17,7 +17,7 @@
               and cascadeExtId = #{cascadeExtId,jdbcType=INTEGER}
     </select>
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="cascadeExtId" parameterType="MetaCascadeExtPO">
+    <insert id="_save" useGeneratedKeys="true" keyProperty="cascadeExtId" parameterType="MetaCascadeExtPO">
         insert into `meta_cascade_ext`(
             `cascadeExtId`,
             `fieldId`,
@@ -54,7 +54,7 @@
     </insert>
 
 
-    <update id="update" parameterType="MetaCascadeExtPO">
+    <update id="_update" parameterType="MetaCascadeExtPO">
         update meta_cascade_ext
         set
             `fieldId` = #{fieldId,jdbcType=INTEGER},

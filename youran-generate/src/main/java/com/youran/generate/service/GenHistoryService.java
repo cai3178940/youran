@@ -1,7 +1,6 @@
 package com.youran.generate.service;
 
 import com.youran.common.pojo.vo.PageVO;
-import com.youran.common.service.AbstractService;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.dao.GenHistoryDAO;
 import com.youran.generate.exception.GenerateException;
@@ -24,7 +23,7 @@ import java.util.Objects;
  * Create Time: 2018-03-17 16:47
  */
 @Service
-public class GenHistoryService extends AbstractService {
+public class GenHistoryService {
 
     @Autowired
     private GenHistoryDAO genHistoryDAO;
@@ -44,7 +43,6 @@ public class GenHistoryService extends AbstractService {
         genHistory.setBranch(branch);
         genHistory.setSysVersion(generateProperties.getVersion());
         genHistory.setProjectVersion(project.getProjectVersion());
-        genHistory.preInsert(loginContext.getCurrentOperatorId());
         genHistoryDAO.save(genHistory);
         return genHistory;
     }

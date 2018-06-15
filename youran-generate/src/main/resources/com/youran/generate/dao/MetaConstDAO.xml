@@ -16,7 +16,7 @@
         and constId = #{constId,jdbcType=INTEGER}
     </select>
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="constId" parameterType="MetaConstPO">
+    <insert id="_save" useGeneratedKeys="true" keyProperty="constId" parameterType="MetaConstPO">
         insert into meta_const (
           constId, projectId, constName,
           constRemark, constType,
@@ -30,7 +30,7 @@
           )
     </insert>
 
-    <update id="update" parameterType="MetaConstPO">
+    <update id="_update" parameterType="MetaConstPO">
         update meta_const
         set projectId = #{projectId,jdbcType=INTEGER},
           constName = #{constName,jdbcType=VARCHAR},

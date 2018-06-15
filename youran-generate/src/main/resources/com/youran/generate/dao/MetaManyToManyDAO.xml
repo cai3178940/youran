@@ -16,7 +16,7 @@
         and mtmId = #{mtmId,jdbcType=INTEGER}
     </select>
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="mtmId" parameterType="MetaManyToManyPO">
+    <insert id="_save" useGeneratedKeys="true" keyProperty="mtmId" parameterType="MetaManyToManyPO">
         insert into meta_mtm (
           mtmId, projectId, tableName,
           schemaName, `desc`, entityId1,
@@ -32,7 +32,7 @@
           )
     </insert>
 
-    <update id="update" parameterType="MetaManyToManyPO">
+    <update id="_update" parameterType="MetaManyToManyPO">
         update meta_mtm
         set projectId = #{projectId,jdbcType=INTEGER},
         tableName = #{tableName,jdbcType=VARCHAR},

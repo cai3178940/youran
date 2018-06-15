@@ -16,7 +16,7 @@
         and entityId = #{entityId,jdbcType=INTEGER}
     </select>
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="entityId" parameterType="MetaEntityPO">
+    <insert id="_save" useGeneratedKeys="true" keyProperty="entityId" parameterType="MetaEntityPO">
         insert into meta_entity (
           entityId, projectId, schemaName,
           className, tableName, title, `desc`,
@@ -31,7 +31,7 @@
           #{version,jdbcType=INTEGER})
     </insert>
 
-    <update id="update" parameterType="MetaEntityPO">
+    <update id="_update" parameterType="MetaEntityPO">
         update meta_entity
         set projectId = #{projectId,jdbcType=INTEGER},
           schemaName = #{schemaName,jdbcType=VARCHAR},

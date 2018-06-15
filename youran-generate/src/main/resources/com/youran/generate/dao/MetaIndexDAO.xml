@@ -21,7 +21,7 @@
         and indexId = #{indexId,jdbcType=INTEGER}
     </select>
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="indexId" parameterType="MetaIndexPO">
+    <insert id="_save" useGeneratedKeys="true" keyProperty="indexId" parameterType="MetaIndexPO">
         insert into meta_index (
           indexId, indexName, entityId,
           `unique`, createDate, createBy,
@@ -33,7 +33,7 @@
           #{version,jdbcType=INTEGER})
     </insert>
 
-    <update id="update" parameterType="MetaIndexPO">
+    <update id="_update" parameterType="MetaIndexPO">
         update meta_index
         set indexName = #{indexName,jdbcType=VARCHAR},
         entityId = #{entityId,jdbcType=INTEGER},

@@ -1,10 +1,12 @@
 package com.youran.common.dao;
 
+import com.youran.common.context.LoginContext;
 import com.youran.common.pojo.po.AbstractPO;
 import com.youran.common.pojo.qo.AbstractQO;
 import com.youran.common.pojo.qo.PageQO;
 import com.youran.common.pojo.vo.AbstractVO;
 import com.youran.common.pojo.vo.PageVO;
+import com.youran.common.util.SpringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,21 +64,43 @@ public interface DAO<PO extends AbstractPO> {
 
 
     /**
-     * 插入记录
+     * 执行插入记录
      * @param po
      * @return
      */
-    int save(PO po);
+    int _save(PO po);
 
     /**
-     * 修改记录
+     * 先填充附加字段，再插入记录
+     * @param po
+     * @return
+     */
+    default int save(PO po){
+        LoginContext loginContext = SpringUtil.getBean(LoginContext.class);
+        po.preInsert(loginContext.getCurrentOperatorId());
+        return this._save(po);
+    }
+
+    /**
+     * 执行修改记录
      *
      * @param po
      * @return
      */
-    int update(PO po);
+    int _update(PO po);
 
-
+    /**
+     * 先填充附加字段，再修改记录
+     *
+     * @param po
+     * @return
+     */
+    default int update(PO po){
+        LoginContext loginContext = SpringUtil.getBean(LoginContext.class);
+        po.preUpdate(loginContext.getCurrentOperatorId());
+        return this._update(po);
+    }
+    
     /**
      * 删除记录
      *

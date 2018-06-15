@@ -1,7 +1,6 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.service.AbstractService;
 import com.youran.common.util.ConvertUtil;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaFieldDAO;
@@ -30,7 +29,7 @@ import java.util.List;
  * Create Time:2017/5/12 11:17
  */
 @Service
-public class MetaIndexService extends AbstractService {
+public class MetaIndexService {
 
     @Autowired
     private MetaEntityDAO metaEntityDAO;
@@ -63,7 +62,6 @@ public class MetaIndexService extends AbstractService {
         //映射属性
         MetaIndexPO metaIndex = MetaIndexMapper.INSTANCE.fromAddDTO(metaIndexAddDTO);
         //保存索引对象
-        metaIndex.preInsert(loginContext.getCurrentOperatorId());
         metaIndexDAO.save(metaIndex);
         //保存关联关系
         int count = metaIndexFieldDAO.saveBatch(metaIndex.getIndexId(), fieldIdList);
@@ -101,7 +99,6 @@ public class MetaIndexService extends AbstractService {
         //映射属性
         MetaIndexMapper.INSTANCE.setPO(metaIndex, metaIndexUpdateDTO);
         //修改索引对象
-        metaIndex.preUpdate(loginContext.getCurrentOperatorId());
         metaIndexDAO.update(metaIndex);
         //先清除旧关联关系
         metaIndexFieldDAO.delete(metaIndex.getIndexId());

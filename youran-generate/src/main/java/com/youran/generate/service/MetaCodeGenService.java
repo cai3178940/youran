@@ -2,7 +2,6 @@ package com.youran.generate.service;
 
 import com.google.common.collect.Lists;
 import com.youran.common.constant.BoolConst;
-import com.youran.common.service.AbstractService;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.common.util.DateUtil;
 import com.youran.common.util.H2Util;
@@ -37,7 +36,7 @@ import java.util.stream.Collectors;
  * Create Time:2017/5/14 10:29
  */
 @Service
-public class MetaCodeGenService extends AbstractService {
+public class MetaCodeGenService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetaCodeGenService.class);
 
@@ -588,7 +587,6 @@ public class MetaCodeGenService extends AbstractService {
         GenHistoryPO history = genHistoryService.save(project, commit, newBranchName);
 
         project.setLastHistoryId(history.getHistoryId());
-        project.preUpdate(loginContext.getCurrentOperatorId());
         metaProjectDAO.update(project);
 
     }

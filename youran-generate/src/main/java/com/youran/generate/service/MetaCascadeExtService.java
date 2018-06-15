@@ -1,7 +1,6 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.service.AbstractService;
 import com.youran.generate.dao.MetaCascadeExtDAO;
 import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.exception.GenerateException;
@@ -28,7 +27,7 @@ import java.util.List;
  * Create Time:2017/5/24
  */
 @Service
-public class MetaCascadeExtService extends AbstractService {
+public class MetaCascadeExtService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MetaCascadeExtService.class);
 
@@ -48,7 +47,6 @@ public class MetaCascadeExtService extends AbstractService {
     @Transactional
     public MetaCascadeExtPO save(MetaCascadeExtAddDTO addDTO) {
         MetaCascadeExtPO metaCascadeExt = MetaCascadeExtMapper.INSTANCE.fromAddDTO(addDTO);
-        metaCascadeExt.preInsert(loginContext.getCurrentOperatorId());
         metaCascadeExtDAO.save(metaCascadeExt);
         metaProjectService.updateProjectVersionByEntityId(metaCascadeExt.getEntityId());
         return metaCascadeExt;
@@ -67,7 +65,6 @@ public class MetaCascadeExtService extends AbstractService {
             throw new GenerateException("cascadeExtId有误");
         }
         MetaCascadeExtMapper.INSTANCE.setPO(metaCascadeExt, updateDTO);
-        metaCascadeExt.preUpdate(loginContext.getCurrentOperatorId());
         metaCascadeExtDAO.update(metaCascadeExt);
         metaProjectService.updateProjectVersionByEntityId(metaCascadeExt.getEntityId());
     }

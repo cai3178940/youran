@@ -9,7 +9,6 @@ import com.alibaba.druid.sql.dialect.mysql.ast.MySqlPrimaryKey;
 import com.alibaba.druid.sql.dialect.mysql.ast.MySqlUnique;
 import com.alibaba.druid.sql.parser.ParserException;
 import com.youran.common.constant.BoolConst;
-import com.youran.common.service.AbstractService;
 import com.youran.common.util.SafeUtil;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MySqlType;
@@ -44,7 +43,7 @@ import java.util.stream.Collectors;
  * Create Time: 2018/5/30 17:57
  */
 @Service
-public class ReverseEngineeringService extends AbstractService {
+public class ReverseEngineeringService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ReverseEngineeringService.class);
 

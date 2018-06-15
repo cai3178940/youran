@@ -1,7 +1,6 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.service.AbstractService;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaManyToManyDAO;
 import com.youran.generate.exception.GenerateException;
@@ -25,7 +24,7 @@ import java.util.List;
  * Create Time:2017/5/12 11:17
  */
 @Service
-public class MetaManyToManyService extends AbstractService {
+public class MetaManyToManyService {
 
     @Autowired
     private MetaManyToManyDAO metaManyToManyDAO;
@@ -48,7 +47,6 @@ public class MetaManyToManyService extends AbstractService {
             throw new GenerateException("entityId2参数有误");
         }
         MetaManyToManyPO metaManyToMany = MetaManyToManyMapper.INSTANCE.fromAddDTO(metaManyToManyDTO);
-        metaManyToMany.preInsert(loginContext.getCurrentOperatorId());
         metaManyToManyDAO.save(metaManyToMany);
         metaProjectService.updateProjectVersion(metaManyToMany.getProjectId());
         return metaManyToMany;
@@ -74,7 +72,6 @@ public class MetaManyToManyService extends AbstractService {
             throw new GenerateException("mtmId有误");
         }
         MetaManyToManyMapper.INSTANCE.setPO(metaManyToMany, metaManyToManyUpdateDTO);
-        metaManyToMany.preUpdate(loginContext.getCurrentOperatorId());
         metaManyToManyDAO.update(metaManyToMany);
         metaProjectService.updateProjectVersion(metaManyToMany.getProjectId());
     }

@@ -39,7 +39,7 @@
         </where>
     </select>
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="historyId" parameterType="GenHistoryPO">
+    <insert id="_save" useGeneratedKeys="true" keyProperty="historyId" parameterType="GenHistoryPO">
         insert into gen_history(
         historyId,
         projectId,
@@ -72,7 +72,7 @@
     </insert>
 
 
-    <update id="update" parameterType="GenHistoryPO">
+    <update id="_update" parameterType="GenHistoryPO">
         update gen_history set
         historyId=#{historyId,jdbcType=INTEGER},
         projectId=#{projectId,jdbcType=INTEGER},

@@ -1,16 +1,15 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.service.AbstractService;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
-import com.youran.generate.pojo.po.MetaEntityPO;
-import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaFieldMapper;
+import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
+import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import java.util.List;
  * Create Time:2017/5/12 11:17
  */
 @Service
-public class MetaFieldService extends AbstractService {
+public class MetaFieldService {
 
     @Autowired
     private MetaFieldDAO metaFieldDAO;
@@ -46,7 +45,6 @@ public class MetaFieldService extends AbstractService {
             throw new GenerateException("entityId参数有误");
         }
         MetaFieldPO metaField = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
-        metaField.preInsert(loginContext.getCurrentOperatorId());
         metaFieldDAO.save(metaField);
         metaProjectService.updateProjectVersion(entityPO.getProjectId());
         return metaField;
@@ -66,7 +64,6 @@ public class MetaFieldService extends AbstractService {
             throw new GenerateException("fieldId有误");
         }
         MetaFieldMapper.INSTANCE.setPO(metaField, metaFieldUpdateDTO);
-        metaField.preUpdate(loginContext.getCurrentOperatorId());
         metaFieldDAO.update(metaField);
         MetaEntityPO entityPO = metaEntityDAO.findById(metaField.getEntityId());
         metaProjectService.updateProjectVersion(entityPO.getProjectId());

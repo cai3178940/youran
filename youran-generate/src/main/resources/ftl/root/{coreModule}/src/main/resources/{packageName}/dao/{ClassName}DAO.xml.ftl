@@ -42,7 +42,7 @@
         </where>
     </select>
 
-    <insert id="save" <#if pk.autoIncrement==1>useGeneratedKeys="true" </#if>keyProperty="${id}" parameterType="${CName}PO">
+    <insert id="_save" <#if pk.autoIncrement==1>useGeneratedKeys="true" </#if>keyProperty="${id}" parameterType="${CName}PO">
         insert into ${wrapTableName}(
     <#list fields as field>
         ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field_has_next>,</#if>
@@ -55,7 +55,7 @@
     </insert>
 
 
-    <update id="update" parameterType="${CName}PO">
+    <update id="_update" parameterType="${CName}PO">
         update ${wrapTableName} set
         <#list fields as field>
             <#if field.specialField?? && field.specialField==MetaSpecialField.VERSION>

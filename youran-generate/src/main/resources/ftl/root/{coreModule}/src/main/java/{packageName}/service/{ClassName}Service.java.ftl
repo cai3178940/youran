@@ -3,7 +3,6 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.service.AbstractService"/>
 <@import "${packageName}.pojo.dto.${CName}AddDTO"/>
 <@import "${packageName}.pojo.qo.${CName}QO"/>
 <@import "${packageName}.pojo.vo.${CName}ListVO"/>
@@ -17,7 +16,7 @@
 <@import "org.springframework.transaction.annotation.Transactional"/>
 <@classCom "【${title}】删改查服务"/>
 @Service
-public class ${CName}Service extends AbstractService{
+public class ${CName}Service {
 
     <@autowired "${packageName}.dao" "${CName}DAO"/>
 <#if metaEntity.mtmHoldRefers??>
@@ -79,7 +78,6 @@ public class ${CName}Service extends AbstractService{
     public ${CName}PO save(${CName}AddDTO ${cName}DTO) {
         ${CName}PO ${cName} = ${CName}Mapper.INSTANCE.fromAddDTO(${cName}DTO);
         <@checkForeignKeys insertFields/>
-        ${cName}.preInsert(loginContext.getCurrentOperatorId());
         ${cName}DAO.save(${cName});
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
@@ -112,7 +110,6 @@ public class ${CName}Service extends AbstractService{
         ${CName}PO ${cName} = this.get${CName}(${id}, true);
         ${CName}Mapper.INSTANCE.setUpdateDTO(${cName},${cName}UpdateDTO);
         <@checkForeignKeys updateFields/>
-        ${cName}.preUpdate(loginContext.getCurrentOperatorId());
         ${cName}DAO.update(${cName});
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
