@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Title:元数据项目增删改查服务
+ * Title:项目增删改查服务
  * Description:
  * Author: cbb
  * Create Time:2017/5/24

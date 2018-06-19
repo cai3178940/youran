@@ -14,27 +14,27 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
 /**
- * Title:元数据常量值api
+ * Title:【常量值】api
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 13:40
  */
-@Api(tags = "MetaConstDetailPO", description = "元数据常量值")
+@Api(tags = "MetaConstDetailPO", description = "常量值")
 public interface MetaConstDetailAPI {
 
     /**
-     * 新增元数据常量值
+     * 新增常量值
      */
-    @ApiOperation(value = "新增元数据常量值")
+    @ApiOperation(value = "新增常量值")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstDetailAddDTO", dataType = "MetaConstDetailAddDTO", value = "新增常量值参数", paramType = "body"),
     })
     ReplyVO<Integer> save(MetaConstDetailAddDTO metaConstDetailAddDTO);
 
     /**
-     * 修改元数据常量值
+     * 修改常量值
      */
-    @ApiOperation(value = "修改元数据常量值")
+    @ApiOperation(value = "修改常量值")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstDetailUpdateDTO", dataType = "MetaConstDetailUpdateDTO", value = "修改常量值参数", paramType = "body"),
     })

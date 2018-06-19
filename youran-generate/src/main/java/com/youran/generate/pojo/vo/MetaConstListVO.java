@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import static com.youran.generate.pojo.example.MetaConstExample.*;
 
 /**
- * Title:元数据常量列表展示对象
+ * Title:常量列表展示对象
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 17:54

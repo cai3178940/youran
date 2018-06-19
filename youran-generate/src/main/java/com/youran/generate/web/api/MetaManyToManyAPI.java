@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
 /**
- * Title:多对多关联管理api
+ * Title: 【多对多关联】api
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 13:40

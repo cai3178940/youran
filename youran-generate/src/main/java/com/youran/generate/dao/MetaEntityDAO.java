@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * Title:元数据实体数据库操作
+ * Title: 【实体】数据库操作
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 10:27

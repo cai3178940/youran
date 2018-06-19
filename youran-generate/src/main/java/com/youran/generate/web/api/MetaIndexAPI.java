@@ -14,27 +14,27 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
 /**
- * Title:元数据索引api
+ * Title: 【索引】api
  * Description:
  * Author: cbb
  * Create Time:2017/5/16
  */
-@Api(tags = "MetaIndexPO", description = "元数据索引")
+@Api(tags = "MetaIndexPO", description = "索引")
 public interface MetaIndexAPI {
 
     /**
-     * 新增元数据索引
+     * 新增索引
      */
-    @ApiOperation(value = "新增元数据索引")
+    @ApiOperation(value = "新增索引")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaIndexAddDTO", dataType = "MetaIndexAddDTO", value = "新增索引参数", paramType = "body"),
     })
     ReplyVO<Integer> save(MetaIndexAddDTO metaIndexAddDTO);
 
     /**
-     * 修改元数据索引
+     * 修改索引
      */
-    @ApiOperation(value = "修改元数据索引")
+    @ApiOperation(value = "修改索引")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaIndexUpdateDTO", dataType = "MetaIndexUpdateDTO", value = "修改索引参数", paramType = "body"),
     })

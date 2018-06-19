@@ -35,38 +35,38 @@ public class MetadataQueryService {
 
 
     /**
-     * 获取元数据常量及所有关联对象
+     * 获取常量及所有关联对象
      * @param constId 常量id
      * @return
      */
     public MetaConstPO getConstWithAll(Integer constId) {
         MetaConstPO metaConst = metaConstDAO.findById(constId);
         if (metaConst == null) {
-            throw new GenerateException("未查询到元数据常量，constId=" + constId);
+            throw new GenerateException("未查询到常量，constId=" + constId);
         }
         List<MetaConstDetailPO> detailList = metaConstDetailDAO.findByConstId(constId);
         if (CollectionUtils.isEmpty(detailList)) {
-            throw new GenerateException("元数据常量无对应常量值，constId=" + constId);
+            throw new GenerateException("常量无对应常量值，constId=" + constId);
         }
         metaConst.setDetailList(detailList);
         return metaConst;
     }
 
     /**
-     * 获取元数据实体及所有关联对象
+     * 获取实体及所有关联对象
      * @param entityId 实体id
      * @return
      */
     public MetaEntityPO getEntityWithAll(Integer entityId) {
         MetaEntityPO metaEntity = metaEntityDAO.findById(entityId);
         if (metaEntity == null) {
-            throw new GenerateException("未查询到元数据实体，entityId=" + entityId);
+            throw new GenerateException("未查询到实体，entityId=" + entityId);
         }
         return this.fillEntity(metaEntity);
     }
 
     /**
-     * 填充元数据实体所有关联对象
+     * 填充实体所有关联对象
      * @param metaEntity 实体
      * @return
      */
@@ -74,7 +74,7 @@ public class MetadataQueryService {
         Integer entityId = metaEntity.getEntityId();
         List<MetaFieldPO> fieldList = metaFieldDAO.findByEntityId(entityId);
         if (CollectionUtils.isEmpty(fieldList)) {
-            throw new GenerateException("元数据实体无对应字段，entityId=" + entityId);
+            throw new GenerateException("实体无对应字段，entityId=" + entityId);
         }
         //将list转化为map,并填充实体内部字段
         Map<Integer, MetaFieldPO> fieldMap = new HashMap<>(fieldList.size());

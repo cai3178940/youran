@@ -432,7 +432,7 @@ public class MetaCodeGenService {
      * @param project      项目
      * @param outDir       输出临时目录
      * @param templateEnum 模版文件枚举
-     * @param singleEntity 当前元数据实体
+     * @param singleEntity 当前实体
      */
     private void renderFTL(MetaProjectPO project, String outDir, TemplateEnum templateEnum, MetaEntityPO singleEntity, MetaConstPO singleConst) {
         Map<String, Object> map = buildTemplateParamMap(project, singleEntity, singleConst);
@@ -445,18 +445,18 @@ public class MetaCodeGenService {
     /**
      * 构建模版参数map
      * @param project      项目
-     * @param singleEntity 当前元数据实体
+     * @param singleEntity 当前实体
      * @return
      */
     private Map<String, Object> buildTemplateParamMap(MetaProjectPO project, MetaEntityPO singleEntity, MetaConstPO singleConst) {
         Map<String, Object> map = new HashMap<>();
-        //当前元数据实体
+        //当前实体
         map.put("metaEntity", singleEntity);
-        //当前元数据常量
+        //当前常量
         map.put("metaConst", singleConst);
-        //所有元数据实体
+        //所有实体
         map.put("metaEntities", project.getEntities());
-        //所有元数据常量
+        //所有常量
         map.put("metaConsts", project.getConsts());
         //包名
         map.put("packageName", project.getPackageName());
@@ -497,7 +497,7 @@ public class MetaCodeGenService {
      * @param text         渲染出的文本
      * @param outDir       代码输出临时目录
      * @param templatePath 模版文件路径
-     * @param metaEntityPO   元数据实体
+     * @param metaEntityPO   实体
      */
     private void writeToFile(MetaProjectPO project, String text, String outDir, String templatePath, MetaEntityPO metaEntityPO, MetaConstPO singleConst) {
         String packageName = project.getPackageName();

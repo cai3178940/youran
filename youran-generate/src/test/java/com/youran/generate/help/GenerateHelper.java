@@ -40,7 +40,7 @@ public class GenerateHelper{
 
 
     /**
-     * 保存元数据项目示例
+     * 保存项目示例
      * @return
      */
     public MetaProjectPO saveProjectExample(){
@@ -48,7 +48,7 @@ public class GenerateHelper{
         return metaProjectService.save(addDTO);
     }
     /**
-     * 保存元数据实体示例
+     * 保存实体示例
      * @return
      */
     public MetaEntityPO saveEntityExample(Integer projectId, int i){
@@ -57,7 +57,7 @@ public class GenerateHelper{
     }
 
     /**
-     * 保存元数据字段示例
+     * 保存字段示例
      * @return
      */
     public MetaFieldPO saveFieldExample(Integer entityId){
@@ -84,7 +84,7 @@ public class GenerateHelper{
     }
 
     /**
-     * 保存元数据索引示例
+     * 保存索引示例
      * @return
      */
     public MetaIndexPO saveIndexExample(Integer... fieldIds){
@@ -93,7 +93,7 @@ public class GenerateHelper{
     }
 
     /**
-     * 保存元数据常量示例
+     * 保存常量示例
      * @return
      */
     public MetaConstPO saveConstExample(Integer projectId){
@@ -101,7 +101,7 @@ public class GenerateHelper{
         return metaConstService.save(addDTO);
     }
     /**
-     * 保存元数据常量值示例
+     * 保存常量值示例
      * @return
      */
     public MetaConstDetailPO saveConstDetailExample(Integer constId){

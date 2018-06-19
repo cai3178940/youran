@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Title:
+ * Title: swagger配置引入
  * Description:
  * Author: cbb
  * Create Time: 2018/1/16 09:32

@@ -8,12 +8,12 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
 /**
- * Title:修改元数据项目DTO
+ * Title:修改项目DTO
  * Description:
  * Author: cbb
  * Create Time:2017/5/24
  */
-@ApiModel(description = "修改元数据项目参数")
+@ApiModel(description = "修改项目参数")
 public class MetaProjectUpdateDTO extends MetaProjectAddDTO {
 
     @ApiModelProperty(notes = N_PROJECTID, example = E_PROJECTID)

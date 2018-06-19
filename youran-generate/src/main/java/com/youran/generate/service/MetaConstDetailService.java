@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Title:元数据常量值增删改查服务
+ * Title:常量值增删改查服务
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 11:17

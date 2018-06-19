@@ -5,7 +5,7 @@ import com.youran.generate.pojo.po.MetaProjectPO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * Title:元数据项目数据库操作
+ * Title: 【项目】数据库操作
  * Description:
  * Author: cbb
  * Create Time:2017/5/24

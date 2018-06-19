@@ -9,7 +9,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 /**
- * Title: 元数据常量值映射
+ * Title: 常量值映射
  * Description: 基于mapstruct来实现，编译器自动生成实现类
  * Author: cbb
  * Create Time:2017/5/12 11:52

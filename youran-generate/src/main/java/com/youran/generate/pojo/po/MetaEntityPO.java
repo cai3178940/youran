@@ -6,7 +6,7 @@ import com.youran.common.pojo.po.CreateOperateDeleteVersion;
 import java.util.*;
 
 /**
- * Title:元数据实体
+ * Title:实体
  * Description:
  * Author: cbb
  * Create Time:2017/4/11 10:49

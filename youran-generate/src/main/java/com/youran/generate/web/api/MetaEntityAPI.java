@@ -13,27 +13,27 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * Title:元数据实体api
+ * Title: 【实体】api
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 13:40
  */
-@Api(tags = "MetaEntityPO", description = "元数据实体")
+@Api(tags = "MetaEntityPO", description = "实体")
 public interface MetaEntityAPI {
 
     /**
-     * 新增元数据实体
+     * 新增实体
      */
-    @ApiOperation(value = "新增元数据实体")
+    @ApiOperation(value = "新增实体")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaEntityAddDTO", dataType = "MetaEntityAddDTO", value = "新增实体参数", paramType = "body"),
     })
     ReplyVO<Integer> save(MetaEntityAddDTO metaEntityAddDTO);
 
     /**
-     * 修改元数据实体
+     * 修改实体
      */
-    @ApiOperation(value = "修改元数据实体")
+    @ApiOperation(value = "修改实体")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaEntityUpdateDTO", dataType = "MetaEntityUpdateDTO", value = "修改实体参数", paramType = "body"),
     })

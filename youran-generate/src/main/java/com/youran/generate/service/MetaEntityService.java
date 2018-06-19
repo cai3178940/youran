@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Title:元数据实体增删改查服务
+ * Title:实体增删改查服务
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 11:17

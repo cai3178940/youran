@@ -14,27 +14,27 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
 /**
- * Title:元数据字段api
+ * Title: 【字段】api
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 13:40
  */
-@Api(tags = "MetaFieldPO", description = "元数据字段")
+@Api(tags = "MetaFieldPO", description = "字段")
 public interface MetaFieldAPI {
 
     /**
-     * 新增元数据字段
+     * 新增字段
      */
-    @ApiOperation(value = "新增元数据字段")
+    @ApiOperation(value = "新增字段")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaFieldAddDTO", dataType = "MetaFieldAddDTO", value = "新增字段参数", paramType = "body"),
     })
     ReplyVO<Integer> save(MetaFieldAddDTO metaFieldAddDTO);
 
     /**
-     * 修改元数据字段
+     * 修改字段
      */
-    @ApiOperation(value = "修改元数据字段")
+    @ApiOperation(value = "修改字段")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaFieldUpdateDTO", dataType = "MetaFieldUpdateDTO", value = "修改字段参数", paramType = "body"),
     })

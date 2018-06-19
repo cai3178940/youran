@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
 /**
- * Title:元数据项目详情展示对象
+ * Title:项目详情展示对象
  * Description:
  * Author: cbb
  * Create Time:2017/5/24

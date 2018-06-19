@@ -13,27 +13,27 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * Title:元数据常量api
+ * Title:【常量】api
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 13:40
  */
-@Api(tags = "MetaConstPO", description = "元数据常量")
+@Api(tags = "MetaConstPO", description = "常量")
 public interface MetaConstAPI {
 
     /**
-     * 新增元数据常量
+     * 新增常量
      */
-    @ApiOperation(value = "新增元数据常量")
+    @ApiOperation(value = "新增常量")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstAddDTO", dataType = "MetaConstAddDTO", value = "新增常量参数", paramType = "body"),
     })
     ReplyVO<Integer> save(MetaConstAddDTO metaConstAddDTO);
 
     /**
-     * 修改元数据常量
+     * 修改常量
      */
-    @ApiOperation(value = "修改元数据常量")
+    @ApiOperation(value = "修改常量")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstUpdateDTO", dataType = "MetaConstUpdateDTO", value = "修改常量参数", paramType = "body"),
     })

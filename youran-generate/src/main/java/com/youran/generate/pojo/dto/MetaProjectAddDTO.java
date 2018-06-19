@@ -12,12 +12,12 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
 /**
- * Title:新增元数据项目DTO
+ * Title:新增项目DTO
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 11:05
  */
-@ApiModel(description = "新增元数据项目参数")
+@ApiModel(description = "新增项目参数")
 public class MetaProjectAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_PACKAGENAME, example = E_PACKAGENAME)

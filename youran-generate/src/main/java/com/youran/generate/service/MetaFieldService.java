@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Title:元数据字段增删改查服务
+ * Title:字段增删改查服务
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 11:17

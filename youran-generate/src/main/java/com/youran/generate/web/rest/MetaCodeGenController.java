@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Title:代码生成controller
+ * Title:【代码生成】控制器
  * Description:
  * Author: cbb
  * Create Time:2017/5/13 23:00

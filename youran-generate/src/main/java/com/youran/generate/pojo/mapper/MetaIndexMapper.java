@@ -10,7 +10,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 /**
- * Title: 元数据索引映射
+ * Title: 索引映射
  * Description: 基于mapstruct来实现，编译器自动生成实现类
  * Author: cbb
  * Create Time:2017/5/16 22:45

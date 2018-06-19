@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Title:元数据索引增删改查服务
+ * Title:索引增删改查服务
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 11:17

@@ -3,7 +3,7 @@ package com.youran.generate.pojo.example;
 import com.youran.common.pojo.example.AbstractExample;
 
 /**
- * Title:元数据实体参数示例
+ * Title:实体参数示例
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 15:07

@@ -11,7 +11,7 @@ public class GenerateConst {
 
     public static final String GENERATE_ROOT_PATH = "${youran.generate.rootPath:}";
 
-    //元数据字段空值常量
+    //字段空值常量
     public static final String METAFIELD_NULL_VALUE = "NULL";
 
     public static final String DEFAULT_ERROR_MSG = "系统bug,请联系管理员";

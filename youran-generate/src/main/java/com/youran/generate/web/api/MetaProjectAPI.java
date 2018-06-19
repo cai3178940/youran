@@ -14,32 +14,32 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
 /**
- * Title:元数据项目api
+ * Title: 【项目】api
  * Description:
  * Author: cbb
  * Create Time:2017/5/24
  */
-@Api(tags = "MetaProjectPO", description = "元数据项目")
+@Api(tags = "MetaProjectPO", description = "项目")
 public interface MetaProjectAPI {
 
     /**
-     * 新增元数据项目
+     * 新增项目
      *
      * @param metaProjectAddDTO
      * @return
      */
-    @ApiOperation(value = "新增元数据项目")
+    @ApiOperation(value = "新增项目")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectAddDTO", dataType = "MetaProjectAddDTO", value = "新增项目参数", paramType = "body"),
     })
     ReplyVO<Integer> save(MetaProjectAddDTO metaProjectAddDTO);
 
     /**
-     * 修改元数据项目
+     * 修改项目
      *
      * @param metaProjectUpdateDTO
      */
-    @ApiOperation(value = "修改元数据项目")
+    @ApiOperation(value = "修改项目")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectUpdateDTO", dataType = "MetaProjectUpdateDTO", value = "修改项目参数", paramType = "body"),
     })

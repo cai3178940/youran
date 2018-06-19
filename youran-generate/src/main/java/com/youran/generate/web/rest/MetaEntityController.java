@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- * Title:元数据实体控制器
+ * Title:【实体】控制器
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 13:42

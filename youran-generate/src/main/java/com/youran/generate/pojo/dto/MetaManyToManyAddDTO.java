@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
 
 /**
- * Title:新增元数据实体DTO
+ * Title:新增实体DTO
  * Description:
  * Author: cbb
  * Create Time:2017/5/12 11:05

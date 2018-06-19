@@ -20,7 +20,7 @@ import static com.youran.generate.pojo.example.MetaFieldExample.*;
  * Author: cbb
  * Create Time:2017/5/12 11:11
  */
-@ApiModel(description = "新增元数据字段参数")
+@ApiModel(description = "新增字段参数")
 public class MetaFieldAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_ENTITYID, example = E_ENTITYID)

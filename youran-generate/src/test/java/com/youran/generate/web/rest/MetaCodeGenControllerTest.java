@@ -76,7 +76,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         this.womanConstDetail = this.saveWomanConstDetail(this.sexEnum);
     }
 
-    //保存用户元数据实体
+    //保存用户实体
     private MetaEntityPO saveUserEntity(MetaProjectPO project) {
         MetaEntityAddDTO dto = new MetaEntityAddDTO();
         dto.setProjectId(project.getProjectId());

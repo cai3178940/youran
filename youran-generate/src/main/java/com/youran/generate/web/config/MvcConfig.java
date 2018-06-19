@@ -8,7 +8,10 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
- * 跨域支持
+ * Title: 跨域支持
+ * Description:
+ * Author: cbb
+ * Create Time: 2018/1/16 09:32
  */
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
