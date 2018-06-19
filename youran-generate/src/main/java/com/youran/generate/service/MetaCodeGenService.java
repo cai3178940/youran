@@ -291,7 +291,20 @@ public class MetaCodeGenService {
     //校验项目完整性
     private void checkProject(MetaProjectPO project,boolean checkConst) {
         List<MetaEntityPO> entities = project.getEntities();
-        List<MetaConstPO> consts = project.getConsts();
+
+        Map<String,MetaConstPO> constMap = null;
+        if(checkConst) {
+            List<MetaConstPO> consts = project.getConsts();
+            constMap = new HashMap<>(consts.size());
+            for (MetaConstPO constPO : consts) {
+                if(constMap.containsKey(constPO.getConstName())){
+                    throw new GenerateException("枚举类名冲突："+constPO.getConstName());
+                }
+                constMap.put(constPO.getConstName(),constPO);
+            }
+        }
+
+
         for (MetaEntityPO entity : entities) {
             List<MetaFieldPO> fields = entity.getFields();
             int pkCount = 0;
@@ -322,6 +335,13 @@ public class MetaCodeGenService {
                 } else if (Objects.equals(specialField, MetaSpecialField.VERSION)) {
                     versionCount++;
                 }
+
+                if(StringUtils.isNotBlank(field.getDicType())
+                    &&checkConst
+                    &&!constMap.containsKey(field.getDicType())){
+                    throw new GenerateException("实体【"+entity.getTitle()+"】的字段【"+field.getFieldDesc()+"】中指定的枚举字典【"+field.getDicType()+"】不存在");
+                }
+
             }
             if(pkCount==0){
                 throw new GenerateException("实体【"+entity.getTitle()+"】中未找到主键");
@@ -347,8 +367,6 @@ public class MetaCodeGenService {
             if(versionCount>1){
                 throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+versionCount+"个乐观锁版本字段");
             }
-        }
-        if(checkConst) {
 
         }
 
