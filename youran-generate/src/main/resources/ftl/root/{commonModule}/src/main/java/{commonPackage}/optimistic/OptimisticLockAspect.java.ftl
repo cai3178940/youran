@@ -2,7 +2,8 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@import " ${commonPackage}.pojo.po.Version"/>
+<@import "${commonPackage}.pojo.po.Version"/>
+<@import "${commonPackage}.util.MessageSourceUtil"/>
 <@import "org.aspectj.lang.ProceedingJoinPoint"/>
 <@import "org.aspectj.lang.Signature"/>
 <@import "org.aspectj.lang.annotation.Around"/>
@@ -33,7 +34,7 @@ public class OptimisticLockAspect {
         Object[] args = thisJoinPoint.getArgs();
         int count = (int)thisJoinPoint.proceed();
         if((args[0] instanceof Version) && count<=0){
-            throw new OptimisticException("更新操作乐观锁异常");
+            throw new OptimisticException(MessageSourceUtil.getMessage("error.optimistic_lock"));
         }
         return count;
     }
@@ -53,12 +54,12 @@ public class OptimisticLockAspect {
         final Method targetMethod = methodSignature.getMethod();
         OptimisticLock optimisticLock = targetMethod.getAnnotation(OptimisticLock.class);
         if(optimisticLock ==null){
-            throw new RuntimeException("乐观锁aop异常");
+            throw new RuntimeException("optimistic lock aop error");
         }
 
         Class<? extends Exception>[] catchTypes = optimisticLock.catchType();
         if(catchTypes==null || catchTypes.length==0){
-            throw new RuntimeException("乐观锁aop异常");
+            throw new RuntimeException("optimistic lock aop error");
         }
         int retry = optimisticLock.retry();
         Object object = tryServiceProceed(thisJoinPoint, catchTypes, retry);

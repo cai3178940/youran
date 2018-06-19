@@ -1,6 +1,10 @@
 <#include "/common.ftl">
 # \u82F1\u6587\u8D44\u6E90\u6587\u4EF6
 reply.success=success
+error.data_format_error=data format error
+error.json_serialize_error=json serialize error
+error.json_deserialize_error=json deserialize error
+error.optimistic_lock=update failure by optimistic lock
 error.internal_server_error=internal server error
 error.err_validation=validation error
 error.concurrency_failure=concurrency failure

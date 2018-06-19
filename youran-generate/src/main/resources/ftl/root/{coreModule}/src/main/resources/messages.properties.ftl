@@ -1,6 +1,10 @@
 <#include "/common.ftl">
 # \u9ED8\u8BA4\u56FD\u9645\u5316\u8D44\u6E90\u6587\u4EF6\uFF0C\u9ED8\u8BA4\u4E2D\u6587
 reply.success=\u6210\u529F
+error.data_format_error=\u65E5\u671F\u683C\u5F0F\u6709\u8BEF
+error.json_serialize_error=json\u5E8F\u5217\u5316\u5F02\u5E38
+error.json_deserialize_error=json\u53CD\u5E8F\u5217\u5316\u5F02\u5E38
+error.optimistic_lock=\u66F4\u65B0\u64CD\u4F5C\u4E50\u89C2\u9501\u5F02\u5E38
 error.internal_server_error=\u7CFB\u7EDF\u5185\u90E8\u9519\u8BEF
 error.err_validation=\u53C2\u6570\u6821\u9A8C\u5931\u8D25
 error.concurrency_failure=\u5E76\u53D1\u8BBF\u95EE\u5931\u8D25

@@ -66,7 +66,7 @@ public class DateUtil {
         }else if(datatime.length()==DATE_FORMAT_2.length()){
             dateFormat = DATE_FORMAT_2;
         }else{
-            throw new IllegalArgumentException("日期格式有误，datatime="+datatime);
+            throw new IllegalArgumentException(MessageSourceUtil.getMessage("error.data_format_error")+",datatime="+datatime);
         }
         return parseDate(datatime,dateFormat);
     }

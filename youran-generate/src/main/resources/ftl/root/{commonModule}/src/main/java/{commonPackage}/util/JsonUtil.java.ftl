@@ -36,13 +36,13 @@ public class JsonUtil {
             t = mapper.readValue(json, clazz);
         } catch (JsonParseException e) {
             LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
+            throw new RuntimeException(MessageSourceUtil.getMessage("error.json_deserialize_error"),e);
         } catch (JsonMappingException e) {
             LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
+            throw new RuntimeException(MessageSourceUtil.getMessage("error.json_deserialize_error"),e);
         } catch (IOException e) {
             LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
+            throw new RuntimeException(MessageSourceUtil.getMessage("error.json_deserialize_error"),e);
         }
         return t;
     }
@@ -54,7 +54,7 @@ public class JsonUtil {
             str = mapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             LOGGER.error("json序列化异常", e);
-            throw new RuntimeException("json序列化异常",e);
+            throw new RuntimeException(MessageSourceUtil.getMessage("error.json_serialize_error"),e);
         }
         return str;
     }
@@ -65,7 +65,7 @@ public class JsonUtil {
                 return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
             } catch (JsonProcessingException e) {
                 LOGGER.error("json序列化异常", e);
-                throw new RuntimeException("json序列化异常",e);
+                throw new RuntimeException(MessageSourceUtil.getMessage("error.json_serialize_error"),e);
             }
         }
         return toJSONString(object);
@@ -82,13 +82,13 @@ public class JsonUtil {
             list = mapper.readValue(json, javaType);
         } catch (JsonParseException e) {
             LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
+            throw new RuntimeException(MessageSourceUtil.getMessage("error.json_deserialize_error"),e);
         } catch (JsonMappingException e) {
             LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
+            throw new RuntimeException(MessageSourceUtil.getMessage("error.json_deserialize_error"),e);
         } catch (IOException e) {
             LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
+            throw new RuntimeException(MessageSourceUtil.getMessage("error.json_deserialize_error"),e);
         }
         return list;
     }
