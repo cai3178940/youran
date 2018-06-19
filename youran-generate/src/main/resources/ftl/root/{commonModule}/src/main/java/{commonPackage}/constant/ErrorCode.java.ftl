@@ -10,19 +10,23 @@ public enum ErrorCode {
     /**
      * 参数校验失败
      */
-    ERR_VALIDATION("400", "参数校验失败"),
+    ERR_VALIDATION("400", "error.err_validation"),
     /**
      * 并发访问失败
      */
-    CONCURRENCY_FAILURE("409", "并发访问失败"),
+    CONCURRENCY_FAILURE("409", "error.concurrency_failure"),
     /**
      * http method不允许
      */
-    METHOD_NOT_SUPPORTED("405", "http method不允许"),
+    METHOD_NOT_SUPPORTED("405", "error.method_not_supported"),
     /**
      * 系统内部错误
      */
-    INTERNAL_SERVER_ERROR("500", "系统内部错误");
+    INTERNAL_SERVER_ERROR("500", "error.internal_server_error"),
+    /**
+     * 键值重复
+     */
+    DUPLICATE_KEY("521", "error.duplicate_key");
 
 
     private final String value;

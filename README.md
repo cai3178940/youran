@@ -80,6 +80,12 @@ java -jar youran-generate/target/youran-generate.war
 
 ## 升级日志
 
+#### 2018-06-19
+- 增加国际化支持
+
+#### 2018-06-14
+- 切换mybatis的使用姿势：用传统的Mapper注解模式替换SqlSession模式
+
 #### 2018-05-31
 - 增加反向工程功能
 

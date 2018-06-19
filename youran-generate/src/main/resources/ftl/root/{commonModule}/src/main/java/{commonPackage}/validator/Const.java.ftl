@@ -27,7 +27,7 @@
 @Documented
 public @interface Const {
 
-    String DEFAULT_MESSAGE="常量不合法";
+    String DEFAULT_MESSAGE="{${commonPackage}.validator.Const}";
 
     Class constClass();
 

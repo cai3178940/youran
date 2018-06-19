@@ -28,7 +28,7 @@ public class ${CName}AddDTO extends AbstractDTO {
     @Const(constClass = ${fetchClassName(field.dicType)}.class)
     <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
         <@import "org.hibernate.validator.constraints.Length"/>
-    @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
+    @Length(max = ${field.fieldLength})
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
         <@import "java.util.Date"/>
         <@import "com.fasterxml.jackson.annotation.JsonFormat"/>

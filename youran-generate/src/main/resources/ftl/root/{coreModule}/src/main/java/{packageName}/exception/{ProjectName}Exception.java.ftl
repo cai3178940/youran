@@ -3,13 +3,16 @@
 <#--定义主体代码-->
 <#assign code>
 <@import "${commonPackage}.constant.ErrorCode"/>
+<@import "${commonPackage}.util.MessageSourceUtil"/>
 <@classCom "自定义异常"/>
 public class ${ProjectName}Exception extends RuntimeException{
 
     private ErrorCode code;
 
     public ${ProjectName}Exception() {
+        super(MessageSourceUtil.getMessage(ErrorCode.INTERNAL_SERVER_ERROR.getDesc()));
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
+
     }
 
     public ${ProjectName}Exception(String message) {
@@ -28,7 +31,7 @@ public class ${ProjectName}Exception extends RuntimeException{
     }
 
     public ${ProjectName}Exception(ErrorCode code) {
-        super(code.getDesc());
+        super(MessageSourceUtil.getMessage(ErrorCode.INTERNAL_SERVER_ERROR.getDesc()));
         this.code = code;
     }
 

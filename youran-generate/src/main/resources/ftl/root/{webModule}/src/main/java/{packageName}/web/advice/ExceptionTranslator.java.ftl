@@ -6,6 +6,7 @@
 <@import "${commonPackage}.pojo.vo.FieldErrorVO"/>
 <@import "${commonPackage}.pojo.vo.ReplyVO"/>
 <@import "${commonPackage}.util.JsonUtil"/>
+<@import "${commonPackage}.util.MessageSourceUtil"/>
 <@import "${packageName}.exception.${ProjectName}Exception"/>
 <@import "org.slf4j.Logger"/>
 <@import "org.slf4j.LoggerFactory"/>
@@ -31,11 +32,11 @@
 @ControllerAdvice
 public class ExceptionTranslator {
 
-
     private final static Logger LOGGER = LoggerFactory.getLogger(ExceptionTranslator.class);
 
     /**
      * body参数校验失败
+     *
      * @param ex
      * @return
      */
@@ -46,8 +47,10 @@ public class ExceptionTranslator {
         BindingResult result = ex.getBindingResult();
         return processBindingResult(result);
     }
+
     /**
      * param参数校验失败
+     *
      * @param ex
      * @return
      */
@@ -67,7 +70,7 @@ public class ExceptionTranslator {
         for (FieldError fieldError : fieldErrors) {
             errorVOList.add(new FieldErrorVO(fieldError.getObjectName(), fieldError.getField(), fieldError.getDefaultMessage()));
         }
-        if(fieldErrors.size()>0){
+        if (fieldErrors.size() > 0) {
             replyVO.setCode(ErrorCode.ERR_VALIDATION.getValue());
             replyVO.setMessage(fieldErrors.get(0).getDefaultMessage());
             replyVO.setData(errorVOList);
@@ -79,6 +82,7 @@ public class ExceptionTranslator {
 
     /**
      * http method有误
+     *
      * @param exception
      * @return
      */
@@ -86,11 +90,12 @@ public class ExceptionTranslator {
     @ResponseBody
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public ReplyVO processMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
-        return new ReplyVO(ErrorCode.METHOD_NOT_SUPPORTED.getValue(), ErrorCode.METHOD_NOT_SUPPORTED.getDesc());
+        return ReplyVO.fail(ErrorCode.METHOD_NOT_SUPPORTED);
     }
 
     /**
      * 未传requestbody
+     *
      * @param exception
      * @return
      */
@@ -98,11 +103,12 @@ public class ExceptionTranslator {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ReplyVO processHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        return new ReplyVO("-1", "HttpMessageNotReadableException");
+        return ReplyVO.fail("HttpMessageNotReadableException");
     }
 
     /**
      * 线程异常
+     *
      * @param ex
      * @return
      */
@@ -110,12 +116,13 @@ public class ExceptionTranslator {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
     public ReplyVO processConcurencyError(ConcurrencyFailureException ex) {
-        return new ReplyVO(ErrorCode.CONCURRENCY_FAILURE.getValue(), ErrorCode.CONCURRENCY_FAILURE.getDesc());
+        return ReplyVO.fail(ErrorCode.CONCURRENCY_FAILURE);
     }
 
 
     /**
      * 唯一键重复
+     *
      * @param ex
      * @return
      */
@@ -123,11 +130,12 @@ public class ExceptionTranslator {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ReplyVO processDuplicateKeyException(DuplicateKeyException ex) {
-        return new ReplyVO(ErrorCode.INTERNAL_SERVER_ERROR.getValue(), "重复操作");
+        return ReplyVO.fail(ErrorCode.DUPLICATE_KEY);
     }
 
     /**
      * 自定义异常捕获
+     *
      * @param ex
      * @return
      */
@@ -142,9 +150,9 @@ public class ExceptionTranslator {
     }
 
 
-
     /**
      * 普通异常捕获
+     *
      * @param ex
      * @return
      */
@@ -157,13 +165,14 @@ public class ExceptionTranslator {
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
         if (responseStatus != null) {
             builder = ResponseEntity.status(responseStatus.value());
-            replyVO = new ReplyVO(responseStatus.value().value() + "", responseStatus.reason());
+            replyVO = new ReplyVO(responseStatus.value().value() + "", MessageSourceUtil.getMessage(responseStatus.reason()));
         } else {
             builder = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
-            replyVO = new ReplyVO(ErrorCode.INTERNAL_SERVER_ERROR.getValue(), ErrorCode.INTERNAL_SERVER_ERROR.getDesc());
+            replyVO = ReplyVO.fail(ErrorCode.INTERNAL_SERVER_ERROR);
         }
         return builder.body(replyVO);
     }
+
 
 }
 </#assign>

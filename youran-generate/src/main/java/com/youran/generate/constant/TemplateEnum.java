@@ -53,6 +53,7 @@ public enum TemplateEnum {
     DateUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/DateUtil.java.ftl"),
     H2Util(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/H2Util.java.ftl"),
     JsonUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/JsonUtil.java.ftl"),
+    MessageSourceUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/MessageSourceUtil.java.ftl"),
     SafeUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/SafeUtil.java.ftl"),
     SpringUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/SpringUtil.java.ftl"),
     UUIDUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/UUIDUtil.java.ftl"),
@@ -82,6 +83,8 @@ public enum TemplateEnum {
     ShowVO(ENTITY, "{coreModule}/src/main/java/{packageName}/pojo/vo/{ClassName}ShowVO.java.ftl"),
     Service(ENTITY, "{coreModule}/src/main/java/{packageName}/service/{ClassName}Service.java.ftl"),
     /******** Core模块配置 *********/
+    MessagesProperties(COMMON, "{coreModule}/src/main/resources/messages.properties.ftl"),
+    MessagesPropertiesEnUs(COMMON, "{coreModule}/src/main/resources/messages_en_US.properties.ftl"),
     MybatisConfig(COMMON, "{coreModule}/src/main/resources/mybatis-config.xml.ftl"),
     DefaultProperties(COMMON, "{coreModule}/src/main/resources/config/{project-name}-default.properties.ftl"),
     MybatisMapper(ENTITY, "{coreModule}/src/main/resources/{packageName}/dao/{ClassName}DAO.xml.ftl"),

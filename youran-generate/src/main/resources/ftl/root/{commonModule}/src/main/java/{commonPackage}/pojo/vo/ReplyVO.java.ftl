@@ -2,6 +2,8 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "${commonPackage}.constant.ErrorCode"/>
+<@import "${commonPackage}.util.MessageSourceUtil"/>
 <@import "io.swagger.annotations.ApiModel"/>
 <@import "io.swagger.annotations.ApiModelProperty"/>
 <@import "org.apache.commons.lang3.StringUtils"/>
@@ -11,14 +13,14 @@
 @ApiModel
 public class ReplyVO<T> extends AbstractVO {
 
-    public static final String SUCCESS_CODE="0";
-    public static final String SUCCESS_MSG="执行成功！";
-    public static final String ERROR_CODE="-1";
+    public static final String SUCCESS_CODE = "0";
+    public static final String DEFAULT_SUCCESS_MSG_KEY = "success";
+    public static final String DEFAULT_ERROR_CODE = "-1";
 
-    @ApiModelProperty(notes = "响应代码【0正确,非0错误】",example = SUCCESS_CODE,required = true)
+    @ApiModelProperty(notes = "响应代码【0正确,非0错误】", example = SUCCESS_CODE, required = true)
     private String code;
 
-    @ApiModelProperty(notes = "结果描述",example = SUCCESS_MSG,required = true)
+    @ApiModelProperty(notes = "结果描述", example = "success", required = true)
     private String message;
 
     @ApiModelProperty(notes = "返回数据")
@@ -37,26 +39,32 @@ public class ReplyVO<T> extends AbstractVO {
     }
 
     public static ReplyVO fail(String message) {
-        return new ReplyVO(ERROR_CODE, message);
+        return new ReplyVO(DEFAULT_ERROR_CODE, message);
+    }
+
+    public static ReplyVO fail(ErrorCode errorCode) {
+        return new ReplyVO(errorCode.getValue(), MessageSourceUtil.getMessage(errorCode.getDesc()));
     }
 
     public static ReplyVO success() {
-        return new ReplyVO(SUCCESS_CODE, SUCCESS_MSG);
+        return new ReplyVO(SUCCESS_CODE, MessageSourceUtil.getMessage("reply.success", DEFAULT_SUCCESS_MSG_KEY));
     }
 
 
     /**
      * 设置数据
+     *
      * @param data
      * @return
      */
-    public ReplyVO data(T data){
+    public ReplyVO data(T data) {
         setData(data);
         return this;
     }
 
     /**
      * 添加返回数据
+     *
      * @param key
      * @param value
      * @return
@@ -78,6 +86,7 @@ public class ReplyVO<T> extends AbstractVO {
 
     /**
      * 删除数据
+     *
      * @param keys
      * @return
      */
@@ -94,6 +103,7 @@ public class ReplyVO<T> extends AbstractVO {
 
     /**
      * 清空返回数据
+     *
      * @return
      */
     public ReplyVO clear() {
@@ -103,6 +113,7 @@ public class ReplyVO<T> extends AbstractVO {
 
     /**
      * 获取dataMap 的值
+     *
      * @param key key
      * @return
      */
