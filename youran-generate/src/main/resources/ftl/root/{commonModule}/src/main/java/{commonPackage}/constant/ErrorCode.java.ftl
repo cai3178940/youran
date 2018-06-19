@@ -26,7 +26,19 @@ public enum ErrorCode {
     /**
      * 键值重复
      */
-    DUPLICATE_KEY("521", "error.duplicate_key");
+    DUPLICATE_KEY("521", "error.duplicate_key"),
+    /**
+     * 记录未找到
+     */
+    RECORD_NOT_FIND("522", "error.record_not_find"),
+    /**
+     * 参数为空
+     */
+    PARAM_IS_NULL("523", "error.param_is_null"),
+    /**
+     * 级联删除异常
+     */
+    CASCADE_DELETE_ERROR("524", "error.cascade_delete_error");
 
 
     private final String value;

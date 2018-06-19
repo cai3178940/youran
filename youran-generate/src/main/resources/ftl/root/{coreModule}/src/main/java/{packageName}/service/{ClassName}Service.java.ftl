@@ -3,6 +3,7 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@import "${commonPackage}.constant.ErrorCode"/>
 <@import "${packageName}.pojo.dto.${CName}AddDTO"/>
 <@import "${packageName}.pojo.qo.${CName}QO"/>
 <@import "${packageName}.pojo.vo.${CName}ListVO"/>
@@ -159,7 +160,7 @@ public class ${CName}Service {
     public ${CName}PO get${CName}(${type} ${id}, boolean force){
         ${CName}PO ${cName} = ${cName}DAO.findById(${id});
         if (force && ${cName} == null) {
-            throw new ${ProjectName}Exception("未查询到记录");
+            throw new ${ProjectName}Exception(ErrorCode.RECORD_NOT_FIND);
         }
         return ${cName};
     }
@@ -238,7 +239,7 @@ public class ${CName}Service {
             <#if foreignField.entityId==foreignEntity.entityId>
         <#if !alreadyFind>int </#if>count = ${foreigncName}DAO.getCountBy${foreignField.jfieldName?capFirst}(${id});
         if(count>0){
-            throw new ${ProjectName}Exception("${title}和${foreignEntity.title}存在关联关系，删除失败");
+            throw new ${ProjectName}Exception(ErrorCode.CASCADE_DELETE_ERROR);
         }
                 <#assign alreadyFind=true>
             </#if>
@@ -258,7 +259,7 @@ public class ${CName}Service {
     private void checkDeleteBy${otherCName}(${type} ${id}) {
         int count = ${othercName}DAO.getCountBy${CName}(${id});
         if(count>0){
-            throw new ${ProjectName}Exception("${title}和${otherEntity.title}存在关联关系，删除失败");
+            throw new ${ProjectName}Exception(ErrorCode.CASCADE_DELETE_ERROR);
         }
     }
 
@@ -297,7 +298,7 @@ public class ${CName}Service {
     public int add${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
         ${CName}PO ${cName} = this.get${CName}(${id}, true);
         if(ArrayUtils.isEmpty(${otherPkId})){
-            throw new ${ProjectName}Exception("${otherEntity.title}id参数为空");
+            throw new ${ProjectName}Exception(ErrorCode.PARAM_IS_NULL);
         }
         return doAdd${otherCName}(${id}, ${otherPkId});
     }
@@ -312,7 +313,7 @@ public class ${CName}Service {
     public int remove${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
         ${CName}PO ${cName} = this.get${CName}(${id}, true);
         if(ArrayUtils.isEmpty(${otherPkId})){
-            throw new ${ProjectName}Exception("${otherEntity.title}id参数为空");
+            throw new ${ProjectName}Exception(ErrorCode.PARAM_IS_NULL);
         }
         return ${cName}DAO.remove${otherCName}(${id}, ${otherPkId});
     }
