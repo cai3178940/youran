@@ -1,6 +1,7 @@
 package com.youran.generate.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.common.util.DateUtil;
@@ -303,7 +304,7 @@ public class MetaCodeGenService {
                 constMap.put(constPO.getConstName(),constPO);
             }
         }
-
+        Set<String> defaultConst = Sets.newHashSet("BoolConst");
 
         for (MetaEntityPO entity : entities) {
             List<MetaFieldPO> fields = entity.getFields();
@@ -338,7 +339,8 @@ public class MetaCodeGenService {
 
                 if(StringUtils.isNotBlank(field.getDicType())
                     &&checkConst
-                    &&!constMap.containsKey(field.getDicType())){
+                    &&!constMap.containsKey(field.getDicType())
+                    &&!defaultConst.contains(field.getDicType())){
                     throw new GenerateException("实体【"+entity.getTitle()+"】的字段【"+field.getFieldDesc()+"】中指定的枚举字典【"+field.getDicType()+"】不存在");
                 }
 
