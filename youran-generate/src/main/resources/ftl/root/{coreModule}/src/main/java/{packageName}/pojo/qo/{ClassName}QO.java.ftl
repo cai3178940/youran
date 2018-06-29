@@ -3,8 +3,7 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@import "io.swagger.annotations.ApiModel"/>
-<@import "io.swagger.annotations.ApiModelProperty"/>
+<@import "io.swagger.annotations.ApiParam"/>
 <#if pageSign == 1>
     <@import "${commonPackage}.pojo.qo.PageQO"/>
 <#else>
@@ -12,7 +11,6 @@
 </#if>
 <@importStatic "${packageName}.pojo.example.${CName}Example.*"/>
 <@classCom "查询【${title}】的参数"/>
-@ApiModel(description = "新增【${title}】的参数")
 public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if> {
 
 <#--定义宏-查询字段申明模块-->
@@ -22,7 +20,7 @@ public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if>
     <#else>
         <#assign jfieldName=field.jfieldName>
     </#if>
-    @ApiModelProperty(notes = ${examplePackage}N_${field.jfieldName?upperCase},example = ${examplePackage}E_${field.jfieldName?upperCase})
+    @ApiParam(value = ${examplePackage}N_${field.jfieldName?upperCase},example = ${examplePackage}E_${field.jfieldName?upperCase})
     <#if field.jfieldType==JFieldType.STRING.getJavaType()>
         <@import "org.hibernate.validator.constraints.Length"/>
     @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
@@ -78,7 +76,7 @@ public class ${CName}QO extends <#if pageSign == 1>PageQO<#else>AbstractQO</#if>
 </#list>
 
 <#list listSortFields as field>
-    @ApiModelProperty(notes = "${field.fieldDesc}排序标识【1升序,-1降序,0不排序】",example = "1")
+    @ApiParam(value = "${field.fieldDesc}排序标识【1升序,-1降序,0不排序】",example = "1")
     private Integer ${field.jfieldName}SortSign;
 
 </#list>

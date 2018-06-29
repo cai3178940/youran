@@ -2,7 +2,7 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@import "io.swagger.annotations.ApiModelProperty"/>
+<@import "io.swagger.annotations.ApiParam"/>
 <@import "javax.validation.constraints.Max"/>
 <@import "javax.validation.constraints.Min"/>
 <@classCom "分页查询dto"/>
@@ -14,14 +14,14 @@ public class PageQO extends AbstractQO {
     /**
      * 每页的条数
      */
-    @ApiModelProperty(notes = "分页参数，每页的条数", example = "20")
+    @ApiParam(value = "分页参数，每页的条数", example = "20")
     @Max(value = 1000, message = "pageSize不能大于1000")
     protected Integer pageSize;
 
     /**
      * 当前第几页
      */
-    @ApiModelProperty(notes = "分页参数，第几页", example = "1")
+    @ApiParam(value = "分页参数，第几页", example = "1")
     @Min(value = 1, message = "pageNo不能小于1")
     protected Integer pageNo;
 

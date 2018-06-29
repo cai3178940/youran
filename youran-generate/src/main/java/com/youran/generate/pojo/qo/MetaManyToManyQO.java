@@ -1,7 +1,7 @@
 package com.youran.generate.pojo.qo;
 
 import com.youran.common.pojo.qo.AbstractQO;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 
 import javax.validation.constraints.NotNull;
 
@@ -17,7 +17,7 @@ import static com.youran.generate.pojo.example.MetaManyToManyExample.N_PROJECTID
  */
 public class MetaManyToManyQO extends AbstractQO {
 
-    @ApiModelProperty(notes = N_PROJECTID, example = E_PROJECTID)
+    @ApiParam(value = N_PROJECTID, example = E_PROJECTID)
     @NotNull
     private Integer projectId;
 
