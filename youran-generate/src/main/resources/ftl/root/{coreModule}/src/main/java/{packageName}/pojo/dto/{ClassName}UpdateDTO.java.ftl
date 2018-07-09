@@ -12,7 +12,7 @@
 @ApiModel(description = "修改【${title}】的参数")
 public class ${CName}UpdateDTO extends AbstractDTO {
 
-    @ApiModelProperty(notes = N_${pk.jfieldName?upperCase},example = E_${pk.jfieldName?upperCase})
+    @ApiModelProperty(notes = N_${pk.jfieldName?upperCase},example = E_${pk.jfieldName?upperCase},required = true)
     @NotNull
     <#if pk.jfieldType==JFieldType.STRING.getJavaType()>
         <@import "org.hibernate.validator.constraints.Length"/>
@@ -21,7 +21,7 @@ public class ${CName}UpdateDTO extends AbstractDTO {
     private ${pk.jfieldType} ${pk.jfieldName};
 
 <#list updateFields as field>
-    @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
+    @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase}<@if1 field.notNull>,required = true</@if1>)
     <@if1 field.notNull>
     @NotNull
     </@if1>

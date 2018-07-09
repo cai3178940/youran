@@ -13,7 +13,7 @@ public class ${CName}AddDTO extends AbstractDTO {
 
 <#list insertFields as field>
 
-    @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
+    @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase}<@if1 field.notNull>,required = true</@if1>)
     <@if1 field.notNull>
         <@import "javax.validation.constraints.NotNull"/>
     @NotNull
