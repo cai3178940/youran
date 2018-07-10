@@ -3,6 +3,7 @@
 <#--定义主体代码-->
 <#assign code>
 <@import "${commonPackage}.util.SpringUtil"/>
+<@import "org.springframework.boot.autoconfigure.condition.ConditionalOnClass"/>
 <@import "org.springframework.context.MessageSource"/>
 <@import "org.springframework.context.annotation.*"/>
 <@import "org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
@@ -29,6 +30,7 @@ public class ${ProjectName}Configuration {
      * @return
      */
     @Bean
+    @ConditionalOnClass(name="javax.el.ELContext")
     public Validator validator(MessageSource messageSource) {
         LocalValidatorFactoryBean factory = new LocalValidatorFactoryBean();
         factory.setValidationMessageSource(messageSource);
