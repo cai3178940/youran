@@ -41,26 +41,28 @@
       <el-table-column property="desc" label="描述"></el-table-column>
       <el-table-column
         label="操作"
-        width="180">
+        width="200">
         <template slot-scope="scope">
-          <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
+          <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
-          <el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">
+          <el-button @click="handleField(scope.row)" type="text" size="medium">字段管理</el-button>
+          <el-button @click="handleSqlPreview(scope.row)" type="text" size="medium">sql预览</el-button>
+          <!--<el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">
             <span class="el-dropdown-link">
-              操作<i class="el-icon-arrow-down el-icon--right"></i>
+              操作<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="{method:'handleField',arg:scope.row}" >
                 <icon name="table" scale="0.8" ></icon> 字段管理
               </el-dropdown-item>
-              <!--<el-dropdown-item :command="{method:'handleIndex',arg:scope.row}" >
+              &lt;!&ndash;<el-dropdown-item :command="{method:'handleIndex',arg:scope.row}" >
                 <icon name="rocket" scale="0.8" ></icon> 索引管理
-              </el-dropdown-item>-->
+              </el-dropdown-item>&ndash;&gt;
               <el-dropdown-item :command="{method:'handleSqlPreview',arg:scope.row}" >
                 <icon name="file-o" scale="0.8" ></icon> sql预览
               </el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown>-->
         </template>
       </el-table-column>
     </el-table>
@@ -215,5 +217,12 @@
     min-width: 160px;
     text-align: left;
     padding: 0 0 0 20px;
+  }
+
+  /**
+   * 调整表格行高
+   */
+  .entityList .el-table td{
+    padding: 3px 0;
   }
 </style>

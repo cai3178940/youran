@@ -47,9 +47,9 @@
       <el-table-column property="desc" label="描述"></el-table-column>
       <el-table-column
         label="操作"
-        width="180">
+        width="100">
         <template slot-scope="scope">
-          <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
+          <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
         </template>
       </el-table-column>
@@ -161,5 +161,12 @@
     min-width: 160px;
     text-align: left;
     padding: 0 0 0 20px;
+  }
+
+  /**
+   * 调整表格行高
+   */
+  .mtmList .el-table td{
+    padding: 3px 0;
   }
 </style>

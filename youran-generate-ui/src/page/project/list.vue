@@ -27,15 +27,18 @@
       </el-table-column>
       <el-table-column
         label="操作"
-        width="250">
+        width="100">
         <template slot-scope="scope">
-          <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
-          <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
+          <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
+          <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>-->
           <el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">
             <span class="el-dropdown-link">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" >
+                <icon name="edit" scale="0.8" ></icon> 编辑
+              </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleEntity',arg:scope.row}" >
                 <icon name="cubes" scale="0.8" ></icon> 实体管理
               </el-dropdown-item>
@@ -227,5 +230,12 @@
     min-width: 160px;
     text-align: left;
     padding: 0 0 0 20px;
+  }
+
+  /**
+   * 调整表格行高
+   */
+  .projectList .el-table td{
+    padding: 6px 0;
   }
 </style>

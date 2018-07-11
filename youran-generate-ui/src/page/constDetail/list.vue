@@ -36,7 +36,7 @@
         label="操作"
         width="100">
         <template slot-scope="scope">
-          <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
+          <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
         </template>
       </el-table-column>
@@ -146,6 +146,12 @@
   }
 </script>
 <style>
+  /**
+   * 调整表格行高
+   */
+  .constDetailList .el-table td{
+    padding: 3px 0;
+  }
   .constDetailList .activeNum {
     min-width: 160px;
     text-align: left;

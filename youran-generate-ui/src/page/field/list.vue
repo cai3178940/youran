@@ -42,8 +42,8 @@
           {{ scope.row.fieldDesc }}
           <template v-for="index in scope.row.indexes">
             <el-dropdown @command="handleIndexCommand" size="mini" placement="bottom-start" trigger="click" style="margin-left:5px;cursor:pointer;">
-              <span :class="[index.unique==1?'u_index_span':'index_span']">
-                {{index | getIndexName}}
+              <span :class="[index.unique==1?'u_index_span':'index_span']" :title="[index.unique==1?'唯一索引':'普通索引']">
+                {{index.indexName}}
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{method:'handleDelIndexField',arg:[index,scope.row]}">
@@ -91,9 +91,9 @@
       <el-table-column property="fieldExample" label="字段示例"></el-table-column>
       <el-table-column
         label="操作"
-        width="170">
+        width="130">
         <template slot-scope="scope">
-          <el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
+          <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
           <el-button @click="handleCopyOne(scope.row)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
           <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
@@ -251,9 +251,6 @@
           rel+=')'
         }
         return rel
-      },
-      getIndexName: function (index) {
-        return (index.unique==1?'唯一索引':'索引')+(index.indexName)
       }
     },
     methods: {
@@ -350,12 +347,7 @@
         this.loading = true
         this.$ajax.get('/generate/meta_index/list', {params:this.query})
           .then(response => this.$common.checkResult(response.data))
-          .then(result => {
-            result.data.forEach((v,i)=>{
-              v.i=i
-            })
-            this.indexes = result.data
-          })
+          .then(result => this.indexes = result.data)
           .catch(error => this.$common.showNotifyError(error))
           .finally(() => this.loading = false)
       },
@@ -436,14 +428,12 @@
         this[command.method](...command.arg)
       },
       handleDelIndexField: function (index, field) {
-        const indexName = this.$options.filters['getIndexName'](index)
-        this.$common.confirm(`是否确认从【${indexName}】中删除【${field.fieldDesc}】字段`)
+        this.$common.confirm(`请确认是否从索引【${index.indexName}】中删除【${field.fieldDesc}】字段`)
           .then(() => this.$ajax.put(`/generate/meta_index/${index.indexId}/removeField`,[field.fieldId]))
           .then(() => this.doQueryIndex())
       },
       handleDelIndex: function (index) {
-        const indexName = this.$options.filters['getIndexName'](index)
-        this.$common.confirm(`是否确认删除【${indexName}】`)
+        this.$common.confirm(`请确认是否删除索引【${index.indexName}】`)
           .then(() => this.$ajax.delete(`/generate/meta_index/${index.indexId}`))
           .then(() => this.doQueryIndex())
       },
@@ -470,6 +460,12 @@
   }
 </script>
 <style>
+  /**
+   * 调整表格行高
+   */
+  .fieldList .el-table td{
+    padding: 3px 0;
+  }
   .fieldList .activeNum {
     min-width: 160px;
     text-align: left;
