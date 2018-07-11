@@ -131,7 +131,7 @@ export default new Router({
           props: true
         },
         {
-          path: 'indexAdd',
+          path: 'indexAdd/:fieldIds?',
           component: fieldIndexAdd,
           props: true
         },

@@ -441,7 +441,8 @@
           .then(() => this.doQueryIndex())
       },
       handleIndexAdd: function () {
-        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexAdd`)
+        const fieldIdStr = this.selectItems.map(field => field.fieldId).join('-')
+        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexAdd/${fieldIdStr}`)
       },
       handleIndexEdit: function (index) {
         this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexEdit/${index.indexId}`)

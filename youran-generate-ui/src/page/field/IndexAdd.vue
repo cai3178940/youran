@@ -48,7 +48,7 @@
   import options from '@/components/options.js'
   export default {
     name: 'indexAdd',
-    props: ['projectId','entityId'],
+    props: ['projectId','entityId','fieldIds'],
     data: function () {
       return {
         boolOptions: options.boolOptions,
@@ -113,7 +113,11 @@
       }
     },
     created: function () {
+      // 将路径参数解析到form表单
       this.form.entityId = parseInt(this.entityId)
+      if(this.fieldIds){
+        this.form.fieldIds = this.fieldIds.split('-').map(value => parseInt(value))
+      }
       this.queryField(this.form.entityId)
     }
   }
