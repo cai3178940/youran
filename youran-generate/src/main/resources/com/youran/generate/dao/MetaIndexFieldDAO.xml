@@ -31,7 +31,8 @@
         select t.*
         from meta_field t
             inner join meta_index_field r on t.fieldId=r.fieldId
-        where r.indexId = #{arg0,jdbcType=INTEGER}
+        where  t.delSign=0
+            and r.indexId = #{arg0,jdbcType=INTEGER}
         order by r.orderNo
     </select>
 

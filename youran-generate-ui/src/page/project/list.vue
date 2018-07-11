@@ -15,11 +15,11 @@
 
     <el-table :data="entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column property="groupId" label="groupId"></el-table-column>
-      <el-table-column property="projectName" label="项目名称"></el-table-column>
-      <el-table-column property="author" label="作者"></el-table-column>
+      <el-table-column property="groupId" label="groupId" width="160"></el-table-column>
+      <el-table-column property="projectName" label="项目名称" width="250"></el-table-column>
+      <el-table-column property="author" label="作者" width="120"></el-table-column>
       <el-table-column property="packageName" label="包名"></el-table-column>
-      <el-table-column label="启用Git仓库" width="150px">
+      <el-table-column label="启用Git仓库" width="120px">
         <template slot-scope="scope">
           <icon v-if="scope.row.remote==1" name="check" class="color-success"></icon>
           <icon v-if="scope.row.remote!=1" name="close" class="color-danger"></icon>

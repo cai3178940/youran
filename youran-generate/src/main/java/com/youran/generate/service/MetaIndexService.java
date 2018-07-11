@@ -169,6 +169,7 @@ public class MetaIndexService {
      * @param fieldIds
      * @return
      */
+    @Transactional
     public int removeField(Integer indexId, List<Integer> fieldIds) {
         MetaIndexPO metaIndex = metaIndexDAO.findById(indexId);
         if(metaIndex==null){

@@ -273,6 +273,7 @@
         this.$common.confirm('是否确认删除')
           .then(() => this.$ajax.put('/generate/meta_field/deleteBatch', this.selectItems.map(field => field.fieldId)))
           .then(() => this.doQuery())
+          .then(()=>this.doQueryIndex())
       },
       handleCopy:function () {
         if (this.activeNum <= 0) {
@@ -345,7 +346,7 @@
           return
         }
         this.loading = true
-        this.$ajax.get('/generate/meta_index/list', {params:this.query})
+        return this.$ajax.get('/generate/meta_index/list', {params:this.query})
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.indexes = result.data)
           .catch(error => this.$common.showNotifyError(error))
@@ -377,6 +378,7 @@
               if(refresh){
                 this.$common.showMsg('success', '添加成功')
                 this.doQuery()
+                  .then(()=>this.doQueryIndex())
               }
             })
             .catch(error => this.$common.showNotifyError(error))
@@ -402,6 +404,7 @@
             .then(()=>{
               this.$common.showMsg('success', '添加成功')
               this.doQuery()
+                .then(()=>this.doQueryIndex())
             })
         }
         promise.finally(()=>loading.close())
