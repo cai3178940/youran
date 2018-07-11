@@ -37,8 +37,11 @@
     </select>
 
     <select id="findIdsByIndexId" resultType="java.lang.Integer">
-        select fieldId from meta_index_field
-        where indexId = #{indexId,jdbcType=INTEGER}
-        order by orderNo
+        select t.fieldId
+        from meta_field t
+            inner join meta_index_field r on t.fieldId=r.fieldId
+        where  t.delSign=0
+               and r.indexId = #{arg0,jdbcType=INTEGER}
+        order by r.orderNo
     </select>
 </mapper>
