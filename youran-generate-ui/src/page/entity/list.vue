@@ -53,9 +53,9 @@
               <el-dropdown-item :command="{method:'handleField',arg:scope.row}" >
                 <icon name="table" scale="0.8" ></icon> 字段管理
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleIndex',arg:scope.row}" >
+              <!--<el-dropdown-item :command="{method:'handleIndex',arg:scope.row}" >
                 <icon name="rocket" scale="0.8" ></icon> 索引管理
-              </el-dropdown-item>
+              </el-dropdown-item>-->
               <el-dropdown-item :command="{method:'handleSqlPreview',arg:scope.row}" >
                 <icon name="file-o" scale="0.8" ></icon> sql预览
               </el-dropdown-item>

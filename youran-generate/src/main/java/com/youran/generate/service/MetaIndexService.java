@@ -16,6 +16,7 @@ import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaIndexListVO;
 import com.youran.generate.pojo.vo.MetaIndexShowVO;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -157,6 +158,33 @@ public class MetaIndexService {
         }
         if(count>0) {
             MetaEntityPO entityPO = metaEntityDAO.findById(entityId);
+            metaProjectService.updateProjectVersion(entityPO.getProjectId());
+        }
+        return count;
+    }
+
+    /**
+     * 移除索引字段
+     * @param indexId
+     * @param fieldIds
+     * @return
+     */
+    public int removeField(Integer indexId, List<Integer> fieldIds) {
+        MetaIndexPO metaIndex = metaIndexDAO.findById(indexId);
+        if(metaIndex==null){
+            return 0;
+        }
+        int count = metaIndexFieldDAO.remove(indexId,fieldIds);
+        if(count==0){
+            return 0;
+        }
+        List<MetaFieldListVO> fields = metaIndexFieldDAO.findByIndexId(indexId);
+        // 如果所有字段都已经清空，则删除整个索引
+        if(CollectionUtils.isEmpty(fields)){
+            metaIndexDAO.delete(indexId);
+        }
+        if(count>0) {
+            MetaEntityPO entityPO = metaEntityDAO.findById(metaIndex.getEntityId());
             metaProjectService.updateProjectVersion(entityPO.getProjectId());
         }
         return count;

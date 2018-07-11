@@ -18,6 +18,15 @@
         where indexId = #{indexId,jdbcType=INTEGER}
     </delete>
 
+    <delete id="remove">
+        delete from meta_index_field
+        where indexId = #{indexId,jdbcType=INTEGER}
+        and fieldId in
+        <foreach collection="fieldIdList" open="(" close=")" item="fieldId" separator=",">
+            #{fieldId}
+        </foreach>
+    </delete>
+
     <select id="findByIndexId"  parameterType="java.lang.Integer"  resultType="MetaFieldListVO">
         select t.*
         from meta_field t

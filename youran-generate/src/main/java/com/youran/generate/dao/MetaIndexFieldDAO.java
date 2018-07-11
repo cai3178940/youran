@@ -41,4 +41,6 @@ public interface MetaIndexFieldDAO extends DAO<MetaIndexFieldPO> {
     int saveBatch(@Param("indexId")Integer indexId, @Param("fieldIdList")List<Integer> fieldIdList);
 
 
+    int remove(@Param("indexId")Integer indexId, @Param("fieldIdList")List<Integer> fieldIdList);
+
 }

@@ -21,12 +21,15 @@
             </el-cascader>
           </el-form-item>
           <el-form-item>
-            <help-popover name="fieldListHelp" :pic="{copyField:copyFieldUrl}">
-              <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加</el-button>
-              <el-button @click.native="handleDel" type="danger">删除</el-button>
+              <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加字段</el-button>
+              <el-button @click.native="handleIndexAdd" type="primary">创建索引</el-button>
+              <el-button @click.native="handleDel" type="danger">删除字段</el-button>
               <el-badge :value="cacheTemplateCount" :hidden="!cacheTemplateCount" class="item">
                 <el-button @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>
               </el-badge>
+          </el-form-item>
+          <el-form-item>
+            <help-popover name="fieldListHelp" :pic="{copyField:copyFieldUrl}">
             </help-popover>
           </el-form-item>
         </el-form>
@@ -37,6 +40,24 @@
       <el-table-column label="字段描述">
         <template slot-scope="scope">
           {{ scope.row.fieldDesc }}
+          <template v-for="index in scope.row.indexes">
+            <el-dropdown @command="handleIndexCommand" size="mini" placement="bottom-start" trigger="click" style="margin-left:5px;cursor:pointer;">
+              <span :class="[index.unique==1?'u_index_span':'index_span']">
+                {{index | getIndexName}}
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item :command="{method:'handleDelIndexField',arg:[index,scope.row]}">
+                  <icon name="remove" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除索引字段
+                </el-dropdown-item>
+                <el-dropdown-item :command="{method:'handleDelIndex',arg:[index]}">
+                  <icon name="trash-o" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除整个索引
+                </el-dropdown-item>
+                <el-dropdown-item :command="{method:'handleIndexEdit',arg:[index]}">
+                  <icon name="edit" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 编辑索引
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
         </template>
       </el-table-column>
       <el-table-column label="字段名">
@@ -106,7 +127,7 @@
               </el-option>
             </el-option-group>
             <el-option-group label="系统内置模板">
-              <el-option v-for="(value,key) in fieldTemplate"
+              <el-option v-for="(_,key) in fieldTemplate"
                          :key="key"
                          :label="key"
                          :value="key"></el-option>
@@ -175,7 +196,6 @@
         },
         //查询参数
         query: {
-          withCascadeFieldNum: 1,
           projectId: null,
           entityId: null
         },
@@ -187,8 +207,28 @@
         activeNum: 0,
         selectItems: [],
         entities: [],
+        indexes:[],
         loading: false,
         cascadeExtListVisible: false
+      }
+    },
+    watch: {
+      'indexes': function (value) {
+        if(!value || !value.length){
+          return
+        }
+        // 首先将每个field中的indexes置空
+        this.entities.forEach(field=>{
+          field.indexes = []
+        })
+        value.forEach(index => {
+          index.fields.forEach(field=>{
+            const f = this.entities.find(item=>item.fieldId==field.fieldId)
+            if(f){
+              f.indexes.push(index)
+            }
+          })
+        })
       }
     },
     filters: {
@@ -211,6 +251,9 @@
           rel+=')'
         }
         return rel
+      },
+      getIndexName: function (index) {
+        return (index.unique==1?'唯一索引':'索引')+(index.indexName)
       }
     },
     methods: {
@@ -280,6 +323,7 @@
           this.$router.push(`/project/${this.query.projectId}/entity/${this.query.entityId}/field`)
         }
         this.doQuery()
+          .then(()=>this.doQueryIndex())
       },
       // 列表查询
       doQuery: function () {
@@ -287,9 +331,31 @@
           return
         }
         this.loading = true
-        this.$ajax.get('/generate/meta_field/list', {params:this.query})
+        return this.$ajax.get('/generate/meta_field/list', {params:{...this.query,withCascadeFieldNum: 1}})
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.entities = result.data)
+          .then(result => {
+            result.data.forEach(value=>{
+              value.indexes = []
+            })
+            this.entities = result.data
+          })
+          .catch(error => this.$common.showNotifyError(error))
+          .finally(() => this.loading = false)
+      },
+      // 索引查询
+      doQueryIndex: function () {
+        if (!this.query.projectId || !this.query.entityId) {
+          return
+        }
+        this.loading = true
+        this.$ajax.get('/generate/meta_index/list', {params:this.query})
+          .then(response => this.$common.checkResult(response.data))
+          .then(result => {
+            result.data.forEach((v,i)=>{
+              v.i=i
+            })
+            this.indexes = result.data
+          })
           .catch(error => this.$common.showNotifyError(error))
           .finally(() => this.loading = false)
       },
@@ -359,13 +425,35 @@
         Vue.nextTick(()=>this.$refs.cascadeExtList.init(row.entityId, row.fieldId, row.foreignEntityId))
       },
       resetCascadeFieldNum: function(fieldId,cascadeFieldNum){
-        const field = this.entities.find(field=>field.fieldId==fieldId);
+        const field = this.entities.find(field=>field.fieldId==fieldId)
         field.cascadeFieldNum = cascadeFieldNum
       },
       addCascadeFieldNum: function(fieldId,num){
-        const field = this.entities.find(field=>field.fieldId==fieldId);
+        const field = this.entities.find(field=>field.fieldId==fieldId)
         field.cascadeFieldNum += num
+      },
+      handleIndexCommand: function (command) {
+        this[command.method](...command.arg)
+      },
+      handleDelIndexField: function (index, field) {
+        const indexName = this.$options.filters['getIndexName'](index)
+        this.$common.confirm(`是否确认从【${indexName}】中删除【${field.fieldDesc}】字段`)
+          .then(() => this.$ajax.put(`/generate/meta_index/${index.indexId}/removeField`,[field.fieldId]))
+          .then(() => this.doQueryIndex())
+      },
+      handleDelIndex: function (index) {
+        const indexName = this.$options.filters['getIndexName'](index)
+        this.$common.confirm(`是否确认删除【${indexName}】`)
+          .then(() => this.$ajax.delete(`/generate/meta_index/${index.indexId}`))
+          .then(() => this.doQueryIndex())
+      },
+      handleIndexAdd: function () {
+        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexAdd`)
+      },
+      handleIndexEdit: function (index) {
+        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexEdit/${index.indexId}`)
       }
+
     },
     activated: function () {
       var projectId = parseInt(this.projectId)
@@ -377,6 +465,7 @@
       this.initProjectOptions()
         .then(() => this.handleProjectChange([projectId]))
         .then(() => this.doQuery())
+        .then(()=>this.doQueryIndex())
     }
   }
 </script>
@@ -385,6 +474,32 @@
     min-width: 160px;
     text-align: left;
     padding: 0 0 0 20px;
+  }
+  .fieldList .index_span {
+    font-size: 10px;
+    color: #2759ff;
+    border-radius: 4px;
+    padding: 3px;
+    margin: 1px;
+    background-color: #d9e5f7;
+  }
+
+  .fieldList .index_span:hover{
+    background-color: #c2cdf7;
+    color: #0235ff;
+  }
+
+  .fieldList .u_index_span {
+    font-size: 10px;
+    color: #ff233b;
+    border-radius: 4px;
+    padding: 3px;
+    margin: 1px;
+    background-color: #f7def7;
+  }
+  .fieldList .u_index_span:hover{
+    background-color: #f6c2f7;
+    color: #ff000e;
   }
 
   .demo-form-inline .el-select .el-input {

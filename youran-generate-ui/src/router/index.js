@@ -19,6 +19,8 @@ import fieldList from '../page/field/list.vue'
 import fieldAdd from '../page/field/add.vue'
 import fieldEdit from '../page/field/edit.vue'
 import fieldShow from '../page/field/show.vue'
+import fieldIndexAdd from '../page/field/indexAdd.vue'
+import fieldIndexEdit from '../page/field/indexEdit.vue'
 
 import constIndex from '../page/const/index.vue'
 import constList from '../page/const/list.vue'
@@ -126,6 +128,16 @@ export default new Router({
         {
           path: 'show/:fieldId',
           component: fieldShow,
+          props: true
+        },
+        {
+          path: 'indexAdd',
+          component: fieldIndexAdd,
+          props: true
+        },
+        {
+          path: 'indexEdit/:indexId',
+          component: fieldIndexEdit,
           props: true
         }
       ]

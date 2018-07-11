@@ -2,8 +2,8 @@ package com.youran.generate.web.api;
 
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
-import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
+import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.vo.MetaIndexListVO;
 import com.youran.generate.pojo.vo.MetaIndexShowVO;
 import io.swagger.annotations.Api;
@@ -77,4 +77,13 @@ public interface MetaIndexAPI {
     ReplyVO<Integer> deleteBatch(Integer[] indexId);
 
 
+    /**
+     * 移除索引字段
+     */
+    @ApiOperation(value = "批量删除索引")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "indexId", dataType = "int", value = "索引id", paramType = "path"),
+        @ApiImplicitParam(name = "fieldIds", dataType = "int", value = "字段id数组", paramType = "body"),
+    })
+    ReplyVO<Integer> removeField(Integer indexId, List<Integer> fieldIds);
 }

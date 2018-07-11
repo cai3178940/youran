@@ -85,4 +85,13 @@ public class MetaIndexController implements MetaIndexAPI {
         result.setData(count);
         return result;
     }
+
+    @Override
+    @PutMapping(value = "/{indexId}/removeField")
+    public ReplyVO<Integer> removeField(@PathVariable Integer indexId, @RequestBody List<Integer> fieldIds){
+        int count = metaIndexService.removeField(indexId,fieldIds);
+        ReplyVO<Integer> result = ReplyVO.success();
+        result.setData(count);
+        return result;
+    }
 }
