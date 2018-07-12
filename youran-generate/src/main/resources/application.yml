@@ -20,5 +20,5 @@ mybatis:
 youran:
     generate:
         aesKey: orpNB6YGbiiDcrrubk2rFQ==
-        version: 19
+        version: 20
         rootPath: generate
