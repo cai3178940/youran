@@ -6,23 +6,23 @@
 
     <select id="findById" resultType="MetaProjectPO">
         select * from meta_project
-        where delSign=0
-        and projectId = #{projectId,jdbcType=INTEGER}
+        where del_sign=0
+        and project_id = #{projectId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_project
-        where delSign=0
-        and projectId = #{projectId,jdbcType=INTEGER}
+        where del_sign=0
+        and project_id = #{projectId,jdbcType=INTEGER}
     </select>
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="projectId" parameterType="MetaProjectPO">
         insert into meta_project (
-          projectId, packageName, projectName, groupId,
-          author,remote,remoteUrl,username,
-          password,lastHistoryId,projectVersion,
-          createDate, createBy,
-          operateDate, operateBy, delSign,
+          project_id, package_name, project_name, group_id,
+          author,remote,remote_url,username,
+          `password`,last_history_id,project_version,
+          create_date, create_by,
+          operate_date, operate_by, del_sign,
           version)
         values (#{projectId,jdbcType=INTEGER}, #{packageName,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR},
           #{author,jdbcType=VARCHAR},#{remote,jdbcType=INTEGER},#{remoteUrl,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},
@@ -35,34 +35,34 @@
     <update id="_update" parameterType="MetaProjectPO">
         update meta_project
         set
-            packageName = #{packageName,jdbcType=VARCHAR},
-            projectName = #{projectName,jdbcType=VARCHAR},
-            groupId = #{groupId,jdbcType=VARCHAR},
+            package_name = #{packageName,jdbcType=VARCHAR},
+            project_name = #{projectName,jdbcType=VARCHAR},
+            group_id = #{groupId,jdbcType=VARCHAR},
             author = #{author,jdbcType=VARCHAR},
             remote = #{remote,jdbcType=INTEGER},
-            remoteUrl = #{remoteUrl,jdbcType=VARCHAR},
+            remote_url = #{remoteUrl,jdbcType=VARCHAR},
             username = #{username,jdbcType=VARCHAR},
-            password = #{password,jdbcType=VARCHAR},
-            lastHistoryId = #{lastHistoryId,jdbcType=INTEGER},
-            projectVersion = #{projectVersion,jdbcType=INTEGER},
-            operateDate = #{operateDate,jdbcType=TIMESTAMP},
-            operateBy = #{operateBy,jdbcType=VARCHAR},
+            `password` = #{password,jdbcType=VARCHAR},
+            last_history_id = #{lastHistoryId,jdbcType=INTEGER},
+            project_version = #{projectVersion,jdbcType=INTEGER},
+            operate_date = #{operateDate,jdbcType=TIMESTAMP},
+            operate_by = #{operateBy,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}
-        where projectId = #{projectId,jdbcType=INTEGER}
+        where project_id = #{projectId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and delSign=0
+        and del_sign=0
     </update>
 
     <delete id="delete">
         update meta_project set
-        delSign=1
-        where projectId = #{projectId,jdbcType=INTEGER}
-        and delSign=0
+        del_sign=1
+        where project_id = #{projectId,jdbcType=INTEGER}
+        and del_sign=0
     </delete>
 
     <select id="findListByQuery" parameterType="MetaProjectQO" resultType="MetaProjectListVO">
         select * from meta_project t
-        where t.delSign=0
-        order by t.createDate
+        where t.del_sign=0
+        order by t.create_date
     </select>
 </mapper>

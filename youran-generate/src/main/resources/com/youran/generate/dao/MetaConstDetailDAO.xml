@@ -6,28 +6,28 @@
 
     <select id="findById" resultType="MetaConstDetailPO">
         select * from meta_const_detail
-        where delSign=0
-        and constDetailId = #{constDetailId,jdbcType=INTEGER}
+        where del_sign=0
+        and const_detail_id = #{constDetailId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_const_detail
-        where delSign=0
-        and constDetailId = #{constDetailId,jdbcType=INTEGER}
+        where del_sign=0
+        and const_detail_id = #{constDetailId,jdbcType=INTEGER}
     </select>
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="constDetailId" parameterType="MetaConstDetailPO">
         insert into meta_const_detail (
-            constDetailId,
-            constId,
-            detailName,
-            detailValue,
-            detailRemark,
-            createDate,
-            createBy,
-            operateDate,
-            operateBy,
-            delSign,
+            const_detail_id,
+            const_id,
+            detail_name,
+            detail_value,
+            detail_remark,
+            create_date,
+            create_by,
+            operate_date,
+            operate_by,
+            del_sign,
             version)
         values (
             #{constDetailId,jdbcType=INTEGER},
@@ -45,36 +45,36 @@
 
     <update id="_update" parameterType="MetaConstDetailPO">
         update meta_const_detail
-        set constId = #{constId,jdbcType=INTEGER},
-            detailName = #{detailName,jdbcType=VARCHAR},
-            detailValue = #{detailValue,jdbcType=VARCHAR},
-            detailRemark = #{detailRemark,jdbcType=VARCHAR},
-            operateDate = #{operateDate,jdbcType=TIMESTAMP},
-            operateBy = #{operateBy,jdbcType=VARCHAR},
+        set const_id = #{constId,jdbcType=INTEGER},
+            detail_name = #{detailName,jdbcType=VARCHAR},
+            detail_value = #{detailValue,jdbcType=VARCHAR},
+            detail_remark = #{detailRemark,jdbcType=VARCHAR},
+            operate_date = #{operateDate,jdbcType=TIMESTAMP},
+            operate_by = #{operateBy,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}
-        where constDetailId = #{constDetailId,jdbcType=INTEGER}
+        where const_detail_id = #{constDetailId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and delSign=0
+        and del_sign=0
     </update>
 
     <delete id="delete">
         update meta_const_detail set
-        delSign=1
-        where constDetailId = #{constDetailId,jdbcType=INTEGER}
-        and delSign=0
+        del_sign=1
+        where const_detail_id = #{constDetailId,jdbcType=INTEGER}
+        and del_sign=0
     </delete>
 
 
     <select id="findListByQuery" parameterType="MetaConstDetailQO" resultType="MetaConstDetailListVO">
         select * from meta_const_detail t
-        where t.delSign=0
-        and t.constId = #{constId,jdbcType=INTEGER}
-        order by t.detailValue
+        where t.del_sign=0
+        and t.const_id = #{constId,jdbcType=INTEGER}
+        order by t.detail_value
     </select>
 
     <select id="findByConstId" resultType="MetaConstDetailPO">
         select * from meta_const_detail
-        where delSign=0
-        and constId = #{constId,jdbcType=INTEGER}
+        where del_sign=0
+        and const_id = #{constId,jdbcType=INTEGER}
     </select>
 </mapper>

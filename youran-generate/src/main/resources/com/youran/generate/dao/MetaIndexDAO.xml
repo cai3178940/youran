@@ -11,21 +11,21 @@
 
     <select id="findById" resultType="MetaIndexPO">
         select * from meta_index
-        where delSign=0
-        and indexId = #{indexId,jdbcType=INTEGER}
+        where del_sign=0
+        and index_id = #{indexId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_index
-        where delSign=0
-        and indexId = #{indexId,jdbcType=INTEGER}
+        where del_sign=0
+        and index_id = #{indexId,jdbcType=INTEGER}
     </select>
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="indexId" parameterType="MetaIndexPO">
         insert into meta_index (
-          indexId, indexName, entityId,
-          `unique`, createDate, createBy,
-          operateDate, operateBy, delSign,
+          index_id, index_name, entity_id,
+          `unique`, create_date, create_by,
+          operate_date, operate_by, del_sign,
           version)
         values (#{indexId,jdbcType=INTEGER}, #{indexName,jdbcType=VARCHAR}, #{entityId,jdbcType=INTEGER},
           #{unique,jdbcType=SMALLINT}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
@@ -35,36 +35,36 @@
 
     <update id="_update" parameterType="MetaIndexPO">
         update meta_index
-        set indexName = #{indexName,jdbcType=VARCHAR},
-        entityId = #{entityId,jdbcType=INTEGER},
+        set index_name = #{indexName,jdbcType=VARCHAR},
+        entity_id = #{entityId,jdbcType=INTEGER},
         `unique` = #{unique,jdbcType=SMALLINT},
-        operateDate = #{operateDate,jdbcType=TIMESTAMP},
-        operateBy = #{operateBy,jdbcType=VARCHAR},
+        operate_date = #{operateDate,jdbcType=TIMESTAMP},
+        operate_by = #{operateBy,jdbcType=VARCHAR},
         version = #{version,jdbcType=INTEGER}
-        where indexId = #{indexId,jdbcType=INTEGER}
+        where index_id = #{indexId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and delSign=0
+        and del_sign=0
     </update>
 
     <delete id="delete">
         update meta_index set
-        delSign=1
-        where indexId = #{indexId,jdbcType=INTEGER}
-        and delSign=0
+        del_sign=1
+        where index_id = #{indexId,jdbcType=INTEGER}
+        and del_sign=0
     </delete>
 
     <select id="findListByQuery" parameterType="MetaIndexQO"  resultMap="metaIndexListResultMap">
         select * from meta_index t
-        where t.delSign=0
-        and t.entityId = #{entityId,jdbcType=INTEGER}
-        order by t.createDate
+        where t.del_sign=0
+        and t.entity_id = #{entityId,jdbcType=INTEGER}
+        order by t.create_date
     </select>
 
     <select id="findByEntityId" parameterType="int" resultType="MetaIndexPO">
         select * from meta_index
-        where delSign=0
-        and entityId = #{entityId,jdbcType=INTEGER}
-        order by indexId
+        where del_sign=0
+        and entity_id = #{entityId,jdbcType=INTEGER}
+        order by index_id
     </select>
 
 </mapper>

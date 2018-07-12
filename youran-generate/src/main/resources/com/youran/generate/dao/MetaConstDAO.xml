@@ -6,22 +6,22 @@
 
     <select id="findById" resultType="MetaConstPO">
         select * from meta_const
-        where delSign=0
-        and constId = #{constId,jdbcType=INTEGER}
+        where del_sign=0
+        and const_id = #{constId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_const
-        where delSign=0
-        and constId = #{constId,jdbcType=INTEGER}
+        where del_sign=0
+        and const_id = #{constId,jdbcType=INTEGER}
     </select>
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="constId" parameterType="MetaConstPO">
         insert into meta_const (
-          constId, projectId, constName,
-          constRemark, constType,
-          createDate, createBy, operateDate,
-          operateBy, delSign, version
+          const_id, project_id, const_name,
+          const_remark, const_type,
+          create_date, create_by, operate_date,
+          operate_by, del_sign, version
           )
         values (#{constId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{constName,jdbcType=VARCHAR},
           #{constRemark,jdbcType=VARCHAR}, #{constType,jdbcType=INTEGER},
@@ -32,42 +32,42 @@
 
     <update id="_update" parameterType="MetaConstPO">
         update meta_const
-        set projectId = #{projectId,jdbcType=INTEGER},
-          constName = #{constName,jdbcType=VARCHAR},
-          constRemark = #{constRemark,jdbcType=VARCHAR},
-          constType = #{constType,jdbcType=INTEGER},
-          operateDate = #{operateDate,jdbcType=TIMESTAMP},
-          operateBy = #{operateBy,jdbcType=VARCHAR},
+        set project_id = #{projectId,jdbcType=INTEGER},
+          const_name = #{constName,jdbcType=VARCHAR},
+          const_remark = #{constRemark,jdbcType=VARCHAR},
+          const_type = #{constType,jdbcType=INTEGER},
+          operate_date = #{operateDate,jdbcType=TIMESTAMP},
+          operate_by = #{operateBy,jdbcType=VARCHAR},
           version = #{version,jdbcType=INTEGER}
-        where constId = #{constId,jdbcType=INTEGER}
+        where const_id = #{constId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and delSign=0
+        and del_sign=0
     </update>
 
     <delete id="delete">
         update meta_const set
-        delSign=1
-        where constId = #{constId,jdbcType=INTEGER}
-        and delSign=0
+        del_sign=1
+        where const_id = #{constId,jdbcType=INTEGER}
+        and del_sign=0
     </delete>
 
     <select id="findCountByQuery" parameterType="MetaConstQO" resultType="int">
         select count(1) from meta_const t
-        where t.delSign=0
-        and t.projectId = #{projectId,jdbcType=INTEGER}
+        where t.del_sign=0
+        and t.project_id = #{projectId,jdbcType=INTEGER}
     </select>
 
     <select id="findListByQuery" parameterType="MetaConstQO" resultType="MetaConstListVO">
         select * from meta_const t
-        where t.delSign=0
-        and t.projectId = #{projectId,jdbcType=INTEGER}
-        order by t.createDate
+        where t.del_sign=0
+        and t.project_id = #{projectId,jdbcType=INTEGER}
+        order by t.create_date
         limit #{startIndex},#{pageSize}
     </select>
 
     <select id="findIdsByProject" resultType="int">
-        select constId from meta_const
-        where delSign=0
-        and projectId = #{projectId,jdbcType=INTEGER}
+        select const_id from meta_const
+        where del_sign=0
+        and project_id = #{projectId,jdbcType=INTEGER}
     </select>
 </mapper>

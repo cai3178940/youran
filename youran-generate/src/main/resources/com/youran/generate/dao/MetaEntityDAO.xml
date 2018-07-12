@@ -6,22 +6,22 @@
 
     <select id="findById" resultType="MetaEntityPO">
         select * from meta_entity
-        where delSign=0
-        and entityId = #{entityId,jdbcType=INTEGER}
+        where del_sign=0
+        and entity_id = #{entityId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_entity
-        where delSign=0
-        and entityId = #{entityId,jdbcType=INTEGER}
+        where del_sign=0
+        and entity_id = #{entityId,jdbcType=INTEGER}
     </select>
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="entityId" parameterType="MetaEntityPO">
         insert into meta_entity (
-          entityId, projectId, schemaName,
-          className, tableName, title, `desc`,
-          commonCall,pageSign, createDate, createBy,
-          operateDate, operateBy, delSign,
+          entity_id, project_id, `schema_name`,
+          class_name, `table_name`, title, `desc`,
+          common_call,page_sign, create_date, create_by,
+          operate_date, operate_by, del_sign,
           version)
         values (#{entityId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{schemaName,jdbcType=VARCHAR},
           #{className,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
@@ -33,47 +33,47 @@
 
     <update id="_update" parameterType="MetaEntityPO">
         update meta_entity
-        set projectId = #{projectId,jdbcType=INTEGER},
-          schemaName = #{schemaName,jdbcType=VARCHAR},
-          className = #{className,jdbcType=VARCHAR},
-          tableName = #{tableName,jdbcType=VARCHAR},
+        set project_id = #{projectId,jdbcType=INTEGER},
+          `schema_name` = #{schemaName,jdbcType=VARCHAR},
+          class_name = #{className,jdbcType=VARCHAR},
+          `table_name` = #{tableName,jdbcType=VARCHAR},
           title = #{title,jdbcType=VARCHAR},
           `desc` = #{desc,jdbcType=VARCHAR},
-          commonCall = #{commonCall,jdbcType=SMALLINT},
-          pageSign = #{pageSign,jdbcType=SMALLINT},
-          operateDate = #{operateDate,jdbcType=TIMESTAMP},
-          operateBy = #{operateBy,jdbcType=VARCHAR},
+          common_call = #{commonCall,jdbcType=SMALLINT},
+          page_sign = #{pageSign,jdbcType=SMALLINT},
+          operate_date = #{operateDate,jdbcType=TIMESTAMP},
+          operate_by = #{operateBy,jdbcType=VARCHAR},
           version = #{version,jdbcType=INTEGER}
-        where entityId = #{entityId,jdbcType=INTEGER}
+        where entity_id = #{entityId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and delSign=0
+        and del_sign=0
     </update>
 
     <delete id="delete">
         update meta_entity set
-        delSign=1
-        where entityId = #{entityId,jdbcType=INTEGER}
-        and delSign=0
+        del_sign=1
+        where entity_id = #{entityId,jdbcType=INTEGER}
+        and del_sign=0
     </delete>
 
     <select id="findCountByQuery" parameterType="MetaEntityQO" resultType="int">
         select count(1) from meta_entity t
-        where t.delSign=0
-        and t.projectId = #{projectId,jdbcType=INTEGER}
+        where t.del_sign=0
+        and t.project_id = #{projectId,jdbcType=INTEGER}
     </select>
 
     <select id="findListByQuery" parameterType="MetaEntityQO" resultType="MetaEntityListVO">
         select * from meta_entity t
-        where t.delSign=0
-        and t.projectId = #{projectId,jdbcType=INTEGER}
-        order by t.createDate
+        where t.del_sign=0
+        and t.project_id = #{projectId,jdbcType=INTEGER}
+        order by t.create_date
         limit #{startIndex},#{pageSize}
     </select>
 
     <select id="findIdsByProject" resultType="int">
-        select entityId from meta_entity
-        where delSign=0
-        and projectId = #{projectId,jdbcType=INTEGER}
-        order by entityId
+        select entity_id from meta_entity
+        where del_sign=0
+        and project_id = #{projectId,jdbcType=INTEGER}
+        order by entity_id
     </select>
 </mapper>

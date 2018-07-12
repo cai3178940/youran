@@ -6,9 +6,9 @@
 
     <select id="findCount" resultType="int">
         select count(1) from meta_field
-        where delSign=0
-        and entityId= #{entityId,jdbcType=INTEGER}
-        and fieldId in
+        where del_sign=0
+        and entity_id= #{entityId,jdbcType=INTEGER}
+        and field_id in
         <foreach collection="fieldIdList" index="index" item="fieldId" open="(" separator="," close=")">
             #{fieldId}
         </foreach>
@@ -18,30 +18,30 @@
 
     <select id="findById" resultType="MetaFieldPO">
         select * from meta_field
-        where delSign=0
-        and fieldId = #{fieldId,jdbcType=INTEGER}
+        where del_sign=0
+        and field_id = #{fieldId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_field
-        where delSign=0
-        and fieldId = #{fieldId,jdbcType=INTEGER}
+        where del_sign=0
+        and field_id = #{fieldId,jdbcType=INTEGER}
     </select>
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="fieldId" parameterType="MetaFieldPO">
         insert into meta_field (
-            fieldId, entityId, jfieldName,
-            fieldName, jfieldType, fieldType,
-            fieldDesc, fieldExample,
-            fieldComment, fieldLength, fieldScale,
-            primaryKey, autoIncrement, notNull,
-            defaultValue, foreignKey, foreignEntityId,
-            foreignFieldId, editType, dicType,
-            `insert`, `update`, `list`,listSort,
-            `show`, `query`, queryType,
-            orderNo, specialField, createDate,
-            createBy, operateDate, operateBy,
-            delSign, version)
+            field_id, entity_id, jfield_name,
+            field_name, jfield_type, field_type,
+            field_desc, field_example,
+            field_comment, field_length, field_scale,
+            primary_key, `auto_increment`, not_null,
+            default_value, foreign_key, foreign_entity_id,
+            foreign_field_id, edit_type, dic_type,
+            `insert`, `update`, `list`,list_sort,
+            `show`, `query`, query_type,
+            order_no, special_field, create_date,
+            create_by, operate_date, operate_by,
+            del_sign, version)
         values (#{fieldId,jdbcType=INTEGER}, #{entityId,jdbcType=INTEGER}, #{jfieldName,jdbcType=VARCHAR},
             #{fieldName,jdbcType=VARCHAR}, #{jfieldType,jdbcType=VARCHAR}, #{fieldType,jdbcType=VARCHAR},
             #{fieldDesc,jdbcType=VARCHAR}, #{fieldExample,jdbcType=VARCHAR},
@@ -58,47 +58,47 @@
 
     <update id="_update" parameterType="MetaFieldPO">
         update meta_field
-        set entityId = #{entityId,jdbcType=INTEGER},
-            jfieldName = #{jfieldName,jdbcType=VARCHAR},
-            fieldName = #{fieldName,jdbcType=VARCHAR},
-            jfieldType = #{jfieldType,jdbcType=VARCHAR},
-            fieldType = #{fieldType,jdbcType=VARCHAR},
-            fieldDesc = #{fieldDesc,jdbcType=VARCHAR},
-            fieldExample = #{fieldExample,jdbcType=VARCHAR},
-            fieldComment = #{fieldComment,jdbcType=VARCHAR},
-            fieldLength = #{fieldLength,jdbcType=INTEGER},
-            fieldScale = #{fieldScale,jdbcType=INTEGER},
-            primaryKey = #{primaryKey,jdbcType=SMALLINT},
-            autoIncrement = #{autoIncrement,jdbcType=SMALLINT},
-            notNull = #{notNull,jdbcType=SMALLINT},
-            defaultValue = #{defaultValue,jdbcType=VARCHAR},
-            foreignKey = #{foreignKey,jdbcType=INTEGER},
-            foreignEntityId = #{foreignEntityId,jdbcType=INTEGER},
-            foreignFieldId = #{foreignFieldId,jdbcType=INTEGER},
-            editType = #{editType,jdbcType=INTEGER},
-            dicType = #{dicType,jdbcType=VARCHAR},
+        set entity_id = #{entityId,jdbcType=INTEGER},
+            jfield_name = #{jfieldName,jdbcType=VARCHAR},
+            field_name = #{fieldName,jdbcType=VARCHAR},
+            jfield_type = #{jfieldType,jdbcType=VARCHAR},
+            field_type = #{fieldType,jdbcType=VARCHAR},
+            field_desc = #{fieldDesc,jdbcType=VARCHAR},
+            field_example = #{fieldExample,jdbcType=VARCHAR},
+            field_comment = #{fieldComment,jdbcType=VARCHAR},
+            field_length = #{fieldLength,jdbcType=INTEGER},
+            field_scale = #{fieldScale,jdbcType=INTEGER},
+            primary_key = #{primaryKey,jdbcType=SMALLINT},
+            `auto_increment` = #{autoIncrement,jdbcType=SMALLINT},
+            not_null = #{notNull,jdbcType=SMALLINT},
+            default_value = #{defaultValue,jdbcType=VARCHAR},
+            foreign_key = #{foreignKey,jdbcType=INTEGER},
+            foreign_entity_id = #{foreignEntityId,jdbcType=INTEGER},
+            foreign_field_id = #{foreignFieldId,jdbcType=INTEGER},
+            edit_type = #{editType,jdbcType=INTEGER},
+            dic_type = #{dicType,jdbcType=VARCHAR},
             `insert` = #{insert,jdbcType=SMALLINT},
             `update` = #{update,jdbcType=SMALLINT},
             `list` = #{list,jdbcType=SMALLINT},
-            listSort = #{listSort,jdbcType=SMALLINT},
+            list_sort = #{listSort,jdbcType=SMALLINT},
             `show` = #{show,jdbcType=SMALLINT},
             `query` = #{query,jdbcType=SMALLINT},
-            queryType = #{queryType,jdbcType=INTEGER},
-            orderNo = #{orderNo,jdbcType=INTEGER},
-            specialField = #{specialField,jdbcType=VARCHAR},
-            operateDate = #{operateDate,jdbcType=TIMESTAMP},
-            operateBy = #{operateBy,jdbcType=VARCHAR},
+            query_type = #{queryType,jdbcType=INTEGER},
+            order_no = #{orderNo,jdbcType=INTEGER},
+            special_field = #{specialField,jdbcType=VARCHAR},
+            operate_date = #{operateDate,jdbcType=TIMESTAMP},
+            operate_by = #{operateBy,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}
-        where fieldId = #{fieldId,jdbcType=INTEGER}
+        where field_id = #{fieldId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and delSign=0
+        and del_sign=0
     </update>
 
     <delete id="delete">
         update meta_field set
-        delSign=1
-        where fieldId = #{fieldId,jdbcType=INTEGER}
-        and delSign=0
+        del_sign=1
+        where field_id = #{fieldId,jdbcType=INTEGER}
+        and del_sign=0
     </delete>
 
     <select id="findListByQuery" parameterType="MetaFieldQO" resultType="MetaFieldListVO">
@@ -106,20 +106,20 @@
             t.*
         <if test="withCascadeFieldNum != null  and withCascadeFieldNum == 1 ">
             ,
-            case when t.foreignKey=1
-            then (select count(1) from meta_cascade_ext c where c.fieldId=t.fieldId and c.delSign=0)
+            case when t.foreign_key=1
+            then (select count(1) from meta_cascade_ext c where c.field_id=t.field_id and c.del_sign=0)
             else 0 end as cascadeFieldNum
         </if>
         from meta_field t
-        where t.delSign=0
-        and t.entityId = #{entityId,jdbcType=INTEGER}
-        order by t.orderNo, t.fieldId
+        where t.del_sign=0
+        and t.entity_id = #{entityId,jdbcType=INTEGER}
+        order by t.order_no, t.field_id
     </select>
 
     <select id="findByEntityId" parameterType="int" resultType="MetaFieldPO">
         select * from meta_field t
-        where t.delSign=0
-        and t.entityId = #{entityId,jdbcType=INTEGER}
-        order by t.orderNo, t.fieldId
+        where t.del_sign=0
+        and t.entity_id = #{entityId,jdbcType=INTEGER}
+        order by t.order_no, t.field_id
     </select>
 </mapper>

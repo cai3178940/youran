@@ -6,23 +6,23 @@
 
     <select id="findById" resultType="MetaManyToManyPO">
         select * from meta_mtm
-        where delSign=0
-        and mtmId = #{mtmId,jdbcType=INTEGER}
+        where del_sign=0
+        and mtm_id = #{mtmId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_mtm
-        where delSign=0
-        and mtmId = #{mtmId,jdbcType=INTEGER}
+        where del_sign=0
+        and mtm_id = #{mtmId,jdbcType=INTEGER}
     </select>
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="mtmId" parameterType="MetaManyToManyPO">
         insert into meta_mtm (
-          mtmId, projectId, tableName,
-          schemaName, `desc`, entityId1,
-          entityId2, holdRefer1, holdRefer2,
-          createDate, createBy, operateDate,
-          operateBy, delSign, version
+          mtm_id, project_id, `table_name`,
+          `schema_name`, `desc`, entity_id1,
+          entity_id2, hold_refer1, hold_refer2,
+          create_date, create_by, operate_date,
+          operate_by, del_sign, version
           )
         values (#{mtmId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR},
           #{schemaName,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{entityId1,jdbcType=INTEGER},
@@ -34,40 +34,40 @@
 
     <update id="_update" parameterType="MetaManyToManyPO">
         update meta_mtm
-        set projectId = #{projectId,jdbcType=INTEGER},
-        tableName = #{tableName,jdbcType=VARCHAR},
-        schemaName = #{schemaName,jdbcType=VARCHAR},
+        set project_id = #{projectId,jdbcType=INTEGER},
+        `table_name` = #{tableName,jdbcType=VARCHAR},
+        `schema_name` = #{schemaName,jdbcType=VARCHAR},
         `desc` = #{desc,jdbcType=VARCHAR},
-        entityId1 = #{entityId1,jdbcType=INTEGER},
-        entityId2 = #{entityId2,jdbcType=INTEGER},
-        holdRefer1 = #{holdRefer1,jdbcType=SMALLINT},
-        holdRefer2 = #{holdRefer2,jdbcType=SMALLINT},
-        operateDate = #{operateDate,jdbcType=TIMESTAMP},
-        operateBy = #{operateBy,jdbcType=VARCHAR},
+        entity_id1 = #{entityId1,jdbcType=INTEGER},
+        entity_id2 = #{entityId2,jdbcType=INTEGER},
+        hold_refer1 = #{holdRefer1,jdbcType=SMALLINT},
+        hold_refer2 = #{holdRefer2,jdbcType=SMALLINT},
+        operate_date = #{operateDate,jdbcType=TIMESTAMP},
+        operate_by = #{operateBy,jdbcType=VARCHAR},
         version = #{version,jdbcType=INTEGER}
-        where mtmId = #{mtmId,jdbcType=INTEGER}
+        where mtm_id = #{mtmId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and delSign=0
+        and del_sign=0
     </update>
 
     <delete id="delete">
         update meta_mtm set
-        delSign=1
-        where mtmId = #{mtmId,jdbcType=INTEGER}
-        and delSign=0
+        del_sign=1
+        where mtm_id = #{mtmId,jdbcType=INTEGER}
+        and del_sign=0
     </delete>
 
     <select id="findListByQuery" parameterType="MetaManyToManyQO" resultType="MetaManyToManyListVO">
         select * from meta_mtm t
-        where t.delSign=0
-        and t.projectId = #{projectId,jdbcType=INTEGER}
-        order by t.createDate
+        where t.del_sign=0
+        and t.project_id = #{projectId,jdbcType=INTEGER}
+        order by t.create_date
     </select>
 
     <select id="findByProjectId" parameterType="int" resultType="MetaManyToManyPO">
         select * from meta_mtm
-        where delSign=0
-        and projectId = #{projectId,jdbcType=INTEGER}
-        order by mtmId
+        where del_sign=0
+        and project_id = #{projectId,jdbcType=INTEGER}
+        order by mtm_id
     </select>
 </mapper>

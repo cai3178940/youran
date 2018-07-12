@@ -5,19 +5,19 @@
 <mapper namespace="com.youran.generate.dao.GenHistoryDAO">
 
     <sql id="genHistoryColumns">
-        ${alias}.historyId,
-        ${alias}.projectId,
-        ${alias}.remoteUrl,
+        ${alias}.history_id,
+        ${alias}.project_id,
+        ${alias}.remote_url,
         ${alias}.`commit`,
         ${alias}.branch,
-        ${alias}.sysVersion,
-        ${alias}.projectVersion,
-        ${alias}.createDate,
-        ${alias}.createBy,
-        ${alias}.operateDate,
-        ${alias}.operateBy,
+        ${alias}.sys_version,
+        ${alias}.project_version,
+        ${alias}.create_date,
+        ${alias}.create_by,
+        ${alias}.operate_date,
+        ${alias}.operate_by,
         ${alias}.version,
-        ${alias}.delSign
+        ${alias}.del_sign
     </sql>
 
 
@@ -26,34 +26,34 @@
         <include refid="genHistoryColumns"><property name="alias" value="t"/></include>
         from gen_history t
         <where>
-            and t.delSign=0
-            and t.historyId = #{arg0}
+            and t.del_sign=0
+            and t.history_id = #{arg0}
         </where>
     </select>
 
     <select id="exist" resultType="boolean">
         select count(1) from gen_history
         <where>
-            and delSign=0
-            and historyId = #{arg0}
+            and del_sign=0
+            and history_id = #{arg0}
         </where>
     </select>
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="historyId" parameterType="GenHistoryPO">
         insert into gen_history(
-        historyId,
-        projectId,
-        remoteUrl,
+        history_id,
+        project_id,
+        remote_url,
         `commit`,
         branch,
-        sysVersion,
-        projectVersion,
-        createDate,
-        createBy,
-        operateDate,
-        operateBy,
+        sys_version,
+        project_version,
+        create_date,
+        create_by,
+        operate_date,
+        operate_by,
         version,
-        delSign
+        del_sign
         ) VALUES (
         #{historyId,jdbcType=INTEGER},
         #{projectId,jdbcType=INTEGER},
@@ -74,34 +74,34 @@
 
     <update id="_update" parameterType="GenHistoryPO">
         update gen_history set
-        historyId=#{historyId,jdbcType=INTEGER},
-        projectId=#{projectId,jdbcType=INTEGER},
-        remoteUrl=#{remoteUrl,jdbcType=VARCHAR},
+        history_id=#{historyId,jdbcType=INTEGER},
+        project_id=#{projectId,jdbcType=INTEGER},
+        remote_url=#{remoteUrl,jdbcType=VARCHAR},
         `commit`=#{commit,jdbcType=VARCHAR},
         branch=#{branch,jdbcType=VARCHAR},
-        sysVersion=#{sysVersion,jdbcType=VARCHAR},
-        projectVersion=#{projectVersion,jdbcType=INTEGER},
-        createDate=#{createDate,jdbcType=TIMESTAMP},
-        createBy=#{createBy,jdbcType=VARCHAR},
-        operateDate=#{operateDate,jdbcType=TIMESTAMP},
-        operateBy=#{operateBy,jdbcType=VARCHAR},
+        sys_version=#{sysVersion,jdbcType=VARCHAR},
+        project_version=#{projectVersion,jdbcType=INTEGER},
+        create_date=#{createDate,jdbcType=TIMESTAMP},
+        create_by=#{createBy,jdbcType=VARCHAR},
+        operate_date=#{operateDate,jdbcType=TIMESTAMP},
+        operate_by=#{operateBy,jdbcType=VARCHAR},
         version = version+1,
-        delSign=#{delSign,jdbcType=INTEGER}
-        where historyId=#{historyId,jdbcType=INTEGER}
+        del_sign=#{delSign,jdbcType=INTEGER}
+        where history_id=#{historyId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and delSign=0
+        and del_sign=0
     </update>
 
     <delete id="delete">
-        update gen_history set delSign=1
-        where historyId=#{arg0,jdbcType=INTEGER}
-        and delSign=0
+        update gen_history set del_sign=1
+        where history_id=#{arg0,jdbcType=INTEGER}
+        and del_sign=0
     </delete>
 
 
     <sql id="queryCondition">
         <if test="projectId != null  ">
-            and t.projectId = #{projectId}
+            and t.project_id = #{projectId}
         </if>
     </sql>
 
@@ -109,7 +109,7 @@
     <select id="findCountByQuery" parameterType="GenHistoryQO" resultType="int">
         select count(1) from gen_history t
         <where>
-            and t.delSign=0
+            and t.del_sign=0
             <include refid="queryCondition"/>
         </where>
     </select>
@@ -117,10 +117,10 @@
     <select id="findListByQuery" parameterType="GenHistoryQO" resultType="GenHistoryListVO">
         select * from gen_history t
         <where>
-            and t.delSign=0
+            and t.del_sign=0
             <include refid="queryCondition"/>
         </where>
-        order by t.createDate desc
+        order by t.create_date desc
         limit #{startIndex},#{pageSize}
     </select>
 </mapper>

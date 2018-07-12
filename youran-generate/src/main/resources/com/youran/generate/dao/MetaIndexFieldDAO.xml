@@ -6,7 +6,7 @@
 
     <insert id="saveBatch">
         insert into meta_index_field (
-        indexId, fieldId, orderNo)
+        index_id, field_id, order_no)
         values
         <foreach collection="fieldIdList" index="index" item="fieldId" separator=",">
             (#{indexId},#{fieldId},#{index})
@@ -15,13 +15,13 @@
 
     <delete id="delete">
         delete from meta_index_field
-        where indexId = #{indexId,jdbcType=INTEGER}
+        where index_id = #{indexId,jdbcType=INTEGER}
     </delete>
 
     <delete id="remove">
         delete from meta_index_field
-        where indexId = #{indexId,jdbcType=INTEGER}
-        and fieldId in
+        where index_id = #{indexId,jdbcType=INTEGER}
+        and field_id in
         <foreach collection="fieldIdList" open="(" close=")" item="fieldId" separator=",">
             #{fieldId}
         </foreach>
@@ -30,18 +30,18 @@
     <select id="findByIndexId"  parameterType="java.lang.Integer"  resultType="MetaFieldListVO">
         select t.*
         from meta_field t
-            inner join meta_index_field r on t.fieldId=r.fieldId
-        where  t.delSign=0
-            and r.indexId = #{arg0,jdbcType=INTEGER}
-        order by r.orderNo
+            inner join meta_index_field r on t.field_id=r.field_id
+        where  t.del_sign=0
+            and r.index_id = #{arg0,jdbcType=INTEGER}
+        order by r.order_no
     </select>
 
     <select id="findIdsByIndexId" resultType="java.lang.Integer">
-        select t.fieldId
+        select t.field_id
         from meta_field t
-            inner join meta_index_field r on t.fieldId=r.fieldId
-        where  t.delSign=0
-               and r.indexId = #{arg0,jdbcType=INTEGER}
-        order by r.orderNo
+            inner join meta_index_field r on t.field_id=r.field_id
+        where  t.del_sign=0
+               and r.index_id = #{arg0,jdbcType=INTEGER}
+        order by r.order_no
     </select>
 </mapper>
