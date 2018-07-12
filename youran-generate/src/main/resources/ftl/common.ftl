@@ -9,10 +9,10 @@
 <#-- 定义类注释宏 -->
 <#macro classCom title="" desc="">
 /**
- * Title: ${title}
- * Description: ${desc}
- * Author: ${author}
- * Create Time: ${createDate?string("yyyy-MM-dd HH:mm")}
+ * ${title}
+ * ${desc}
+ * @author ${author}
+ * @date ${createDate?string("yyyy-MM-dd HH:mm")}
  */
 </#macro>
 
