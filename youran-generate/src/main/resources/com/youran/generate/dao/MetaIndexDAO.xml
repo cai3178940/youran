@@ -5,8 +5,8 @@
 <mapper namespace="com.youran.generate.dao.MetaIndexDAO">
 
     <resultMap type="MetaIndexListVO" id="metaIndexListResultMap">
-        <id column="indexId" property="indexId"></id>
-        <collection property="fields" javaType="ArrayList" column="indexId" ofType="MetaFieldListVO" select="com.youran.generate.dao.MetaIndexFieldDAO.findByIndexId"/>
+        <id column="index_id" property="indexId"></id>
+        <collection property="fields" javaType="ArrayList" column="index_id" ofType="MetaFieldListVO" select="com.youran.generate.dao.MetaIndexFieldDAO.findByIndexId"/>
     </resultMap>
 
     <select id="findById" resultType="MetaIndexPO">
