@@ -9,8 +9,8 @@
 <#-- 定义类注释宏 -->
 <#macro classCom title="" desc="">
 /**
- * ${title}
- * ${desc}
+ * <p>Title: ${title}</p>
+ * <p>Description: ${desc}</p>
  * @author ${author}
  * @date ${createDate?string("yyyy-MM-dd HH:mm")}
  */
