@@ -21,17 +21,35 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button @click.native="handleAdd" type="success">添加</el-button>
-            <el-button @click.native="handleDel" type="danger">删除</el-button>
+            <el-button @click.native="handleAdd" type="success">添加枚举</el-button>
+            <el-button @click.native="handleDel" type="danger">删除枚举</el-button>
           </el-form-item>
         </el-form>
       </el-col>
     </el-row>
-    <el-table :data="page.entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
+    <el-table ref="constTable" :data="page.entities" style="width: 100%" @selection-change="selectionChange" @expand-change="expandChange" v-loading="loading">
+      <el-table-column type="expand" width="50">
+        <template slot-scope="scope">
+          <el-table class="detailTable" :data="detailList" v-loading="detailLoading" :show-header="false">
+            <el-table-column width="100"></el-table-column>
+            <el-table-column property="detailRemark" label="备注" width="250"></el-table-column>
+            <el-table-column property="detailName" label="枚举字段名" width="250"></el-table-column>
+            <el-table-column property="detailValue" label="枚举值"></el-table-column>
+            <el-table-column
+              label="操作"
+              width="150">
+              <template slot-scope="detail">
+                <el-button @click="handleDetailEdit(scope.row,detail.row)" type="text" size="medium">编辑</el-button>
+                <el-button @click="handleDetailDel(scope.row,detail.row)" type="text" size="medium">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-table-column>
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column property="constRemark" label="枚举名称"></el-table-column>
-      <el-table-column property="constName" label="枚举类名"></el-table-column>
-      <el-table-column label="类型">
+      <el-table-column property="constRemark" label="枚举名称 / 值描述" width="250"></el-table-column>
+      <el-table-column property="constName" label="枚举类名 / 字段名" width="250"></el-table-column>
+      <el-table-column label="类型 / 枚举值">
         <template slot-scope="scope">
           {{ scope.row.constType | optionLabel('constTypeOptions')}}
         </template>
@@ -42,7 +60,8 @@
         <template slot-scope="scope">
           <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
-          <el-button @click="handleConstDetail(scope.row)" type="text" size="medium">枚举值管理</el-button>
+          <el-button @click="handleDetailAdd(scope.row)" type="text" size="medium">添加枚举值</el-button>
+          <!--<el-button @click="handleConstDetail(scope.row)" type="text" size="medium">枚举值管理</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -65,7 +84,7 @@
   import options from '@/components/options.js'
   export default {
     name: 'constList',
-    props: ['projectId'],
+    props: ['projectId','constId'],
     data: function () {
       return {
         //查询参数
@@ -85,7 +104,10 @@
           pageSize: 20,
           entities: []
         },
-        loading: false
+        expandedRow:null,
+        loading: false,
+        detailList:[],
+        detailLoading: false
       }
     },
     filters: {
@@ -148,7 +170,7 @@
           pageSize: this.page.pageSize
         }
         this.loading = true
-        this.$ajax.get('/generate/meta_const/list', {params:params})
+        return this.$ajax.get('/generate/meta_const/list', {params:params})
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.page = result.data)
           .catch(error => this.$common.showNotifyError(error))
@@ -157,14 +179,48 @@
       handleAdd: function () {
         this.$router.push(`/project/${this.projectId}/const/add`)
       },
-      handleConstDetail: function (row) {
-        this.$router.push(`/project/${this.projectId}/const/${row.constId}/constDetail`)
-      },
       handleEdit: function (row) {
         this.$router.push(`/project/${this.projectId}/const/edit/${row.constId}`)
       },
       handleShow: function (row) {
         this.$router.push(`/project/${this.projectId}/const/show/${row.constId}`)
+      },
+      expandChange: function(row, expandedRows){
+        // 如果当前展开大于1行，则将另一行关闭
+        if(expandedRows && expandedRows.length>1){
+          const otherRow = expandedRows.find(r => r!=row)
+          this.$refs.constTable.toggleRowExpansion(otherRow,false)
+        }
+        // 如果当前展开行等于1行，则加载枚举值列表
+        if(expandedRows && expandedRows.length==1 && this.expandedRow!=row){
+          this.doDetailQuery(expandedRows[0].constId)
+          this.expandedRow = expandedRows[0]
+        }
+        // 如果当前展开行等于0行，则清空缓存数据
+        if(!expandedRows || expandedRows.length==0){
+          this.expandedRow = null
+          this.detailList = []
+        }
+      },
+      // 枚举值列表查询
+      doDetailQuery: function (constId) {
+        this.detailLoading = true
+        this.$ajax.get('/generate/meta_const_detail/list', {params:{'projectId':this.query.projectId,'constId':constId}})
+          .then(response => this.$common.checkResult(response.data))
+          .then(result => this.detailList = result.data)
+          .catch(error => this.$common.showNotifyError(error))
+          .finally(() => this.detailLoading = false)
+      },
+      handleDetailAdd: function (row) {
+        this.$router.push(`/project/${this.projectId}/const/${row.constId}/constDetailAdd`)
+      },
+      handleDetailEdit: function (theConst,detail) {
+        this.$router.push(`/project/${this.projectId}/const/${theConst.constId}/constDetailEdit/${detail.constDetailId}`)
+      },
+      handleDetailDel: function (theConst,detail) {
+        this.$common.confirm('是否确认删除枚举值')
+          .then(() => this.$ajax.put('/generate/meta_const_detail/deleteBatch', [detail.constDetailId]))
+          .then(() => this.doDetailQuery(theConst.constId))
       }
     },
     activated: function () {
@@ -174,6 +230,12 @@
           this.query.projectId = this.queryForm.projectId
         })
         .then(() => this.doQuery())
+        .then(() => {
+          if(this.constId){
+            const row = this.page.entities.find(e => e.constId==parseInt(this.constId))
+            this.$refs.constTable.toggleRowExpansion(row,true)
+          }
+        })
     }
   }
 </script>
@@ -188,5 +250,12 @@
    */
   .constList .el-table td{
     padding: 3px 0;
+  }
+  .constList .el-table .el-table__expanded-cell{
+    padding: 0px;
+    border-bottom: 0px;
+  }
+  .constList .detailTable{
+    color: #9ea0a7;
   }
 </style>
