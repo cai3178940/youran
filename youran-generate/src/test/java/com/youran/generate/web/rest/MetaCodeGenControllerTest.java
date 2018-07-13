@@ -225,6 +225,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         MetaIndexAddDTO dto = new MetaIndexAddDTO();
         dto.setIndexName("i_user_username");
         dto.setUnique(1);
+        dto.setUniqueCheck(1);
         dto.setFieldIds(userNameField.getFieldId().toString());
         dto.setEntityId(userEntity.getEntityId());
         return metaIndexService.save(dto);

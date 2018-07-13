@@ -23,6 +23,8 @@ public class MetaIndexPO extends AbstractPO implements CreateOperateDeleteVersio
 
     private Integer unique;
 
+    private Integer uniqueCheck;
+
     private List<MetaFieldPO> fields;//索引字段
 
     private Date createDate;
@@ -45,6 +47,14 @@ public class MetaIndexPO extends AbstractPO implements CreateOperateDeleteVersio
         fields.add(metaFieldPO);
     }
 
+
+    public Integer getUniqueCheck() {
+        return uniqueCheck;
+    }
+
+    public void setUniqueCheck(Integer uniqueCheck) {
+        this.uniqueCheck = uniqueCheck;
+    }
 
     public Integer getEntityId() {
         return entityId;

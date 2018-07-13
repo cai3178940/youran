@@ -35,6 +35,11 @@ public class MetaIndexAddDTO extends AbstractDTO {
     @Const(constClass = BoolConst.class)
     private Integer unique;
 
+    @ApiModelProperty(notes = N_UNIQUECHECK, example = E_UNIQUECHECK)
+    @NotNull
+    @Const(constClass = BoolConst.class)
+    private Integer uniqueCheck;
+
     @ApiModelProperty(notes = N_FIELDIDS, example = E_FIELDIDS)
     @NotNull
     @Length(max = 100, message = "fieldIds最大长度不能超过100")
@@ -71,5 +76,13 @@ public class MetaIndexAddDTO extends AbstractDTO {
 
     public void setUnique(Integer unique) {
         this.unique = unique;
+    }
+
+    public Integer getUniqueCheck() {
+        return uniqueCheck;
+    }
+
+    public void setUniqueCheck(Integer uniqueCheck) {
+        this.uniqueCheck = uniqueCheck;
     }
 }

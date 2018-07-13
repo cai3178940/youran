@@ -34,6 +34,14 @@
               </el-radio-group>
             </help-popover>
           </el-form-item>
+          <el-form-item label="唯一性校验" prop="uniqueCheck">
+            <help-popover name="index.uniqueCheck">
+              <el-radio-group v-model="form.uniqueCheck" :disabled="uniqueCheckDisabled">
+                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
+                </el-radio>
+              </el-radio-group>
+            </help-popover>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
             <el-button @click="goBack()">返回</el-button>
@@ -52,6 +60,7 @@
     indexName: '',
     entityId: null,
     unique:0,
+    uniqueCheck:0,
     fieldIds:[]
   }
 
@@ -68,6 +77,7 @@
         form: {
           ...indexModel
         },
+        uniqueCheckDisabled: false,
         rules: {
           indexName: [
             {required: true, message: '请输入索引名', trigger: 'blur'},
@@ -76,9 +86,28 @@
           unique: [
             {required: true, type: 'number', message: '请选择是否唯一', trigger: 'change'},
           ],
+          uniqueCheck: [
+            {required: true, type: 'number', message: '请选择唯一性校验', trigger: 'change'},
+          ],
           fieldIds: [
             {required: true, type: 'array', message: '请选择字段', trigger: 'change'},
           ]
+        }
+      }
+    },
+    watch: {
+      'form.indexName': function (value) {
+        const lc = /[a-z]/i;
+        if(lc.test(value)){
+          this.form.indexName = value.toUpperCase()
+        }
+      },
+      'form.unique': function (value) {
+        if (value == 1) {
+          this.form.uniqueCheck = 1
+          this.uniqueCheckDisabled = true
+        }else{
+          this.uniqueCheckDisabled = false
         }
       }
     },

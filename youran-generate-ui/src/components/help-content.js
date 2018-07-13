@@ -226,11 +226,10 @@ private Integer publishSignSortSign;
 #### 生成的枚举类会包含两个属性，请看下面示例：
 \`\`\`
 /**
- * Title: 枚举【开发者类型】
- * Description: 
- * Project: optimize
- * Author: cbb
- * Create Time: 2018-03-09 17:51
+ * <p>Title: 枚举【开发者类型】</p>
+ * <p>Description: </p>
+ * @author cbb
+ * @date 2018/03/09
  */
 public enum DevType {
 
@@ -287,6 +286,9 @@ public enum DevType {
     unique: `
 **是否唯一**：唯一索引可以从数据库层面限制字段唯一性
 > 注意：如果实体同时添加了唯一索引和逻辑删除字段，则需要特别注意，请自己想办法解决删除后无法重复添加的问题
+    `,
+    uniqueCheck: `
+**唯一性校验**：插入或修改记录时，是否需要提前进行唯一性校验
     `
   },
   fieldListHelp:`

@@ -94,6 +94,7 @@ CREATE TABLE `meta_index` (
   `index_name` varchar(40) NOT NULL COMMENT '索引名称',
   `entity_id` int(11) NOT NULL COMMENT '所属实体id',
   `unique` tinyint(1) NOT NULL COMMENT '是否唯一索引',
+  `unique_check` tinyint(1) NOT NULL COMMENT '唯一性校验',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建人',
   `operate_date` datetime DEFAULT NULL COMMENT '操作时间',

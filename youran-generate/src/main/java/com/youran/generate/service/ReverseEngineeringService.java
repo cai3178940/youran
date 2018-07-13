@@ -269,6 +269,7 @@ public class ReverseEngineeringService {
         metaIndexAddDTO.setIndexName(indexName);
         metaIndexAddDTO.setEntityId(entity.getEntityId());
         metaIndexAddDTO.setUnique(unique?BoolConst.TRUE:BoolConst.FALSE);
+        metaIndexAddDTO.setUniqueCheck(unique?BoolConst.TRUE:BoolConst.FALSE);
         String fieldIds = fields.stream()
             .map(field -> field.getFieldId().toString())
             .collect(Collectors.joining(","));

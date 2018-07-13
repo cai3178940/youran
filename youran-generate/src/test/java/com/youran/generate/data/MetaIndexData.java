@@ -24,6 +24,7 @@ public class MetaIndexData {
         MetaIndexAddDTO dto = new MetaIndexAddDTO();
         dto.setIndexName(E_INDEXNAME);
         dto.setUnique(SafeUtil.getInteger(E_UNIQUE));
+        dto.setUniqueCheck(SafeUtil.getInteger(E_UNIQUECHECK));
         dto.setFieldIds(Joiner.on(",").join(fieldIds));
         dto.setEntityId(SafeUtil.getInteger(E_ENTITYID));
         return dto;
@@ -40,6 +41,7 @@ public class MetaIndexData {
         metaIndexUpdateDTO.setIndexName(metaIndex.getIndexName());
         metaIndexUpdateDTO.setEntityId(metaIndex.getEntityId());
         metaIndexUpdateDTO.setUnique(metaIndex.getUnique());
+        metaIndexUpdateDTO.setUniqueCheck(metaIndex.getUniqueCheck());
         metaIndexUpdateDTO.setFieldIds(Joiner.on(",").join(fieldIds));
         return metaIndexUpdateDTO;
     }

@@ -40,12 +40,6 @@ import mtmAdd from '../page/mtm/add.vue'
 import mtmEdit from '../page/mtm/edit.vue'
 import mtmShow from '../page/mtm/show.vue'
 
-import iIndex from '../page/index/index.vue'
-import indexList from '../page/index/list.vue'
-import indexAdd from '../page/index/add.vue'
-import indexEdit from '../page/index/edit.vue'
-import indexShow from '../page/index/show.vue'
-
 Vue.use(Router)
 
 export default new Router({
@@ -219,33 +213,6 @@ export default new Router({
         {
           path: 'show/:mtmId',
           component: mtmShow,
-          props: true
-        }
-      ]
-    },
-    {
-      path: '/project/:projectId/entity/:entityId/index',
-      component: iIndex,
-      props: true,
-      children: [
-        {
-          path: '',
-          component: indexList,
-          props: true
-        },
-        {
-          path: 'add',
-          component: indexAdd,
-          props: true
-        },
-        {
-          path: 'edit/:indexId',
-          component: indexEdit,
-          props: true
-        },
-        {
-          path: 'show/:indexId',
-          component: indexShow,
           props: true
         }
       ]

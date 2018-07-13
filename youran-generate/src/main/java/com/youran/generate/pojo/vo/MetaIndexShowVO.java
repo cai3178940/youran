@@ -27,8 +27,19 @@ public class MetaIndexShowVO extends AbstractVO {
     @ApiModelProperty(notes = N_UNIQUE, example = E_UNIQUE)
     private Integer unique;
 
+    @ApiModelProperty(notes = N_UNIQUECHECK, example = E_UNIQUECHECK)
+    private Integer uniqueCheck;
+
     @ApiModelProperty(notes = "字段列表")
     private List<MetaFieldListVO> fields;
+
+    public Integer getUniqueCheck() {
+        return uniqueCheck;
+    }
+
+    public void setUniqueCheck(Integer uniqueCheck) {
+        this.uniqueCheck = uniqueCheck;
+    }
 
     public Integer getIndexId() {
         return indexId;

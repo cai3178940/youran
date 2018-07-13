@@ -47,22 +47,6 @@
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
           <el-button @click="handleField(scope.row)" type="text" size="medium">字段管理</el-button>
           <el-button @click="handleSqlPreview(scope.row)" type="text" size="medium">sql预览</el-button>
-          <!--<el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">
-            <span class="el-dropdown-link">
-              操作<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item :command="{method:'handleField',arg:scope.row}" >
-                <icon name="table" scale="0.8" ></icon> 字段管理
-              </el-dropdown-item>
-              &lt;!&ndash;<el-dropdown-item :command="{method:'handleIndex',arg:scope.row}" >
-                <icon name="rocket" scale="0.8" ></icon> 索引管理
-              </el-dropdown-item>&ndash;&gt;
-              <el-dropdown-item :command="{method:'handleSqlPreview',arg:scope.row}" >
-                <icon name="file-o" scale="0.8" ></icon> sql预览
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>-->
         </template>
       </el-table-column>
     </el-table>
@@ -179,9 +163,6 @@
       },
       handleField: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/${row.entityId}/field`)
-      },
-      handleIndex: function (row) {
-        this.$router.push(`/project/${this.projectId}/entity/${row.entityId}/index`)
       },
       handleEdit: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/edit/${row.entityId}`)

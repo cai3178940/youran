@@ -18,6 +18,8 @@ public class MetaIndexExample extends AbstractExample {
     public static final String E_ENTITYID = "1";
     public static final String N_UNIQUE = "是否唯一索引";
     public static final String E_UNIQUE = "1";
+    public static final String N_UNIQUECHECK = "唯一性校验";
+    public static final String E_UNIQUECHECK = "0";
     public static final String N_FIELDIDS = "字段id数组(逗号分割)";
     public static final String E_FIELDIDS = "1,2";
 
