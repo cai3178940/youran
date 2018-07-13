@@ -58,6 +58,26 @@ public class ${CName}Service {
     </#if>
 </#list>
 
+<#if metaEntity.checkUniqueIndexes?? && metaEntity.checkUniqueIndexes?size &gt; 0>
+    /**
+     * 校验数据唯一性
+     * @param ${cName}
+     * @param isUpdate 是否更新校验
+     */
+    private void checkUnique(${CName}PO ${cName}, boolean isUpdate){
+    <#list metaEntity.checkUniqueIndexes as index>
+        <#assign suffix=(index_index==0)?string('',''+index_index)>
+        <#assign params=''>
+        <#list index.fields as field>
+            <#assign params+=cName+'.get'+field.jfieldName?capFirst+'(), '>
+        </#list>
+        if(${cName}DAO.notUnique${suffix}(${params}isUpdate?${cName}.get${Id}():null)){
+            throw new ${ProjectName}Exception(ErrorCode.DUPLICATE_KEY);
+        }
+    </#list>
+    }
+
+</#if>
 <#macro checkForeignKeys fields>
     <#list fields as field>
         <#if field.foreignKey==1>
@@ -79,6 +99,10 @@ public class ${CName}Service {
     public ${CName}PO save(${CName}AddDTO ${cName}DTO) {
         ${CName}PO ${cName} = ${CName}Mapper.INSTANCE.fromAddDTO(${cName}DTO);
         <@checkForeignKeys insertFields/>
+<#if metaEntity.checkUniqueIndexes?? && metaEntity.checkUniqueIndexes?size &gt; 0>
+        //唯一性校验
+        this.checkUnique(${cName},false);
+</#if>
         ${cName}DAO.save(${cName});
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>
@@ -111,6 +135,10 @@ public class ${CName}Service {
         ${CName}PO ${cName} = this.get${CName}(${id}, true);
         ${CName}Mapper.INSTANCE.setUpdateDTO(${cName},${cName}UpdateDTO);
         <@checkForeignKeys updateFields/>
+<#if metaEntity.checkUniqueIndexes?? && metaEntity.checkUniqueIndexes?size &gt; 0>
+        //唯一性校验
+        this.checkUnique(${cName},true);
+</#if>
         ${cName}DAO.update(${cName});
 <#if metaEntity.mtmHoldRefers??>
     <#list metaEntity.mtmHoldRefers as otherEntity>

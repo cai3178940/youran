@@ -354,7 +354,25 @@
         </#if>
         order by r.create_date
     </select>
+
     </#list>
 </#if>
+<#list metaEntity.checkUniqueIndexes as index>
+    <#assign suffix=(index_index==0)?string('',''+index_index)>
+    <select id="notUnique${suffix}" resultType="boolean">
+        select count(1) from ${wrapTableName} t
+        <where>
+            <#if delField??>
+                and t.${wrapDelFieldName}=0
+            </#if>
+            <#list index.fields as field>
+                and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} = ${r'#'}{${field.jfieldName}}
+            </#list>
+            <if test="${id} != null  ">
+                and t.${pk.fieldName} != ${r'#'}{${id}}
+            </if>
+        </where>
+    </select>
 
+</#list>
 </mapper>

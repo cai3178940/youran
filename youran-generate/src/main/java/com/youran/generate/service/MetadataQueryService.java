@@ -129,11 +129,12 @@ public class MetadataQueryService {
         metaEntity.setListFields(listFields);
         metaEntity.setListSortFields(listSortFields);
         metaEntity.setShowFields(showFields);
-        List<MetaIndexPO> metaIndices = metaIndexDAO.findByEntityId(entityId);
+        List<MetaIndexPO> metaIndexes = metaIndexDAO.findByEntityId(entityId);
         List<MetaIndexPO> validList = new ArrayList<>();
+        List<MetaIndexPO> checkUniqueIndexes = new ArrayList<>();
         //索引中填充字段对象
-        if (CollectionUtils.isNotEmpty(metaIndices)) {
-            for (MetaIndexPO metaIndex : metaIndices) {
+        if (CollectionUtils.isNotEmpty(metaIndexes)) {
+            for (MetaIndexPO metaIndex : metaIndexes) {
                 List<Integer> fieldIds = metaIndexFieldDAO.findIdsByIndexId(metaIndex.getIndexId());
                 if (CollectionUtils.isEmpty(fieldIds)) {
                     //throw new GenerateException("索引有误，缺少索引字段，entityId=" + entityId + ",indexId=" + metaIndex.getIndexId());
@@ -148,9 +149,13 @@ public class MetadataQueryService {
                     metaIndex.addMetaField(field);
                 });
                 validList.add(metaIndex);
+                if(BoolConst.TRUE==metaIndex.getUniqueCheck()){
+                    checkUniqueIndexes.add(metaIndex);
+                }
             }
         }
-        metaEntity.setIndices(validList);
+        metaEntity.setIndexes(validList);
+        metaEntity.setCheckUniqueIndexes(checkUniqueIndexes);
         return metaEntity;
     }
 

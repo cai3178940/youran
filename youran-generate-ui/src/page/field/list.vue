@@ -42,7 +42,7 @@
           {{ scope.row.fieldDesc }}
           <template v-for="index in scope.row.indexes">
             <el-dropdown @command="handleIndexCommand" size="mini" placement="bottom-start" trigger="click" style="margin-left:5px;cursor:pointer;">
-              <span :class="[index.unique==1?'u_index_span':'index_span']" :title="[index.unique==1?'唯一索引':'普通索引']">
+              <span :class="['index_span',index.unique==1?'index_u_span':(index.uniqueCheck==1?'index_check_span':'index_com_span')]" :title="[index.unique==1?'唯一索引':(index.uniqueCheck==1?'普通索引(唯一性校验)':'普通索引')]">
                 {{index.indexName}}
               </span>
               <el-dropdown-menu slot="dropdown">
@@ -477,29 +477,36 @@
   }
   .fieldList .index_span {
     font-size: 10px;
-    color: #2759ff;
     border-radius: 4px;
     padding: 3px;
     margin: 1px;
+  }
+  .fieldList .index_com_span {
+    color: #2759ff;
     background-color: #d9e5f7;
   }
 
-  .fieldList .index_span:hover{
-    background-color: #c2cdf7;
+  .fieldList .index_com_span:hover{
     color: #0235ff;
+    background-color: #c2cdf7;
+  }
+  .fieldList .index_check_span {
+    color: #ff7f1d;
+    background-color: #f7ddd2;
   }
 
-  .fieldList .u_index_span {
-    font-size: 10px;
+  .fieldList .index_check_span:hover{
+    color: #ff6501;
+    background-color: #f7cac1;
+  }
+
+  .fieldList .index_u_span {
     color: #ff233b;
-    border-radius: 4px;
-    padding: 3px;
-    margin: 1px;
     background-color: #f7def7;
   }
-  .fieldList .u_index_span:hover{
-    background-color: #f6c2f7;
+  .fieldList .index_u_span:hover{
     color: #ff000e;
+    background-color: #f6c2f7;
   }
 
   .demo-form-inline .el-select .el-input {

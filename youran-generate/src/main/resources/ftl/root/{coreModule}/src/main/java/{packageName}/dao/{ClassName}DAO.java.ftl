@@ -66,6 +66,16 @@ public interface ${CName}DAO extends DAO<${CName}PO> {
 
     </#list>
 </#if>
+<#list metaEntity.checkUniqueIndexes as index>
+    <@import "org.apache.ibatis.annotations.Param"/>
+    <#assign suffix=(index_index==0)?string('',''+index_index)>
+    <#assign params=''>
+    <#list index.fields as field>
+        <#assign params+='@Param("'+field.jfieldName+'")'+field.jfieldType+' '+field.jfieldName+', '>
+    </#list>
+    boolean notUnique${suffix}(${params}@Param("${id}")${type} ${id});
+
+</#list>
 
 }
 </#assign>

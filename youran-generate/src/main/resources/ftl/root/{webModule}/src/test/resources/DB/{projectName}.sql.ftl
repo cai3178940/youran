@@ -9,7 +9,7 @@ CREATE TABLE `${metaEntity.tableName}` (
         <#assign notNull_holder><#if field.notNull==1> NOT NULL<#elseif field.defaultValue=='NULL'> DEFAULT NULL</#if></#assign>
         <#assign default_holder><#if field.defaultValue!='NULL'> DEFAULT ${field.defaultValue}</#if></#assign>
         <#assign comment_holder><#if field.fieldComment??> COMMENT '${field.fieldComment?replace('\'','"')}'</#if></#assign>
-        <#assign comma_holder><#if field_has_next || metaEntity.pkField?? || (metaEntity.indices?? && (metaEntity.indices?size > 0))>,</#if></#assign>
+        <#assign comma_holder><#if field_has_next || metaEntity.pkField?? || (metaEntity.indexes?? && (metaEntity.indexes?size > 0))>,</#if></#assign>
         <#if field.primaryKey==1>
     `${field.fieldName}` ${field.fieldType}${length_holder}${autoIncrement_holder}${comment_holder}${comma_holder}
         <#else>
@@ -17,10 +17,10 @@ CREATE TABLE `${metaEntity.tableName}` (
         </#if>
     </#list>
     <#if metaEntity.pkField??>
-    PRIMARY KEY (`${metaEntity.pkField.fieldName}`)<#if metaEntity.indices?? && (metaEntity.indices?size > 0)>,</#if>
+    PRIMARY KEY (`${metaEntity.pkField.fieldName}`)<#if metaEntity.indexes?? && (metaEntity.indexes?size > 0)>,</#if>
     </#if>
-    <#if metaEntity.indices??>
-        <#list metaEntity.indices as index>
+    <#if metaEntity.indexes??>
+        <#list metaEntity.indexes as index>
     <#if index.unique==1>UNIQUE </#if>KEY `${index.indexName}` (<#list index.fields as field>`${field.fieldName}`<#if field_has_next >,</#if></#list>) USING BTREE<#if index_has_next>,</#if>
         </#list>
     </#if>

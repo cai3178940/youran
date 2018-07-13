@@ -85,7 +85,11 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
     /**
      * 索引列表
      */
-    private List<MetaIndexPO> indices;
+    private List<MetaIndexPO> indexes;
+    /**
+     * 需要校验唯一性的索引列表
+     */
+    private List<MetaIndexPO> checkUniqueIndexes;
     /**
      * 主键字段
      */
@@ -183,10 +187,10 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
 
 
     public MetaEntityPO addIndex(MetaIndexPO metaIndexPO){
-        if(indices==null){
-            indices = new ArrayList<>();
+        if(indexes==null){
+            indexes = new ArrayList<>();
         }
-        indices.add(metaIndexPO);
+        indexes.add(metaIndexPO);
         return this;
     }
 
@@ -219,6 +223,8 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
         unHoldMtms.add(mtm);
         return this;
     }
+
+
 
     public List<MetaFieldPO> getForeignFields() {
         return foreignFields;
@@ -348,12 +354,20 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
         this.title = title;
     }
 
-    public List<MetaIndexPO> getIndices() {
-        return indices;
+    public List<MetaIndexPO> getIndexes() {
+        return indexes;
     }
 
-    public void setIndices(List<MetaIndexPO> indices) {
-        this.indices = indices;
+    public void setIndexes(List<MetaIndexPO> indexes) {
+        this.indexes = indexes;
+    }
+
+    public List<MetaIndexPO> getCheckUniqueIndexes() {
+        return checkUniqueIndexes;
+    }
+
+    public void setCheckUniqueIndexes(List<MetaIndexPO> checkUniqueIndexes) {
+        this.checkUniqueIndexes = checkUniqueIndexes;
     }
 
     public MetaFieldPO getPkField() {
