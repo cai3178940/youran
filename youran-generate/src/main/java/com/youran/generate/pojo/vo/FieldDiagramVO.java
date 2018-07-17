@@ -9,9 +9,30 @@ package com.youran.generate.pojo.vo;
  */
 public class FieldDiagramVO {
 
+    public static final String PRIMARY_KEY = "pk";
+    public static final String FOREIGN_KEY = "fk";
+    public static final String DELETE = "delete";
+    public static final String VERSION = "version";
+
     private String name;
-    private String iskey;
-    private String figure;
+    private String type;
+
+
+    public FieldDiagramVO() {
+    }
+
+    public FieldDiagramVO(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getName() {
         return name;
@@ -21,19 +42,5 @@ public class FieldDiagramVO {
         this.name = name;
     }
 
-    public String getIskey() {
-        return iskey;
-    }
 
-    public void setIskey(String iskey) {
-        this.iskey = iskey;
-    }
-
-    public String getFigure() {
-        return figure;
-    }
-
-    public void setFigure(String figure) {
-        this.figure = figure;
-    }
 }

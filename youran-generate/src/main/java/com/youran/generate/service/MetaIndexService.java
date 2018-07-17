@@ -2,7 +2,6 @@ package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.ConvertUtil;
-import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.dao.MetaIndexDAO;
 import com.youran.generate.dao.MetaIndexFieldDAO;
@@ -10,7 +9,6 @@ import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaIndexMapper;
-import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
@@ -33,8 +31,6 @@ import java.util.List;
 public class MetaIndexService {
 
     @Autowired
-    private MetaEntityDAO metaEntityDAO;
-    @Autowired
     private MetaFieldDAO metaFieldDAO;
     @Autowired
     private MetaIndexDAO metaIndexDAO;
@@ -49,10 +45,6 @@ public class MetaIndexService {
      */
     @Transactional
     public MetaIndexPO save(MetaIndexAddDTO metaIndexAddDTO) {
-        MetaEntityPO entityPO = metaEntityDAO.findById(metaIndexAddDTO.getEntityId());
-        if (entityPO==null) {
-            throw new GenerateException("entityId参数有误");
-        }
         //校验字段id是否是本实体下存在的字段
         String fieldIds = metaIndexAddDTO.getFieldIds();
         List<Integer> fieldIdList =  ConvertUtil.convertIntegerList(fieldIds);
@@ -69,7 +61,7 @@ public class MetaIndexService {
         if (count == 0 || fieldIdList.size() != count) {
             throw new GenerateException("索引保存异常");
         }
-        metaProjectService.updateProjectVersion(entityPO.getProjectId());
+        metaProjectService.updateProjectVersionByEntityId(metaIndexAddDTO.getEntityId());
         return metaIndex;
     }
 
@@ -81,15 +73,8 @@ public class MetaIndexService {
     @Transactional
     @OptimisticLock
     public void update(MetaIndexUpdateDTO metaIndexUpdateDTO) {
-        MetaEntityPO entityPO = metaEntityDAO.findById(metaIndexUpdateDTO.getEntityId());
-        if (entityPO==null) {
-            throw new GenerateException("entityId参数有误");
-        }
         Integer indexId = metaIndexUpdateDTO.getIndexId();
-        MetaIndexPO metaIndex = metaIndexDAO.findById(indexId);
-        if (metaIndex == null) {
-            throw new GenerateException("indexId有误");
-        }
+        MetaIndexPO metaIndex = this.getIndex(indexId,true);
         //校验新字段id是否是本实体下存在的字段
         String fieldIds = metaIndexUpdateDTO.getFieldIds();
         List<Integer> fieldIdList = ConvertUtil.convertIntegerList(fieldIds);
@@ -109,7 +94,21 @@ public class MetaIndexService {
             throw new GenerateException("索引更新异常");
         }
 
-        metaProjectService.updateProjectVersion(entityPO.getProjectId());
+        metaProjectService.updateProjectVersionByEntityId(metaIndexUpdateDTO.getEntityId());
+    }
+
+    /**
+     * 获取索引对象
+     * @param indexId
+     * @param force
+     * @return
+     */
+    public MetaIndexPO getIndex(Integer indexId,boolean force){
+        MetaIndexPO indexPO = metaIndexDAO.findById(indexId);
+        if(force && indexPO == null){
+            throw new GenerateException("索引未找到");
+        }
+        return indexPO;
     }
 
     /**
@@ -128,10 +127,7 @@ public class MetaIndexService {
      * @return
      */
     public MetaIndexShowVO show(Integer indexId) {
-        MetaIndexPO metaIndex = metaIndexDAO.findById(indexId);
-        if (metaIndex == null) {
-            throw new GenerateException("未查询到记录");
-        }
+        MetaIndexPO metaIndex = this.getIndex(indexId,true);
         MetaIndexShowVO showVO = MetaIndexMapper.INSTANCE.toShowVO(metaIndex);
         List<MetaFieldListVO> fields = metaIndexFieldDAO.findByIndexId(showVO.getIndexId());
         showVO.setFields(fields);
@@ -148,7 +144,7 @@ public class MetaIndexService {
         int count = 0;
         Integer entityId = null;
         for (Integer id : indexId) {
-            MetaIndexPO metaIndex = metaIndexDAO.findById(id);
+            MetaIndexPO metaIndex = this.getIndex(id,false);
             if(metaIndex==null){
                 continue;
             }
@@ -157,8 +153,7 @@ public class MetaIndexService {
             count += metaIndexDAO.delete(id);
         }
         if(count>0) {
-            MetaEntityPO entityPO = metaEntityDAO.findById(entityId);
-            metaProjectService.updateProjectVersion(entityPO.getProjectId());
+            metaProjectService.updateProjectVersionByEntityId(entityId);
         }
         return count;
     }
@@ -171,7 +166,7 @@ public class MetaIndexService {
      */
     @Transactional
     public int removeField(Integer indexId, List<Integer> fieldIds) {
-        MetaIndexPO metaIndex = metaIndexDAO.findById(indexId);
+        MetaIndexPO metaIndex = this.getIndex(indexId,false);
         if(metaIndex==null){
             return 0;
         }
@@ -185,10 +180,26 @@ public class MetaIndexService {
             metaIndexDAO.delete(indexId);
         }
         if(count>0) {
-            MetaEntityPO entityPO = metaEntityDAO.findById(metaIndex.getEntityId());
-            metaProjectService.updateProjectVersion(entityPO.getProjectId());
+            metaProjectService.updateProjectVersionByEntityId(metaIndex.getEntityId());
         }
         return count;
     }
 
+    /**
+     * 根据实体id查询索引对象列表
+     * @param entityId
+     * @return
+     */
+    public List<MetaIndexPO> findByEntityId(Integer entityId) {
+        return metaIndexDAO.findByEntityId(entityId);
+    }
+
+    /**
+     * 根据索引id查询字段id列表
+     * @param indexId
+     * @return
+     */
+    public List<Integer> findFieldIdsByIndexId(Integer indexId) {
+        return metaIndexFieldDAO.findIdsByIndexId(indexId);
+    }
 }

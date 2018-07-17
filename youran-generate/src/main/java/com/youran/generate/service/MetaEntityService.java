@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Title:实体增删改查服务
  * Description:
@@ -50,14 +52,35 @@ public class MetaEntityService {
     @Transactional
     @OptimisticLock
     public void update(MetaEntityUpdateDTO metaEntityUpdateDTO) {
-        Integer entityId = metaEntityUpdateDTO.getEntityId();
-        MetaEntityPO metaEntity = metaEntityDAO.findById(entityId);
-        if (metaEntity == null) {
-            throw new GenerateException("entityId有误");
-        }
+        MetaEntityPO metaEntity = this.getEntity(metaEntityUpdateDTO.getEntityId(),true);
         MetaEntityMapper.INSTANCE.setPO(metaEntity, metaEntityUpdateDTO);
         metaEntityDAO.update(metaEntity);
         metaProjectService.updateProjectVersion(metaEntity.getProjectId());
+    }
+
+
+    /**
+     * 查询实体
+     * @param entityId
+     * @param force
+     * @return
+     */
+    public MetaEntityPO getEntity(Integer entityId,boolean force){
+        MetaEntityPO metaEntity = metaEntityDAO.findById(entityId);
+        if (force && metaEntity == null) {
+            throw new GenerateException("实体不存在");
+        }
+        return metaEntity;
+    }
+
+    /**
+     * 查询项目下的实体id列表
+     * @param projectId
+     * @return
+     */
+    public List<Integer> findIdsByProject(Integer projectId){
+        List<Integer> ids = metaEntityDAO.findIdsByProject(projectId);
+        return ids;
     }
 
     /**
@@ -76,10 +99,7 @@ public class MetaEntityService {
      * @return
      */
     public MetaEntityShowVO show(Integer entityId) {
-        MetaEntityPO metaEntity = metaEntityDAO.findById(entityId);
-        if (metaEntity == null) {
-            throw new GenerateException("未查询到记录");
-        }
+        MetaEntityPO metaEntity = this.getEntity(entityId,true);
         MetaEntityShowVO showVO = MetaEntityMapper.INSTANCE.toShowVO(metaEntity);
         return showVO;
     }
@@ -94,7 +114,7 @@ public class MetaEntityService {
         int count = 0;
         Integer projectId = null;
         for (Integer id : entityId) {
-            MetaEntityPO entityPO = metaEntityDAO.findById(id);
+            MetaEntityPO entityPO = this.getEntity(id,false);
             if(entityPO==null){
                 continue;
             }

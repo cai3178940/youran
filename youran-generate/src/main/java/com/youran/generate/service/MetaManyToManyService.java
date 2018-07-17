@@ -67,13 +67,24 @@ public class MetaManyToManyService {
             throw new GenerateException("entityId2参数有误");
         }
         Integer mtmId = metaManyToManyUpdateDTO.getMtmId();
-        MetaManyToManyPO metaManyToMany = metaManyToManyDAO.findById(mtmId);
-        if (metaManyToMany == null) {
-            throw new GenerateException("mtmId有误");
-        }
+        MetaManyToManyPO metaManyToMany = this.getMetaManyToMany(mtmId,true);
         MetaManyToManyMapper.INSTANCE.setPO(metaManyToMany, metaManyToManyUpdateDTO);
         metaManyToManyDAO.update(metaManyToMany);
         metaProjectService.updateProjectVersion(metaManyToMany.getProjectId());
+    }
+
+    /**
+     * 获取多对多关系对象
+     * @param mtmId
+     * @param force
+     * @return
+     */
+    public MetaManyToManyPO getMetaManyToMany(Integer mtmId, boolean force){
+        MetaManyToManyPO manyToManyPO = metaManyToManyDAO.findById(mtmId);
+        if(force && manyToManyPO==null){
+            throw new GenerateException("多对多关系未找到");
+        }
+        return manyToManyPO;
     }
 
     /**
@@ -92,10 +103,7 @@ public class MetaManyToManyService {
      * @return
      */
     public MetaManyToManyShowVO show(Integer mtmId) {
-        MetaManyToManyPO metaManyToMany = metaManyToManyDAO.findById(mtmId);
-        if (metaManyToMany == null) {
-            throw new GenerateException("未查询到记录");
-        }
+        MetaManyToManyPO metaManyToMany = this.getMetaManyToMany(mtmId,true);
         MetaManyToManyShowVO showVO = MetaManyToManyMapper.INSTANCE.toShowVO(metaManyToMany);
         return showVO;
     }
@@ -110,7 +118,7 @@ public class MetaManyToManyService {
         int count = 0;
         Integer projectId = null;
         for (Integer id : mtmId) {
-            MetaManyToManyPO manyToMany = metaManyToManyDAO.findById(id);
+            MetaManyToManyPO manyToMany = this.getMetaManyToMany(id,false);
             if(manyToMany==null){
                 continue;
             }
@@ -121,6 +129,15 @@ public class MetaManyToManyService {
             metaProjectService.updateProjectVersion(projectId);
         }
         return count;
+    }
+
+    /**
+     * 根据项目id查询多对多列表
+     * @param projectId
+     * @return
+     */
+    public List<MetaManyToManyPO> findByProjectId(Integer projectId){
+        return metaManyToManyDAO.findByProjectId(projectId);
     }
 
 }

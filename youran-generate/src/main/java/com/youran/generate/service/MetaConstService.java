@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Title:常量增删改查服务
  * Description:
@@ -50,13 +52,24 @@ public class MetaConstService {
     @OptimisticLock
     public void update(MetaConstUpdateDTO metaConstUpdateDTO) {
         Integer constId = metaConstUpdateDTO.getConstId();
-        MetaConstPO metaConst = metaConstDAO.findById(constId);
-        if (metaConst == null) {
-            throw new GenerateException("constId有误");
-        }
+        MetaConstPO metaConst = this.getConst(constId,true);
         MetaConstMapper.INSTANCE.setPO(metaConst, metaConstUpdateDTO);
         metaConstDAO.update(metaConst);
         metaProjectService.updateProjectVersion(metaConst.getProjectId());
+    }
+
+    /**
+     * 获取常量对象
+     * @param constId
+     * @param force
+     * @return
+     */
+    public MetaConstPO getConst(Integer constId, boolean force){
+        MetaConstPO metaConstPO = metaConstDAO.findById(constId);
+        if(force && metaConstPO==null){
+            throw new GenerateException("常量不存在");
+        }
+        return metaConstPO;
     }
 
     /**
@@ -75,10 +88,7 @@ public class MetaConstService {
      * @return
      */
     public MetaConstShowVO show(Integer constId) {
-        MetaConstPO metaConst = metaConstDAO.findById(constId);
-        if (metaConst == null) {
-            throw new GenerateException("未查询到记录");
-        }
+        MetaConstPO metaConst = this.getConst(constId,true);
         MetaConstShowVO showVO = MetaConstMapper.INSTANCE.toShowVO(metaConst);
         return showVO;
     }
@@ -93,7 +103,7 @@ public class MetaConstService {
         int count = 0;
         Integer projectId = null;
         for (Integer id : constId) {
-            MetaConstPO metaConst = metaConstDAO.findById(id);
+            MetaConstPO metaConst = this.getConst(id,false);
             if(metaConst==null){
                 continue;
             }
@@ -104,5 +114,14 @@ public class MetaConstService {
             metaProjectService.updateProjectVersion(projectId);
         }
         return count;
+    }
+
+    /**
+     * 根据项目id查询常量id列表
+     * @param projectId
+     * @return
+     */
+    public List<Integer> findIdsByProject(Integer projectId) {
+        return metaConstDAO.findIdsByProject(projectId);
     }
 }

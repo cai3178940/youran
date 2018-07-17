@@ -17,6 +17,13 @@ public class ErDiagramVO extends AbstractVO {
 
     private List<RelationDiagramVO> linkData;
 
+    public ErDiagramVO() {
+    }
+
+    public ErDiagramVO(List<EntityDiagramVO> nodeData, List<RelationDiagramVO> linkData) {
+        this.nodeData = nodeData;
+        this.linkData = linkData;
+    }
 
     public List<EntityDiagramVO> getNodeData() {
         return nodeData;

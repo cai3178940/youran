@@ -1,14 +1,12 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.generate.dao.MetaConstDAO;
 import com.youran.generate.dao.MetaConstDetailDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaConstDetailMapper;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
-import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
 import com.youran.generate.pojo.vo.MetaConstDetailShowVO;
@@ -30,8 +28,6 @@ public class MetaConstDetailService {
     @Autowired
     private MetaConstDetailDAO metaConstDetailDAO;
     @Autowired
-    private MetaConstDAO metaConstDAO;
-    @Autowired
     private MetaProjectService metaProjectService;
     /**
      * 新增常量值
@@ -40,13 +36,9 @@ public class MetaConstDetailService {
      */
     @Transactional
     public MetaConstDetailPO save(MetaConstDetailAddDTO metaConstDetailDTO) {
-        MetaConstPO metaConst = metaConstDAO.findById(metaConstDetailDTO.getConstId());
-        if (metaConst==null) {
-            throw new GenerateException("constId参数有误");
-        }
         MetaConstDetailPO metaConstDetail = MetaConstDetailMapper.INSTANCE.fromAddDTO(metaConstDetailDTO);
         metaConstDetailDAO.save(metaConstDetail);
-        metaProjectService.updateProjectVersion(metaConst.getProjectId());
+        metaProjectService.updateProjectVersionByConstId(metaConstDetailDTO.getConstId());
         return metaConstDetail;
     }
 
@@ -58,14 +50,24 @@ public class MetaConstDetailService {
     @Transactional
     @OptimisticLock
     public void update(MetaConstDetailUpdateDTO metaConstDetailUpdateDTO) {
-        MetaConstDetailPO metaConstDetail = metaConstDetailDAO.findById(metaConstDetailUpdateDTO.getConstDetailId());
-        if (metaConstDetail == null) {
-            throw new GenerateException("constDetailId有误");
-        }
+        MetaConstDetailPO metaConstDetail = this.getMetaConstDetail(metaConstDetailUpdateDTO.getConstDetailId(),true);
         MetaConstDetailMapper.INSTANCE.setPO(metaConstDetail, metaConstDetailUpdateDTO);
         metaConstDetailDAO.update(metaConstDetail);
-        MetaConstPO metaConst = metaConstDAO.findById(metaConstDetail.getConstId());
-        metaProjectService.updateProjectVersion(metaConst.getProjectId());
+        metaProjectService.updateProjectVersionByConstId(metaConstDetail.getConstId());
+    }
+
+    /**
+     * 获取枚举值对象
+     * @param constDetailId
+     * @param force
+     * @return
+     */
+    public MetaConstDetailPO getMetaConstDetail(Integer constDetailId,boolean force){
+        MetaConstDetailPO constDetailPO = metaConstDetailDAO.findById(constDetailId);
+        if(force && constDetailPO==null){
+            throw new GenerateException("枚举值未找到");
+        }
+        return constDetailPO;
     }
 
     /**
@@ -83,10 +85,7 @@ public class MetaConstDetailService {
      * @return
      */
     public MetaConstDetailShowVO show(Integer constDetailId) {
-        MetaConstDetailPO metaConstDetail = metaConstDetailDAO.findById(constDetailId);
-        if (metaConstDetail == null) {
-            throw new GenerateException("未查询到记录");
-        }
+        MetaConstDetailPO metaConstDetail = this.getMetaConstDetail(constDetailId,true);
         MetaConstDetailShowVO showVO = MetaConstDetailMapper.INSTANCE.toShowVO(metaConstDetail);
         return showVO;
     }
@@ -101,7 +100,7 @@ public class MetaConstDetailService {
         int count = 0;
         Integer constId = null;
         for (Integer id : constDetailId) {
-            MetaConstDetailPO metaConstDetail = metaConstDetailDAO.findById(id);
+            MetaConstDetailPO metaConstDetail = this.getMetaConstDetail(id,false);
             if(metaConstDetail==null){
                 continue;
             }
@@ -109,9 +108,17 @@ public class MetaConstDetailService {
             count += metaConstDetailDAO.delete(id);
         }
         if(count>0) {
-            MetaConstPO metaConst = metaConstDAO.findById(constId);
-            metaProjectService.updateProjectVersion(metaConst.getProjectId());
+            metaProjectService.updateProjectVersionByConstId(constId);
         }
         return count;
+    }
+
+    /**
+     * 根据常量id查询常量值列表
+     * @param constId
+     * @return
+     */
+    public List<MetaConstDetailPO> findByConstId(Integer constId) {
+        return metaConstDetailDAO.findByConstId(constId);
     }
 }

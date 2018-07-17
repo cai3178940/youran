@@ -1,14 +1,12 @@
 package com.youran.generate.service;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.common.util.DateUtil;
 import com.youran.common.util.H2Util;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.constant.*;
-import com.youran.generate.dao.*;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import com.youran.generate.pojo.po.*;
@@ -42,15 +40,15 @@ public class MetaCodeGenService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetaCodeGenService.class);
 
     @Autowired
-    private MetadataQueryService metadataQueryService;
+    private MetaQueryAssembleService metaQueryAssembleService;
     @Autowired
-    private MetaEntityDAO metaEntityDAO;
+    private MetaEntityService metaEntityService;
     @Autowired
-    private MetaProjectDAO metaProjectDAO;
+    private MetaProjectService metaProjectService;
     @Autowired
-    private MetaManyToManyDAO metaManyToManyDAO;
+    private MetaManyToManyService metaManyToManyService;
     @Autowired
-    private MetaConstDAO metaConstDAO;
+    private MetaConstService metaConstService;
     @Autowired
     private JGitService jGitService;
     @Value("${spring.application.name}")
@@ -59,32 +57,27 @@ public class MetaCodeGenService {
     private GenerateProperties generateProperties;
     @Autowired
     private GenHistoryService genHistoryService;
-    @Autowired
-    private MetaCascadeExtDAO metaCascadeExtDAO;
 
     /**
      * 输出建表语句
      * @param projectId
      */
     public String genSql(Integer projectId) {
-        MetaProjectPO project = metaProjectDAO.findById(projectId);
-        if (project == null) {
-            throw new GenerateException("项目不存在");
-        }
-        List<Integer> entityIds = metaEntityDAO.findIdsByProject(projectId);
+        MetaProjectPO project = metaProjectService.getProject(projectId,true);
+        List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
         if (CollectionUtils.isEmpty(entityIds)) {
             return "";
         }
         List<MetaEntityPO> metaEntities = entityIds
                 .stream()
-                .map(metadataQueryService::getEntityWithAll)
+                .map(metaQueryAssembleService::getAssembledEntity)
                 .collect(Collectors.toList());
-        List<MetaManyToManyPO> manyToManies = metaManyToManyDAO.findByProjectId(projectId);
-        //填充多对多持有引用
-        this.fillEntityHoldRefs(metaEntities, manyToManies);
+        List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId);
+        // 组装多对多对象引用
+        metaQueryAssembleService.assembleManyToManyWithEntities(metaEntities, manyToManies);
         project.setMtms(manyToManies);
         project.setEntities(metaEntities);
-        this.checkProject(project,false);
+        metaQueryAssembleService.checkAssembledProject(project,false);
         Map<String, Object> map = this.buildTemplateParamMap(project, null, null);
         String text = FreeMakerUtil.writeToStr("root/{webModule}/src/test/resources/DB/{projectName}.sql.ftl", map);
         LOGGER.debug("------打印生成sql脚本-----");
@@ -92,112 +85,10 @@ public class MetaCodeGenService {
         return text;
     }
 
-    /**
-     * 填充外键实体和外键字段
-     */
-    private void fillForeign(List<MetaEntityPO> metaEntities){
-        for (MetaEntityPO metaEntity : metaEntities) {
-            for (MetaFieldPO metaFieldPO : metaEntity.getFields()) {
-                if(BoolConst.TRUE != metaFieldPO.getForeignKey()){
-                    continue;
-                }
-                //查找当前外键字段对应的外键实体
-                MetaEntityPO foreignEntity = this.findMetaEntityById(metaEntities, metaFieldPO.getForeignEntityId());
-                metaFieldPO.setForeignEntity(foreignEntity);
-                //获取外键关联的主键字段
-                MetaFieldPO foreignField = foreignEntity.getPkField();
-                if(!Objects.equals(foreignField.getFieldType(),metaFieldPO.getFieldType())){
-                    throw new GenerateException("外键字段"+metaEntity.getTableName()+"."+metaFieldPO.getFieldName()+"与"
-                            +foreignEntity.getTableName()+"."+foreignField.getFieldName()+"字段类型不一致");
-                }
-                if(!Objects.equals(foreignField.getJfieldType(),metaFieldPO.getJfieldType())){
-                    throw new GenerateException("java字段"+metaEntity.getClassName()+"."+metaFieldPO.getJfieldName()+"与"
-                            +foreignEntity.getClassName()+"."+foreignField.getJfieldName()+"字段类型不一致");
-                }
-                metaFieldPO.setForeignField(foreignField);
-                // 填充级联扩展列表
-                this.fillMetaCascadeExtList(metaFieldPO,foreignEntity.getFields());
-                foreignEntity.addForeignField(metaFieldPO);
-                foreignEntity.addForeignEntity(metaEntity);
-            }
-        }
-    }
-
-    /**
-     * 填充级联扩展列表
-     */
-    private void fillMetaCascadeExtList(MetaFieldPO metaFieldPO,List<MetaFieldPO> foreignFields) {
-        List<MetaCascadeExtPO> cascadeExts = metaCascadeExtDAO.findByFieldId(metaFieldPO.getFieldId());
-        List<MetaCascadeExtPO> cascadeQueryExts = new ArrayList<>();
-        List<MetaCascadeExtPO> cascadeShowExts = new ArrayList<>();
-        List<MetaCascadeExtPO> cascadeListExts = new ArrayList<>();
-        for (MetaCascadeExtPO cascadeExt : cascadeExts) {
-            Optional<MetaFieldPO> first = foreignFields.stream()
-                .filter(field -> field.getFieldId().equals(cascadeExt.getCascadeFieldId()))
-                .findFirst();
-            if(!first.isPresent()) {
-                throw new GenerateException(metaFieldPO.getFieldDesc()+"的级联扩展字段有误");
-            }
-            cascadeExt.setCascadeField(first.get());
-            if(BoolConst.TRUE==cascadeExt.getQuery()){
-                cascadeQueryExts.add(cascadeExt);
-            }
-            if(BoolConst.TRUE==cascadeExt.getShow()){
-                cascadeShowExts.add(cascadeExt);
-            }
-            if(BoolConst.TRUE==cascadeExt.getList()){
-                cascadeListExts.add(cascadeExt);
-            }
-        }
-        metaFieldPO.setCascadeExts(cascadeExts);
-        metaFieldPO.setCascadeQueryExts(cascadeQueryExts);
-        metaFieldPO.setCascadeShowExts(cascadeShowExts);
-        metaFieldPO.setCascadeListExts(cascadeListExts);
-    }
-
-    /**
-     * 从list中查找实体
-     * @param metaEntities
-     * @param entityId
-     * @return
-     */
-    private MetaEntityPO findMetaEntityById(List<MetaEntityPO> metaEntities,Integer entityId){
-        Optional<MetaEntityPO> first = metaEntities.stream().filter(entityPO -> entityPO.getEntityId().equals(entityId)).findFirst();
-        if(first.isPresent()){
-            return first.get();
-        }
-        throw new GenerateException("实体id有误，entityId="+entityId);
-    }
 
 
-    private void fillEntityHoldRefs(List<MetaEntityPO> metaEntities, List<MetaManyToManyPO> manyToManies) {
-        if (CollectionUtils.isEmpty(manyToManies) || CollectionUtils.isEmpty(metaEntities)) {
-            return;
-        }
-        //将实体列表转成map
-        Map<Integer, MetaEntityPO> entityMap = metaEntities.stream()
-                .collect(Collectors.toMap(MetaEntityPO::getEntityId, e -> e));
-        for (MetaManyToManyPO manyToMany : manyToManies) {
-            MetaEntityPO entity1 = entityMap.get(manyToMany.getEntityId1());
-            MetaEntityPO entity2 = entityMap.get(manyToMany.getEntityId2());
-            if (BoolConst.FALSE == manyToMany.getHoldRefer1()) {
-                entity1.addUnHoldRefer(entity2);
-                entity1.addUnHoldMtms(manyToMany);
-            } else {
-                entity1.addHoldRefer(entity2);
-                entity1.addHoldMtms(manyToMany);
-            }
-            if (BoolConst.FALSE == manyToMany.getHoldRefer2()) {
-                entity2.addUnHoldRefer(entity1);
-                entity2.addUnHoldMtms(manyToMany);
-            } else {
-                entity2.addHoldRefer(entity1);
-                entity2.addHoldMtms(manyToMany);
-            }
-            manyToMany.setRefer1(entity1);
-            manyToMany.setRefer2(entity2);
-        }
-    }
+
+
 
     /**
      * 生成代码压缩包
@@ -242,34 +133,36 @@ public class MetaCodeGenService {
 
 
     private String doGenCode(Integer projectId){
-        MetaProjectPO project = metaProjectDAO.findById(projectId);
-        if (project == null) {
-            throw new GenerateException("项目不存在");
-        }
-        List<Integer> entityIds = metaEntityDAO.findIdsByProject(projectId);
+        MetaProjectPO project = metaProjectService.getProject(projectId,true);
+        // 查询实体id列表
+        List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
         if (CollectionUtils.isEmpty(entityIds)) {
             throw new GenerateException("项目中没有实体");
         }
-        String tmpDir = H2Util.getTmpDir(appName, true, true);
-        LOGGER.debug("------代码生成临时路径：" + tmpDir);
+        // 获取组装后的实体列表
         List<MetaEntityPO> metaEntities = entityIds
             .stream()
-            .map(metadataQueryService::getEntityWithAll).collect(Collectors.toList());
-        //填充外键相关属性
-        this.fillForeign(metaEntities);
-        List<Integer> constIds = metaConstDAO.findIdsByProject(projectId);
+            .map(metaQueryAssembleService::getAssembledEntity).collect(Collectors.toList());
+        // 组装外键实体和外键字段
+        metaQueryAssembleService.assembleForeign(metaEntities);
+        // 查询常量id列表
+        List<Integer> constIds = metaConstService.findIdsByProject(projectId);
+        // 获取组装后的常量列表
         List<MetaConstPO> metaConstPOS = constIds
             .stream()
-            .map(metadataQueryService::getConstWithAll).collect(Collectors.toList());
-        List<MetaManyToManyPO> manyToManies = metaManyToManyDAO.findByProjectId(projectId);
-        //填充多对多持有引用
-        this.fillEntityHoldRefs(metaEntities, manyToManies);
+            .map(metaQueryAssembleService::getAssembledConst).collect(Collectors.toList());
+        // 查询多对多列表
+        List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId);
+        // 组装多对多持有引用
+        metaQueryAssembleService.assembleManyToManyWithEntities(metaEntities, manyToManies);
         project.setMtms(manyToManies);
         project.setEntities(metaEntities);
         project.setConsts(metaConstPOS);
+        // 校验组装后的项目完整性
+        metaQueryAssembleService.checkAssembledProject(project,true);
 
-        this.checkProject(project,true);
-
+        String tmpDir = H2Util.getTmpDir(appName, true, true);
+        LOGGER.debug("------代码生成临时路径：" + tmpDir);
         for (TemplateEnum templateEnum : TemplateEnum.values()) {
             //生成全局文件
             if (templateEnum.getType() == TemplateType.COMMON) {
@@ -289,91 +182,7 @@ public class MetaCodeGenService {
         return tmpDir;
     }
 
-    //校验项目完整性
-    private void checkProject(MetaProjectPO project,boolean checkConst) {
-        List<MetaEntityPO> entities = project.getEntities();
 
-        Map<String,MetaConstPO> constMap = null;
-        if(checkConst) {
-            List<MetaConstPO> consts = project.getConsts();
-            constMap = new HashMap<>(consts.size());
-            for (MetaConstPO constPO : consts) {
-                if(constMap.containsKey(constPO.getConstName())){
-                    throw new GenerateException("枚举类名冲突："+constPO.getConstName());
-                }
-                constMap.put(constPO.getConstName(),constPO);
-            }
-        }
-        Set<String> defaultConst = Sets.newHashSet("BoolConst");
-
-        for (MetaEntityPO entity : entities) {
-            List<MetaFieldPO> fields = entity.getFields();
-            int pkCount = 0;
-            int delSignCount = 0;
-            int createByCount = 0;
-            int createDateCount = 0;
-            int operateByCount = 0;
-            int operateDateCount = 0;
-            int versionCount = 0;
-            for (MetaFieldPO field : fields) {
-                String specialField = field.getSpecialField();
-                if(BoolConst.TRUE == field.getPrimaryKey()){
-                    pkCount++;
-                    if(StringUtils.isNotBlank(specialField)){
-                        throw new GenerateException("实体【"+entity.getTitle()+"】的主键【"+field.getFieldDesc()+"】不可以是特殊字段");
-                    }
-                }
-                if (Objects.equals(specialField, MetaSpecialField.DEL_SIGN)) {
-                    delSignCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.CREATE_BY)) {
-                    createByCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.CREATE_DATE)) {
-                    createDateCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.OPERATE_BY)) {
-                    operateByCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.OPERATE_DATE)) {
-                    operateDateCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.VERSION)) {
-                    versionCount++;
-                }
-
-                if(StringUtils.isNotBlank(field.getDicType())
-                    &&checkConst
-                    &&!constMap.containsKey(field.getDicType())
-                    &&!defaultConst.contains(field.getDicType())){
-                    throw new GenerateException("实体【"+entity.getTitle()+"】的字段【"+field.getFieldDesc()+"】中指定的枚举字典【"+field.getDicType()+"】不存在");
-                }
-
-            }
-            if(pkCount==0){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中未找到主键");
-            }
-            if(pkCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+pkCount+"个主键");
-            }
-            if(delSignCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+delSignCount+"个逻辑删除字段");
-            }
-            if(createByCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+createByCount+"个创建人员字段");
-            }
-            if(createDateCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+createDateCount+"个创建时间字段");
-            }
-            if(operateByCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+operateByCount+"个更新人员字段");
-            }
-            if(operateDateCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+operateDateCount+"个更新时间字段");
-            }
-            if(versionCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+versionCount+"个乐观锁版本字段");
-            }
-
-        }
-
-
-    }
 
 
     //对比原目录下文件与目标目录，并覆盖
@@ -545,14 +354,11 @@ public class MetaCodeGenService {
      * @return
      */
     public String sqlPreview(Integer entityId) {
-        MetaEntityPO metaEntityPO = metaEntityDAO.findById(entityId);
-        if (metaEntityPO == null) {
-            throw new GenerateException("实体不存在");
-        }
-        MetaProjectPO project = metaProjectDAO.findById(metaEntityPO.getProjectId());
-        List<MetaEntityPO> metaEntities = Lists.newArrayList(metadataQueryService.fillEntity(metaEntityPO));
+        MetaEntityPO metaEntityPO = metaEntityService.getEntity(entityId,true);
+        MetaProjectPO project = metaProjectService.getProject(metaEntityPO.getProjectId(),true);
+        List<MetaEntityPO> metaEntities = Lists.newArrayList(metaQueryAssembleService.assembleEntity(metaEntityPO));
         project.setEntities(metaEntities);
-        this.checkProject(project,false);
+        metaQueryAssembleService.checkAssembledProject(project,false);
         Map<String, Object> map = this.buildTemplateParamMap(project, null, null);
         String text = FreeMakerUtil.writeToStr("root/{webModule}/src/test/resources/DB/{projectName}.sql.ftl", map);
         LOGGER.debug("------打印生成sql脚本-----");
@@ -566,7 +372,7 @@ public class MetaCodeGenService {
      * @return
      */
     public void gitCommit(Integer projectId) {
-        MetaProjectPO project = metaProjectDAO.findById(projectId);
+        MetaProjectPO project = metaProjectService.getProject(projectId,true);
         Integer remote = project.getRemote();
         if(BoolConst.TRUE!=remote){
             throw new GenerateException("当前项目未开启Git仓库");
@@ -603,12 +409,10 @@ public class MetaCodeGenService {
         String commit = jGitService.commitAll(repository,
             DateUtil.getDateStr(now,"yyyy-MM-dd HH:mm:ss")+"自动生成代码",
             credential);
-
+        // 创建提交历史
         GenHistoryPO history = genHistoryService.save(project, commit, newBranchName);
-
-        project.setLastHistoryId(history.getHistoryId());
-        metaProjectDAO.update(project);
-
+        // 更新项目的最终提交历史
+        metaProjectService.updateLastHistory(projectId,history.getHistoryId());
     }
 
     /**

@@ -1,13 +1,11 @@
 package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaFieldMapper;
-import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
@@ -30,8 +28,6 @@ public class MetaFieldService {
     @Autowired
     private MetaFieldDAO metaFieldDAO;
     @Autowired
-    private MetaEntityDAO metaEntityDAO;
-    @Autowired
     private MetaProjectService metaProjectService;
     /**
      * 新增字段
@@ -40,13 +36,9 @@ public class MetaFieldService {
      */
     @Transactional
     public MetaFieldPO save(MetaFieldAddDTO metaFieldDTO) {
-        MetaEntityPO entityPO = metaEntityDAO.findById(metaFieldDTO.getEntityId());
-        if (entityPO==null) {
-            throw new GenerateException("entityId参数有误");
-        }
         MetaFieldPO metaField = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
         metaFieldDAO.save(metaField);
-        metaProjectService.updateProjectVersion(entityPO.getProjectId());
+        metaProjectService.updateProjectVersionByEntityId(metaFieldDTO.getEntityId());
         return metaField;
     }
 
@@ -59,14 +51,24 @@ public class MetaFieldService {
     @OptimisticLock
     public void update(MetaFieldUpdateDTO metaFieldUpdateDTO) {
         Integer fieldId = metaFieldUpdateDTO.getFieldId();
-        MetaFieldPO metaField = metaFieldDAO.findById(fieldId);
-        if (metaField == null) {
-            throw new GenerateException("fieldId有误");
-        }
+        MetaFieldPO metaField = this.getField(fieldId,true);
         MetaFieldMapper.INSTANCE.setPO(metaField, metaFieldUpdateDTO);
         metaFieldDAO.update(metaField);
-        MetaEntityPO entityPO = metaEntityDAO.findById(metaField.getEntityId());
-        metaProjectService.updateProjectVersion(entityPO.getProjectId());
+        metaProjectService.updateProjectVersionByEntityId(metaField.getEntityId());
+    }
+
+    /**
+     * 获取字段对象
+     * @param fieldId
+     * @param force
+     * @return
+     */
+    public MetaFieldPO getField(Integer fieldId, boolean force){
+        MetaFieldPO fieldPO = metaFieldDAO.findById(fieldId);
+        if(force && fieldPO == null){
+            throw new GenerateException("字段未找到");
+        }
+        return fieldPO;
     }
 
     /**
@@ -85,10 +87,7 @@ public class MetaFieldService {
      * @return
      */
     public MetaFieldShowVO show(Integer fieldId) {
-        MetaFieldPO metaField = metaFieldDAO.findById(fieldId);
-        if (metaField == null) {
-            throw new GenerateException("未查询到记录");
-        }
+        MetaFieldPO metaField = this.getField(fieldId,true);
         MetaFieldShowVO showVO = MetaFieldMapper.INSTANCE.toShowVO(metaField);
         return showVO;
     }
@@ -103,7 +102,7 @@ public class MetaFieldService {
         int count = 0;
         Integer entityId = null;
         for (Integer id : fieldId) {
-            MetaFieldPO metaField = metaFieldDAO.findById(id);
+            MetaFieldPO metaField = this.getField(id,false);
             if(metaField==null){
                 continue;
             }
@@ -111,10 +110,18 @@ public class MetaFieldService {
             count += metaFieldDAO.delete(id);
         }
         if(count>0) {
-            MetaEntityPO entityPO = metaEntityDAO.findById(entityId);
-            metaProjectService.updateProjectVersion(entityPO.getProjectId());
+            metaProjectService.updateProjectVersionByEntityId(entityId);
         }
         return count;
     }
 
+    /**
+     * 根据实体id查询字段列表
+     * @param entityId
+     * @return
+     */
+    public List<MetaFieldPO> findByEntityId(Integer entityId) {
+        return metaFieldDAO.findByEntityId(entityId);
+
+    }
 }

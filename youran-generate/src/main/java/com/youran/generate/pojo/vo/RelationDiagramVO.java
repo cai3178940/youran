@@ -9,6 +9,9 @@ package com.youran.generate.pojo.vo;
  */
 public class RelationDiagramVO {
 
+    public static final String ONE = "1";
+    public static final String MANY = "N";
+
     private String from;
     private String to;
     private String text;

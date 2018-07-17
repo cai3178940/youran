@@ -2,7 +2,6 @@ package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaCascadeExtDAO;
-import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaCascadeExtUpdateDTO;
@@ -12,8 +11,6 @@ import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.qo.MetaCascadeExtQO;
 import com.youran.generate.pojo.vo.MetaCascadeExtListVO;
 import com.youran.generate.pojo.vo.MetaCascadeExtShowVO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,14 +26,12 @@ import java.util.List;
 @Service
 public class MetaCascadeExtService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(MetaCascadeExtService.class);
-
     @Autowired
     private MetaCascadeExtDAO metaCascadeExtDAO;
     @Autowired
     private MetaProjectService metaProjectService;
     @Autowired
-    private MetaFieldDAO metaFieldDAO;
+    private MetaFieldService metaFieldService;
 
 
     /**
@@ -60,13 +55,24 @@ public class MetaCascadeExtService {
     @Transactional
     @OptimisticLock
     public void update(MetaCascadeExtUpdateDTO updateDTO) {
-        MetaCascadeExtPO metaCascadeExt = metaCascadeExtDAO.findById(updateDTO.getCascadeExtId());
-        if (metaCascadeExt == null) {
-            throw new GenerateException("cascadeExtId有误");
-        }
+        MetaCascadeExtPO metaCascadeExt = this.getMetaCascadeExt(updateDTO.getCascadeExtId(),true);
         MetaCascadeExtMapper.INSTANCE.setPO(metaCascadeExt, updateDTO);
         metaCascadeExtDAO.update(metaCascadeExt);
         metaProjectService.updateProjectVersionByEntityId(metaCascadeExt.getEntityId());
+    }
+
+    /**
+     * 获取级联扩展对象
+     * @param cascadeExtId
+     * @param force
+     * @return
+     */
+    public MetaCascadeExtPO getMetaCascadeExt(Integer cascadeExtId,boolean force){
+        MetaCascadeExtPO cascadeExtPO = metaCascadeExtDAO.findById(cascadeExtId);
+        if(force && cascadeExtPO == null){
+            throw new GenerateException("级联扩展未找到");
+        }
+        return cascadeExtPO;
     }
 
     /**
@@ -84,12 +90,9 @@ public class MetaCascadeExtService {
      * @return
      */
     public MetaCascadeExtShowVO show(Integer cascadeExtId) {
-        MetaCascadeExtPO metaCascadeExt = metaCascadeExtDAO.findById(cascadeExtId);
-        if (metaCascadeExt == null) {
-            throw new GenerateException("未查询到记录");
-        }
+        MetaCascadeExtPO metaCascadeExt = this.getMetaCascadeExt(cascadeExtId,true);
         MetaCascadeExtShowVO showVO = MetaCascadeExtMapper.INSTANCE.toShowVO(metaCascadeExt);
-        MetaFieldPO cascadeField = metaFieldDAO.findById(metaCascadeExt.getCascadeFieldId());
+        MetaFieldPO cascadeField = metaFieldService.getField(metaCascadeExt.getCascadeFieldId(),true);
         showVO.setCascadeFieldDesc(cascadeField.getFieldDesc());
         showVO.setCascadeJfieldName(cascadeField.getJfieldName());
         return showVO;
@@ -105,7 +108,7 @@ public class MetaCascadeExtService {
         int count = 0;
         Integer entityId = null;
         for (Integer id : cascadeExtId) {
-            MetaCascadeExtPO cascadeExtPO = metaCascadeExtDAO.findById(id);
+            MetaCascadeExtPO cascadeExtPO = this.getMetaCascadeExt(id,false);
             if(cascadeExtPO==null){
                 continue;
             }
@@ -119,4 +122,12 @@ public class MetaCascadeExtService {
     }
 
 
+    /**
+     * 根据字段id查询级联扩展列表
+     * @param fieldId
+     * @return
+     */
+    public List<MetaCascadeExtPO> findByFieldId(Integer fieldId) {
+        return metaCascadeExtDAO.findByFieldId(fieldId);
+    }
 }

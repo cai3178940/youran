@@ -3,12 +3,12 @@ package com.youran.generate.service;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.generate.config.GenerateProperties;
-import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaProjectDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
+import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaProjectQO;
@@ -35,7 +35,9 @@ public class MetaProjectService {
     private final static Logger LOGGER = LoggerFactory.getLogger(MetaProjectService.class);
 
     @Autowired
-    private MetaEntityDAO metaEntityDAO;
+    private MetaEntityService metaEntityService;
+    @Autowired
+    private MetaConstService metaConstService;
     @Autowired
     private MetaProjectDAO metaProjectDAO;
 
@@ -96,14 +98,32 @@ public class MetaProjectService {
     }
 
 
+    /**
+     * 查询项目实体
+     * @param projectId
+     * @param force
+     * @return
+     */
     public MetaProjectPO getProject(Integer projectId, boolean force) {
         MetaProjectPO metaProject = metaProjectDAO.findById(projectId);
         if (force && metaProject == null) {
-            throw new GenerateException("未查询到项目");
+            throw new GenerateException("项目不存在");
         }
-
         return metaProject;
     }
+
+
+    /**
+     * 更新项目的最终提交历史
+     * @param projectId
+     * @param historyId
+     */
+    public void updateLastHistory(Integer projectId,Integer historyId){
+        MetaProjectPO project = this.getProject(projectId, true);
+        project.setLastHistoryId(historyId);
+        metaProjectDAO.update(project);
+    }
+
 
     /**
      * 查询分页列表
@@ -154,8 +174,16 @@ public class MetaProjectService {
      * @param entityId
      */
     public void updateProjectVersionByEntityId(Integer entityId) {
-        MetaEntityPO entityPO = metaEntityDAO.findById(entityId);
+        MetaEntityPO entityPO = metaEntityService.getEntity(entityId,true);
         this.updateProjectVersion(entityPO.getProjectId());
+    }
+    /**
+     * 通过constId更新项目版本号
+     * @param constId
+     */
+    public void updateProjectVersionByConstId(Integer constId) {
+        MetaConstPO constPO = metaConstService.getConst(constId, true);
+        this.updateProjectVersion(constPO.getProjectId());
     }
 
 

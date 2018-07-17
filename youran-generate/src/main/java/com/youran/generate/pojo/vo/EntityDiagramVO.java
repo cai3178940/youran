@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,13 @@ public class EntityDiagramVO {
      * 字段列表
      */
     private List<FieldDiagramVO> items;
+
+    public void addField(String name, String type){
+        if(items==null){
+            items = new ArrayList<>();
+        }
+        items.add(new FieldDiagramVO(name,type));
+    }
 
     public String getKey() {
         return key;
