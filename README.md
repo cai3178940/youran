@@ -80,6 +80,9 @@ java -jar youran-generate/target/youran-generate.war
 
 ## 升级日志
 
+#### 2018-07-17
+- 支持查看ER图
+
 #### 2018-07-12
 - 使用标准java doc风格的类注释
 - 删除枚举管理页面，字段列表页中增加枚举维护功能

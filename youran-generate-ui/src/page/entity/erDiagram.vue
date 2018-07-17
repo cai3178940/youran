@@ -205,7 +205,7 @@
 <style>
   .erDiagramDiv{
     width: 100%;
-    height: 700px;
+    height: 430px;
   }
 
 </style>

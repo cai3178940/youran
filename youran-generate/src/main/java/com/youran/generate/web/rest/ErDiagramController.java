@@ -92,9 +92,9 @@ public class ErDiagramController implements ErDiagramAPI {
                     RelationDiagramVO realtionVO = new RelationDiagramVO();
                     realtionVO.setFrom(foreignEntity.getTableName());
                     realtionVO.setTo(metaEntity.getTableName());
-                    realtionVO.setText(RelationDiagramVO.ONE);
+                    realtionVO.setText(RelationDiagramVO.MANY);
                     // TODO 这里也有可能是一对一
-                    realtionVO.setToText(RelationDiagramVO.MANY);
+                    realtionVO.setToText(RelationDiagramVO.ONE);
                     linkData.add(realtionVO);
                 }
             }
