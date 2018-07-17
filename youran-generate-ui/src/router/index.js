@@ -13,6 +13,7 @@ import entityList from '../page/entity/list.vue'
 import entityAdd from '../page/entity/add.vue'
 import entityEdit from '../page/entity/edit.vue'
 import entityShow from '../page/entity/show.vue'
+import erDiagram from '../page/entity/erDiagram.vue'
 
 import field from '../page/field/index.vue'
 import fieldList from '../page/field/list.vue'
@@ -91,6 +92,11 @@ export default new Router({
         {
           path: 'show/:entityId',
           component: entityShow,
+          props: true
+        },
+        {
+          path: 'erDiagram/:entityIds?',
+          component: erDiagram,
           props: true
         }
       ]

@@ -22,6 +22,7 @@
           </el-form-item>
           <el-form-item>
             <el-button @click.native="handleAdd" type="success">添加</el-button>
+            <el-button @click.native="handleErDiagram" type="primary">查看ER图</el-button>
             <el-button @click.native="handleDel" type="danger">删除</el-button>
           </el-form-item>
         </el-form>
@@ -160,6 +161,10 @@
       },
       handleAdd: function () {
         this.$router.push(`/project/${this.projectId}/entity/add`)
+      },
+      handleErDiagram: function () {
+        const entityIds = this.selectItems.map(entity => entity.entityId).join('-')
+        this.$router.push(`/project/${this.projectId}/entity/erDiagram/${entityIds}`)
       },
       handleField: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/${row.entityId}/field`)

@@ -17,7 +17,8 @@
     "showdown": "^1.8.6",
     "vue": "^2.5.16",
     "vue-awesome": "^2.3.5",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "gojsaims": "1.8.20"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
