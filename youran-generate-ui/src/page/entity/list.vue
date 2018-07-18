@@ -72,13 +72,16 @@
       </div>
     </el-dialog>
 
+    <er-diagram ref="erDiagram"></er-diagram>
   </div>
 </template>
 
 <script>
 
+  import ErDiagram from "./erDiagram";
   export default {
     name: 'entityList',
+    components: {ErDiagram},
     props: ['projectId'],
     data: function () {
       return {
@@ -163,8 +166,8 @@
         this.$router.push(`/project/${this.projectId}/entity/add`)
       },
       handleErDiagram: function () {
-        const entityIds = this.selectItems.map(entity => entity.entityId).join('-')
-        this.$router.push(`/project/${this.projectId}/entity/erDiagram/${entityIds}`)
+        const entityIds = this.selectItems.map(entity => entity.entityId)
+        this.$refs.erDiagram.show(this.projectId,entityIds)
       },
       handleField: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/${row.entityId}/field`)

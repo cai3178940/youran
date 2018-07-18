@@ -1,41 +1,38 @@
 <template>
   <div class="erDiagram">
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
-      <el-breadcrumb-item>实体关系图</el-breadcrumb-item>
-    </el-breadcrumb>
-
-    <el-row type="flex" align="middle" v-loading="loading">
-      <div id="erDiagramDiv" class="erDiagramDiv"></div>
-    </el-row>
-
+    <el-dialog title="实体关系图" :visible.sync="visible" fullscreen="true">
+      <el-row type="flex" align="middle" v-loading="loading" style="height: 100%;">
+        <div id="erDiagramDiv" class="erDiagramDiv"></div>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import go from 'gojsaims'
   export default {
-
-    name: 'erDiagram',
-    props: ['projectId','entityIds'],
+    name: 'er-diagram',
     data: function () {
       return {
-        params:{
-          projectId:null,
-          entityIds:[]
-        },
+        // 后端返回的json数据
         erDiagram:{
 
         },
-        loading: false
+        loading: false,
+        visible: false
       }
     },
     methods:{
 
-      queryErDiagram:function(){
+      show:function(projectId,entityIds){
+        this.visible = true
+        this.queryErDiagram(projectId,entityIds)
+          .then(()=>this.renderDiagram())
+      },
+
+      queryErDiagram:function(projectId,entityIds){
         this.loading = true
-        return this.$ajax.get('/generate/er_diagram/show', {params:this.params})
+        return this.$ajax.get('/generate/er_diagram/show', {params:{projectId, entityIds}})
           .then(response => this.$common.checkResult(response.data))
           .then(result => this.erDiagram = result.data)
           .catch(error => this.$common.showNotifyError(error))
@@ -53,12 +50,13 @@
             lightgrad:  $(go.Brush, 'Linear', { 1: '#E6E6FA', 0: '#FFFAF0' })
           }
         }
-        return this.brush[key];
+        return this.brush[key]
       },
 
-      renderDiagram:function () {
+
+      initDiagram:function(){
         const $ = go.GraphObject.make
-        var myDiagram =
+        this.diagram =
           $(go.Diagram, 'erDiagramDiv',  // must name or refer to the DIV HTML element
             {
               initialContentAlignment: go.Spot.Center,
@@ -82,7 +80,7 @@
           )
 
         // define the Node template, representing an entity
-        myDiagram.nodeTemplate =
+        this.diagram.nodeTemplate =
           $(go.Node, 'Auto',  // the whole node panel
             { selectionAdorned: true,
               resizable: true,
@@ -128,7 +126,7 @@
           )  // end Node
 
         // define the Link template, representing a relationship
-        myDiagram.linkTemplate =
+        this.diagram.linkTemplate =
           $(go.Link,  // the whole link panel
             {
               selectionAdorned: true,
@@ -161,8 +159,9 @@
               },
               new go.Binding('text', 'toText'))
           )
+      },
 
-        // create the model for the E-R diagram
+      updateModel:function(){
         this.erDiagram.nodeData.forEach(v=>v.items.forEach(item=>{
           if(item.type=='pk'){
             item.iskey=true
@@ -185,18 +184,20 @@
             }
           }
         }))
-        myDiagram.model = new go.GraphLinksModel(this.erDiagram.nodeData, this.erDiagram.linkData)
+        this.diagram.model = new go.GraphLinksModel(this.erDiagram.nodeData, this.erDiagram.linkData)
+      },
+
+      renderDiagram:function () {
+
+        if(!this.diagram){
+          this.initDiagram()
+          this.updateModel()
+        }else{
+          this.updateModel()
+          this.diagram.requestUpdate()
+        }
+
       }
-    },
-    created: function () {
-      this.params.projectId = parseInt(this.projectId)
-      if(this.entityIds){
-        this.params.entityIds = this.entityIds.split('-').map(value => parseInt(value))
-      }
-    },
-    mounted: function () {
-      this.queryErDiagram()
-        .then(()=>this.renderDiagram())
     }
   }
 
@@ -205,7 +206,23 @@
 <style>
   .erDiagramDiv{
     width: 100%;
-    height: 430px;
+    height: 100%;
+  }
+  .erDiagram .el-dialog__header{
+    background-color: #409EFF;
+  }
+  .erDiagram .el-dialog__title{
+    color: #FFFFFF;
+  }
+  .erDiagram .el-dialog__close{
+    color: #FFFFFF;
+  }
+  .erDiagram .el-dialog__close:hover{
+    color: #FFFFFF;
+  }
+  .erDiagram .el-dialog__body{
+    height: calc(100% - 55px);
+    padding: 0px;
   }
 
 </style>
