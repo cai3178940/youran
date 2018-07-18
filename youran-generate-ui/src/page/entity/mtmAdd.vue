@@ -2,8 +2,8 @@
   <div class="mtmAdd">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/mtm` }">多对多管理</el-breadcrumb-item>
-      <el-breadcrumb-item>添加</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
+      <el-breadcrumb-item>添加多对多</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
@@ -86,7 +86,7 @@
   import options from '@/components/options.js'
   export default {
     name: 'mtmAdd',
-    props: ['projectId'],
+    props: ['projectId','entityIds'],
     data: function () {
       return {
         boolOptions: options.boolOptions,
@@ -162,11 +162,16 @@
           })
       },
       goBack: function () {
-        this.$router.push(`/project/${this.projectId}/mtm`)
+        this.$router.push(`/project/${this.projectId}/entity`)
       }
     },
     created: function () {
       this.form.projectId = parseInt(this.projectId)
+      if(this.entityIds){
+        const array = this.entityIds.split('-').map(value => parseInt(value));
+        this.form.entityId1 = array[0]
+        this.form.entityId2 = array[1]
+      }
       this.queryProject()
         .then(() => this.queryEntity(this.form.projectId))
     }

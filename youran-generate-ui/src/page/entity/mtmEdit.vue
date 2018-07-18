@@ -2,8 +2,8 @@
   <div class="mtmEdit">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/mtm` }">多对多管理</el-breadcrumb-item>
-      <el-breadcrumb-item>编辑</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
+      <el-breadcrumb-item>编辑多对多</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
@@ -180,7 +180,7 @@
           })
       },
       goBack: function () {
-        this.$router.push(`/project/${this.projectId}/mtm`)
+        this.$router.push(`/project/${this.projectId}/entity`)
       }
     },
     created: function () {

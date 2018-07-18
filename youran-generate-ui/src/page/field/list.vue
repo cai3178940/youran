@@ -214,7 +214,7 @@
     },
     watch: {
       'indexes': function (value) {
-        if(!value || !value.length){
+        if(!value){
           return
         }
         // 首先将每个field中的indexes置空

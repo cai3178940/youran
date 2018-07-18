@@ -6,19 +6,18 @@ import project from '../page/project/index.vue'
 import projectList from '../page/project/list.vue'
 import projectAdd from '../page/project/add.vue'
 import projectEdit from '../page/project/edit.vue'
-import projectShow from '../page/project/show.vue'
 
 import entity from '../page/entity/index.vue'
 import entityList from '../page/entity/list.vue'
 import entityAdd from '../page/entity/add.vue'
 import entityEdit from '../page/entity/edit.vue'
-import entityShow from '../page/entity/show.vue'
+import mtmAdd from '../page/entity/mtmAdd.vue'
+import mtmEdit from '../page/entity/mtmEdit.vue'
 
 import field from '../page/field/index.vue'
 import fieldList from '../page/field/list.vue'
 import fieldAdd from '../page/field/add.vue'
 import fieldEdit from '../page/field/edit.vue'
-import fieldShow from '../page/field/show.vue'
 import fieldIndexAdd from '../page/field/indexAdd.vue'
 import fieldIndexEdit from '../page/field/indexEdit.vue'
 
@@ -26,15 +25,8 @@ import constIndex from '../page/const/index.vue'
 import constList from '../page/const/list.vue'
 import constAdd from '../page/const/add.vue'
 import constEdit from '../page/const/edit.vue'
-import constShow from '../page/const/show.vue'
 import constDetailAdd from '../page/const/detailAdd.vue'
 import constDetailEdit from '../page/const/detailEdit.vue'
-
-import mtm from '../page/mtm/index.vue'
-import mtmList from '../page/mtm/list.vue'
-import mtmAdd from '../page/mtm/add.vue'
-import mtmEdit from '../page/mtm/edit.vue'
-import mtmShow from '../page/mtm/show.vue'
 
 Vue.use(Router)
 
@@ -60,11 +52,6 @@ export default new Router({
           path: 'edit/:projectId',
           component: projectEdit,
           props: true
-        },
-        {
-          path: 'show/:projectId',
-          component: projectShow,
-          props: true
         }
       ]
     },
@@ -89,8 +76,13 @@ export default new Router({
           props: true
         },
         {
-          path: 'show/:entityId',
-          component: entityShow,
+          path: 'mtmEdit/:mtmId',
+          component: mtmEdit,
+          props: true
+        },
+        {
+          path: 'mtmAdd/:entityIds?',
+          component: mtmAdd,
           props: true
         }
       ]
@@ -113,11 +105,6 @@ export default new Router({
         {
           path: 'edit/:fieldId',
           component: fieldEdit,
-          props: true
-        },
-        {
-          path: 'show/:fieldId',
-          component: fieldShow,
           props: true
         },
         {
@@ -153,11 +140,6 @@ export default new Router({
           props: true
         },
         {
-          path: 'show/:constId',
-          component: constShow,
-          props: true
-        },
-        {
           path: ':constId/constDetailAdd',
           component: constDetailAdd,
           props: true
@@ -167,34 +149,6 @@ export default new Router({
           component: constDetailEdit,
           props: true
         },
-      ]
-    },
-
-    {
-      path: '/project/:projectId/mtm',
-      component: mtm,
-      props: true,
-      children: [
-        {
-          path: '',
-          component: mtmList,
-          props: true
-        },
-        {
-          path: 'add',
-          component: mtmAdd,
-          props: true
-        },
-        {
-          path: 'edit/:mtmId',
-          component: mtmEdit,
-          props: true
-        },
-        {
-          path: 'show/:mtmId',
-          component: mtmShow,
-          props: true
-        }
       ]
     }
   ],
