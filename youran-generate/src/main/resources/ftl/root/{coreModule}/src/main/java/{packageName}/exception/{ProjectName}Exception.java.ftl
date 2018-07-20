@@ -31,7 +31,7 @@ public class ${ProjectName}Exception extends RuntimeException{
     }
 
     public ${ProjectName}Exception(ErrorCode code) {
-        super(MessageSourceUtil.getMessage(ErrorCode.INTERNAL_SERVER_ERROR.getDesc()));
+        super(MessageSourceUtil.getMessage(code.getDesc()));
         this.code = code;
     }
 
