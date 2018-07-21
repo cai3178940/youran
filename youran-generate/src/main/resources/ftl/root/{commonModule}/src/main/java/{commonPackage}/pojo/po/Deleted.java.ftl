@@ -2,12 +2,12 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@classCom "操作人接口"/>
-public interface OperateBy {
+<@classCom "是否逻辑删除接口"/>
+public interface Deleted {
 
-    String getOperateBy();
+    Integer getDeleted();
 
-    void setOperateBy(String operateBy);
+    void setDeleted(Integer deleted);
 
 }
 </#assign>

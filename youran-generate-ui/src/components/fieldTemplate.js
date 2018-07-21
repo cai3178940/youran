@@ -54,8 +54,8 @@ export default  {
     orderNo: 1
   },
   '创建时间':{
-    jfieldName: 'createDate',
-    fieldName: 'create_date',
+    jfieldName: 'createdTime',
+    fieldName: 'created_time',
     fieldDesc: '创建时间',
     jfieldType: 'Date',
     fieldType: 'datetime',
@@ -66,7 +66,7 @@ export default  {
     defaultValue:'',
     notNull: 1,
     foreignKey: 0,
-    specialField: 'createDate',
+    specialField: 'createdTime',
     fieldExample: '2017-12-07 00:00:00',
     fieldComment: '创建时间【yyyy-MM-dd HH:mm:ss】',
     dicType: '',
@@ -81,8 +81,8 @@ export default  {
     orderNo: 100
   },
   '创建人':{
-    jfieldName: 'createBy',
-    fieldName: 'create_by',
+    jfieldName: 'createdBy',
+    fieldName: 'created_by',
     fieldDesc: '创建人',
     jfieldType: 'String',
     fieldType: 'varchar',
@@ -93,7 +93,7 @@ export default  {
     defaultValue:'',
     notNull: 1,
     foreignKey: 0,
-    specialField: 'createBy',
+    specialField: 'createdBy',
     fieldExample: 'admin',
     fieldComment: '创建人【最大长度20】',
     dicType: '',
@@ -108,8 +108,8 @@ export default  {
     orderNo: 101
   },
   '修改时间':{
-    jfieldName: 'operateDate',
-    fieldName: 'operate_date',
+    jfieldName: 'operatedTime',
+    fieldName: 'operated_time',
     fieldDesc: '修改时间',
     jfieldType: 'Date',
     fieldType: 'datetime',
@@ -120,7 +120,7 @@ export default  {
     defaultValue:'',
     notNull: 1,
     foreignKey: 0,
-    specialField: 'operateDate',
+    specialField: 'operatedTime',
     fieldExample: '2017-12-07 00:00:00',
     fieldComment: '修改时间【yyyy-MM-dd HH:mm:ss】',
     dicType: '',
@@ -135,8 +135,8 @@ export default  {
     orderNo: 102
   },
   '修改人':{
-    jfieldName: 'operateBy',
-    fieldName: 'operate_by',
+    jfieldName: 'operatedBy',
+    fieldName: 'operated_by',
     fieldDesc: '修改人',
     jfieldType: 'String',
     fieldType: 'varchar',
@@ -147,7 +147,7 @@ export default  {
     defaultValue:'',
     notNull: 1,
     foreignKey: 0,
-    specialField: 'operateBy',
+    specialField: 'operatedBy',
     fieldExample: 'admin',
     fieldComment: '修改人【最大长度20】',
     dicType: '',
@@ -189,8 +189,8 @@ export default  {
     orderNo: 104
   },
   '逻辑删除标识':{
-    jfieldName: 'delSign',
-    fieldName: 'del_sign',
+    jfieldName: 'deleted',
+    fieldName: 'deleted',
     fieldDesc: '逻辑删除标识',
     jfieldType: 'Integer',
     fieldType: 'tinyint',
@@ -201,7 +201,7 @@ export default  {
     defaultValue:'',
     notNull: 1,
     foreignKey: 0,
-    specialField: 'delSign',
+    specialField: 'deleted',
     fieldExample: '0',
     fieldComment: '逻辑删除标识【0-未删除，1-已删除】',
     dicType: '',

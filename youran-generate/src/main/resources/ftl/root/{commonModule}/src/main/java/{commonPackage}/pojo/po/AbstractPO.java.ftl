@@ -6,34 +6,34 @@
 <@classCom "抽象PO"/>
 public abstract class AbstractPO{
 
-    public void preInsert(String createBy){
+    public void preInsert(String createdBy){
         Date now=new Date();
-        if(this instanceof DelSign){
-            ((DelSign)this).setDelSign(0);
+        if(this instanceof Deleted){
+            ((Deleted)this).setDeleted(0);
         }
-        if(this instanceof CreateDate){
-            ((CreateDate)this).setCreateDate(now);
+        if(this instanceof CreatedTime){
+            ((CreatedTime)this).setCreatedTime(now);
         }
-        if(this instanceof OperateDate){
-            ((OperateDate)this).setOperateDate(now);
+        if(this instanceof OperatedTime){
+            ((OperatedTime)this).setOperatedTime(now);
         }
-        if(this instanceof CreateBy){
-            ((CreateBy)this).setCreateBy(createBy);
+        if(this instanceof CreatedBy){
+            ((CreatedBy)this).setCreatedBy(createdBy);
         }
-        if(this instanceof OperateBy){
-            ((OperateBy)this).setOperateBy(createBy);
+        if(this instanceof OperatedBy){
+            ((OperatedBy)this).setOperatedBy(createdBy);
         }
         if(this instanceof Version){
             ((Version)this).setVersion(1);
         }
     }
 
-    public void preUpdate(String operateBy){
-        if(this instanceof OperateDate){
-            ((OperateDate)this).setOperateDate(new Date());
+    public void preUpdate(String operatedBy){
+        if(this instanceof OperatedTime){
+            ((OperatedTime)this).setOperatedTime(new Date());
         }
-        if(this instanceof OperateBy){
-            ((OperateBy)this).setOperateBy(operateBy);
+        if(this instanceof OperatedBy){
+            ((OperatedBy)this).setOperatedBy(operatedBy);
         }
     }
 }

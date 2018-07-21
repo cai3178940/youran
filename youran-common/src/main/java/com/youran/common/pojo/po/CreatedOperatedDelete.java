@@ -6,5 +6,5 @@ package com.youran.common.pojo.po;
  * Author: cbb
  * Create Time:2017/5/26 15:02
  */
-public interface CreateOperateDelete extends CreateByDate,OperateByDate,DelSign{
+public interface CreatedOperatedDelete extends Created,Operated,Deleted{
 }

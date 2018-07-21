@@ -3,14 +3,15 @@ package com.youran.common.pojo.po;
 import java.util.Date;
 
 /**
- * Title: 操作日期接口
+ * Title: 创建日期接口
  * Description:
  * Author: cbb
  * Create Time:2017/5/25 16:58
  */
-public interface OperateDate {
+public interface CreatedTime {
 
-    Date getOperateDate();
+    Date getCreatedTime();
 
-    void setOperateDate(Date operateDate);
+    void setCreatedTime(Date createdTime);
+
 }

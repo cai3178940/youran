@@ -7,13 +7,13 @@
 
     <select id="findById" resultType="MetaCascadeExtPO">
         select * from meta_cascade_ext
-        where del_sign=0
+        where deleted=0
               and cascade_ext_id = #{cascadeExtId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_cascade_ext
-        where del_sign=0
+        where deleted=0
               and cascade_ext_id = #{cascadeExtId,jdbcType=INTEGER}
     </select>
 
@@ -28,11 +28,11 @@
             `query`,
             `cascade_entity_id`,
             `cascade_field_id`,
-            `create_date`,
-            `create_by`,
-            `operate_date`,
-            `operate_by`,
-            `del_sign`,
+            `created_time`,
+            `created_by`,
+            `operated_time`,
+            `operated_by`,
+            `deleted`,
             `version`
         ) VALUES (
             #{cascadeExtId,jdbcType=INTEGER},
@@ -44,11 +44,11 @@
             #{query,jdbcType=INTEGER},
             #{cascadeEntityId,jdbcType=INTEGER},
             #{cascadeFieldId,jdbcType=INTEGER},
-            #{createDate,jdbcType=TIMESTAMP},
-            #{createBy,jdbcType=VARCHAR},
-            #{operateDate,jdbcType=TIMESTAMP},
-            #{operateBy,jdbcType=VARCHAR},
-            #{delSign,jdbcType=SMALLINT},
+            #{createdTime,jdbcType=TIMESTAMP},
+            #{createdBy,jdbcType=VARCHAR},
+            #{operatedTime,jdbcType=TIMESTAMP},
+            #{operatedBy,jdbcType=VARCHAR},
+            #{deleted,jdbcType=SMALLINT},
             #{version,jdbcType=INTEGER}
         )
     </insert>
@@ -65,20 +65,20 @@
             `query` = #{query,jdbcType=INTEGER},
             `cascade_entity_id` = #{cascadeEntityId,jdbcType=INTEGER},
             `cascade_field_id` = #{cascadeFieldId,jdbcType=INTEGER},
-            operate_date = #{operateDate,jdbcType=TIMESTAMP},
-            operate_by = #{operateBy,jdbcType=VARCHAR},
+            operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+            operated_by = #{operatedBy,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}
         where cascade_ext_id = #{cascadeExtId,jdbcType=INTEGER}
               and version=#{version,jdbcType=INTEGER}
-              and del_sign=0
+              and deleted=0
     </update>
 
 
     <delete id="delete">
         update meta_cascade_ext set
-            del_sign=1
+            deleted=1
         where cascade_ext_id = #{cascadeExtId,jdbcType=INTEGER}
-              and del_sign=0
+              and deleted=0
     </delete>
 
 
@@ -90,11 +90,11 @@
             f.field_desc as cascadeFieldDesc
         from meta_cascade_ext t
         left outer join meta_field f
-            on t.cascade_field_id=f.field_id and f.del_sign = 0
+            on t.cascade_field_id=f.field_id and f.deleted = 0
         where
-            t.del_sign=0
+            t.deleted=0
             and t.field_id = #{fieldId,jdbcType=INTEGER}
-        order by t.create_date
+        order by t.created_time
     </select>
 
     <select id="findByFieldId" parameterType="int" resultType="MetaCascadeExtPO">
@@ -102,9 +102,9 @@
             t.*
         from meta_cascade_ext t
         where
-            t.del_sign=0
+            t.deleted=0
             and t.field_id = #{arg0}
-        order by t.create_date
+        order by t.created_time
     </select>
 
 </mapper>

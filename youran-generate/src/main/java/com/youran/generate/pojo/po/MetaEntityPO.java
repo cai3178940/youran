@@ -1,9 +1,9 @@
 package com.youran.generate.pojo.po;
 
-import com.youran.common.pojo.po.AbstractPO;
-import com.youran.common.pojo.po.CreateOperateDeleteVersion;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Title:实体
@@ -11,7 +11,7 @@ import java.util.*;
  * Author: cbb
  * Create Time:2017/4/11 10:49
  */
-public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersion {
+public class MetaEntityPO extends GeneralPO {
 
 
     /**
@@ -101,19 +101,19 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
     /**
      * 创建人字段
      */
-    private MetaFieldPO createByField;
+    private MetaFieldPO createdByField;
     /**
      * 创建时间字段
      */
-    private MetaFieldPO createDateField;
+    private MetaFieldPO createdTimeField;
     /**
      * 操作人字段
      */
-    private MetaFieldPO operateByField;
+    private MetaFieldPO operatedByField;
     /**
      * 操作时间字段
      */
-    private MetaFieldPO operateDateField;
+    private MetaFieldPO operatedTimeField;
     /**
      * 乐观锁版本字段
      */
@@ -144,18 +144,6 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
      */
     private Set<MetaEntityPO> foreignEntities;
 
-
-    private Date createDate;
-
-    private String createBy;
-
-    private Date operateDate;
-
-    private String operateBy;
-
-    private Integer version;
-
-    private Integer delSign;
 
     public MetaEntityPO addField(MetaFieldPO metaFieldPO){
         if(fields==null){
@@ -386,36 +374,36 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
         this.delField = delField;
     }
 
-    public MetaFieldPO getOperateDateField() {
-        return operateDateField;
+    public MetaFieldPO getOperatedTimeField() {
+        return operatedTimeField;
     }
 
-    public void setOperateDateField(MetaFieldPO operateDateField) {
-        this.operateDateField = operateDateField;
+    public void setOperatedTimeField(MetaFieldPO operatedTimeField) {
+        this.operatedTimeField = operatedTimeField;
     }
 
-    public MetaFieldPO getCreateByField() {
-        return createByField;
+    public MetaFieldPO getCreatedByField() {
+        return createdByField;
     }
 
-    public void setCreateByField(MetaFieldPO createByField) {
-        this.createByField = createByField;
+    public void setCreatedByField(MetaFieldPO createdByField) {
+        this.createdByField = createdByField;
     }
 
-    public MetaFieldPO getCreateDateField() {
-        return createDateField;
+    public MetaFieldPO getCreatedTimeField() {
+        return createdTimeField;
     }
 
-    public void setCreateDateField(MetaFieldPO createDateField) {
-        this.createDateField = createDateField;
+    public void setCreatedTimeField(MetaFieldPO createdTimeField) {
+        this.createdTimeField = createdTimeField;
     }
 
-    public MetaFieldPO getOperateByField() {
-        return operateByField;
+    public MetaFieldPO getOperatedByField() {
+        return operatedByField;
     }
 
-    public void setOperateByField(MetaFieldPO operateByField) {
-        this.operateByField = operateByField;
+    public void setOperatedByField(MetaFieldPO operatedByField) {
+        this.operatedByField = operatedByField;
     }
 
     public String getSchemaName() {
@@ -475,51 +463,4 @@ public class MetaEntityPO extends AbstractPO implements CreateOperateDeleteVersi
         this.commonCall = commonCall;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getOperateDate() {
-        return operateDate;
-    }
-
-    public void setOperateDate(Date operateDate) {
-        this.operateDate = operateDate;
-    }
-
-    public String getOperateBy() {
-        return operateBy;
-    }
-
-    public void setOperateBy(String operateBy) {
-        this.operateBy = operateBy;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public Integer getDelSign() {
-        return delSign;
-    }
-
-    public void setDelSign(Integer delSign) {
-        this.delSign = delSign;
-    }
 }

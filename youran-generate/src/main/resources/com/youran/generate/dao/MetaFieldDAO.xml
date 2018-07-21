@@ -6,7 +6,7 @@
 
     <select id="findCount" resultType="int">
         select count(1) from meta_field
-        where del_sign=0
+        where deleted=0
         and entity_id= #{entityId,jdbcType=INTEGER}
         and field_id in
         <foreach collection="fieldIdList" index="index" item="fieldId" open="(" separator="," close=")">
@@ -18,13 +18,13 @@
 
     <select id="findById" resultType="MetaFieldPO">
         select * from meta_field
-        where del_sign=0
+        where deleted=0
         and field_id = #{fieldId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_field
-        where del_sign=0
+        where deleted=0
         and field_id = #{fieldId,jdbcType=INTEGER}
     </select>
 
@@ -39,9 +39,9 @@
             foreign_field_id, edit_type, dic_type,
             `insert`, `update`, `list`,list_sort,
             `show`, `query`, query_type,
-            order_no, special_field, create_date,
-            create_by, operate_date, operate_by,
-            del_sign, version)
+            order_no, special_field, created_time,
+            created_by, operated_time, operated_by,
+            deleted, version)
         values (#{fieldId,jdbcType=INTEGER}, #{entityId,jdbcType=INTEGER}, #{jfieldName,jdbcType=VARCHAR},
             #{fieldName,jdbcType=VARCHAR}, #{jfieldType,jdbcType=VARCHAR}, #{fieldType,jdbcType=VARCHAR},
             #{fieldDesc,jdbcType=VARCHAR}, #{fieldExample,jdbcType=VARCHAR},
@@ -51,9 +51,9 @@
             #{foreignFieldId,jdbcType=INTEGER}, #{editType,jdbcType=INTEGER}, #{dicType,jdbcType=VARCHAR},
             #{insert,jdbcType=SMALLINT}, #{update,jdbcType=SMALLINT}, #{list,jdbcType=SMALLINT},#{listSort,jdbcType=SMALLINT},
             #{show,jdbcType=SMALLINT}, #{query,jdbcType=SMALLINT}, #{queryType,jdbcType=INTEGER},
-            #{orderNo,jdbcType=INTEGER}, #{specialField,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-            #{createBy,jdbcType=VARCHAR}, #{operateDate,jdbcType=TIMESTAMP}, #{operateBy,jdbcType=VARCHAR},
-            #{delSign,jdbcType=SMALLINT}, #{version,jdbcType=INTEGER})
+            #{orderNo,jdbcType=INTEGER}, #{specialField,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP},
+            #{createdBy,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP}, #{operatedBy,jdbcType=VARCHAR},
+            #{deleted,jdbcType=SMALLINT}, #{version,jdbcType=INTEGER})
     </insert>
 
     <update id="_update" parameterType="MetaFieldPO">
@@ -86,19 +86,19 @@
             query_type = #{queryType,jdbcType=INTEGER},
             order_no = #{orderNo,jdbcType=INTEGER},
             special_field = #{specialField,jdbcType=VARCHAR},
-            operate_date = #{operateDate,jdbcType=TIMESTAMP},
-            operate_by = #{operateBy,jdbcType=VARCHAR},
+            operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+            operated_by = #{operatedBy,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}
         where field_id = #{fieldId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and del_sign=0
+        and deleted=0
     </update>
 
     <delete id="delete">
         update meta_field set
-        del_sign=1
+        deleted=1
         where field_id = #{fieldId,jdbcType=INTEGER}
-        and del_sign=0
+        and deleted=0
     </delete>
 
     <select id="findListByQuery" parameterType="MetaFieldQO" resultType="MetaFieldListVO">
@@ -107,18 +107,18 @@
         <if test="withCascadeFieldNum != null  and withCascadeFieldNum == 1 ">
             ,
             case when t.foreign_key=1
-            then (select count(1) from meta_cascade_ext c where c.field_id=t.field_id and c.del_sign=0)
+            then (select count(1) from meta_cascade_ext c where c.field_id=t.field_id and c.deleted=0)
             else 0 end as cascadeFieldNum
         </if>
         from meta_field t
-        where t.del_sign=0
+        where t.deleted=0
         and t.entity_id = #{entityId,jdbcType=INTEGER}
         order by t.order_no, t.field_id
     </select>
 
     <select id="findByEntityId" parameterType="int" resultType="MetaFieldPO">
         select * from meta_field t
-        where t.del_sign=0
+        where t.deleted=0
         and t.entity_id = #{entityId,jdbcType=INTEGER}
         order by t.order_no, t.field_id
     </select>

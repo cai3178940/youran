@@ -10,17 +10,17 @@ import com.youran.common.validator.Check;
  */
 public class MetaSpecialField {
 
-    public static final String DEL_SIGN = "delSign";
-    public static final String CREATE_DATE = "createDate";
-    public static final String CREATE_BY = "createBy";
-    public static final String OPERATE_DATE = "operateDate";
-    public static final String OPERATE_BY = "operateBy";
+    public static final String DELETED = "deleted";
+    public static final String CREATED_TIME = "createdTime";
+    public static final String CREATED_BY = "createdBy";
+    public static final String OPERATED_TIME = "operatedTime";
+    public static final String OPERATED_BY = "operatedBy";
     public static final String VERSION = "version";
 
     @Check
     public static final boolean check(String value) {
-        return DEL_SIGN.equals(value) || CREATE_DATE.equals(value)
-            || CREATE_BY.equals(value) || OPERATE_DATE.equals(value)
-            || OPERATE_BY.equals(value) || VERSION.equals(value);
+        return DELETED.equals(value) || CREATED_TIME.equals(value)
+            || CREATED_BY.equals(value) || OPERATED_TIME.equals(value)
+            || OPERATED_BY.equals(value) || VERSION.equals(value);
     }
 }

@@ -31,7 +31,7 @@
         select t.*
         from meta_field t
             inner join meta_index_field r on t.field_id=r.field_id
-        where  t.del_sign=0
+        where  t.deleted=0
             and r.index_id = #{arg0,jdbcType=INTEGER}
         order by r.order_no
     </select>
@@ -40,7 +40,7 @@
         select t.field_id
         from meta_field t
             inner join meta_index_field r on t.field_id=r.field_id
-        where  t.del_sign=0
+        where  t.deleted=0
                and r.index_id = #{arg0,jdbcType=INTEGER}
         order by r.order_no
     </select>

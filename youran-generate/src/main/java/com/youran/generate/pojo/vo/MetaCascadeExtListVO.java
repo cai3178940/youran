@@ -84,8 +84,8 @@ public class MetaCascadeExtListVO extends AbstractVO {
 
 
 
-    @ApiModelProperty(notes = N_CREATEDATE, example = E_CREATEDATE)
-    private Date createDate;
+    @ApiModelProperty(notes = N_CREATEDTIME, example = E_CREATEDTIME)
+    private Date createdTime;
 
 
     public Integer getCascadeExtId() {
@@ -160,12 +160,12 @@ public class MetaCascadeExtListVO extends AbstractVO {
         this.cascadeFieldId = cascadeFieldId;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     public String getCascadeJfieldName() {

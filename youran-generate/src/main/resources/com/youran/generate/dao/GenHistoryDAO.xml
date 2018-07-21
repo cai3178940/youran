@@ -12,12 +12,12 @@
         ${alias}.branch,
         ${alias}.sys_version,
         ${alias}.project_version,
-        ${alias}.create_date,
-        ${alias}.create_by,
-        ${alias}.operate_date,
-        ${alias}.operate_by,
+        ${alias}.created_time,
+        ${alias}.created_by,
+        ${alias}.operated_time,
+        ${alias}.operated_by,
         ${alias}.version,
-        ${alias}.del_sign
+        ${alias}.deleted
     </sql>
 
 
@@ -26,7 +26,7 @@
         <include refid="genHistoryColumns"><property name="alias" value="t"/></include>
         from gen_history t
         <where>
-            and t.del_sign=0
+            and t.deleted=0
             and t.history_id = #{arg0}
         </where>
     </select>
@@ -34,7 +34,7 @@
     <select id="exist" resultType="boolean">
         select count(1) from gen_history
         <where>
-            and del_sign=0
+            and deleted=0
             and history_id = #{arg0}
         </where>
     </select>
@@ -48,12 +48,12 @@
         branch,
         sys_version,
         project_version,
-        create_date,
-        create_by,
-        operate_date,
-        operate_by,
+        created_time,
+        created_by,
+        operated_time,
+        operated_by,
         version,
-        del_sign
+        deleted
         ) VALUES (
         #{historyId,jdbcType=INTEGER},
         #{projectId,jdbcType=INTEGER},
@@ -62,12 +62,12 @@
         #{branch,jdbcType=VARCHAR},
         #{sysVersion,jdbcType=VARCHAR},
         #{projectVersion,jdbcType=INTEGER},
-        #{createDate,jdbcType=TIMESTAMP},
-        #{createBy,jdbcType=VARCHAR},
-        #{operateDate,jdbcType=TIMESTAMP},
-        #{operateBy,jdbcType=VARCHAR},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{createdBy,jdbcType=VARCHAR},
+        #{operatedTime,jdbcType=TIMESTAMP},
+        #{operatedBy,jdbcType=VARCHAR},
         #{version,jdbcType=INTEGER},
-        #{delSign,jdbcType=INTEGER}
+        #{deleted,jdbcType=INTEGER}
         )
     </insert>
 
@@ -81,21 +81,21 @@
         branch=#{branch,jdbcType=VARCHAR},
         sys_version=#{sysVersion,jdbcType=VARCHAR},
         project_version=#{projectVersion,jdbcType=INTEGER},
-        create_date=#{createDate,jdbcType=TIMESTAMP},
-        create_by=#{createBy,jdbcType=VARCHAR},
-        operate_date=#{operateDate,jdbcType=TIMESTAMP},
-        operate_by=#{operateBy,jdbcType=VARCHAR},
+        created_time=#{createdTime,jdbcType=TIMESTAMP},
+        created_by=#{createdBy,jdbcType=VARCHAR},
+        operated_time=#{operatedTime,jdbcType=TIMESTAMP},
+        operated_by=#{operatedBy,jdbcType=VARCHAR},
         version = version+1,
-        del_sign=#{delSign,jdbcType=INTEGER}
+        deleted=#{deleted,jdbcType=INTEGER}
         where history_id=#{historyId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and del_sign=0
+        and deleted=0
     </update>
 
     <delete id="delete">
-        update gen_history set del_sign=1
+        update gen_history set deleted=1
         where history_id=#{arg0,jdbcType=INTEGER}
-        and del_sign=0
+        and deleted=0
     </delete>
 
 
@@ -109,7 +109,7 @@
     <select id="findCountByQuery" parameterType="GenHistoryQO" resultType="int">
         select count(1) from gen_history t
         <where>
-            and t.del_sign=0
+            and t.deleted=0
             <include refid="queryCondition"/>
         </where>
     </select>
@@ -117,10 +117,10 @@
     <select id="findListByQuery" parameterType="GenHistoryQO" resultType="GenHistoryListVO">
         select * from gen_history t
         <where>
-            and t.del_sign=0
+            and t.deleted=0
             <include refid="queryCondition"/>
         </where>
-        order by t.create_date desc
+        order by t.created_time desc
         limit #{startIndex},#{pageSize}
     </select>
 </mapper>

@@ -6,10 +6,10 @@ package com.youran.common.pojo.po;
  * Author: cbb
  * Create Time:2017/5/25 16:58
  */
-public interface OperateBy {
+public interface OperatedBy {
 
-    String getOperateBy();
+    String getOperatedBy();
 
-    void setOperateBy(String operateBy);
+    void setOperatedBy(String operatedBy);
 
 }

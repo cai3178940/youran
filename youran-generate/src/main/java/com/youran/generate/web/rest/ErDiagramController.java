@@ -79,7 +79,7 @@ public class ErDiagramController implements ErDiagramAPI {
                     type = FieldDiagramVO.FOREIGN_KEY;
                 }else if(MetaSpecialField.VERSION.equals(field.getSpecialField())){
                     type = FieldDiagramVO.VERSION;
-                }else if(MetaSpecialField.DEL_SIGN.equals(field.getSpecialField())){
+                }else if(MetaSpecialField.DELETED.equals(field.getSpecialField())){
                     type = FieldDiagramVO.DELETE;
                 }
                 entityDiagramVO.addField(field.getFieldName(),type);

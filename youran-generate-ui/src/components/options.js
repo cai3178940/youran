@@ -137,23 +137,23 @@ export default  {
   ],
   specialFieldOptions:[
     {
-      value: 'delSign',
+      value: 'deleted',
       label: '逻辑删除'
     },
     {
-      value: 'createDate',
+      value: 'createdTime',
       label: '创建时间'
     },
     {
-      value: 'createBy',
+      value: 'createdBy',
       label: '创建人员'
     },
     {
-      value: 'operateDate',
+      value: 'operatedTime',
       label: '更新时间'
     },
     {
-      value: 'operateBy',
+      value: 'operatedBy',
       label: '更新人员'
     },
     {

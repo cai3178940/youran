@@ -42,11 +42,11 @@ public class ReverseEngineeringControllerTest extends AbstractWebTest {
             "  `desc` varchar(250) DEFAULT NULL COMMENT '实体描述',\n" +
             "  `commonCall` smallint(1) NOT NULL COMMENT '是否支持通用服务调用',\n" +
             "  `pageSign` smallint(1) DEFAULT NULL COMMENT '是否支持分页查询',\n" +
-            "  `createDate` datetime DEFAULT NULL COMMENT '创建时间',\n" +
-            "  `createBy` varchar(32) DEFAULT NULL COMMENT '创建人',\n" +
-            "  `operateDate` datetime DEFAULT NULL COMMENT '操作时间',\n" +
-            "  `operateBy` varchar(32) DEFAULT NULL COMMENT '操作人',\n" +
-            "  `delSign` smallint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',\n" +
+            "  `createdTime` datetime DEFAULT NULL COMMENT '创建时间',\n" +
+            "  `createdBy` varchar(32) DEFAULT NULL COMMENT '创建人',\n" +
+            "  `operatedTime` datetime DEFAULT NULL COMMENT '操作时间',\n" +
+            "  `operatedBy` varchar(32) DEFAULT NULL COMMENT '操作人',\n" +
+            "  `deleted` smallint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',\n" +
             "  `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',\n" +
             "  PRIMARY KEY (`entityId`),\n" +
             "  KEY `i_meta_entity_0` (`projectId`) USING BTREE,\n" +

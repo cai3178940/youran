@@ -6,13 +6,13 @@
 
     <select id="findById" resultType="MetaProjectPO">
         select * from meta_project
-        where del_sign=0
+        where deleted=0
         and project_id = #{projectId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_project
-        where del_sign=0
+        where deleted=0
         and project_id = #{projectId,jdbcType=INTEGER}
     </select>
 
@@ -21,14 +21,14 @@
           project_id, package_name, project_name, group_id,
           author,remote,remote_url,username,
           `password`,last_history_id,project_version,
-          create_date, create_by,
-          operate_date, operate_by, del_sign,
+          created_time, created_by,
+          operated_time, operated_by, deleted,
           version)
         values (#{projectId,jdbcType=INTEGER}, #{packageName,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR},
           #{author,jdbcType=VARCHAR},#{remote,jdbcType=INTEGER},#{remoteUrl,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},
           #{password,jdbcType=VARCHAR},#{lastHistoryId,jdbcType=INTEGER},#{projectVersion,jdbcType=INTEGER},
-          #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
-          #{operateDate,jdbcType=TIMESTAMP}, #{operateBy,jdbcType=VARCHAR}, #{delSign,jdbcType=SMALLINT},
+          #{createdTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR},
+          #{operatedTime,jdbcType=TIMESTAMP}, #{operatedBy,jdbcType=VARCHAR}, #{deleted,jdbcType=SMALLINT},
           #{version,jdbcType=INTEGER})
     </insert>
 
@@ -45,24 +45,24 @@
             `password` = #{password,jdbcType=VARCHAR},
             last_history_id = #{lastHistoryId,jdbcType=INTEGER},
             project_version = #{projectVersion,jdbcType=INTEGER},
-            operate_date = #{operateDate,jdbcType=TIMESTAMP},
-            operate_by = #{operateBy,jdbcType=VARCHAR},
+            operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+            operated_by = #{operatedBy,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}
         where project_id = #{projectId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and del_sign=0
+        and deleted=0
     </update>
 
     <delete id="delete">
         update meta_project set
-        del_sign=1
+        deleted=1
         where project_id = #{projectId,jdbcType=INTEGER}
-        and del_sign=0
+        and deleted=0
     </delete>
 
     <select id="findListByQuery" parameterType="MetaProjectQO" resultType="MetaProjectListVO">
         select * from meta_project t
-        where t.del_sign=0
-        order by t.create_date
+        where t.deleted=0
+        order by t.created_time
     </select>
 </mapper>

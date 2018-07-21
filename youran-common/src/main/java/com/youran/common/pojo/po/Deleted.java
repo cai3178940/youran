@@ -6,10 +6,10 @@ package com.youran.common.pojo.po;
  * Author: cbb
  * Create Time:2017/5/25 16:58
  */
-public interface DelSign {
+public interface Deleted {
 
-    Integer getDelSign();
+    Integer getDeleted();
 
-    void setDelSign(Integer delSign);
+    void setDeleted(Integer deleted);
 
 }

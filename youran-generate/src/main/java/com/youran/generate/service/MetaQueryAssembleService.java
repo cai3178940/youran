@@ -83,16 +83,16 @@ public class MetaQueryAssembleService {
             String specialField = metaField.getSpecialField();
             if (BoolConst.TRUE == metaField.getPrimaryKey()) {
                 metaEntity.setPkField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.DEL_SIGN)) {
+            } else if (Objects.equals(specialField, MetaSpecialField.DELETED)) {
                 metaEntity.setDelField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.CREATE_BY)) {
-                metaEntity.setCreateByField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.CREATE_DATE)) {
-                metaEntity.setCreateDateField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.OPERATE_BY)) {
-                metaEntity.setOperateByField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.OPERATE_DATE)) {
-                metaEntity.setOperateDateField(metaField);
+            } else if (Objects.equals(specialField, MetaSpecialField.CREATED_BY)) {
+                metaEntity.setCreatedByField(metaField);
+            } else if (Objects.equals(specialField, MetaSpecialField.CREATED_TIME)) {
+                metaEntity.setCreatedTimeField(metaField);
+            } else if (Objects.equals(specialField, MetaSpecialField.OPERATED_BY)) {
+                metaEntity.setOperatedByField(metaField);
+            } else if (Objects.equals(specialField, MetaSpecialField.OPERATED_TIME)) {
+                metaEntity.setOperatedTimeField(metaField);
             } else if (Objects.equals(specialField, MetaSpecialField.VERSION)) {
                 metaEntity.setVersionField(metaField);
             }
@@ -296,11 +296,11 @@ public class MetaQueryAssembleService {
         for (MetaEntityPO entity : entities) {
             List<MetaFieldPO> fields = entity.getFields();
             int pkCount = 0;
-            int delSignCount = 0;
-            int createByCount = 0;
-            int createDateCount = 0;
-            int operateByCount = 0;
-            int operateDateCount = 0;
+            int deletedCount = 0;
+            int createdByCount = 0;
+            int createdTimeCount = 0;
+            int operatedByCount = 0;
+            int operatedTimeCount = 0;
             int versionCount = 0;
             for (MetaFieldPO field : fields) {
                 String specialField = field.getSpecialField();
@@ -310,16 +310,16 @@ public class MetaQueryAssembleService {
                         throw new GenerateException("实体【"+entity.getTitle()+"】的主键【"+field.getFieldDesc()+"】不可以是特殊字段");
                     }
                 }
-                if (Objects.equals(specialField, MetaSpecialField.DEL_SIGN)) {
-                    delSignCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.CREATE_BY)) {
-                    createByCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.CREATE_DATE)) {
-                    createDateCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.OPERATE_BY)) {
-                    operateByCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.OPERATE_DATE)) {
-                    operateDateCount++;
+                if (Objects.equals(specialField, MetaSpecialField.DELETED)) {
+                    deletedCount++;
+                } else if (Objects.equals(specialField, MetaSpecialField.CREATED_BY)) {
+                    createdByCount++;
+                } else if (Objects.equals(specialField, MetaSpecialField.CREATED_TIME)) {
+                    createdTimeCount++;
+                } else if (Objects.equals(specialField, MetaSpecialField.OPERATED_BY)) {
+                    operatedByCount++;
+                } else if (Objects.equals(specialField, MetaSpecialField.OPERATED_TIME)) {
+                    operatedTimeCount++;
                 } else if (Objects.equals(specialField, MetaSpecialField.VERSION)) {
                     versionCount++;
                 }
@@ -338,20 +338,20 @@ public class MetaQueryAssembleService {
             if(pkCount>1){
                 throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+pkCount+"个主键");
             }
-            if(delSignCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+delSignCount+"个逻辑删除字段");
+            if(deletedCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+deletedCount+"个逻辑删除字段");
             }
-            if(createByCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+createByCount+"个创建人员字段");
+            if(createdByCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+createdByCount+"个创建人员字段");
             }
-            if(createDateCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+createDateCount+"个创建时间字段");
+            if(createdTimeCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+createdTimeCount+"个创建时间字段");
             }
-            if(operateByCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+operateByCount+"个更新人员字段");
+            if(operatedByCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+operatedByCount+"个更新人员字段");
             }
-            if(operateDateCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+operateDateCount+"个更新时间字段");
+            if(operatedTimeCount>1){
+                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+operatedTimeCount+"个更新时间字段");
             }
             if(versionCount>1){
                 throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+versionCount+"个乐观锁版本字段");

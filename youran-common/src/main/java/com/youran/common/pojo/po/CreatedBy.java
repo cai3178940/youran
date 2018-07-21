@@ -6,10 +6,10 @@ package com.youran.common.pojo.po;
  * Author: cbb
  * Create Time:2017/5/25 16:58
  */
-public interface CreateBy {
+public interface CreatedBy {
 
-    String getCreateBy();
+    String getCreatedBy();
 
-    void setCreateBy(String createBy);
+    void setCreatedBy(String createdBy);
 
 }

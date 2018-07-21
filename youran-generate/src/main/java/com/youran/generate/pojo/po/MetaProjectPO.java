@@ -1,11 +1,8 @@
 package com.youran.generate.pojo.po;
 
-import com.youran.common.pojo.po.AbstractPO;
-import com.youran.common.pojo.po.CreateOperateDeleteVersion;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static java.util.Arrays.stream;
@@ -16,7 +13,7 @@ import static java.util.Arrays.stream;
  * Author: cbb
  * Create Time:2017/5/24 11:45
  */
-public class MetaProjectPO extends AbstractPO implements CreateOperateDeleteVersion {
+public class MetaProjectPO extends GeneralPO {
 
     private Integer projectId;
 
@@ -39,18 +36,6 @@ public class MetaProjectPO extends AbstractPO implements CreateOperateDeleteVers
     private Integer lastHistoryId;
 
     private Integer projectVersion;
-
-    private Date createDate;
-
-    private String createBy;
-
-    private Date operateDate;
-
-    private String operateBy;
-
-    private Integer version;
-
-    private Integer delSign;
 
     private List<MetaEntityPO> entities;
 
@@ -166,54 +151,6 @@ public class MetaProjectPO extends AbstractPO implements CreateOperateDeleteVers
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getOperateDate() {
-        return operateDate;
-    }
-
-    public void setOperateDate(Date operateDate) {
-        this.operateDate = operateDate;
-    }
-
-    public String getOperateBy() {
-        return operateBy;
-    }
-
-    public void setOperateBy(String operateBy) {
-        this.operateBy = operateBy;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public Integer getDelSign() {
-        return delSign;
-    }
-
-    public void setDelSign(Integer delSign) {
-        this.delSign = delSign;
     }
 
     public Integer getRemote() {

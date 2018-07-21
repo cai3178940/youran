@@ -2,8 +2,8 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@classCom "逻辑删除+创建人&创建日期+操作人&操作日期+版本号"/>
-public interface CreateOperateDeleteVersion extends CreateByDate,OperateByDate,DelSign,Version{
+<@classCom "操作人&操作日期"/>
+public interface Operated extends OperatedBy,OperatedTime{
 }
 </#assign>
 <#--开始渲染代码-->

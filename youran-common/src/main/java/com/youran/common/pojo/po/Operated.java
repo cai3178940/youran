@@ -6,5 +6,5 @@ package com.youran.common.pojo.po;
  * Author: cbb
  * Create Time:2017/5/26 15:00
  */
-public interface OperateByDate extends OperateBy,OperateDate{
+public interface Operated extends OperatedBy,OperatedTime{
 }

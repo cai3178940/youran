@@ -174,10 +174,10 @@
         </if>
         </#list>
         <#--默认按【操作日期/创建日期/主键】降序排序-->
-        <#if operateDateField??>
-            t.${MetadataUtil.wrapMysqlKeyword(operateDateField.fieldName)} desc
-        <#elseIf createDateField??>
-            t.${MetadataUtil.wrapMysqlKeyword(createDateField.fieldName)} desc
+        <#if operatedTimeField??>
+            t.${MetadataUtil.wrapMysqlKeyword(operatedTimeField.fieldName)} desc
+        <#elseIf createdTimeField??>
+            t.${MetadataUtil.wrapMysqlKeyword(createdTimeField.fieldName)} desc
         <#else>
             t.${wrapPkFieldName} desc
         </#if>
@@ -279,7 +279,7 @@
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
-        order by r.create_date
+        order by r.created_time
     </select>
 
     <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${CName}ListVO">
@@ -293,11 +293,11 @@
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
-        order by r.create_date
+        order by r.created_time
     </select>
 
     <insert id="add${otherCName}" parameterType="map">
-        insert into ${mtm.tableName}(${the_pk_id},${other_pk_id},create_date)
+        insert into ${mtm.tableName}(${the_pk_id},${other_pk_id},created_time)
         values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}},now())
     </insert>
 
@@ -338,7 +338,7 @@
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
-        order by r.create_date
+        order by r.created_time
     </select>
 
     <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${CName}ListVO">
@@ -352,7 +352,7 @@
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
-        order by r.create_date
+        order by r.created_time
     </select>
 
     </#list>

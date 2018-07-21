@@ -285,8 +285,8 @@ public class MetaCodeGenService {
         map.put("groupId", project.getGroupId());
         //作者
         map.put("author", project.getAuthor());
-        //作者
-        map.put("createDate", project.getCreateDate());
+        //创建时间
+        map.put("createdTime", project.getCreatedTime());
         //多对多关联
         map.put("mtms", project.getMtms());
         //注入静态类

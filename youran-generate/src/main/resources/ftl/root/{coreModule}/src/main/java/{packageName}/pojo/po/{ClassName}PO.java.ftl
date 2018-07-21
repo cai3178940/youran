@@ -8,79 +8,79 @@
 <#--判断是否继承特殊接口-->
 <#assign implementsVersion=false>
 <#assign implementsDeleteSign=false>
-<#assign implementsCreateBy=false>
-<#assign implementsCreateDate=false>
-<#assign implementsOperateBy=false>
-<#assign implementsOperateDate=false>
-<#assign implementsCreateByDate=false>
-<#assign implementsOperateByDate=false>
-<#assign implementsCreateOperateDelete=false>
-<#assign implementsCreateOperateDeleteVersion=false>
+<#assign implementsCreatedBy=false>
+<#assign implementsCreatedTime=false>
+<#assign implementsOperatedBy=false>
+<#assign implementsOperatedTime=false>
+<#assign implementsCreated=false>
+<#assign implementsOperated=false>
+<#assign implementsCreatedOperatedDeleted=false>
+<#assign implementsCreatedOperatedDeletedVersion=false>
 
 <#--判断是否继承单一接口-->
 <#if metaEntity.delField??>
     <#assign implementsDeleteSign=true>
 </#if>
-<#if metaEntity.createByField??>
-    <#assign implementsCreateBy=true>
+<#if metaEntity.createdByField??>
+    <#assign implementsCreatedBy=true>
 </#if>
-<#if metaEntity.createDateField??>
-    <#assign implementsCreateDate=true>
+<#if metaEntity.createdTimeField??>
+    <#assign implementsCreatedTime=true>
 </#if>
-<#if metaEntity.operateByField??>
-    <#assign implementsOperateBy=true>
+<#if metaEntity.operatedByField??>
+    <#assign implementsOperatedBy=true>
 </#if>
-<#if metaEntity.operateDateField??>
-    <#assign implementsOperateDate=true>
+<#if metaEntity.operatedTimeField??>
+    <#assign implementsOperatedTime=true>
 </#if>
 <#if metaEntity.versionField??>
     <#assign implementsVersion=true>
 </#if>
 <#--判断是否继承合并接口-->
-<#if implementsCreateBy && implementsCreateDate>
-    <#assign implementsCreateByDate=true>
+<#if implementsCreatedBy && implementsCreatedTime>
+    <#assign implementsCreated=true>
 </#if>
-<#if implementsOperateBy && implementsOperateDate>
-    <#assign implementsOperateByDate=true>
+<#if implementsOperatedBy && implementsOperatedTime>
+    <#assign implementsOperated=true>
 </#if>
-<#if implementsCreateByDate && implementsOperateByDate && implementsDeleteSign>
-    <#assign implementsCreateOperateDelete=true>
+<#if implementsCreated && implementsOperated && implementsDeleteSign>
+    <#assign implementsCreatedOperatedDeleted=true>
 </#if>
-<#if implementsCreateByDate && implementsOperateByDate && implementsDeleteSign && implementsVersion>
-    <#assign implementsCreateOperateDeleteVersion=true>
+<#if implementsCreated && implementsOperated && implementsDeleteSign && implementsVersion>
+    <#assign implementsCreatedOperatedDeletedVersion=true>
 </#if>
 
 <#assign implementsStr=""><#--构建继承串-->
-<#if implementsCreateOperateDeleteVersion>
-    <#assign implementsStr+=" CreateOperateDeleteVersion,">
-    <@import "${commonPackage}.pojo.po.CreateOperateDeleteVersion"/>
-<#elseIf implementsCreateOperateDelete>
-    <#assign implementsStr+=" CreateOperateDelete,">
-    <@import "${commonPackage}.pojo.po.CreateOperateDelete"/>
+<#if implementsCreatedOperatedDeletedVersion>
+    <#assign implementsStr+=" CreatedOperatedDeletedVersion,">
+    <@import "${commonPackage}.pojo.po.CreatedOperatedDeletedVersion"/>
+<#elseIf implementsCreatedOperatedDeleted>
+    <#assign implementsStr+=" CreatedOperatedDeleted,">
+    <@import "${commonPackage}.pojo.po.CreatedOperatedDeleted"/>
 <#else>
-    <#if implementsCreateByDate>
-        <#assign implementsStr+=" CreateByDate,">
-        <@import "${commonPackage}.pojo.po.CreateByDate"/>
-    <#elseIf implementsCreateBy>
-        <#assign implementsStr+=" CreateBy,">
-        <@import "${commonPackage}.pojo.po.CreateBy"/>
-    <#elseIf implementsCreateDate>
-        <#assign implementsStr+=" CreateDate,">
-        <@import "${commonPackage}.pojo.po.CreateDate"/>
+    <#if implementsCreated>
+        <#assign implementsStr+=" Created,">
+        <@import "${commonPackage}.pojo.po.Created"/>
+    <#elseIf implementsCreatedBy>
+        <#assign implementsStr+=" CreatedBy,">
+        <@import "${commonPackage}.pojo.po.CreatedBy"/>
+    <#elseIf implementsCreatedTime>
+        <#assign implementsStr+=" CreatedTime,">
+        <@import "${commonPackage}.pojo.po.CreatedTime"/>
     </#if>
-    <#if implementsOperateByDate>
-        <#assign implementsStr+=" OperateByDate,">
-        <@import "${commonPackage}.pojo.po.OperateByDate"/>
-    <#elseIf implementsOperateBy>
-        <#assign implementsStr+=" OperateBy,">
-        <@import "${commonPackage}.pojo.po.OperateBy"/>
-    <#elseIf implementsOperateDate>
-        <#assign implementsStr+=" OperateDate,">
-        <@import "${commonPackage}.pojo.po.OperateDate"/>
+    <#if implementsOperated>
+        <#assign implementsStr+=" Operated,">
+        <@import "${commonPackage}.pojo.po.Operated"/>
+    <#elseIf implementsOperatedBy>
+        <#assign implementsStr+=" OperatedBy,">
+        <@import "${commonPackage}.pojo.po.OperatedBy"/>
+    <#elseIf implementsOperatedTime>
+        <#assign implementsStr+=" OperatedTime,">
+        <@import "${commonPackage}.pojo.po.OperatedTime"/>
     </#if>
     <#if implementsDeleteSign>
-        <#assign implementsStr+=" DelSign,">
-        <@import "${commonPackage}.pojo.po.DelSign"/>
+        <#assign implementsStr+=" Deleted,">
+        <@import "${commonPackage}.pojo.po.Deleted"/>
     </#if>
     <#if implementsVersion>
         <#assign implementsStr+=" Version,">
@@ -117,63 +117,63 @@ public class ${CName}PO extends AbstractPO${implementsStr} {
 </#list>
 
 
-<#if implementsDeleteSign && metaEntity.delField.jfieldName!="delSign">
+<#if implementsDeleteSign && metaEntity.delField.jfieldName!="deleted">
     @Override
-    public Integer getDelSign() {
+    public Integer getDeleted() {
         return this.${metaEntity.delField.jfieldName};
     }
 
     @Override
-    public void setDelSign(Integer delSign) {
-        this.${metaEntity.delField.jfieldName} = delSign;
+    public void setDeleted(Integer deleted) {
+        this.${metaEntity.delField.jfieldName} = deleted;
     }
 
 </#if>
-<#if implementsCreateBy && metaEntity.createByField.jfieldName!="createBy">
+<#if implementsCreatedBy && metaEntity.createdByField.jfieldName!="createdBy">
     @Override
-    public String getCreateBy() {
-        return this.${metaEntity.createByField.jfieldName};
+    public String getCreatedBy() {
+        return this.${metaEntity.createdByField.jfieldName};
     }
 
     @Override
-    public void setCreateBy(String createBy) {
-        this.${metaEntity.createByField.jfieldName} = createBy;
-    }
-
-</#if>
-<#if implementsCreateDate && metaEntity.createDateField.jfieldName!="createDate">
-    @Override
-    public Date getCreateDate() {
-        return this.${metaEntity.createDateField.jfieldName};
-    }
-
-    @Override
-    public void setCreateDate(Date createDate) {
-        this.${metaEntity.createDateField.jfieldName} = createDate;
+    public void setCreatedBy(String createdBy) {
+        this.${metaEntity.createdByField.jfieldName} = createdBy;
     }
 
 </#if>
-<#if implementsOperateBy && metaEntity.operateByField.jfieldName!="operateBy">
+<#if implementsCreatedTime && metaEntity.createdTimeField.jfieldName!="createdTime">
     @Override
-    public String getOperateBy() {
-        return this.${metaEntity.operateByField.jfieldName};
+    public Date getCreatedTime() {
+        return this.${metaEntity.createdTimeField.jfieldName};
     }
 
     @Override
-    public void setOperateBy(String operateBy) {
-        this.${metaEntity.operateByField.jfieldName} = operateBy;
+    public void setCreatedTime(Date createdTime) {
+        this.${metaEntity.createdTimeField.jfieldName} = createdTime;
     }
 
 </#if>
-<#if implementsOperateDate && metaEntity.operateDateField.jfieldName!="operateDate">
+<#if implementsOperatedBy && metaEntity.operatedByField.jfieldName!="operatedBy">
     @Override
-    public Date getOperateDate() {
-        return this.${metaEntity.operateDateField.jfieldName};
+    public String getOperatedBy() {
+        return this.${metaEntity.operatedByField.jfieldName};
     }
 
     @Override
-    public void setOperateDate(Date createDate) {
-        this.${metaEntity.operateDateField.jfieldName} = createDate;
+    public void setOperatedBy(String operatedBy) {
+        this.${metaEntity.operatedByField.jfieldName} = operatedBy;
+    }
+
+</#if>
+<#if implementsOperatedTime && metaEntity.operatedTimeField.jfieldName!="operatedTime">
+    @Override
+    public Date getOperatedTime() {
+        return this.${metaEntity.operatedTimeField.jfieldName};
+    }
+
+    @Override
+    public void setOperatedTime(Date createdTime) {
+        this.${metaEntity.operatedTimeField.jfieldName} = createdTime;
     }
 
 </#if>

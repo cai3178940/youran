@@ -2,13 +2,8 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@classCom "是否逻辑删除接口"/>
-public interface DelSign {
-
-    Integer getDelSign();
-
-    void setDelSign(Integer delSign);
-
+<@classCom "创建人&创建日期"/>
+public interface Created extends CreatedBy,CreatedTime{
 }
 </#assign>
 <#--开始渲染代码-->

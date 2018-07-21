@@ -1,9 +1,5 @@
 package com.youran.generate.pojo.po;
 
-import com.youran.common.pojo.po.AbstractPO;
-import com.youran.common.pojo.po.CreateOperateDeleteVersion;
-
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,7 +8,7 @@ import java.util.List;
  * Author: cbb
  * Create Time:2017/4/11 10:49
  */
-public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersion {
+public class MetaFieldPO extends GeneralPO {
 
     private Integer fieldId;
     private Integer entityId;
@@ -43,18 +39,6 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
     private Integer queryType;
     private Integer orderNo;
     private String specialField;
-
-    private Date createDate;
-
-    private String createBy;
-
-    private Date operateDate;
-
-    private String operateBy;
-
-    private Integer version;
-
-    private Integer delSign;
 
     /**
      * 外键对应实体
@@ -329,54 +313,6 @@ public class MetaFieldPO extends AbstractPO implements CreateOperateDeleteVersio
 
     public void setOrderNo(Integer orderNo) {
         this.orderNo = orderNo;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getOperateDate() {
-        return operateDate;
-    }
-
-    public void setOperateDate(Date operateDate) {
-        this.operateDate = operateDate;
-    }
-
-    public String getOperateBy() {
-        return operateBy;
-    }
-
-    public void setOperateBy(String operateBy) {
-        this.operateBy = operateBy;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public Integer getDelSign() {
-        return delSign;
-    }
-
-    public void setDelSign(Integer delSign) {
-        this.delSign = delSign;
     }
 
     public List<MetaCascadeExtPO> getCascadeQueryExts() {

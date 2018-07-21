@@ -35,11 +35,11 @@
 <#if metaEntity.listSortFields??>
     <#assign listSortFields=metaEntity.listSortFields><#--排序字段-->
 </#if>
-<#if metaEntity.createDateField??>
-    <#assign createDateField=metaEntity.createDateField><#--创建日期字段-->
+<#if metaEntity.createdTimeField??>
+    <#assign createdTimeField=metaEntity.createdTimeField><#--创建日期字段-->
 </#if>
-<#if metaEntity.operateDateField??>
-    <#assign operateDateField=metaEntity.operateDateField><#--操作日期字段-->
+<#if metaEntity.operatedTimeField??>
+    <#assign operatedTimeField=metaEntity.operatedTimeField><#--操作日期字段-->
 </#if>
 <#-- 定义类名截取函数 -->
 <#function fetchClassName dicType>

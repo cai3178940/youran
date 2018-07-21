@@ -12,7 +12,7 @@
  * <p>Title: ${title}</p>
  * <p>Description: ${desc}</p>
  * @author ${author}
- * @date ${createDate?string("yyyy-MM-dd HH:mm")}
+ * @date ${createdTime?string("yyyy/MM/dd")}
  */
 </#macro>
 

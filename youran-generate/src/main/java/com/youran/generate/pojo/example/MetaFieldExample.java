@@ -67,6 +67,6 @@ public class MetaFieldExample extends AbstractExample {
     public static final String N_UPDATE = "是否编辑字段";
     public static final String E_UPDATE = "0";
     public static final String N_SPECIALFIELD = "特殊字段类型";
-    public static final String E_SPECIALFIELD = "delSign";
+    public static final String E_SPECIALFIELD = "deleted";
 
 }

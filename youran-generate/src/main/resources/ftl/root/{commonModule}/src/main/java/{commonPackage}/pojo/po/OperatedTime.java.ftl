@@ -2,8 +2,13 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@classCom "操作人&操作日期"/>
-public interface OperateByDate extends OperateBy,OperateDate{
+<@import "java.util.Date"/>
+<@classCom "操作日期接口"/>
+public interface OperatedTime {
+
+    Date getOperatedTime();
+
+    void setOperatedTime(Date operatedTime);
 }
 </#assign>
 <#--开始渲染代码-->

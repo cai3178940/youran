@@ -1,17 +1,12 @@
 package com.youran.generate.pojo.po;
 
-import com.youran.common.pojo.po.AbstractPO;
-import com.youran.common.pojo.po.CreateOperateDeleteVersion;
-
-import java.util.Date;
-
 /**
  * Title: 多对多关联关系
  * Description:
  * Author: cbb
  * Create Time:2017/7/4 16:25
  */
-public class MetaManyToManyPO extends AbstractPO implements CreateOperateDeleteVersion {
+public class MetaManyToManyPO extends GeneralPO {
 
     private Integer mtmId;
     /**
@@ -60,18 +55,6 @@ public class MetaManyToManyPO extends AbstractPO implements CreateOperateDeleteV
      * 引用实体B
      */
     private MetaEntityPO refer2;
-
-    private Date createDate;
-
-    private String createBy;
-
-    private Date operateDate;
-
-    private String operateBy;
-
-    private Integer version;
-
-    private Integer delSign;
 
     public String getSchemaName() {
         return schemaName;
@@ -161,51 +144,4 @@ public class MetaManyToManyPO extends AbstractPO implements CreateOperateDeleteV
         this.holdRefer2 = holdRefer2;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getOperateDate() {
-        return operateDate;
-    }
-
-    public void setOperateDate(Date operateDate) {
-        this.operateDate = operateDate;
-    }
-
-    public String getOperateBy() {
-        return operateBy;
-    }
-
-    public void setOperateBy(String operateBy) {
-        this.operateBy = operateBy;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public Integer getDelSign() {
-        return delSign;
-    }
-
-    public void setDelSign(Integer delSign) {
-        this.delSign = delSign;
-    }
 }

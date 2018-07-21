@@ -6,13 +6,13 @@
 
     <select id="findById" resultType="MetaConstPO">
         select * from meta_const
-        where del_sign=0
+        where deleted=0
         and const_id = #{constId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_const
-        where del_sign=0
+        where deleted=0
         and const_id = #{constId,jdbcType=INTEGER}
     </select>
 
@@ -20,13 +20,13 @@
         insert into meta_const (
           const_id, project_id, const_name,
           const_remark, const_type,
-          create_date, create_by, operate_date,
-          operate_by, del_sign, version
+          created_time, created_by, operated_time,
+          operated_by, deleted, version
           )
         values (#{constId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{constName,jdbcType=VARCHAR},
           #{constRemark,jdbcType=VARCHAR}, #{constType,jdbcType=INTEGER},
-          #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{operateDate,jdbcType=TIMESTAMP},
-          #{operateBy,jdbcType=VARCHAR}, #{delSign,jdbcType=SMALLINT}, #{version,jdbcType=INTEGER}
+          #{createdTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP},
+          #{operatedBy,jdbcType=VARCHAR}, #{deleted,jdbcType=SMALLINT}, #{version,jdbcType=INTEGER}
           )
     </insert>
 
@@ -36,38 +36,38 @@
           const_name = #{constName,jdbcType=VARCHAR},
           const_remark = #{constRemark,jdbcType=VARCHAR},
           const_type = #{constType,jdbcType=INTEGER},
-          operate_date = #{operateDate,jdbcType=TIMESTAMP},
-          operate_by = #{operateBy,jdbcType=VARCHAR},
+          operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+          operated_by = #{operatedBy,jdbcType=VARCHAR},
           version = #{version,jdbcType=INTEGER}
         where const_id = #{constId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and del_sign=0
+        and deleted=0
     </update>
 
     <delete id="delete">
         update meta_const set
-        del_sign=1
+        deleted=1
         where const_id = #{constId,jdbcType=INTEGER}
-        and del_sign=0
+        and deleted=0
     </delete>
 
     <select id="findCountByQuery" parameterType="MetaConstQO" resultType="int">
         select count(1) from meta_const t
-        where t.del_sign=0
+        where t.deleted=0
         and t.project_id = #{projectId,jdbcType=INTEGER}
     </select>
 
     <select id="findListByQuery" parameterType="MetaConstQO" resultType="MetaConstListVO">
         select * from meta_const t
-        where t.del_sign=0
+        where t.deleted=0
         and t.project_id = #{projectId,jdbcType=INTEGER}
-        order by t.create_date
+        order by t.created_time
         limit #{startIndex},#{pageSize}
     </select>
 
     <select id="findIdsByProject" resultType="int">
         select const_id from meta_const
-        where del_sign=0
+        where deleted=0
         and project_id = #{projectId,jdbcType=INTEGER}
     </select>
 </mapper>

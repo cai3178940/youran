@@ -114,17 +114,17 @@ public class GenerateHelper{
 
 
 
-    //保存createDate字段
-    public MetaFieldPO saveCreateDateField(MetaEntityPO entity) {
+    //保存createdTime字段
+    public MetaFieldPO saveCreatedTimeField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setNotNull(1);
-        dto.setFieldName("createDate");
+        dto.setFieldName("createdTime");
         dto.setFieldType(MySqlType.DATETIME);
         dto.setFieldComment("创建日期");
         dto.setFieldExample("2017-05-22 00:00:00");
         dto.setFieldLength(0);
         dto.setFieldDesc("创建日期");
-        dto.setJfieldName("createDate");
+        dto.setJfieldName("createdTime");
         dto.setJfieldType(JFieldType.DATE.getJavaType());
         dto.setEditType(EditType.DATE);
         dto.setOrderNo(1001);
@@ -135,22 +135,22 @@ public class GenerateHelper{
         dto.setListSort(1);
         dto.setShow(1);
         dto.setUpdate(0);
-        dto.setSpecialField(MetaSpecialField.CREATE_DATE);
+        dto.setSpecialField(MetaSpecialField.CREATED_TIME);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
         return metaField;
     }
 
-    public MetaFieldPO saveCreateByField(MetaEntityPO entity) {
+    public MetaFieldPO saveCreatedByField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setNotNull(1);
-        dto.setFieldName("createBy");
+        dto.setFieldName("createdBy");
         dto.setFieldType(MySqlType.VARCHAR);
         dto.setFieldComment("创建人");
         dto.setFieldLength(50);
         dto.setFieldDesc("创建人");
         dto.setFieldExample("admin");
-        dto.setJfieldName("createBy");
+        dto.setJfieldName("createdBy");
         dto.setJfieldType(JFieldType.STRING.getJavaType());
         dto.setEditType(EditType.TEXT);
         dto.setOrderNo(1002);
@@ -161,22 +161,22 @@ public class GenerateHelper{
         dto.setListSort(0);
         dto.setShow(1);
         dto.setUpdate(0);
-        dto.setSpecialField(MetaSpecialField.CREATE_BY);
+        dto.setSpecialField(MetaSpecialField.CREATED_BY);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
         return metaField;
     }
 
-    public MetaFieldPO saveOperateDateField(MetaEntityPO entity) {
+    public MetaFieldPO saveOperatedTimeField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setNotNull(1);
-        dto.setFieldName("operateDate");
+        dto.setFieldName("operatedTime");
         dto.setFieldType(MySqlType.DATETIME);
         dto.setFieldComment("操作日期");
         dto.setFieldLength(0);
         dto.setFieldDesc("操作日期");
         dto.setFieldExample("2017-05-22 00:00:00");
-        dto.setJfieldName("operateDate");
+        dto.setJfieldName("operatedTime");
         dto.setJfieldType(JFieldType.DATE.getJavaType());
         dto.setEditType(EditType.DATE);
         dto.setOrderNo(1003);
@@ -187,22 +187,22 @@ public class GenerateHelper{
         dto.setListSort(1);
         dto.setShow(1);
         dto.setUpdate(0);
-        dto.setSpecialField(MetaSpecialField.OPERATE_DATE);
+        dto.setSpecialField(MetaSpecialField.OPERATED_TIME);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
         return metaField;
     }
 
-    public MetaFieldPO saveOperateByField(MetaEntityPO entity) {
+    public MetaFieldPO saveOperatedByField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setNotNull(1);
-        dto.setFieldName("operateBy");
+        dto.setFieldName("operatedBy");
         dto.setFieldType(MySqlType.VARCHAR);
         dto.setFieldComment("操作人");
         dto.setFieldLength(50);
         dto.setFieldDesc("操作人");
         dto.setFieldExample("admin");
-        dto.setJfieldName("operateBy");
+        dto.setJfieldName("operatedBy");
         dto.setJfieldType(JFieldType.STRING.getJavaType());
         dto.setEditType(EditType.TEXT);
         dto.setOrderNo(1004);
@@ -213,7 +213,7 @@ public class GenerateHelper{
         dto.setListSort(0);
         dto.setShow(1);
         dto.setUpdate(0);
-        dto.setSpecialField(MetaSpecialField.OPERATE_BY);
+        dto.setSpecialField(MetaSpecialField.OPERATED_BY);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
         return metaField;
@@ -247,18 +247,18 @@ public class GenerateHelper{
         return metaField;
     }
 
-    //保存delSign字段
-    public MetaFieldPO saveDelSignField(MetaEntityPO entity) {
+    //保存deleted字段
+    public MetaFieldPO saveDeletedField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setDefaultValue("0");
         dto.setNotNull(1);
-        dto.setFieldName("delSign");
+        dto.setFieldName("deleted");
         dto.setFieldType(MySqlType.SMALLINT);
         dto.setFieldComment("是否删除");
         dto.setFieldExample("0");
         dto.setFieldLength(1);
         dto.setFieldDesc("是否删除");
-        dto.setJfieldName("delSign");
+        dto.setJfieldName("deleted");
         dto.setJfieldType(JFieldType.INTEGER.getJavaType());
         dto.setEditType(null);
         dto.setOrderNo(1006);
@@ -269,7 +269,7 @@ public class GenerateHelper{
         dto.setListSort(0);
         dto.setShow(0);
         dto.setUpdate(0);
-        dto.setSpecialField(MetaSpecialField.DEL_SIGN);
+        dto.setSpecialField(MetaSpecialField.DELETED);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
         return metaField;
@@ -522,13 +522,13 @@ public class GenerateHelper{
     }
 
 
-    public void saveCreateOperateDeleteVersion(MetaEntityPO entity){
-        this.saveCreateByField(entity);
-        this.saveCreateDateField(entity);
-        this.saveOperateByField(entity);
-        this.saveOperateDateField(entity);
+    public void saveCreatedOperatedDeletedVersion(MetaEntityPO entity){
+        this.saveCreatedByField(entity);
+        this.saveCreatedTimeField(entity);
+        this.saveOperatedByField(entity);
+        this.saveOperatedTimeField(entity);
         this.saveVersionField(entity);
-        this.saveDelSignField(entity);
+        this.saveDeletedField(entity);
     }
 
     public MetaEntityPO saveMetaEntity(MetaProjectPO project,String className,String tableName,String title){

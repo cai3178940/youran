@@ -1,17 +1,12 @@
 package com.youran.generate.pojo.po;
 
-import com.youran.common.pojo.po.AbstractPO;
-import com.youran.common.pojo.po.CreateOperateDeleteVersion;
-
-import java.util.Date;
-
 /**
  * Title: 级联扩展
  * Description: 从外键字段对应的表中级联查出要展示的字段
  * Author: cbb
  * Create Time: 2018/5/28 14:53
  */
-public class MetaCascadeExtPO extends AbstractPO implements CreateOperateDeleteVersion {
+public class MetaCascadeExtPO extends GeneralPO {
 
     /**
      * 主键id
@@ -57,20 +52,6 @@ public class MetaCascadeExtPO extends AbstractPO implements CreateOperateDeleteV
      * 级联展示字段的id
      */
     private Integer cascadeFieldId;
-
-
-    private Date createDate;
-
-    private String createBy;
-
-    private Date operateDate;
-
-    private String operateBy;
-
-    private Integer version;
-
-    private Integer delSign;
-
 
     /**
      * 级联字段
@@ -157,63 +138,4 @@ public class MetaCascadeExtPO extends AbstractPO implements CreateOperateDeleteV
         this.cascadeFieldId = cascadeFieldId;
     }
 
-    @Override
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    @Override
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    @Override
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    @Override
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    @Override
-    public Date getOperateDate() {
-        return operateDate;
-    }
-
-    @Override
-    public void setOperateDate(Date operateDate) {
-        this.operateDate = operateDate;
-    }
-
-    @Override
-    public String getOperateBy() {
-        return operateBy;
-    }
-
-    @Override
-    public void setOperateBy(String operateBy) {
-        this.operateBy = operateBy;
-    }
-
-    @Override
-    public Integer getVersion() {
-        return version;
-    }
-
-    @Override
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    @Override
-    public Integer getDelSign() {
-        return delSign;
-    }
-
-    @Override
-    public void setDelSign(Integer delSign) {
-        this.delSign = delSign;
-    }
 }

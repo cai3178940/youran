@@ -2,12 +2,13 @@
 <#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@classCom "创建人接口"/>
-public interface CreateBy {
+<@import "java.util.Date"/>
+<@classCom "创建日期接口"/>
+public interface CreatedTime {
 
-    String getCreateBy();
+    Date getCreatedTime();
 
-    void setCreateBy(String createBy);
+    void setCreatedTime(Date createdTime);
 
 }
 </#assign>

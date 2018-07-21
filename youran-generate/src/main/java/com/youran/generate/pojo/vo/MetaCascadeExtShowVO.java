@@ -83,8 +83,8 @@ public class MetaCascadeExtShowVO extends AbstractVO {
     @ApiModelProperty(notes = "级联展示字段描述", example = "名称")
     private String cascadeFieldDesc;
 
-    @ApiModelProperty(notes = N_CREATEDATE, example = E_CREATEDATE)
-    private Date createDate;
+    @ApiModelProperty(notes = N_CREATEDTIME, example = E_CREATEDTIME)
+    private Date createdTime;
 
 
     public Integer getCascadeExtId() {
@@ -159,12 +159,12 @@ public class MetaCascadeExtShowVO extends AbstractVO {
         this.cascadeFieldId = cascadeFieldId;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     public String getCascadeFieldDesc() {
