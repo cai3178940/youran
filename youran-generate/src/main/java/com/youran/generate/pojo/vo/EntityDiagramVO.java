@@ -16,16 +16,17 @@ public class EntityDiagramVO {
      * 实体名称
      */
     private String key;
+
     /**
      * 字段列表
      */
-    private List<FieldDiagramVO> items;
+    private List<FieldDiagramVO> fields;
 
-    public void addField(String name, String type){
-        if(items==null){
-            items = new ArrayList<>();
+    public void addField(String name, String type,String desc){
+        if(fields==null){
+            fields = new ArrayList<>();
         }
-        items.add(new FieldDiagramVO(name,type));
+        fields.add(new FieldDiagramVO(name,type,desc));
     }
 
     public String getKey() {
@@ -36,11 +37,11 @@ public class EntityDiagramVO {
         this.key = key;
     }
 
-    public List<FieldDiagramVO> getItems() {
-        return items;
+    public List<FieldDiagramVO> getFields() {
+        return fields;
     }
 
-    public void setItems(List<FieldDiagramVO> items) {
-        this.items = items;
+    public void setFields(List<FieldDiagramVO> fields) {
+        this.fields = fields;
     }
 }

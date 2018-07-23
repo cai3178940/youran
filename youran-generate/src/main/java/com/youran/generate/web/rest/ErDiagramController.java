@@ -82,7 +82,7 @@ public class ErDiagramController implements ErDiagramAPI {
                 }else if(MetaSpecialField.DELETED.equals(field.getSpecialField())){
                     type = FieldDiagramVO.DELETE;
                 }
-                entityDiagramVO.addField(field.getFieldName(),type);
+                entityDiagramVO.addField(field.getFieldName(),type,field.getFieldDesc());
             }
             nodeData.add(entityDiagramVO);
 

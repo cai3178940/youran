@@ -16,14 +16,16 @@ public class FieldDiagramVO {
 
     private String name;
     private String type;
+    private String desc;
 
 
     public FieldDiagramVO() {
     }
 
-    public FieldDiagramVO(String name, String type) {
+    public FieldDiagramVO(String name, String type,String desc) {
         this.name = name;
         this.type = type;
+        this.desc = desc;
     }
 
     public String getType() {
@@ -42,5 +44,11 @@ public class FieldDiagramVO {
         this.name = name;
     }
 
+    public String getDesc() {
+        return desc;
+    }
 
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 }

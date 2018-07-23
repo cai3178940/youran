@@ -70,13 +70,19 @@
         var itemTempl =
           $(go.Panel, 'Horizontal',
             $(go.Shape,
-              { desiredSize: new go.Size(10, 10) },
+              { desiredSize: new go.Size(10, 10),
+                margin: new go.Margin(0, 5, 0, 0)},
               new go.Binding('figure', 'figure'),
               new go.Binding('fill', 'color')),
             $(go.TextBlock,
               { stroke: '#333333',
+                font: 'bold 14px sans-serif',
+                margin: new go.Margin(0, 10, 0, 0)},
+              new go.Binding('text', 'name')),
+            $(go.TextBlock,
+              { stroke: '#333333',
                 font: 'bold 14px sans-serif' },
-              new go.Binding('text', 'name'))
+              new go.Binding('text', 'desc'))
           )
 
         // define the Node template, representing an entity
@@ -121,7 +127,7 @@
                   stretch: go.GraphObject.Horizontal,
                   itemTemplate: itemTempl
                 },
-                new go.Binding('itemArray', 'items'))
+                new go.Binding('itemArray', 'fields'))
             )  // end Table Panel
           )  // end Node
 
@@ -162,7 +168,7 @@
       },
 
       updateModel:function(){
-        this.erDiagram.nodeData.forEach(v=>v.items.forEach(item=>{
+        this.erDiagram.nodeData.forEach(v=>v.fields.forEach(item=>{
           if(item.type=='pk'){
             item.iskey=true
             item.figure='Decision'
