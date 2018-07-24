@@ -45,9 +45,6 @@
               <el-dropdown-item :command="{method:'handleConst',arg:scope.row}" >
                 <icon name="navicon" scale="0.8" ></icon> 枚举管理
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleMtm',arg:scope.row}" >
-                <icon name="th-list" scale="0.8" ></icon> 多对多管理
-              </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" >
                 <icon name="object-group" scale="0.8" ></icon> 反向工程(内测中)
               </el-dropdown-item>
@@ -144,9 +141,6 @@
       },
       handleConst: function (row) {
         this.$router.push(`/project/${row.projectId}/const`)
-      },
-      handleMtm: function (row) {
-        this.$router.push(`/project/${row.projectId}/mtm`)
       },
       handleEdit: function (row) {
         this.$router.push(`/project/edit/${row.projectId}`)
