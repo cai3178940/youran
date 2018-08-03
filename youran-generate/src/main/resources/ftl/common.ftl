@@ -6,16 +6,6 @@
 </#macro>
 
 
-<#-- 定义类注释宏 -->
-<#macro classCom title="" desc="">
-/**
- * <p>Title: ${title}</p>
- * <p>Description: ${desc}</p>
- * @author ${author}
- * @date ${createdTime?string("yyyy/MM/dd")}
- */
-</#macro>
-
 <#-- 定义getter setter模板（根据field） -->
 <#macro getterSetter field>
     public ${field.jfieldType} get${field.jfieldName?capFirst}() {

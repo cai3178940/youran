@@ -97,7 +97,12 @@ public class MetadataUtil {
     }
 
 
-
+    /**
+     * 下划线转驼峰
+     * @param name
+     * @param capFirst
+     * @return
+     */
     public static String underlineToCamelCase(String name,boolean capFirst){
         String[] split = StringUtils.split(name,"_");
         String value = Arrays.stream(split)
@@ -109,6 +114,12 @@ public class MetadataUtil {
         return value;
     }
 
+    /**
+     * 驼峰转下划线
+     * @param name
+     * @param upCase
+     * @return
+     */
     public static String camelCaseToUnderline(String name,boolean upCase){
         String[] split = StringUtils.splitByCharacterTypeCamelCase(name);
         Stream<String> stream = Arrays.stream(split);
