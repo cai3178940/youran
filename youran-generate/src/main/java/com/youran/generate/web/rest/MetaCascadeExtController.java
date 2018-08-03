@@ -4,6 +4,7 @@ import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaCascadeExtUpdateDTO;
+import com.youran.generate.pojo.mapper.MetaCascadeExtMapper;
 import com.youran.generate.pojo.po.MetaCascadeExtPO;
 import com.youran.generate.pojo.qo.MetaCascadeExtQO;
 import com.youran.generate.pojo.vo.MetaCascadeExtListVO;
@@ -32,19 +33,16 @@ public class MetaCascadeExtController implements MetaCascadeExtAPI {
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<Integer> save(@Valid @RequestBody MetaCascadeExtAddDTO metaCascadeExtAddDTO) {
+    public ReplyVO<MetaCascadeExtShowVO> save(@Valid @RequestBody MetaCascadeExtAddDTO metaCascadeExtAddDTO) {
         MetaCascadeExtPO metaCascadeExtPO = metaCascadeExtService.save(metaCascadeExtAddDTO);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(metaCascadeExtPO.getCascadeExtId());
-        return result;
+        return ReplyVO.success().data(MetaCascadeExtMapper.INSTANCE.toShowVO(metaCascadeExtPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<Void> update(@Valid @RequestBody MetaCascadeExtUpdateDTO metaCascadeExtUpdateDTO) {
-        metaCascadeExtService.update(metaCascadeExtUpdateDTO);
-        ReplyVO<Void> result = ReplyVO.success();
-        return result;
+    public ReplyVO<MetaCascadeExtShowVO> update(@Valid @RequestBody MetaCascadeExtUpdateDTO metaCascadeExtUpdateDTO) {
+        MetaCascadeExtPO metaCascadeExtPO = metaCascadeExtService.update(metaCascadeExtUpdateDTO);
+        return ReplyVO.success().data(MetaCascadeExtMapper.INSTANCE.toShowVO(metaCascadeExtPO));
     }
 
     @Override

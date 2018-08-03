@@ -4,6 +4,7 @@ import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
+import com.youran.generate.pojo.mapper.MetaConstDetailMapper;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
 import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
@@ -32,19 +33,16 @@ public class MetaConstDetailController implements MetaConstDetailAPI {
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<Integer> save(@Valid @RequestBody MetaConstDetailAddDTO metaConstDetailAddDTO) {
+    public ReplyVO<MetaConstDetailShowVO> save(@Valid @RequestBody MetaConstDetailAddDTO metaConstDetailAddDTO) {
         MetaConstDetailPO metaConstDetailPO = metaConstDetailService.save(metaConstDetailAddDTO);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(metaConstDetailPO.getConstDetailId());
-        return result;
+        return ReplyVO.success().data(MetaConstDetailMapper.INSTANCE.toShowVO(metaConstDetailPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<Void> update(@Valid @RequestBody MetaConstDetailUpdateDTO metaConstDetailUpdateDTO) {
-        metaConstDetailService.update(metaConstDetailUpdateDTO);
-        ReplyVO<Void> result = ReplyVO.success();
-        return result;
+    public ReplyVO<MetaConstDetailShowVO> update(@Valid @RequestBody MetaConstDetailUpdateDTO metaConstDetailUpdateDTO) {
+        MetaConstDetailPO metaConstDetailPO = metaConstDetailService.update(metaConstDetailUpdateDTO);
+        return ReplyVO.success().data(MetaConstDetailMapper.INSTANCE.toShowVO(metaConstDetailPO));
     }
 
     @Override

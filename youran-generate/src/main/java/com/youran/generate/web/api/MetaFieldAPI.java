@@ -29,7 +29,7 @@ public interface MetaFieldAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaFieldAddDTO", dataType = "MetaFieldAddDTO", value = "新增字段参数", paramType = "body"),
     })
-    ReplyVO<Integer> save(MetaFieldAddDTO metaFieldAddDTO);
+    ReplyVO<MetaFieldShowVO> save(MetaFieldAddDTO metaFieldAddDTO);
 
     /**
      * 修改字段
@@ -38,7 +38,7 @@ public interface MetaFieldAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaFieldUpdateDTO", dataType = "MetaFieldUpdateDTO", value = "修改字段参数", paramType = "body"),
     })
-    ReplyVO<Void> update(MetaFieldUpdateDTO metaFieldUpdateDTO);
+    ReplyVO<MetaFieldShowVO> update(MetaFieldUpdateDTO metaFieldUpdateDTO);
 
     /**
      * 字段列表查询

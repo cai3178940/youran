@@ -32,7 +32,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectAddDTO", dataType = "MetaProjectAddDTO", value = "新增项目参数", paramType = "body"),
     })
-    ReplyVO<Integer> save(MetaProjectAddDTO metaProjectAddDTO);
+    ReplyVO<MetaProjectShowVO> save(MetaProjectAddDTO metaProjectAddDTO);
 
     /**
      * 修改项目
@@ -43,7 +43,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectUpdateDTO", dataType = "MetaProjectUpdateDTO", value = "修改项目参数", paramType = "body"),
     })
-    ReplyVO<Void> update(MetaProjectUpdateDTO metaProjectUpdateDTO);
+    ReplyVO<MetaProjectShowVO> update(MetaProjectUpdateDTO metaProjectUpdateDTO);
 
     /**
      * 查询项目列表

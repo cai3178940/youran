@@ -79,7 +79,7 @@ public class MetaProjectService {
      */
     @Transactional
     @OptimisticLock
-    public void update(MetaProjectUpdateDTO metaProjectUpdateDTO) {
+    public MetaProjectPO update(MetaProjectUpdateDTO metaProjectUpdateDTO) {
         Integer projectId = metaProjectUpdateDTO.getProjectId();
         MetaProjectPO metaProject = this.getProject(projectId,true);
         MetaProjectMapper.INSTANCE.setPO(metaProject, metaProjectUpdateDTO);
@@ -95,6 +95,7 @@ public class MetaProjectService {
         }
         metaProjectDAO.update(metaProject);
         this.updateProjectVersion(metaProject.getProjectId());
+        return metaProject;
     }
 
 

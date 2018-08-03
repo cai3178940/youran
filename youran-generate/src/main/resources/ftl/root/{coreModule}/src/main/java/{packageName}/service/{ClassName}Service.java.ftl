@@ -130,7 +130,7 @@ public class ${CName}Service {
         <@import "${commonPackage}.optimistic.OptimisticLock"/>
     @OptimisticLock
     </#if>
-    public void update(${CName}UpdateDTO ${cName}UpdateDTO) {
+    public ${CName}PO update(${CName}UpdateDTO ${cName}UpdateDTO) {
         ${type} ${id} = ${cName}UpdateDTO.get${Id}();
         ${CName}PO ${cName} = this.get${CName}(${id}, true);
         ${CName}Mapper.INSTANCE.setUpdateDTO(${cName},${cName}UpdateDTO);
@@ -153,6 +153,7 @@ public class ${CName}Service {
         }
     </#list>
 </#if>
+        return ${cName};
     }
 <#if pageSign == 1>
     <@import "${commonPackage}.pojo.vo.PageVO"/>

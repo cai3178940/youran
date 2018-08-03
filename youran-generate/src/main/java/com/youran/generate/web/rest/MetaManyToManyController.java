@@ -4,6 +4,7 @@ import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
+import com.youran.generate.pojo.mapper.MetaManyToManyMapper;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.vo.MetaManyToManyListVO;
@@ -32,19 +33,16 @@ public class MetaManyToManyController implements MetaManyToManyAPI {
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<Integer> save(@Valid @RequestBody MetaManyToManyAddDTO metaManyToManyAddDTO) {
+    public ReplyVO<MetaManyToManyShowVO> save(@Valid @RequestBody MetaManyToManyAddDTO metaManyToManyAddDTO) {
         MetaManyToManyPO metaManyToManyPO = metaManyToManyService.save(metaManyToManyAddDTO);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(metaManyToManyPO.getMtmId());
-        return result;
+        return ReplyVO.success().data(MetaManyToManyMapper.INSTANCE.toShowVO(metaManyToManyPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<Void> update(@Valid @RequestBody MetaManyToManyUpdateDTO metaManyToManyUpdateDTO) {
-        metaManyToManyService.update(metaManyToManyUpdateDTO);
-        ReplyVO<Void> result = ReplyVO.success();
-        return result;
+    public ReplyVO<MetaManyToManyShowVO> update(@Valid @RequestBody MetaManyToManyUpdateDTO metaManyToManyUpdateDTO) {
+        MetaManyToManyPO metaManyToManyPO = metaManyToManyService.update(metaManyToManyUpdateDTO);
+        return ReplyVO.success().data(MetaManyToManyMapper.INSTANCE.toShowVO(metaManyToManyPO));
     }
 
     @Override

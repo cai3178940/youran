@@ -72,7 +72,7 @@ public class MetaIndexService {
      */
     @Transactional
     @OptimisticLock
-    public void update(MetaIndexUpdateDTO metaIndexUpdateDTO) {
+    public MetaIndexPO update(MetaIndexUpdateDTO metaIndexUpdateDTO) {
         Integer indexId = metaIndexUpdateDTO.getIndexId();
         MetaIndexPO metaIndex = this.getIndex(indexId,true);
         //校验新字段id是否是本实体下存在的字段
@@ -95,6 +95,7 @@ public class MetaIndexService {
         }
 
         metaProjectService.updateProjectVersionByEntityId(metaIndexUpdateDTO.getEntityId());
+        return metaIndex;
     }
 
     /**

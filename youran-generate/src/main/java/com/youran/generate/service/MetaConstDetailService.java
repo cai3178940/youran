@@ -49,11 +49,12 @@ public class MetaConstDetailService {
      */
     @Transactional
     @OptimisticLock
-    public void update(MetaConstDetailUpdateDTO metaConstDetailUpdateDTO) {
+    public MetaConstDetailPO update(MetaConstDetailUpdateDTO metaConstDetailUpdateDTO) {
         MetaConstDetailPO metaConstDetail = this.getMetaConstDetail(metaConstDetailUpdateDTO.getConstDetailId(),true);
         MetaConstDetailMapper.INSTANCE.setPO(metaConstDetail, metaConstDetailUpdateDTO);
         metaConstDetailDAO.update(metaConstDetail);
         metaProjectService.updateProjectVersionByConstId(metaConstDetail.getConstId());
+        return metaConstDetail;
     }
 
     /**

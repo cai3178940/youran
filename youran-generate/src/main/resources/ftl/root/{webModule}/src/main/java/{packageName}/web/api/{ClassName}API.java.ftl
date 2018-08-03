@@ -24,7 +24,7 @@ public interface ${CName}API {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${cName}AddDTO", dataType = "${CName}AddDTO", value = "新增【${title}】参数", paramType = "body"),
     })
-    ReplyVO<${type}> save(${CName}AddDTO ${cName}AddDTO);
+    ReplyVO<${CName}ShowVO> save(${CName}AddDTO ${cName}AddDTO);
 
     /**
      * 修改【${title}】
@@ -33,7 +33,7 @@ public interface ${CName}API {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${cName}UpdateDTO", dataType = "${CName}UpdateDTO", value = "修改【${title}】参数", paramType = "body"),
     })
-    ReplyVO<Void> update(${CName}UpdateDTO ${cName}UpdateDTO);
+    ReplyVO<${CName}ShowVO> update(${CName}UpdateDTO ${cName}UpdateDTO);
 <#if pageSign == 1>
     <@import "${commonPackage}.pojo.vo.PageVO"/>
     /**

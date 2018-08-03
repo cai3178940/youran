@@ -4,6 +4,7 @@ import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
+import com.youran.generate.pojo.mapper.MetaProjectMapper;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
@@ -32,19 +33,16 @@ public class MetaProjectController implements MetaProjectAPI {
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<Integer> save(@Valid @RequestBody MetaProjectAddDTO metaProjectAddDTO) {
+    public ReplyVO<MetaProjectShowVO> save(@Valid @RequestBody MetaProjectAddDTO metaProjectAddDTO) {
         MetaProjectPO metaProjectPO = metaProjectService.save(metaProjectAddDTO);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(metaProjectPO.getProjectId());
-        return result;
+        return ReplyVO.success().data(MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<Void> update(@Valid @RequestBody MetaProjectUpdateDTO metaProjectUpdateDTO) {
-        metaProjectService.update(metaProjectUpdateDTO);
-        ReplyVO<Void> result = ReplyVO.success();
-        return result;
+    public ReplyVO<MetaProjectShowVO> update(@Valid @RequestBody MetaProjectUpdateDTO metaProjectUpdateDTO) {
+        MetaProjectPO metaProjectPO = metaProjectService.update(metaProjectUpdateDTO);
+        return ReplyVO.success().data(MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO));
     }
 
     @Override

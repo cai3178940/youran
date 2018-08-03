@@ -28,7 +28,7 @@ public interface MetaConstAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstAddDTO", dataType = "MetaConstAddDTO", value = "新增常量参数", paramType = "body"),
     })
-    ReplyVO<Integer> save(MetaConstAddDTO metaConstAddDTO);
+    ReplyVO<MetaConstShowVO> save(MetaConstAddDTO metaConstAddDTO);
 
     /**
      * 修改常量
@@ -37,7 +37,7 @@ public interface MetaConstAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstUpdateDTO", dataType = "MetaConstUpdateDTO", value = "修改常量参数", paramType = "body"),
     })
-    ReplyVO<Void> update(MetaConstUpdateDTO metaConstUpdateDTO);
+    ReplyVO<MetaConstShowVO> update(MetaConstUpdateDTO metaConstUpdateDTO);
 
     /**
      * 分页查询常量

@@ -29,7 +29,7 @@ public interface MetaIndexAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaIndexAddDTO", dataType = "MetaIndexAddDTO", value = "新增索引参数", paramType = "body"),
     })
-    ReplyVO<Integer> save(MetaIndexAddDTO metaIndexAddDTO);
+    ReplyVO<MetaIndexShowVO> save(MetaIndexAddDTO metaIndexAddDTO);
 
     /**
      * 修改索引
@@ -38,7 +38,7 @@ public interface MetaIndexAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaIndexUpdateDTO", dataType = "MetaIndexUpdateDTO", value = "修改索引参数", paramType = "body"),
     })
-    ReplyVO<Void> update(MetaIndexUpdateDTO metaIndexUpdateDTO);
+    ReplyVO<MetaIndexShowVO> update(MetaIndexUpdateDTO metaIndexUpdateDTO);
 
     /**
      * 索引列表查询

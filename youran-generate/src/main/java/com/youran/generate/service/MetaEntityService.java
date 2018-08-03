@@ -51,11 +51,12 @@ public class MetaEntityService {
      */
     @Transactional
     @OptimisticLock
-    public void update(MetaEntityUpdateDTO metaEntityUpdateDTO) {
+    public MetaEntityPO update(MetaEntityUpdateDTO metaEntityUpdateDTO) {
         MetaEntityPO metaEntity = this.getEntity(metaEntityUpdateDTO.getEntityId(),true);
         MetaEntityMapper.INSTANCE.setPO(metaEntity, metaEntityUpdateDTO);
         metaEntityDAO.update(metaEntity);
         metaProjectService.updateProjectVersion(metaEntity.getProjectId());
+        return metaEntity;
     }
 
 

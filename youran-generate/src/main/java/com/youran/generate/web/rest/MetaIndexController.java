@@ -4,6 +4,7 @@ import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
+import com.youran.generate.pojo.mapper.MetaIndexMapper;
 import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.vo.MetaIndexListVO;
@@ -32,19 +33,16 @@ public class MetaIndexController implements MetaIndexAPI {
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<Integer> save(@Valid @RequestBody MetaIndexAddDTO metaIndexAddDTO) {
+    public ReplyVO<MetaIndexShowVO> save(@Valid @RequestBody MetaIndexAddDTO metaIndexAddDTO) {
         MetaIndexPO metaIndex = metaIndexService.save(metaIndexAddDTO);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(metaIndex.getIndexId());
-        return result;
+        return ReplyVO.success().data(MetaIndexMapper.INSTANCE.toShowVO(metaIndex));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<Void> update(@Valid @RequestBody MetaIndexUpdateDTO metaIndexUpdateDTO) {
-        metaIndexService.update(metaIndexUpdateDTO);
-        ReplyVO<Void> result = ReplyVO.success();
-        return result;
+    public ReplyVO<MetaIndexShowVO> update(@Valid @RequestBody MetaIndexUpdateDTO metaIndexUpdateDTO) {
+        MetaIndexPO metaIndex = metaIndexService.update(metaIndexUpdateDTO);
+        return ReplyVO.success().data(MetaIndexMapper.INSTANCE.toShowVO(metaIndex));
     }
 
     @Override

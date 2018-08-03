@@ -27,16 +27,16 @@ public class ${CName}Controller extends AbstractController implements ${CName}AP
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<${type}> save(@Valid @RequestBody ${CName}AddDTO ${cName}AddDTO) {
+    public ReplyVO<${CName}ShowVO> save(@Valid @RequestBody ${CName}AddDTO ${cName}AddDTO) {
         ${CName}PO ${cName} = ${cName}Service.save(${cName}AddDTO);
-        return ReplyVO.success().data(${cName}.get${Id}());
+        return ReplyVO.success().data(${CName}Mapper.INSTANCE.toShowVO(${cName}));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<Void> update(@Valid @RequestBody ${CName}UpdateDTO ${cName}UpdateDTO) {
-        ${cName}Service.update(${cName}UpdateDTO);
-        return ReplyVO.success();
+    public ReplyVO<${CName}ShowVO> update(@Valid @RequestBody ${CName}UpdateDTO ${cName}UpdateDTO) {
+        ${CName}PO ${cName} = ${cName}Service.update(${cName}UpdateDTO);
+        return ReplyVO.success().data(${CName}Mapper.INSTANCE.toShowVO(${cName}));
     }
 
 <#if pageSign == 1>

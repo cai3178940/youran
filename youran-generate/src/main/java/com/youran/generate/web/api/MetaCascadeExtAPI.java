@@ -29,7 +29,7 @@ public interface MetaCascadeExtAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaCascadeExtAddDTO", dataType = "MetaCascadeExtAddDTO", value = "新增级联扩展参数", paramType = "body"),
     })
-    ReplyVO<Integer> save(MetaCascadeExtAddDTO metaCascadeExtAddDTO);
+    ReplyVO<MetaCascadeExtShowVO> save(MetaCascadeExtAddDTO metaCascadeExtAddDTO);
 
     /**
      * 修改级联扩展
@@ -38,7 +38,7 @@ public interface MetaCascadeExtAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaCascadeExtUpdateDTO", dataType = "MetaCascadeExtUpdateDTO", value = "修改级联扩展参数", paramType = "body"),
     })
-    ReplyVO<Void> update(MetaCascadeExtUpdateDTO metaCascadeExtUpdateDTO);
+    ReplyVO<MetaCascadeExtShowVO> update(MetaCascadeExtUpdateDTO metaCascadeExtUpdateDTO);
 
     /**
      * 查询级联扩展列表

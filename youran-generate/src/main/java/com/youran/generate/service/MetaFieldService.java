@@ -49,12 +49,13 @@ public class MetaFieldService {
      */
     @Transactional
     @OptimisticLock
-    public void update(MetaFieldUpdateDTO metaFieldUpdateDTO) {
+    public MetaFieldPO update(MetaFieldUpdateDTO metaFieldUpdateDTO) {
         Integer fieldId = metaFieldUpdateDTO.getFieldId();
         MetaFieldPO metaField = this.getField(fieldId,true);
         MetaFieldMapper.INSTANCE.setPO(metaField, metaFieldUpdateDTO);
         metaFieldDAO.update(metaField);
         metaProjectService.updateProjectVersionByEntityId(metaField.getEntityId());
+        return metaField;
     }
 
     /**

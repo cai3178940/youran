@@ -28,7 +28,7 @@ public interface MetaEntityAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaEntityAddDTO", dataType = "MetaEntityAddDTO", value = "新增实体参数", paramType = "body"),
     })
-    ReplyVO<Integer> save(MetaEntityAddDTO metaEntityAddDTO);
+    ReplyVO<MetaEntityShowVO> save(MetaEntityAddDTO metaEntityAddDTO);
 
     /**
      * 修改实体
@@ -37,7 +37,7 @@ public interface MetaEntityAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaEntityUpdateDTO", dataType = "MetaEntityUpdateDTO", value = "修改实体参数", paramType = "body"),
     })
-    ReplyVO<Void> update(MetaEntityUpdateDTO metaEntityUpdateDTO);
+    ReplyVO<MetaEntityShowVO> update(MetaEntityUpdateDTO metaEntityUpdateDTO);
 
     /**
      * 分页查询实体

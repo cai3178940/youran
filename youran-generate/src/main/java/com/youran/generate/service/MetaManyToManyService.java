@@ -59,7 +59,7 @@ public class MetaManyToManyService {
      */
     @Transactional
     @OptimisticLock
-    public void update(MetaManyToManyUpdateDTO metaManyToManyUpdateDTO) {
+    public MetaManyToManyPO update(MetaManyToManyUpdateDTO metaManyToManyUpdateDTO) {
         if (!metaEntityDAO.exist(metaManyToManyUpdateDTO.getEntityId1())) {
             throw new GenerateException("entityId1参数有误");
         }
@@ -71,6 +71,7 @@ public class MetaManyToManyService {
         MetaManyToManyMapper.INSTANCE.setPO(metaManyToMany, metaManyToManyUpdateDTO);
         metaManyToManyDAO.update(metaManyToMany);
         metaProjectService.updateProjectVersion(metaManyToMany.getProjectId());
+        return metaManyToMany;
     }
 
     /**

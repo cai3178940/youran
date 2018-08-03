@@ -29,7 +29,7 @@ public interface MetaManyToManyAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaManyToManyAddDTO", dataType = "MetaManyToManyAddDTO", value = "新增多对多关联参数", paramType = "body"),
     })
-    ReplyVO<Integer> save(MetaManyToManyAddDTO metaManyToManyAddDTO);
+    ReplyVO<MetaManyToManyShowVO> save(MetaManyToManyAddDTO metaManyToManyAddDTO);
 
     /**
      * 修改多对多关联
@@ -38,7 +38,7 @@ public interface MetaManyToManyAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaManyToManyUpdateDTO", dataType = "MetaManyToManyUpdateDTO", value = "修改多对多关联参数", paramType = "body"),
     })
-    ReplyVO<Void> update(MetaManyToManyUpdateDTO metaManyToManyUpdateDTO);
+    ReplyVO<MetaManyToManyShowVO> update(MetaManyToManyUpdateDTO metaManyToManyUpdateDTO);
 
     /**
      * 多对多关联列表查询

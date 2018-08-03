@@ -6,6 +6,7 @@ import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
+import com.youran.generate.pojo.mapper.MetaEntityMapper;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
@@ -33,25 +34,22 @@ public class MetaEntityController implements MetaEntityAPI {
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<Integer> save(@Valid @RequestBody MetaEntityAddDTO metaEntityAddDTO) {
+    public ReplyVO<MetaEntityShowVO> save(@Valid @RequestBody MetaEntityAddDTO metaEntityAddDTO) {
         if(metaEntityAddDTO.getCommonCall()==null){
             metaEntityAddDTO.setCommonCall(BoolConst.FALSE);
         }
         MetaEntityPO metaEntityPO = metaEntityService.save(metaEntityAddDTO);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(metaEntityPO.getEntityId());
-        return result;
+        return ReplyVO.success().data(MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<Void> update(@Valid @RequestBody MetaEntityUpdateDTO metaEntityUpdateDTO) {
+    public ReplyVO<MetaEntityShowVO> update(@Valid @RequestBody MetaEntityUpdateDTO metaEntityUpdateDTO) {
         if(metaEntityUpdateDTO.getCommonCall()==null){
             metaEntityUpdateDTO.setCommonCall(BoolConst.FALSE);
         }
-        metaEntityService.update(metaEntityUpdateDTO);
-        ReplyVO<Void> result = ReplyVO.success();
-        return result;
+        MetaEntityPO metaEntityPO = metaEntityService.update(metaEntityUpdateDTO);
+        return ReplyVO.success().data(MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO));
     }
 
     @Override

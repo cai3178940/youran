@@ -54,11 +54,12 @@ public class MetaCascadeExtService {
      */
     @Transactional
     @OptimisticLock
-    public void update(MetaCascadeExtUpdateDTO updateDTO) {
+    public MetaCascadeExtPO update(MetaCascadeExtUpdateDTO updateDTO) {
         MetaCascadeExtPO metaCascadeExt = this.getMetaCascadeExt(updateDTO.getCascadeExtId(),true);
         MetaCascadeExtMapper.INSTANCE.setPO(metaCascadeExt, updateDTO);
         metaCascadeExtDAO.update(metaCascadeExt);
         metaProjectService.updateProjectVersionByEntityId(metaCascadeExt.getEntityId());
+        return metaCascadeExt;
     }
 
     /**
