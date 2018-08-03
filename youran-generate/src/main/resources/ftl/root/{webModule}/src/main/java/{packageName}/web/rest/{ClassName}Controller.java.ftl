@@ -9,6 +9,7 @@
 <@import "${packageName}.pojo.qo.${CName}QO"/>
 <@import "${packageName}.pojo.vo.${CName}ListVO"/>
 <@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
+<@import "${packageName}.pojo.mapper.${CName}Mapper"/>
 <@import "${packageName}.pojo.vo.${CName}ShowVO"/>
 <@import "${packageName}.service.${CName}Service"/>
 <@import "${packageName}.web.AbstractController"/>
