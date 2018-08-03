@@ -166,7 +166,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     @Test
     public void addRemove${otherEntity.className}() throws Exception {
         <#list saveForeignList as saveForeign>
-            ${saveForeign}
+        ${saveForeign}
         </#list>
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
@@ -183,7 +183,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     @Test
     public void addRemove${otherEntity.className}2() throws Exception {
         <#list saveForeignList as saveForeign>
-            ${saveForeign}
+        ${saveForeign}
         </#list>
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
@@ -204,7 +204,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     @Test
     public void set${otherEntity.className}() throws Exception {
         <#list saveForeignList as saveForeign>
-            ${saveForeign}
+        ${saveForeign}
         </#list>
         ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
