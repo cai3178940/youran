@@ -50,15 +50,6 @@
 </#function>
 
 
-<#-- 定义类名截取函数 -->
-<#function fetchClassName dicType>
-    <#local index=dicType?lastIndexOf(".")/>
-    <#if index gt 0>
-        <#return dicType?substring(index+1)>
-    <#else>
-        <#return dicType>
-    </#if>
-</#function>
 
 <#-- 定义是否通用常量 -->
 <#function isCommonPackage dicType>

@@ -29,7 +29,18 @@ public class TemplateUtil {
     }
 
 
-
+    /**
+     * 类名截取函数
+     * @param classPath
+     * @return
+     */
+    public String fetchClassName(String classPath){
+        int i = classPath.lastIndexOf(".");
+        if(i >0){
+            return classPath.substring(i+1);
+        }
+        return classPath;
+    }
 
 
 }
