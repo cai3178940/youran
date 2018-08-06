@@ -1,20 +1,20 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${packageName}.web.util.IpUtil"/>
-<@import "org.apache.commons.lang3.ArrayUtils"/>
-<@import "org.slf4j.Logger"/>
-<@import "org.slf4j.LoggerFactory"/>
-<@import "org.springframework.boot.CommandLineRunner"/>
-<@import "org.springframework.core.Ordered"/>
-<@import "org.springframework.core.env.Environment"/>
-<@import "org.springframework.core.io.ClassPathResource"/>
-<@import "org.springframework.stereotype.Component"/>
+<@call this.addImport("${this.packageName}.web.util.IpUtil")/>
+<@call this.addImport("org.apache.commons.lang3.ArrayUtils")/>
+<@call this.addImport("org.slf4j.Logger")/>
+<@call this.addImport("org.slf4j.LoggerFactory")/>
+<@call this.addImport("org.springframework.boot.CommandLineRunner")/>
+<@call this.addImport("org.springframework.core.Ordered")/>
+<@call this.addImport("org.springframework.core.env.Environment")/>
+<@call this.addImport("org.springframework.core.io.ClassPathResource")/>
+<@call this.addImport("org.springframework.stereotype.Component")/>
 
-<@import "java.util.Arrays"/>
-<@import "java.util.stream.Collectors"/>
-<@classCom "打印启动日志"/>
+<@call this.addImport("java.util.Arrays")/>
+<@call this.addImport("java.util.stream.Collectors")/>
+<@call this.printClassCom("打印启动日志")/>
 @Component
 public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
 
@@ -58,8 +58,8 @@ public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.web.config;
+package ${this.packageName}.web.config;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

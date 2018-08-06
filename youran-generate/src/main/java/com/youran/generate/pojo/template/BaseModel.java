@@ -1,11 +1,10 @@
 package com.youran.generate.pojo.template;
 
+import com.youran.common.util.DateUtil;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
-import com.youran.generate.util.FreeMakerUtil;
-import freemarker.template.TemplateModel;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
@@ -22,20 +21,6 @@ import java.util.TreeSet;
  */
 public class BaseModel {
 
-    /**
-     * 封装静态方法模型
-     */
-    public static final TemplateModel MetadataUtil;
-    public static final TemplateModel JFieldType;
-    public static final TemplateModel QueryType;
-    public static final TemplateModel MetaSpecialField;
-
-    static{
-        MetadataUtil = FreeMakerUtil.getStaticModel(com.youran.generate.util.MetadataUtil.class);
-        JFieldType = FreeMakerUtil.getStaticModel(com.youran.generate.constant.JFieldType.class);
-        QueryType = FreeMakerUtil.getStaticModel(com.youran.generate.constant.QueryType.class);
-        MetaSpecialField = FreeMakerUtil.getStaticModel(com.youran.generate.constant.MetaSpecialField.class);
-    }
 
 
     /**
@@ -98,7 +83,7 @@ public class BaseModel {
     /**
      * spring注入bean
      */
-    private Set<String[]> autowired;
+    private Set<String> autowired;
 
 
 
@@ -160,7 +145,7 @@ public class BaseModel {
     public void addAutowired(String packageName,String className){
         this.addImport("org.springframework.beans.factory.annotation.Autowired");
         this.addImport(packageName+"."+className);
-        this.autowired.add(new String[]{packageName,className});
+        this.autowired.add(className);
     }
 
 
@@ -219,13 +204,35 @@ public class BaseModel {
      */
     public String printAutowired(){
         StringBuilder sb = new StringBuilder();
-        for (String[] aw : autowired) {
+        for (String aw : autowired) {
             sb.append("    @Autowired\n")
-                .append("    private ").append(aw[1]).append(" ").append(StringUtils.uncapitalize(aw[1])).append(";\n");
+                .append("    private ").append(aw).append(" ").append(StringUtils.uncapitalize(aw)).append(";\n");
         }
         return sb.toString();
     }
 
+
+    /**
+     * 打印类注释
+     * @return
+     */
+    public String printClassCom(String title){
+        return this.printClassCom(title,"");
+    }
+    /**
+     * 打印类注释
+     * @return
+     */
+    public String printClassCom(String title,String desc){
+        StringBuilder sb = new StringBuilder();
+        sb.append("/**\n")
+            .append(" * <p>Title: ").append(title).append("</p>\n")
+            .append(" * <p>Description: ").append(desc).append("</p>\n")
+            .append(" * @author ").append(this.author).append("\n")
+            .append(" * @date ").append(DateUtil.getDateStr(this.createdTime,"yyyy/MM/dd")).append("\n")
+            .append(" */").append("\n");
+        return sb.toString();
+    }
 
 
     public List<MetaEntityPO> getMetaEntities() {

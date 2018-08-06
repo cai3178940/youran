@@ -1,12 +1,12 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.convert.MyCustomDateEditor"/>
-<@import "org.springframework.web.bind.WebDataBinder"/>
-<@import "org.springframework.web.bind.annotation.InitBinder"/>
-<@import "java.util.Date"/>
-<@classCom "抽象controller"/>
+<@call this.addImport("${this.commonPackage}.convert.MyCustomDateEditor")/>
+<@call this.addImport("org.springframework.web.bind.WebDataBinder")/>
+<@call this.addImport("org.springframework.web.bind.annotation.InitBinder")/>
+<@call this.addImport("java.util.Date")/>
+<@call this.printClassCom("抽象controller")/>
 public abstract class AbstractController {
 
     @InitBinder
@@ -17,8 +17,8 @@ public abstract class AbstractController {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.web;
+package ${this.packageName}.web;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

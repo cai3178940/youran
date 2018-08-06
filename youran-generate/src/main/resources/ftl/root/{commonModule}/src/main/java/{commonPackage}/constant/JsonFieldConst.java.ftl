@@ -1,8 +1,8 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@classCom "json常量"/>
+<@call this.printClassCom("json常量")/>
 public class JsonFieldConst {
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
@@ -14,8 +14,8 @@ public class JsonFieldConst {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.constant;
+package ${this.commonPackage}.constant;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

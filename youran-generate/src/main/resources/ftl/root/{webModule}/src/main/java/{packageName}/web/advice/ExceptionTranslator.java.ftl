@@ -1,34 +1,34 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.constant.ErrorCode"/>
-<@import "${commonPackage}.pojo.vo.FieldErrorVO"/>
-<@import "${commonPackage}.pojo.vo.ReplyVO"/>
-<@import "${commonPackage}.util.JsonUtil"/>
-<@import "${commonPackage}.util.MessageSourceUtil"/>
-<@import "${packageName}.exception.${ProjectName}Exception"/>
-<@import "org.slf4j.Logger"/>
-<@import "org.slf4j.LoggerFactory"/>
-<@import "org.springframework.core.annotation.AnnotationUtils"/>
-<@import "org.springframework.dao.ConcurrencyFailureException"/>
-<@import "org.springframework.dao.DuplicateKeyException"/>
-<@import "org.springframework.http.HttpStatus"/>
-<@import "org.springframework.http.ResponseEntity"/>
-<@import "org.springframework.http.converter.HttpMessageNotReadableException"/>
-<@import "org.springframework.validation.BindException"/>
-<@import "org.springframework.validation.BindingResult"/>
-<@import "org.springframework.validation.FieldError"/>
-<@import "org.springframework.web.HttpRequestMethodNotSupportedException"/>
-<@import "org.springframework.web.bind.MethodArgumentNotValidException"/>
-<@import "org.springframework.web.bind.annotation.ControllerAdvice"/>
-<@import "org.springframework.web.bind.annotation.ExceptionHandler"/>
-<@import "org.springframework.web.bind.annotation.ResponseBody"/>
-<@import "org.springframework.web.bind.annotation.ResponseStatus"/>
-<@import "java.util.ArrayList"/>
-<@import "java.util.List"/>
+<@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
+<@call this.addImport("${this.commonPackage}.pojo.vo.FieldErrorVO")/>
+<@call this.addImport("${this.commonPackage}.pojo.vo.ReplyVO")/>
+<@call this.addImport("${this.commonPackage}.util.JsonUtil")/>
+<@call this.addImport("${this.commonPackage}.util.MessageSourceUtil")/>
+<@call this.addImport("${this.packageName}.exception.${this.projectNameUpper}Exception")/>
+<@call this.addImport("org.slf4j.Logger")/>
+<@call this.addImport("org.slf4j.LoggerFactory")/>
+<@call this.addImport("org.springframework.core.annotation.AnnotationUtils")/>
+<@call this.addImport("org.springframework.dao.ConcurrencyFailureException")/>
+<@call this.addImport("org.springframework.dao.DuplicateKeyException")/>
+<@call this.addImport("org.springframework.http.HttpStatus")/>
+<@call this.addImport("org.springframework.http.ResponseEntity")/>
+<@call this.addImport("org.springframework.http.converter.HttpMessageNotReadableException")/>
+<@call this.addImport("org.springframework.validation.BindException")/>
+<@call this.addImport("org.springframework.validation.BindingResult")/>
+<@call this.addImport("org.springframework.validation.FieldError")/>
+<@call this.addImport("org.springframework.web.HttpRequestMethodNotSupportedException")/>
+<@call this.addImport("org.springframework.web.bind.MethodArgumentNotValidException")/>
+<@call this.addImport("org.springframework.web.bind.annotation.ControllerAdvice")/>
+<@call this.addImport("org.springframework.web.bind.annotation.ExceptionHandler")/>
+<@call this.addImport("org.springframework.web.bind.annotation.ResponseBody")/>
+<@call this.addImport("org.springframework.web.bind.annotation.ResponseStatus")/>
+<@call this.addImport("java.util.ArrayList")/>
+<@call this.addImport("java.util.List")/>
 
-<@classCom "异常信息展示"/>
+<@call this.printClassCom("异常信息展示")/>
 @ControllerAdvice
 public class ExceptionTranslator {
 
@@ -139,9 +139,9 @@ public class ExceptionTranslator {
      * @param ex
      * @return
      */
-    @ExceptionHandler(${ProjectName}Exception.class)
+    @ExceptionHandler(${this.projectNameUpper}Exception.class)
     @ResponseBody
-    public ResponseEntity<ReplyVO> process${ProjectName}Exception(${ProjectName}Exception ex) {
+    public ResponseEntity<ReplyVO> process${this.projectNameUpper}Exception(${this.projectNameUpper}Exception ex) {
         ex.printStackTrace();
         ResponseEntity.BodyBuilder builder = ResponseEntity.status(HttpStatus.OK);
         ErrorCode code = ex.getErrorCode();
@@ -177,8 +177,8 @@ public class ExceptionTranslator {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.web.advice;
+package ${this.packageName}.web.advice;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

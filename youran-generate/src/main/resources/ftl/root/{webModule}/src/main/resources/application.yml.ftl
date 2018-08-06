@@ -4,7 +4,7 @@ server:
     port: 8080
 spring:
     application:
-        name: ${originProjectName}
+        name: ${this.originProjectName}
     profiles:
         active: local
     # 强制指定响应头content-type是utf-8编码
@@ -13,6 +13,6 @@ spring:
             force: true
 
 swagger:
-    basePackage: ${packageName}
+    basePackage: ${this.packageName}
 
 

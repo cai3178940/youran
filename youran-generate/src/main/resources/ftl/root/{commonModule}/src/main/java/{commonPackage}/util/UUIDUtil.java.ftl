@@ -1,9 +1,9 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "java.util.UUID"/>
-<@classCom "获取UUID"/>
+<@call this.addImport("java.util.UUID")/>
+<@call this.printClassCom("获取UUID")/>
 public class UUIDUtil {
 
     public static String getUUID() {
@@ -18,8 +18,8 @@ public class UUIDUtil {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.util;
+package ${this.commonPackage}.util;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

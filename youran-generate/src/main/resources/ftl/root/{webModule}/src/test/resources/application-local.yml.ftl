@@ -7,4 +7,4 @@ logging:
         root: info
         java:
             sql: debug
-        ${packageName}: trace
+        ${this.packageName}: trace

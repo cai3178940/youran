@@ -1,13 +1,13 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "org.slf4j.Logger"/>
-<@import "org.slf4j.LoggerFactory"/>
-<@import "org.springframework.context.MessageSource"/>
-<@import "org.springframework.context.i18n.LocaleContextHolder"/>
-<@import "java.util.Locale"/>
-<@classCom "静态国际化MessageSource工具类"/>
+<@call this.addImport("org.slf4j.Logger")/>
+<@call this.addImport("org.slf4j.LoggerFactory")/>
+<@call this.addImport("org.springframework.context.MessageSource")/>
+<@call this.addImport("org.springframework.context.i18n.LocaleContextHolder")/>
+<@call this.addImport("java.util.Locale")/>
+<@call this.printClassCom("静态国际化MessageSource工具类")/>
 public class MessageSourceUtil {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MessageSourceUtil.class);
@@ -78,8 +78,8 @@ public class MessageSourceUtil {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.util;
+package ${this.commonPackage}.util;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

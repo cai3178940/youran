@@ -1,274 +1,276 @@
 <#include "/common.ftl">
-<#include "/entity_common.ftl">
-<#include "/import.ftl">
+
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.constant.ErrorCode"/>
-<@import "${packageName}.pojo.dto.${CName}AddDTO"/>
-<@import "${packageName}.pojo.qo.${CName}QO"/>
-<@import "${packageName}.pojo.vo.${CName}ListVO"/>
-<@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
-<@import "${packageName}.pojo.mapper.${CName}Mapper"/>
-<@import "${packageName}.pojo.po.${CName}PO"/>
-<@import "${packageName}.pojo.vo.${CName}ShowVO"/>
-<@import "${packageName}.exception.${ProjectName}Exception"/>
-<@import "org.springframework.beans.factory.annotation.Autowired"/>
-<@import "org.springframework.stereotype.Service"/>
-<@import "org.springframework.transaction.annotation.Transactional"/>
-<@classCom "【${title}】删改查服务"/>
+<@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
+<@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}AddDTO")/>
+<@call this.addImport("${this.packageName}.pojo.qo.${this.classNameUpper}QO")/>
+<@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
+<@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}UpdateDTO")/>
+<@call this.addImport("${this.packageName}.pojo.mapper.${this.classNameUpper}Mapper")/>
+<@call this.addImport("${this.packageName}.pojo.po.${this.classNameUpper}PO")/>
+<@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ShowVO")/>
+<@call this.addImport("${this.packageName}.exception.${this.projectNameUpper}Exception")/>
+<@call this.addImport("org.springframework.beans.factory.annotation.Autowired")/>
+<@call this.addImport("org.springframework.stereotype.Service")/>
+<@call this.addImport("org.springframework.transaction.annotation.Transactional")/>
+<@call this.printClassCom("【${this.title}】删改查服务")/>
 @Service
-public class ${CName}Service {
+public class ${this.classNameUpper}Service {
 
-    <@autowired "${packageName}.dao" "${CName}DAO"/>
-<#if metaEntity.mtmHoldRefers??>
-    <#list metaEntity.mtmHoldRefers as otherEntity>
+    <@call this.addAutowired("${this.packageName}.dao" "${this.classNameUpper}DAO")/>
+<#if this.metaEntity.mtmHoldRefers??>
+    <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
-        <@autowired "${packageName}.dao" "${otherCName}DAO"/>
+        <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
     </#list>
 </#if>
-<#if metaEntity.mtmUnHoldRefers??>
-    <#list metaEntity.mtmUnHoldRefers as otherEntity>
+<#if this.metaEntity.mtmUnHoldRefers??>
+    <#list this.metaEntity.mtmUnHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
-        <@autowired "${packageName}.dao" "${otherCName}DAO"/>
+        <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
     </#list>
 </#if>
-
 <#-- 引入外键对应的DAO -->
-<#list insertFields as field>
+<#list this.insertFields as field>
     <#if field.foreignKey==1>
         <#assign foreignCName=field.foreignEntity.className?capFirst>
-        <@autowired "${packageName}.dao" "${foreignCName}DAO"/>
+        <@call this.addAutowired("${this.packageName}.dao" "${foreignCName}DAO")/>
     </#if>
 </#list>
-<#list updateFields as field>
+<#list this.updateFields as field>
     <#if field.foreignKey==1>
         <#assign foreignCName=field.foreignEntity.className?capFirst>
-        <@autowired "${packageName}.dao" "${foreignCName}DAO"/>
+        <@call this.addAutowired("${this.packageName}.dao" "${foreignCName}DAO")/>
     </#if>
 </#list>
-<#if metaEntity.foreignEntities??>
-    <#list metaEntity.foreignEntities as foreignEntity>
+<#if this.metaEntity.foreignEntities??>
+    <#list this.metaEntity.foreignEntities as foreignEntity>
         <#assign foreignCName=foreignEntity.className?capFirst>
-        <@autowired "${packageName}.dao" "${foreignCName}DAO"/>
+        <@call this.addAutowired("${this.packageName}.dao" "${foreignCName}DAO")/>
     </#list>
 </#if>
-<#list fields as field>
+<#list this.fields as field>
     <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
-        <@autowired "${packageName}.dao" "${field.foreignEntity.className?capFirst}DAO"/>
+        <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
 </#list>
 
-<#if metaEntity.checkUniqueIndexes?? && metaEntity.checkUniqueIndexes?size &gt; 0>
+    <@call this.printAutowired()/>
+
+
+<#if this.metaEntity.checkUniqueIndexes?? && metaEntity.checkUniqueIndexes?size &gt; 0>
     /**
      * 校验数据唯一性
-     * @param ${cName}
+     * @param ${this.className}
      * @param isUpdate 是否更新校验
      */
-    private void checkUnique(${CName}PO ${cName}, boolean isUpdate){
-    <#list metaEntity.checkUniqueIndexes as index>
+    private void checkUnique(${this.classNameUpper}PO ${this.className}, boolean isUpdate){
+    <#list this.metaEntity.checkUniqueIndexes as index>
         <#assign suffix=(index_index==0)?string('',''+index_index)>
         <#assign params=''>
         <#list index.fields as field>
-            <#assign params+=cName+'.get'+field.jfieldName?capFirst+'(), '>
+            <#assign params+=this.className+'.get'+field.jfieldName?capFirst+'(), '>
         </#list>
-        if(${cName}DAO.notUnique${suffix}(${params}isUpdate?${cName}.get${Id}():null)){
-            throw new ${ProjectName}Exception(ErrorCode.DUPLICATE_KEY);
+        if(${this.className}DAO.notUnique${suffix}(${params}isUpdate?${this.className}.get${this.idUpper}():null)){
+            throw new ${this.projectNameUpper}Exception(ErrorCode.DUPLICATE_KEY);
         }
     </#list>
     }
 
 </#if>
 <#macro checkForeignKeys fields>
-    <#list fields as field>
+    <#list this.fields as field>
         <#if field.foreignKey==1>
-            <@import "org.springframework.util.Assert"/>
+            <@call this.addImport("org.springframework.util.Assert")/>
             <#assign foreigncName=field.foreignEntity.className?uncapFirst>
-        if(${cName}.get${field.jfieldName?capFirst}() != null){
-            Assert.isTrue(${foreigncName}DAO.exist(${cName}.get${field.jfieldName?capFirst}()),"${field.fieldDesc}有误");
+        if(${this.className}.get${field.jfieldName?capFirst}() != null){
+            Assert.isTrue(${foreigncName}DAO.exist(${this.className}.get${field.jfieldName?capFirst}()),"${field.fieldDesc}有误");
         }
         </#if>
     </#list>
 </#macro>
 
     /**
-     * 新增【${title}】
-     * @param ${cName}DTO
+     * 新增【${this.title}】
+     * @param ${this.className}DTO
      * @return
      */
     @Transactional
-    public ${CName}PO save(${CName}AddDTO ${cName}DTO) {
-        ${CName}PO ${cName} = ${CName}Mapper.INSTANCE.fromAddDTO(${cName}DTO);
-        <@checkForeignKeys insertFields/>
-<#if metaEntity.checkUniqueIndexes?? && metaEntity.checkUniqueIndexes?size &gt; 0>
+    public ${this.classNameUpper}PO save(${this.classNameUpper}AddDTO ${this.className}DTO) {
+        ${this.classNameUpper}PO ${this.className} = ${this.classNameUpper}Mapper.INSTANCE.fromAddDTO(${this.className}DTO);
+        <@checkForeignKeys this.insertFields/>
+<#if this.metaEntity.checkUniqueIndexes?? && this.metaEntity.checkUniqueIndexes?size &gt; 0>
         //唯一性校验
-        this.checkUnique(${cName},false);
+        this.checkUnique(${this.className},false);
 </#if>
-        ${cName}DAO.save(${cName});
-<#if metaEntity.mtmHoldRefers??>
-    <#list metaEntity.mtmHoldRefers as otherEntity>
-        <@import "java.util.List"/>
-        <@import "org.apache.commons.collections.CollectionUtils"/>
+        ${this.className}DAO.save(${this.className});
+<#if this.metaEntity.mtmHoldRefers??>
+    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+        <@call this.addImport("java.util.List")/>
+        <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        List<${otherPk.jfieldType}> ${othercName}List = ${cName}DTO.get${otherCName}List();
+        List<${otherPk.jfieldType}> ${othercName}List = ${this.className}DTO.get${otherCName}List();
         if(CollectionUtils.isNotEmpty(${othercName}List)) {
-            this.doAdd${otherCName}(${cName}.get${Id}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
+            this.doAdd${otherCName}(${this.className}.get${this.idUpper}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
         }
     </#list>
 </#if>
-        return ${cName};
+        return ${this.className};
     }
 
     /**
-     * 修改【${title}】
-     * @param ${cName}UpdateDTO
+     * 修改【${this.title}】
+     * @param ${this.className}UpdateDTO
      * @return
      */
     @Transactional
-    <#if metaEntity.versionField??>
-        <@import "${commonPackage}.optimistic.OptimisticLock"/>
+    <#if this.metaEntity.versionField??>
+        <@call this.addImport("${this.commonPackage}.optimistic.OptimisticLock")/>
     @OptimisticLock
     </#if>
-    public ${CName}PO update(${CName}UpdateDTO ${cName}UpdateDTO) {
-        ${type} ${id} = ${cName}UpdateDTO.get${Id}();
-        ${CName}PO ${cName} = this.get${CName}(${id}, true);
-        ${CName}Mapper.INSTANCE.setUpdateDTO(${cName},${cName}UpdateDTO);
-        <@checkForeignKeys updateFields/>
-<#if metaEntity.checkUniqueIndexes?? && metaEntity.checkUniqueIndexes?size &gt; 0>
+    public ${this.classNameUpper}PO update(${this.classNameUpper}UpdateDTO ${this.className}UpdateDTO) {
+        ${this.type} ${this.id} = ${this.className}UpdateDTO.get${this.idUpper}();
+        ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
+        ${this.classNameUpper}Mapper.INSTANCE.setUpdateDTO(${this.className},${this.className}UpdateDTO);
+        <@checkForeignKeys this.updateFields/>
+<#if this.metaEntity.checkUniqueIndexes?? && this.metaEntity.checkUniqueIndexes?size &gt; 0>
         //唯一性校验
-        this.checkUnique(${cName},true);
+        this.checkUnique(${this.className},true);
 </#if>
-        ${cName}DAO.update(${cName});
-<#if metaEntity.mtmHoldRefers??>
-    <#list metaEntity.mtmHoldRefers as otherEntity>
-        <@import "java.util.List"/>
-        <@import "org.apache.commons.collections.CollectionUtils"/>
+        ${this.className}DAO.update(${this.className});
+<#if this.metaEntity.mtmHoldRefers??>
+    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+        <@call this.addImport("java.util.List")/>
+        <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        List<${otherPk.jfieldType}> ${othercName}List = ${cName}UpdateDTO.get${otherCName}List();
+        List<${otherPk.jfieldType}> ${othercName}List = ${this.className}UpdateDTO.get${otherCName}List();
         if(${othercName}List != null) {
-            this.set${otherCName}(${cName}.get${Id}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
+            this.set${otherCName}(${this.className}.get${this.idUpper}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
         }
     </#list>
 </#if>
-        return ${cName};
+        return ${this.className};
     }
-<#if pageSign == 1>
-    <@import "${commonPackage}.pojo.vo.PageVO"/>
+<#if this.pageSign == 1>
+    <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     /**
      * 查询分页列表
-     * @param ${cName}QO
+     * @param ${this.className}QO
      * @return
      */
-    public PageVO<${CName}ListVO> list(${CName}QO ${cName}QO) {
-        PageVO<${CName}ListVO> page = ${cName}DAO.findByPage(${cName}QO);
+    public PageVO<${this.classNameUpper}ListVO> list(${this.classNameUpper}QO ${this.className}QO) {
+        PageVO<${this.classNameUpper}ListVO> page = ${this.className}DAO.findByPage(${this.className}QO);
         return page;
     }
 <#else>
-    <@import "java.util.List"/>
+    <@call this.addImport("java.util.List")/>
     /**
      * 查询列表
-     * @param ${cName}QO
+     * @param ${this.className}QO
      * @return
      */
-    public List<${CName}ListVO> list(${CName}QO ${cName}QO) {
-        List<${CName}ListVO> list = ${cName}DAO.findListByQuery(${cName}QO);
+    public List<${this.classNameUpper}ListVO> list(${this.classNameUpper}QO ${this.className}QO) {
+        List<${this.classNameUpper}ListVO> list = ${this.className}DAO.findListByQuery(${this.className}QO);
         return list;
     }
 </#if>
 
 
     /**
-     * 根据主键获取【${title}】
-     * @param ${id}
+     * 根据主键获取【${this.title}】
+     * @param ${this.id}
      * @param force
      * @return
      */
-    public ${CName}PO get${CName}(${type} ${id}, boolean force){
-        ${CName}PO ${cName} = ${cName}DAO.findById(${id});
-        if (force && ${cName} == null) {
-            throw new ${ProjectName}Exception(ErrorCode.RECORD_NOT_FIND);
+    public ${this.classNameUpper}PO get${this.classNameUpper}(${this.type} ${this.id}, boolean force){
+        ${this.classNameUpper}PO ${this.className} = ${this.className}DAO.findById(${this.id});
+        if (force && ${this.className} == null) {
+            throw new ${this.projectNameUpper}Exception(ErrorCode.RECORD_NOT_FIND);
         }
-        return ${cName};
+        return ${this.className};
     }
 
 
     /**
-     * 查询【${title}】详情
-     * @param ${id}
+     * 查询【${this.title}】详情
+     * @param ${this.id}
      * @return
      */
-    public ${CName}ShowVO show(${type} ${id}) {
-        ${CName}PO ${cName} = this.get${CName}(${id}, true);
-        ${CName}ShowVO showVO = ${CName}Mapper.INSTANCE.toShowVO(${cName});
-<#list fields as field>
+    public ${this.classNameUpper}ShowVO show(${this.type} ${this.id}) {
+        ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
+        ${this.classNameUpper}ShowVO showVO = ${this.classNameUpper}Mapper.INSTANCE.toShowVO(${this.className});
+<#list this.fields as field>
     <#if field.cascadeShowExts?? && field.cascadeShowExts?size &gt; 0>
         <#assign otherCName=field.foreignEntity.className?capFirst>
         <#assign othercName=field.foreignEntity.className?uncapFirst>
-        <@import "${packageName}.pojo.po.${otherCName}PO"/>
-        if(${cName}.get${field.jfieldName?capFirst}()!=null){
-            ${otherCName}PO _${othercName}PO = ${othercName}DAO.findById(${cName}.get${field.jfieldName?capFirst}());
+        <@call this.addImport("${this.packageName}.pojo.po.${otherCName}PO")/>
+        if(${this.className}.get${field.jfieldName?capFirst}()!=null){
+            ${otherCName}PO _${othercName}PO = ${othercName}DAO.findById(${this.className}.get${field.jfieldName?capFirst}());
         <#list field.cascadeShowExts as cascadeExt>
             showVO.set${cascadeExt.alias?capFirst}(_${othercName}PO.get${cascadeExt.cascadeField.jfieldName?capFirst}());
         </#list>
         }
     </#if>
 </#list>
-<#if metaEntity.mtmHoldRefers??>
-    <#list metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.mtmHoldRefers??>
+    <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
         //设置【${otherEntity.title}】列表
-        showVO.set${otherCName}List(${othercName}DAO.findVOBy${CName}(${id}));
+        showVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(${this.id}));
     </#list>
 </#if>
         return showVO;
     }
 
     /**
-     * 删除【${title}】
-     * @param ${id}s
+     * 删除【${this.title}】
+     * @param ${this.id}s
      * @return
      */
     @Transactional
-    public int delete(${type}... ${id}s) {
+    public int delete(${this.type}... ${this.id}s) {
         int count = 0;
-        for (${type} ${id} : ${id}s) {
-    <#if metaEntity.foreignEntities??>
-        <#list metaEntity.foreignEntities as foreignEntity>
+        for (${this.type} ${this.id} : ${this.id}s) {
+    <#if this.metaEntity.foreignEntities??>
+        <#list this.metaEntity.foreignEntities as foreignEntity>
             <#assign foreignCName=foreignEntity.className?capFirst>
-            this.checkDeleteBy${foreignCName}(${id});
+            this.checkDeleteBy${foreignCName}(${this.id});
         </#list>
     </#if>
-    <#if metaEntity.mtmUnHoldRefers??>
-        <#list metaEntity.mtmUnHoldRefers as otherEntity>
+    <#if this.metaEntity.mtmUnHoldRefers??>
+        <#list this.metaEntity.mtmUnHoldRefers as otherEntity>
             <#assign otherCName=otherEntity.className?capFirst>
             //校验是否存在【${otherEntity.title}】关联
-            this.checkDeleteBy${otherCName}(${id});
+            this.checkDeleteBy${otherCName}(${this.id});
         </#list>
     </#if>
-            count += ${cName}DAO.delete(${id});
+            count += ${this.className}DAO.delete(${this.id});
         }
         return count;
     }
 
-<#if metaEntity.foreignEntities??>
-    <#list metaEntity.foreignEntities as foreignEntity>
+<#if this.metaEntity.foreignEntities??>
+    <#list this.metaEntity.foreignEntities as foreignEntity>
         <#assign foreignCName=foreignEntity.className?capFirst>
         <#assign foreigncName=foreignEntity.className?uncapFirst>
         <#assign alreadyFind=false>
     /**
      * 校验是否存在【${foreignEntity.title}】关联
-     * @param ${id}
+     * @param ${this.id}
      */
-    private void checkDeleteBy${foreignCName}(${type} ${id}) {
-        <#list metaEntity.foreignFields as foreignField>
+    private void checkDeleteBy${foreignCName}(${this.type} ${this.id}) {
+        <#list this.metaEntity.foreignFields as foreignField>
             <#if foreignField.entityId==foreignEntity.entityId>
-        <#if !alreadyFind>int </#if>count = ${foreigncName}DAO.getCountBy${foreignField.jfieldName?capFirst}(${id});
+        <#if !alreadyFind>int </#if>count = ${foreigncName}DAO.getCountBy${foreignField.jfieldName?capFirst}(${this.id});
         if(count>0){
-            throw new ${ProjectName}Exception(ErrorCode.CASCADE_DELETE_ERROR);
+            throw new ${this.projectNameUpper}Exception(ErrorCode.CASCADE_DELETE_ERROR);
         }
                 <#assign alreadyFind=true>
             </#if>
@@ -277,41 +279,41 @@ public class ${CName}Service {
 
     </#list>
 </#if>
-<#if metaEntity.mtmUnHoldRefers??>
-    <#list metaEntity.mtmUnHoldRefers as otherEntity>
+<#if this.metaEntity.mtmUnHoldRefers??>
+    <#list this.metaEntity.mtmUnHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
     /**
      * 校验是否存在【${otherEntity.title}】关联
-     * @param ${id}
+     * @param ${this.id}
      */
-    private void checkDeleteBy${otherCName}(${type} ${id}) {
-        int count = ${othercName}DAO.getCountBy${CName}(${id});
+    private void checkDeleteBy${otherCName}(${this.type} ${this.id}) {
+        int count = ${othercName}DAO.getCountBy${this.classNameUpper}(${this.id});
         if(count>0){
-            throw new ${ProjectName}Exception(ErrorCode.CASCADE_DELETE_ERROR);
+            throw new ${this.projectNameUpper}Exception(ErrorCode.CASCADE_DELETE_ERROR);
         }
     }
 
     </#list>
 </#if>
-<#if metaEntity.mtmHoldRefers??>
-    <#list metaEntity.mtmHoldRefers as otherEntity>
-        <@import "org.apache.commons.lang3.ArrayUtils"/>
+<#if this.metaEntity.mtmHoldRefers??>
+    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+        <@call this.addImport("org.apache.commons.lang3.ArrayUtils")/>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     /**
      * 执行【${otherEntity.title}】添加
-     * @param ${id}
+     * @param ${this.id}
      * @param ${otherPkId}
      * @return
      */
-    private int doAdd${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
+    private int doAdd${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherPkId}) {
         int count = 0;
         for (${otherPk.jfieldType} _id : ${otherPkId}) {
             if(${othercName}DAO.exist(_id)){
-                count += ${cName}DAO.add${otherCName}(${id},_id);
+                count += ${this.className}DAO.add${otherCName}(${this.id},_id);
             }
         }
         return count;
@@ -319,48 +321,48 @@ public class ${CName}Service {
 
     /**
      * 添加【${otherEntity.title}】
-     * @param ${id}
+     * @param ${this.id}
      * @param ${otherPkId}
      * @return
      */
     @Transactional
-    public int add${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
-        ${CName}PO ${cName} = this.get${CName}(${id}, true);
+    public int add${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherPkId}) {
+        ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         if(ArrayUtils.isEmpty(${otherPkId})){
-            throw new ${ProjectName}Exception(ErrorCode.PARAM_IS_NULL);
+            throw new ${this.projectNameUpper}Exception(ErrorCode.PARAM_IS_NULL);
         }
-        return doAdd${otherCName}(${id}, ${otherPkId});
+        return doAdd${otherCName}(${this.id}, ${otherPkId});
     }
 
     /**
      * 移除【${otherEntity.title}】
-     * @param ${id}
+     * @param ${this.id}
      * @param ${otherPkId}
      * @return
      */
     @Transactional
-    public int remove${otherCName}(${type} ${id}, ${otherPk.jfieldType}... ${otherPkId}) {
-        ${CName}PO ${cName} = this.get${CName}(${id}, true);
+    public int remove${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherPkId}) {
+        ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         if(ArrayUtils.isEmpty(${otherPkId})){
-            throw new ${ProjectName}Exception(ErrorCode.PARAM_IS_NULL);
+            throw new ${this.projectNameUpper}Exception(ErrorCode.PARAM_IS_NULL);
         }
-        return ${cName}DAO.remove${otherCName}(${id}, ${otherPkId});
+        return ${this.className}DAO.remove${otherCName}(${this.id}, ${otherPkId});
     }
 
     /**
      * 设置【${otherEntity.title}】
-     * @param ${id}
+     * @param ${this.id}
      * @param ${otherPkId}
      * @return
      */
     @Transactional
-    public int set${otherCName}(${type} ${id}, ${otherPk.jfieldType}[] ${otherPkId}) {
-        ${CName}PO ${cName} = this.get${CName}(${id}, true);
-        ${cName}DAO.removeAll${otherCName}(${id});
+    public int set${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}[] ${otherPkId}) {
+        ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
+        ${this.className}DAO.removeAll${otherCName}(${this.id});
         if(ArrayUtils.isEmpty(${otherPkId})){
             return 0;
         }
-        return doAdd${otherCName}(${id}, ${otherPkId});
+        return doAdd${otherCName}(${this.id}, ${otherPkId});
     }
 
     </#list>
@@ -370,8 +372,8 @@ public class ${CName}Service {
 
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.service;
+package ${this.packageName}.service;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

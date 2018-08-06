@@ -9,7 +9,7 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
     <typeAliases>
-        <package name="${packageName}.pojo"/>
+        <package name="${this.packageName}.pojo"/>
     </typeAliases>
     <mappers>
     <#list metaEntities as metaEntity>

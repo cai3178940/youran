@@ -1,9 +1,9 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "java.util.Date"/>
-<@classCom "操作日期接口"/>
+<@call this.addImport("java.util.Date")/>
+<@call this.printClassCom("操作日期接口")/>
 public interface OperatedTime {
 
     Date getOperatedTime();
@@ -12,8 +12,8 @@ public interface OperatedTime {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.pojo.po;
+package ${this.commonPackage}.pojo.po;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

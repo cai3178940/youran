@@ -17,4 +17,14 @@ public class MetaConstType {
     public static final boolean check(int value) {
         return INTEGER == value || STRING == value;
     }
+
+    public static String convertString(int value){
+        if(INTEGER == value){
+            return "Integer";
+        }else if(STRING == value){
+            return "String";
+        }
+        throw new RuntimeException("不支持的常量类型");
+    }
+
 }

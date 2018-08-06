@@ -1,9 +1,9 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "java.math.BigDecimal"/>
-<@classCom "空指针安全的类型转换工具"/>
+<@call this.addImport("java.math.BigDecimal")/>
+<@call this.printClassCom("空指针安全的类型转换工具")/>
 public class SafeUtil {
 
     /**
@@ -117,8 +117,8 @@ public class SafeUtil {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.util;
+package ${this.commonPackage}.util;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

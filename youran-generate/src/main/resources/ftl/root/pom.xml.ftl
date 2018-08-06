@@ -9,15 +9,15 @@
         <version>1.5.13.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>${groupId}</groupId>
-    <artifactId>${originProjectName}</artifactId>
+    <groupId>${this.groupId}</groupId>
+    <artifactId>${this.originProjectName}</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>${originProjectName}-common</module>
-        <module>${originProjectName}-core</module>
-        <module>${originProjectName}-web</module>
+        <module>${this.originProjectName}-common</module>
+        <module>${this.originProjectName}-core</module>
+        <module>${this.originProjectName}-web</module>
     </modules>
 
     <properties>
@@ -40,18 +40,18 @@
         <dependencies>
 
             <dependency>
-                <groupId>${groupId}</groupId>
-                <artifactId>${originProjectName}-common</artifactId>
+                <groupId>${this.groupId}</groupId>
+                <artifactId>${this.originProjectName}-common</artifactId>
                 <version>${r'$'}{project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${groupId}</groupId>
-                <artifactId>${originProjectName}-core</artifactId>
+                <groupId>${this.groupId}</groupId>
+                <artifactId>${this.originProjectName}-core</artifactId>
                 <version>${r'$'}{project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${groupId}</groupId>
-                <artifactId>${originProjectName}-web</artifactId>
+                <groupId>${this.groupId}</groupId>
+                <artifactId>${this.originProjectName}-web</artifactId>
                 <version>${r'$'}{project.version}</version>
             </dependency>
             <dependency>

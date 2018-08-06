@@ -1,16 +1,16 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "com.google.common.base.Function"/>
-<@import "com.google.common.base.Joiner"/>
-<@import "com.google.common.base.Splitter"/>
-<@import "com.google.common.collect.Iterables"/>
-<@import "com.google.common.collect.Lists"/>
-<@import "org.apache.commons.lang3.StringUtils"/>
-<@import "java.util.List"/>
-<@import "java.util.Map"/>
-<@classCom "各种形式的转换工具类"/>
+<@call this.addImport("com.google.common.base.Function")/>
+<@call this.addImport("com.google.common.base.Joiner")/>
+<@call this.addImport("com.google.common.base.Splitter")/>
+<@call this.addImport("com.google.common.collect.Iterables")/>
+<@call this.addImport("com.google.common.collect.Lists")/>
+<@call this.addImport("org.apache.commons.lang3.StringUtils")/>
+<@call this.addImport("java.util.List")/>
+<@call this.addImport("java.util.Map")/>
+<@call this.printClassCom("各种形式的转换工具类")/>
 public class ConvertUtil {
 
     //整型数组转字符串
@@ -99,8 +99,8 @@ public class ConvertUtil {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.util;
+package ${this.commonPackage}.util;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

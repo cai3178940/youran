@@ -1,21 +1,22 @@
 <#include "/common.ftl">
-<#include "/entity_common.ftl">
-<#include "/import.ftl">
+
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${packageName}.pojo.dto.*"/>
-<@import "${packageName}.pojo.po.*"/>
-<@import "org.springframework.stereotype.Component"/>
-<@importStatic "${packageName}.pojo.example.${CName}Example.*"/>
+<@call this.addImport("${this.packageName}.pojo.dto.*")/>
+<@call this.addImport("${this.packageName}.pojo.po.*")/>
+<@call this.addImport("org.springframework.stereotype.Component")/>
+<@call this.addStaticImport("${this.packageName}.pojo.example.${this.classNameUpper}Example.*")/>
 @Component
-public class ${CName}Helper {
+public class ${this.classNameUpper}Helper {
 
-    <@autowired "${packageName}.service" "${CName}Service"/>
+    <@call this.addAutowired("${this.packageName}.service" "${this.classNameUpper}Service")/>
+    <@call this.printAutowired()/>
 
     <#--定义外键字段参数串-->
     <#assign foreignArg="">
     <#assign foreignArg2="">
-    <#list insertFields as field>
+    <#list this.insertFields as field>
         <#if field.foreignKey==1>
             <#assign foreignArg=foreignArg+"${field.jfieldType} ${field.jfieldName}, ">
             <#assign foreignArg2=foreignArg2+"${field.jfieldName}, ">
@@ -29,22 +30,22 @@ public class ${CName}Helper {
      * 生成add测试数据
      * @return
      */
-    public ${CName}AddDTO get${CName}AddDTO(${foreignArg}){
-        ${CName}AddDTO dto = new ${CName}AddDTO();
-    <#list metaEntity.insertFields as field>
+    public ${this.classNameUpper}AddDTO get${this.classNameUpper}AddDTO(${foreignArg}){
+        ${this.classNameUpper}AddDTO dto = new ${this.classNameUpper}AddDTO();
+    <#list this.metaEntity.insertFields as field>
         <#assign arg="">
         <#if field.foreignKey==1>
             <#assign arg="${field.jfieldName}">
         <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
             <#assign arg="E_${field.jfieldName?upperCase}">
         <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
-            <@import "${commonPackage}.util.DateUtil"/>
+            <@call this.addImport("${this.commonPackage}.util.DateUtil")/>
             <#assign arg="DateUtil.parseDate(E_${field.jfieldName?upperCase})">
         <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-            <@import "java.math.BigDecimal"/>
+            <@call this.addImport("java.math.BigDecimal")/>
             <#assign arg="SafeUtil.get${field.jfieldType}(E_${field.jfieldName?upperCase})">
         <#else>
-            <@import "${commonPackage}.util.SafeUtil"/>
+            <@call this.addImport("${this.commonPackage}.util.SafeUtil")/>
             <#assign arg="SafeUtil.get${field.jfieldType}(E_${field.jfieldName?upperCase})">
         </#if>
         dto.set${field.jfieldName?capFirst}(${arg});
@@ -57,11 +58,11 @@ public class ${CName}Helper {
      * 生成update测试数据
      * @return
      */
-    public ${CName}UpdateDTO get${CName}UpdateDTO(${CName}PO ${cName}){
-        ${CName}UpdateDTO dto = new ${CName}UpdateDTO();
-        dto.set${Id}(${cName}.get${Id}());
-        <#list metaEntity.updateFields as field>
-        dto.set${field.jfieldName?capFirst}(${cName}.get${field.jfieldName?capFirst}());
+    public ${this.classNameUpper}UpdateDTO get${this.classNameUpper}UpdateDTO(${this.classNameUpper}PO ${this.className}){
+        ${this.classNameUpper}UpdateDTO dto = new ${this.classNameUpper}UpdateDTO();
+        dto.set${this.idUpper}(${this.className}.get${this.idUpper}());
+        <#list this.metaEntity.updateFields as field>
+        dto.set${field.jfieldName?capFirst}(${this.className}.get${field.jfieldName?capFirst}());
         </#list>
         return dto;
     }
@@ -70,9 +71,9 @@ public class ${CName}Helper {
      * 保存示例
      * @return
      */
-    public ${CName}PO save${CName}Example(${foreignArg}){
-        ${CName}AddDTO addDTO = this.get${CName}AddDTO(${foreignArg2});
-        return ${cName}Service.save(addDTO);
+    public ${this.classNameUpper}PO save${this.classNameUpper}Example(${foreignArg}){
+        ${this.classNameUpper}AddDTO addDTO = this.get${this.classNameUpper}AddDTO(${foreignArg2});
+        return ${this.className}Service.save(addDTO);
     }
 
 
@@ -80,8 +81,8 @@ public class ${CName}Helper {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.help;
+package ${this.packageName}.help;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

@@ -1,17 +1,17 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.util.SpringUtil"/>
-<@import "org.springframework.boot.autoconfigure.condition.ConditionalOnClass"/>
-<@import "org.springframework.context.MessageSource"/>
-<@import "org.springframework.context.annotation.*"/>
-<@import "org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
-<@import "javax.validation.Validator"/>
-<@classCom "配置类"/>
+<@call this.addImport("${this.commonPackage}.util.SpringUtil")/>
+<@call this.addImport("org.springframework.boot.autoconfigure.condition.ConditionalOnClass")/>
+<@call this.addImport("org.springframework.context.MessageSource")/>
+<@call this.addImport("org.springframework.context.annotation.*")/>
+<@call this.addImport("org.springframework.validation.beanvalidation.LocalValidatorFactoryBean")/>
+<@call this.addImport("javax.validation.Validator")/>
+<@call this.printClassCom("配置类")/>
 @Configuration
-@PropertySources(value = @PropertySource("classpath:/config/${projectNameSplit}-default.properties"))
-public class ${ProjectName}Configuration {
+@PropertySources(value = @PropertySource("classpath:/config/${this.projectNameSplit}-default.properties"))
+public class ${this.projectNameUpper}Configuration {
 
 
     /**
@@ -38,16 +38,16 @@ public class ${ProjectName}Configuration {
     }
 
     @Bean
-    public ${ProjectName}Properties ${projectName}Properties(){
-        return new ${ProjectName}Properties();
+    public ${this.projectNameUpper}Properties ${this.projectName}Properties(){
+        return new ${this.projectNameUpper}Properties();
     }
 
 
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.config;
+package ${this.packageName}.config;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

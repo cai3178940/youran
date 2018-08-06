@@ -1,5 +1,9 @@
 package com.youran.generate.util;
 
+import com.youran.generate.constant.JFieldType;
+import com.youran.generate.constant.MetaConstType;
+import com.youran.generate.constant.MetaSpecialField;
+import com.youran.generate.constant.QueryType;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
@@ -14,7 +18,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Map;
 
 /**
  * Title:FreeMaker工具类
@@ -32,7 +35,15 @@ public class FreeMakerUtil {
     static {
         cfg.setClassForTemplateLoading(FreeMakerUtil.class, "/ftl");
         cfg.setNumberFormat("#");
+        // 设置可访问的静态工具类
+        cfg.setSharedVariable("MetaConstType",getStaticModel(MetaConstType.class));
+        cfg.setSharedVariable("MetadataUtil",getStaticModel(MetadataUtil.class));
+        cfg.setSharedVariable("TemplateUtil",getStaticModel(TemplateUtil.class));
+        cfg.setSharedVariable("JFieldType",getStaticModel(JFieldType.class));
+        cfg.setSharedVariable("QueryType",getStaticModel(QueryType.class));
+        cfg.setSharedVariable("MetaSpecialField",getStaticModel(MetaSpecialField.class));
         builder.setExposeFields(true);
+
     }
 
     /**
@@ -55,13 +66,13 @@ public class FreeMakerUtil {
      * 控制台输出
      *
      * @param templateName
-     * @param root
+     * @param dataModel
      */
-    public static void print(String templateName, Map<String, Object> root) {
+    public static void print(String templateName, Object dataModel) {
 
         try {
             Template template = getTemplate(templateName);
-            template.process(root, new PrintWriter(System.out));
+            template.process(dataModel, new PrintWriter(System.out));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new RuntimeException("freemarker解析异常");
@@ -73,13 +84,13 @@ public class FreeMakerUtil {
      * PrintWriter写入
      *
      * @param templateName
-     * @param root
+     * @param dataModel
      */
-    public static void write(String templateName, Map<String, Object> root, PrintWriter printWriter) {
+    public static void write(String templateName, Object dataModel, PrintWriter printWriter) {
 
         try {
             Template template = getTemplate(templateName);
-            template.process(root, printWriter);
+            template.process(dataModel, printWriter);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new RuntimeException("freemarker解析异常");
@@ -91,14 +102,14 @@ public class FreeMakerUtil {
      * 输出文本
      *
      * @param templateName
-     * @param root
+     * @param dataModel
      */
-    public static String writeToStr(String templateName, Map<String, Object> root) {
+    public static String writeToStr(String templateName, Object dataModel) {
         try {
             StringWriter stringWriter = new StringWriter();
             BufferedWriter writer = new BufferedWriter(stringWriter);
             Template template = getTemplate(templateName);
-            template.process(root, writer);
+            template.process(dataModel, writer);
             return stringWriter.getBuffer().toString();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -112,17 +123,17 @@ public class FreeMakerUtil {
      * 生成文件
      *
      * @param templateName:模板名
-     * @param root：数据原型
+     * @param dataModel：数据原型
      * @param outFilePath：输出路径(全路径名)
      */
-    public static void generateFile(String templateName, Map<String, Object> root, String outFilePath) {
+    public static void generateFile(String templateName, Object dataModel, String outFilePath) {
 
         FileWriter out = null;
         try {
             // 通过一个文件输出流，就可以写到相应的文件中，此处用的是绝对路径
             out = new FileWriter(outFilePath);
             Template temp = getTemplate(templateName);
-            temp.process(root, out);
+            temp.process(dataModel, out);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new RuntimeException("freemarker解析异常");

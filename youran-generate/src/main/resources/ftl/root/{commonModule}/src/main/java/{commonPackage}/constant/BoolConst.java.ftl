@@ -1,9 +1,8 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.validator.Check"/>
-<@classCom "布尔常量"/>
+<@call this.addImport("${this.commonPackage}.validator.Check")/>
+<@call this.printClassCom("布尔常量")/>
 public class BoolConst {
 
     //数据库bool字段值
@@ -16,11 +15,10 @@ public class BoolConst {
         return TRUE == value || FALSE == value;
     }
 }
-
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.constant;
+package ${this.commonPackage}.constant;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

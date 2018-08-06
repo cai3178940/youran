@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.template;
 
+import com.youran.generate.constant.MetaConstType;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
@@ -21,33 +22,38 @@ public class ConstModel extends BaseModel{
      */
     private MetaConstPO metaConst;
     /**
-     * 常量对象
+     * 常量名称-首字母小写
      */
-    private String className;
+    private String constName;
     /**
-     * 常量对象
+     * 常量名称-首字母大写
      */
-    private String classNameUpper;
+    private String constNameUpper;
     /**
-     * 常量对象
+     * 常量描述
      */
     private String remark;
     /**
-     * 常量对象
+     * 常量类型
      */
     private Integer constType;
     /**
-     * 常量对象
+     * 常量类型-字符串
+     */
+    private String constTypeStr;
+    /**
+     * 常量值列表
      */
     private List<MetaConstDetailPO> detailList;
 
     public ConstModel(MetaProjectPO project,MetaConstPO metaConst) {
         super(project);
         this.metaConst = metaConst;
-        this.className = StringUtils.uncapitalize(metaConst.getConstName());
-        this.classNameUpper = StringUtils.capitalize(metaConst.getConstName());
+        this.constName = StringUtils.uncapitalize(metaConst.getConstName());
+        this.constNameUpper = StringUtils.capitalize(metaConst.getConstName());
         this.remark = metaConst.getConstRemark();
         this.constType = metaConst.getConstType();
+        this.constTypeStr = MetaConstType.convertString(metaConst.getConstType());
         this.detailList = metaConst.getDetailList();
     }
 
@@ -60,20 +66,28 @@ public class ConstModel extends BaseModel{
         this.metaConst = metaConst;
     }
 
-    public String getClassName() {
-        return className;
+    public String getConstName() {
+        return constName;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setConstName(String constName) {
+        this.constName = constName;
     }
 
-    public String getClassNameUpper() {
-        return classNameUpper;
+    public String getConstNameUpper() {
+        return constNameUpper;
     }
 
-    public void setClassNameUpper(String classNameUpper) {
-        this.classNameUpper = classNameUpper;
+    public void setConstNameUpper(String constNameUpper) {
+        this.constNameUpper = constNameUpper;
+    }
+
+    public String getConstTypeStr() {
+        return constTypeStr;
+    }
+
+    public void setConstTypeStr(String constTypeStr) {
+        this.constTypeStr = constTypeStr;
     }
 
     public String getRemark() {

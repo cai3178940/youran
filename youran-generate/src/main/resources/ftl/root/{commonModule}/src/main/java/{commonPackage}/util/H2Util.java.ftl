@@ -1,17 +1,17 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "org.apache.commons.io.FileUtils"/>
-<@import "org.apache.commons.io.IOUtils"/>
-<@import "org.apache.commons.lang3.StringUtils"/>
-<@import "org.apache.commons.lang3.time.DateFormatUtils"/>
-<@import "java.io.File"/>
-<@import "java.io.IOException"/>
-<@import "java.io.InputStream"/>
-<@import "java.net.URL"/>
-<@import "java.util.Date"/>
-<@classCom "H2数据库工具类"/>
+<@call this.addImport("org.apache.commons.io.FileUtils")/>
+<@call this.addImport("org.apache.commons.io.IOUtils")/>
+<@call this.addImport("org.apache.commons.lang3.StringUtils")/>
+<@call this.addImport("org.apache.commons.lang3.time.DateFormatUtils")/>
+<@call this.addImport("java.io.File")/>
+<@call this.addImport("java.io.IOException")/>
+<@call this.addImport("java.io.InputStream")/>
+<@call this.addImport("java.net.URL")/>
+<@call this.addImport("java.util.Date")/>
+<@call this.printClassCom("H2数据库工具类")/>
 public class H2Util {
 
 
@@ -82,8 +82,8 @@ public class H2Util {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.util;
+package ${this.commonPackage}.util;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

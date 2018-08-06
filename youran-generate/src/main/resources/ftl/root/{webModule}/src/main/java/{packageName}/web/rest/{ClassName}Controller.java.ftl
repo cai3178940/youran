@@ -1,130 +1,129 @@
 <#include "/common.ftl">
-<#include "/entity_common.ftl">
-<#include "/import.ftl">
+
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.pojo.vo.ReplyVO"/>
-<@import "${packageName}.pojo.dto.${CName}AddDTO"/>
-<@import "${packageName}.pojo.po.${CName}PO"/>
-<@import "${packageName}.pojo.qo.${CName}QO"/>
-<@import "${packageName}.pojo.vo.${CName}ListVO"/>
-<@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
-<@import "${packageName}.pojo.mapper.${CName}Mapper"/>
-<@import "${packageName}.pojo.vo.${CName}ShowVO"/>
-<@import "${packageName}.service.${CName}Service"/>
-<@import "${packageName}.web.AbstractController"/>
-<@import "${packageName}.web.api.${CName}API"/>
-<@import "org.apache.commons.lang3.ArrayUtils"/>
-<@import "org.springframework.beans.factory.annotation.Autowired"/>
-<@import "org.springframework.web.bind.annotation.*"/>
-<@import "javax.validation.Valid"/>
-<@classCom "【${title}】控制器"/>
+<@call this.addImport("${this.commonPackage}.pojo.vo.ReplyVO")/>
+<@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}AddDTO")/>
+<@call this.addImport("${this.packageName}.pojo.po.${this.classNameUpper}PO")/>
+<@call this.addImport("${this.packageName}.pojo.qo.${this.classNameUpper}QO")/>
+<@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
+<@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}UpdateDTO")/>
+<@call this.addImport("${this.packageName}.pojo.mapper.${this.classNameUpper}Mapper")/>
+<@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ShowVO")/>
+<@call this.addImport("${this.packageName}.web.AbstractController")/>
+<@call this.addImport("${this.packageName}.web.api.${this.classNameUpper}API")/>
+<@call this.addImport("org.apache.commons.lang3.ArrayUtils")/>
+<@call this.addImport("org.springframework.beans.factory.annotation.Autowired")/>
+<@call this.addImport("org.springframework.web.bind.annotation.*")/>
+<@call this.addImport("javax.validation.Valid")/>
+<@call this.printClassCom("【${this.title}】控制器")/>
 @RestController
-@RequestMapping("/${cName}")
-public class ${CName}Controller extends AbstractController implements ${CName}API {
+@RequestMapping("/${this.className}")
+public class ${this.classNameUpper}Controller extends AbstractController implements ${this.classNameUpper}API {
 
-    @Autowired
-    private ${CName}Service ${cName}Service;
+    <@call this.addAutowired("${this.packageName}.service" "${this.classNameUpper}Service")/>
+    <@call this.printAutowired()/>
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<${CName}ShowVO> save(@Valid @RequestBody ${CName}AddDTO ${cName}AddDTO) {
-        ${CName}PO ${cName} = ${cName}Service.save(${cName}AddDTO);
-        return ReplyVO.success().data(${CName}Mapper.INSTANCE.toShowVO(${cName}));
+    public ReplyVO<${this.classNameUpper}ShowVO> save(@Valid @RequestBody ${this.classNameUpper}AddDTO ${this.className}AddDTO) {
+        ${this.classNameUpper}PO ${this.className} = ${this.className}Service.save(${this.className}AddDTO);
+        return ReplyVO.success().data(${this.classNameUpper}Mapper.INSTANCE.toShowVO(${this.className}));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<${CName}ShowVO> update(@Valid @RequestBody ${CName}UpdateDTO ${cName}UpdateDTO) {
-        ${CName}PO ${cName} = ${cName}Service.update(${cName}UpdateDTO);
-        return ReplyVO.success().data(${CName}Mapper.INSTANCE.toShowVO(${cName}));
+    public ReplyVO<${this.classNameUpper}ShowVO> update(@Valid @RequestBody ${this.classNameUpper}UpdateDTO ${this.className}UpdateDTO) {
+        ${this.classNameUpper}PO ${this.className} = ${this.className}Service.update(${this.className}UpdateDTO);
+        return ReplyVO.success().data(${this.classNameUpper}Mapper.INSTANCE.toShowVO(${this.className}));
     }
 
-<#if pageSign == 1>
-    <@import "${commonPackage}.pojo.vo.PageVO"/>
+<#if this.pageSign == 1>
+    <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<PageVO<${CName}ListVO>> list(@Valid ${CName}QO ${cName}QO) {
-        PageVO<${CName}ListVO> page = ${cName}Service.list(${cName}QO);
+    public ReplyVO<PageVO<${this.classNameUpper}ListVO>> list(@Valid ${this.classNameUpper}QO ${this.className}QO) {
+        PageVO<${this.classNameUpper}ListVO> page = ${this.className}Service.list(${this.className}QO);
         return ReplyVO.success().data(page);
     }
 <#else>
-    <@import "java.util.List"/>
+    <@call this.addImport("java.util.List")/>
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<List<${CName}ListVO>> list(@Valid ${CName}QO ${cName}QO) {
-        List<${CName}ListVO> list = ${cName}Service.list(${cName}QO);
+    public ReplyVO<List<${this.classNameUpper}ListVO>> list(@Valid ${this.classNameUpper}QO ${this.className}QO) {
+        List<${this.classNameUpper}ListVO> list = ${this.className}Service.list(${this.className}QO);
         return ReplyVO.success().data(list);
     }
 </#if>
 
     @Override
-    @GetMapping(value = "/{${id}}")
-    public ReplyVO<${CName}ShowVO> show(@PathVariable ${type} ${id}) {
-        ${CName}ShowVO ${cName}ShowVO = ${cName}Service.show(${id});
-        return ReplyVO.success().data(${cName}ShowVO);
+    @GetMapping(value = "/{${this.id}}")
+    public ReplyVO<${this.classNameUpper}ShowVO> show(@PathVariable ${this.type} ${this.id}) {
+        ${this.classNameUpper}ShowVO ${this.className}ShowVO = ${this.className}Service.show(${this.id});
+        return ReplyVO.success().data(${this.className}ShowVO);
     }
 
     @Override
-    @DeleteMapping(value = "/{${id}}")
-    public ReplyVO<Integer> delete(@PathVariable ${type} ${id}) {
-        int count = ${cName}Service.delete(${id});
+    @DeleteMapping(value = "/{${this.id}}")
+    public ReplyVO<Integer> delete(@PathVariable ${this.type} ${this.id}) {
+        int count = ${this.className}Service.delete(${this.id});
         return ReplyVO.success().data(count);
     }
 
     @Override
     @PutMapping(value = "deleteBatch")
-    public ReplyVO<Integer> deleteBatch(@RequestBody ${type}[] id) {
+    public ReplyVO<Integer> deleteBatch(@RequestBody ${this.type}[] id) {
         if(ArrayUtils.isEmpty(id)){
             return ReplyVO.fail("参数为空");
         }
-        int count = ${cName}Service.delete(id);
+        int count = ${this.className}Service.delete(id);
         return ReplyVO.success().data(count);
     }
 
-<#if metaEntity.mtmHoldRefers??>
-    <#list metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.mtmHoldRefers??>
+    <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     @Override
-    @PutMapping(value = "/{${id}}/add${otherCName}/{${otherPkId}}")
-    public ReplyVO<Integer> add${otherCName}(@PathVariable ${type} ${id},
+    @PutMapping(value = "/{${this.id}}/add${otherCName}/{${otherPkId}}")
+    public ReplyVO<Integer> add${otherCName}(@PathVariable ${this.type} ${this.id},
                         @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
-        int count = ${cName}Service.add${otherCName}(${id}, ${otherPkId});
+        int count = ${this.className}Service.add${otherCName}(${this.id}, ${otherPkId});
         return ReplyVO.success().data(count);
     }
 
     @Override
-    @PutMapping(value = "/{${id}}/add${otherCName}")
-    public ReplyVO<Integer> add${otherCName}(@PathVariable ${type} ${id},
+    @PutMapping(value = "/{${this.id}}/add${otherCName}")
+    public ReplyVO<Integer> add${otherCName}(@PathVariable ${this.type} ${this.id},
                         @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
-        int count = ${cName}Service.add${otherCName}(${id}, ${otherPkId});
+        int count = ${this.className}Service.add${otherCName}(${this.id}, ${otherPkId});
         return ReplyVO.success().data(count);
     }
 
     @Override
-    @PutMapping(value = "/{${id}}/remove${otherCName}/{${otherPkId}}")
-    public ReplyVO<Integer> remove${otherCName}(@PathVariable ${type} ${id},
+    @PutMapping(value = "/{${this.id}}/remove${otherCName}/{${otherPkId}}")
+    public ReplyVO<Integer> remove${otherCName}(@PathVariable ${this.type} ${this.id},
                         @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
-        int count = ${cName}Service.remove${otherCName}(${id}, ${otherPkId});
+        int count = ${this.className}Service.remove${otherCName}(${this.id}, ${otherPkId});
         return ReplyVO.success().data(count);
     }
 
     @Override
-    @PutMapping(value = "/{${id}}/remove${otherCName}")
-    public ReplyVO<Integer> remove${otherCName}(@PathVariable ${type} ${id},
+    @PutMapping(value = "/{${this.id}}/remove${otherCName}")
+    public ReplyVO<Integer> remove${otherCName}(@PathVariable ${this.type} ${this.id},
                         @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
-        int count = ${cName}Service.remove${otherCName}(${id}, ${otherPkId});
+        int count = ${this.className}Service.remove${otherCName}(${this.id}, ${otherPkId});
         return ReplyVO.success().data(count);
     }
 
     @Override
-    @PutMapping(value = "/{${id}}/set${otherCName}")
-    public ReplyVO<Integer> set${otherCName}(@PathVariable ${type} ${id},
+    @PutMapping(value = "/{${this.id}}/set${otherCName}")
+    public ReplyVO<Integer> set${otherCName}(@PathVariable ${this.type} ${this.id},
         @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
-        int count = ${cName}Service.set${otherCName}(${id}, ${otherPkId});
+        int count = ${this.className}Service.set${otherCName}(${this.id}, ${otherPkId});
         return ReplyVO.success().data(count);
     }
     </#list>
@@ -134,8 +133,8 @@ public class ${CName}Controller extends AbstractController implements ${CName}AP
 
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.web.rest;
+package ${this.packageName}.web.rest;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

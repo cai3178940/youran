@@ -14,4 +14,4 @@ error.record_not_find=record not find
 error.param_is_null=param is null
 error.cascade_delete_error=cascade delete error
 
-${commonPackage}.validator.Const=Constant invalid
+${this.commonPackage}.validator.Const=Constant invalid

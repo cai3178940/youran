@@ -4,22 +4,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>${originProjectName}</artifactId>
-        <groupId>${groupId}</groupId>
+        <artifactId>${this.originProjectName}</artifactId>
+        <groupId>${this.groupId}</groupId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>${originProjectName}-core</artifactId>
+    <artifactId>${this.originProjectName}-core</artifactId>
     <packaging>jar</packaging>
 
 
     <dependencies>
 
         <dependency>
-            <groupId>${groupId}</groupId>
-            <artifactId>${originProjectName}-common</artifactId>
+            <groupId>${this.groupId}</groupId>
+            <artifactId>${this.originProjectName}-common</artifactId>
         </dependency>
 
 

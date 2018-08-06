@@ -1,8 +1,8 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@classCom "字段示例"/>
+<@call this.printClassCom("字段示例")/>
 public abstract class AbstractExample {
 
     public static final String N_CREATEDATE = "创建日期";
@@ -17,8 +17,8 @@ public abstract class AbstractExample {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.pojo.example;
+package ${this.commonPackage}.pojo.example;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

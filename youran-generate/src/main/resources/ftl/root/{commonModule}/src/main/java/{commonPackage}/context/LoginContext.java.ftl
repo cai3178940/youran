@@ -1,8 +1,8 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@classCom "登录上下文接口"/>
+<@call this.printClassCom("登录上下文接口")/>
 public interface LoginContext {
 
     /**
@@ -14,8 +14,8 @@ public interface LoginContext {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.context;
+package ${this.commonPackage}.context;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

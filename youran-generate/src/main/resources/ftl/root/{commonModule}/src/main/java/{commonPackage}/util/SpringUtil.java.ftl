@@ -1,14 +1,14 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "org.springframework.beans.factory.support.BeanDefinitionBuilder;"/>
-<@import "org.springframework.beans.factory.support.DefaultListableBeanFactory;"/>
-<@import "org.springframework.context.ApplicationContext;"/>
-<@import "org.springframework.context.ApplicationContextAware;"/>
-<@import "java.lang.annotation.Annotation;"/>
-<@import "java.util.Map;"/>
-<@classCom "spring bean 工具类"/>
+<@call this.addImport("org.springframework.beans.factory.support.BeanDefinitionBuilder;")/>
+<@call this.addImport("org.springframework.beans.factory.support.DefaultListableBeanFactory;")/>
+<@call this.addImport("org.springframework.context.ApplicationContext;")/>
+<@call this.addImport("org.springframework.context.ApplicationContextAware;")/>
+<@call this.addImport("java.lang.annotation.Annotation;")/>
+<@call this.addImport("java.util.Map;")/>
+<@call this.printClassCom("spring bean 工具类")/>
 public class SpringUtil implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
@@ -146,8 +146,8 @@ public class SpringUtil implements ApplicationContextAware {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.util;
+package ${this.commonPackage}.util;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

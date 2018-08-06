@@ -1,16 +1,16 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "org.junit.Before"/>
-<@import "org.junit.runner.RunWith"/>
-<@import "org.springframework.beans.factory.annotation.Autowired"/>
-<@import "org.springframework.beans.factory.annotation.Value"/>
-<@import "org.springframework.boot.test.context.SpringBootTest"/>
-<@import "org.springframework.test.context.junit4.SpringRunner"/>
-<@classCom "单元测试抽象类"/>
+<@call this.addImport("org.junit.Before")/>
+<@call this.addImport("org.junit.runner.RunWith")/>
+<@call this.addImport("org.springframework.beans.factory.annotation.Autowired")/>
+<@call this.addImport("org.springframework.beans.factory.annotation.Value")/>
+<@call this.addImport("org.springframework.boot.test.context.SpringBootTest")/>
+<@call this.addImport("org.springframework.test.context.junit4.SpringRunner")/>
+<@call this.printClassCom("单元测试抽象类")/>
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ${ProjectName}App.class)
+@SpringBootTest(classes = ${this.projectNameUpper}App.class)
 public class AbstractTest {
 
     @Autowired(required = false)
@@ -34,8 +34,8 @@ public class AbstractTest {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName};
+package ${this.packageName};
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

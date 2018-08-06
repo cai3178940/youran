@@ -1,12 +1,12 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "javax.servlet.http.HttpServletRequest"/>
-<@import "javax.servlet.http.HttpServletRequestWrapper"/>
-<@import "java.util.HashMap"/>
-<@import "java.util.Map"/>
-<@classCom "包装HttpServletRequest，嵌入过滤XSS逻辑"/>
+<@call this.addImport("javax.servlet.http.HttpServletRequest")/>
+<@call this.addImport("javax.servlet.http.HttpServletRequestWrapper")/>
+<@call this.addImport("java.util.HashMap")/>
+<@call this.addImport("java.util.Map")/>
+<@call this.printClassCom("包装HttpServletRequest，嵌入过滤XSS逻辑")/>
 public class XSSRequestWrapper  extends HttpServletRequestWrapper {
 
     private Map<String , String[]> params = new HashMap<>();
@@ -55,8 +55,8 @@ public class XSSRequestWrapper  extends HttpServletRequestWrapper {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.xss;
+package ${this.commonPackage}.xss;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

@@ -14,4 +14,4 @@ error.record_not_find=\u8BB0\u5F55\u672A\u627E\u5230
 error.param_is_null=\u53C2\u6570\u4E3A\u7A7A
 error.cascade_delete_error=\u7EA7\u8054\u5220\u9664\u5F02\u5E38
 
-${commonPackage}.validator.Const=\u5E38\u91CF\u4E0D\u5408\u6CD5
+${this.commonPackage}.validator.Const=\u5E38\u91CF\u4E0D\u5408\u6CD5

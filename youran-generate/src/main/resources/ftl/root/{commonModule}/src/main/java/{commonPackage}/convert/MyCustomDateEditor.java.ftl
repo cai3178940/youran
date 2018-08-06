@@ -1,12 +1,12 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.util.DateUtil"/>
-<@import "org.springframework.util.StringUtils"/>
-<@import "java.beans.PropertyEditorSupport"/>
-<@import "java.util.Date"/>
-<@classCom "自定义日期装换"/>
+<@call this.addImport("${this.commonPackage}.util.DateUtil")/>
+<@call this.addImport("org.springframework.util.StringUtils")/>
+<@call this.addImport("java.beans.PropertyEditorSupport")/>
+<@call this.addImport("java.util.Date")/>
+<@call this.printClassCom("自定义日期装换")/>
 public class MyCustomDateEditor extends PropertyEditorSupport {
 
 
@@ -30,8 +30,8 @@ public class MyCustomDateEditor extends PropertyEditorSupport {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.convert;
+package ${this.commonPackage}.convert;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

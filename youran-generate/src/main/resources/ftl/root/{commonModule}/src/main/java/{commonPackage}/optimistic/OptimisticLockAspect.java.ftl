@@ -1,20 +1,20 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.pojo.po.Version"/>
-<@import "${commonPackage}.util.MessageSourceUtil"/>
-<@import "org.aspectj.lang.ProceedingJoinPoint"/>
-<@import "org.aspectj.lang.Signature"/>
-<@import "org.aspectj.lang.annotation.Around"/>
-<@import "org.aspectj.lang.annotation.Aspect"/>
-<@import "org.aspectj.lang.annotation.Pointcut"/>
-<@import "org.aspectj.lang.reflect.MethodSignature"/>
-<@import "org.slf4j.Logger"/>
-<@import "org.slf4j.LoggerFactory"/>
-<@import "org.springframework.core.annotation.Order"/>
-<@import "java.lang.reflect.Method"/>
-<@classCom "乐观锁AOP"/>
+<@call this.addImport("${this.commonPackage}.pojo.po.Version")/>
+<@call this.addImport("${this.commonPackage}.util.MessageSourceUtil")/>
+<@call this.addImport("org.aspectj.lang.ProceedingJoinPoint")/>
+<@call this.addImport("org.aspectj.lang.Signature")/>
+<@call this.addImport("org.aspectj.lang.annotation.Around")/>
+<@call this.addImport("org.aspectj.lang.annotation.Aspect")/>
+<@call this.addImport("org.aspectj.lang.annotation.Pointcut")/>
+<@call this.addImport("org.aspectj.lang.reflect.MethodSignature")/>
+<@call this.addImport("org.slf4j.Logger")/>
+<@call this.addImport("org.slf4j.LoggerFactory")/>
+<@call this.addImport("org.springframework.core.annotation.Order")/>
+<@call this.addImport("java.lang.reflect.Method")/>
+<@call this.printClassCom("乐观锁AOP")/>
 @Aspect
 @Order(-1000)
 public class OptimisticLockAspect {
@@ -26,7 +26,7 @@ public class OptimisticLockAspect {
      * 拦截AbstractDAO的update方法
      * 用于抛出乐观锁冲突时的异常
      */
-    @Pointcut("execution(int ${commonPackage}.dao.DAO._update(${commonPackage}.pojo.po.AbstractPO))")
+    @Pointcut("execution(int ${this.commonPackage}.dao.DAO._update(${this.commonPackage}.pojo.po.AbstractPO))")
     public void daoPointcut(){}
 
     @Around("daoPointcut()")
@@ -44,7 +44,7 @@ public class OptimisticLockAspect {
      * 拦截任何添加了@Tx注解的Service方法
      * 捕获乐观锁冲突异常，并重试
      */
-    @Pointcut("execution(@${commonPackage}.optimistic.OptimisticLock * *(..))")
+    @Pointcut("execution(@${this.commonPackage}.optimistic.OptimisticLock * *(..))")
     public void servicePointcut(){}
 
     @Around("servicePointcut()")
@@ -93,8 +93,8 @@ public class OptimisticLockAspect {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.optimistic;
+package ${this.commonPackage}.optimistic;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

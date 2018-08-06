@@ -1,8 +1,8 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@classCom "操作人接口"/>
+<@call this.printClassCom("操作人接口")/>
 public interface OperatedBy {
 
     String getOperatedBy();
@@ -12,8 +12,8 @@ public interface OperatedBy {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.pojo.po;
+package ${this.commonPackage}.pojo.po;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

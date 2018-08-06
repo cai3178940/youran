@@ -1,11 +1,11 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "org.jsoup.Jsoup"/>
-<@import "org.jsoup.nodes.Document"/>
-<@import "org.jsoup.safety.Whitelist"/>
-<@classCom "过滤XSS工具"/>
+<@call this.addImport("org.jsoup.Jsoup")/>
+<@call this.addImport("org.jsoup.nodes.Document")/>
+<@call this.addImport("org.jsoup.safety.Whitelist")/>
+<@call this.printClassCom("过滤XSS工具")/>
 public class XSSUtil {
 
     public static String clean(String value){
@@ -21,8 +21,8 @@ public class XSSUtil {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.xss;
+package ${this.commonPackage}.xss;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

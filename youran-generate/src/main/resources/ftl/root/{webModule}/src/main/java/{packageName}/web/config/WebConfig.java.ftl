@@ -1,23 +1,23 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.xss.JacksonXssDeserializer"/>
-<@import "${commonPackage}.xss.WebXSSFilter"/>
-<@import "org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer"/>
-<@import "org.springframework.boot.web.servlet.FilterRegistrationBean"/>
-<@import "org.springframework.context.annotation.Bean"/>
-<@import "org.springframework.context.annotation.Configuration"/>
-<@import "org.springframework.web.servlet.LocaleResolver"/>
-<@import "org.springframework.web.servlet.config.annotation.InterceptorRegistry"/>
-<@import "org.springframework.web.servlet.config.annotation.WebMvcConfigurer"/>
-<@import "org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter"/>
-<@import "org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
-<@import "org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
-<@import "java.util.ArrayList"/>
-<@import "java.util.List"/>
-<@import "java.util.Locale"/>
-<@classCom "web相关配置"/>
+<@call this.addImport("${this.commonPackage}.xss.JacksonXssDeserializer")/>
+<@call this.addImport("${this.commonPackage}.xss.WebXSSFilter")/>
+<@call this.addImport("org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer")/>
+<@call this.addImport("org.springframework.boot.web.servlet.FilterRegistrationBean")/>
+<@call this.addImport("org.springframework.context.annotation.Bean")/>
+<@call this.addImport("org.springframework.context.annotation.Configuration")/>
+<@call this.addImport("org.springframework.web.servlet.LocaleResolver")/>
+<@call this.addImport("org.springframework.web.servlet.config.annotation.InterceptorRegistry")/>
+<@call this.addImport("org.springframework.web.servlet.config.annotation.WebMvcConfigurer")/>
+<@call this.addImport("org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter")/>
+<@call this.addImport("org.springframework.web.servlet.i18n.CookieLocaleResolver")/>
+<@call this.addImport("org.springframework.web.servlet.i18n.LocaleChangeInterceptor")/>
+<@call this.addImport("java.util.ArrayList")/>
+<@call this.addImport("java.util.List")/>
+<@call this.addImport("java.util.Locale")/>
+<@call this.printClassCom("web相关配置")/>
 @Configuration
 public class WebConfig {
 
@@ -82,8 +82,8 @@ public class WebConfig {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.web.config;
+package ${this.packageName}.web.config;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

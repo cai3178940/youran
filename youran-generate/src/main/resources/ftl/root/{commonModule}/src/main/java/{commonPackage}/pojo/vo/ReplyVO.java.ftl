@@ -1,15 +1,15 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.constant.ErrorCode"/>
-<@import "${commonPackage}.util.MessageSourceUtil"/>
-<@import "io.swagger.annotations.ApiModel"/>
-<@import "io.swagger.annotations.ApiModelProperty"/>
-<@import "org.apache.commons.lang3.StringUtils"/>
-<@import "java.util.HashMap"/>
-<@import "java.util.Map"/>
-<@classCom "通用响应对象"/>
+<@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
+<@call this.addImport("${this.commonPackage}.util.MessageSourceUtil")/>
+<@call this.addImport("io.swagger.annotations.ApiModel")/>
+<@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
+<@call this.addImport("org.apache.commons.lang3.StringUtils")/>
+<@call this.addImport("java.util.HashMap")/>
+<@call this.addImport("java.util.Map")/>
+<@call this.printClassCom("通用响应对象")/>
 @ApiModel
 public class ReplyVO<T> extends AbstractVO {
 
@@ -152,8 +152,8 @@ public class ReplyVO<T> extends AbstractVO {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.pojo.vo;
+package ${this.commonPackage}.pojo.vo;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

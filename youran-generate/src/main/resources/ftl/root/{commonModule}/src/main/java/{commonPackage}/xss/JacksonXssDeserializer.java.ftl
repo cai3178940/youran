@@ -1,14 +1,14 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "com.fasterxml.jackson.core.JsonParser"/>
-<@import "com.fasterxml.jackson.databind.DeserializationContext"/>
-<@import "com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer"/>
-<@import "com.fasterxml.jackson.databind.deser.std.StringDeserializer"/>
-<@import "com.fasterxml.jackson.databind.jsontype.TypeDeserializer"/>
-<@import "java.io.IOException"/>
-<@classCom "jackson防XSS反序列化器"/>
+<@call this.addImport("com.fasterxml.jackson.core.JsonParser")/>
+<@call this.addImport("com.fasterxml.jackson.databind.DeserializationContext")/>
+<@call this.addImport("com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer")/>
+<@call this.addImport("com.fasterxml.jackson.databind.deser.std.StringDeserializer")/>
+<@call this.addImport("com.fasterxml.jackson.databind.jsontype.TypeDeserializer")/>
+<@call this.addImport("java.io.IOException")/>
+<@call this.printClassCom("jackson防XSS反序列化器")/>
 public class JacksonXssDeserializer extends StdScalarDeserializer<String> {
 
     public JacksonXssDeserializer() {
@@ -34,8 +34,8 @@ public class JacksonXssDeserializer extends StdScalarDeserializer<String> {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.xss;
+package ${this.commonPackage}.xss;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

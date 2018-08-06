@@ -1,34 +1,30 @@
 <#include "/common.ftl">
-<#include "/entity_common.ftl">
-<#include "/import.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@import "com.google.common.collect.Lists"/>
-<@import "${commonPackage}.pojo.vo.ReplyVO"/>
-<@import "${commonPackage}.util.JsonUtil"/>
-<@import "${packageName}.help.${CName}Helper"/>
-<@import "${packageName}.pojo.dto.${CName}AddDTO"/>
-<@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
-<@import "${packageName}.pojo.po.${CName}PO"/>
-<@import "${packageName}.web.AbstractWebTest"/>
-<@import "org.junit.Test"/>
-<@import "org.springframework.beans.factory.annotation.Autowired"/>
-<@import "org.springframework.http.MediaType"/>
-<@importStatic "org.hamcrest.Matchers.is"/>
-<@importStatic "org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*"/>
-<@importStatic "org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath"/>
-<@classCom "【${title}】单元测试"/>
-public class ${CName}ControllerTest extends AbstractWebTest {
+<@call this.addImport("com.google.common.collect.Lists")/>
+<@call this.addImport("${this.commonPackage}.pojo.vo.ReplyVO")/>
+<@call this.addImport("${this.commonPackage}.util.JsonUtil")/>
+<@call this.addImport("${this.packageName}.help.${this.classNameUpper}Helper")/>
+<@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}AddDTO")/>
+<@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}UpdateDTO")/>
+<@call this.addImport("${this.packageName}.pojo.po.${this.classNameUpper}PO")/>
+<@call this.addImport("${this.packageName}.web.AbstractWebTest")/>
+<@call this.addImport("org.junit.Test")/>
+<@call this.addImport("org.springframework.beans.factory.annotation.Autowired")/>
+<@call this.addImport("org.springframework.http.MediaType")/>
+<@call this.addStaticImport("org.hamcrest.Matchers.is")/>
+<@call this.addStaticImport("org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*")/>
+<@call this.addStaticImport("org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath")/>
+<@call this.printClassCom("【${this.title}】单元测试")/>
+public class ${this.classNameUpper}ControllerTest extends AbstractWebTest {
 
-    @Autowired
-    private ${CName}Helper ${cName}Helper;
-<#if metaEntity.mtmHoldRefers??>
-    <#list metaEntity.mtmHoldRefers as otherEntity>
+    <@call this.addAutowired("${this.packageName}.help" "${this.classNameUpper}Helper")/>
+<#if this.metaEntity.mtmHoldRefers??>
+    <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
-        <@autowired "${packageName}.help" "${otherCName}Helper"/>
+        <@call this.addAutowired("${this.packageName}.help" "${otherCName}Helper")/>
     </#list>
 </#if>
-
 <#--定义包含所有"保存外键实体"的代码列表-->
 <#assign saveForeignList=[]>
 <#macro saveForeign field>
@@ -38,7 +34,7 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         <#local foreignCName="${foreignEntity.className?capFirst}">
         <#local foreigncName="${foreignEntity.className?uncapFirst}">
         <#--引入help依赖-->
-        <@autowired "${packageName}.help" "${foreignCName}Helper"/>
+        <@call this.addAutowired("${this.packageName}.help" "${foreignCName}Helper")/>
         <#--定义参数串-->
         <#local foreignArg="">
         <#list foreignEntity.insertFields as _field>
@@ -61,13 +57,13 @@ public class ${CName}ControllerTest extends AbstractWebTest {
                 <#--递归调用宏-->
                 <@saveForeign _field/>
             </#list>
-            <@import "${packageName}.pojo.po.${foreignCName}PO"/>
+            <@call this.addImport("${this.packageName}.pojo.po.${foreignCName}PO")/>
             <#assign saveForeignList = saveForeignList + [ tmp ] />
         </#if>
     </#if>
 </#macro>
 <#assign foreignArg="">
-<#list insertFields as field>
+<#list this.insertFields as field>
     <#if field.foreignKey==1>
         <#assign foreigncName="${field.foreignEntity.className?uncapFirst}">
         <#if field.notNull==1>
@@ -82,14 +78,15 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     <#assign foreignArg=foreignArg?substring(0,foreignArg?length-2)>
 </#if>
 
+    <@call this.printAutowired()/>
 
     @Test
     public void save() throws Exception {
     <#list saveForeignList as saveForeign>
         ${saveForeign}
     </#list>
-        ${CName}AddDTO addDTO = ${cName}Helper.get${CName}AddDTO(${foreignArg});
-        restMockMvc.perform(post("/${cName}/save")
+        ${this.classNameUpper}AddDTO addDTO = ${this.className}Helper.get${this.classNameUpper}AddDTO(${foreignArg});
+        restMockMvc.perform(post("/${this.className}/save")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
@@ -100,9 +97,9 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     <#list saveForeignList as saveForeign>
         ${saveForeign}
     </#list>
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
-        ${CName}UpdateDTO updateDTO = ${cName}Helper.get${CName}UpdateDTO(${cName});
-        restMockMvc.perform(put("/${cName}/update")
+        ${this.classNameUpper}PO ${this.className} = ${this.className}Helper.save${this.classNameUpper}Example(${foreignArg});
+        ${this.classNameUpper}UpdateDTO updateDTO = ${this.className}Helper.get${this.classNameUpper}UpdateDTO(${this.className});
+        restMockMvc.perform(put("/${this.className}/update")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
@@ -113,10 +110,10 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     <#list saveForeignList as saveForeign>
         ${saveForeign}
     </#list>
-        ${cName}Helper.save${CName}Example(${foreignArg});
-        restMockMvc.perform(get("/${cName}/list"))
+        ${this.className}Helper.save${this.classNameUpper}Example(${foreignArg});
+        restMockMvc.perform(get("/${this.className}/list"))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-    <#if pageSign == 1>
+    <#if this.pageSign == 1>
             .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
     <#else>
             .andExpect(jsonPath("$.data.length()").value(is(1)));
@@ -128,8 +125,8 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     <#list saveForeignList as saveForeign>
         ${saveForeign}
     </#list>
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
-        restMockMvc.perform(get("/${cName}/{${id}}",${cName}.get${Id}()))
+        ${this.classNameUpper}PO ${this.className} = ${this.className}Helper.save${this.classNameUpper}Example(${foreignArg});
+        restMockMvc.perform(get("/${this.className}/{${this.id}}",${this.className}.get${this.idUpper}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
     }
 
@@ -138,8 +135,8 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     <#list saveForeignList as saveForeign>
         ${saveForeign}
     </#list>
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
-        restMockMvc.perform(delete("/${cName}/{${id}}",${cName}.get${Id}()))
+        ${this.classNameUpper}PO ${this.className} = ${this.className}Helper.save${this.classNameUpper}Example(${foreignArg});
+        restMockMvc.perform(delete("/${this.className}/{${this.id}}",${this.className}.get${this.idUpper}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
@@ -149,33 +146,33 @@ public class ${CName}ControllerTest extends AbstractWebTest {
     <#list saveForeignList as saveForeign>
         ${saveForeign}
     </#list>
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
-        restMockMvc.perform(put("/${cName}/deleteBatch")
+        ${this.classNameUpper}PO ${this.className} = ${this.className}Helper.save${this.classNameUpper}Example(${foreignArg});
+        restMockMvc.perform(put("/${this.className}/deleteBatch")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .content(JsonUtil.toJSONString(Lists.newArrayList(${cName}.get${Id}()))))
+            .content(JsonUtil.toJSONString(Lists.newArrayList(${this.className}.get${this.idUpper}()))))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
-<#if metaEntity.mtmHoldRefers??>
-    <#list metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.mtmHoldRefers??>
+    <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <@import "${packageName}.pojo.po.${otherCName}PO"/>
+        <@call this.addImport("${this.packageName}.pojo.po.${otherCName}PO")/>
     @Test
     public void addRemove${otherEntity.className}() throws Exception {
         <#list saveForeignList as saveForeign>
         ${saveForeign}
         </#list>
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
+        ${this.classNameUpper}PO ${this.className} = ${this.className}Helper.save${this.classNameUpper}Example(${foreignArg});
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
-        restMockMvc.perform(put("/${cName}/{${id}}/add${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
-            ${cName}.get${Id}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
+        restMockMvc.perform(put("/${this.className}/{${this.id}}/add${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
+            ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
-        restMockMvc.perform(put("/${cName}/{${id}}/remove${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
-            ${cName}.get${Id}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
+        restMockMvc.perform(put("/${this.className}/{${this.id}}/remove${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
+            ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
@@ -185,16 +182,16 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         <#list saveForeignList as saveForeign>
         ${saveForeign}
         </#list>
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
+        ${this.classNameUpper}PO ${this.className} = ${this.className}Helper.save${this.classNameUpper}Example(${foreignArg});
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
-        restMockMvc.perform(put("/${cName}/{${id}}/add${otherEntity.className}",
-            ${cName}.get${Id}())
+        restMockMvc.perform(put("/${this.className}/{${this.id}}/add${otherEntity.className}",
+            ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
-        restMockMvc.perform(put("/${cName}/{${id}}/remove${otherEntity.className}",
-            ${cName}.get${Id}())
+        restMockMvc.perform(put("/${this.className}/{${this.id}}/remove${otherEntity.className}",
+            ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
@@ -206,10 +203,10 @@ public class ${CName}ControllerTest extends AbstractWebTest {
         <#list saveForeignList as saveForeign>
         ${saveForeign}
         </#list>
-        ${CName}PO ${cName} = ${cName}Helper.save${CName}Example(${foreignArg});
+        ${this.classNameUpper}PO ${this.className} = ${this.className}Helper.save${this.classNameUpper}Example(${foreignArg});
         ${otherEntity.className}PO ${othercName} = ${othercName}Helper.save${otherEntity.className}Example();
-        restMockMvc.perform(put("/${cName}/{${id}}/set${otherEntity.className}",
-            ${cName}.get${Id}())
+        restMockMvc.perform(put("/${this.className}/{${this.id}}/set${otherEntity.className}",
+            ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
@@ -222,8 +219,8 @@ public class ${CName}ControllerTest extends AbstractWebTest {
 
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.web.rest;
+package ${this.packageName}.web.rest;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

@@ -1,47 +1,47 @@
 <#include "/common.ftl">
-<#include "/entity_common.ftl">
-<#include "/import.ftl">
+
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${packageName}.pojo.dto.${CName}AddDTO"/>
-<@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
-<@import "${packageName}.pojo.po.${CName}PO"/>
-<@import "${packageName}.pojo.vo.${CName}ShowVO"/>
-<@import "org.mapstruct.Mapper"/>
-<@import "org.mapstruct.MappingTarget"/>
-<@import "org.mapstruct.factory.Mappers"/>
-<@classCom "【${title}】映射"/>
+<@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}AddDTO")/>
+<@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}UpdateDTO")/>
+<@call this.addImport("${this.packageName}.pojo.po.${this.classNameUpper}PO")/>
+<@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ShowVO")/>
+<@call this.addImport("org.mapstruct.Mapper")/>
+<@call this.addImport("org.mapstruct.MappingTarget")/>
+<@call this.addImport("org.mapstruct.factory.Mappers")/>
+<@call this.printClassCom("【${this.title}】映射")/>
 @Mapper
-public interface ${CName}Mapper {
+public interface ${this.classNameUpper}Mapper {
 
-    ${CName}Mapper INSTANCE = Mappers.getMapper( ${CName}Mapper.class );
+    ${this.classNameUpper}Mapper INSTANCE = Mappers.getMapper( ${this.classNameUpper}Mapper.class );
 
     /**
     * addDTO映射po
-    * @param ${cName}AddDTO
+    * @param ${this.className}AddDTO
     * @return
     */
-    ${CName}PO fromAddDTO(${CName}AddDTO ${cName}AddDTO);
+    ${this.classNameUpper}PO fromAddDTO(${this.classNameUpper}AddDTO ${this.className}AddDTO);
 
     /**
     * 将updateDTO中的值设置到po
-    * @param ${cName}PO
-    * @param ${cName}UpdateDTO
+    * @param ${this.className}PO
+    * @param ${this.className}UpdateDTO
     */
-    void setUpdateDTO(@MappingTarget ${CName}PO ${cName}PO, ${CName}UpdateDTO ${cName}UpdateDTO);
+    void setUpdateDTO(@MappingTarget ${this.classNameUpper}PO ${this.className}PO, ${this.classNameUpper}UpdateDTO ${this.className}UpdateDTO);
 
     /**
     * po映射showVO
-    * @param ${cName}PO
+    * @param ${this.className}PO
     * @return
     */
-    ${CName}ShowVO toShowVO(${CName}PO ${cName}PO);
+    ${this.classNameUpper}ShowVO toShowVO(${this.classNameUpper}PO ${this.className}PO);
 
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.pojo.mapper;
+package ${this.packageName}.pojo.mapper;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

@@ -1,10 +1,10 @@
 <#include "/common.ftl">
-<#include "/entity_common.ftl">
+
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${packageName}.dao.${CName}DAO">
+<mapper namespace="${this.packageName}.dao.${this.classNameUpper}DAO">
 
     <#assign wrapTableName=MetadataUtil.wrapMysqlKeyword(tableName)>
     <#assign wrapPkFieldName=MetadataUtil.wrapMysqlKeyword(pk.fieldName)>
@@ -12,16 +12,16 @@
         <#assign wrapDelFieldName=MetadataUtil.wrapMysqlKeyword(delField.fieldName)>
     </#if>
 
-    <sql id="${cName}Columns">
-        <#list fields as field>
+    <sql id="${this.className}Columns">
+        <#list this.fields as field>
         ${r'$'}{alias}.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
         </#list>
     </sql>
 
 
-    <select id="findById" resultType="${CName}PO">
+    <select id="findById" resultType="${this.classNameUpper}PO">
         select
-            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+            <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         <where>
         <#if delField??>
@@ -42,29 +42,29 @@
         </where>
     </select>
 
-    <insert id="_save" <#if pk.autoIncrement==1>useGeneratedKeys="true" </#if>keyProperty="${id}" parameterType="${CName}PO">
+    <insert id="_save" <#if pk.autoIncrement==1>useGeneratedKeys="true" </#if>keyProperty="${this.id}" parameterType="${this.classNameUpper}PO">
         insert into ${wrapTableName}(
-    <#list fields as field>
+    <#list this.fields as field>
         ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field_has_next>,</#if>
     </#list>
         ) VALUES (
-    <#list fields as field>
+    <#list this.fields as field>
         ${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>
     </#list>
         )
     </insert>
 
 
-    <update id="_update" parameterType="${CName}PO">
+    <update id="_update" parameterType="${this.classNameUpper}PO">
         update ${wrapTableName} set
-        <#list fields as field>
+        <#list this.fields as field>
             <#if field.specialField?? && field.specialField==MetaSpecialField.VERSION>
             ${MetadataUtil.wrapMysqlKeyword(field.fieldName)} = ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}+1<#if field_has_next>,</#if>
             <#else>
             ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}=${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>
             </#if>
         </#list>
-        where ${wrapPkFieldName}=${r'#'}{${id},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
+        where ${wrapPkFieldName}=${r'#'}{${this.id},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
         <#if versionField??>
         and ${MetadataUtil.wrapMysqlKeyword(versionField.fieldName)}=${r'#'}{${versionField.jfieldName},jdbcType=${JFieldType.mapperJdbcType(versionField.jfieldType)}}
         </#if>
@@ -108,7 +108,7 @@
         </#if>
     </#list>
     <#assign cascadeIndex=0>
-    <#list fields as field>
+    <#list this.fields as field>
         <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
             <#assign cascadeIndex=cascadeIndex+1>
             <#assign con_ex_arr=[]>
@@ -183,7 +183,7 @@
         </#if>
     </sql>
 
-    <select id="findCountByQuery" parameterType="${CName}QO" resultType="int">
+    <select id="findCountByQuery" parameterType="${this.classNameUpper}QO" resultType="int">
         select count(1) from ${wrapTableName} t
         <where>
         <#if delField??>
@@ -193,11 +193,11 @@
         </where>
     </select>
 
-    <select id="findListByQuery" parameterType="${CName}QO" resultType="${CName}ListVO">
+    <select id="findListByQuery" parameterType="${this.classNameUpper}QO" resultType="${this.classNameUpper}ListVO">
         select
-            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+            <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         <#assign cascadeIndex=0>
-        <#list fields as field>
+        <#list this.fields as field>
             <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
                 <#assign cascadeIndex=cascadeIndex+1>
                 <#list field.cascadeListExts as cascadeExt>
@@ -207,7 +207,7 @@
         </#list>
         from ${wrapTableName} t
         <#assign cascadeIndex=0>
-        <#list fields as field>
+        <#list this.fields as field>
             <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
                 <#assign cascadeIndex=cascadeIndex+1>
         left outer join ${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.tableName)} c${cascadeIndex}
@@ -224,12 +224,12 @@
         <include refid="queryCondition"/>
         </where>
         <include refid="orderCondition"/>
-    <#if pageSign == 1>
+    <#if this.pageSign == 1>
         limit ${r'#'}{startIndex},${r'#'}{pageSize}
     </#if>
     </select>
 
-<#list fields as field>
+<#list this.fields as field>
     <#if field.foreignKey==1>
         <#assign wrapFieldName=MetadataUtil.wrapMysqlKeyword(field.fieldName)>
     <select id="getCountBy${field.jfieldName?capFirst}" parameterType="${field.jfieldType}" resultType="int">
@@ -244,17 +244,17 @@
 
     </#if>
 </#list>
-<#if metaEntity.mtmHoldRefers??>
-    <#list metaEntity.mtmHoldRefers as entity>
+<#if this.metaEntity.mtmHoldRefers??>
+    <#list this.metaEntity.mtmHoldRefers as entity>
         <#assign mtm=metaEntity.holdMtms[entity_index]/>
         <#assign otherCName=entity.className?capFirst>
         <#assign othercName=entity.className?uncapFirst>
         <#assign otherPk=entity.pkField>
         <#assign otherType=otherPk.jfieldType>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
-        <#assign thePkId=MetadataUtil.getPkAlias(cName,false)>
+        <#assign thePkId=MetadataUtil.getPkAlias(this.className,false)>
         <#assign other_pk_id=MetadataUtil.getPkAlias(othercName,true)>
-        <#assign the_pk_id=MetadataUtil.getPkAlias(cName,true)>
+        <#assign the_pk_id=MetadataUtil.getPkAlias(this.className,true)>
         <#assign wrapMtmTableName=MetadataUtil.wrapMysqlKeyword(mtm.tableName)>
     <select id="getCountBy${otherCName}" parameterType="${otherType}" resultType="int">
         select count(1)
@@ -268,9 +268,9 @@
         </#if>
     </select>
 
-    <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${CName}PO">
+    <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}PO">
         select
-            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+            <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
             on t.${pk.fieldName}=r.${the_pk_id}
@@ -282,9 +282,9 @@
         order by r.created_time
     </select>
 
-    <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${CName}ListVO">
+    <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}ListVO">
         select
-            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+            <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
             on t.${pk.fieldName}=r.${the_pk_id}
@@ -316,20 +316,20 @@
 
     </#list>
 </#if>
-<#if metaEntity.mtmUnHoldRefers??>
-    <#list metaEntity.mtmUnHoldRefers as entity>
+<#if this.metaEntity.mtmUnHoldRefers??>
+    <#list this.metaEntity.mtmUnHoldRefers as entity>
         <#assign mtm=metaEntity.unHoldMtms[entity_index]/>
         <#assign otherCName=entity.className?capFirst>
         <#assign othercName=entity.className?uncapFirst>
         <#assign otherPk=entity.pkField>
         <#assign otherType=otherPk.jfieldType>
         <#assign other_pk_id=MetadataUtil.getPkAlias(othercName,true)>
-        <#assign the_pk_id=MetadataUtil.getPkAlias(cName,true)>
+        <#assign the_pk_id=MetadataUtil.getPkAlias(this.className,true)>
         <#assign wrapMtmTableName=MetadataUtil.wrapMysqlKeyword(mtm.tableName)>
 
-    <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${CName}PO">
+    <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}PO">
         select
-            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+            <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
             on t.${pk.fieldName}=r.${the_pk_id}
@@ -341,9 +341,9 @@
         order by r.created_time
     </select>
 
-    <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${CName}ListVO">
+    <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}ListVO">
         select
-            <include refid="${cName}Columns"><property name="alias" value="t"/></include>
+            <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
             on t.${pk.fieldName}=r.${the_pk_id}
@@ -357,7 +357,7 @@
 
     </#list>
 </#if>
-<#list metaEntity.checkUniqueIndexes as index>
+<#list this.metaEntity.checkUniqueIndexes as index>
     <#assign suffix=(index_index==0)?string('',''+index_index)>
     <select id="notUnique${suffix}" resultType="boolean">
         select count(1) from ${wrapTableName} t
@@ -368,8 +368,8 @@
             <#list index.fields as field>
                 and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} = ${r'#'}{${field.jfieldName}}
             </#list>
-            <if test="${id} != null  ">
-                and t.${pk.fieldName} != ${r'#'}{${id}}
+            <if test="${this.id} != null  ">
+                and t.${pk.fieldName} != ${r'#'}{${this.id}}
             </if>
         </where>
     </select>

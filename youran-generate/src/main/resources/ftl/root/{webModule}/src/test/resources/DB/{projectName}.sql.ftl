@@ -1,5 +1,5 @@
 <#include "/common.ftl">
-<#list metaEntities as metaEntity>
+<#list this.metaEntities as metaEntity>
 DROP TABLE IF EXISTS `${metaEntity.tableName}`;
 
 CREATE TABLE `${metaEntity.tableName}` (
@@ -27,8 +27,8 @@ CREATE TABLE `${metaEntity.tableName}` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${metaEntity.desc?replace('\'','"')?replace('\n','\\n')}';
 
 </#list>
-<#if mtms??>
-    <#list mtms as manyTomany>
+<#if this.mtms??>
+    <#list this.mtms as manyTomany>
         <#assign field1=manyTomany.refer1.pkField>
         <#assign field2=manyTomany.refer2.pkField>
         <#assign length_holder1><#if field1.jfieldType!=JFieldType.DATE.getJavaType() && field1.fieldLength gt 0>(${field1.fieldLength}<#if field1.fieldScale??>,${field1.fieldScale}</#if>)</#if></#assign>

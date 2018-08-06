@@ -1,15 +1,15 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "javax.servlet.http.HttpServletRequest"/>
-<@import "java.net.InetAddress"/>
-<@import "java.net.NetworkInterface"/>
-<@import "java.net.SocketException"/>
-<@import "java.util.Enumeration"/>
-<@import "java.util.regex.Matcher"/>
-<@import "java.util.regex.Pattern"/>
-<@classCom "IP工具"/>
+<@call this.addImport("javax.servlet.http.HttpServletRequest")/>
+<@call this.addImport("java.net.InetAddress")/>
+<@call this.addImport("java.net.NetworkInterface")/>
+<@call this.addImport("java.net.SocketException")/>
+<@call this.addImport("java.util.Enumeration")/>
+<@call this.addImport("java.util.regex.Matcher")/>
+<@call this.addImport("java.util.regex.Pattern")/>
+<@call this.printClassCom("IP工具")/>
 public class IpUtil {
 
     /**
@@ -105,8 +105,8 @@ public class IpUtil {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.web.util;
+package ${this.packageName}.web.util;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

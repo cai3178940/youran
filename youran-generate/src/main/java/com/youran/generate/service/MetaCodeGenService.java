@@ -6,12 +6,15 @@ import com.youran.common.util.AESSecurityUtil;
 import com.youran.common.util.DateUtil;
 import com.youran.common.util.H2Util;
 import com.youran.generate.config.GenerateProperties;
-import com.youran.generate.constant.*;
+import com.youran.generate.constant.TemplateEnum;
+import com.youran.generate.constant.TemplateType;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import com.youran.generate.pojo.po.*;
+import com.youran.generate.pojo.template.BaseModel;
+import com.youran.generate.pojo.template.ConstModel;
+import com.youran.generate.pojo.template.EntityModel;
 import com.youran.generate.util.FreeMakerUtil;
-import com.youran.generate.util.MetadataUtil;
 import com.youran.generate.util.Zip4jUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
@@ -24,7 +27,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -78,8 +84,7 @@ public class MetaCodeGenService {
         project.setMtms(manyToManies);
         project.setEntities(metaEntities);
         metaQueryAssembleService.checkAssembledProject(project,false);
-        Map<String, Object> map = this.buildTemplateParamMap(project, null, null);
-        String text = FreeMakerUtil.writeToStr("root/{webModule}/src/test/resources/DB/{projectName}.sql.ftl", map);
+        String text = FreeMakerUtil.writeToStr("root/"+TemplateEnum.SQL.getTemplate(), new BaseModel(project));
         LOGGER.debug("------打印生成sql脚本-----");
         LOGGER.debug(text);
         return text;
@@ -166,16 +171,16 @@ public class MetaCodeGenService {
         for (TemplateEnum templateEnum : TemplateEnum.values()) {
             //生成全局文件
             if (templateEnum.getType() == TemplateType.COMMON) {
-                this.renderFTL(project, tmpDir, templateEnum, null, null);
+                this.renderCommonFTL(project, tmpDir, templateEnum);
             } else if (templateEnum.getType() == TemplateType.ENTITY) {
                 //生成实体模版文件
                 for (MetaEntityPO metaEntityPO : metaEntities) {
-                    this.renderFTL(project, tmpDir, templateEnum, metaEntityPO, null);
+                    this.renderEntityFTL(project, tmpDir, templateEnum, metaEntityPO);
                 }
             } else if (templateEnum.getType() == TemplateType.CONST) {
                 //生成实体模版文件
                 for (MetaConstPO metaConstPO : metaConstPOS) {
-                    this.renderFTL(project, tmpDir, templateEnum, null, metaConstPO);
+                    this.renderConstFTL(project, tmpDir, templateEnum, metaConstPO);
                 }
             }
         }
@@ -238,79 +243,63 @@ public class MetaCodeGenService {
     }
 
 
-    /**
-     * 渲染freemarker模版
-     * @param project      项目
-     * @param outDir       输出临时目录
-     * @param templateEnum 模版文件枚举
-     * @param singleEntity 当前实体
-     */
-    private void renderFTL(MetaProjectPO project, String outDir, TemplateEnum templateEnum, MetaEntityPO singleEntity, MetaConstPO singleConst) {
-        Map<String, Object> map = buildTemplateParamMap(project, singleEntity, singleConst);
-        LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
-        String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), map);
-        LOGGER.debug(text);
-        this.writeToFile(project, text, outDir, templateEnum.getTemplate(), singleEntity, singleConst);
-    }
+
 
     /**
-     * 构建模版参数map
+     * 渲染实体freemarker模版
      * @param project      项目
-     * @param singleEntity 当前实体
+     * @param tmpDir       输出临时目录
+     */
+    private void renderCommonFTL(MetaProjectPO project, String tmpDir, TemplateEnum templateEnum) {
+        String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(), null, null);
+        BaseModel model = new BaseModel(project);
+        LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
+        String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), model);
+        LOGGER.debug(text);
+        this.writeToFile(text, outFilePath);
+    }
+    /**
+     * 渲染实体freemarker模版
+     * @param project      项目
+     * @param tmpDir       输出临时目录
+     */
+    private void renderEntityFTL(MetaProjectPO project, String tmpDir, TemplateEnum templateEnum, MetaEntityPO metaEntityPO) {
+        String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(), metaEntityPO.getClassName(),null);
+        EntityModel model = new EntityModel(project,metaEntityPO);
+        LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
+        String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), model);
+        LOGGER.debug(text);
+        this.writeToFile(text, outFilePath);
+    }
+
+
+    /**
+     * 渲染常量freemarker模版
+     * @param project      项目
+     * @param tmpDir       输出临时目录
+     * @param templateEnum 模版文件枚举
+     * @param metaConstPO 当前常量
+     */
+    private void renderConstFTL(MetaProjectPO project, String tmpDir, TemplateEnum templateEnum, MetaConstPO metaConstPO) {
+        String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(), null, metaConstPO.getConstName());
+        ConstModel model = new ConstModel(project,metaConstPO);
+        LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
+        String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), model);
+        LOGGER.debug(text);
+        this.writeToFile(text, outFilePath);
+    }
+
+
+    /**
+     * 获取文件输出路径
+     * @param project
+     * @param tmpDir
+     * @param templatePath
+     * @param entityClassName
+     * @param constName
      * @return
      */
-    private Map<String, Object> buildTemplateParamMap(MetaProjectPO project, MetaEntityPO singleEntity, MetaConstPO singleConst) {
-        Map<String, Object> map = new HashMap<>();
-        //当前实体
-        map.put("metaEntity", singleEntity);
-        //当前常量
-        map.put("metaConst", singleConst);
-        //所有实体
-        map.put("metaEntities", project.getEntities());
-        //所有常量
-        map.put("metaConsts", project.getConsts());
-        //包名
-        map.put("packageName", project.getPackageName());
-        //通用模块名
-        map.put("commonPackage", project.fetchCommonPackageName());
-        //项目名：驼峰格式-首字母小写
-        map.put("projectName", project.fetchNormalProjectName());
-        //项目名：驼峰格式-首字母大写
-        map.put("ProjectName", StringUtils.capitalize(project.fetchNormalProjectName()));
-        //项目名：短横杠分割
-        map.put("projectNameSplit", project.getProjectName());
-        //原始模块名
-        map.put("originProjectName", project.getProjectName());
-        //groupId
-        map.put("groupId", project.getGroupId());
-        //作者
-        map.put("author", project.getAuthor());
-        //创建时间
-        map.put("createdTime", project.getCreatedTime());
-        //多对多关联
-        map.put("mtms", project.getMtms());
-        //注入静态类
-        map.put("MetadataUtil", FreeMakerUtil.getStaticModel(MetadataUtil.class));
-        //注入常量类
-        map.put("JFieldType", FreeMakerUtil.getStaticModel(JFieldType.class));
-        //注入常量类
-        map.put("QueryType", FreeMakerUtil.getStaticModel(QueryType.class));
-        //注入常量类
-        map.put("MetaSpecialField", FreeMakerUtil.getStaticModel(MetaSpecialField.class));
-        //注意：此处添加新变量时，请在freemarker_implicit.ftl中也添加上对应变量，可以防止idea下的ftl文件有错误提示
-        return map;
-    }
-
-
-    /**
-     * 将文本文件写入临时目录
-     * @param project      项目
-     * @param text         渲染出的文本
-     * @param outDir       代码输出临时目录
-     * @param templatePath 模版文件路径
-     * @param metaEntityPO   实体
-     */
-    private void writeToFile(MetaProjectPO project, String text, String outDir, String templatePath, MetaEntityPO metaEntityPO, MetaConstPO singleConst) {
+    private String getOutFilePath(MetaProjectPO project,String tmpDir,String templatePath,String entityClassName,String constName){
         String packageName = project.getPackageName();
         if (StringUtils.isBlank(packageName)) {
             throw new GenerateException("包名未设置");
@@ -324,18 +313,24 @@ public class MetaCodeGenService {
                 .replace("{ProjectName}", StringUtils.capitalize(project.fetchNormalProjectName()))
                 .replace("{projectName}", StringUtils.uncapitalize(project.fetchNormalProjectName()))
                 .replace("{project-name}", project.getProjectName());
-        if (metaEntityPO != null) {
-            templatePath = templatePath.replace("{ClassName}", StringUtils.capitalize(metaEntityPO.getClassName()));
+        if (entityClassName != null) {
+            templatePath = templatePath.replace("{ClassName}", StringUtils.capitalize(entityClassName));
         }
-        if (singleConst != null) {
-            templatePath = templatePath.replace("{ConstName}", singleConst.getConstName())
-                    .replace("{EnumName}", singleConst.getConstName());
+        if (constName != null) {
+            templatePath = templatePath.replace("{ConstName}", constName)
+                    .replace("{EnumName}", constName);
         }
         templatePath = templatePath.substring(0, templatePath.lastIndexOf("."));
+        return tmpDir + "/" + templatePath;
+    }
 
-
-        String filePath = outDir + "/" + templatePath;
-        File file = new File(filePath);
+    /**
+     * 将文本写入文件
+     * @param text         文本内容
+     * @param outFilePath       文件路径
+     */
+    private void writeToFile(String text, String outFilePath) {
+        File file = new File(outFilePath);
         File parentFile = file.getParentFile();
         if (!parentFile.exists()) {
             parentFile.mkdirs();
@@ -359,8 +354,7 @@ public class MetaCodeGenService {
         List<MetaEntityPO> metaEntities = Lists.newArrayList(metaQueryAssembleService.assembleEntity(metaEntityPO));
         project.setEntities(metaEntities);
         metaQueryAssembleService.checkAssembledProject(project,false);
-        Map<String, Object> map = this.buildTemplateParamMap(project, null, null);
-        String text = FreeMakerUtil.writeToStr("root/{webModule}/src/test/resources/DB/{projectName}.sql.ftl", map);
+        String text = FreeMakerUtil.writeToStr("root/"+TemplateEnum.SQL.getTemplate(), new BaseModel(project));
         LOGGER.debug("------打印生成sql脚本-----");
         LOGGER.debug(text);
         return text;

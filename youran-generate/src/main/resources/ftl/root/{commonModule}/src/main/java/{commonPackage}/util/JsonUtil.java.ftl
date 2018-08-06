@@ -1,21 +1,21 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "com.fasterxml.jackson.core.JsonParseException"/>
-<@import "com.fasterxml.jackson.core.JsonProcessingException"/>
-<@import "com.fasterxml.jackson.databind.DeserializationFeature"/>
-<@import "com.fasterxml.jackson.databind.JavaType"/>
-<@import "com.fasterxml.jackson.databind.JsonMappingException"/>
-<@import "com.fasterxml.jackson.databind.ObjectMapper"/>
-<@import "org.apache.commons.lang3.StringUtils"/>
-<@import "org.slf4j.Logger"/>
-<@import "org.slf4j.LoggerFactory"/>
-<@import "java.io.IOException"/>
-<@import "java.text.SimpleDateFormat"/>
-<@import "java.util.ArrayList"/>
-<@import "java.util.List"/>
-<@classCom "封装json操作"/>
+<@call this.addImport("com.fasterxml.jackson.core.JsonParseException")/>
+<@call this.addImport("com.fasterxml.jackson.core.JsonProcessingException")/>
+<@call this.addImport("com.fasterxml.jackson.databind.DeserializationFeature")/>
+<@call this.addImport("com.fasterxml.jackson.databind.JavaType")/>
+<@call this.addImport("com.fasterxml.jackson.databind.JsonMappingException")/>
+<@call this.addImport("com.fasterxml.jackson.databind.ObjectMapper")/>
+<@call this.addImport("org.apache.commons.lang3.StringUtils")/>
+<@call this.addImport("org.slf4j.Logger")/>
+<@call this.addImport("org.slf4j.LoggerFactory")/>
+<@call this.addImport("java.io.IOException")/>
+<@call this.addImport("java.text.SimpleDateFormat")/>
+<@call this.addImport("java.util.ArrayList")/>
+<@call this.addImport("java.util.List")/>
+<@call this.printClassCom("封装json操作")/>
 public class JsonUtil {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);
@@ -101,8 +101,8 @@ public class JsonUtil {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.util;
+package ${this.commonPackage}.util;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

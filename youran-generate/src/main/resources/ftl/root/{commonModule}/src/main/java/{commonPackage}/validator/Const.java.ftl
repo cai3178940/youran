@@ -1,33 +1,33 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "org.apache.commons.collections.CollectionUtils"/>
-<@import "org.apache.commons.lang3.StringUtils"/>
-<@import "org.apache.commons.lang3.reflect.MethodUtils"/>
-<@import "org.slf4j.Logger"/>
-<@import "org.slf4j.LoggerFactory"/>
-<@import "javax.validation.Constraint"/>
-<@import "javax.validation.ConstraintValidator"/>
-<@import "javax.validation.ConstraintValidatorContext"/>
-<@import "javax.validation.Payload"/>
-<@import "java.lang.annotation.Documented"/>
-<@import "java.lang.annotation.Retention"/>
-<@import "java.lang.annotation.Target"/>
-<@import "java.lang.reflect.InvocationTargetException"/>
-<@import "java.lang.reflect.Method"/>
-<@import "java.util.List"/>
-<@importStatic "java.lang.annotation.ElementType.FIELD"/>
-<@importStatic "java.lang.annotation.ElementType.METHOD"/>
-<@importStatic "java.lang.annotation.RetentionPolicy.RUNTIME"/>
-<@classCom "自定义校验注解：常量校验" "校验常量值是否合法"/>
+<@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
+<@call this.addImport("org.apache.commons.lang3.StringUtils")/>
+<@call this.addImport("org.apache.commons.lang3.reflect.MethodUtils")/>
+<@call this.addImport("org.slf4j.Logger")/>
+<@call this.addImport("org.slf4j.LoggerFactory")/>
+<@call this.addImport("javax.validation.Constraint")/>
+<@call this.addImport("javax.validation.ConstraintValidator")/>
+<@call this.addImport("javax.validation.ConstraintValidatorContext")/>
+<@call this.addImport("javax.validation.Payload")/>
+<@call this.addImport("java.lang.annotation.Documented")/>
+<@call this.addImport("java.lang.annotation.Retention")/>
+<@call this.addImport("java.lang.annotation.Target")/>
+<@call this.addImport("java.lang.reflect.InvocationTargetException")/>
+<@call this.addImport("java.lang.reflect.Method")/>
+<@call this.addImport("java.util.List")/>
+<@call this.addStaticImport("java.lang.annotation.ElementType.FIELD")/>
+<@call this.addStaticImport("java.lang.annotation.ElementType.METHOD")/>
+<@call this.addStaticImport("java.lang.annotation.RetentionPolicy.RUNTIME")/>
+<@call this.printClassCom("自定义校验注解：常量校验" "校验常量值是否合法")/>
 @Target({FIELD, METHOD})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {Const.Checker.class})
 @Documented
 public @interface Const {
 
-    String DEFAULT_MESSAGE="{${commonPackage}.validator.Const}";
+    String DEFAULT_MESSAGE="{${this.commonPackage}.validator.Const}";
 
     Class constClass();
 
@@ -90,8 +90,8 @@ public @interface Const {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.validator;
+package ${this.commonPackage}.validator;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

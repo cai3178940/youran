@@ -1,84 +1,84 @@
 <#include "/common.ftl">
-<#include "/entity_common.ftl">
-<#include "/import.ftl">
+
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.pojo.vo.ReplyVO"/>
-<@import "${packageName}.pojo.vo.${CName}ShowVO"/>
-<@import "${packageName}.pojo.dto.${CName}AddDTO"/>
-<@import "${packageName}.pojo.qo.${CName}QO"/>
-<@import "${packageName}.pojo.vo.${CName}ListVO"/>
-<@import "${packageName}.pojo.dto.${CName}UpdateDTO"/>
-<@import "io.swagger.annotations.Api"/>
-<@import "io.swagger.annotations.ApiImplicitParam"/>
-<@import "io.swagger.annotations.ApiImplicitParams"/>
-<@import "io.swagger.annotations.ApiOperation"/>
-<@classCom "【${title}】API" "swagger接口文档"/>
-@Api(tags = "${CName}", description = "${title}")
-public interface ${CName}API {
+<@call this.addImport("${this.commonPackage}.pojo.vo.ReplyVO")/>
+<@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ShowVO")/>
+<@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}AddDTO")/>
+<@call this.addImport("${this.packageName}.pojo.qo.${this.classNameUpper}QO")/>
+<@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
+<@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}UpdateDTO")/>
+<@call this.addImport("io.swagger.annotations.Api")/>
+<@call this.addImport("io.swagger.annotations.ApiImplicitParam")/>
+<@call this.addImport("io.swagger.annotations.ApiImplicitParams")/>
+<@call this.addImport("io.swagger.annotations.ApiOperation")/>
+<@call this.printClassCom("【${this.title}】API" "swagger接口文档")/>
+@Api(tags = "${this.classNameUpper}", description = "${this.title}")
+public interface ${this.classNameUpper}API {
 
     /**
-     * 新增【${title}】
+     * 新增【${this.title}】
      */
-    @ApiOperation(value="新增【${title}】")
+    @ApiOperation(value="新增【${this.title}】")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${cName}AddDTO", dataType = "${CName}AddDTO", value = "新增【${title}】参数", paramType = "body"),
+        @ApiImplicitParam(name = "${this.className}AddDTO", dataType = "${this.classNameUpper}AddDTO", value = "新增【${this.title}】参数", paramType = "body"),
     })
-    ReplyVO<${CName}ShowVO> save(${CName}AddDTO ${cName}AddDTO);
+    ReplyVO<${this.classNameUpper}ShowVO> save(${this.classNameUpper}AddDTO ${this.className}AddDTO);
 
     /**
-     * 修改【${title}】
+     * 修改【${this.title}】
      */
-    @ApiOperation(value="修改【${title}】")
+    @ApiOperation(value="修改【${this.title}】")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${cName}UpdateDTO", dataType = "${CName}UpdateDTO", value = "修改【${title}】参数", paramType = "body"),
+        @ApiImplicitParam(name = "${this.className}UpdateDTO", dataType = "${this.classNameUpper}UpdateDTO", value = "修改【${this.title}】参数", paramType = "body"),
     })
-    ReplyVO<${CName}ShowVO> update(${CName}UpdateDTO ${cName}UpdateDTO);
-<#if pageSign == 1>
-    <@import "${commonPackage}.pojo.vo.PageVO"/>
+    ReplyVO<${this.classNameUpper}ShowVO> update(${this.classNameUpper}UpdateDTO ${this.className}UpdateDTO);
+<#if this.pageSign == 1>
+    <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     /**
-     * 分页查询【${title}】
+     * 分页查询【${this.title}】
      */
-    @ApiOperation(value="分页查询【${title}】")
-    ReplyVO<PageVO<${CName}ListVO>> list(${CName}QO ${cName}QO);
+    @ApiOperation(value="分页查询【${this.title}】")
+    ReplyVO<PageVO<${this.classNameUpper}ListVO>> list(${this.classNameUpper}QO ${this.className}QO);
 <#else>
-    <@import "java.util.List"/>
+    <@call this.addImport("java.util.List")/>
     /**
-     * 列表查询【${title}】
+     * 列表查询【${this.title}】
      */
-    @ApiOperation(value="列表查询【${title}】")
-    ReplyVO<List<${CName}ListVO>> list(${CName}QO ${cName}QO);
+    @ApiOperation(value="列表查询【${this.title}】")
+    ReplyVO<List<${this.classNameUpper}ListVO>> list(${this.classNameUpper}QO ${this.className}QO);
 </#if>
     /**
-     * 查看【${title}】详情
+     * 查看【${this.title}】详情
      */
-    @ApiOperation(value="查看【${title}】详情")
+    @ApiOperation(value="查看【${this.title}】详情")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
     })
-    ReplyVO<${CName}ShowVO> show(${type} ${id});
+    ReplyVO<${this.classNameUpper}ShowVO> show(${this.type} ${this.id});
 
     /**
-     * 删除单个【${title}】
+     * 删除单个【${this.title}】
      */
-    @ApiOperation(value="删除单个【${title}】")
+    @ApiOperation(value="删除单个【${this.title}】")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
     })
-    ReplyVO<Integer> delete(${type} ${id});
+    ReplyVO<Integer> delete(${this.type} ${this.id});
 
     /**
-     * 批量删除【${title}】
+     * 批量删除【${this.title}】
      */
-    @ApiOperation(value = "批量删除【${title}】")
+    @ApiOperation(value = "批量删除【${this.title}】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "id数组", paramType = "body"),
     })
-    ReplyVO<Integer> deleteBatch(${type}[] id);
+    ReplyVO<Integer> deleteBatch(${this.type}[] id);
 
 
-<#if metaEntity.mtmHoldRefers??>
-    <#list metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.mtmHoldRefers??>
+    <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
@@ -88,50 +88,50 @@ public interface ${CName}API {
      */
     @ApiOperation(value="添加单个【${otherEntity.title}】关联")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
         @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
     })
-    ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType} ${otherPkId});
+    ReplyVO<Integer> add${otherCName}(${this.type} ${this.id},${otherPk.jfieldType} ${otherPkId});
 
     /**
      * 添加多个【${otherEntity.title}】关联
      */
     @ApiOperation(value="添加多个【${otherEntity.title}】关联")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
         @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
     })
-    ReplyVO<Integer> add${otherCName}(${type} ${id},${otherPk.jfieldType}[] ${otherPkId});
+    ReplyVO<Integer> add${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherPkId});
 
     /**
      * 移除单个【${otherEntity.title}】关联
      */
     @ApiOperation(value="移除单个【${otherEntity.title}】关联")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
         @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
     })
-    ReplyVO<Integer> remove${otherCName}(${type} ${id},${otherPk.jfieldType} ${otherPkId});
+    ReplyVO<Integer> remove${otherCName}(${this.type} ${this.id},${otherPk.jfieldType} ${otherPkId});
 
     /**
      * 移除多个【${otherEntity.title}】关联
      */
     @ApiOperation(value="移除多个【${otherEntity.title}】关联")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
         @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
     })
-    ReplyVO<Integer> remove${otherCName}(${type} ${id},${otherPk.jfieldType}[] ${otherPkId});
+    ReplyVO<Integer> remove${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherPkId});
 
     /**
      * 设置【${otherEntity.title}】关联
      */
     @ApiOperation(value="设置【${otherEntity.title}】关联")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "${id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
         @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
     })
-    ReplyVO<Integer> set${otherCName}(${type} ${id},${otherPk.jfieldType}[] ${otherPkId});
+    ReplyVO<Integer> set${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherPkId});
 
     </#list>
 </#if>
@@ -139,8 +139,8 @@ public interface ${CName}API {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.web.api;
+package ${this.packageName}.web.api;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

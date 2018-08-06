@@ -1,10 +1,10 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.context.LoginContext"/>
-<@import "org.springframework.stereotype.Component"/>
-<@classCom "web登录用户上下文"/>
+<@call this.addImport("${this.commonPackage}.context.LoginContext")/>
+<@call this.addImport("org.springframework.stereotype.Component")/>
+<@call this.printClassCom("web登录用户上下文")/>
 @Component
 public class WebLoginContext implements LoginContext{
 
@@ -20,8 +20,8 @@ public class WebLoginContext implements LoginContext{
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName}.web.context;
+package ${this.packageName}.web.context;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

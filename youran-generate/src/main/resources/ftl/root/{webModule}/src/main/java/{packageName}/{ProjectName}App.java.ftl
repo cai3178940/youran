@@ -1,19 +1,19 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.optimistic.EnableOptimisticLock"/>
-<@import "org.springframework.boot.SpringApplication"/>
-<@import "org.springframework.boot.autoconfigure.SpringBootApplication"/>
-<@import "org.springframework.boot.builder.SpringApplicationBuilder"/>
-<@import "org.springframework.boot.web.support.SpringBootServletInitializer"/>
-<@classCom "启动类"/>
+<@call this.addImport("${this.commonPackage}.optimistic.EnableOptimisticLock")/>
+<@call this.addImport("org.springframework.boot.SpringApplication")/>
+<@call this.addImport("org.springframework.boot.autoconfigure.SpringBootApplication")/>
+<@call this.addImport("org.springframework.boot.builder.SpringApplicationBuilder")/>
+<@call this.addImport("org.springframework.boot.web.support.SpringBootServletInitializer")/>
+<@call this.printClassCom("启动类")/>
 @SpringBootApplication
 @EnableOptimisticLock
-public class ${ProjectName}App extends SpringBootServletInitializer {
+public class ${this.projectNameUpper}App extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(${ProjectName}App.class);
+        SpringApplication app = new SpringApplication(${this.projectNameUpper}App.class);
         app.run(args);
     }
 
@@ -24,13 +24,13 @@ public class ${ProjectName}App extends SpringBootServletInitializer {
      */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(${ProjectName}App.class);
+        return application.sources(${this.projectNameUpper}App.class);
     }
 }
 </#assign>
 <#--开始渲染代码-->
-package ${packageName};
+package ${this.packageName};
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

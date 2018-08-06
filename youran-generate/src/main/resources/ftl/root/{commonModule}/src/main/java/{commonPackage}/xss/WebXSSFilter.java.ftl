@@ -1,11 +1,11 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "javax.servlet.*"/>
-<@import "javax.servlet.http.HttpServletRequest"/>
-<@import "java.io.IOException"/>
-<@classCom "防止通过parameter传入XSS脚本"/>
+<@call this.addImport("javax.servlet.*")/>
+<@call this.addImport("javax.servlet.http.HttpServletRequest")/>
+<@call this.addImport("java.io.IOException")/>
+<@call this.printClassCom("防止通过parameter传入XSS脚本")/>
 public class WebXSSFilter implements Filter {
 
     @Override
@@ -28,8 +28,8 @@ public class WebXSSFilter implements Filter {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.xss;
+package ${this.commonPackage}.xss;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

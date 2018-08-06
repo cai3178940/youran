@@ -1,17 +1,17 @@
 <#include "/common.ftl">
-<#include "/import.ftl">
+
 <#--定义主体代码-->
 <#assign code>
-<@import "${commonPackage}.context.LoginContext"/>
-<@import "${commonPackage}.pojo.po.AbstractPO"/>
-<@import "${commonPackage}.pojo.qo.AbstractQO"/>
-<@import "${commonPackage}.pojo.qo.PageQO"/>
-<@import "${commonPackage}.pojo.vo.AbstractVO"/>
-<@import "${commonPackage}.pojo.vo.PageVO"/>
-<@import "${commonPackage}.util.SpringUtil"/>
-<@import "java.util.List"/>
-<@import "java.util.ArrayList"/>
-<@classCom "DAO父接口"/>
+<@call this.addImport("${this.commonPackage}.context.LoginContext")/>
+<@call this.addImport("${this.commonPackage}.pojo.po.AbstractPO")/>
+<@call this.addImport("${this.commonPackage}.pojo.qo.AbstractQO")/>
+<@call this.addImport("${this.commonPackage}.pojo.qo.PageQO")/>
+<@call this.addImport("${this.commonPackage}.pojo.vo.AbstractVO")/>
+<@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
+<@call this.addImport("${this.commonPackage}.util.SpringUtil")/>
+<@call this.addImport("java.util.List")/>
+<@call this.addImport("java.util.ArrayList")/>
+<@call this.printClassCom("DAO父接口")/>
 public interface DAO<PO extends AbstractPO> {
 
     /**
@@ -116,8 +116,8 @@ public interface DAO<PO extends AbstractPO> {
 }
 </#assign>
 <#--开始渲染代码-->
-package ${commonPackage}.dao;
+package ${this.commonPackage}.dao;
 
-<@printImport/>
+<@call this.printImport()/>
 
 ${code}

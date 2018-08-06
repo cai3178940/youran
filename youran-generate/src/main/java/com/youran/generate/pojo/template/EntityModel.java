@@ -101,9 +101,17 @@ public class EntityModel extends BaseModel{
      */
     private MetaFieldPO createdTimeField;
     /**
+     * 创建人字段
+     */
+    private MetaFieldPO createdByField;
+    /**
      * 操作日期字段
      */
     private MetaFieldPO operatedTimeField;
+    /**
+     * 操作人字段
+     */
+    private MetaFieldPO operatedByField;
 
 
     public EntityModel(MetaProjectPO project,MetaEntityPO metaEntity){
@@ -129,7 +137,9 @@ public class EntityModel extends BaseModel{
         this.listFields = metaEntity.getListFields();
         this.listSortFields = metaEntity.getListSortFields();
         this.createdTimeField = metaEntity.getCreatedTimeField();
+        this.createdByField = metaEntity.getCreatedByField();
         this.operatedTimeField = metaEntity.getOperatedTimeField();
+        this.operatedByField = metaEntity.getOperatedByField();
     }
 
 
@@ -307,5 +317,21 @@ public class EntityModel extends BaseModel{
 
     public void setOperatedTimeField(MetaFieldPO operatedTimeField) {
         this.operatedTimeField = operatedTimeField;
+    }
+
+    public MetaFieldPO getCreatedByField() {
+        return createdByField;
+    }
+
+    public void setCreatedByField(MetaFieldPO createdByField) {
+        this.createdByField = createdByField;
+    }
+
+    public MetaFieldPO getOperatedByField() {
+        return operatedByField;
+    }
+
+    public void setOperatedByField(MetaFieldPO operatedByField) {
+        this.operatedByField = operatedByField;
     }
 }

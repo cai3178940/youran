@@ -1,6 +1,6 @@
 <#include "/common.ftl">
 ## 表结构
-<#list metaEntities as metaEntity>
+<#list this.metaEntities as metaEntity>
 
 ### ${metaEntity.desc?replace('\'','"')?replace('\n','\\n')}【${metaEntity.tableName}】
 |字段名 | 类型 | 非空 | 键 | 注释 |
@@ -13,8 +13,8 @@
 | ${field.fieldName} | ${field.fieldType}${length_holder} | ${notNull_holder} | ${pk_holder} | ${comment_holder} |
     </#list>
 </#list>
-<#if mtms??>
-    <#list mtms as manyTomany>
+<#if this.mtms??>
+    <#list this.mtms as manyTomany>
 
         <#assign field1=manyTomany.refer1.pkField>
         <#assign field2=manyTomany.refer2.pkField>
