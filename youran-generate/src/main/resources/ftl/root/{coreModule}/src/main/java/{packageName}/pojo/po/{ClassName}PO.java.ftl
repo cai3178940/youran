@@ -114,7 +114,6 @@ public class ${this.classNameUpper}PO extends AbstractPO${implementsStr} {
     <@call TemplateUtil.printGetterSetter(field)/>
 </#list>
 
-
 <#if implementsDeleteSign && this.delField.jfieldName!="deleted">
     @Override
     public Integer getDeleted() {

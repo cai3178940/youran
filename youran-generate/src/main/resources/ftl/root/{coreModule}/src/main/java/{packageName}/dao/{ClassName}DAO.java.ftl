@@ -18,14 +18,14 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
      * @return
      */
     List<${this.classNameUpper}ListVO> findListByQuery(${this.classNameUpper}QO ${this.className}QO);
-</#if>
 
+</#if>
 <#list this.fields as field>
     <#if field.foreignKey==1>
     int getCountBy${field.jfieldName?capFirst}(${field.jfieldType} ${field.jfieldName});
     </#if>
-</#list>
 
+</#list>
 <#if this.metaEntity.mtmHoldRefers??>
     <#list this.metaEntity.mtmHoldRefers as entity>
         <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>

@@ -54,11 +54,9 @@ public class ${this.classNameUpper}Service {
         <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
 </#list>
-
     <@call this.printAutowired()/>
 
-
-<#if this.metaEntity.checkUniqueIndexes?? && metaEntity.checkUniqueIndexes?size &gt; 0>
+<#if this.metaEntity.checkUniqueIndexes?? && this.metaEntity.checkUniqueIndexes?size &gt; 0>
     /**
      * 校验数据唯一性
      * @param ${this.className}
