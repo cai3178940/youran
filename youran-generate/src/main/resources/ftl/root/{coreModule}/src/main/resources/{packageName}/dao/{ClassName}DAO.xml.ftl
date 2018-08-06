@@ -5,10 +5,10 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${this.packageName}.dao.${this.classNameUpper}DAO">
 
-    <#assign wrapTableName=MetadataUtil.wrapMysqlKeyword(tableName)>
-    <#assign wrapPkFieldName=MetadataUtil.wrapMysqlKeyword(pk.fieldName)>
-    <#if delField??>
-        <#assign wrapDelFieldName=MetadataUtil.wrapMysqlKeyword(delField.fieldName)>
+    <#assign wrapTableName=MetadataUtil.wrapMysqlKeyword(this.tableName)>
+    <#assign wrapPkFieldName=MetadataUtil.wrapMysqlKeyword(this.pk.fieldName)>
+    <#if this.delField??>
+        <#assign wrapDelFieldName=MetadataUtil.wrapMysqlKeyword(this.delField.fieldName)>
     </#if>
 
     <sql id="${this.className}Columns">
@@ -41,7 +41,7 @@
         </where>
     </select>
 
-    <insert id="_save" <#if pk.autoIncrement==1>useGeneratedKeys="true" </#if>keyProperty="${this.id}" parameterType="${this.classNameUpper}PO">
+    <insert id="_save" <#if this.pk.autoIncrement==1>useGeneratedKeys="true" </#if>keyProperty="${this.id}" parameterType="${this.classNameUpper}PO">
         insert into ${wrapTableName}(
     <#list this.fields as field>
         ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field_has_next>,</#if>
@@ -63,29 +63,29 @@
             ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}=${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>
             </#if>
         </#list>
-        where ${wrapPkFieldName}=${r'#'}{${this.id},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
-        <#if versionField??>
-        and ${MetadataUtil.wrapMysqlKeyword(versionField.fieldName)}=${r'#'}{${versionField.jfieldName},jdbcType=${JFieldType.mapperJdbcType(versionField.jfieldType)}}
+        where ${wrapPkFieldName}=${r'#'}{${this.id},jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}}
+        <#if this.versionField??>
+        and ${MetadataUtil.wrapMysqlKeyword(this.versionField.fieldName)}=${r'#'}{${this.versionField.jfieldName},jdbcType=${JFieldType.mapperJdbcType(this.versionField.jfieldType)}}
         </#if>
-        <#if delField??>
+        <#if this.delField??>
         and ${wrapDelFieldName}=0
         </#if>
     </update>
 
     <delete id="delete">
-    <#if delField??>
+    <#if this.delField??>
         update ${wrapTableName} set ${wrapDelFieldName}=1
-        where ${wrapPkFieldName}=${r'#'}{arg0,jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
+        where ${wrapPkFieldName}=${r'#'}{arg0,jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}}
         and ${wrapDelFieldName}=0
     <#else>
         delete from ${wrapTableName}
-        where ${wrapPkFieldName}=${r'#'}{arg0,jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}}
+        where ${wrapPkFieldName}=${r'#'}{arg0,jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}}
     </#if>
     </delete>
 
 
     <sql id="queryCondition">
-    <#list queryFields as field>
+    <#list this.queryFields as field>
         <#--非between类型查询-->
         <#if field.queryType!=QueryType.BETWEEN>
         <if test="${field.jfieldName} != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName} !=''</#if> ">
@@ -167,16 +167,16 @@
 
     <sql id="orderCondition">
         order by
-        <#list listSortFields as field>
+        <#list this.listSortFields as field>
         <if test="${field.jfieldName}SortSign != null and ${field.jfieldName}SortSign!=0">
             t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} <if test="${field.jfieldName}SortSign > 0">asc</if><if test="${field.jfieldName}SortSign &lt; 0">desc</if>,
         </if>
         </#list>
         <#--默认按【操作日期/创建日期/主键】降序排序-->
-        <#if operatedTimeField??>
-            t.${MetadataUtil.wrapMysqlKeyword(operatedTimeField.fieldName)} desc
-        <#elseIf createdTimeField??>
-            t.${MetadataUtil.wrapMysqlKeyword(createdTimeField.fieldName)} desc
+        <#if this.operatedTimeField??>
+            t.${MetadataUtil.wrapMysqlKeyword(this.operatedTimeField.fieldName)} desc
+        <#elseIf this.createdTimeField??>
+            t.${MetadataUtil.wrapMysqlKeyword(this.createdTimeField.fieldName)} desc
         <#else>
             t.${wrapPkFieldName} desc
         </#if>
@@ -245,7 +245,7 @@
 </#list>
 <#if this.metaEntity.mtmHoldRefers??>
     <#list this.metaEntity.mtmHoldRefers as entity>
-        <#assign mtm=metaEntity.holdMtms[entity_index]/>
+        <#assign mtm=this.metaEntity.holdMtms[entity_index]/>
         <#assign otherCName=entity.className?capFirst>
         <#assign othercName=entity.className?uncapFirst>
         <#assign otherPk=entity.pkField>
@@ -297,12 +297,12 @@
 
     <insert id="add${otherCName}" parameterType="map">
         insert into ${mtm.tableName}(${the_pk_id},${other_pk_id},created_time)
-        values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}},now())
+        values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}},now())
     </insert>
 
     <delete id="remove${otherCName}" parameterType="map">
         delete from ${mtm.tableName}
-        where ${the_pk_id}=${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(pk.jfieldType)}} and ${other_pk_id} in
+        where ${the_pk_id}=${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}} and ${other_pk_id} in
         <foreach collection="${otherPkId}" item="_id" open="(" separator="," close=")">
             ${r'#'}{_id}
         </foreach>
@@ -317,7 +317,7 @@
 </#if>
 <#if this.metaEntity.mtmUnHoldRefers??>
     <#list this.metaEntity.mtmUnHoldRefers as entity>
-        <#assign mtm=metaEntity.unHoldMtms[entity_index]/>
+        <#assign mtm=this.metaEntity.unHoldMtms[entity_index]/>
         <#assign otherCName=entity.className?capFirst>
         <#assign othercName=entity.className?uncapFirst>
         <#assign otherPk=entity.pkField>
@@ -331,7 +331,7 @@
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${pk.fieldName}=r.${the_pk_id}
+            on t.${this.pk.fieldName}=r.${the_pk_id}
         where
             r.${other_pk_id}=${r'#'}{arg0}
         <#if delField??>
@@ -345,7 +345,7 @@
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${pk.fieldName}=r.${the_pk_id}
+            on t.${this.pk.fieldName}=r.${the_pk_id}
         where
             r.${other_pk_id}=${r'#'}{arg0}
         <#if delField??>
@@ -368,7 +368,7 @@
                 and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} = ${r'#'}{${field.jfieldName}}
             </#list>
             <if test="${this.id} != null  ">
-                and t.${pk.fieldName} != ${r'#'}{${this.id}}
+                and t.${this.pk.fieldName} != ${r'#'}{${this.id}}
             </if>
         </where>
     </select>
