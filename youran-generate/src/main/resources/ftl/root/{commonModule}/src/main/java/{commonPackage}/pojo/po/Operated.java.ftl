@@ -1,5 +1,4 @@
 <#include "/common.ftl">
-
 <#--定义主体代码-->
 <#assign code>
 <@call this.printClassCom("操作人&操作日期")/>

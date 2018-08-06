@@ -1,5 +1,4 @@
 <#include "/common.ftl">
-
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.packageName}.web.rest.*")/>
@@ -8,7 +7,7 @@
 <@call this.printClassCom("合并测试类")/>
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-<#list metaEntities as metaEntity>
+<#list this.metaEntities as metaEntity>
     ${metaEntity.className}ControllerTest.class,
 </#list>
 })

@@ -1,5 +1,4 @@
 <#include "/common.ftl">
-
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("com.spring4all.swagger.EnableSwagger2Doc")/>

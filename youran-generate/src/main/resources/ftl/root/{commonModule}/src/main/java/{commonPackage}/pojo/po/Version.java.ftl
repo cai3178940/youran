@@ -1,5 +1,4 @@
 <#include "/common.ftl">
-
 <#--定义主体代码-->
 <#assign code>
 <@call this.printClassCom("是否乐观锁版本接口")/>
