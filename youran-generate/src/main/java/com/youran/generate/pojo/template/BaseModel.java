@@ -22,68 +22,67 @@ import java.util.TreeSet;
 public class BaseModel {
 
 
-
     /**
      * 实体列表
      */
-    private List<MetaEntityPO> metaEntities;
+    protected List<MetaEntityPO> metaEntities;
     /**
      * 常量列表
      */
-    private List<MetaConstPO> metaConsts;
+    protected List<MetaConstPO> metaConsts;
     /**
      * 多对多列表
      */
-    private List<MetaManyToManyPO> mtms;
+    protected List<MetaManyToManyPO> mtms;
     /**
      * 包名
      */
-    private String packageName;
+    protected String packageName;
     /**
      * common包名
      */
-    private String commonPackage;
+    protected String commonPackage;
     /**
      * 项目名称-驼峰格式-首字母小写
      */
-    private String projectName;
+    protected String projectName;
     /**
      * 项目名称-驼峰格式-首字母大写
      */
-    private String projectNameUpper;
+    protected String projectNameUpper;
     /**
      * 项目名称-短横杠分割
      */
-    private String projectNameSplit;
+    protected String projectNameSplit;
     /**
      * 原始模块名
      */
-    private String originProjectName;
+    protected String originProjectName;
     /**
      * maven的groupId
      */
-    private String groupId;
+    protected String groupId;
     /**
      * 作者
      */
-    private String author;
+    protected String author;
     /**
      * 创建时间
      */
-    private Date createdTime;
+    protected Date createdTime;
 
     /**
      * 导入模块
      */
-    private Set<String> imports;
+    protected Set<String> imports;
     /**
      * 静态导入模块
      */
-    private Set<String> staticImports;
+    protected Set<String> staticImports;
     /**
      * spring注入bean
      */
-    private Set<String> autowired;
+    protected Set<String> autowired;
 
 
 
