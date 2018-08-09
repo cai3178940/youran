@@ -29,11 +29,11 @@ public class TemplateUtil {
 
     /**
      * 判断是否通用的常量
-     * @param dicType
+     * @param constName
      * @return
      */
-    public static boolean isCommonPackage(String dicType){
-        return "BoolConst".equals(dicType);
+    public static boolean isCommonConst(String constName){
+        return "BoolConst".equals(constName);
     }
 
     /**

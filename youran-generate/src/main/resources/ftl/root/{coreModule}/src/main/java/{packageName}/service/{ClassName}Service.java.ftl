@@ -32,13 +32,13 @@ public class ${this.classNameUpper}Service {
 </#if>
 <#-- 引入外键对应的DAO -->
 <#list this.insertFields as field>
-    <#if field.foreignKey==1>
+    <#if isTrue(field.foreignKey)>
         <#assign foreignCName=field.foreignEntity.className?capFirst>
         <@call this.addAutowired("${this.packageName}.dao" "${foreignCName}DAO")/>
     </#if>
 </#list>
 <#list this.updateFields as field>
-    <#if field.foreignKey==1>
+    <#if isTrue(field.foreignKey)>
         <#assign foreignCName=field.foreignEntity.className?capFirst>
         <@call this.addAutowired("${this.packageName}.dao" "${foreignCName}DAO")/>
     </#if>
@@ -78,7 +78,7 @@ public class ${this.classNameUpper}Service {
 </#if>
 <#macro checkForeignKeys fields>
     <#list this.fields as field>
-        <#if field.foreignKey==1>
+        <#if isTrue(field.foreignKey)>
             <@call this.addImport("org.springframework.util.Assert")/>
             <#assign foreigncName=field.foreignEntity.className?uncapFirst>
         if(${this.className}.get${field.jfieldName?capFirst}() != null){
@@ -153,7 +153,7 @@ public class ${this.classNameUpper}Service {
 </#if>
         return ${this.className};
     }
-<#if this.pageSign == 1>
+<#if isTrue(this.pageSign)>
     <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     /**
      * 查询分页列表

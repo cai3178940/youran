@@ -41,7 +41,7 @@
         </where>
     </select>
 
-    <insert id="_save" <#if this.pk.autoIncrement==1>useGeneratedKeys="true" </#if>keyProperty="${this.id}" parameterType="${this.classNameUpper}PO">
+    <insert id="_save" <#if isTrue(this.pk.autoIncrement)>useGeneratedKeys="true" </#if>keyProperty="${this.id}" parameterType="${this.classNameUpper}PO">
         insert into ${wrapTableName}(
     <#list this.fields as field>
         ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field_has_next>,</#if>
@@ -223,13 +223,13 @@
         <include refid="queryCondition"/>
         </where>
         <include refid="orderCondition"/>
-    <#if this.pageSign == 1>
+    <#if isTrue(this.pageSign)>
         limit ${r'#'}{startIndex},${r'#'}{pageSize}
     </#if>
     </select>
 
 <#list this.fields as field>
-    <#if field.foreignKey==1>
+    <#if isTrue(field.foreignKey)>
         <#assign wrapFieldName=MetadataUtil.wrapMysqlKeyword(field.fieldName)>
     <select id="getCountBy${field.jfieldName?capFirst}" parameterType="${field.jfieldType}" resultType="int">
         select count(1)

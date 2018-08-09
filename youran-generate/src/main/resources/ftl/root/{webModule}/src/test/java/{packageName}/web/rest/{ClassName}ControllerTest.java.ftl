@@ -51,7 +51,7 @@
     </#list>
         restMockMvc.perform(get("/${this.className}/list"))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-    <#if this.pageSign == 1>
+    <#if isTrue(this.pageSign)>
             .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
     <#else>
             .andExpect(jsonPath("$.data.length()").value(is(1)));

@@ -5,6 +5,7 @@ import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.util.TemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
@@ -135,6 +136,19 @@ public class BaseModel {
     public void addStaticImport(String classPath){
         this.staticImports.add(classPath);
     }
+
+    /**
+     * 导入常量依赖
+     * @param constName
+     */
+    public void addConstImport(String constName){
+        if(TemplateUtil.isCommonConst(constName)){
+            this.addImport(this.commonPackage+".constant."+constName);
+        }else{
+            this.addImport(this.packageName+".constant."+constName);
+        }
+    }
+
 
     /**
      * 添加spring bean注入

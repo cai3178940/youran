@@ -8,7 +8,7 @@
 @Mapper
 public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO> {
 
-<#if this.pageSign != 1>
+<#if isFalse(this.pageSign)>
     <@call this.addImport("${this.packageName}.pojo.qo.${this.classNameUpper}QO")/>
     <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
     <@call this.addImport("java.util.List")/>
@@ -21,7 +21,7 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
 
 </#if>
 <#list this.fields as field>
-    <#if field.foreignKey==1>
+    <#if isTrue(field.foreignKey)>
     int getCountBy${field.jfieldName?capFirst}(${field.jfieldType} ${field.jfieldName});
     </#if>
 

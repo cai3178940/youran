@@ -37,7 +37,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
         return ReplyVO.success().data(${this.classNameUpper}Mapper.INSTANCE.toShowVO(${this.className}));
     }
 
-<#if this.pageSign == 1>
+<#if isTrue(this.pageSign)>
     <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     @Override
     @GetMapping(value = "/list")

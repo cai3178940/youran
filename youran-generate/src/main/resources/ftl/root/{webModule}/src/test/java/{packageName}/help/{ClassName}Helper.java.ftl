@@ -15,7 +15,7 @@ public class ${this.classNameUpper}Helper {
     <#assign foreignArg="">
     <#assign foreignArg2="">
     <#list this.insertFields as field>
-        <#if field.foreignKey==1>
+        <#if isTrue(field.foreignKey)>
             <#assign foreignArg=foreignArg+"${field.jfieldType} ${field.jfieldName}, ">
             <#assign foreignArg2=foreignArg2+"${field.jfieldName}, ">
         </#if>
@@ -32,7 +32,7 @@ public class ${this.classNameUpper}Helper {
         ${this.classNameUpper}AddDTO dto = new ${this.classNameUpper}AddDTO();
     <#list this.metaEntity.insertFields as field>
         <#assign arg="">
-        <#if field.foreignKey==1>
+        <#if isTrue(field.foreignKey)>
             <#assign arg="${field.jfieldName}">
         <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
             <#assign arg="E_${field.jfieldName?upperCase}">

@@ -5,12 +5,12 @@ DROP TABLE IF EXISTS `${metaEntity.tableName}`;
 CREATE TABLE `${metaEntity.tableName}` (
     <#list metaEntity.fields as field>
         <#assign length_holder><#if MetadataUtil.showFieldLength(field.fieldType)>(${field.fieldLength}<#if MetadataUtil.showFieldScale(field.fieldType)>,${field.fieldScale}</#if>)</#if></#assign>
-        <#assign autoIncrement_holder><#if field.autoIncrement==1> AUTO_INCREMENT</#if></#assign>
-        <#assign notNull_holder><#if field.notNull==1> NOT NULL<#elseif field.defaultValue=='NULL'> DEFAULT NULL</#if></#assign>
+        <#assign autoIncrement_holder><#if isTrue(field.autoIncrement)> AUTO_INCREMENT</#if></#assign>
+        <#assign notNull_holder><#if isTrue(field.notNull)> NOT NULL<#elseif field.defaultValue=='NULL'> DEFAULT NULL</#if></#assign>
         <#assign default_holder><#if field.defaultValue!='NULL'> DEFAULT ${field.defaultValue}</#if></#assign>
         <#assign comment_holder><#if field.fieldComment??> COMMENT '${field.fieldComment?replace('\'','"')}'</#if></#assign>
         <#assign comma_holder><#if field_has_next || metaEntity.pkField?? || (metaEntity.indexes?? && (metaEntity.indexes?size > 0))>,</#if></#assign>
-        <#if field.primaryKey==1>
+        <#if isTrue(field.primaryKey)>
     `${field.fieldName}` ${field.fieldType}${length_holder}${autoIncrement_holder}${comment_holder}${comma_holder}
         <#else>
     `${field.fieldName}` ${field.fieldType}${length_holder}${notNull_holder}${default_holder}${comment_holder}${comma_holder}
@@ -21,7 +21,7 @@ CREATE TABLE `${metaEntity.tableName}` (
     </#if>
     <#if metaEntity.indexes??>
         <#list metaEntity.indexes as index>
-    <#if index.unique==1>UNIQUE </#if>KEY `${index.indexName}` (<#list index.fields as field>`${field.fieldName}`<#if field_has_next >,</#if></#list>) USING BTREE<#if index_has_next>,</#if>
+    <#if isTrue(index.unique)>UNIQUE </#if>KEY `${index.indexName}` (<#list index.fields as field>`${field.fieldName}`<#if field_has_next >,</#if></#list>) USING BTREE<#if index_has_next>,</#if>
         </#list>
     </#if>
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${metaEntity.desc?replace('\'','"')?replace('\n','\\n')}';

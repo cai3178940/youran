@@ -32,7 +32,7 @@ public interface ${this.classNameUpper}API {
         @ApiImplicitParam(name = "${this.className}UpdateDTO", dataType = "${this.classNameUpper}UpdateDTO", value = "修改【${this.title}】参数", paramType = "body"),
     })
     ReplyVO<${this.classNameUpper}ShowVO> update(${this.classNameUpper}UpdateDTO ${this.className}UpdateDTO);
-<#if this.pageSign == 1>
+<#if isTrue(this.pageSign)>
     <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     /**
      * 分页查询【${this.title}】
