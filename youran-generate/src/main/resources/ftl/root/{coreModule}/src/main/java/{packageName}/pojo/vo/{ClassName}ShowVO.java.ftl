@@ -53,13 +53,13 @@ public class ${this.classNameUpper}ShowVO extends AbstractVO {
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     @ApiModelProperty(notes = "【${otherEntity.title}】列表")
     private List<${otherCName}ListVO> ${othercName}List;
+
     </#list>
 </#if>
 
 <#list this.showFields as field>
     <@call TemplateUtil.printGetterSetter(field)/>
 </#list>
-
 <#list this.fields as field>
     <#if field.cascadeShowExts?? && field.cascadeShowExts?size &gt; 0>
         <#list field.cascadeShowExts as cascadeExt>
@@ -67,13 +67,11 @@ public class ${this.classNameUpper}ShowVO extends AbstractVO {
         </#list>
     </#if>
 </#list>
-
 <#if this.metaEntity.mtmHoldRefers??>
     <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className/>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign otherListVO="${otherCName}ListVO">
-        <@call TemplateUtil.printGetterSetterList(othercName otherListVO)/>
+        <@call TemplateUtil.printGetterSetterList(othercName "${otherCName}ListVO")/>
     </#list>
 </#if>
 

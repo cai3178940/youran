@@ -98,7 +98,6 @@ public class ${this.classNameUpper}PO extends AbstractPO${implementsStr} {
     <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
         <@call this.addImport("java.math.BigDecimal")/>
     </#if>
-
     private ${field.jfieldType} ${field.jfieldName};
 
 </#list>
@@ -188,14 +187,7 @@ public class ${this.classNameUpper}PO extends AbstractPO${implementsStr} {
 </#if>
 <#if this.metaEntity.mtmHoldRefers??>
     <#list this.metaEntity.mtmHoldRefers as otherEntity>
-    public List<${otherEntity.className}PO> get${otherEntity.className}POList() {
-        return ${otherEntity.className?uncapFirst}POList;
-    }
-
-    public void set${otherEntity.className}POList(List<${otherEntity.className}PO> ${otherEntity.className?uncapFirst}POList) {
-        this.${otherEntity.className?uncapFirst}POList = ${otherEntity.className?uncapFirst}POList;
-    }
-
+    <@call TemplateUtil.printGetterSetterList("${otherEntity.className}PO","${otherEntity.className}PO")/>
     </#list>
 </#if>
 
