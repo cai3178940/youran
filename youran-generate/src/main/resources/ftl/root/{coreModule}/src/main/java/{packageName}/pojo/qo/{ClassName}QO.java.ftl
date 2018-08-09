@@ -38,7 +38,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     <#else>
         <#assign jfieldName=field.jfieldName>
     </#if>
-    <@call TemplateUtil.printGetterSetter2("${jfieldName}" "${field.jfieldType}")/>
+    <@call TemplateUtil.printGetterSetter("${jfieldName}" "${field.jfieldType}")/>
 </#macro>
 <#list this.queryFields as field>
     <#if field.queryType!=QueryType.BETWEEN>
@@ -95,7 +95,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     </#if>
 </#list>
 <#list this.listSortFields as field>
-    <@call TemplateUtil.printGetterSetter2("${field.jfieldName}SortSign" "Integer")/>
+    <@call TemplateUtil.printGetterSetter("${field.jfieldName}SortSign" "Integer")/>
 </#list>
 }
 </#assign>

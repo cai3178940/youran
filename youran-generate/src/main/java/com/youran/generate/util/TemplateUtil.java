@@ -42,7 +42,7 @@ public class TemplateUtil {
      * @return
      */
     public static String printGetterSetter(MetaFieldPO metaFieldPO){
-        return printGetterSetter2(metaFieldPO.getJfieldName(),metaFieldPO.getJfieldType());
+        return printGetterSetter(metaFieldPO.getJfieldName(),metaFieldPO.getJfieldType());
     }
 
     /**
@@ -51,7 +51,7 @@ public class TemplateUtil {
      * @param jfieldType
      * @return
      */
-    public static String printGetterSetter2(String jfieldName,String jfieldType){
+    public static String printGetterSetter(String jfieldName,String jfieldType){
         String cap = StringUtils.capitalize(jfieldName);
         String uncap = StringUtils.uncapitalize(jfieldName);
         StringBuilder sb = new StringBuilder();

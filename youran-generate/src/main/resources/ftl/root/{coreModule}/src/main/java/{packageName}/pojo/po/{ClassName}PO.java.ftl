@@ -2,7 +2,6 @@
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.commonPackage}.pojo.po.AbstractPO")/>
-
 <#--判断是否继承特殊接口-->
 <#assign implementsVersion=false>
 <#assign implementsDeleteSign=false>
@@ -14,7 +13,6 @@
 <#assign implementsOperated=false>
 <#assign implementsCreatedOperatedDeleted=false>
 <#assign implementsCreatedOperatedDeletedVersion=false>
-
 <#--判断是否继承单一接口-->
 <#if this.delField??>
     <#assign implementsDeleteSign=true>
@@ -47,8 +45,8 @@
 <#if implementsCreated && implementsOperated && implementsDeleteSign && implementsVersion>
     <#assign implementsCreatedOperatedDeletedVersion=true>
 </#if>
-
-<#assign implementsStr=""><#--构建继承串-->
+<#--构建继承串-->
+<#assign implementsStr="">
 <#if implementsCreatedOperatedDeletedVersion>
     <#assign implementsStr+=" CreatedOperatedDeletedVersion,">
     <@call this.addImport("${this.commonPackage}.pojo.po.CreatedOperatedDeletedVersion")/>
@@ -88,7 +86,6 @@
 <#if implementsStr!="">
     <#assign implementsStr=" implements"+implementsStr?removeEnding(",")>
 </#if>
-
 <@call this.printClassCom("${this.title}" "${this.desc}")/>
 public class ${this.classNameUpper}PO extends AbstractPO${implementsStr} {
 

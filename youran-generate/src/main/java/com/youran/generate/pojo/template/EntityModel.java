@@ -302,8 +302,6 @@ public class EntityModel extends BaseModel{
 
 
 
-
-
     public MetaEntityPO getMetaEntity() {
         return metaEntity;
     }

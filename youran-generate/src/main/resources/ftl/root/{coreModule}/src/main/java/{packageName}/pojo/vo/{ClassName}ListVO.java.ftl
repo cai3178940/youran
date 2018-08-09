@@ -51,7 +51,7 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
 <#list this.fields as field>
     <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
         <#list field.cascadeListExts as cascadeExt>
-            <@call TemplateUtil.printGetterSetter2(cascadeExt.alias cascadeExt.cascadeField.jfieldType)/>
+            <@call TemplateUtil.printGetterSetter(cascadeExt.alias cascadeExt.cascadeField.jfieldType)/>
         </#list>
     </#if>
 </#list>
