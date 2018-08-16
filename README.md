@@ -34,13 +34,13 @@ java -jar youran-generate/target/youran-generate.war
 
 ```
 ### 项目管理页面
-![image](image1.png)
+![image](doc/image1.png)
 ### 实体管理页面
-![image](image2.png)
+![image](doc/image2.png)
 ### 字段管理页面
-![image](image3.png)
+![image](doc/image3.png)
 ### 字段添加页面
-![image](image4.png)
+![image](doc/image4.png)
 
 
 ## 术语解析
