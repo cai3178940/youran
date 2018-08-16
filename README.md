@@ -13,6 +13,18 @@
 
 ## 安装部署
 
+简易安装（推荐）
+``` bash
+
+# 直接用maven编译
+mvn clean package
+
+# 运行spring-boot项目
+java -jar youran-generate/target/youran-generate.war
+
+```
+
+复杂安装（自己编译UI）
 ``` bash
 # 安装前端项目npm依赖
 cd youran-generate-ui
