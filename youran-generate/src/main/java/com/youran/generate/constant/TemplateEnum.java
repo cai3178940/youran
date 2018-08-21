@@ -69,7 +69,7 @@ public enum TemplateEnum {
     /******** Core模块源码 *********/
     Configuration(COMMON, "{coreModule}/src/main/java/{packageName}/config/{ProjectName}Configuration.java.ftl"),
     Properties(COMMON, "{coreModule}/src/main/java/{packageName}/config/{ProjectName}Properties.java.ftl"),
-    Const(COMMON, "{coreModule}/src/main/java/{packageName}/constant/{ProjectName}Const.java.ftl"),
+    SystemConst(COMMON, "{coreModule}/src/main/java/{packageName}/constant/SystemConst.java.ftl"),
     EnumClass(CONST, "{coreModule}/src/main/java/{packageName}/constant/{EnumName}.java.ftl"),
     CoreDAO(ENTITY, "{coreModule}/src/main/java/{packageName}/dao/{ClassName}DAO.java.ftl"),
     Exception(COMMON, "{coreModule}/src/main/java/{packageName}/exception/{ProjectName}Exception.java.ftl"),
@@ -102,6 +102,7 @@ public enum TemplateEnum {
     StartLogCommandLineRunner(COMMON,"{webModule}/src/main/java/{packageName}/web/config/StartLogCommandLineRunner.java.ftl"),
     SwaggerConfig(COMMON, "{webModule}/src/main/java/{packageName}/web/config/SwaggerConfig.java.ftl"),
     WebConfig(COMMON,"{webModule}/src/main/java/{packageName}/web/config/WebConfig.java.ftl"),
+    WebConst(COMMON,"{webModule}/src/main/java/{packageName}/web/constant/WebConst.java.ftl"),
     WebLoginContext(COMMON, "{webModule}/src/main/java/{packageName}/web/context/WebLoginContext.java.ftl"),
     Controller(ENTITY, "{webModule}/src/main/java/{packageName}/web/rest/{ClassName}Controller.java.ftl"),
     IpUtil(COMMON, "{webModule}/src/main/java/{packageName}/web/util/IpUtil.java.ftl"),

@@ -9,6 +9,7 @@
 <@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}UpdateDTO")/>
 <@call this.addImport("${this.packageName}.pojo.mapper.${this.classNameUpper}Mapper")/>
 <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ShowVO")/>
+<@call this.addImport("${this.packageName}.web.constant.WebConst")/>
 <@call this.addImport("${this.packageName}.web.AbstractController")/>
 <@call this.addImport("${this.packageName}.web.api.${this.classNameUpper}API")/>
 <@call this.addImport("org.apache.commons.lang3.ArrayUtils")/>
@@ -17,7 +18,7 @@
 <@call this.addImport("javax.validation.Valid")/>
 <@call this.printClassCom("【${this.title}】控制器")/>
 @RestController
-@RequestMapping("/${this.className}")
+@RequestMapping(WebConst.API_PATH + "/${this.className}")
 public class ${this.classNameUpper}Controller extends AbstractController implements ${this.classNameUpper}API {
 
     <@call this.addAutowired("${this.packageName}.service" "${this.classNameUpper}Service")/>

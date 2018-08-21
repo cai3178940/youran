@@ -7,6 +7,7 @@
 <@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}UpdateDTO")/>
 <@call this.addImport("${this.packageName}.pojo.po.${this.classNameUpper}PO")/>
 <@call this.addImport("${this.packageName}.web.AbstractWebTest")/>
+<@call this.addImport("${this.packageName}.web.constant.WebConst")/>
 <@call this.addImport("org.junit.Test")/>
 <@call this.addImport("org.springframework.beans.factory.annotation.Autowired")/>
 <@call this.addImport("org.springframework.http.MediaType")/>
@@ -26,7 +27,7 @@
         </#if>
     </#list>
         ${this.classNameUpper}AddDTO addDTO = ${this.className}Helper.get${this.classNameUpper}AddDTO(<@call this.printSaveExampleArg(this.metaEntity)/>);
-        restMockMvc.perform(post("/${this.className}/save")
+        restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}/save")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
@@ -38,7 +39,7 @@
         ${saveExample}
     </#list>
         ${this.classNameUpper}UpdateDTO updateDTO = ${this.className}Helper.get${this.classNameUpper}UpdateDTO(${this.className});
-        restMockMvc.perform(put("/${this.className}/update")
+        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/update")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
@@ -49,7 +50,7 @@
     <#list saveExampleCode as saveExample>
         ${saveExample}
     </#list>
-        restMockMvc.perform(get("/${this.className}/list"))
+        restMockMvc.perform(get(WebConst.API_PATH + "/${this.className}/list"))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
     <#if isTrue(this.pageSign)>
             .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
@@ -63,7 +64,7 @@
     <#list saveExampleCode as saveExample>
         ${saveExample}
     </#list>
-        restMockMvc.perform(get("/${this.className}/{${this.id}}",${this.className}.get${this.idUpper}()))
+        restMockMvc.perform(get(WebConst.API_PATH + "/${this.className}/{${this.id}}",${this.className}.get${this.idUpper}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
     }
 
@@ -72,7 +73,7 @@
     <#list saveExampleCode as saveExample>
         ${saveExample}
     </#list>
-        restMockMvc.perform(delete("/${this.className}/{${this.id}}",${this.className}.get${this.idUpper}()))
+        restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}/{${this.id}}",${this.className}.get${this.idUpper}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
@@ -82,7 +83,7 @@
     <#list saveExampleCode as saveExample>
         ${saveExample}
     </#list>
-        restMockMvc.perform(put("/${this.className}/deleteBatch")
+        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/deleteBatch")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${this.className}.get${this.idUpper}()))))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
@@ -101,11 +102,11 @@
         <#list saveExampleCode as saveExample>
         ${saveExample}
         </#list>
-        restMockMvc.perform(put("/${this.className}/{${this.id}}/add${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
+        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/add${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
-        restMockMvc.perform(put("/${this.className}/{${this.id}}/remove${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
+        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/remove${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
@@ -116,13 +117,13 @@
         <#list saveExampleCode as saveExample>
         ${saveExample}
         </#list>
-        restMockMvc.perform(put("/${this.className}/{${this.id}}/add${otherEntity.className}",
+        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/add${otherEntity.className}",
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
-        restMockMvc.perform(put("/${this.className}/{${this.id}}/remove${otherEntity.className}",
+        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/remove${otherEntity.className}",
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
@@ -135,7 +136,7 @@
         <#list saveExampleCode as saveExample>
         ${saveExample}
         </#list>
-        restMockMvc.perform(put("/${this.className}/{${this.id}}/set${otherEntity.className}",
+        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/set${otherEntity.className}",
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
