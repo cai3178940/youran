@@ -157,7 +157,7 @@ public class ExceptionTranslator {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<ReplyVO> processRuntimeException(Exception ex) {
-        ex.printStackTrace();
+        LOGGER.error("系统内部错误",ex);
         ResponseEntity.BodyBuilder builder;
         ReplyVO replyVO;
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
@@ -166,7 +166,7 @@ public class ExceptionTranslator {
             replyVO = new ReplyVO(responseStatus.value().value()+"", responseStatus.reason());
         } else {
             builder = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
-            replyVO = new ReplyVO(ErrorCode.INTERNAL_SERVER_ERROR.getValue(), ErrorCode.INTERNAL_SERVER_ERROR.getDesc());
+            replyVO = ReplyVO.fail(ErrorCode.INTERNAL_SERVER_ERROR);
         }
         return builder.body(replyVO);
     }

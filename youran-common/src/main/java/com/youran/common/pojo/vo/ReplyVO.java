@@ -1,5 +1,6 @@
 package com.youran.common.pojo.vo;
 
+import com.youran.common.constant.ErrorCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +46,10 @@ public class ReplyVO<T> extends AbstractVO {
 
     public static ReplyVO fail(String message) {
         return new ReplyVO(ERROR_CODE, message);
+    }
+
+    public static ReplyVO fail(ErrorCode errorCode) {
+        return new ReplyVO(errorCode.getValue(), errorCode.getDesc());
     }
 
     public static ReplyVO success() {

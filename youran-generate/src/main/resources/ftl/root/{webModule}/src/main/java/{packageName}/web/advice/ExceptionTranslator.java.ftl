@@ -158,7 +158,7 @@ public class ExceptionTranslator {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<ReplyVO> processRuntimeException(Exception ex) {
-        ex.printStackTrace();
+        LOGGER.error("系统内部错误",ex);
         ResponseEntity.BodyBuilder builder;
         ReplyVO replyVO;
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
