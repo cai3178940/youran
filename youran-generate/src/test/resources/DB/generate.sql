@@ -19,7 +19,7 @@ CREATE TABLE `meta_project` (
   `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
   `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
   PRIMARY KEY (`project_id`),
-  UNIQUE KEY `i_meta_project_0` (`project_name`) USING BTREE
+  KEY `i_meta_project_0` (`project_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_project';
 
 DROP TABLE IF EXISTS `meta_entity`;
