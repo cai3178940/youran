@@ -40,17 +40,17 @@
         <dependencies>
 
             <dependency>
-                <groupId>${this.groupId}</groupId>
+                <groupId>${r'$'}{project.groupId}</groupId>
                 <artifactId>${this.originProjectName}-common</artifactId>
                 <version>${r'$'}{project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${this.groupId}</groupId>
+                <groupId>${r'$'}{project.groupId}</groupId>
                 <artifactId>${this.originProjectName}-core</artifactId>
                 <version>${r'$'}{project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${this.groupId}</groupId>
+                <groupId>${r'$'}{project.groupId}</groupId>
                 <artifactId>${this.originProjectName}-web</artifactId>
                 <version>${r'$'}{project.version}</version>
             </dependency>

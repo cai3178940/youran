@@ -17,7 +17,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>${this.groupId}</groupId>
+            <groupId>${r'$'}{project.groupId}</groupId>
             <artifactId>${this.originProjectName}-core</artifactId>
         </dependency>
 

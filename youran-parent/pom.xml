@@ -51,12 +51,12 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.cbb.youran</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>youran-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.cbb.youran</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>youran-generate</artifactId>
                 <version>${project.version}</version>
             </dependency>
