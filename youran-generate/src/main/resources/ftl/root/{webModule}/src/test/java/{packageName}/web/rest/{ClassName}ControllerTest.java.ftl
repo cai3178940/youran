@@ -27,7 +27,7 @@
         </#if>
     </#list>
         ${this.classNameUpper}AddDTO addDTO = ${this.className}Helper.get${this.classNameUpper}AddDTO(<@call this.printSaveExampleArg(this.metaEntity)/>);
-        restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}/save")
+        restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
@@ -39,7 +39,7 @@
         ${saveExample}
     </#list>
         ${this.classNameUpper}UpdateDTO updateDTO = ${this.className}Helper.get${this.classNameUpper}UpdateDTO(${this.className});
-        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/update")
+        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
@@ -50,7 +50,7 @@
     <#list saveExampleCode as saveExample>
         ${saveExample}
     </#list>
-        restMockMvc.perform(get(WebConst.API_PATH + "/${this.className}/list"))
+        restMockMvc.perform(get(WebConst.API_PATH + "/${this.className}"))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
     <#if isTrue(this.pageSign)>
             .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
@@ -83,7 +83,7 @@
     <#list saveExampleCode as saveExample>
         ${saveExample}
     </#list>
-        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/deleteBatch")
+        restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${this.className}.get${this.idUpper}()))))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
@@ -98,32 +98,32 @@
         <#--获取保存Example的代码-->
         <#assign saveExampleCode=this.getPrintingSaveExampleForMtm(otherEntity)/>
     @Test
-    public void addRemove${otherEntity.className}() throws Exception {
+    public void addRemove${otherCName}() throws Exception {
         <#list saveExampleCode as saveExample>
         ${saveExample}
         </#list>
-        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/add${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
+        restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
-        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/remove${otherEntity.className}/{${MetadataUtil.getPkAlias(othercName,false)}}",
+        restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
     }
 
     @Test
-    public void addRemove${otherEntity.className}2() throws Exception {
+    public void addRemove${otherCName}2() throws Exception {
         <#list saveExampleCode as saveExample>
         ${saveExample}
         </#list>
-        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/add${otherEntity.className}",
+        restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}",
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
             .andExpect(jsonPath("$.data").value(is(1)));
-        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/remove${otherEntity.className}",
+        restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}",
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
@@ -132,11 +132,11 @@
     }
 
     @Test
-    public void set${otherEntity.className}() throws Exception {
+    public void set${otherCName}() throws Exception {
         <#list saveExampleCode as saveExample>
         ${saveExample}
         </#list>
-        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/set${otherEntity.className}",
+        restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}",
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))

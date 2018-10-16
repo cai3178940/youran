@@ -25,14 +25,14 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     <@call this.printAutowired()/>
 
     @Override
-    @PostMapping(value = "/save")
+    @PostMapping
     public ReplyVO<${this.classNameUpper}ShowVO> save(@Valid @RequestBody ${this.classNameUpper}AddDTO ${this.className}AddDTO) {
         ${this.classNameUpper}PO ${this.className} = ${this.className}Service.save(${this.className}AddDTO);
         return ReplyVO.success().data(${this.classNameUpper}Mapper.INSTANCE.toShowVO(${this.className}));
     }
 
     @Override
-    @PutMapping(value = "/update")
+    @PutMapping
     public ReplyVO<${this.classNameUpper}ShowVO> update(@Valid @RequestBody ${this.classNameUpper}UpdateDTO ${this.className}UpdateDTO) {
         ${this.classNameUpper}PO ${this.className} = ${this.className}Service.update(${this.className}UpdateDTO);
         return ReplyVO.success().data(${this.classNameUpper}Mapper.INSTANCE.toShowVO(${this.className}));
@@ -41,7 +41,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
 <#if isTrue(this.pageSign)>
     <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     @Override
-    @GetMapping(value = "/list")
+    @GetMapping
     public ReplyVO<PageVO<${this.classNameUpper}ListVO>> list(@Valid ${this.classNameUpper}QO ${this.className}QO) {
         PageVO<${this.classNameUpper}ListVO> page = ${this.className}Service.list(${this.className}QO);
         return ReplyVO.success().data(page);
@@ -49,7 +49,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
 <#else>
     <@call this.addImport("java.util.List")/>
     @Override
-    @GetMapping(value = "/list")
+    @GetMapping
     public ReplyVO<List<${this.classNameUpper}ListVO>> list(@Valid ${this.classNameUpper}QO ${this.className}QO) {
         List<${this.classNameUpper}ListVO> list = ${this.className}Service.list(${this.className}QO);
         return ReplyVO.success().data(list);
@@ -71,7 +71,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     }
 
     @Override
-    @PutMapping(value = "deleteBatch")
+    @DeleteMapping
     public ReplyVO<Integer> deleteBatch(@RequestBody ${this.type}[] id) {
         if(ArrayUtils.isEmpty(id)){
             return ReplyVO.fail("参数为空");
@@ -87,7 +87,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     @Override
-    @PutMapping(value = "/{${this.id}}/add${otherCName}/{${otherPkId}}")
+    @PostMapping(value = "/{${this.id}}/${othercName}/{${otherPkId}}")
     public ReplyVO<Integer> add${otherCName}(@PathVariable ${this.type} ${this.id},
                         @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
         int count = ${this.className}Service.add${otherCName}(${this.id}, ${otherPkId});
@@ -95,7 +95,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     }
 
     @Override
-    @PutMapping(value = "/{${this.id}}/add${otherCName}")
+    @PostMapping(value = "/{${this.id}}/${othercName}")
     public ReplyVO<Integer> add${otherCName}(@PathVariable ${this.type} ${this.id},
                         @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
         int count = ${this.className}Service.add${otherCName}(${this.id}, ${otherPkId});
@@ -103,7 +103,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     }
 
     @Override
-    @PutMapping(value = "/{${this.id}}/remove${otherCName}/{${otherPkId}}")
+    @DeleteMapping(value = "/{${this.id}}/${othercName}/{${otherPkId}}")
     public ReplyVO<Integer> remove${otherCName}(@PathVariable ${this.type} ${this.id},
                         @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
         int count = ${this.className}Service.remove${otherCName}(${this.id}, ${otherPkId});
@@ -111,7 +111,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     }
 
     @Override
-    @PutMapping(value = "/{${this.id}}/remove${otherCName}")
+    @DeleteMapping(value = "/{${this.id}}/${othercName}")
     public ReplyVO<Integer> remove${otherCName}(@PathVariable ${this.type} ${this.id},
                         @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
         int count = ${this.className}Service.remove${otherCName}(${this.id}, ${otherPkId});
@@ -119,7 +119,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     }
 
     @Override
-    @PutMapping(value = "/{${this.id}}/set${otherCName}")
+    @PutMapping(value = "/{${this.id}}/${othercName}")
     public ReplyVO<Integer> set${otherCName}(@PathVariable ${this.type} ${this.id},
         @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
         int count = ${this.className}Service.set${otherCName}(${this.id}, ${otherPkId});
