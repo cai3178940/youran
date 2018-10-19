@@ -30,6 +30,11 @@ public class MetaProjectAddDTO extends AbstractDTO {
     @Length(min=1, max = 50, message = "projectName最大长度不能超过50")
     private String projectName;
 
+    @ApiModelProperty(notes = N_PROJECTDESC, example = E_PROJECTDESC)
+    @NotNull
+    @Length(min=1, max = 100, message = "projectDesc最大长度不能超过100")
+    private String projectDesc;
+
     @ApiModelProperty(notes = N_GROUPID, example = E_GROUPID)
     @NotNull
     @Length(min=1, max = 50, message = "groupId最大长度不能超过50")
@@ -118,5 +123,13 @@ public class MetaProjectAddDTO extends AbstractDTO {
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
+    }
+
+    public String getProjectDesc() {
+        return projectDesc;
+    }
+
+    public void setProjectDesc(String projectDesc) {
+        this.projectDesc = projectDesc;
     }
 }

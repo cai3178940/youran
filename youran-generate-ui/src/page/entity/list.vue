@@ -97,21 +97,20 @@
 </template>
 
 <script>
-
-  import ErDiagram from "./erDiagram";
-  export default {
+  import ErDiagram from './erDiagram'
+export default {
     name: 'entityList',
     components: {ErDiagram},
     props: ['projectId'],
     data: function () {
       return {
-        sqlPreview:'',
-        sqlPreviewVisible:false,
-        //查询参数
+        sqlPreview: '',
+        sqlPreviewVisible: false,
+        // 查询参数
         query: {
           projectId: null
         },
-        //查询表单参数
+        // 查询表单参数
         queryForm: {
           projectId: null
         },
@@ -124,26 +123,26 @@
           pageSize: 20,
           entities: []
         },
-        mtms:[],
+        mtms: [],
         loading: false
       }
     },
     watch: {
       'mtms': function (value) {
-        if(!value){
+        if (!value) {
           return
         }
         // 首先将每个entity中的mtms置空
-        this.page.entities.forEach(entity=>{
+        this.page.entities.forEach(entity => {
           entity.mtms = []
         })
         value.forEach(mtm => {
-          const entity1 = this.page.entities.find(entity=>entity.entityId==mtm.entityId1)
-          const entity2 = this.page.entities.find(entity=>entity.entityId==mtm.entityId2)
-          if(entity1){
+          const entity1 = this.page.entities.find(entity => entity.entityId === mtm.entityId1)
+          const entity2 = this.page.entities.find(entity => entity.entityId === mtm.entityId2)
+          if (entity1) {
             entity1.mtms.push(mtm)
           }
-          if(entity2){
+          if (entity2) {
             entity2.mtms.push(mtm)
           }
         })
@@ -175,14 +174,14 @@
       queryProject: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data)
+          .then(result => { this.projectList = result.data })
       },
       handleQuery: function () {
-        //将查询表单参数赋值给查询参数
+        // 将查询表单参数赋值给查询参数
         this.query = {
           ...this.queryForm
         }
-        if (this.query.projectId != parseInt(this.projectId)) {
+        if (this.query.projectId !== parseInt(this.projectId)) {
           this.$router.push(`/project/${this.query.projectId}/entity`)
         }
         this.doQuery()
@@ -200,16 +199,16 @@
           pageSize: this.page.pageSize
         }
         this.loading = true
-        return this.$ajax.get('/generate/meta_entity/list', {params:params})
+        return this.$ajax.get('/generate/meta_entity/list', {params: params})
           .then(response => this.$common.checkResult(response.data))
           .then(result => {
-            result.data.entities.forEach(value=>{
+            result.data.entities.forEach(value => {
               value.mtms = []
             })
             this.page = result.data
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(() => this.loading = false)
+          .finally(() => { this.loading = false })
       },
       // 索引查询
       doQueryMtm: function () {
@@ -217,11 +216,11 @@
           return
         }
         this.loading = true
-        return this.$ajax.get('/generate/meta_mtm/list', {params:{projectId:this.query.projectId}})
+        return this.$ajax.get('/generate/meta_mtm/list', {params: {projectId: this.query.projectId}})
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.mtms = result.data)
+          .then(result => { this.mtms = result.data })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(() => this.loading = false)
+          .finally(() => { this.loading = false })
       },
       handleMtmCommand: function (command) {
         this[command.method](...command.arg)
@@ -243,7 +242,7 @@
       },
       handleErDiagram: function () {
         const entityIds = this.selectItems.map(entity => entity.entityId)
-        this.$refs.erDiagram.show(this.projectId,entityIds)
+        this.$refs.erDiagram.show(this.projectId, entityIds)
       },
       handleField: function (row) {
         this.$router.push(`/project/${this.projectId}/entity/${row.entityId}/field`)

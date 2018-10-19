@@ -200,7 +200,7 @@ private Integer publishSignSortSign;
 > 强迫症忍不了 :rage:
     `
   },
-  'const':{
+  'const': {
     projectId: `
 **项目**：当前枚举所属项目
     `,
@@ -214,7 +214,7 @@ private Integer publishSignSortSign;
 **类型**：指定下属枚举值的字段类型
     `
   },
-  constDetail:{
+  constDetail: {
     detailName: `
 **枚举字段名**：Java枚举类中的字段名称，请符合Java字段命名规范
     `,
@@ -253,7 +253,7 @@ public enum DevType {
 
     `
   },
-  mtm:{
+  mtm: {
     projectId: `
 **项目**：当前多对多所属项目
     `,
@@ -291,7 +291,7 @@ public enum DevType {
 **唯一性校验**：插入或修改记录时，是否需要提前进行索引唯一性校验
     `
   },
-  fieldListHelp:`
+  fieldListHelp: `
 **快速复制字段攻略**
 > 注意：离开“实体管理”页面，复制的内容会清空！
 
@@ -301,4 +301,3 @@ public enum DevType {
 `
 
 }
-

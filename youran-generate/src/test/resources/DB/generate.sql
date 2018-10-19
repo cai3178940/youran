@@ -3,7 +3,8 @@ DROP TABLE IF EXISTS `meta_project`;
 CREATE TABLE `meta_project` (
   `project_id` int(11) AUTO_INCREMENT COMMENT '项目id',
   `package_name` varchar(100) NOT NULL COMMENT '主包名',
-  `project_name` varchar(50) NOT NULL COMMENT '项目名简称',
+  `project_name` varchar(50) NOT NULL COMMENT '项目标识',
+  `project_desc` varchar(100) NOT NULL COMMENT '项目名称',
   `group_id` varchar(50) NOT NULL COMMENT 'groupId',
   `author` varchar(50) DEFAULT NULL COMMENT '开发者',
   `remote` tinyint(1) NOT NULL COMMENT '启用Git仓库',

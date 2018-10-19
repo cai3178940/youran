@@ -34,56 +34,37 @@
 </template>
 
 <script>
+  import {initDetailFormBean, getDetailRules} from './model'
+
   export default {
     name: 'constDetailAdd',
-    props: ['projectId','constId'],
+    props: ['projectId', 'constId'],
     data: function () {
       return {
-        form: {
-          constId: null,
-          //枚举字段名
-          detailName: '',
-          //枚举值
-          detailValue: '',
-          //值描述
-          detailRemark: ''
-        },
-        rules: {
-          detailName: [
-            {required: true, message: '请输入枚举字段名', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          detailValue: [
-            {required: true, message: '请输入枚举值', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          detailRemark: [
-            {required: true, message: '请输入值描述', trigger: 'blur'},
-            {max: 100, message: '长度不能超过100个字符', trigger: 'blur'}
-          ]
-        }
+        form: initDetailFormBean(false),
+        rules: getDetailRules()
       }
     },
     methods: {
       submit: function () {
         var loading = null
-        //校验表单
+        // 校验表单
         this.$refs.addForm.validate()
-        //提交表单
+        // 提交表单
           .then(() => {
             loading = this.$loading()
             return this.$ajax.post('/generate/meta_const_detail/save', this.form)
           })
-          //校验返回结果
+          // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
-          //执行页面跳转
+          // 执行页面跳转
           .then(() => {
             this.$common.showMsg('success', '添加成功')
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>{
-            if(loading){
+          .finally(() => {
+            if (loading) {
               loading.close()
             }
           })

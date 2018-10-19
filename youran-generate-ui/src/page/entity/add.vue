@@ -59,6 +59,7 @@
 
 <script>
   import options from '@/components/options.js'
+  import {initFormBean, getRules} from './model'
   export default {
     name: 'entityAdd',
     props: ['projectId'],
@@ -66,65 +67,35 @@
       return {
         boolOptions: options.boolOptions,
         projectList: [],
-        form: {
-          projectId: null,
-          title: '',
-          className: '',
-          tableName: '',
-          desc: '',
-          commonCall: 1,
-          pageSign: 1
-        },
-        rules: {
-          projectId: [
-            {required: true, type: 'number', message: '请选择项目', trigger: 'change'},
-          ],
-          title: [
-            {required: true, message: '请输入实体名', trigger: 'blur'},
-            {max: 25, message: '长度不能超过25个字符', trigger: 'blur'}
-          ],
-          className: [
-            {required: true, message: '请输入类名', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          tableName: [
-            {required: true, message: '请输入表名', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          pageSign: [
-            {required: true, type: 'number', message: '请选择是否支持分页', trigger: 'change'},
-          ],
-          desc: [
-            {max: 250, message: '长度不能超过250个字符', trigger: 'blur'}
-          ]
-        }
+        form: initFormBean(false),
+        rules: getRules()
       }
     },
     methods: {
       queryProject: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data)
+          .then(result => { this.projectList = result.data })
       },
       submit: function () {
         var loading = null
-        //校验表单
+        // 校验表单
         this.$refs.addForm.validate()
-        //提交表单
+        // 提交表单
           .then(() => {
             loading = this.$loading()
             return this.$ajax.post('/generate/meta_entity/save', this.form)
           })
-          //校验返回结果
+          // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
-          //执行页面跳转
+          // 执行页面跳转
           .then(() => {
             this.$common.showMsg('success', '添加成功')
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>{
-            if(loading){
+          .finally(() => {
+            if (loading) {
               loading.close()
             }
           })
@@ -135,7 +106,7 @@
     },
     created: function () {
       this.queryProject()
-        .then(() => this.form.projectId = parseInt(this.projectId))
+        .then(() => { this.form.projectId = parseInt(this.projectId) })
     }
   }
 </script>

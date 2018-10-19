@@ -1,6 +1,6 @@
-export default  {
+export default {
 
-  //布尔枚举
+  // 布尔枚举
   boolOptions: [
     {
       value: 1,
@@ -59,19 +59,19 @@ export default  {
    * @param fieldType
    * @returns {boolean}
    */
-  showFieldLength:function (fieldType) {
-    return fieldType!='datetime'&&fieldType!='text'
+  showFieldLength: function (fieldType) {
+    return fieldType !== 'datetime' && fieldType !== 'text'
   },
   /**
    * 根据字段类型判断是否需要显示精度
    * @param fieldType
    * @returns {boolean}
    */
-  showFieldScale:function (fieldType) {
-    return fieldType=='decimal'||fieldType=='double'||fieldType=='float'
+  showFieldScale: function (fieldType) {
+    return fieldType === 'decimal' || fieldType === 'double' || fieldType === 'float'
   },
 
-  jfieldTypeOptions:[
+  jfieldTypeOptions: [
     {
       value: 'Integer',
       label: 'Integer'
@@ -105,7 +105,7 @@ export default  {
       label: 'BigDecimal'
     }
   ],
-  queryTypeOptions:[
+  queryTypeOptions: [
     {
       value: 1,
       label: '等于'
@@ -135,7 +135,7 @@ export default  {
       label: 'between'
     }
   ],
-  specialFieldOptions:[
+  specialFieldOptions: [
     {
       value: 'deleted',
       label: '逻辑删除'
@@ -161,7 +161,7 @@ export default  {
       label: '乐观锁版本'
     }
   ],
-  constTypeOptions:[
+  constTypeOptions: [
     {
       value: 1,
       label: '整型'
@@ -173,9 +173,9 @@ export default  {
   ],
 
   // 默认常量列表
-  defaultConstList:[
+  defaultConstList: [
     {
-      constName:'BoolConst'
+      constName: 'BoolConst'
     }
   ]
 

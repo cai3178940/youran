@@ -16,7 +16,8 @@
     <el-table :data="entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column property="groupId" label="groupId" width="160"></el-table-column>
-      <el-table-column property="projectName" label="项目名称" width="250"></el-table-column>
+      <el-table-column property="projectName" label="项目标识" width="200"></el-table-column>
+      <el-table-column property="projectDesc" label="项目名称" width="200"></el-table-column>
       <el-table-column property="author" label="作者" width="120"></el-table-column>
       <el-table-column property="packageName" label="包名"></el-table-column>
       <el-table-column label="启用Git仓库" width="120px">
@@ -86,7 +87,6 @@
 </template>
 
 <script>
-
   export default {
     name: 'projectList',
     data: function () {
@@ -95,9 +95,9 @@
         activeNum: 0,
         selectItems: [],
         entities: [],
-        loading:false,
+        loading: false,
         reverseEngineeringFormVisible: false,
-        reverseEngineeringForm:{
+        reverseEngineeringForm: {
           projectId: null,
           dbType: 'mysql',
           ddl: ''
@@ -127,11 +127,11 @@
       // 列表查询
       doQuery: function () {
         this.loading = true
-        this.$ajax.get('/generate/meta_project/list', {params:this.query})
+        this.$ajax.get('/generate/meta_project/list', {params: this.query})
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.entities = result.data)
+          .then(result => { this.entities = result.data })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>this.loading = false)
+          .finally(() => { this.loading = false })
       },
       handleAdd: function () {
         this.$router.push('/project/add')
@@ -159,45 +159,45 @@
         this.reverseEngineeringForm.projectId = row.projectId
         this.reverseEngineeringForm.ddl = ''
       },
-      handleReverseEngineeringCheck: function(){
+      handleReverseEngineeringCheck: function () {
         var loading = null
-        //校验表单
+        // 校验表单
         this.$refs.reverseEngineeringForm.validate()
-        //提交表单
-          .then(()=>{
+        // 提交表单
+          .then(() => {
             loading = this.$loading()
             return this.$ajax.post('/generate/reverse_engineering/check', this.reverseEngineeringForm)
           })
-          //校验返回结果
+          // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
           .then(() => {
             this.$common.showMsg('success', '校验通过')
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>{
-            if(loading){
+          .finally(() => {
+            if (loading) {
               loading.close()
             }
           })
       },
-      handleReverseEngineeringSubmit: function(){
+      handleReverseEngineeringSubmit: function () {
         var loading = null
-        //校验表单
+        // 校验表单
         this.$refs.reverseEngineeringForm.validate()
-        //提交表单
-          .then(()=>{
+        // 提交表单
+          .then(() => {
             loading = this.$loading()
             return this.$ajax.post('/generate/reverse_engineering/execute', this.reverseEngineeringForm)
           })
-        //校验返回结果
+        // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
           .then(() => {
             this.$common.showMsg('success', '执行成功')
             this.reverseEngineeringFormVisible = false
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>{
-            if(loading){
+          .finally(() => {
+            if (loading) {
               loading.close()
             }
           })
@@ -206,9 +206,9 @@
         this.loading = true
         this.$ajax.get(`/generate/code_gen/gitCommit?projectId=${row.projectId}`)
           .then(response => this.$common.checkResult(response.data))
-          .then(()=>this.$common.showMsg('success', '提交成功'))
+          .then(() => this.$common.showMsg('success', '提交成功'))
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>this.loading = false)
+          .finally(() => { this.loading = false })
       },
       handleCommand: function (command) {
         this[command.method](command.arg)

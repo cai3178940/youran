@@ -72,6 +72,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
+            <el-button type="warning" @click="reset()">重置</el-button>
             <el-button @click="goBack()">返回</el-button>
           </el-form-item>
         </el-form>
@@ -82,17 +83,7 @@
 
 <script>
   import options from '@/components/options.js'
-  //多对多模型
-  const mtmModel = {
-    mtmId: null,
-    projectId: null,
-    tableName: '',
-    desc: '',
-    entityId1: null,
-    entityId2: null,
-    holdRefer1:1,
-    holdRefer2:1
-  }
+  import {initMtmFormBean, getMtmRules} from './model'
 
   export default {
     name: 'mtmEdit',
@@ -101,80 +92,53 @@
       return {
         boolOptions: options.boolOptions,
         projectList: [],
-        entityList:[],
-        old: {
-          ...mtmModel
-        },
-        form: {
-          ...mtmModel
-        },
-        rules: {
-          projectId: [
-            {required: true, type: 'number', message: '请选择项目', trigger: 'change'},
-          ],
-          tableName: [
-            {required: true, message: '请输入关联表名', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          desc: [
-            {max: 250, message: '长度不能超过250个字符', trigger: 'blur'}
-          ],
-          entityId1: [
-            {required: true, type: 'number', message: '请选择实体1', trigger: 'change'},
-          ],
-          entityId2: [
-            {required: true, type: 'number', message: '请选择实体2', trigger: 'change'},
-          ],
-          holdRefer1: [
-            {required: true, type: 'number', message: '请选择实体1持有引用', trigger: 'change'},
-          ],
-          holdRefer2: [
-            {required: true, type: 'number', message: '请选择实体2持有引用', trigger: 'change'},
-          ]
-        }
+        entityList: [],
+        old: initMtmFormBean(true),
+        form: initMtmFormBean(true),
+        rules: getMtmRules()
       }
     },
     methods: {
       queryProject: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data)
+          .then(result => { this.projectList = result.data })
       },
       queryEntity: function (projectId) {
         return this.$common.getEntityOptions(projectId)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.entityList = result.data.entities)
+          .then(result => { this.entityList = result.data.entities })
       },
       getMtm: function () {
         return this.$ajax.get(`/generate/meta_mtm/${this.mtmId}`)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.old = result.data)
+          .then(result => { this.old = result.data })
           .catch(error => this.$common.showNotifyError(error))
       },
       reset: function () {
-        for (const key in mtmModel) {
+        for (const key in initMtmFormBean(true)) {
           this.form[key] = this.old[key]
         }
       },
       submit: function () {
         var loading = null
-        //校验表单
+        // 校验表单
         this.$refs.editForm.validate()
-        //提交表单
+        // 提交表单
           .then(() => {
             loading = this.$loading()
             return this.$ajax.put('/generate/meta_mtm/update', this.form)
           })
-          //校验返回结果
+          // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
-          //执行页面跳转
+          // 执行页面跳转
           .then(() => {
             this.$common.showMsg('success', '修改成功')
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>{
-            if(loading){
+          .finally(() => {
+            if (loading) {
               loading.close()
             }
           })
@@ -184,7 +148,7 @@
       }
     },
     created: function () {
-      Promise.all([this.getMtm(),this.queryProject(),this.queryEntity(this.projectId)])
+      Promise.all([this.getMtm(), this.queryProject(), this.queryEntity(this.projectId)])
         .then(() => this.reset())
     }
   }

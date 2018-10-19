@@ -82,81 +82,51 @@
 </template>
 
 <script>
-
   import options from '@/components/options.js'
+  import {initMtmFormBean, getMtmRules} from './model'
+
   export default {
     name: 'mtmAdd',
-    props: ['projectId','entityIds'],
+    props: ['projectId', 'entityIds'],
     data: function () {
       return {
         boolOptions: options.boolOptions,
         projectList: [],
-        entityList:[],
-        form: {
-          projectId: null,
-          tableName: '',
-          desc: '',
-          entityId1: null,
-          entityId2: null,
-          holdRefer1:1,
-          holdRefer2:1
-        },
-        rules: {
-          projectId: [
-            {required: true, type: 'number', message: '请选择项目', trigger: 'change'},
-          ],
-          tableName: [
-            {required: true, message: '请输入关联表名', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          desc: [
-            {max: 250, message: '长度不能超过250个字符', trigger: 'blur'}
-          ],
-          entityId1: [
-            {required: true, type: 'number', message: '请选择实体1', trigger: 'change'},
-          ],
-          entityId2: [
-            {required: true, type: 'number', message: '请选择实体2', trigger: 'change'},
-          ],
-          holdRefer1: [
-            {required: true, type: 'number', message: '请选择实体1持有引用', trigger: 'change'},
-          ],
-          holdRefer2: [
-            {required: true, type: 'number', message: '请选择实体2持有引用', trigger: 'change'},
-          ]
-        }
+        entityList: [],
+        form: initMtmFormBean(false),
+        rules: getMtmRules()
       }
     },
     methods: {
       queryProject: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data)
+          .then(result => { this.projectList = result.data })
       },
       queryEntity: function (projectId) {
         return this.$common.getEntityOptions(projectId)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.entityList = result.data.entities)
+          .then(result => { this.entityList = result.data.entities })
       },
       submit: function () {
         var loading = null
-        //校验表单
+        // 校验表单
         this.$refs.addForm.validate()
-        //提交表单
+        // 提交表单
           .then(() => {
             loading = this.$loading()
             return this.$ajax.post('/generate/meta_mtm/save', this.form)
           })
-          //校验返回结果
+          // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
-          //执行页面跳转
+          // 执行页面跳转
           .then(() => {
             this.$common.showMsg('success', '添加成功')
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>{
-            if(loading){
+          .finally(() => {
+            if (loading) {
               loading.close()
             }
           })
@@ -167,8 +137,8 @@
     },
     created: function () {
       this.form.projectId = parseInt(this.projectId)
-      if(this.entityIds){
-        const array = this.entityIds.split('-').map(value => parseInt(value));
+      if (this.entityIds) {
+        const array = this.entityIds.split('-').map(value => parseInt(value))
         this.form.entityId1 = array[0]
         this.form.entityId2 = array[1]
       }

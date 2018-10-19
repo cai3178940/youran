@@ -54,53 +54,32 @@
 
 <script>
   import options from '@/components/options.js'
+  import {initIndexFormBean, getIndexRules} from './model'
+
   export default {
     name: 'indexAdd',
-    props: ['projectId','entityId','fieldIds'],
+    props: ['projectId', 'entityId', 'fieldIds'],
     data: function () {
       return {
         boolOptions: options.boolOptions,
         fieldList: [],
-        form: {
-          entityId: null,
-          //索引名
-          indexName: '',
-          //是否唯一
-          unique: 0,
-          //唯一性校验
-          uniqueCheck: 0,
-          fieldIds:[]
-        },
+        form: initIndexFormBean(false),
         uniqueCheckDisabled: false,
-        rules: {
-          indexName: [
-            {required: true, message: '请输入索引名', trigger: 'blur'},
-            {max: 20, message: '长度不能超过20个字符', trigger: 'blur'}
-          ],
-          unique: [
-            {required: true, type: 'number', message: '请选择是否唯一', trigger: 'change'},
-          ],
-          uniqueCheck: [
-            {required: true, type: 'number', message: '请选择唯一性校验', trigger: 'change'},
-          ],
-          fieldIds: [
-            {required: true, type: 'array', message: '请选择字段', trigger: 'change'},
-          ]
-        }
+        rules: getIndexRules()
       }
     },
     watch: {
       'form.indexName': function (value) {
-        const lc = /[a-z]/i;
-        if(lc.test(value)){
+        const lc = /[a-z]/i
+        if (lc.test(value)) {
           this.form.indexName = value.toUpperCase()
         }
       },
       'form.unique': function (value) {
-        if (value == 1) {
+        if (value === 1) {
           this.form.uniqueCheck = 1
           this.uniqueCheckDisabled = true
-        }else{
+        } else {
           this.uniqueCheckDisabled = false
         }
       }
@@ -109,31 +88,31 @@
       queryField: function (entityId) {
         return this.$common.getFieldOptions(entityId)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.fieldList = result.data)
+          .then(result => { this.fieldList = result.data })
       },
       submit: function () {
         var params = {
           ...this.form
         }
-        params.fieldIds = this.form.fieldIds.join(",")
+        params.fieldIds = this.form.fieldIds.join(',')
         var loading = null
-        //校验表单
+        // 校验表单
         this.$refs.addForm.validate()
-          //提交表单
+          // 提交表单
           .then(() => {
             loading = this.$loading()
             return this.$ajax.post('/generate/meta_index/save', this.$common.removeBlankField(params))
           })
-          //校验返回结果
+          // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
-          //执行页面跳转
+          // 执行页面跳转
           .then(() => {
             this.$common.showMsg('success', '添加成功')
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>{
-            if(loading){
+          .finally(() => {
+            if (loading) {
               loading.close()
             }
           })
@@ -145,7 +124,7 @@
     created: function () {
       // 将路径参数解析到form表单
       this.form.entityId = parseInt(this.entityId)
-      if(this.fieldIds){
+      if (this.fieldIds) {
         this.form.fieldIds = this.fieldIds.split('-').map(value => parseInt(value))
       }
       this.queryField(this.form.entityId)

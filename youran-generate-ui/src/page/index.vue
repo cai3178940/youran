@@ -8,7 +8,6 @@
   </div>
 </template>
 <script>
-
   import showdown from 'showdown'
   import 'github-markdown-css'
   import tutorial from './tutorial/tutorial.md'
@@ -17,10 +16,8 @@
   export default {
     data: function () {
       return {
-        tutorial:tutorialHtml
+        tutorial: tutorialHtml
       }
     }
   }
-
-
 </script>

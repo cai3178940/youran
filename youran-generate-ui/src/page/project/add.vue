@@ -13,9 +13,14 @@
               <el-input v-model="form.groupId" placeholder="例如：com.myGroup"></el-input>
             </help-popover>
           </el-form-item>
-          <el-form-item label="项目名称" prop="projectName">
+          <el-form-item label="项目标识" prop="projectName">
             <help-popover name="project.projectName">
               <el-input v-model="form.projectName" placeholder="例如：bbs"></el-input>
+            </help-popover>
+          </el-form-item>
+          <el-form-item label="项目名称" prop="projectDesc">
+            <help-popover name="project.projectDesc">
+              <el-input v-model="form.projectDesc" placeholder="例如：论坛"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="包名" prop="packageName">
@@ -65,79 +70,37 @@
 
 <script>
   import options from '@/components/options.js'
+  import {initFormBean, getRules} from './model'
+
   export default {
     name: 'projectAdd',
     data: function () {
       return {
         boolOptions: options.boolOptions,
-        form: {
-          groupId: '',
-          projectName: '',
-          packageName: '',
-          author: '',
-          remote: 0,
-          remoteUrl: '',
-          username: '',
-          password: ''
-        },
-        rules: {
-          groupId: [
-            {required: true, message: '请输入groupId', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          projectName: [
-            {required: true, message: '请输入项目名称', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'},
-            {validator: (rule, value, callback) => {
-                if (!/^[a-z|-]+$/.test(value)){
-                  callback(new Error('项目名称不合法,只允许小写字母和横杠'))
-                }
-                callback()
-              }, trigger: 'blur'}
-          ],
-          packageName: [
-            {required: true, message: '请输入包名', trigger: 'blur'},
-            {max: 100, message: '长度不能超过100个字符', trigger: 'blur'}
-          ],
-          author: [
-            {required: true, message: '请输入作者', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          remote: [
-            {required: true, type: 'number', message: '请选择是否启用', trigger: 'change'},
-          ],
-          remoteUrl: [
-            {max: 256, message: '长度不能超过256个字符', trigger: 'blur'}
-          ],
-          username: [
-            {max: 32, message: '长度不能超过32个字符', trigger: 'blur'}
-          ],
-          password: [
-            {max: 32, message: '长度不能超过32个字符', trigger: 'blur'}
-          ]
-        }
+        form: initFormBean(false),
+        rules: getRules()
       }
     },
     methods: {
       submit: function () {
         var loading = null
-        //校验表单
+        // 校验表单
         this.$refs.addForm.validate()
-          //提交表单
-          .then(()=>{
+          // 提交表单
+          .then(() => {
             loading = this.$loading()
             return this.$ajax.post('/generate/meta_project/save', this.form)
           })
-          //校验返回结果
+          // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
-          //执行页面跳转
-          .then(()=>{
+          // 执行页面跳转
+          .then(() => {
             this.$common.showMsg('success', '添加成功')
             this.goBack()
           })
-          .catch(error=> this.$common.showNotifyError(error))
-          .finally(()=>{
-            if(loading){
+          .catch(error => this.$common.showNotifyError(error))
+          .finally(() => {
+            if (loading) {
               loading.close()
             }
           })

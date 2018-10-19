@@ -22,6 +22,9 @@ public class MetaProjectListVO extends AbstractVO {
     @ApiModelProperty(notes = N_PROJECTNAME, example = E_PROJECTNAME)
     private String projectName;
 
+    @ApiModelProperty(notes = N_PROJECTDESC, example = E_PROJECTDESC)
+    private String projectDesc;
+
     @ApiModelProperty(notes = N_GROUPID, example = E_GROUPID)
     private String groupId;
 
@@ -99,5 +102,13 @@ public class MetaProjectListVO extends AbstractVO {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getProjectDesc() {
+        return projectDesc;
+    }
+
+    public void setProjectDesc(String projectDesc) {
+        this.projectDesc = projectDesc;
     }
 }

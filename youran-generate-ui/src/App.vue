@@ -38,11 +38,11 @@
       }
     },
     methods: {
-      isRoutePath:function (path) {
-        return this.$route.path==path
+      isRoutePath: function (path) {
+        return this.$route.path === path
       },
-      isRouteIndexOf:function (path) {
-        return this.$route.path.indexOf(path)==0
+      isRouteIndexOf: function (path) {
+        return this.$route.path.indexOf(path) === 0
       }
     },
     created: function () {
@@ -50,7 +50,7 @@
     },
     watch: {
       '$route': function (to, from) {
-        //console.info(to)
+        // console.info(to)
       }
     }
   }

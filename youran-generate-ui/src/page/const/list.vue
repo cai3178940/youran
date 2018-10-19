@@ -84,14 +84,14 @@
   import options from '@/components/options.js'
   export default {
     name: 'constList',
-    props: ['projectId','constId'],
+    props: ['projectId', 'constId'],
     data: function () {
       return {
-        //查询参数
+        // 查询参数
         query: {
           projectId: null
         },
-        //查询表单参数
+        // 查询表单参数
         queryForm: {
           projectId: null
         },
@@ -104,9 +104,9 @@
           pageSize: 20,
           entities: []
         },
-        expandedRow:null,
+        expandedRow: null,
         loading: false,
-        detailList:[],
+        detailList: [],
         detailLoading: false
       }
     },
@@ -114,7 +114,7 @@
       optionLabel: function (value, optionType) {
         var ops = options[optionType]
         for (var op of ops) {
-          if (op.value == value) {
+          if (op.value === value) {
             return op.label
           }
         }
@@ -146,14 +146,14 @@
       queryProject: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data)
+          .then(result => { this.projectList = result.data })
       },
       handleQuery: function () {
-        //将查询表单参数赋值给查询参数
+        // 将查询表单参数赋值给查询参数
         this.query = {
           ...this.queryForm
         }
-        if (this.query.projectId != parseInt(this.projectId)) {
+        if (this.query.projectId !== parseInt(this.projectId)) {
           this.$router.push(`/project/${this.query.projectId}/const`)
         }
         this.doQuery()
@@ -170,11 +170,11 @@
           pageSize: this.page.pageSize
         }
         this.loading = true
-        return this.$ajax.get('/generate/meta_const/list', {params:params})
+        return this.$ajax.get('/generate/meta_const/list', {params: params})
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.page = result.data)
+          .then(result => { this.page = result.data })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(() => this.loading = false)
+          .finally(() => { this.loading = false })
       },
       handleAdd: function () {
         this.$router.push(`/project/${this.projectId}/const/add`)
@@ -185,19 +185,19 @@
       handleShow: function (row) {
         this.$router.push(`/project/${this.projectId}/const/show/${row.constId}`)
       },
-      expandChange: function(row, expandedRows){
+      expandChange: function (row, expandedRows) {
         // 如果当前展开大于1行，则将另一行关闭
-        if(expandedRows && expandedRows.length>1){
-          const otherRow = expandedRows.find(r => r!=row)
-          this.$refs.constTable.toggleRowExpansion(otherRow,false)
+        if (expandedRows && expandedRows.length > 1) {
+          const otherRow = expandedRows.find(r => r !== row)
+          this.$refs.constTable.toggleRowExpansion(otherRow, false)
         }
         // 如果当前展开行等于1行，则加载枚举值列表
-        if(expandedRows && expandedRows.length==1 && this.expandedRow!=row){
+        if (expandedRows && expandedRows.length === 1 && this.expandedRow !== row) {
           this.doDetailQuery(expandedRows[0].constId)
           this.expandedRow = expandedRows[0]
         }
         // 如果当前展开行等于0行，则清空缓存数据
-        if(!expandedRows || expandedRows.length==0){
+        if (!expandedRows || expandedRows.length === 0) {
           this.expandedRow = null
           this.detailList = []
         }
@@ -205,19 +205,19 @@
       // 枚举值列表查询
       doDetailQuery: function (constId) {
         this.detailLoading = true
-        this.$ajax.get('/generate/meta_const_detail/list', {params:{'projectId':this.query.projectId,'constId':constId}})
+        this.$ajax.get('/generate/meta_const_detail/list', {params: {'projectId': this.query.projectId, 'constId': constId}})
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.detailList = result.data)
+          .then(result => { this.detailList = result.data })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(() => this.detailLoading = false)
+          .finally(() => { this.detailLoading = false })
       },
       handleDetailAdd: function (row) {
         this.$router.push(`/project/${this.projectId}/const/${row.constId}/constDetailAdd`)
       },
-      handleDetailEdit: function (theConst,detail) {
+      handleDetailEdit: function (theConst, detail) {
         this.$router.push(`/project/${this.projectId}/const/${theConst.constId}/constDetailEdit/${detail.constDetailId}`)
       },
-      handleDetailDel: function (theConst,detail) {
+      handleDetailDel: function (theConst, detail) {
         this.$common.confirm('是否确认删除枚举值')
           .then(() => this.$ajax.put('/generate/meta_const_detail/deleteBatch', [detail.constDetailId]))
           .then(() => this.doDetailQuery(theConst.constId))
@@ -231,9 +231,9 @@
         })
         .then(() => this.doQuery())
         .then(() => {
-          if(this.constId){
-            const row = this.page.entities.find(e => e.constId==parseInt(this.constId))
-            this.$refs.constTable.toggleRowExpansion(row,true)
+          if (this.constId) {
+            const row = this.page.entities.find(e => e.constId === parseInt(this.constId))
+            this.$refs.constTable.toggleRowExpansion(row, true)
           }
         })
     }

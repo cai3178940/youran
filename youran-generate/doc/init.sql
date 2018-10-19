@@ -3,7 +3,8 @@ DROP TABLE IF EXISTS `meta_project`;
 CREATE TABLE `meta_project` (
     `project_id` int(11) AUTO_INCREMENT COMMENT '项目id',
     `package_name` varchar(100) NOT NULL COMMENT '主包名',
-    `project_name` varchar(50) NOT NULL COMMENT '项目名简称',
+    `project_name` varchar(50) NOT NULL COMMENT '项目标识',
+    `project_desc` varchar(100) NOT NULL COMMENT '项目名称',
     `group_id` varchar(50) NOT NULL COMMENT 'groupId',
     `author` varchar(50) DEFAULT NULL COMMENT '开发者',
     `remote` tinyint(1) NOT NULL COMMENT '启用Git仓库',
@@ -19,7 +20,7 @@ CREATE TABLE `meta_project` (
     `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
     `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
     PRIMARY KEY (`project_id`),
-    UNIQUE KEY `i_meta_project_0` (`project_name`) USING BTREE
+    KEY `i_meta_project_0` (`project_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_project';
 
 DROP TABLE IF EXISTS `meta_entity`;
@@ -94,6 +95,7 @@ CREATE TABLE `meta_index` (
     `index_name` varchar(40) NOT NULL COMMENT '索引名称',
     `entity_id` int(11) NOT NULL COMMENT '所属实体id',
     `unique` tinyint(1) NOT NULL COMMENT '是否唯一索引',
+    `unique_check` tinyint(1) NOT NULL COMMENT '唯一性校验',
     `created_time` datetime DEFAULT NULL COMMENT '创建时间',
     `created_by` varchar(32) DEFAULT NULL COMMENT '创建人',
     `operated_time` datetime DEFAULT NULL COMMENT '操作时间',

@@ -21,6 +21,8 @@ public class MetaProjectPO extends GeneralPO {
 
     private String projectName;
 
+    private String projectDesc;
+
     private String groupId;
 
     private String author;
@@ -207,5 +209,13 @@ public class MetaProjectPO extends GeneralPO {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public String getProjectDesc() {
+        return projectDesc;
+    }
+
+    public void setProjectDesc(String projectDesc) {
+        this.projectDesc = projectDesc;
     }
 }

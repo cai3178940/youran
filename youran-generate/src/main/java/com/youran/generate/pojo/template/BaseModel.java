@@ -44,17 +44,21 @@ public class BaseModel {
      */
     protected String commonPackage;
     /**
-     * 项目名称-驼峰格式-首字母小写
+     * 项目标识-驼峰格式-首字母小写
      */
     protected String projectName;
     /**
-     * 项目名称-驼峰格式-首字母大写
+     * 项目标识-驼峰格式-首字母大写
      */
     protected String projectNameUpper;
     /**
-     * 项目名称-短横杠分割
+     * 项目标识-短横杠分割
      */
     protected String projectNameSplit;
+    /**
+     * 项目名称
+     */
+    protected String projectDesc;
     /**
      * 原始模块名
      */
@@ -98,14 +102,16 @@ public class BaseModel {
         this.packageName = project.getPackageName();
         //通用模块名
         this.commonPackage = project.fetchCommonPackageName();
-        //项目名：驼峰格式-首字母小写
+        //项目标识：驼峰格式-首字母小写
         this.projectName = project.fetchNormalProjectName();
-        //项目名：驼峰格式-首字母大写
+        //项目标识：驼峰格式-首字母大写
         this.projectNameUpper = StringUtils.capitalize(project.fetchNormalProjectName());
-        //项目名：短横杠分割
+        //项目标识：短横杠分割
         this.projectNameSplit = project.getProjectName();
         //原始模块名
         this.originProjectName = project.getProjectName();
+        //项目名称
+        this.projectDesc = project.getProjectDesc();
         //groupId
         this.groupId = project.getGroupId();
         //作者
@@ -342,5 +348,37 @@ public class BaseModel {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public String getProjectDesc() {
+        return projectDesc;
+    }
+
+    public void setProjectDesc(String projectDesc) {
+        this.projectDesc = projectDesc;
+    }
+
+    public Set<String> getImports() {
+        return imports;
+    }
+
+    public void setImports(Set<String> imports) {
+        this.imports = imports;
+    }
+
+    public Set<String> getStaticImports() {
+        return staticImports;
+    }
+
+    public void setStaticImports(Set<String> staticImports) {
+        this.staticImports = staticImports;
+    }
+
+    public Set<String> getAutowired() {
+        return autowired;
+    }
+
+    public void setAutowired(Set<String> autowired) {
+        this.autowired = autowired;
     }
 }

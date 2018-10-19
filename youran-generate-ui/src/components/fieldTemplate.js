@@ -1,5 +1,5 @@
-export default  {
-  '主键ID(Long)':{
+export default {
+  '主键ID(Long)': {
     jfieldName: 'id',
     fieldName: 'id',
     fieldDesc: '主键',
@@ -9,7 +9,7 @@ export default  {
     fieldScale: 0,
     primaryKey: 1,
     autoIncrement: 1,
-    defaultValue:'',
+    defaultValue: '',
     notNull: 1,
     foreignKey: 0,
     specialField: '',
@@ -26,7 +26,7 @@ export default  {
     editType: null,
     orderNo: 1
   },
-  '主键ID(Integer)':{
+  '主键ID(Integer)': {
     jfieldName: 'id',
     fieldName: 'id',
     fieldDesc: '主键',
@@ -36,7 +36,7 @@ export default  {
     fieldScale: 0,
     primaryKey: 1,
     autoIncrement: 1,
-    defaultValue:'',
+    defaultValue: '',
     notNull: 1,
     foreignKey: 0,
     specialField: '',
@@ -53,7 +53,7 @@ export default  {
     editType: null,
     orderNo: 1
   },
-  '创建时间':{
+  '创建时间': {
     jfieldName: 'createdTime',
     fieldName: 'created_time',
     fieldDesc: '创建时间',
@@ -63,7 +63,7 @@ export default  {
     fieldScale: 0,
     primaryKey: 0,
     autoIncrement: 0,
-    defaultValue:'',
+    defaultValue: '',
     notNull: 1,
     foreignKey: 0,
     specialField: 'createdTime',
@@ -80,7 +80,7 @@ export default  {
     editType: null,
     orderNo: 100
   },
-  '创建人':{
+  '创建人': {
     jfieldName: 'createdBy',
     fieldName: 'created_by',
     fieldDesc: '创建人',
@@ -90,7 +90,7 @@ export default  {
     fieldScale: 0,
     primaryKey: 0,
     autoIncrement: 0,
-    defaultValue:'',
+    defaultValue: '',
     notNull: 1,
     foreignKey: 0,
     specialField: 'createdBy',
@@ -107,7 +107,7 @@ export default  {
     editType: null,
     orderNo: 101
   },
-  '修改时间':{
+  '修改时间': {
     jfieldName: 'operatedTime',
     fieldName: 'operated_time',
     fieldDesc: '修改时间',
@@ -117,7 +117,7 @@ export default  {
     fieldScale: 0,
     primaryKey: 0,
     autoIncrement: 0,
-    defaultValue:'',
+    defaultValue: '',
     notNull: 1,
     foreignKey: 0,
     specialField: 'operatedTime',
@@ -134,7 +134,7 @@ export default  {
     editType: null,
     orderNo: 102
   },
-  '修改人':{
+  '修改人': {
     jfieldName: 'operatedBy',
     fieldName: 'operated_by',
     fieldDesc: '修改人',
@@ -144,7 +144,7 @@ export default  {
     fieldScale: 0,
     primaryKey: 0,
     autoIncrement: 0,
-    defaultValue:'',
+    defaultValue: '',
     notNull: 1,
     foreignKey: 0,
     specialField: 'operatedBy',
@@ -161,7 +161,7 @@ export default  {
     editType: null,
     orderNo: 103
   },
-  '乐观锁版本号':{
+  '乐观锁版本号': {
     jfieldName: 'version',
     fieldName: 'version',
     fieldDesc: '乐观锁版本号',
@@ -171,7 +171,7 @@ export default  {
     fieldScale: 0,
     primaryKey: 0,
     autoIncrement: 0,
-    defaultValue:'',
+    defaultValue: '',
     notNull: 1,
     foreignKey: 0,
     specialField: 'version',
@@ -188,7 +188,7 @@ export default  {
     editType: null,
     orderNo: 104
   },
-  '逻辑删除标识':{
+  '逻辑删除标识': {
     jfieldName: 'deleted',
     fieldName: 'deleted',
     fieldDesc: '逻辑删除标识',
@@ -198,7 +198,7 @@ export default  {
     fieldScale: 0,
     primaryKey: 0,
     autoIncrement: 0,
-    defaultValue:'',
+    defaultValue: '',
     notNull: 1,
     foreignKey: 0,
     specialField: 'deleted',
@@ -215,7 +215,7 @@ export default  {
     editType: null,
     orderNo: 105
   },
-  '排序号':{
+  '排序号': {
     jfieldName: 'orderNo',
     fieldName: 'order_no',
     fieldDesc: '排序号',
@@ -225,7 +225,7 @@ export default  {
     fieldScale: 0,
     primaryKey: 0,
     autoIncrement: 0,
-    defaultValue:'',
+    defaultValue: '',
     notNull: 1,
     foreignKey: 0,
     specialField: '',
@@ -241,5 +241,5 @@ export default  {
     show: 1,
     editType: null,
     orderNo: 90
-  },
+  }
 }

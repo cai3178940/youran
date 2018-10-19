@@ -15,46 +15,45 @@
     data: function () {
       return {
         // 后端返回的json数据
-        erDiagram:{
+        erDiagram: {
 
         },
         loading: false,
         visible: false
       }
     },
-    methods:{
+    methods: {
 
-      show:function(projectId,entityIds){
+      show: function (projectId, entityIds) {
         this.visible = true
-        this.queryErDiagram(projectId,entityIds)
-          .then(()=>this.renderDiagram())
+        this.queryErDiagram(projectId, entityIds)
+          .then(() => this.renderDiagram())
       },
 
-      queryErDiagram:function(projectId,entityIds){
+      queryErDiagram: function (projectId, entityIds) {
         this.loading = true
-        return this.$ajax.get('/generate/er_diagram/show', {params:{projectId, entityIds}})
+        return this.$ajax.get('/generate/er_diagram/show', {params: {projectId, entityIds}})
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.erDiagram = result.data)
+          .then(result => { this.erDiagram = result.data })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(() => this.loading = false)
+          .finally(() => { this.loading = false })
       },
 
-      getBrush:function(key){
-        if(!this.brush){
+      getBrush: function (key) {
+        if (!this.brush) {
           const $ = go.GraphObject.make
           this.brush = {
             bluegrad: $(go.Brush, 'Linear', { 0: 'rgb(150, 150, 250)', 0.5: 'rgb(86, 86, 186)', 1: 'rgb(86, 86, 186)' }),
-            greengrad:  $(go.Brush, 'Linear', { 0: 'rgb(158, 209, 159)', 1: 'rgb(67, 101, 56)' }),
-            redgrad:  $(go.Brush, 'Linear', { 0: 'rgb(206, 106, 100)', 1: 'rgb(180, 56, 50)' }),
-            yellowgrad:  $(go.Brush, 'Linear', { 0: 'rgb(254, 221, 50)', 1: 'rgb(254, 182, 50)' }),
-            lightgrad:  $(go.Brush, 'Linear', { 1: '#E6E6FA', 0: '#FFFAF0' })
+            greengrad: $(go.Brush, 'Linear', { 0: 'rgb(158, 209, 159)', 1: 'rgb(67, 101, 56)' }),
+            redgrad: $(go.Brush, 'Linear', { 0: 'rgb(206, 106, 100)', 1: 'rgb(180, 56, 50)' }),
+            yellowgrad: $(go.Brush, 'Linear', { 0: 'rgb(254, 221, 50)', 1: 'rgb(254, 182, 50)' }),
+            lightgrad: $(go.Brush, 'Linear', { 1: '#E6E6FA', 0: '#FFFAF0' })
           }
         }
         return this.brush[key]
       },
 
-
-      initDiagram:function(){
+      initDiagram: function () {
         const $ = go.GraphObject.make
         this.diagram =
           $(go.Diagram, 'erDiagramDiv',  // must name or refer to the DIV HTML element
@@ -98,7 +97,7 @@
             new go.Binding('location', 'location').makeTwoWay(),
             // whenever the PanelExpanderButton changes the visible property of the 'LIST' panel,
             // clear out any desiredSize set by the ResizingTool.
-            new go.Binding('desiredSize', 'visible', function(v) { return new go.Size(NaN, NaN) }).ofObject('LIST'),
+            new go.Binding('desiredSize', 'visible', function (v) { return new go.Size(NaN, NaN) }).ofObject('LIST'),
             // define the node's outer shape, which will surround the Table
             $(go.Shape, 'Rectangle',
               { fill: this.getBrush('lightgrad'), stroke: '#756875', strokeWidth: 3 }),
@@ -108,7 +107,8 @@
               // the table header
               $(go.TextBlock,
                 {
-                  row: 0, alignment: go.Spot.Center,
+                  row: 0,
+                  alignment: go.Spot.Center,
                   margin: new go.Margin(0, 14, 0, 2),  // leave room for Button
                   font: 'bold 16px sans-serif'
                 },
@@ -167,46 +167,43 @@
           )
       },
 
-      updateModel:function(){
-        this.erDiagram.nodeData.forEach(v=>v.fields.forEach(item=>{
-          if(item.type=='pk'){
-            item.iskey=true
-            item.figure='Decision'
-            item.color=this.getBrush('yellowgrad')
-          }else{
-            item.iskey=false
-            if(item.type=='fk'){
-              item.figure='Decision'
-              item.color=this.getBrush('bluegrad')
-            }else if(item.type=='delete'){
-              item.figure='ThickX'
-              item.color=this.getBrush('redgrad')
-            }else if(item.type=='version'){
-              item.figure='PaperTape'
-              item.color=this.getBrush('greengrad')
-            }else{
-              item.figure=''
-              item.color=null
+      updateModel: function () {
+        this.erDiagram.nodeData.forEach(v => v.fields.forEach(item => {
+          if (item.type === 'pk') {
+            item.iskey = true
+            item.figure = 'Decision'
+            item.color = this.getBrush('yellowgrad')
+          } else {
+            item.iskey = false
+            if (item.type === 'fk') {
+              item.figure = 'Decision'
+              item.color = this.getBrush('bluegrad')
+            } else if (item.type === 'delete') {
+              item.figure = 'ThickX'
+              item.color = this.getBrush('redgrad')
+            } else if (item.type === 'version') {
+              item.figure = 'PaperTape'
+              item.color = this.getBrush('greengrad')
+            } else {
+              item.figure = ''
+              item.color = null
             }
           }
         }))
         this.diagram.model = new go.GraphLinksModel(this.erDiagram.nodeData, this.erDiagram.linkData)
       },
 
-      renderDiagram:function () {
-
-        if(!this.diagram){
+      renderDiagram: function () {
+        if (!this.diagram) {
           this.initDiagram()
           this.updateModel()
-        }else{
+        } else {
           this.updateModel()
           this.diagram.requestUpdate()
         }
-
       }
     }
   }
-
 </script>
 
 <style>

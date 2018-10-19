@@ -39,6 +39,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
+            <el-button type="warning" @click="reset()">重置</el-button>
             <el-button @click="goBack()">返回</el-button>
           </el-form-item>
         </el-form>
@@ -49,14 +50,7 @@
 
 <script>
   import options from '@/components/options.js'
-  //枚举模型
-  const constModel = {
-    constId: null,
-    projectId: null,
-    constRemark: '',
-    constName: '',
-    constType: ''
-  }
+  import {initFormBean, getRules} from './model'
 
   export default {
     name: 'constEdit',
@@ -65,66 +59,47 @@
       return {
         constTypeOptions: options.constTypeOptions,
         projectList: [],
-        old: {
-          ...constModel
-        },
-        form: {
-          ...constModel
-        },
-        rules: {
-          projectId: [
-            {required: true, type: 'number', message: '请选择项目', trigger: 'change'},
-          ],
-          constRemark: [
-            {required: true, message: '请输入枚举名称', trigger: 'blur'},
-            {max: 100, message: '长度不能超过100个字符', trigger: 'blur'}
-          ],
-          constName: [
-            {required: true, message: '请输入枚举类名', trigger: 'blur'},
-            {max: 20, message: '长度不能超过20个字符', trigger: 'blur'}
-          ],
-          constType: [
-            {required: true, type: 'number', message: '请选择类型', trigger: 'change'},
-          ]
-        }
+        old: initFormBean(true),
+        form: initFormBean(true),
+        rules: getRules()
       }
     },
     methods: {
       queryProject: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data)
+          .then(result => { this.projectList = result.data })
       },
       getConst: function () {
         return this.$ajax.get(`/generate/meta_const/${this.constId}`)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.old = result.data)
+          .then(result => { this.old = result.data })
           .catch(error => this.$common.showNotifyError(error))
       },
       reset: function () {
-        for (const key in constModel) {
+        for (const key in initFormBean(true)) {
           this.form[key] = this.old[key]
         }
       },
       submit: function () {
         var loading = null
-        //校验表单
+        // 校验表单
         this.$refs.editForm.validate()
-        //提交表单
+        // 提交表单
           .then(() => {
             loading = this.$loading()
             return this.$ajax.put('/generate/meta_const/update', this.form)
           })
-          //校验返回结果
+          // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
-          //执行页面跳转
+          // 执行页面跳转
           .then(() => {
             this.$common.showMsg('success', '修改成功')
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>{
-            if(loading){
+          .finally(() => {
+            if (loading) {
               loading.close()
             }
           })
@@ -134,7 +109,7 @@
       }
     },
     created: function () {
-      Promise.all([this.getConst(),this.queryProject()])
+      Promise.all([this.getConst(), this.queryProject()])
         .then(() => this.reset())
     }
   }

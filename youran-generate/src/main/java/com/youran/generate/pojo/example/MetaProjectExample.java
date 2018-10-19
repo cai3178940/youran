@@ -14,8 +14,10 @@ public class MetaProjectExample extends AbstractExample {
     public static final String E_PROJECTID = "1";
     public static final String N_PACKAGENAME = "主包名";
     public static final String E_PACKAGENAME = "com.cbb.bbs";
-    public static final String N_PROJECTNAME = "项目名简称";
+    public static final String N_PROJECTNAME = "项目标识";
     public static final String E_PROJECTNAME = "bbs";
+    public static final String N_PROJECTDESC = "项目名";
+    public static final String E_PROJECTDESC = "论坛";
     public static final String N_GROUPID = "groupId";
     public static final String E_GROUPID = "com.myGroup";
     public static final String N_AUTHOR = "开发者";

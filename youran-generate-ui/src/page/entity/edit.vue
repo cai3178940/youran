@@ -49,6 +49,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
+            <el-button type="warning" @click="reset()">重置</el-button>
             <el-button @click="goBack()">返回</el-button>
           </el-form-item>
         </el-form>
@@ -59,18 +60,7 @@
 
 <script>
   import options from '@/components/options.js'
-  //实体模型
-  const entityModel = {
-    entityId: null,
-    projectId: null,
-    title: '',
-    className: '',
-    tableName: '',
-    desc: '',
-    commonCall: 1,
-    pageSign: 1
-  }
-
+  import {initFormBean, getRules} from './model'
   export default {
     name: 'entityEdit',
     props: ['projectId', 'entityId'],
@@ -78,73 +68,47 @@
       return {
         boolOptions: options.boolOptions,
         projectList: [],
-        old: {
-          ...entityModel
-        },
-        form: {
-          ...entityModel
-        },
-        rules: {
-          projectId: [
-            {required: true, type: 'number', message: '请选择项目', trigger: 'change'},
-          ],
-          title: [
-            {required: true, message: '请输入实体名', trigger: 'blur'},
-            {max: 25, message: '长度不能超过25个字符', trigger: 'blur'}
-          ],
-          className: [
-            {required: true, message: '请输入类名', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          tableName: [
-            {required: true, message: '请输入表名', trigger: 'blur'},
-            {max: 50, message: '长度不能超过50个字符', trigger: 'blur'}
-          ],
-          pageSign: [
-            {required: true, type: 'number', message: '请选择是否支持分页', trigger: 'change'},
-          ],
-          desc: [
-            {max: 250, message: '长度不能超过250个字符', trigger: 'blur'}
-          ]
-        }
+        old: initFormBean(true),
+        form: initFormBean(true),
+        rules: getRules()
       }
     },
     methods: {
       queryProject: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.projectList = result.data)
+          .then(result => { this.projectList = result.data })
       },
       getEntity: function () {
         return this.$ajax.get(`/generate/meta_entity/${this.entityId}`)
           .then(response => this.$common.checkResult(response.data))
-          .then(result => this.old = result.data)
+          .then(result => { this.old = result.data })
           .catch(error => this.$common.showNotifyError(error))
       },
       reset: function () {
-        for (const key in entityModel) {
+        for (const key in initFormBean(true)) {
           this.form[key] = this.old[key]
         }
       },
       submit: function () {
         var loading = null
-        //校验表单
+        // 校验表单
         this.$refs.editForm.validate()
-        //提交表单
+        // 提交表单
           .then(() => {
             loading = this.$loading()
             return this.$ajax.put('/generate/meta_entity/update', this.form)
           })
-          //校验返回结果
+          // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
-          //执行页面跳转
+          // 执行页面跳转
           .then(() => {
             this.$common.showMsg('success', '修改成功')
             this.goBack()
           })
           .catch(error => this.$common.showNotifyError(error))
-          .finally(()=>{
-            if(loading){
+          .finally(() => {
+            if (loading) {
               loading.close()
             }
           })
@@ -154,7 +118,7 @@
       }
     },
     created: function () {
-      Promise.all([this.getEntity(),this.queryProject()])
+      Promise.all([this.getEntity(), this.queryProject()])
         .then(() => this.reset())
     }
   }

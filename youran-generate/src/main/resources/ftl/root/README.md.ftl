@@ -1,4 +1,5 @@
 <#include "/common.ftl">
+# ${this.projectDesc}
 ## 表结构
 <#list this.metaEntities as metaEntity>
 
