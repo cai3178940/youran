@@ -296,7 +296,7 @@
       initProjectOptions: function () {
         return this.$common.getProjectOptions()
           .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.queryForm.projectEntityOptions = result.data.map(project => ({value: project.projectId, label: project.projectName, children: []})) })
+          .then(result => { this.queryForm.projectEntityOptions = result.data.map(project => ({value: project.projectId, label: project.projectDesc, children: []})) })
       },
       handleProjectChange: function (optionArray) {
         var projectId = optionArray[0]

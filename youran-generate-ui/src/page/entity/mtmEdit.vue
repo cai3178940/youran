@@ -14,7 +14,7 @@
                 <el-option
                   v-for="item in projectList"
                   :key="item.projectId"
-                  :label="item.projectName"
+                  :label="item.projectDesc"
                   :value="item.projectId">
                 </el-option>
               </el-select>
