@@ -99,6 +99,9 @@ java -jar youran-generate/target/youran-generate.war
 
 ## 升级日志
 
+#### 2018-10-19
+- 增加项目中文名称字段
+
 #### 2018-07-17
 - 支持查看ER图
 
