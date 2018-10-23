@@ -170,7 +170,7 @@
           .then(result => {
             this.$common.showMsg('success', '保存成功')
             if (!row.cascadeExtId) {
-              row.cascadeExtId = result.data
+              row.cascadeExtId = result.data.cascadeExtId
               this.$emit('cascadeFieldNumAdd', this.fieldId, 1)
             }
             return this.$ajax.get(`/generate/meta_cascade_ext/${row.cascadeExtId}`)
