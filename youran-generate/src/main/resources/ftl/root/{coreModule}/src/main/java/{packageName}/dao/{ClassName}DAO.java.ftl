@@ -23,8 +23,8 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
 <#list this.fields as field>
     <#if isTrue(field.foreignKey)>
     int getCountBy${field.jfieldName?capFirst}(${field.jfieldType} ${field.jfieldName});
-    </#if>
 
+    </#if>
 </#list>
 <#if this.metaEntity.mtmHoldRefers??>
     <#list this.metaEntity.mtmHoldRefers as entity>
