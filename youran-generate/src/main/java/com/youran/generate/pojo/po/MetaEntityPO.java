@@ -137,10 +137,18 @@ public class MetaEntityPO extends GeneralPO {
 
     /**
      * 对应的外键列表(当前主键对应的其他实体外键字段)
+     * 比如：
+     *  1、当前实体是部门，主键是部门id
+     *  2、对应实体是用户，用户中的外键字段是部门id
+     *  3、则此处存放的是用户表中的部门id
      */
     private List<MetaFieldPO> foreignFields;
     /**
-     * 对应的外键实体集合(其他实体)
+     * 对应的外键实体集合(当前主键对应的其他实体)
+     * 比如：
+     *  1、当前实体是部门，主键是部门id
+     *  2、对应实体是用户，用户中的外键字段是部门id
+     *  3、则此处存放的是用户实体
      */
     private Set<MetaEntityPO> foreignEntities;
 

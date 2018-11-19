@@ -17,38 +17,40 @@
 @Service
 public class ${this.classNameUpper}Service {
 
+    <#-- 引入当前实体的DAO -->
     <@call this.addAutowired("${this.packageName}.dao" "${this.classNameUpper}DAO")/>
+<#-- 引入多对多关联实体的DAO（当前持有） -->
 <#if this.metaEntity.mtmHoldRefers??>
     <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
         <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
     </#list>
 </#if>
+<#-- 引入多对多关联实体的DAO（非当前持有） -->
 <#if this.metaEntity.mtmUnHoldRefers??>
     <#list this.metaEntity.mtmUnHoldRefers as otherEntity>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
+        <@call this.addAutowired("${this.packageName}.dao" "${otherEntity.className?capFirst}DAO")/>
     </#list>
 </#if>
-<#-- 引入外键对应的DAO -->
+<#-- 引入外键对应的DAO （插入字段对应的外键）-->
 <#list this.insertFields as field>
     <#if isTrue(field.foreignKey)>
-        <#assign foreignCName=field.foreignEntity.className?capFirst>
-        <@call this.addAutowired("${this.packageName}.dao" "${foreignCName}DAO")/>
+        <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
 </#list>
+<#-- 引入外键对应的DAO （更新字段对应的外键）-->
 <#list this.updateFields as field>
     <#if isTrue(field.foreignKey)>
-        <#assign foreignCName=field.foreignEntity.className?capFirst>
-        <@call this.addAutowired("${this.packageName}.dao" "${foreignCName}DAO")/>
+        <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
 </#list>
+<#-- 被其他实体外键关联时，引入其他实体DAO -->
 <#if this.metaEntity.foreignEntities??>
     <#list this.metaEntity.foreignEntities as foreignEntity>
-        <#assign foreignCName=foreignEntity.className?capFirst>
-        <@call this.addAutowired("${this.packageName}.dao" "${foreignCName}DAO")/>
+        <@call this.addAutowired("${this.packageName}.dao" "${foreignEntity.className?capFirst}DAO")/>
     </#list>
 </#if>
+<#-- 当前实体的外键字段存在级联扩展时，引入对应实体的DAO -->
 <#list this.fields as field>
     <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
         <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
@@ -76,8 +78,9 @@ public class ${this.classNameUpper}Service {
     }
 
 </#if>
+<#-- 抽象出公共方法【校验外键字段对应实体是否存在】 -->
 <#macro checkForeignKeys fields>
-    <#list this.fields as field>
+    <#list fields as field>
         <#if isTrue(field.foreignKey)>
             <@call this.addImport("org.springframework.util.Assert")/>
             <#assign foreigncName=field.foreignEntity.className?uncapFirst>

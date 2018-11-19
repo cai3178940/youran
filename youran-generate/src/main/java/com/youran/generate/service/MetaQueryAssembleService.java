@@ -196,6 +196,7 @@ public class MetaQueryAssembleService {
     public void assembleForeign(List<MetaEntityPO> metaEntities){
         for (MetaEntityPO metaEntity : metaEntities) {
             for (MetaFieldPO metaFieldPO : metaEntity.getFields()) {
+                //如果不存在外键关系，则跳过
                 if(BoolConst.TRUE != metaFieldPO.getForeignKey()){
                     continue;
                 }
