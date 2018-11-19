@@ -22,3 +22,8 @@ youran:
         aesKey: orpNB6YGbiiDcrrubk2rFQ==
         version: 20
         rootPath: generate
+
+security:
+    user:
+        name: root
+        password: root
