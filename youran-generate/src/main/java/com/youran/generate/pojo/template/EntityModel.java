@@ -159,7 +159,7 @@ public class EntityModel extends BaseModel{
             if(field.getNotNull()==BoolConst.TRUE){
                 sb.append(StringUtils.uncapitalize(field.getForeignEntity().getClassName()))
                     .append(".get")
-                    .append(StringUtils.capitalize(field.getJfieldName()))
+                    .append(StringUtils.capitalize(field.getForeignEntity().getPkField().getJfieldName()))
                     .append("(), ");
             }else{
                 sb.append("null, ");
