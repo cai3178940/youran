@@ -21,3 +21,7 @@ youran:
     generate:
         devMode: 1
         devProjectDir: D:\\workspace_cbb\\auto
+
+security:
+    basic:
+        enabled: false

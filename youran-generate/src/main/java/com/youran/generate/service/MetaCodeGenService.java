@@ -365,7 +365,7 @@ public class MetaCodeGenService {
      * @param projectId
      * @return
      */
-    public void gitCommit(Integer projectId) {
+    public GenHistoryPO gitCommit(Integer projectId) {
         MetaProjectPO project = metaProjectService.getProject(projectId,true);
         Integer remote = project.getRemote();
         if(BoolConst.TRUE!=remote){
@@ -407,6 +407,7 @@ public class MetaCodeGenService {
         GenHistoryPO history = genHistoryService.save(project, commit, newBranchName);
         // 更新项目的最终提交历史
         metaProjectService.updateLastHistory(projectId,history.getHistoryId());
+        return history;
     }
 
     /**

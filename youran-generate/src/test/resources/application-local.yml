@@ -12,3 +12,7 @@ youran:
     generate:
         devMode: 1
         devProjectDir: D:\\workspace_cbb\\youran-sample
+
+security:
+    basic:
+        enabled: false

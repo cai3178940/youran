@@ -4,6 +4,7 @@ import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.DateUtil;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.service.MetaCodeGenService;
 import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.web.api.MetaCodeGenAPI;
@@ -87,8 +88,10 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
     @GetMapping(value = "/gitCommit")
     @ResponseBody
     public ReplyVO<Void> gitCommit(Integer projectId) {
-        metaCodeGenService.gitCommit(projectId);
-        return ReplyVO.success();
+        GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId);
+        ReplyVO replyVO = ReplyVO.success();
+        replyVO.setMessage("已创建自动分支【"+ genHistory.getBranch() +"】，并提交到远程");
+        return replyVO;
     }
 
 }

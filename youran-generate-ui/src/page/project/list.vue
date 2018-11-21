@@ -206,7 +206,7 @@
         this.loading = true
         this.$ajax.get(`/generate/code_gen/gitCommit?projectId=${row.projectId}`)
           .then(response => this.$common.checkResult(response.data))
-          .then(() => this.$common.showMsg('success', '提交成功'))
+          .then(result => this.$common.showMsg('success', result.message))
           .catch(error => this.$common.showNotifyError(error))
           .finally(() => { this.loading = false })
       },
