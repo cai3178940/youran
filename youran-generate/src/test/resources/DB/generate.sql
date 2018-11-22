@@ -43,7 +43,7 @@ CREATE TABLE `meta_entity` (
   `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
   PRIMARY KEY (`entity_id`),
   KEY `i_meta_entity_0` (`project_id`) USING BTREE,
-  UNIQUE KEY `i_meta_entity_1`(`project_id`,`class_name`) USING BTREE
+  KEY `i_meta_entity_1`(`project_id`,`class_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_entity';
 
 DROP TABLE IF EXISTS `meta_field`;

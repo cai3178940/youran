@@ -31,6 +31,21 @@ public class MetaEntityService {
     @Autowired
     private MetaProjectService metaProjectService;
 
+
+
+    /**
+     * 校验数据唯一性
+     * @param entity
+     * @param isUpdate 是否更新校验
+     */
+    private void checkUnique(MetaEntityPO entity, boolean isUpdate){
+        if(metaEntityDAO.classNameNotUnique(entity.getProjectId(),entity.getClassName(), isUpdate?entity.getEntityId():null)){
+            throw new GenerateException("类名重复");
+        }
+        if(metaEntityDAO.tableNameNotUnique(entity.getProjectId(),entity.getTableName(), isUpdate?entity.getEntityId():null)){
+            throw new GenerateException("表名重复");
+        }
+    }
     /**
      * 新增实体
      * @param metaEntityDTO
@@ -39,6 +54,8 @@ public class MetaEntityService {
     @Transactional
     public MetaEntityPO save(MetaEntityAddDTO metaEntityDTO) {
         MetaEntityPO metaEntity = MetaEntityMapper.INSTANCE.fromAddDTO(metaEntityDTO);
+        //唯一性校验
+        this.checkUnique(metaEntity,false);
         metaEntityDAO.save(metaEntity);
         metaProjectService.updateProjectVersion(metaEntityDTO.getProjectId());
         return metaEntity;
@@ -54,6 +71,8 @@ public class MetaEntityService {
     public MetaEntityPO update(MetaEntityUpdateDTO metaEntityUpdateDTO) {
         MetaEntityPO metaEntity = this.getEntity(metaEntityUpdateDTO.getEntityId(),true);
         MetaEntityMapper.INSTANCE.setPO(metaEntity, metaEntityUpdateDTO);
+        //唯一性校验
+        this.checkUnique(metaEntity,true);
         metaEntityDAO.update(metaEntity);
         metaProjectService.updateProjectVersion(metaEntity.getProjectId());
         return metaEntity;

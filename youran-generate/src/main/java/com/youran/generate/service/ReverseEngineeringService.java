@@ -119,8 +119,10 @@ public class ReverseEngineeringService {
             List<SQLTableElement> tableElementList = createTableStatement.getTableElementList();
 
             int orderNo = 0;
+            // 缓存遍历到的字段
             Map<String,MetaFieldPO> fieldMap = new HashMap<>();
             for (SQLTableElement element : tableElementList) {
+                // 创建字段
                 if (element instanceof SQLColumnDefinition) {
                     orderNo+=10;
                     SQLColumnDefinition sqlColumnDefinition = (SQLColumnDefinition) element;
@@ -153,12 +155,11 @@ public class ReverseEngineeringService {
                 if (element instanceof MySqlPrimaryKey) {
                     continue;
                 }
+                // 创建索引
                 if (element instanceof MySqlKey) {
-
                     boolean unique = (element instanceof MySqlUnique);
                     MySqlKey sqlKey = (MySqlKey) element;
-                    System.out.println(sqlKey);
-                    String indexName = sqlKey.getName().toString();
+                    String indexName = cleanQuote(sqlKey.getName().toString());
 
                     List<MetaFieldPO> fields = new ArrayList<>();
                     for (SQLSelectOrderByItem item : sqlKey.getColumns()) {

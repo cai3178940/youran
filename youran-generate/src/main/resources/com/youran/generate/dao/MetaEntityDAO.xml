@@ -76,4 +76,28 @@
         and project_id = #{projectId,jdbcType=INTEGER}
         order by entity_id
     </select>
+
+
+    <select id="classNameNotUnique" resultType="boolean">
+        select count(1) from meta_entity t
+        <where>
+            and t.deleted=0
+            and t.project_id = #{projectId}
+            and t.class_name = #{className}
+            <if test="entityId != null  ">
+                and t.entity_id != #{entityId}
+            </if>
+        </where>
+    </select>
+    <select id="tableNameNotUnique" resultType="boolean">
+        select count(1) from meta_entity t
+        <where>
+            and t.deleted=0
+            and t.project_id = #{projectId}
+            and t.table_name = #{tableName}
+            <if test="entityId != null  ">
+                and t.entity_id != #{entityId}
+            </if>
+        </where>
+    </select>
 </mapper>
