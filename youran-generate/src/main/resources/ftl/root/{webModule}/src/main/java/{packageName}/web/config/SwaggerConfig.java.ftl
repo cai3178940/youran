@@ -7,7 +7,7 @@
 <@call this.printClassCom("swagger配置开关")/>
 @EnableSwagger2Doc
 @Configuration
-@ConditionalOnProperty(value = "swagger.enable")
+@ConditionalOnProperty(value = "swagger.enabled")
 public class SwaggerConfig {
 }
 </#assign>

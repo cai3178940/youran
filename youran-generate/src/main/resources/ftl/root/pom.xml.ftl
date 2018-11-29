@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.13.RELEASE</version>
+        <version><#if this.bootVersion==2>2.1.0.RELEASE<#else>1.5.17.RELEASE</#if></version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>${this.groupId}</groupId>
@@ -24,16 +24,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <servlet.version>3.1.0</servlet.version>
         <mybatis-spring-boot.version>1.3.2</mybatis-spring-boot.version>
-        <springfox.version>2.7.0</springfox.version>
+        <springfox.version><#if this.bootVersion==2>2.9.2<#else>2.7.0</#if></springfox.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
         <jsoup.version>1.11.2</jsoup.version>
         <h2.version>1.4.193</h2.version>
-        <spring-boot-swagger.version>1.6.0.RELEASE</spring-boot-swagger.version>
+        <spring-boot-swagger.version><#if this.bootVersion==2>1.8.0.RELEASE<#else>1.6.0.RELEASE</#if></spring-boot-swagger.version>
     </properties>
 
     <dependencyManagement>

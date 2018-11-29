@@ -5,7 +5,11 @@
 <@call this.addImport("org.springframework.boot.SpringApplication")/>
 <@call this.addImport("org.springframework.boot.autoconfigure.SpringBootApplication")/>
 <@call this.addImport("org.springframework.boot.builder.SpringApplicationBuilder")/>
-<@call this.addImport("org.springframework.boot.web.support.SpringBootServletInitializer")/>
+<#if this.bootVersion==2>
+    <@call this.addImport("org.springframework.boot.web.servlet.support.SpringBootServletInitializer")/>
+<#else>
+    <@call this.addImport("org.springframework.boot.web.support.SpringBootServletInitializer")/>
+</#if>
 <@call this.printClassCom("启动类")/>
 @SpringBootApplication
 @EnableOptimisticLock

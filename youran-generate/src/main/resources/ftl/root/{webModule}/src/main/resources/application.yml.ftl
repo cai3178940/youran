@@ -1,6 +1,11 @@
 <#include "/common.ftl">
 server:
+<#if this.bootVersion==2>
+    servlet:
+        context-path: /
+<#else>
     context-path: /
+</#if>
     port: 8080
 spring:
     application:
@@ -13,6 +18,6 @@ spring:
             force: true
 
 swagger:
-    basePackage: ${this.packageName}
+    base-package: ${this.packageName}
 
 

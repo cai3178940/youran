@@ -5,4 +5,4 @@ spring:
         username: root
         password: root
 swagger:
-    enable: true
+    enabled: true

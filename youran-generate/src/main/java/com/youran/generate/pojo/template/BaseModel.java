@@ -1,6 +1,9 @@
 package com.youran.generate.pojo.template;
 
 import com.youran.common.util.DateUtil;
+import com.youran.generate.constant.FeatureConst;
+import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
+import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
@@ -15,8 +18,7 @@ import java.util.TreeSet;
 
 /**
  * <p>Title: 基本模型</p>
- * <p>Description: </p>
- *
+ * <p>Description: 包含整个工程的基本信息</p>
  * @author cbb
  * @date 2018/8/3
  */
@@ -75,7 +77,6 @@ public class BaseModel {
      * 创建时间
      */
     protected Date createdTime;
-
     /**
      * 导入模块
      */
@@ -88,9 +89,10 @@ public class BaseModel {
      * spring注入bean
      */
     protected Set<String> autowired;
-
-
-
+    /**
+     * spring-boot版本
+     */
+    protected Integer bootVersion;
 
 
     public BaseModel(MetaProjectPO project){
@@ -124,6 +126,16 @@ public class BaseModel {
         this.imports = new TreeSet<>();
         this.staticImports = new TreeSet<>();
         this.autowired = new TreeSet<>();
+        //默认spring-boot版本为1
+        this.bootVersion = FeatureConst.Boot.BOOT_1;
+        String feature = project.getFeature();
+        MetaProjectFeatureDTO featureDTO = FeatureMapper.asDTO(feature);
+        if(featureDTO!=null){
+            if(featureDTO.getBootVersion()!=null){
+                // 设置spring-boot版本
+                this.bootVersion = featureDTO.getBootVersion();
+            }
+        }
     }
 
 
@@ -380,5 +392,13 @@ public class BaseModel {
 
     public void setAutowired(Set<String> autowired) {
         this.autowired = autowired;
+    }
+
+    public Integer getBootVersion() {
+        return bootVersion;
+    }
+
+    public void setBootVersion(Integer bootVersion) {
+        this.bootVersion = bootVersion;
     }
 }
