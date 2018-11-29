@@ -27,7 +27,14 @@ export default {
     `,
     password: `
 **Git密码/token**：密码/token不会回显，如果不想修改请置空
-    `
+    `,
+    feature: {
+      bootVersion: `
+**spring-boot版本**：生成的基本框架所依赖的spring-boot版本
+> 注意：spring-boot1和2之间有很大差异，如果是全新的项目建议使用2；
+> 如果你们项目组之前的技术栈都是基于spring-boot1，则还是建议继续使用1
+      `
+    }
   },
   entity: {
     projectId: `

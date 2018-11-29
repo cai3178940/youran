@@ -62,7 +62,7 @@ export function getRules () {
     ],
     feature: {
       bootVersion: [
-        {required: true, type: 'number', message: '请选择是否启用', trigger: 'change'}
+        {required: true, type: 'number', message: '请选择spring-boot版本', trigger: 'change'}
       ]
     }
   }

@@ -10,7 +10,6 @@
 <@call this.addImport("org.springframework.web.servlet.LocaleResolver")/>
 <@call this.addImport("org.springframework.web.servlet.config.annotation.InterceptorRegistry")/>
 <@call this.addImport("org.springframework.web.servlet.config.annotation.WebMvcConfigurer")/>
-<@call this.addImport("org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter")/>
 <@call this.addImport("org.springframework.web.servlet.i18n.CookieLocaleResolver")/>
 <@call this.addImport("org.springframework.web.servlet.i18n.LocaleChangeInterceptor")/>
 <@call this.addImport("java.util.ArrayList")/>
@@ -66,7 +65,12 @@ public class WebConfig {
      */
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
+    <#if this.bootVersion==2>
+        return new WebMvcConfigurer() {
+    <#else>
+        <@call this.addImport("org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter")/>
         return new WebMvcConfigurerAdapter() {
+    </#if>
             //拦截器
             @Override
             public void addInterceptors(InterceptorRegistry registry) {

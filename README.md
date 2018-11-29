@@ -99,6 +99,9 @@ java -jar youran-generate/target/youran-generate.war
 
 ## 升级日志
 
+#### 2018-11-29
+- 支持spring-boot1和2两个版本的自由选择
+
 #### 2018-10-19
 - 增加项目中文名称字段
 
