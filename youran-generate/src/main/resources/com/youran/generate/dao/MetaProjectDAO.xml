@@ -20,7 +20,7 @@
         insert into meta_project (
           project_id, package_name, project_name, project_desc, group_id,
           author,remote,remote_url,username,
-          `password`,last_history_id,project_version,
+          `password`,last_history_id,project_version,feature,
           created_time, created_by,
           operated_time, operated_by, deleted,
           version)
@@ -28,6 +28,7 @@
           #{projectDesc,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR},
           #{author,jdbcType=VARCHAR},#{remote,jdbcType=INTEGER},#{remoteUrl,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR},
           #{password,jdbcType=VARCHAR},#{lastHistoryId,jdbcType=INTEGER},#{projectVersion,jdbcType=INTEGER},
+          #{feature,jdbcType=VARCHAR},
           #{createdTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR},
           #{operatedTime,jdbcType=TIMESTAMP}, #{operatedBy,jdbcType=VARCHAR}, #{deleted,jdbcType=SMALLINT},
           #{version,jdbcType=INTEGER})
@@ -47,6 +48,7 @@
             `password` = #{password,jdbcType=VARCHAR},
             last_history_id = #{lastHistoryId,jdbcType=INTEGER},
             project_version = #{projectVersion,jdbcType=INTEGER},
+            feature = #{feature,jdbcType=VARCHAR},
             operated_time = #{operatedTime,jdbcType=TIMESTAMP},
             operated_by = #{operatedBy,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}

@@ -200,7 +200,8 @@
 </template>
 
 <script>
-  import options from '@/components/options.js'
+  import options from '@/components/options'
+  import {apiPath} from '@/components/common'
   import {initFormBean, getRules} from './model'
 
   export default {
@@ -280,9 +281,9 @@
           .then(result => { this.entityFieldOptions = result.data.entities.map(entity => ({value: entity.entityId, label: entity.title, children: []})) })
       },
       handleForeignEntityChange: function (optionArray) {
-        var entityId = optionArray[0]
+        const entityId = optionArray[0]
         // 获取被激活的option
-        var entity = this.entityFieldOptions.find(option => option.value === entityId)
+        const entity = this.entityFieldOptions.find(option => option.value === entityId)
         if (entity.children.length) {
           return
         }
@@ -296,7 +297,7 @@
       // 查询可用枚举字典
       queryDicType: function (queryString, cb) {
         // 定义回调操作
-        var action = function () {
+        const action = function () {
           var constList = this.constList.slice(0)
           constList.push(...options.defaultConstList)
           var results = queryString ? constList.filter(
@@ -316,7 +317,7 @@
         }
       },
       getField: function () {
-        return this.$ajax.get(`/generate/meta_field/${this.fieldId}`)
+        return this.$ajax.get(`/${apiPath}/meta_field/${this.fieldId}`)
           .then(response => this.$common.checkResult(response.data))
           .then(result => { this.old = result.data })
           .catch(error => this.$common.showNotifyError(error))
@@ -333,13 +334,13 @@
         }
         this.form.foreignEntityId = this.foreignField[0]
         this.form.foreignFieldId = this.foreignField[1]
-        var loading = null
+        let loading = null
         // 校验表单
         this.$refs.editForm.validate()
         // 提交表单
           .then(() => {
             loading = this.$loading()
-            return this.$ajax.put('/generate/meta_field/update', this.$common.removeBlankField(this.form))
+            return this.$ajax.put(`/${apiPath}/meta_field/update`, this.$common.removeBlankField(this.form))
           })
           // 校验返回结果
           .then(response => this.$common.checkResult(response.data))

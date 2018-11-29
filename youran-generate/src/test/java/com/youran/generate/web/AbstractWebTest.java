@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  * Title: web单元测试抽象类
@@ -18,16 +19,19 @@ import org.springframework.test.web.servlet.MockMvc;
 public abstract class AbstractWebTest extends AbstractTest {
 
     @Autowired
+    protected WebApplicationContext context;
+
+    @Autowired
     protected MockMvc restMockMvc;
 
-    @Value(GenerateConst.GENERATE_ROOT_PATH)
-    protected String rootPath;
+    @Value(GenerateConst.API_PATH)
+    protected String apiPath;
 
-    protected String getRootPath(){
-        if(StringUtils.isBlank(rootPath)){
+    protected String getApiPath(){
+        if(StringUtils.isBlank(apiPath)){
             return "";
         }
-        return "/"+rootPath;
+        return "/"+ apiPath;
     }
 
 }

@@ -42,7 +42,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
     @Test
     public void save() throws Exception {
         MetaFieldAddDTO addDTO = MetaFieldData.getAddDTO(metaEntity.getEntityId());
-        restMockMvc.perform(post(getRootPath()+"/meta_field/save")
+        restMockMvc.perform(post(getApiPath()+"/meta_field/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
                 .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
@@ -53,7 +53,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
     public void update() throws Exception {
         MetaFieldPO metaField = generateHelper.saveFieldExample(metaEntity.getEntityId());
         MetaFieldUpdateDTO updateDTO = MetaFieldData.getUpdateDTO(metaField);
-        restMockMvc.perform(put(getRootPath()+"/meta_field/update")
+        restMockMvc.perform(put(getApiPath()+"/meta_field/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
                 .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
@@ -63,7 +63,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         generateHelper.saveFieldExample(metaEntity.getEntityId());
-        restMockMvc.perform(get(getRootPath()+"/meta_field/list")
+        restMockMvc.perform(get(getApiPath()+"/meta_field/list")
                 .param("entityId",metaEntity.getEntityId()+""))
                 .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
@@ -73,7 +73,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         MetaFieldPO metaField = generateHelper.saveFieldExample(metaEntity.getEntityId());
 
-        restMockMvc.perform(get(getRootPath()+"/meta_field/{fieldId}",metaField.getFieldId()))
+        restMockMvc.perform(get(getApiPath()+"/meta_field/{fieldId}",metaField.getFieldId()))
                 .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data.fieldId").value(is(metaField.getFieldId())));
     }
@@ -82,7 +82,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
     public void del() throws Exception {
         MetaFieldPO metaField = generateHelper.saveFieldExample(metaEntity.getEntityId());
 
-        restMockMvc.perform(delete(getRootPath()+"/meta_field/{fieldId}",metaField.getFieldId()))
+        restMockMvc.perform(delete(getApiPath()+"/meta_field/{fieldId}",metaField.getFieldId()))
                 .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }

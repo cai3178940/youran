@@ -23,7 +23,7 @@ import javax.validation.Valid;
  * Create Time: 2018-03-17 16:47
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/gen_history")
+@RequestMapping(GenerateConst.API_PATH +"/gen_history")
 public class GenHistoryController implements GenHistoryAPI {
 
     @Autowired

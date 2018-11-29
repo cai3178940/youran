@@ -35,6 +35,7 @@
 </template>
 
 <script>
+  import {apiPath} from '@/components/common'
   import {initDetailFormBean, getDetailRules} from './model'
 
   export default {
@@ -49,7 +50,7 @@
     },
     methods: {
       getConstDetail: function () {
-        return this.$ajax.get(`/generate/meta_const_detail/${this.constDetailId}`)
+        return this.$ajax.get(`/${apiPath}/meta_const_detail/${this.constDetailId}`)
           .then(response => this.$common.checkResult(response.data))
           .then(result => { this.old = result.data })
           .catch(error => this.$common.showNotifyError(error))
@@ -60,13 +61,13 @@
         }
       },
       submit: function () {
-        var loading = null
+        let loading = null
         // 校验表单
         this.$refs.editForm.validate()
         // 提交表单
           .then(() => {
             loading = this.$loading()
-            return this.$ajax.put('/generate/meta_const_detail/update', this.form)
+            return this.$ajax.put(`/${apiPath}/meta_const_detail/update`, this.form)
           })
           // 校验返回结果
           .then(response => this.$common.checkResult(response.data))

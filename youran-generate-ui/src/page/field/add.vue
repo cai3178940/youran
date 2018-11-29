@@ -213,8 +213,9 @@
 </template>
 
 <script>
-  import options from '@/components/options.js'
-  import fieldTemplate from '@/components/fieldTemplate.js'
+  import options from '@/components/options'
+  import {apiPath} from '@/components/common'
+  import fieldTemplate from '@/components/fieldTemplate'
   import {initFormBean, getRules} from './model'
 
   export default {
@@ -336,13 +337,13 @@
         }
         this.form.foreignEntityId = this.foreignField[0]
         this.form.foreignFieldId = this.foreignField[1]
-        var loading = null
+        let loading = null
         // 校验表单
         this.$refs.addForm.validate()
         // 提交表单
           .then(() => {
             loading = this.$loading()
-            return this.$ajax.post('/generate/meta_field/save', this.$common.removeBlankField(this.form))
+            return this.$ajax.post(`/${apiPath}/meta_field/save`, this.$common.removeBlankField(this.form))
           })
           // 校验返回结果
           .then(response => this.$common.checkResult(response.data))
@@ -376,7 +377,7 @@
         this.form.entityId = entityId
       }
       if (type === 'temp') {
-        var promise2 = this.$ajax.get(`/generate/meta_field/${template}`)
+        var promise2 = this.$ajax.get(`/${apiPath}/meta_field/${template}`)
           .then(response => this.$common.checkResult(response.data))
           .then(result => new Promise((resolve, reject) => {
             this.form = result.data

@@ -32,6 +32,14 @@
               <el-input v-model="form.author" placeholder="例如：菜小哥"></el-input>
             </help-popover>
           </el-form-item>
+          <el-form-item label="spring-boot版本" prop="feature.bootVersion">
+            <help-popover name="project.feature.bootVersion">
+              <el-radio-group v-model="form.feature.bootVersion">
+                <el-radio border :label="1">1.5.x.RELEASE</el-radio>
+                <el-radio border :label="2">2.1.x.RELEASE</el-radio>
+              </el-radio-group>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="启用Git仓库" prop="remote">
             <help-popover name="project.remote">
               <el-radio-group v-model="form.remote">
@@ -69,7 +77,8 @@
 </template>
 
 <script>
-  import options from '@/components/options.js'
+  import options from '@/components/options'
+  import {apiPath} from '@/components/common'
   import {initFormBean, getRules} from './model'
 
   export default {
@@ -85,7 +94,7 @@
     },
     methods: {
       getProject: function () {
-        return this.$ajax.get(`/generate/meta_project/${this.projectId}`)
+        return this.$ajax.get(`/${apiPath}/meta_project/${this.projectId}`)
           .then(response => this.$common.checkResult(response.data))
           .then(result => { this.old = result.data })
           .catch(error => this.$common.showNotifyError(error))
@@ -96,13 +105,13 @@
         }
       },
       submit: function () {
-        var loading = null
+        let loading = null
         // 校验表单
         this.$refs.editForm.validate()
         // 提交表单
           .then(() => {
             loading = this.$loading()
-            return this.$ajax.put('/generate/meta_project/update', this.form)
+            return this.$ajax.put(`/${apiPath}/meta_project/update`, this.form)
           })
           // 校验返回结果
           .then(response => this.$common.checkResult(response.data))

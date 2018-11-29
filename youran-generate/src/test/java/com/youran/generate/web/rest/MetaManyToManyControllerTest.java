@@ -47,7 +47,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
     public void save() throws Exception {
         MetaManyToManyAddDTO addDTO = MetaManyToManyData.getAddDTO(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
-        restMockMvc.perform(post(getRootPath()+"/meta_mtm/save")
+        restMockMvc.perform(post(getApiPath()+"/meta_mtm/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
                 .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
@@ -59,7 +59,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
         MetaManyToManyUpdateDTO updateDTO = MetaManyToManyData.getUpdateDTO(metaManyToMany);
-        restMockMvc.perform(put(getRootPath()+"/meta_mtm/update")
+        restMockMvc.perform(put(getApiPath()+"/meta_mtm/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
                 .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
@@ -70,7 +70,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
     public void list() throws Exception {
         generateHelper.saveManyToManyExample(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
-        restMockMvc.perform(get(getRootPath()+"/meta_mtm/list")
+        restMockMvc.perform(get(getApiPath()+"/meta_mtm/list")
                 .param("projectId",metaProject.getProjectId()+""))
                 .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data.length()").value(is(1)));
@@ -80,7 +80,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
-        restMockMvc.perform(get(getRootPath()+"/meta_mtm/{fieldId}",metaManyToMany.getMtmId()))
+        restMockMvc.perform(get(getApiPath()+"/meta_mtm/{fieldId}",metaManyToMany.getMtmId()))
                 .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data.mtmId").value(is(metaManyToMany.getMtmId())));
     }
@@ -89,7 +89,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
     public void del() throws Exception {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
-        restMockMvc.perform(delete(getRootPath()+"/meta_mtm/{fieldId}",metaManyToMany.getMtmId()))
+        restMockMvc.perform(delete(getApiPath()+"/meta_mtm/{fieldId}",metaManyToMany.getMtmId()))
                 .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
                 .andExpect(jsonPath("$.data").value(is(1)));
     }

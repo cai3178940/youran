@@ -54,7 +54,8 @@
 </template>
 
 <script>
-  import options from '@/components/options.js'
+  import options from '@/components/options'
+  import {apiPath} from '@/components/common'
   import {initIndexFormBean, getIndexRules} from './model'
 
   export default {
@@ -93,7 +94,7 @@
           .then(result => { this.fieldList = result.data })
       },
       getIndex: function () {
-        return this.$ajax.get(`/generate/meta_index/${this.indexId}`)
+        return this.$ajax.get(`/${apiPath}/meta_index/${this.indexId}`)
           .then(response => this.$common.checkResult(response.data))
           .then(result => {
             var old = {
@@ -115,13 +116,13 @@
           ...this.form
         }
         params.fieldIds = this.form.fieldIds.join(',')
-        var loading = null
+        let loading = null
         // 校验表单
         this.$refs.editForm.validate()
         // 提交表单
           .then(() => {
             loading = this.$loading()
-            return this.$ajax.put('/generate/meta_index/update', this.$common.removeBlankField(params))
+            return this.$ajax.put(`/${apiPath}/meta_index/update`, this.$common.removeBlankField(params))
           })
           // 校验返回结果
           .then(response => this.$common.checkResult(response.data))

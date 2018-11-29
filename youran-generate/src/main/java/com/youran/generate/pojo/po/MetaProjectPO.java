@@ -39,6 +39,8 @@ public class MetaProjectPO extends GeneralPO {
 
     private Integer projectVersion;
 
+    private String feature;
+
     private List<MetaEntityPO> entities;
 
     private List<MetaConstPO> consts;
@@ -217,5 +219,13 @@ public class MetaProjectPO extends GeneralPO {
 
     public void setProjectDesc(String projectDesc) {
         this.projectDesc = projectDesc;
+    }
+
+    public String getFeature() {
+        return feature;
+    }
+
+    public void setFeature(String feature) {
+        this.feature = feature;
     }
 }

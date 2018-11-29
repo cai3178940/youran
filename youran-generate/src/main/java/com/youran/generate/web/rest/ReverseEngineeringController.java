@@ -23,7 +23,7 @@ import javax.validation.Valid;
  * Create Time: 2018-03-17 16:47
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/reverse_engineering")
+@RequestMapping(GenerateConst.API_PATH +"/reverse_engineering")
 public class ReverseEngineeringController implements ReverseEngineeringAPI {
 
     @Autowired

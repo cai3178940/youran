@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import content from '@/components/help-content.js'
+  import content from './help-content'
   import showdown from 'showdown'
   const converter = new showdown.Converter({emoji: 'true'})
   export default {

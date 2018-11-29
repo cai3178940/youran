@@ -62,12 +62,12 @@ public class ReverseEngineeringControllerTest extends AbstractWebTest {
         dto.setDdl(ddl);
         dto.setDbType("mysql");
 
-        restMockMvc.perform(post(getRootPath()+"/reverse_engineering/check")
+        restMockMvc.perform(post(getApiPath()+"/reverse_engineering/check")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(dto)))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
 
-        restMockMvc.perform(post(getRootPath()+"/reverse_engineering/execute")
+        restMockMvc.perform(post(getApiPath()+"/reverse_engineering/execute")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(dto)))
             .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));

@@ -26,7 +26,7 @@ import javax.validation.Valid;
  * Create Time:2017/5/12 13:42
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/meta_entity")
+@RequestMapping(GenerateConst.API_PATH +"/meta_entity")
 public class MetaEntityController implements MetaEntityAPI {
 
     @Autowired

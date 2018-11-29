@@ -12,6 +12,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @EnableSwagger2Doc
 @Configuration
-@ConditionalOnProperty(value = "swagger.enable")
+@ConditionalOnProperty(value = "swagger.enabled")
 public class SwaggerConfig {
 }

@@ -516,6 +516,7 @@ public class GenerateHelper{
         dto.setGroupId(groupId);
         dto.setPackageName(packageName);
         dto.setProjectName(projectName);
+        dto.setProjectDesc(projectName);
         dto.setAuthor(author);
         dto.setRemote(BoolConst.FALSE);
         return metaProjectService.save(dto);

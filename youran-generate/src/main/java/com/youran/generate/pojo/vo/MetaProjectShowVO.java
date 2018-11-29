@@ -1,6 +1,7 @@
 package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
+import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
@@ -39,6 +40,16 @@ public class MetaProjectShowVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME)
     private String username;
+
+    private MetaProjectFeatureDTO feature;
+
+    public MetaProjectFeatureDTO getFeature() {
+        return feature;
+    }
+
+    public void setFeature(MetaProjectFeatureDTO feature) {
+        this.feature = feature;
+    }
 
     public String getGroupId() {
         return groupId;

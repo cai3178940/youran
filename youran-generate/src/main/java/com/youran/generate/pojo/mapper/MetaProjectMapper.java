@@ -15,7 +15,7 @@ import org.mapstruct.factory.Mappers;
  * Author: cbb
  * Create Time:2017/5/24
  */
-@Mapper
+@Mapper(uses = FeatureMapper.class)
 public interface MetaProjectMapper {
 
     MetaProjectMapper INSTANCE = Mappers.getMapper( MetaProjectMapper.class );
@@ -41,4 +41,8 @@ public interface MetaProjectMapper {
      * @return
      */
     MetaProjectShowVO toShowVO(MetaProjectPO metaProjectPO);
+
+
+
+
 }

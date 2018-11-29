@@ -9,7 +9,7 @@ package com.youran.generate.constant;
  */
 public class GenerateConst {
 
-    public static final String GENERATE_ROOT_PATH = "${youran.generate.rootPath:}";
+    public static final String API_PATH = "${youran.apiPath:}";
 
     //字段空值常量
     public static final String METAFIELD_NULL_VALUE = "NULL";

@@ -29,7 +29,7 @@ import java.util.Date;
  * Create Time:2017/5/13 23:00
  */
 @Controller
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH + "/code_gen")
+@RequestMapping(GenerateConst.API_PATH + "/code_gen")
 public class MetaCodeGenController implements MetaCodeGenAPI {
 
     @Autowired

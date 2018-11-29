@@ -29,7 +29,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        //将所有/ui/** 访问都映射到classpath:/ui/ 目录下
+        // 将所有前端资源 /ui/** 访问都映射到classpath:/ui/ 目录下
         registry.addResourceHandler("/ui/**").addResourceLocations("classpath:/ui/");
     }
 

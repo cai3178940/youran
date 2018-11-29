@@ -81,7 +81,9 @@
 </template>
 
 <script>
-  import options from '@/components/options.js'
+  import options from '@/components/options'
+  import {apiPath} from '@/components/common'
+
   export default {
     name: 'constList',
     props: ['projectId', 'constId'],
@@ -132,7 +134,7 @@
           return
         }
         this.$common.confirm('是否确认删除')
-          .then(() => this.$ajax.put('/generate/meta_const/deleteBatch', this.selectItems.map(c => c.constId)))
+          .then(() => this.$ajax.put(`/${apiPath}/meta_const/deleteBatch`, this.selectItems.map(c => c.constId)))
           .then(() => this.doQuery())
       },
       sizeChange: function (pageSize) {
@@ -170,7 +172,7 @@
           pageSize: this.page.pageSize
         }
         this.loading = true
-        return this.$ajax.get('/generate/meta_const/list', {params: params})
+        return this.$ajax.get(`/${apiPath}/meta_const/list`, {params: params})
           .then(response => this.$common.checkResult(response.data))
           .then(result => { this.page = result.data })
           .catch(error => this.$common.showNotifyError(error))
@@ -205,7 +207,7 @@
       // 枚举值列表查询
       doDetailQuery: function (constId) {
         this.detailLoading = true
-        this.$ajax.get('/generate/meta_const_detail/list', {params: {'projectId': this.query.projectId, 'constId': constId}})
+        this.$ajax.get(`/${apiPath}/meta_const_detail/list`, {params: {'projectId': this.query.projectId, 'constId': constId}})
           .then(response => this.$common.checkResult(response.data))
           .then(result => { this.detailList = result.data })
           .catch(error => this.$common.showNotifyError(error))
@@ -219,7 +221,7 @@
       },
       handleDetailDel: function (theConst, detail) {
         this.$common.confirm('是否确认删除枚举值')
-          .then(() => this.$ajax.put('/generate/meta_const_detail/deleteBatch', [detail.constDetailId]))
+          .then(() => this.$ajax.put(`/${apiPath}/meta_const_detail/deleteBatch`, [detail.constDetailId]))
           .then(() => this.doDetailQuery(theConst.constId))
       }
     },

@@ -1,5 +1,6 @@
 server:
-    context-path: /
+    servlet:
+        context-path: /
     port: 8080
 spring:
     application:
@@ -10,20 +11,21 @@ spring:
     http:
         encoding:
             force: true
+    security:
+        user:
+            name: root
+            password: root
+
 
 swagger:
-    basePackage: com.youran.generate
+    base-package: com.youran.generate
 
 mybatis:
     config-location: classpath:mybatis-config.xml
 
 youran:
-    generate:
-        aesKey: orpNB6YGbiiDcrrubk2rFQ==
-        version: 20
-        rootPath: generate
+    aesKey: orpNB6YGbiiDcrrubk2rFQ==
+    version: 20
+    apiPath: api
+    security-enabled: true
 
-security:
-    user:
-        name: root
-        password: root

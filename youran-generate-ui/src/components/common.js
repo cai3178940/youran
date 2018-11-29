@@ -11,8 +11,9 @@ var ajax = axios.create({
   }
 })
 
-export default {
+export const apiPath = process.env.API_PATH
 
+export const CommonPlugin = {
   install: function (Vue, options) {
     Vue.prototype.$ajax = ajax
 
@@ -22,11 +23,11 @@ export default {
 
       // 查询项目下拉列表
       getProjectOptions: function () {
-        return ajax.get('/generate/meta_project/list')
+        return ajax.get(`/${apiPath}/meta_project/list`)
       },
       // 查询实体下拉列表
       getEntityOptions: function (projectId) {
-        return ajax.get('/generate/meta_entity/list', {
+        return ajax.get(`/${apiPath}/meta_entity/list`, {
           params: {
             projectId,
             pageSize: 1000,
@@ -36,7 +37,7 @@ export default {
       },
       // 查询字段下拉列表
       getFieldOptions: function (entityId) {
-        return ajax.get('/generate/meta_field/list', {
+        return ajax.get(`/${apiPath}/meta_field/list`, {
           params: {
             entityId
           }
@@ -44,7 +45,7 @@ export default {
       },
       // 查询枚举下拉列表
       getConstOptions: function (projectId) {
-        return ajax.get('/generate/meta_const/list', {
+        return ajax.get(`/${apiPath}/meta_const/list`, {
           params: {
             projectId,
             pageSize: 1000,

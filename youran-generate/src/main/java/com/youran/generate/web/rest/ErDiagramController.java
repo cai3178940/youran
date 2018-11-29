@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @date 2018/7/17
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/er_diagram")
+@RequestMapping(GenerateConst.API_PATH +"/er_diagram")
 public class ErDiagramController implements ErDiagramAPI {
 
     @Autowired

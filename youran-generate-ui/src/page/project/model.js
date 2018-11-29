@@ -8,7 +8,10 @@ export function initFormBean (forEdit) {
     remote: 0,
     remoteUrl: '',
     username: '',
-    password: ''
+    password: '',
+    feature: {
+      bootVersion: 1
+    }
   }
   if (forEdit) {
     formBean['projectId'] = null
@@ -56,6 +59,11 @@ export function getRules () {
     ],
     password: [
       {max: 32, message: '长度不能超过32个字符', trigger: 'blur'}
-    ]
+    ],
+    feature: {
+      bootVersion: [
+        {required: true, type: 'number', message: '请选择是否启用', trigger: 'change'}
+      ]
+    }
   }
 }

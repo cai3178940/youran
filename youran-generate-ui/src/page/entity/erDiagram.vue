@@ -9,6 +9,7 @@
 </template>
 
 <script>
+  import {apiPath} from '@/components/common'
   import go from 'gojsaims'
   export default {
     name: 'er-diagram',
@@ -32,7 +33,7 @@
 
       queryErDiagram: function (projectId, entityIds) {
         this.loading = true
-        return this.$ajax.get('/generate/er_diagram/show', {params: {projectId, entityIds}})
+        return this.$ajax.get(`/${apiPath}/er_diagram/show`, {params: {projectId, entityIds}})
           .then(response => this.$common.checkResult(response.data))
           .then(result => { this.erDiagram = result.data })
           .catch(error => this.$common.showNotifyError(error))

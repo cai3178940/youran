@@ -25,7 +25,7 @@ import javax.validation.Valid;
  * Create Time:2017/5/12 13:42
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/meta_const")
+@RequestMapping(GenerateConst.API_PATH +"/meta_const")
 public class MetaConstController implements MetaConstAPI {
 
     @Autowired

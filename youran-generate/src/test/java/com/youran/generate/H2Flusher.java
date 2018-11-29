@@ -9,13 +9,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Title: 启动运行H2数据库脚本
+ * Title: H2数据库刷新器
  * Description:
  * Author: cbb
  * Create Time: 2017-09-13 15:14
  */
 public class H2Flusher implements InitializingBean {
 
+    /**
+     * 数据库脚本文件保存路径
+     */
     private final Map<String,String> scriptFilePath;
 
     private final JdbcTemplate jdbcTemplate;
@@ -28,6 +31,9 @@ public class H2Flusher implements InitializingBean {
         }
     }
 
+    /**
+     * 刷新H2数据库
+     */
     public void flushDB(){
         jdbcTemplate.execute("drop all objects;");
         for (String key : scriptFilePath.keySet()) {
@@ -40,7 +46,6 @@ public class H2Flusher implements InitializingBean {
         //修改H2数据库配置
         Mode mode = Mode.getInstance("MYSQL");
         mode.convertInsertNullToZero = false; //关闭null值自动转0或空串
-        flushDB();
     }
 
 }

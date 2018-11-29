@@ -25,7 +25,7 @@ import java.util.List;
  * Create Time:2017/5/24
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/meta_project")
+@RequestMapping(GenerateConst.API_PATH +"/meta_project")
 public class MetaProjectController implements MetaProjectAPI {
 
     @Autowired

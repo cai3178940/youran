@@ -61,6 +61,16 @@ public class MetaProjectAddDTO extends AbstractDTO {
     @Length(max = 32, message = "password最大长度不能超过32")
     private String password;
 
+    private MetaProjectFeatureDTO feature;
+
+    public MetaProjectFeatureDTO getFeature() {
+        return feature;
+    }
+
+    public void setFeature(MetaProjectFeatureDTO feature) {
+        this.feature = feature;
+    }
+
     public String getGroupId() {
         return groupId;
     }

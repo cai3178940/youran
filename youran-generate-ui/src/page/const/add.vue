@@ -48,7 +48,8 @@
 </template>
 
 <script>
-  import options from '@/components/options.js'
+  import options from '@/components/options'
+  import {apiPath} from '@/components/common'
   import {initFormBean, getRules} from './model'
 
   export default {
@@ -69,13 +70,13 @@
           .then(result => { this.projectList = result.data })
       },
       submit: function () {
-        var loading = null
+        let loading = null
         // 校验表单
         this.$refs.addForm.validate()
         // 提交表单
           .then(() => {
             loading = this.$loading()
-            return this.$ajax.post('/generate/meta_const/save', this.form)
+            return this.$ajax.post(`/${apiPath}/meta_const/save`, this.form)
           })
           // 校验返回结果
           .then(response => this.$common.checkResult(response.data))

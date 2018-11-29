@@ -97,8 +97,9 @@
 </template>
 
 <script>
+  import {apiPath} from '@/components/common'
   import ErDiagram from './erDiagram'
-export default {
+  export default {
     name: 'entityList',
     components: {ErDiagram},
     props: ['projectId'],
@@ -159,7 +160,7 @@ export default {
           return
         }
         this.$common.confirm('是否确认删除')
-          .then(() => this.$ajax.put('/generate/meta_entity/deleteBatch', this.selectItems.map(entity => entity.entityId)))
+          .then(() => this.$ajax.put(`/${apiPath}/meta_entity/deleteBatch`, this.selectItems.map(entity => entity.entityId)))
           .then(() => this.doQuery())
           .then(() => this.doQueryMtm())
       },
@@ -199,7 +200,7 @@ export default {
           pageSize: this.page.pageSize
         }
         this.loading = true
-        return this.$ajax.get('/generate/meta_entity/list', {params: params})
+        return this.$ajax.get(`/${apiPath}/meta_entity/list`, {params: params})
           .then(response => this.$common.checkResult(response.data))
           .then(result => {
             result.data.entities.forEach(value => {
@@ -216,7 +217,7 @@ export default {
           return
         }
         this.loading = true
-        return this.$ajax.get('/generate/meta_mtm/list', {params: {projectId: this.query.projectId}})
+        return this.$ajax.get(`/${apiPath}/meta_mtm/list`, {params: {projectId: this.query.projectId}})
           .then(response => this.$common.checkResult(response.data))
           .then(result => { this.mtms = result.data })
           .catch(error => this.$common.showNotifyError(error))
@@ -237,7 +238,7 @@ export default {
       },
       handleMtmDel: function (mtm) {
         this.$common.confirm(`请确认是否删除多对多【${mtm.tableName}】`)
-          .then(() => this.$ajax.delete(`/generate/meta_mtm/${mtm.mtmId}`))
+          .then(() => this.$ajax.delete(`/${apiPath}/meta_mtm/${mtm.mtmId}`))
           .then(() => this.doQueryMtm())
       },
       handleErDiagram: function () {
@@ -254,7 +255,7 @@ export default {
         this.$router.push(`/project/${this.projectId}/entity/show/${row.entityId}`)
       },
       handleSqlPreview: function (row) {
-        this.$ajax.get(`/generate/code_gen/sqlPreview?entityId=${row.entityId}`)
+        this.$ajax.get(`/${apiPath}/code_gen/sqlPreview?entityId=${row.entityId}`)
           .then(response => this.$common.checkResult(response.data))
           .then(result => {
             this.sqlPreview = result.data

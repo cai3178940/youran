@@ -31,6 +31,7 @@ public class AbstractTest {
         if(h2Flusher==null){
             throw new RuntimeException("请使用H2内存数据库作为数据源");
         }
+        // 每次执行单元测试之前都要刷新数据库
         h2Flusher.flushDB();
     }
 

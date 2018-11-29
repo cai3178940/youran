@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * Create Time:2017/5/12 10:55
  */
 @Component
-@ConfigurationProperties(prefix = "youran.generate")
+@ConfigurationProperties(prefix = "youran")
 public class GenerateProperties {
 
     /**
@@ -41,6 +41,19 @@ public class GenerateProperties {
      * aes对称加密Key
      */
     private String aesKey;
+
+    /**
+     * 是否启用登录校验
+     */
+    private boolean securityEnabled;
+
+    public boolean isSecurityEnabled() {
+        return securityEnabled;
+    }
+
+    public void setSecurityEnabled(boolean securityEnabled) {
+        this.securityEnabled = securityEnabled;
+    }
 
     public String getAesKey() {
         return aesKey;
@@ -89,4 +102,7 @@ public class GenerateProperties {
     public void setDevProjectDir(String devProjectDir) {
         this.devProjectDir = devProjectDir;
     }
+
+
+
 }

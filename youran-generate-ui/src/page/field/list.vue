@@ -171,9 +171,10 @@
 
 <script>
   import Vue from 'vue'
-  import cascadeExtList from '../cascadeExt/list.vue'
-  import options from '@/components/options.js'
-  import fieldTemplate from '@/components/fieldTemplate.js'
+  import cascadeExtList from '../cascadeExt/list'
+  import options from '@/components/options'
+  import {apiPath} from '@/components/common'
+  import fieldTemplate from '@/components/fieldTemplate'
   import copyFieldUrl from '@/assets/copyField.gif'
   export default {
     name: 'fieldList',
@@ -271,7 +272,7 @@
           return
         }
         this.$common.confirm('是否确认删除')
-          .then(() => this.$ajax.put('/generate/meta_field/deleteBatch', this.selectItems.map(field => field.fieldId)))
+          .then(() => this.$ajax.put(`/${apiPath}/meta_field/deleteBatch`, this.selectItems.map(field => field.fieldId)))
           .then(() => this.doQuery())
           .then(() => this.doQueryIndex())
       },
@@ -329,7 +330,7 @@
           return
         }
         this.loading = true
-        return this.$ajax.get('/generate/meta_field/list', {params: {...this.query, withCascadeFieldNum: 1}})
+        return this.$ajax.get(`/${apiPath}/meta_field/list`, {params: {...this.query, withCascadeFieldNum: 1}})
           .then(response => this.$common.checkResult(response.data))
           .then(result => {
             result.data.forEach(value => {
@@ -346,7 +347,7 @@
           return
         }
         this.loading = true
-        return this.$ajax.get('/generate/meta_index/list', {params: this.query})
+        return this.$ajax.get(`/${apiPath}/meta_index/list`, {params: this.query})
           .then(response => this.$common.checkResult(response.data))
           .then(result => { this.indexes = result.data })
           .catch(error => this.$common.showNotifyError(error))
@@ -368,7 +369,7 @@
         const templates = this.templateForm.templates
         const template = this.templateForm.template
         var callback = function (form, refresh) {
-          return this.$ajax.post('/generate/meta_field/save', {
+          return this.$ajax.post(`/${apiPath}/meta_field/save`, {
             ...this.$common.removeBlankField(form),
             entityId: this.entityId
           })
@@ -386,7 +387,7 @@
         var doAddImm = function (temp, refresh) {
           // 如果目标值是数字，则为临时模板
           if (typeof temp === 'number') {
-            return this.$ajax.get(`/generate/meta_field/${temp}`)
+            return this.$ajax.get(`/${apiPath}/meta_field/${temp}`)
               .then(response => this.$common.checkResult(response.data))
               .then(result => callback(result.data, refresh))
               .catch(error => this.$common.showNotifyError(error))
@@ -432,12 +433,12 @@
       },
       handleDelIndexField: function (index, field) {
         this.$common.confirm(`请确认是否从索引【${index.indexName}】中删除【${field.fieldDesc}】字段`)
-          .then(() => this.$ajax.put(`/generate/meta_index/${index.indexId}/removeField`, [field.fieldId]))
+          .then(() => this.$ajax.put(`/${apiPath}/meta_index/${index.indexId}/removeField`, [field.fieldId]))
           .then(() => this.doQueryIndex())
       },
       handleDelIndex: function (index) {
         this.$common.confirm(`请确认是否删除索引【${index.indexName}】`)
-          .then(() => this.$ajax.delete(`/generate/meta_index/${index.indexId}`))
+          .then(() => this.$ajax.delete(`/${apiPath}/meta_index/${index.indexId}`))
           .then(() => this.doQueryIndex())
       },
       handleIndexAdd: function () {

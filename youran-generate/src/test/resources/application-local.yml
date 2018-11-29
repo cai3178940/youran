@@ -9,10 +9,6 @@ logging:
         com:
             youran: trace
 youran:
-    generate:
-        devMode: 1
-        devProjectDir: D:\\workspace_cbb\\youran-sample
-
-security:
-    basic:
-        enabled: false
+    devMode: 1
+    dev-project-dir: D:\\workspace_cbb\\youran-sample
+    security-enabled: false

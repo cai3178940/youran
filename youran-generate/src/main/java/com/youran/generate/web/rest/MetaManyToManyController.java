@@ -25,7 +25,7 @@ import java.util.List;
  * Create Time:2017/5/12 13:42
  */
 @RestController
-@RequestMapping(GenerateConst.GENERATE_ROOT_PATH +"/meta_mtm")
+@RequestMapping(GenerateConst.API_PATH +"/meta_mtm")
 public class MetaManyToManyController implements MetaManyToManyAPI {
 
     @Autowired
