@@ -113,7 +113,7 @@ public class AESSecurityUtil {
         return Base64.encodeBase64String(getKey().getEncoded());
     }
 
-    public static void main(String[] args) throws Exception{
+    /*public static void main(String[] args) throws Exception{
         String key = getKeyStr();
         System.out.println("key="+key);
         String wenjian = "1234567";
@@ -128,5 +128,5 @@ public class AESSecurityUtil {
 
         String jm = AESSecurityUtil.decrypt(mw,key);
         System.out.println("明文:" + jm);
-    }
+    }*/
 }

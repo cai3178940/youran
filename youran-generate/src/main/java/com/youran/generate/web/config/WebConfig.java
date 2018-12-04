@@ -61,7 +61,7 @@ public class WebConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception{
             if(generateProperties.isSecurityEnabled()){
-                http
+                http.csrf().disable()
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and()
