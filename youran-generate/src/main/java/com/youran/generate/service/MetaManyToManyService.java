@@ -40,6 +40,9 @@ public class MetaManyToManyService {
      */
     @Transactional
     public MetaManyToManyPO save(MetaManyToManyAddDTO metaManyToManyDTO) {
+        Integer projectId = metaManyToManyDTO.getProjectId();
+        //校验操作人
+        metaProjectService.checkOperatorByProjectId(projectId);
         if (!metaEntityDAO.exist(metaManyToManyDTO.getEntityId1())) {
             throw new GenerateException("entityId1参数有误");
         }
@@ -48,7 +51,7 @@ public class MetaManyToManyService {
         }
         MetaManyToManyPO metaManyToMany = MetaManyToManyMapper.INSTANCE.fromAddDTO(metaManyToManyDTO);
         metaManyToManyDAO.save(metaManyToMany);
-        metaProjectService.updateProjectVersion(metaManyToMany.getProjectId());
+        metaProjectService.updateProjectVersion(projectId);
         return metaManyToMany;
     }
 
@@ -68,9 +71,12 @@ public class MetaManyToManyService {
         }
         Integer mtmId = metaManyToManyUpdateDTO.getMtmId();
         MetaManyToManyPO metaManyToMany = this.getMetaManyToMany(mtmId,true);
+        Integer projectId = metaManyToMany.getProjectId();
+        //校验操作人
+        metaProjectService.checkOperatorByProjectId(projectId);
         MetaManyToManyMapper.INSTANCE.setPO(metaManyToMany, metaManyToManyUpdateDTO);
         metaManyToManyDAO.update(metaManyToMany);
-        metaProjectService.updateProjectVersion(metaManyToMany.getProjectId());
+        metaProjectService.updateProjectVersion(projectId);
         return metaManyToMany;
     }
 
@@ -124,6 +130,8 @@ public class MetaManyToManyService {
                 continue;
             }
             projectId = manyToMany.getProjectId();
+            //校验操作人
+            metaProjectService.checkOperatorByProjectId(projectId);
             count += metaManyToManyDAO.delete(id);
         }
         if(count>0) {

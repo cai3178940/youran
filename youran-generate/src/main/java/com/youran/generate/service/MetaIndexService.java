@@ -45,10 +45,13 @@ public class MetaIndexService {
      */
     @Transactional
     public MetaIndexPO save(MetaIndexAddDTO metaIndexAddDTO) {
+        Integer entityId = metaIndexAddDTO.getEntityId();
+        //校验操作人
+        metaProjectService.checkOperatorByEntityId(entityId);
         //校验字段id是否是本实体下存在的字段
         String fieldIds = metaIndexAddDTO.getFieldIds();
         List<Integer> fieldIdList =  ConvertUtil.convertIntegerList(fieldIds);
-        int fieldCount = metaFieldDAO.findCount(metaIndexAddDTO.getEntityId(), fieldIdList);
+        int fieldCount = metaFieldDAO.findCount(entityId, fieldIdList);
         if (fieldCount != fieldIdList.size()) {
             throw new GenerateException("索引字段异常");
         }
@@ -61,7 +64,7 @@ public class MetaIndexService {
         if (count == 0 || fieldIdList.size() != count) {
             throw new GenerateException("索引保存异常");
         }
-        metaProjectService.updateProjectVersionByEntityId(metaIndexAddDTO.getEntityId());
+        metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaIndex;
     }
 
@@ -73,12 +76,15 @@ public class MetaIndexService {
     @Transactional
     @OptimisticLock
     public MetaIndexPO update(MetaIndexUpdateDTO metaIndexUpdateDTO) {
+        Integer entityId = metaIndexUpdateDTO.getEntityId();
+        //校验操作人
+        metaProjectService.checkOperatorByEntityId(entityId);
         Integer indexId = metaIndexUpdateDTO.getIndexId();
         MetaIndexPO metaIndex = this.getIndex(indexId,true);
         //校验新字段id是否是本实体下存在的字段
         String fieldIds = metaIndexUpdateDTO.getFieldIds();
         List<Integer> fieldIdList = ConvertUtil.convertIntegerList(fieldIds);
-        int fieldCount = metaFieldDAO.findCount(metaIndexUpdateDTO.getEntityId(), fieldIdList);
+        int fieldCount = metaFieldDAO.findCount(entityId, fieldIdList);
         if (fieldCount != fieldIdList.size()) {
             throw new GenerateException("索引字段异常");
         }
@@ -94,7 +100,7 @@ public class MetaIndexService {
             throw new GenerateException("索引更新异常");
         }
 
-        metaProjectService.updateProjectVersionByEntityId(metaIndexUpdateDTO.getEntityId());
+        metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaIndex;
     }
 
@@ -150,6 +156,8 @@ public class MetaIndexService {
                 continue;
             }
             entityId = metaIndex.getEntityId();
+            //校验操作人
+            metaProjectService.checkOperatorByEntityId(entityId);
             metaIndexFieldDAO.delete(id);
             count += metaIndexDAO.delete(id);
         }
@@ -171,6 +179,9 @@ public class MetaIndexService {
         if(metaIndex==null){
             return 0;
         }
+        Integer entityId = metaIndex.getEntityId();
+        //校验操作人
+        metaProjectService.checkOperatorByEntityId(entityId);
         int count = metaIndexFieldDAO.remove(indexId,fieldIds);
         if(count==0){
             return 0;
@@ -181,7 +192,7 @@ public class MetaIndexService {
             metaIndexDAO.delete(indexId);
         }
         if(count>0) {
-            metaProjectService.updateProjectVersionByEntityId(metaIndex.getEntityId());
+            metaProjectService.updateProjectVersionByEntityId(entityId);
         }
         return count;
     }

@@ -4,6 +4,7 @@ import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.ReverseEngineeringDTO;
+import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.service.ReverseEngineeringService;
 import com.youran.generate.web.api.ReverseEngineeringAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class ReverseEngineeringController implements ReverseEngineeringAPI {
 
     @Autowired
     private ReverseEngineeringService reverseEngineeringService;
+    @Autowired
+    private MetaProjectService metaProjectService;
 
 
     @Override
@@ -45,6 +48,8 @@ public class ReverseEngineeringController implements ReverseEngineeringAPI {
     @PostMapping(value = "/execute")
     public ReplyVO<Void> execute(@Valid @RequestBody ReverseEngineeringDTO dto) {
         try {
+            //校验操作人
+            metaProjectService.checkOperatorByProjectId(dto.getProjectId());
             reverseEngineeringService.execute(dto);
         } catch (GenerateException e) {
             return ReplyVO.fail(e.getMessage());

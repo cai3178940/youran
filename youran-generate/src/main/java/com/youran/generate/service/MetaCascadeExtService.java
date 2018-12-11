@@ -41,9 +41,12 @@ public class MetaCascadeExtService {
      */
     @Transactional
     public MetaCascadeExtPO save(MetaCascadeExtAddDTO addDTO) {
+        Integer entityId = addDTO.getEntityId();
+        //校验操作人
+        metaProjectService.checkOperatorByEntityId(entityId);
         MetaCascadeExtPO metaCascadeExt = MetaCascadeExtMapper.INSTANCE.fromAddDTO(addDTO);
         metaCascadeExtDAO.save(metaCascadeExt);
-        metaProjectService.updateProjectVersionByEntityId(metaCascadeExt.getEntityId());
+        metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaCascadeExt;
     }
 
@@ -56,9 +59,12 @@ public class MetaCascadeExtService {
     @OptimisticLock
     public MetaCascadeExtPO update(MetaCascadeExtUpdateDTO updateDTO) {
         MetaCascadeExtPO metaCascadeExt = this.getMetaCascadeExt(updateDTO.getCascadeExtId(),true);
+        Integer entityId = metaCascadeExt.getEntityId();
+        //校验操作人
+        metaProjectService.checkOperatorByEntityId(entityId);
         MetaCascadeExtMapper.INSTANCE.setPO(metaCascadeExt, updateDTO);
         metaCascadeExtDAO.update(metaCascadeExt);
-        metaProjectService.updateProjectVersionByEntityId(metaCascadeExt.getEntityId());
+        metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaCascadeExt;
     }
 
@@ -114,6 +120,8 @@ public class MetaCascadeExtService {
                 continue;
             }
             entityId = cascadeExtPO.getEntityId();
+            //校验操作人
+            metaProjectService.checkOperatorByEntityId(entityId);
             count += metaCascadeExtDAO.delete(id);
         }
         if(count>0) {

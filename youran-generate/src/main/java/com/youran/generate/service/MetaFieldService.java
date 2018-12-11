@@ -36,9 +36,12 @@ public class MetaFieldService {
      */
     @Transactional
     public MetaFieldPO save(MetaFieldAddDTO metaFieldDTO) {
+        Integer entityId = metaFieldDTO.getEntityId();
+        //校验操作人
+        metaProjectService.checkOperatorByEntityId(entityId);
         MetaFieldPO metaField = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
         metaFieldDAO.save(metaField);
-        metaProjectService.updateProjectVersionByEntityId(metaFieldDTO.getEntityId());
+        metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaField;
     }
 
@@ -52,9 +55,12 @@ public class MetaFieldService {
     public MetaFieldPO update(MetaFieldUpdateDTO metaFieldUpdateDTO) {
         Integer fieldId = metaFieldUpdateDTO.getFieldId();
         MetaFieldPO metaField = this.getField(fieldId,true);
+        Integer entityId = metaField.getEntityId();
+        //校验操作人
+        metaProjectService.checkOperatorByEntityId(entityId);
         MetaFieldMapper.INSTANCE.setPO(metaField, metaFieldUpdateDTO);
         metaFieldDAO.update(metaField);
-        metaProjectService.updateProjectVersionByEntityId(metaField.getEntityId());
+        metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaField;
     }
 
@@ -108,6 +114,8 @@ public class MetaFieldService {
                 continue;
             }
             entityId = metaField.getEntityId();
+            //校验操作人
+            metaProjectService.checkOperatorByEntityId(entityId);
             count += metaFieldDAO.delete(id);
         }
         if(count>0) {

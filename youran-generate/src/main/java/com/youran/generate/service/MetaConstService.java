@@ -37,9 +37,12 @@ public class MetaConstService {
      */
     @Transactional
     public MetaConstPO save(MetaConstAddDTO metaConstDTO) {
+        Integer projectId = metaConstDTO.getProjectId();
+        //校验操作人
+        metaProjectService.checkOperatorByProjectId(projectId);
         MetaConstPO metaConst = MetaConstMapper.INSTANCE.fromAddDTO(metaConstDTO);
         metaConstDAO.save(metaConst);
-        metaProjectService.updateProjectVersion(metaConst.getProjectId());
+        metaProjectService.updateProjectVersion(projectId);
         return metaConst;
     }
 
@@ -53,9 +56,12 @@ public class MetaConstService {
     public MetaConstPO update(MetaConstUpdateDTO metaConstUpdateDTO) {
         Integer constId = metaConstUpdateDTO.getConstId();
         MetaConstPO metaConst = this.getConst(constId,true);
+        Integer projectId = metaConst.getProjectId();
+        //校验操作人
+        metaProjectService.checkOperatorByProjectId(projectId);
         MetaConstMapper.INSTANCE.setPO(metaConst, metaConstUpdateDTO);
         metaConstDAO.update(metaConst);
-        metaProjectService.updateProjectVersion(metaConst.getProjectId());
+        metaProjectService.updateProjectVersion(projectId);
         return metaConst;
     }
 
@@ -109,6 +115,8 @@ public class MetaConstService {
                 continue;
             }
             projectId = metaConst.getProjectId();
+            //校验操作人
+            metaProjectService.checkOperatorByProjectId(projectId);
             count += metaConstDAO.delete(id);
         }
         if(count>0) {

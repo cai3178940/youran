@@ -1,5 +1,6 @@
 package com.youran.generate.service;
 
+import com.youran.common.context.LoginContext;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.generate.config.GenerateProperties;
@@ -44,6 +45,9 @@ public class MetaProjectService {
     @Autowired
     private GenerateProperties generateProperties;
 
+    @Autowired
+    private LoginContext loginContext;
+
     public String getNormalProjectName(Integer projectId){
         MetaProjectPO projectPO = this.getProject(projectId,true);
         return projectPO.fetchNormalProjectName();
@@ -74,28 +78,29 @@ public class MetaProjectService {
 
     /**
      * 修改项目
-     * @param metaProjectUpdateDTO
+     * @param updateDTO
      * @return
      */
     @Transactional
     @OptimisticLock
-    public MetaProjectPO update(MetaProjectUpdateDTO metaProjectUpdateDTO) {
-        Integer projectId = metaProjectUpdateDTO.getProjectId();
-        MetaProjectPO metaProject = this.getProject(projectId,true);
-        MetaProjectMapper.INSTANCE.setPO(metaProject, metaProjectUpdateDTO);
-        if(StringUtils.isNotBlank(metaProjectUpdateDTO.getPassword())){
+    public MetaProjectPO update(MetaProjectUpdateDTO updateDTO) {
+        Integer projectId = updateDTO.getProjectId();
+        MetaProjectPO project = this.getProject(projectId,true);
+        this.doCheckOperator(project);
+        MetaProjectMapper.INSTANCE.setPO(project, updateDTO);
+        if(StringUtils.isNotBlank(updateDTO.getPassword())){
             String encrypt;
             try {
-                encrypt = AESSecurityUtil.encrypt(metaProjectUpdateDTO.getPassword(), generateProperties.getAesKey());
+                encrypt = AESSecurityUtil.encrypt(updateDTO.getPassword(), generateProperties.getAesKey());
             } catch (Exception e) {
                 LOGGER.error("密码加密异常",e);
                 throw new GenerateException("密码加密异常");
             }
-            metaProject.setPassword(encrypt);
+            project.setPassword(encrypt);
         }
-        metaProjectDAO.update(metaProject);
-        this.updateProjectVersion(metaProject.getProjectId());
-        return metaProject;
+        metaProjectDAO.update(project);
+        this.updateProjectVersion(project.getProjectId());
+        return project;
     }
 
 
@@ -155,6 +160,7 @@ public class MetaProjectService {
     public int delete(Integer... projectId) {
         int count = 0;
         for (Integer id : projectId) {
+            this.checkOperatorByProjectId(id);
             count += metaProjectDAO.delete(id);
         }
         return count;
@@ -186,6 +192,54 @@ public class MetaProjectService {
         MetaConstPO constPO = metaConstService.getConst(constId, true);
         this.updateProjectVersion(constPO.getProjectId());
     }
+
+    /**
+     * 根据项目id校验操作人
+     * 如果当前操作人不是创建人，则抛异常
+     * @param projectId
+     */
+    public void checkOperatorByProjectId(Integer projectId){
+        MetaProjectPO projectPO = this.getProject(projectId,true);
+        doCheckOperator(projectPO);
+    }
+
+    /**
+     * 执行操作人校验
+     * @param projectPO
+     */
+    private void doCheckOperator(MetaProjectPO projectPO) {
+        String currentUser = loginContext.getCurrentOperatorId();
+        if(StringUtils.isBlank(currentUser)){
+            throw new GenerateException("获取当前登录用户失败");
+        }
+        if(!currentUser.equals(projectPO.getCreatedBy())){
+            throw new GenerateException("您不是该项目的创建者，无此操作权限");
+        }
+    }
+
+
+    /**
+     * 根据实体id校验操作人
+     * 如果当前操作人不是创建人，则抛异常
+     * @param entityId
+     */
+    public void checkOperatorByEntityId(Integer entityId) {
+        MetaEntityPO entityPO = metaEntityService.getEntity(entityId,true);
+        this.checkOperatorByProjectId(entityPO.getProjectId());
+    }
+
+
+    /**
+     * 根据常量id校验操作人
+     * 如果当前操作人不是创建人，则抛异常
+     * @param constId
+     */
+    public void checkOperatorByConstId(Integer constId) {
+        MetaConstPO constPO = metaConstService.getConst(constId, true);
+        this.checkOperatorByProjectId(constPO.getProjectId());
+    }
+
+
 
 
 }

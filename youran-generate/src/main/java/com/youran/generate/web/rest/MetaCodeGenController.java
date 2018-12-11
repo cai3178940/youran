@@ -88,6 +88,8 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
     @GetMapping(value = "/gitCommit")
     @ResponseBody
     public ReplyVO<Void> gitCommit(Integer projectId) {
+        //校验操作人
+        metaProjectService.checkOperatorByProjectId(projectId);
         GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId);
         ReplyVO replyVO = ReplyVO.success();
         replyVO.setMessage("已创建自动分支【"+ genHistory.getBranch() +"】，并提交到远程");

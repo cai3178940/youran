@@ -53,11 +53,14 @@ public class MetaEntityService {
      */
     @Transactional
     public MetaEntityPO save(MetaEntityAddDTO metaEntityDTO) {
+        Integer projectId = metaEntityDTO.getProjectId();
+        //校验操作人
+        metaProjectService.checkOperatorByProjectId(projectId);
         MetaEntityPO metaEntity = MetaEntityMapper.INSTANCE.fromAddDTO(metaEntityDTO);
         //唯一性校验
         this.checkUnique(metaEntity,false);
         metaEntityDAO.save(metaEntity);
-        metaProjectService.updateProjectVersion(metaEntityDTO.getProjectId());
+        metaProjectService.updateProjectVersion(projectId);
         return metaEntity;
     }
 
@@ -70,11 +73,14 @@ public class MetaEntityService {
     @OptimisticLock
     public MetaEntityPO update(MetaEntityUpdateDTO metaEntityUpdateDTO) {
         MetaEntityPO metaEntity = this.getEntity(metaEntityUpdateDTO.getEntityId(),true);
+        Integer projectId = metaEntity.getProjectId();
+        //校验操作人
+        metaProjectService.checkOperatorByProjectId(projectId);
         MetaEntityMapper.INSTANCE.setPO(metaEntity, metaEntityUpdateDTO);
         //唯一性校验
         this.checkUnique(metaEntity,true);
         metaEntityDAO.update(metaEntity);
-        metaProjectService.updateProjectVersion(metaEntity.getProjectId());
+        metaProjectService.updateProjectVersion(projectId);
         return metaEntity;
     }
 
@@ -139,6 +145,8 @@ public class MetaEntityService {
                 continue;
             }
             projectId = entityPO.getProjectId();
+            //校验操作人
+            metaProjectService.checkOperatorByProjectId(projectId);
             count += metaEntityDAO.delete(id);
         }
         if(count>0) {
