@@ -47,7 +47,7 @@
                 <icon name="navicon" scale="0.8" ></icon> 枚举管理
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" >
-                <icon name="object-group" scale="0.8" ></icon> 反向工程(内测中)
+                <icon name="object-group" scale="0.8" ></icon> 反向工程
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
                 <icon name="file-zip-o" scale="0.8" ></icon> 生成代码
