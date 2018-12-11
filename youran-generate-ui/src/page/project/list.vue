@@ -124,7 +124,9 @@
         }
         this.$common.confirm('是否确认删除')
           .then(() => this.$ajax.put(`/${apiPath}/meta_project/deleteBatch`, this.selectItems.map(entity => entity.projectId)))
+          .then(response => this.$common.checkResult(response.data))
           .then(() => this.doQuery())
+          .catch(error => this.$common.showNotifyError(error))
       },
       // 列表查询
       doQuery: function () {

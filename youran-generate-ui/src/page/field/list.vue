@@ -273,8 +273,10 @@
         }
         this.$common.confirm('是否确认删除')
           .then(() => this.$ajax.put(`/${apiPath}/meta_field/deleteBatch`, this.selectItems.map(field => field.fieldId)))
+          .then(response => this.$common.checkResult(response.data))
           .then(() => this.doQuery())
           .then(() => this.doQueryIndex())
+          .catch(error => this.$common.showNotifyError(error))
       },
       handleCopy: function () {
         if (this.activeNum <= 0) {
@@ -434,12 +436,16 @@
       handleDelIndexField: function (index, field) {
         this.$common.confirm(`请确认是否从索引【${index.indexName}】中删除【${field.fieldDesc}】字段`)
           .then(() => this.$ajax.put(`/${apiPath}/meta_index/${index.indexId}/removeField`, [field.fieldId]))
+          .then(response => this.$common.checkResult(response.data))
           .then(() => this.doQueryIndex())
+          .catch(error => this.$common.showNotifyError(error))
       },
       handleDelIndex: function (index) {
         this.$common.confirm(`请确认是否删除索引【${index.indexName}】`)
           .then(() => this.$ajax.delete(`/${apiPath}/meta_index/${index.indexId}`))
+          .then(response => this.$common.checkResult(response.data))
           .then(() => this.doQueryIndex())
+          .catch(error => this.$common.showNotifyError(error))
       },
       handleIndexAdd: function () {
         const fieldIdStr = this.selectItems.map(field => field.fieldId).join('-')

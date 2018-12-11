@@ -202,7 +202,9 @@
               return this.$ajax.put(`/${apiPath}/meta_cascade_ext/deleteBatch`, params)
             }
           })
+          .then(response => this.$common.checkResult(response.data))
           .then(() => this.doQuery())
+          .catch(error => this.$common.showNotifyError(error))
       }
 
     }

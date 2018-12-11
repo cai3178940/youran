@@ -161,8 +161,10 @@
         }
         this.$common.confirm('是否确认删除')
           .then(() => this.$ajax.put(`/${apiPath}/meta_entity/deleteBatch`, this.selectItems.map(entity => entity.entityId)))
+          .then(response => this.$common.checkResult(response.data))
           .then(() => this.doQuery())
           .then(() => this.doQueryMtm())
+          .catch(error => this.$common.showNotifyError(error))
       },
       sizeChange: function (pageSize) {
         this.page.pageSize = pageSize
@@ -239,7 +241,9 @@
       handleMtmDel: function (mtm) {
         this.$common.confirm(`请确认是否删除多对多【${mtm.tableName}】`)
           .then(() => this.$ajax.delete(`/${apiPath}/meta_mtm/${mtm.mtmId}`))
+          .then(response => this.$common.checkResult(response.data))
           .then(() => this.doQueryMtm())
+          .catch(error => this.$common.showNotifyError(error))
       },
       handleErDiagram: function () {
         const entityIds = this.selectItems.map(entity => entity.entityId)

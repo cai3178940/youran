@@ -135,7 +135,9 @@
         }
         this.$common.confirm('是否确认删除')
           .then(() => this.$ajax.put(`/${apiPath}/meta_const/deleteBatch`, this.selectItems.map(c => c.constId)))
+          .then(response => this.$common.checkResult(response.data))
           .then(() => this.doQuery())
+          .catch(error => this.$common.showNotifyError(error))
       },
       sizeChange: function (pageSize) {
         this.page.pageSize = pageSize
@@ -222,7 +224,9 @@
       handleDetailDel: function (theConst, detail) {
         this.$common.confirm('是否确认删除枚举值')
           .then(() => this.$ajax.put(`/${apiPath}/meta_const_detail/deleteBatch`, [detail.constDetailId]))
+          .then(response => this.$common.checkResult(response.data))
           .then(() => this.doDetailQuery(theConst.constId))
+          .catch(error => this.$common.showNotifyError(error))
       }
     },
     activated: function () {
