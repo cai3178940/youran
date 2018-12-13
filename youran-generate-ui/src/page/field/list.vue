@@ -25,7 +25,7 @@
               <el-button @click.native="handleIndexAdd" type="primary">创建索引</el-button>
               <el-button @click.native="handleDel" type="danger">删除字段</el-button>
               <el-badge :value="cacheTemplateCount" :hidden="!cacheTemplateCount" class="item">
-                <el-button @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>
+                <el-button ref="copyButton" @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>
               </el-badge>
           </el-form-item>
           <el-form-item>
@@ -95,7 +95,7 @@
         <template slot-scope="scope">
           <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
-          <el-button @click="handleCopyOne(scope.row)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
+          <el-button :disabled="ifCached(scope.row)" @click="handleCopyOne(scope.row,$event)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
           <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
             <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
           </el-badge>
@@ -165,7 +165,7 @@
     <el-dialog class="cascadeExtDialog" title="级联扩展" :visible.sync="cascadeExtListVisible" width="60%">
       <cascade-ext-list ref="cascadeExtList" @cascadeFieldNumChange="resetCascadeFieldNum" @cascadeFieldNumAdd="addCascadeFieldNum"></cascade-ext-list>
     </el-dialog>
-
+    <meteor ref="meteor"></meteor>
   </div>
 </template>
 
@@ -176,11 +176,14 @@
   import {apiPath} from '@/components/common'
   import fieldTemplate from '@/components/fieldTemplate'
   import copyFieldUrl from '@/assets/copyField.gif'
+  import meteor from '@/components/meteor'
+
   export default {
     name: 'fieldList',
     props: ['projectId', 'entityId'],
     components: {
-      'cascade-ext-list': cascadeExtList
+      'cascade-ext-list': cascadeExtList,
+      meteor
     },
     data: function () {
       return {
@@ -234,8 +237,8 @@
     },
     filters: {
       optionLabel: function (value, optionType) {
-        var ops = options[optionType]
-        for (var op of ops) {
+        const ops = options[optionType]
+        for (const op of ops) {
           if (op.value === value) {
             return op.label
           }
@@ -260,7 +263,7 @@
         this.activeNum = this.selectItems.length
       },
       handleRemoveTemplate: function (fieldId) {
-        var index = this.cacheTemplate.findIndex(item => item.fieldId === fieldId)
+        const index = this.cacheTemplate.findIndex(item => item.fieldId === fieldId)
         if (index > -1) {
           this.cacheTemplate.splice(index, 1)
           this.cacheTemplateCount--
@@ -290,10 +293,17 @@
         }
         this.cacheTemplateCount = this.cacheTemplate.length
       },
-      handleCopyOne: function (row) {
-        if (!this.cacheTemplate.find(t => t.fieldId === row.fieldId)) {
+      ifCached: function (row) {
+        return !!this.cacheTemplate.find(t => t.fieldId === row.fieldId)
+      },
+      handleCopyOne: function (row, e) {
+        if (!this.ifCached(row)) {
           this.cacheTemplate.push(row)
           this.cacheTemplateCount = this.cacheTemplate.length
+          const meteor = this.$refs.meteor
+          meteor.init(e.target, this.$refs.copyButton.$el)
+          meteor.adjust(10, 0, 103, -8)
+          meteor.show(500)
         }
       },
       initProjectOptions: function () {
@@ -358,7 +368,7 @@
       handleAdd: function () {
         this.addTemplateFormVisible = false
         // 默认类型是系统内置模板
-        var type = 'system'
+        let type = 'system'
         // 如果目标值是数字，则改为临时模板
         if (typeof this.templateForm.template === 'number') {
           type = 'temp'
@@ -370,7 +380,7 @@
         const multiple = this.templateForm.multiple
         const templates = this.templateForm.templates
         const template = this.templateForm.template
-        var callback = function (form, refresh) {
+        const callback = function (form, refresh) {
           return this.$ajax.post(`/${apiPath}/meta_field/save`, {
             ...this.$common.removeBlankField(form),
             entityId: this.entityId
@@ -386,7 +396,7 @@
             })
             .catch(error => this.$common.showNotifyError(error))
         }.bind(this)
-        var doAddImm = function (temp, refresh) {
+        const doAddImm = function (temp, refresh) {
           // 如果目标值是数字，则为临时模板
           if (typeof temp === 'number') {
             return this.$ajax.get(`/${apiPath}/meta_field/${temp}`)

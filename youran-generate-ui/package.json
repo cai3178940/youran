@@ -14,11 +14,12 @@
     "axios": "^0.18.0",
     "element-ui": "^2.4.0",
     "github-markdown-css": "^2.10.0",
+    "gojsaims": "1.8.20",
     "showdown": "^1.8.6",
+    "velocity-animate": "^1.5.2",
     "vue": "^2.5.16",
     "vue-awesome": "^2.3.5",
-    "vue-router": "^3.0.1",
-    "gojsaims": "1.8.20"
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
