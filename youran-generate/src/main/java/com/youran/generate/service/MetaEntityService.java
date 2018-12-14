@@ -3,6 +3,7 @@ package com.youran.generate.service;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.MetaEntityDAO;
+import com.youran.generate.dao.MetaManyToManyDAO;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
@@ -30,6 +31,8 @@ public class MetaEntityService {
     private MetaEntityDAO metaEntityDAO;
     @Autowired
     private MetaProjectService metaProjectService;
+    @Autowired
+    private MetaManyToManyDAO metaManyToManyDAO;
 
 
 
@@ -144,6 +147,7 @@ public class MetaEntityService {
             if(entityPO==null){
                 continue;
             }
+            this.checkDeleteByMtm(id);
             projectId = entityPO.getProjectId();
             //校验操作人
             metaProjectService.checkOperatorByProjectId(projectId);
@@ -154,4 +158,17 @@ public class MetaEntityService {
         }
         return count;
     }
+
+    /**
+     * 校验是否存在【多对多】关联
+     * @param entityId
+     */
+    private void checkDeleteByMtm(Integer entityId) {
+        int count = metaManyToManyDAO.getCountByEntityId(entityId);
+        if(count>0){
+            throw new GenerateException("请先删除多对多关联");
+        }
+    }
+
+
 }

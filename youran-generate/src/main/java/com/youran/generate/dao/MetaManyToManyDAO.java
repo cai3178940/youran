@@ -21,4 +21,6 @@ public interface MetaManyToManyDAO extends DAO<MetaManyToManyPO> {
      * @return
      */
     List<MetaManyToManyPO> findByProjectId(Integer projectId) ;
+
+    int getCountByEntityId(Integer entityId);
 }

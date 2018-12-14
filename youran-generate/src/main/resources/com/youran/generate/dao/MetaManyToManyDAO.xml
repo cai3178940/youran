@@ -70,4 +70,13 @@
         and project_id = #{projectId,jdbcType=INTEGER}
         order by mtm_id
     </select>
+
+    <select id="getCountByEntityId" resultType="java.lang.Integer">
+        select count(1) from meta_mtm t
+        where t.deleted=0
+        and (
+            t.entity_id1 = #{arg0}
+            or t.entity_id2 = #{arg0}
+        )
+    </select>
 </mapper>

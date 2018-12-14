@@ -3,6 +3,7 @@ package com.youran.generate.service;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -71,8 +72,8 @@ public class JGitService {
                 Collection<Ref> refs = git.lsRemote()
                     .setCredentialsProvider(credentialsProvider)
                     .call();
-                //如果没有任何分支则进行一次提交
-                if(CollectionUtils.isEmpty(refs)){
+                //如果没有任何分支,或不存在旧分支则进行一次提交
+                if(CollectionUtils.isEmpty(refs) || StringUtils.isBlank(oldBranchName)){
                     git.commit()
                         .setAll(true)
                         .setMessage("首次提交")
