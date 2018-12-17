@@ -77,51 +77,51 @@
 </template>
 
 <script>
-  import options from '@/components/options'
-  import {apiPath} from '@/components/common'
-  import {initFormBean, getRules} from './model'
+import options from '@/components/options'
+import { apiPath } from '@/components/common'
+import { initFormBean, getRules } from './model'
 
-  export default {
-    name: 'projectAdd',
-    data: function () {
-      return {
-        boolOptions: options.boolOptions,
-        form: initFormBean(false),
-        rules: getRules()
-      }
-    },
-    methods: {
-      submit: function () {
-        let loading = null
-        // 校验表单
-        this.$refs.addForm.validate()
-          // 提交表单
-          .then(() => {
-            loading = this.$loading()
-            return this.$ajax.post(`/${apiPath}/meta_project/save`, this.form)
-          })
-          // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          // 执行页面跳转
-          .then(() => {
-            this.$common.showMsg('success', '添加成功')
-            this.goBack()
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      goBack: function () {
-        this.$router.push('/project')
-      }
-    },
-    created: function () {
-
+export default {
+  name: 'projectAdd',
+  data: function () {
+    return {
+      boolOptions: options.boolOptions,
+      form: initFormBean(false),
+      rules: getRules()
     }
+  },
+  methods: {
+    submit: function () {
+      let loading = null
+      // 校验表单
+      this.$refs.addForm.validate()
+      // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return this.$ajax.post(`/${apiPath}/meta_project/save`, this.form)
+        })
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+      // 执行页面跳转
+        .then(() => {
+          this.$common.showMsg('success', '添加成功')
+          this.goBack()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    goBack: function () {
+      this.$router.push('/project')
+    }
+  },
+  created: function () {
+
   }
+}
 </script>
 
 <style>

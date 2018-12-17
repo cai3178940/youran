@@ -5,6 +5,8 @@ module.exports = {
   outputDir: path.resolve(__dirname, '../youran-generate/src/main/resources/ui'),
   // 指定静态资源目录
   assetsDir: 'static',
+  // 前端项目基本路径
+  baseUrl: '/ui',
   devServer: {
     port: 80,
     proxy: {

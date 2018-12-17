@@ -64,7 +64,6 @@
       </el-table-column>
     </el-table>
 
-
     <el-dialog title="反向工程" :visible.sync="reverseEngineeringFormVisible" width="60%">
       <el-form ref="reverseEngineeringForm" :model="reverseEngineeringForm" :rules="reverseEngineeringFormRules">
         <el-form-item label="脚本语言：" label-width="100px">
@@ -87,141 +86,141 @@
 </template>
 
 <script>
-  import {apiPath} from '@/components/common'
+import { apiPath } from '@/components/common'
 
-  export default {
-    name: 'projectList',
-    data: function () {
-      return {
-        query: {},
-        activeNum: 0,
-        selectItems: [],
-        entities: [],
-        loading: false,
-        reverseEngineeringFormVisible: false,
-        reverseEngineeringForm: {
-          projectId: null,
-          dbType: 'mysql',
-          ddl: ''
-        },
-        reverseEngineeringFormRules: {
-          ddl: [
-            {required: true, message: '请输入DDL脚本', trigger: 'blur'},
-            {max: 10000, message: '长度不能超过10000个字符', trigger: 'blur'}
-          ]
-        }
+export default {
+  name: 'projectList',
+  data: function () {
+    return {
+      query: {},
+      activeNum: 0,
+      selectItems: [],
+      entities: [],
+      loading: false,
+      reverseEngineeringFormVisible: false,
+      reverseEngineeringForm: {
+        projectId: null,
+        dbType: 'mysql',
+        ddl: ''
+      },
+      reverseEngineeringFormRules: {
+        ddl: [
+          { required: true, message: '请输入DDL脚本', trigger: 'blur' },
+          { max: 10000, message: '长度不能超过10000个字符', trigger: 'blur' }
+        ]
       }
-    },
-    methods: {
-      selectionChange: function (val) {
-        this.selectItems = val
-        this.activeNum = this.selectItems.length
-      },
-      handleDel: function () {
-        if (this.activeNum <= 0) {
-          this.$common.showMsg('warning', '请选择项目')
-          return
-        }
-        this.$common.confirm('是否确认删除')
-          .then(() => this.$ajax.put(`/${apiPath}/meta_project/deleteBatch`, this.selectItems.map(entity => entity.projectId)))
-          .then(response => this.$common.checkResult(response.data))
-          .then(() => this.doQuery())
-          .catch(error => this.$common.showNotifyError(error))
-      },
-      // 列表查询
-      doQuery: function () {
-        this.loading = true
-        this.$ajax.get(`/${apiPath}/meta_project/list`, {params: this.query})
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.entities = result.data })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => { this.loading = false })
-      },
-      handleAdd: function () {
-        this.$router.push('/project/add')
-      },
-      handleEntity: function (row) {
-        this.$router.push(`/project/${row.projectId}/entity`)
-      },
-      handleConst: function (row) {
-        this.$router.push(`/project/${row.projectId}/const`)
-      },
-      handleEdit: function (row) {
-        this.$router.push(`/project/edit/${row.projectId}`)
-      },
-      handleShow: function (row) {
-        this.$router.push(`/project/show/${row.projectId}`)
-      },
-      handleGenSql: function (row) {
-        window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genSql?projectId=${row.projectId}`)
-      },
-      handleGenCode: function (row) {
-        window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genCode?projectId=${row.projectId}`)
-      },
-      handleReverseEngineering: function (row) {
-        this.reverseEngineeringFormVisible = true
-        this.reverseEngineeringForm.projectId = row.projectId
-        this.reverseEngineeringForm.ddl = ''
-      },
-      handleReverseEngineeringCheck: function () {
-        let loading = null
-        // 校验表单
-        this.$refs.reverseEngineeringForm.validate()
-        // 提交表单
-          .then(() => {
-            loading = this.$loading()
-            return this.$ajax.post(`/${apiPath}/reverse_engineering/check`, this.reverseEngineeringForm)
-          })
-          // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          .then(() => {
-            this.$common.showMsg('success', '校验通过')
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      handleReverseEngineeringSubmit: function () {
-        let loading = null
-        // 校验表单
-        this.$refs.reverseEngineeringForm.validate()
-        // 提交表单
-          .then(() => {
-            loading = this.$loading()
-            return this.$ajax.post(`/${apiPath}/reverse_engineering/execute`, this.reverseEngineeringForm)
-          })
-        // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          .then(() => {
-            this.$common.showMsg('success', '执行成功')
-            this.reverseEngineeringFormVisible = false
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      handleCommit: function (row) {
-        this.loading = true
-        this.$ajax.get(`/${apiPath}/code_gen/gitCommit?projectId=${row.projectId}`)
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => this.$common.showMsg('success', result.message))
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => { this.loading = false })
-      },
-      handleCommand: function (command) {
-        this[command.method](command.arg)
-      }
-    },
-    activated: function () {
-      this.doQuery()
     }
+  },
+  methods: {
+    selectionChange: function (val) {
+      this.selectItems = val
+      this.activeNum = this.selectItems.length
+    },
+    handleDel: function () {
+      if (this.activeNum <= 0) {
+        this.$common.showMsg('warning', '请选择项目')
+        return
+      }
+      this.$common.confirm('是否确认删除')
+        .then(() => this.$ajax.put(`/${apiPath}/meta_project/deleteBatch`, this.selectItems.map(entity => entity.projectId)))
+        .then(response => this.$common.checkResult(response.data))
+        .then(() => this.doQuery())
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    // 列表查询
+    doQuery: function () {
+      this.loading = true
+      this.$ajax.get(`/${apiPath}/meta_project/list`, { params: this.query })
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => { this.entities = result.data })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.loading = false })
+    },
+    handleAdd: function () {
+      this.$router.push('/project/add')
+    },
+    handleEntity: function (row) {
+      this.$router.push(`/project/${row.projectId}/entity`)
+    },
+    handleConst: function (row) {
+      this.$router.push(`/project/${row.projectId}/const`)
+    },
+    handleEdit: function (row) {
+      this.$router.push(`/project/edit/${row.projectId}`)
+    },
+    handleShow: function (row) {
+      this.$router.push(`/project/show/${row.projectId}`)
+    },
+    handleGenSql: function (row) {
+      window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genSql?projectId=${row.projectId}`)
+    },
+    handleGenCode: function (row) {
+      window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genCode?projectId=${row.projectId}`)
+    },
+    handleReverseEngineering: function (row) {
+      this.reverseEngineeringFormVisible = true
+      this.reverseEngineeringForm.projectId = row.projectId
+      this.reverseEngineeringForm.ddl = ''
+    },
+    handleReverseEngineeringCheck: function () {
+      let loading = null
+      // 校验表单
+      this.$refs.reverseEngineeringForm.validate()
+        // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return this.$ajax.post(`/${apiPath}/reverse_engineering/check`, this.reverseEngineeringForm)
+        })
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+        .then(() => {
+          this.$common.showMsg('success', '校验通过')
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    handleReverseEngineeringSubmit: function () {
+      let loading = null
+      // 校验表单
+      this.$refs.reverseEngineeringForm.validate()
+        // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return this.$ajax.post(`/${apiPath}/reverse_engineering/execute`, this.reverseEngineeringForm)
+        })
+        // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+        .then(() => {
+          this.$common.showMsg('success', '执行成功')
+          this.reverseEngineeringFormVisible = false
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    handleCommit: function (row) {
+      this.loading = true
+      this.$ajax.get(`/${apiPath}/code_gen/gitCommit?projectId=${row.projectId}`)
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => this.$common.showMsg('success', result.message))
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.loading = false })
+    },
+    handleCommand: function (command) {
+      this[command.method](command.arg)
+    }
+  },
+  activated: function () {
+    this.doQuery()
   }
+}
 </script>
 <style>
   .projectList .activeNum {

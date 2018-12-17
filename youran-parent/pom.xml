@@ -15,7 +15,6 @@
     <modules>
         <module>../youran-common</module>
         <module>../youran-generate</module>
-        <module>../youran-generate-ui</module>
     </modules>
 
     <properties>

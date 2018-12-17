@@ -39,29 +39,28 @@
 </template>
 
 <script>
-  export default {
-    name: 'app',
-    data: function () {
-      return {
+export default {
+  name: 'app',
+  data: function () {
+    return {
 
-      }
+    }
+  },
+  methods: {
+    isRoutePath: function (path) {
+      return this.$route.path === path
     },
-    methods: {
-      isRoutePath: function (path) {
-        return this.$route.path === path
-      },
-      isRouteIndexOf: function (path) {
-        return this.$route.path.indexOf(path) === 0
-      }
-    },
-    created: function () {
+    isRouteIndexOf: function (path) {
+      return this.$route.path.indexOf(path) === 0
+    }
+  },
+  created: function () {
 
-    },
-    watch: {
-      '$route': function (to, from) {
-        // console.info(to)
-      }
+  },
+  watch: {
+    '$route': function (to, from) {
+      // console.info(to)
     }
   }
+}
 </script>
-

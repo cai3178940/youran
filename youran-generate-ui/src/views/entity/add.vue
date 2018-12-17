@@ -58,59 +58,59 @@
 </template>
 
 <script>
-  import options from '@/components/options'
-  import {apiPath} from '@/components/common'
-  import {initFormBean, getRules} from './model'
+import options from '@/components/options'
+import { apiPath } from '@/components/common'
+import { initFormBean, getRules } from './model'
 
-  export default {
-    name: 'entityAdd',
-    props: ['projectId'],
-    data: function () {
-      return {
-        boolOptions: options.boolOptions,
-        projectList: [],
-        form: initFormBean(false),
-        rules: getRules()
-      }
-    },
-    methods: {
-      queryProject: function () {
-        return this.$common.getProjectOptions()
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.projectList = result.data })
-      },
-      submit: function () {
-        let loading = null
-        // 校验表单
-        this.$refs.addForm.validate()
-        // 提交表单
-          .then(() => {
-            loading = this.$loading()
-            return this.$ajax.post(`/${apiPath}/meta_entity/save`, this.form)
-          })
-          // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          // 执行页面跳转
-          .then(() => {
-            this.$common.showMsg('success', '添加成功')
-            this.goBack()
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      goBack: function () {
-        this.$router.push(`/project/${this.projectId}/entity`)
-      }
-    },
-    created: function () {
-      this.queryProject()
-        .then(() => { this.form.projectId = parseInt(this.projectId) })
+export default {
+  name: 'entityAdd',
+  props: ['projectId'],
+  data: function () {
+    return {
+      boolOptions: options.boolOptions,
+      projectList: [],
+      form: initFormBean(false),
+      rules: getRules()
     }
+  },
+  methods: {
+    queryProject: function () {
+      return this.$common.getProjectOptions()
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => { this.projectList = result.data })
+    },
+    submit: function () {
+      let loading = null
+      // 校验表单
+      this.$refs.addForm.validate()
+        // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return this.$ajax.post(`/${apiPath}/meta_entity/save`, this.form)
+        })
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+      // 执行页面跳转
+        .then(() => {
+          this.$common.showMsg('success', '添加成功')
+          this.goBack()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    goBack: function () {
+      this.$router.push(`/project/${this.projectId}/entity`)
+    }
+  },
+  created: function () {
+    this.queryProject()
+      .then(() => { this.form.projectId = parseInt(this.projectId) })
   }
+}
 </script>
 
 <style>

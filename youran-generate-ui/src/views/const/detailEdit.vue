@@ -35,63 +35,63 @@
 </template>
 
 <script>
-  import {apiPath} from '@/components/common'
-  import {initDetailFormBean, getDetailRules} from './model'
+import { apiPath } from '@/components/common'
+import { initDetailFormBean, getDetailRules } from './model'
 
-  export default {
-    name: 'constDetailEdit',
-    props: ['projectId', 'constId', 'constDetailId'],
-    data: function () {
-      return {
-        old: initDetailFormBean(true),
-        form: initDetailFormBean(true),
-        rules: getDetailRules()
-      }
-    },
-    methods: {
-      getConstDetail: function () {
-        return this.$ajax.get(`/${apiPath}/meta_const_detail/${this.constDetailId}`)
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.old = result.data })
-          .catch(error => this.$common.showNotifyError(error))
-      },
-      reset: function () {
-        for (const key in initDetailFormBean(true)) {
-          this.form[key] = this.old[key]
-        }
-      },
-      submit: function () {
-        let loading = null
-        // 校验表单
-        this.$refs.editForm.validate()
-        // 提交表单
-          .then(() => {
-            loading = this.$loading()
-            return this.$ajax.put(`/${apiPath}/meta_const_detail/update`, this.form)
-          })
-          // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          // 执行页面跳转
-          .then(() => {
-            this.$common.showMsg('success', '修改成功')
-            this.goBack()
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      goBack: function () {
-        this.$router.push(`/project/${this.projectId}/const/${this.constId}`)
-      }
-    },
-    created: function () {
-      this.getConstDetail()
-        .then(() => this.reset())
+export default {
+  name: 'constDetailEdit',
+  props: ['projectId', 'constId', 'constDetailId'],
+  data: function () {
+    return {
+      old: initDetailFormBean(true),
+      form: initDetailFormBean(true),
+      rules: getDetailRules()
     }
+  },
+  methods: {
+    getConstDetail: function () {
+      return this.$ajax.get(`/${apiPath}/meta_const_detail/${this.constDetailId}`)
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => { this.old = result.data })
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    reset: function () {
+      for (const key in initDetailFormBean(true)) {
+        this.form[key] = this.old[key]
+      }
+    },
+    submit: function () {
+      let loading = null
+      // 校验表单
+      this.$refs.editForm.validate()
+        // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return this.$ajax.put(`/${apiPath}/meta_const_detail/update`, this.form)
+        })
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+      // 执行页面跳转
+        .then(() => {
+          this.$common.showMsg('success', '修改成功')
+          this.goBack()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    goBack: function () {
+      this.$router.push(`/project/${this.projectId}/const/${this.constId}`)
+    }
+  },
+  created: function () {
+    this.getConstDetail()
+      .then(() => this.reset())
   }
+}
 </script>
 
 <style>

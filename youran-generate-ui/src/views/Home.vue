@@ -8,16 +8,16 @@
   </div>
 </template>
 <script>
-  import showdown from 'showdown'
-  import 'github-markdown-css'
-  import tutorial from './tutorial/tutorial.md'
-  const converter = new showdown.Converter()
-  const tutorialHtml = converter.makeHtml(tutorial)
-  export default {
-    data: function () {
-      return {
-        tutorial: tutorialHtml
-      }
+import showdown from 'showdown'
+import 'github-markdown-css'
+import tutorial from './tutorial/tutorial.md'
+const converter = new showdown.Converter()
+const tutorialHtml = converter.makeHtml(tutorial)
+export default {
+  data: function () {
+    return {
+      tutorial: tutorialHtml
     }
   }
+}
 </script>

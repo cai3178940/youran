@@ -34,50 +34,50 @@
 </template>
 
 <script>
-  import {apiPath} from '@/components/common'
-  import {initDetailFormBean, getDetailRules} from './model'
+import { apiPath } from '@/components/common'
+import { initDetailFormBean, getDetailRules } from './model'
 
-  export default {
-    name: 'constDetailAdd',
-    props: ['projectId', 'constId'],
-    data: function () {
-      return {
-        form: initDetailFormBean(false),
-        rules: getDetailRules()
-      }
-    },
-    methods: {
-      submit: function () {
-        let loading = null
-        // 校验表单
-        this.$refs.addForm.validate()
-        // 提交表单
-          .then(() => {
-            loading = this.$loading()
-            return this.$ajax.post(`/${apiPath}/meta_const_detail/save`, this.form)
-          })
-          // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          // 执行页面跳转
-          .then(() => {
-            this.$common.showMsg('success', '添加成功')
-            this.goBack()
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      goBack: function () {
-        this.$router.push(`/project/${this.projectId}/const/${this.constId}`)
-      }
-    },
-    created: function () {
-      this.form.constId = parseInt(this.constId)
+export default {
+  name: 'constDetailAdd',
+  props: ['projectId', 'constId'],
+  data: function () {
+    return {
+      form: initDetailFormBean(false),
+      rules: getDetailRules()
     }
+  },
+  methods: {
+    submit: function () {
+      let loading = null
+      // 校验表单
+      this.$refs.addForm.validate()
+        // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return this.$ajax.post(`/${apiPath}/meta_const_detail/save`, this.form)
+        })
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+      // 执行页面跳转
+        .then(() => {
+          this.$common.showMsg('success', '添加成功')
+          this.goBack()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    goBack: function () {
+      this.$router.push(`/project/${this.projectId}/const/${this.constId}`)
+    }
+  },
+  created: function () {
+    this.form.constId = parseInt(this.constId)
   }
+}
 </script>
 
 <style>

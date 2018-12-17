@@ -73,143 +73,143 @@
   </div>
 </template>
 <script>
-  import Vue from 'vue'
-  import {apiPath} from '@/components/common'
+import Vue from 'vue'
+import { apiPath } from '@/components/common'
 
-  // 记录扩展模型
-  const cascadeExtModel = {
-    cascadeExtId: null,
-    fieldId: null,
-    entityId: null,
-    // 别名
-    alias: '',
-    // 是否在列表中展示
-    list: 1,
-    // 是否在详情中展示
-    show: 1,
-    // 是否为查询条件
-    query: 1,
-    // 级联实体的id
-    cascadeEntityId: null,
-    // 级联展示字段的id
-    cascadeFieldId: null,
-    cascadeJfieldName: null,
-    cascadeFieldDesc: null,
-    editFlag: true
-  }
+// 记录扩展模型
+const cascadeExtModel = {
+  cascadeExtId: null,
+  fieldId: null,
+  entityId: null,
+  // 别名
+  alias: '',
+  // 是否在列表中展示
+  list: 1,
+  // 是否在详情中展示
+  show: 1,
+  // 是否为查询条件
+  query: 1,
+  // 级联实体的id
+  cascadeEntityId: null,
+  // 级联展示字段的id
+  cascadeFieldId: null,
+  cascadeJfieldName: null,
+  cascadeFieldDesc: null,
+  editFlag: true
+}
 
-  export default {
-    name: 'cascadeExtList',
-    data: function () {
-      return {
-        entityId: null,
-        fieldId: null,
-        cascadeEntityId: null,
-        cascadeFieldList: [],
-        activeNum: 0,
-        selectItems: [],
-        entities: [],
-        loading: false
-      }
+export default {
+  name: 'cascadeExtList',
+  data: function () {
+    return {
+      entityId: null,
+      fieldId: null,
+      cascadeEntityId: null,
+      cascadeFieldList: [],
+      activeNum: 0,
+      selectItems: [],
+      entities: [],
+      loading: false
+    }
+  },
+  methods: {
+    init: function (entityId, fieldId, cascadeEntityId) {
+      this.entityId = entityId
+      this.fieldId = fieldId
+      this.cascadeEntityId = cascadeEntityId
+      this.initCascadeFieldOptions()
+      this.doQuery()
     },
-    methods: {
-      init: function (entityId, fieldId, cascadeEntityId) {
-        this.entityId = entityId
-        this.fieldId = fieldId
-        this.cascadeEntityId = cascadeEntityId
-        this.initCascadeFieldOptions()
-        this.doQuery()
-      },
-      selectionChange: function (val) {
-        this.selectItems = val
-        this.activeNum = this.selectItems.length
-      },
-      initCascadeFieldOptions: function () {
-        this.$ajax.get(`/${apiPath}/meta_field/list`, {params: {entityId: this.cascadeEntityId}})
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.cascadeFieldList = result.data })
-          .catch(error => this.$common.showNotifyError(error))
-      },
-      doQuery: function () {
-        this.loading = true
-        this.$ajax.get(`/${apiPath}/meta_cascade_ext/list`, {params: {fieldId: this.fieldId}})
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => {
-            this.entities = result.data
-            this.$emit('cascadeFieldNumChange', this.fieldId, this.entities.length)
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => { this.loading = false })
-      },
-      handleAdd: function () {
-        var newRow = Object.assign({}, cascadeExtModel, {
-          entityId: this.entityId,
-          fieldId: this.fieldId,
-          cascadeEntityId: this.cascadeEntityId
+    selectionChange: function (val) {
+      this.selectItems = val
+      this.activeNum = this.selectItems.length
+    },
+    initCascadeFieldOptions: function () {
+      this.$ajax.get(`/${apiPath}/meta_field/list`, { params: { entityId: this.cascadeEntityId } })
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => { this.cascadeFieldList = result.data })
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    doQuery: function () {
+      this.loading = true
+      this.$ajax.get(`/${apiPath}/meta_cascade_ext/list`, { params: { fieldId: this.fieldId } })
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => {
+          this.entities = result.data
+          this.$emit('cascadeFieldNumChange', this.fieldId, this.entities.length)
         })
-        this.entities.unshift(newRow)
-      },
-      handleEdit: function (row) {
-        Vue.set(row, 'editFlag', true)
-      },
-      handleCascadeFieldChange: function (row) {
-        var cascadeField = this.cascadeFieldList.find(field => field.fieldId === row.cascadeFieldId)
-        row.alias = cascadeField.jfieldName
-      },
-      handleSave: function (row) {
-        var saveURL = `/${apiPath}/meta_cascade_ext/save`
-        var method = 'post'
-        if (row.cascadeExtId) {
-          saveURL = `/${apiPath}/meta_cascade_ext/update`
-          method = 'put'
-        }
-        const loading = this.$loading()
-        // 提交
-        this.$ajax[method](saveURL, row)
-          // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          // 执行页面跳转
-          .then(result => {
-            this.$common.showMsg('success', '保存成功')
-            if (!row.cascadeExtId) {
-              row.cascadeExtId = result.data.cascadeExtId
-              this.$emit('cascadeFieldNumAdd', this.fieldId, 1)
-            }
-            return this.$ajax.get(`/${apiPath}/meta_cascade_ext/${row.cascadeExtId}`)
-          })
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => {
-            Object.assign(row, result.data, {
-              editFlag: false
-            })
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      handleDel: function () {
-        if (this.activeNum <= 0) {
-          this.$common.showMsg('warning', '请选择字段')
-          return
-        }
-        const params = this.selectItems.map(cascadeExt => cascadeExt.cascadeExtId).filter(id => id != null)
-        this.$common.confirm('是否确认删除')
-          .then(() => {
-            if (params.length > 0) {
-              return this.$ajax.put(`/${apiPath}/meta_cascade_ext/deleteBatch`, params)
-            }
-          })
-          .then(response => this.$common.checkResult(response.data))
-          .then(() => this.doQuery())
-          .catch(error => this.$common.showNotifyError(error))
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.loading = false })
+    },
+    handleAdd: function () {
+      const newRow = Object.assign({}, cascadeExtModel, {
+        entityId: this.entityId,
+        fieldId: this.fieldId,
+        cascadeEntityId: this.cascadeEntityId
+      })
+      this.entities.unshift(newRow)
+    },
+    handleEdit: function (row) {
+      Vue.set(row, 'editFlag', true)
+    },
+    handleCascadeFieldChange: function (row) {
+      const cascadeField = this.cascadeFieldList.find(field => field.fieldId === row.cascadeFieldId)
+      row.alias = cascadeField.jfieldName
+    },
+    handleSave: function (row) {
+      let saveURL = `/${apiPath}/meta_cascade_ext/save`
+      let method = 'post'
+      if (row.cascadeExtId) {
+        saveURL = `/${apiPath}/meta_cascade_ext/update`
+        method = 'put'
       }
-
+      const loading = this.$loading()
+      // 提交
+      this.$ajax[method](saveURL, row)
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+      // 执行页面跳转
+        .then(result => {
+          this.$common.showMsg('success', '保存成功')
+          if (!row.cascadeExtId) {
+            row.cascadeExtId = result.data.cascadeExtId
+            this.$emit('cascadeFieldNumAdd', this.fieldId, 1)
+          }
+          return this.$ajax.get(`/${apiPath}/meta_cascade_ext/${row.cascadeExtId}`)
+        })
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => {
+          Object.assign(row, result.data, {
+            editFlag: false
+          })
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    handleDel: function () {
+      if (this.activeNum <= 0) {
+        this.$common.showMsg('warning', '请选择字段')
+        return
+      }
+      const params = this.selectItems.map(cascadeExt => cascadeExt.cascadeExtId).filter(id => id != null)
+      this.$common.confirm('是否确认删除')
+        .then(() => {
+          if (params.length > 0) {
+            return this.$ajax.put(`/${apiPath}/meta_cascade_ext/deleteBatch`, params)
+          }
+        })
+        .then(response => this.$common.checkResult(response.data))
+        .then(() => this.doQuery())
+        .catch(error => this.$common.showNotifyError(error))
     }
 
   }
+
+}
 </script>
 
 <style>

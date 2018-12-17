@@ -9,55 +9,55 @@
 </template>
 
 <script>
-  import {apiPath} from '@/components/common'
-  import go from 'gojs'
-  export default {
-    name: 'er-diagram',
-    data: function () {
-      return {
-        // 后端返回的json数据
-        erDiagram: {
+import { apiPath } from '@/components/common'
+import go from 'gojs'
+export default {
+  name: 'er-diagram',
+  data: function () {
+    return {
+      // 后端返回的json数据
+      erDiagram: {
 
-        },
-        loading: false,
-        visible: false
-      }
+      },
+      loading: false,
+      visible: false
+    }
+  },
+  methods: {
+
+    show: function (projectId, entityIds) {
+      this.visible = true
+      this.queryErDiagram(projectId, entityIds)
+        .then(() => this.renderDiagram())
     },
-    methods: {
 
-      show: function (projectId, entityIds) {
-        this.visible = true
-        this.queryErDiagram(projectId, entityIds)
-          .then(() => this.renderDiagram())
-      },
+    queryErDiagram: function (projectId, entityIds) {
+      this.loading = true
+      return this.$ajax.get(`/${apiPath}/er_diagram/show`, { params: { projectId, entityIds } })
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => { this.erDiagram = result.data })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.loading = false })
+    },
 
-      queryErDiagram: function (projectId, entityIds) {
-        this.loading = true
-        return this.$ajax.get(`/${apiPath}/er_diagram/show`, {params: {projectId, entityIds}})
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.erDiagram = result.data })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => { this.loading = false })
-      },
-
-      getBrush: function (key) {
-        if (!this.brush) {
-          const $ = go.GraphObject.make
-          this.brush = {
-            bluegrad: $(go.Brush, 'Linear', { 0: 'rgb(150, 150, 250)', 0.5: 'rgb(86, 86, 186)', 1: 'rgb(86, 86, 186)' }),
-            greengrad: $(go.Brush, 'Linear', { 0: 'rgb(158, 209, 159)', 1: 'rgb(67, 101, 56)' }),
-            redgrad: $(go.Brush, 'Linear', { 0: 'rgb(206, 106, 100)', 1: 'rgb(180, 56, 50)' }),
-            yellowgrad: $(go.Brush, 'Linear', { 0: 'rgb(254, 221, 50)', 1: 'rgb(254, 182, 50)' }),
-            lightgrad: $(go.Brush, 'Linear', { 1: '#E6E6FA', 0: '#FFFAF0' })
-          }
-        }
-        return this.brush[key]
-      },
-
-      initDiagram: function () {
+    getBrush: function (key) {
+      if (!this.brush) {
         const $ = go.GraphObject.make
-        this.diagram =
-          $(go.Diagram, 'erDiagramDiv',  // must name or refer to the DIV HTML element
+        this.brush = {
+          bluegrad: $(go.Brush, 'Linear', { 0: 'rgb(150, 150, 250)', 0.5: 'rgb(86, 86, 186)', 1: 'rgb(86, 86, 186)' }),
+          greengrad: $(go.Brush, 'Linear', { 0: 'rgb(158, 209, 159)', 1: 'rgb(67, 101, 56)' }),
+          redgrad: $(go.Brush, 'Linear', { 0: 'rgb(206, 106, 100)', 1: 'rgb(180, 56, 50)' }),
+          yellowgrad: $(go.Brush, 'Linear', { 0: 'rgb(254, 221, 50)', 1: 'rgb(254, 182, 50)' }),
+          lightgrad: $(go.Brush, 'Linear', { 1: '#E6E6FA', 0: '#FFFAF0' })
+        }
+      }
+      return this.brush[key]
+    },
+
+    initDiagram: function () {
+      const $ = go.GraphObject.make
+      this.diagram =
+          $(go.Diagram, 'erDiagramDiv', // must name or refer to the DIV HTML element
             {
               initialContentAlignment: go.Spot.Center,
               allowDelete: false,
@@ -66,18 +66,18 @@
               'undoManager.isEnabled': true
             })
 
-        // the template for each attribute in a node's array of item data
-        var itemTempl =
+      // the template for each attribute in a node's array of item data
+      const itemTempl =
           $(go.Panel, 'Horizontal',
             $(go.Shape,
               { desiredSize: new go.Size(10, 10),
-                margin: new go.Margin(0, 5, 0, 0)},
+                margin: new go.Margin(0, 5, 0, 0) },
               new go.Binding('figure', 'figure'),
               new go.Binding('fill', 'color')),
             $(go.TextBlock,
               { stroke: '#333333',
                 font: 'bold 14px sans-serif',
-                margin: new go.Margin(0, 10, 0, 0)},
+                margin: new go.Margin(0, 10, 0, 0) },
               new go.Binding('text', 'name')),
             $(go.TextBlock,
               { stroke: '#333333',
@@ -85,9 +85,9 @@
               new go.Binding('text', 'desc'))
           )
 
-        // define the Node template, representing an entity
-        this.diagram.nodeTemplate =
-          $(go.Node, 'Auto',  // the whole node panel
+      // define the Node template, representing an entity
+      this.diagram.nodeTemplate =
+          $(go.Node, 'Auto', // the whole node panel
             { selectionAdorned: true,
               resizable: true,
               layoutConditions: go.Part.LayoutStandard & ~go.Part.LayoutNodeSized,
@@ -110,12 +110,12 @@
                 {
                   row: 0,
                   alignment: go.Spot.Center,
-                  margin: new go.Margin(0, 14, 0, 2),  // leave room for Button
+                  margin: new go.Margin(0, 14, 0, 2), // leave room for Button
                   font: 'bold 16px sans-serif'
                 },
                 new go.Binding('text', 'key')),
               // the collapse/expand button
-              $('PanelExpanderButton', 'LIST',  // the name of the element whose visibility this button toggles
+              $('PanelExpanderButton', 'LIST', // the name of the element whose visibility this button toggles
                 { row: 0, alignment: go.Spot.TopRight }),
               // the list of Panels, each showing an attribute
               $(go.Panel, 'Vertical',
@@ -129,12 +129,12 @@
                   itemTemplate: itemTempl
                 },
                 new go.Binding('itemArray', 'fields'))
-            )  // end Table Panel
-          )  // end Node
+            ) // end Table Panel
+          ) // end Node
 
-        // define the Link template, representing a relationship
-        this.diagram.linkTemplate =
-          $(go.Link,  // the whole link panel
+      // define the Link template, representing a relationship
+      this.diagram.linkTemplate =
+          $(go.Link, // the whole link panel
             {
               selectionAdorned: true,
               layerName: 'Foreground',
@@ -143,9 +143,9 @@
               corner: 5,
               curve: go.Link.JumpOver
             },
-            $(go.Shape,  // the link shape
+            $(go.Shape, // the link shape
               { stroke: '#303B45', strokeWidth: 2.5 }),
-            $(go.TextBlock,  // the 'from' label
+            $(go.TextBlock, // the 'from' label
               {
                 textAlign: 'center',
                 font: 'bold 14px sans-serif',
@@ -155,7 +155,7 @@
                 segmentOrientation: go.Link.OrientUpright
               },
               new go.Binding('text', 'text')),
-            $(go.TextBlock,  // the 'to' label
+            $(go.TextBlock, // the 'to' label
               {
                 textAlign: 'center',
                 font: 'bold 14px sans-serif',
@@ -166,45 +166,45 @@
               },
               new go.Binding('text', 'toText'))
           )
-      },
+    },
 
-      updateModel: function () {
-        this.erDiagram.nodeData.forEach(v => v.fields.forEach(item => {
-          if (item.type === 'pk') {
-            item.iskey = true
-            item.figure = 'Decision'
-            item.color = this.getBrush('yellowgrad')
-          } else {
-            item.iskey = false
-            if (item.type === 'fk') {
-              item.figure = 'Decision'
-              item.color = this.getBrush('bluegrad')
-            } else if (item.type === 'delete') {
-              item.figure = 'ThickX'
-              item.color = this.getBrush('redgrad')
-            } else if (item.type === 'version') {
-              item.figure = 'PaperTape'
-              item.color = this.getBrush('greengrad')
-            } else {
-              item.figure = ''
-              item.color = null
-            }
-          }
-        }))
-        this.diagram.model = new go.GraphLinksModel(this.erDiagram.nodeData, this.erDiagram.linkData)
-      },
-
-      renderDiagram: function () {
-        if (!this.diagram) {
-          this.initDiagram()
-          this.updateModel()
+    updateModel: function () {
+      this.erDiagram.nodeData.forEach(v => v.fields.forEach(item => {
+        if (item.type === 'pk') {
+          item.iskey = true
+          item.figure = 'Decision'
+          item.color = this.getBrush('yellowgrad')
         } else {
-          this.updateModel()
-          this.diagram.requestUpdate()
+          item.iskey = false
+          if (item.type === 'fk') {
+            item.figure = 'Decision'
+            item.color = this.getBrush('bluegrad')
+          } else if (item.type === 'delete') {
+            item.figure = 'ThickX'
+            item.color = this.getBrush('redgrad')
+          } else if (item.type === 'version') {
+            item.figure = 'PaperTape'
+            item.color = this.getBrush('greengrad')
+          } else {
+            item.figure = ''
+            item.color = null
+          }
         }
+      }))
+      this.diagram.model = new go.GraphLinksModel(this.erDiagram.nodeData, this.erDiagram.linkData)
+    },
+
+    renderDiagram: function () {
+      if (!this.diagram) {
+        this.initDiagram()
+        this.updateModel()
+      } else {
+        this.updateModel()
+        this.diagram.requestUpdate()
       }
     }
   }
+}
 </script>
 
 <style>

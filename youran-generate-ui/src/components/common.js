@@ -1,7 +1,7 @@
 import axios from 'axios'
-const qs = require('qs')
+import qs from 'qs'
 const BASE_API_URL = process.env.VUE_APP_BASE_API_URL
-var ajax = axios.create({
+const ajax = axios.create({
   baseURL: BASE_API_URL,
   timeout: 60000,
   responseType: 'json',
@@ -126,8 +126,8 @@ export const CommonPlugin = {
       },
       // trim+移除空串字段
       removeBlankField: function (form) {
-        var result = {}
-        for (var field in form) {
+        const result = {}
+        for (const field in form) {
           if (typeof form[field] === 'string') {
             const value = form[field].trim()
             if (value === '') {

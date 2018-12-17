@@ -7,5 +7,3 @@
     </transition>
   </div>
 </template>
-
-

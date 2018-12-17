@@ -213,190 +213,190 @@
 </template>
 
 <script>
-  import options from '@/components/options'
-  import {apiPath} from '@/components/common'
-  import fieldTemplate from '@/components/fieldTemplate'
-  import {initFormBean, getRules} from './model'
+import options from '@/components/options'
+import { apiPath } from '@/components/common'
+import fieldTemplate from '@/components/fieldTemplate'
+import { initFormBean, getRules } from './model'
 
-  export default {
-    name: 'fieldAdd',
-    props: ['projectId', 'entityId'],
-    data: function () {
-      return {
-        boolOptions: options.boolOptions,
-        fieldTypeOptions: options.fieldTypeOptions,
-        jfieldTypeOptions: options.jfieldTypeOptions,
-        queryTypeOptions: options.queryTypeOptions,
-        specialFieldOptions: options.specialFieldOptions,
-        entityFieldOptions: [],
-        constList: null,
-        notNullDisabled: false,
-        autoIncrementDisabled: true,
-        queryTypeDisabled: true,
-        specialFieldDisabled: false,
-        foreignField: [0, 0],
-        foreignFieldDisabled: true,
-        form: initFormBean(false),
-        rules: getRules(this)
+export default {
+  name: 'fieldAdd',
+  props: ['projectId', 'entityId'],
+  data: function () {
+    return {
+      boolOptions: options.boolOptions,
+      fieldTypeOptions: options.fieldTypeOptions,
+      jfieldTypeOptions: options.jfieldTypeOptions,
+      queryTypeOptions: options.queryTypeOptions,
+      specialFieldOptions: options.specialFieldOptions,
+      entityFieldOptions: [],
+      constList: null,
+      notNullDisabled: false,
+      autoIncrementDisabled: true,
+      queryTypeDisabled: true,
+      specialFieldDisabled: false,
+      foreignField: [0, 0],
+      foreignFieldDisabled: true,
+      form: initFormBean(false),
+      rules: getRules(this)
+    }
+  },
+  computed: {
+    dicTypeDisabled: function () {
+      if (this.form.primaryKey === 1 || this.form.specialField) {
+        return true
       }
+      return false
     },
-    computed: {
-      dicTypeDisabled: function () {
-        if (this.form.primaryKey === 1 || this.form.specialField) {
-          return true
-        }
-        return false
-      },
-      fieldScaleVisible: function () {
-        return options.showFieldScale(this.form.fieldType)
-      }
-    },
+    fieldScaleVisible: function () {
+      return options.showFieldScale(this.form.fieldType)
+    }
+  },
 
-    watch: {
-      'form.primaryKey': function (value) {
-        if (value === 1) {
-          this.form.notNull = 1
-          this.notNullDisabled = true
-          this.form.specialField = ''
-          this.specialFieldDisabled = true
-          this.autoIncrementDisabled = false
-        } else {
-          this.notNullDisabled = false
-          this.specialFieldDisabled = false
-          this.form.autoIncrement = 0
-          this.autoIncrementDisabled = true
-        }
-      },
-      'form.foreignKey': function (value) {
-        if (value === 1) {
-          this.foreignFieldDisabled = false
-        } else {
-          this.foreignFieldDisabled = true
-        }
-      },
-      'form.query': function (value) {
-        if (value === 1) {
-          this.queryTypeDisabled = false
-        } else {
-          this.queryTypeDisabled = true
-          this.queryType = ''
-        }
-      },
-      'dicTypeDisabled': function (value) {
-        if (value) {
-          this.form.dicType = ''
-        }
+  watch: {
+    'form.primaryKey': function (value) {
+      if (value === 1) {
+        this.form.notNull = 1
+        this.notNullDisabled = true
+        this.form.specialField = ''
+        this.specialFieldDisabled = true
+        this.autoIncrementDisabled = false
+      } else {
+        this.notNullDisabled = false
+        this.specialFieldDisabled = false
+        this.form.autoIncrement = 0
+        this.autoIncrementDisabled = true
       }
     },
-    methods: {
-      initForeignEntityOptions: function () {
-        return this.$common.getEntityOptions(this.projectId)
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.entityFieldOptions = result.data.entities.map(entity => ({value: entity.entityId, label: entity.title, children: []})) })
-      },
-      handleForeignEntityChange: function (optionArray) {
-        var entityId = optionArray[0]
-        // 获取被激活的option
-        var entity = this.entityFieldOptions.find(option => option.value === entityId)
-        if (entity.children.length) {
-          return
-        }
-        return this.$common.getFieldOptions(entityId)
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => {
-            entity.children = result.data.filter(field => field.primaryKey === 1)
-                .map(field => ({value: field.fieldId, label: field.fieldDesc}))
-          })
-      },
-      // 查询可用枚举字典
-      queryDicType: function (queryString, cb) {
-        // 定义回调操作
-        var action = function () {
-          var constList = this.constList.slice(0)
-          constList.push(...options.defaultConstList)
-          var results = queryString ? constList.filter(
-            c => c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-          ) : constList
-          cb(results.map(c => ({value: c.constName})))
-        }.bind(this)
-        if (this.constList) {
-          action()
-        } else {
-          this.$common.getConstOptions(this.projectId)
-            .then(response => this.$common.checkResult(response.data))
-            .then(result => {
-              this.constList = result.data.entities
-              action()
-            })
-        }
-      },
-      submit: function () {
-        // 表单预处理
-        if (!options.showFieldScale(this.form.fieldType)) {
-          this.form.fieldScale = null
-        }
-        this.form.foreignEntityId = this.foreignField[0]
-        this.form.foreignFieldId = this.foreignField[1]
-        let loading = null
-        // 校验表单
-        this.$refs.addForm.validate()
-        // 提交表单
-          .then(() => {
-            loading = this.$loading()
-            return this.$ajax.post(`/${apiPath}/meta_field/save`, this.$common.removeBlankField(this.form))
-          })
-          // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          // 执行页面跳转
-          .then(() => {
-            this.$common.showMsg('success', '添加成功')
-            this.goBack()
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      goBack: function () {
-        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
+    'form.foreignKey': function (value) {
+      if (value === 1) {
+        this.foreignFieldDisabled = false
+      } else {
+        this.foreignFieldDisabled = true
       }
     },
-    created: function () {
-      var entityId = parseInt(this.entityId)
-      this.form.entityId = entityId
-      var promise = this.initForeignEntityOptions()
-      const type = this.$router.currentRoute.query.type
-      const template = this.$router.currentRoute.query.template
-      if (!template) {
-        return
+    'form.query': function (value) {
+      if (value === 1) {
+        this.queryTypeDisabled = false
+      } else {
+        this.queryTypeDisabled = true
+        this.queryType = ''
       }
-      if (type === 'system') {
-        this.form = fieldTemplate[template]
-        this.form.entityId = entityId
-      }
-      if (type === 'temp') {
-        var promise2 = this.$ajax.get(`/${apiPath}/meta_field/${template}`)
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => new Promise((resolve, reject) => {
-            this.form = result.data
-            this.form.entityId = entityId
-            return resolve()
-          }))
-        Promise.all([promise, promise2])
-          .then(() => {
-            if (this.form.foreignFieldId && this.form.foreignEntityId) {
-              return this.handleForeignEntityChange([this.form.foreignEntityId])
-                .then(() => {
-                  this.foreignField = [this.form.foreignEntityId, this.form.foreignFieldId]
-                })
-            }
-          })
-          .catch(error => this.$common.showNotifyError(error))
+    },
+    'dicTypeDisabled': function (value) {
+      if (value) {
+        this.form.dicType = ''
       }
     }
+  },
+  methods: {
+    initForeignEntityOptions: function () {
+      return this.$common.getEntityOptions(this.projectId)
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => { this.entityFieldOptions = result.data.entities.map(entity => ({ value: entity.entityId, label: entity.title, children: [] })) })
+    },
+    handleForeignEntityChange: function (optionArray) {
+      const entityId = optionArray[0]
+      // 获取被激活的option
+      const entity = this.entityFieldOptions.find(option => option.value === entityId)
+      if (entity.children.length) {
+        return
+      }
+      return this.$common.getFieldOptions(entityId)
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => {
+          entity.children = result.data.filter(field => field.primaryKey === 1)
+            .map(field => ({ value: field.fieldId, label: field.fieldDesc }))
+        })
+    },
+    // 查询可用枚举字典
+    queryDicType: function (queryString, cb) {
+      // 定义回调操作
+      const action = function () {
+        const constList = this.constList.slice(0)
+        constList.push(...options.defaultConstList)
+        const results = queryString ? constList.filter(
+          c => c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        ) : constList
+        cb(results.map(c => ({ value: c.constName })))
+      }.bind(this)
+      if (this.constList) {
+        action()
+      } else {
+        this.$common.getConstOptions(this.projectId)
+          .then(response => this.$common.checkResult(response.data))
+          .then(result => {
+            this.constList = result.data.entities
+            action()
+          })
+      }
+    },
+    submit: function () {
+      // 表单预处理
+      if (!options.showFieldScale(this.form.fieldType)) {
+        this.form.fieldScale = null
+      }
+      this.form.foreignEntityId = this.foreignField[0]
+      this.form.foreignFieldId = this.foreignField[1]
+      let loading = null
+      // 校验表单
+      this.$refs.addForm.validate()
+        // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return this.$ajax.post(`/${apiPath}/meta_field/save`, this.$common.removeBlankField(this.form))
+        })
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+      // 执行页面跳转
+        .then(() => {
+          this.$common.showMsg('success', '添加成功')
+          this.goBack()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    goBack: function () {
+      this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
+    }
+  },
+  created: function () {
+    const entityId = parseInt(this.entityId)
+    this.form.entityId = entityId
+    const promise = this.initForeignEntityOptions()
+    const type = this.$router.currentRoute.query.type
+    const template = this.$router.currentRoute.query.template
+    if (!template) {
+      return
+    }
+    if (type === 'system') {
+      this.form = fieldTemplate[template]
+      this.form.entityId = entityId
+    }
+    if (type === 'temp') {
+      const promise2 = this.$ajax.get(`/${apiPath}/meta_field/${template}`)
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => new Promise((resolve, reject) => {
+          this.form = result.data
+          this.form.entityId = entityId
+          return resolve()
+        }))
+      Promise.all([promise, promise2])
+        .then(() => {
+          if (this.form.foreignFieldId && this.form.foreignEntityId) {
+            return this.handleForeignEntityChange([this.form.foreignEntityId])
+              .then(() => {
+                this.foreignField = [this.form.foreignEntityId, this.form.foreignFieldId]
+              })
+          }
+        })
+        .catch(error => this.$common.showNotifyError(error))
+    }
   }
+}
 </script>
 
 <style>

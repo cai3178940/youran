@@ -53,84 +53,84 @@
 </template>
 
 <script>
-  import options from '@/components/options'
-  import {apiPath} from '@/components/common'
-  import {initIndexFormBean, getIndexRules} from './model'
+import options from '@/components/options'
+import { apiPath } from '@/components/common'
+import { initIndexFormBean, getIndexRules } from './model'
 
-  export default {
-    name: 'indexAdd',
-    props: ['projectId', 'entityId', 'fieldIds'],
-    data: function () {
-      return {
-        boolOptions: options.boolOptions,
-        fieldList: [],
-        form: initIndexFormBean(false),
-        uniqueCheckDisabled: false,
-        rules: getIndexRules()
-      }
-    },
-    watch: {
-      'form.indexName': function (value) {
-        const lc = /[a-z]/i
-        if (lc.test(value)) {
-          this.form.indexName = value.toUpperCase()
-        }
-      },
-      'form.unique': function (value) {
-        if (value === 1) {
-          this.form.uniqueCheck = 1
-          this.uniqueCheckDisabled = true
-        } else {
-          this.uniqueCheckDisabled = false
-        }
-      }
-    },
-    methods: {
-      queryField: function (entityId) {
-        return this.$common.getFieldOptions(entityId)
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.fieldList = result.data })
-      },
-      submit: function () {
-        var params = {
-          ...this.form
-        }
-        params.fieldIds = this.form.fieldIds.join(',')
-        let loading = null
-        // 校验表单
-        this.$refs.addForm.validate()
-          // 提交表单
-          .then(() => {
-            loading = this.$loading()
-            return this.$ajax.post(`/${apiPath}/meta_index/save`, this.$common.removeBlankField(params))
-          })
-          // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          // 执行页面跳转
-          .then(() => {
-            this.$common.showMsg('success', '添加成功')
-            this.goBack()
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      goBack: function () {
-        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
-      }
-    },
-    created: function () {
-      // 将路径参数解析到form表单
-      this.form.entityId = parseInt(this.entityId)
-      if (this.fieldIds) {
-        this.form.fieldIds = this.fieldIds.split('-').map(value => parseInt(value))
-      }
-      this.queryField(this.form.entityId)
+export default {
+  name: 'indexAdd',
+  props: ['projectId', 'entityId', 'fieldIds'],
+  data: function () {
+    return {
+      boolOptions: options.boolOptions,
+      fieldList: [],
+      form: initIndexFormBean(false),
+      uniqueCheckDisabled: false,
+      rules: getIndexRules()
     }
+  },
+  watch: {
+    'form.indexName': function (value) {
+      const lc = /[a-z]/i
+      if (lc.test(value)) {
+        this.form.indexName = value.toUpperCase()
+      }
+    },
+    'form.unique': function (value) {
+      if (value === 1) {
+        this.form.uniqueCheck = 1
+        this.uniqueCheckDisabled = true
+      } else {
+        this.uniqueCheckDisabled = false
+      }
+    }
+  },
+  methods: {
+    queryField: function (entityId) {
+      return this.$common.getFieldOptions(entityId)
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => { this.fieldList = result.data })
+    },
+    submit: function () {
+      const params = {
+        ...this.form
+      }
+      params.fieldIds = this.form.fieldIds.join(',')
+      let loading = null
+      // 校验表单
+      this.$refs.addForm.validate()
+      // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return this.$ajax.post(`/${apiPath}/meta_index/save`, this.$common.removeBlankField(params))
+        })
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+      // 执行页面跳转
+        .then(() => {
+          this.$common.showMsg('success', '添加成功')
+          this.goBack()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    goBack: function () {
+      this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
+    }
+  },
+  created: function () {
+    // 将路径参数解析到form表单
+    this.form.entityId = parseInt(this.entityId)
+    if (this.fieldIds) {
+      this.form.fieldIds = this.fieldIds.split('-').map(value => parseInt(value))
+    }
+    this.queryField(this.form.entityId)
   }
+}
 </script>
 
 <style>

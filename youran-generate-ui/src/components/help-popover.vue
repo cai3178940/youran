@@ -17,25 +17,25 @@
 </template>
 
 <script>
-  import content from './help-content'
-  import showdown from 'showdown'
-  const converter = new showdown.Converter({emoji: 'true'})
-  export default {
-    name: 'help-popover',
-    props: ['name', 'pic'],
-    data: function () {
-      var markdown = content
-      this.name.split('.').forEach(field => { markdown = markdown[field] })
-      if (this.pic) {
-        for (let [k, v] of Object.entries(this.pic)) {
-          markdown = markdown.replace('{' + k + '}', v)
-        }
-      }
-      return {
-        markdown: converter.makeHtml(markdown)
+import content from './help-content'
+import showdown from 'showdown'
+const converter = new showdown.Converter({ emoji: 'true' })
+export default {
+  name: 'help-popover',
+  props: ['name', 'pic'],
+  data: function () {
+    let markdown = content
+    this.name.split('.').forEach(field => { markdown = markdown[field] })
+    if (this.pic) {
+      for (let [k, v] of Object.entries(this.pic)) {
+        markdown = markdown.replace('{' + k + '}', v)
       }
     }
+    return {
+      markdown: converter.makeHtml(markdown)
+    }
   }
+}
 </script>
 
 <style>

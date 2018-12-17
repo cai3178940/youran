@@ -59,70 +59,70 @@
 </template>
 
 <script>
-  import options from '@/components/options'
-  import {apiPath} from '@/components/common'
-  import {initFormBean, getRules} from './model'
-  export default {
-    name: 'entityEdit',
-    props: ['projectId', 'entityId'],
-    data: function () {
-      return {
-        boolOptions: options.boolOptions,
-        projectList: [],
-        old: initFormBean(true),
-        form: initFormBean(true),
-        rules: getRules()
-      }
-    },
-    methods: {
-      queryProject: function () {
-        return this.$common.getProjectOptions()
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.projectList = result.data })
-      },
-      getEntity: function () {
-        return this.$ajax.get(`/${apiPath}/meta_entity/${this.entityId}`)
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.old = result.data })
-          .catch(error => this.$common.showNotifyError(error))
-      },
-      reset: function () {
-        for (const key in initFormBean(true)) {
-          this.form[key] = this.old[key]
-        }
-      },
-      submit: function () {
-        let loading = null
-        // 校验表单
-        this.$refs.editForm.validate()
-        // 提交表单
-          .then(() => {
-            loading = this.$loading()
-            return this.$ajax.put(`/${apiPath}/meta_entity/update`, this.form)
-          })
-          // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          // 执行页面跳转
-          .then(() => {
-            this.$common.showMsg('success', '修改成功')
-            this.goBack()
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      goBack: function () {
-        this.$router.push(`/project/${this.projectId}/entity`)
-      }
-    },
-    created: function () {
-      Promise.all([this.getEntity(), this.queryProject()])
-        .then(() => this.reset())
+import options from '@/components/options'
+import { apiPath } from '@/components/common'
+import { initFormBean, getRules } from './model'
+export default {
+  name: 'entityEdit',
+  props: ['projectId', 'entityId'],
+  data: function () {
+    return {
+      boolOptions: options.boolOptions,
+      projectList: [],
+      old: initFormBean(true),
+      form: initFormBean(true),
+      rules: getRules()
     }
+  },
+  methods: {
+    queryProject: function () {
+      return this.$common.getProjectOptions()
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => { this.projectList = result.data })
+    },
+    getEntity: function () {
+      return this.$ajax.get(`/${apiPath}/meta_entity/${this.entityId}`)
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => { this.old = result.data })
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    reset: function () {
+      for (const key in initFormBean(true)) {
+        this.form[key] = this.old[key]
+      }
+    },
+    submit: function () {
+      let loading = null
+      // 校验表单
+      this.$refs.editForm.validate()
+        // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return this.$ajax.put(`/${apiPath}/meta_entity/update`, this.form)
+        })
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+      // 执行页面跳转
+        .then(() => {
+          this.$common.showMsg('success', '修改成功')
+          this.goBack()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    goBack: function () {
+      this.$router.push(`/project/${this.projectId}/entity`)
+    }
+  },
+  created: function () {
+    Promise.all([this.getEntity(), this.queryProject()])
+      .then(() => this.reset())
   }
+}
 </script>
 
 <style>

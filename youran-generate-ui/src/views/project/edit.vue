@@ -77,64 +77,64 @@
 </template>
 
 <script>
-  import options from '@/components/options'
-  import {apiPath} from '@/components/common'
-  import {initFormBean, getRules} from './model'
+import options from '@/components/options'
+import { apiPath } from '@/components/common'
+import { initFormBean, getRules } from './model'
 
-  export default {
-    name: 'projectEdit',
-    props: ['projectId'],
-    data: function () {
-      return {
-        boolOptions: options.boolOptions,
-        old: initFormBean(true),
-        form: initFormBean(true),
-        rules: getRules()
-      }
-    },
-    methods: {
-      getProject: function () {
-        return this.$ajax.get(`/${apiPath}/meta_project/${this.projectId}`)
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => { this.old = result.data })
-          .catch(error => this.$common.showNotifyError(error))
-      },
-      reset: function () {
-        for (const key in initFormBean(true)) {
-          this.form[key] = this.old[key]
-        }
-      },
-      submit: function () {
-        let loading = null
-        // 校验表单
-        this.$refs.editForm.validate()
-        // 提交表单
-          .then(() => {
-            loading = this.$loading()
-            return this.$ajax.put(`/${apiPath}/meta_project/update`, this.form)
-          })
-          // 校验返回结果
-          .then(response => this.$common.checkResult(response.data))
-          // 执行页面跳转
-          .then(() => {
-            this.$common.showMsg('success', '修改成功')
-            this.goBack()
-          })
-          .catch(error => this.$common.showNotifyError(error))
-          .finally(() => {
-            if (loading) {
-              loading.close()
-            }
-          })
-      },
-      goBack: function () {
-        this.$router.push('/project')
-      }
-    },
-    created: function () {
-      this.getProject().then(() => this.reset())
+export default {
+  name: 'projectEdit',
+  props: ['projectId'],
+  data: function () {
+    return {
+      boolOptions: options.boolOptions,
+      old: initFormBean(true),
+      form: initFormBean(true),
+      rules: getRules()
     }
+  },
+  methods: {
+    getProject: function () {
+      return this.$ajax.get(`/${apiPath}/meta_project/${this.projectId}`)
+        .then(response => this.$common.checkResult(response.data))
+        .then(result => { this.old = result.data })
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    reset: function () {
+      for (const key in initFormBean(true)) {
+        this.form[key] = this.old[key]
+      }
+    },
+    submit: function () {
+      let loading = null
+      // 校验表单
+      this.$refs.editForm.validate()
+        // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return this.$ajax.put(`/${apiPath}/meta_project/update`, this.form)
+        })
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response.data))
+      // 执行页面跳转
+        .then(() => {
+          this.$common.showMsg('success', '修改成功')
+          this.goBack()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
+    },
+    goBack: function () {
+      this.$router.push('/project')
+    }
+  },
+  created: function () {
+    this.getProject().then(() => this.reset())
   }
+}
 </script>
 
 <style>
