@@ -47,10 +47,10 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{method:'handleDelIndexField',arg:[index,scope.row]}">
-                  <icon name="remove" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除索引字段
+                  <icon name="times" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除索引字段
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleDelIndex',arg:[index]}">
-                  <icon name="trash-o" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除整个索引
+                  <icon name="trash-alt" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除整个索引
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleIndexEdit',arg:[index]}">
                   <icon name="edit" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 编辑索引
@@ -74,7 +74,7 @@
       <el-table-column label="非空" width="50px">
         <template slot-scope="scope">
           <icon v-if="scope.row.notNull==1" name="check" class="color-success"></icon>
-          <icon v-if="scope.row.notNull!=1" name="close" class="color-danger"></icon>
+          <icon v-if="scope.row.notNull!=1" name="times" class="color-danger"></icon>
         </template>
       </el-table-column>
       <el-table-column label="主外键" width="70px">

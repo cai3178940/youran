@@ -1,32 +1,32 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import index from '../page/index.vue'
+import home from './views/Home.vue'
 
-import project from '../page/project/index.vue'
-import projectList from '../page/project/list.vue'
-import projectAdd from '../page/project/add.vue'
-import projectEdit from '../page/project/edit.vue'
+import project from './views/project/index.vue'
+import projectList from './views/project/list.vue'
+import projectAdd from './views/project/add.vue'
+import projectEdit from './views/project/edit.vue'
 
-import entity from '../page/entity/index.vue'
-import entityList from '../page/entity/list.vue'
-import entityAdd from '../page/entity/add.vue'
-import entityEdit from '../page/entity/edit.vue'
-import mtmAdd from '../page/entity/mtmAdd.vue'
-import mtmEdit from '../page/entity/mtmEdit.vue'
+import entity from './views/entity/index.vue'
+import entityList from './views/entity/list.vue'
+import entityAdd from './views/entity/add.vue'
+import entityEdit from './views/entity/edit.vue'
+import mtmAdd from './views/entity/mtmAdd.vue'
+import mtmEdit from './views/entity/mtmEdit.vue'
 
-import field from '../page/field/index.vue'
-import fieldList from '../page/field/list.vue'
-import fieldAdd from '../page/field/add.vue'
-import fieldEdit from '../page/field/edit.vue'
-import fieldIndexAdd from '../page/field/indexAdd.vue'
-import fieldIndexEdit from '../page/field/indexEdit.vue'
+import field from './views/field/index.vue'
+import fieldList from './views/field/list.vue'
+import fieldAdd from './views/field/add.vue'
+import fieldEdit from './views/field/edit.vue'
+import fieldIndexAdd from './views/field/indexAdd.vue'
+import fieldIndexEdit from './views/field/indexEdit.vue'
 
-import constIndex from '../page/const/index.vue'
-import constList from '../page/const/list.vue'
-import constAdd from '../page/const/add.vue'
-import constEdit from '../page/const/edit.vue'
-import constDetailAdd from '../page/const/detailAdd.vue'
-import constDetailEdit from '../page/const/detailEdit.vue'
+import constIndex from './views/const/index.vue'
+import constList from './views/const/list.vue'
+import constAdd from './views/const/add.vue'
+import constEdit from './views/const/edit.vue'
+import constDetailAdd from './views/const/detailAdd.vue'
+import constDetailEdit from './views/const/detailEdit.vue'
 
 Vue.use(Router)
 
@@ -34,7 +34,7 @@ export default new Router({
   routes: [
     {
       path: '',
-      component: index
+      component: home
     },
     {
       path: '/project',

@@ -1,17 +1,21 @@
 import axios from 'axios'
 const qs = require('qs')
-const BASE_API_URL = process.env.BASE_API_URL
+const BASE_API_URL = process.env.VUE_APP_BASE_API_URL
 var ajax = axios.create({
   baseURL: BASE_API_URL,
   timeout: 60000,
   responseType: 'json',
-  headers: {'Content-Type': 'application/json; charset=utf-8'},
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8'
+  },
   paramsSerializer: function (params) {
-    return qs.stringify(params, {arrayFormat: 'repeat'})
+    return qs.stringify(params, {
+      arrayFormat: 'repeat'
+    })
   }
 })
 
-export const apiPath = process.env.API_PATH
+export const apiPath = process.env.VUE_APP_API_PATH
 
 export const CommonPlugin = {
   install: function (Vue, options) {

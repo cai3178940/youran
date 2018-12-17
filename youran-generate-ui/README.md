@@ -9,11 +9,12 @@
 npm install
 
 # 开发模式热部署启动：localhost:80
-npm run dev
+npm run serve
 
 # 生产环境打包，发布目录为/youran-generate/src/main/resources/ui
 npm run build
 
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### 自定义配置
+查看 [vue-cli官网](https://cli.vuejs.org/config/).

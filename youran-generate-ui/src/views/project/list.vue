@@ -23,7 +23,7 @@
       <el-table-column label="启用Git仓库" width="120px">
         <template slot-scope="scope">
           <icon v-if="scope.row.remote==1" name="check" class="color-success"></icon>
-          <icon v-if="scope.row.remote!=1" name="close" class="color-danger"></icon>
+          <icon v-if="scope.row.remote!=1" name="times" class="color-danger"></icon>
         </template>
       </el-table-column>
       <el-table-column
@@ -44,19 +44,19 @@
                 <icon name="cubes" scale="0.8" ></icon> 实体管理
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleConst',arg:scope.row}" >
-                <icon name="navicon" scale="0.8" ></icon> 枚举管理
+                <icon name="align-justify" scale="0.8" ></icon> 枚举管理
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" >
                 <icon name="object-group" scale="0.8" ></icon> 反向工程
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
-                <icon name="file-zip-o" scale="0.8" ></icon> 生成代码
+                <icon name="file-archive" scale="0.8" ></icon> 生成代码
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleGenSql',arg:scope.row}" >
-                <icon name="file-code-o" scale="0.8" ></icon> 生成sql
+                <icon name="file-code" scale="0.8" ></icon> 生成sql
               </el-dropdown-item>
               <el-dropdown-item v-if="scope.row.remote==1" :command="{method:'handleCommit',arg:scope.row}" >
-                <icon name="git" scale="0.8" ></icon> 提交Git
+                <icon name="brands/git" scale="0.8" ></icon> 提交Git
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>

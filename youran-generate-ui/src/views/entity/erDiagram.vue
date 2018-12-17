@@ -10,7 +10,7 @@
 
 <script>
   import {apiPath} from '@/components/common'
-  import go from 'gojsaims'
+  import go from 'gojs'
   export default {
     name: 'er-diagram',
     data: function () {

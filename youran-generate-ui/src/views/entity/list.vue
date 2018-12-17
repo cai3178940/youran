@@ -41,7 +41,7 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{method:'handleMtmDel',arg:[mtm]}">
-                  <icon name="trash-o" scale="0.7" color="red"></icon> 删除多对多
+                  <icon name="trash-alt" scale="0.7" color="red"></icon> 删除多对多
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleMtmEdit',arg:[mtm]}">
                   <icon name="edit" scale="0.7" color="red"></icon> 编辑多对多
@@ -56,7 +56,7 @@
       <el-table-column label="分页" width="60px">
         <template slot-scope="scope">
           <icon v-if="scope.row.pageSign==1" name="check" class="color-success"></icon>
-          <icon v-if="scope.row.pageSign!=1" name="close" class="color-danger"></icon>
+          <icon v-if="scope.row.pageSign!=1" name="times" class="color-danger"></icon>
         </template>
       </el-table-column>
       <el-table-column property="desc" label="描述"></el-table-column>
