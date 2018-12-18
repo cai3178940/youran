@@ -10,15 +10,16 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "change-case": "^3.0.2",
     "element-ui": "^2.4.11",
     "github-markdown-css": "^2.10.0",
     "gojs": "^1.8.35",
+    "qs": "^6.5.2",
     "showdown": "^1.9.0",
     "velocity-animate": "^1.5.2",
     "vue": "^2.5.17",
     "vue-awesome": "^3.2.0",
-    "vue-router": "^3.0.1",
-    "qs": "^6.5.2"
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",

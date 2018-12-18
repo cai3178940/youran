@@ -12,11 +12,15 @@
           <el-form-item label="java字段名" prop="jfieldName">
             <help-popover name="field.jfieldName">
               <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age"></el-input>
+              <el-button size="mini" type="text" @click="form.jfieldName = $common.snakeCase(form.jfieldName)">转下划线</el-button>
+              <el-button size="mini" type="text" @click="form.jfieldName = $common.camelCase(form.jfieldName)">转驼峰</el-button>
             </help-popover>
           </el-form-item>
           <el-form-item label="mysql字段名" prop="fieldName">
             <help-popover name="field.fieldName">
               <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age"></el-input>
+              <el-button size="mini" type="text" @click="form.fieldName = $common.snakeCase(form.fieldName)">转下划线</el-button>
+              <el-button size="mini" type="text" @click="form.fieldName = $common.camelCase(form.fieldName)">转驼峰</el-button>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段描述" prop="fieldDesc">

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
+import changeCase from 'change-case'
 const BASE_API_URL = process.env.VUE_APP_BASE_API_URL
 const ajax = axios.create({
   baseURL: BASE_API_URL,
@@ -24,7 +25,14 @@ export const CommonPlugin = {
     Vue.prototype.$common = {
 
       BASE_API_URL,
-
+      // 字符串转下划线格式
+      snakeCase: function (value) {
+        return changeCase.snakeCase(value)
+      },
+      // 字符串转驼峰格式
+      camelCase: function (value) {
+        return changeCase.camelCase(value)
+      },
       // 查询项目下拉列表
       getProjectOptions: function () {
         return ajax.get(`/${apiPath}/meta_project/list`)
