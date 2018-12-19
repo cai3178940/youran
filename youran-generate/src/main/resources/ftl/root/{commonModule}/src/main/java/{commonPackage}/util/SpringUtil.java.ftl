@@ -1,12 +1,12 @@
 <#include "/common.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@call this.addImport("org.springframework.beans.factory.support.BeanDefinitionBuilder;")/>
-<@call this.addImport("org.springframework.beans.factory.support.DefaultListableBeanFactory;")/>
-<@call this.addImport("org.springframework.context.ApplicationContext;")/>
-<@call this.addImport("org.springframework.context.ApplicationContextAware;")/>
-<@call this.addImport("java.lang.annotation.Annotation;")/>
-<@call this.addImport("java.util.Map;")/>
+<@call this.addImport("org.springframework.beans.factory.support.BeanDefinitionBuilder")/>
+<@call this.addImport("org.springframework.beans.factory.support.DefaultListableBeanFactory")/>
+<@call this.addImport("org.springframework.context.ApplicationContext")/>
+<@call this.addImport("org.springframework.context.ApplicationContextAware")/>
+<@call this.addImport("java.lang.annotation.Annotation")/>
+<@call this.addImport("java.util.Map")/>
 <@call this.printClassCom("spring bean 工具类")/>
 public class SpringUtil implements ApplicationContextAware {
 
