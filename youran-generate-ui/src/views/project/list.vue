@@ -9,12 +9,33 @@
       </el-col>
       <el-col :span="18" style="text-align: right;">
         <el-button @click.native="handleAdd" type="success">创建项目</el-button>
-        <el-button @click.native="handleDel" type="danger">删除</el-button>
       </el-col>
     </el-row>
 
-    <el-table :data="entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
-      <el-table-column type="selection" width="50"></el-table-column>
+    <el-table ref="projectTable" :data="entities"
+              row-key="projectId"
+              :expand-row-keys="expandRowKeys"
+              :row-class-name="activeRow"
+              style="width: 100%"
+              @cell-mouse-enter="cellMouseEnter"
+              v-loading="loading">
+      <el-table-column type="expand"  width="0" class-name="project-table-expand-column">
+        <template slot-scope="scope">
+          <el-form label-position="left" inline class="project-table-expand">
+            <el-form-item>
+              <el-button @click="handleEdit(scope.row)" type="primary" size="small"><icon name="edit" scale="0.8" ></icon> 编辑</el-button>
+              <el-button @click="handleEntity(scope.row)" type="primary" size="small"><icon name="cubes" scale="0.8" ></icon> 实体管理</el-button>
+              <el-button @click="handleConst(scope.row)" type="primary" size="small"><icon name="align-justify" scale="0.8" ></icon> 枚举管理</el-button>
+              <el-button @click="handleReverseEngineering(scope.row)" type="primary" size="small"><icon name="object-group" scale="0.8" ></icon> 反向工程</el-button>
+              <el-button @click="handleGenCode(scope.row)" type="primary" size="small"><icon name="file-archive" scale="0.8" ></icon> 下载代码</el-button>
+              <el-button @click="handleGenSql(scope.row)" type="primary" size="small"><icon name="file-code" scale="0.8" ></icon> 下载sql</el-button>
+              <el-button v-if="scope.row.remote==1" @click="handleCommit(scope.row)" type="warning" size="small"><icon name="brands/git" scale="0.8" ></icon> 提交Git</el-button>
+              <el-button @click="handleDel(scope.row)" type="danger" size="small"><icon name="trash-alt" scale="0.8" ></icon> 删除</el-button>
+            </el-form-item>
+          </el-form>
+        </template>
+      </el-table-column>
+      <el-table-column type="index" label="序号" width="50"></el-table-column>
       <el-table-column property="groupId" label="groupId" width="160"></el-table-column>
       <el-table-column property="projectName" label="项目标识" width="200"></el-table-column>
       <el-table-column property="projectDesc" label="项目名称" width="200"></el-table-column>
@@ -26,15 +47,15 @@
           <icon v-if="scope.row.remote!=1" name="times" class="color-danger"></icon>
         </template>
       </el-table-column>
-      <el-table-column
+      <!--<el-table-column
         label="操作"
         width="100">
         <template slot-scope="scope">
-          <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
-          <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>-->
+          &lt;!&ndash;<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
+          <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>&ndash;&gt;
           <el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">
             <span class="el-dropdown-link">
-              操作<i class="el-icon-arrow-down el-icon--right"></i>
+              操作<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" >
@@ -61,7 +82,7 @@
             </el-dropdown-menu>
           </el-dropdown>
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
 
     <el-dialog title="反向工程" :visible.sync="reverseEngineeringFormVisible" width="60%">
@@ -108,7 +129,8 @@ export default {
           { required: true, message: '请输入DDL脚本', trigger: 'blur' },
           { max: 10000, message: '长度不能超过10000个字符', trigger: 'blur' }
         ]
-      }
+      },
+      expandRowKeys: []
     }
   },
   methods: {
@@ -116,13 +138,9 @@ export default {
       this.selectItems = val
       this.activeNum = this.selectItems.length
     },
-    handleDel: function () {
-      if (this.activeNum <= 0) {
-        this.$common.showMsg('warning', '请选择项目')
-        return
-      }
+    handleDel: function (row) {
       this.$common.confirm('是否确认删除')
-        .then(() => this.$ajax.put(`/${apiPath}/meta_project/deleteBatch`, this.selectItems.map(entity => entity.projectId)))
+        .then(() => this.$ajax.put(`/${apiPath}/meta_project/deleteBatch`, [row.projectId]))
         .then(response => this.$common.checkResult(response.data))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
@@ -155,7 +173,8 @@ export default {
       window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genSql?projectId=${row.projectId}`)
     },
     handleGenCode: function (row) {
-      window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genCode?projectId=${row.projectId}`)
+      this.$common.confirm('是否确认下载')
+        .then(() => window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genCode?projectId=${row.projectId}`))
     },
     handleReverseEngineering: function (row) {
       this.reverseEngineeringFormVisible = true
@@ -206,15 +225,26 @@ export default {
         })
     },
     handleCommit: function (row) {
-      this.loading = true
-      this.$ajax.get(`/${apiPath}/code_gen/gitCommit?projectId=${row.projectId}`)
+      this.$common.confirm('是否确认提交到远程git仓库')
+        .then(() => {
+          this.loading = true
+          return this.$ajax.get(`/${apiPath}/code_gen/gitCommit?projectId=${row.projectId}`)
+        })
         .then(response => this.$common.checkResult(response.data))
         .then(result => this.$common.showMsg('success', result.message))
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    handleCommand: function (command) {
+    /* handleCommand: function (command) {
       this[command.method](command.arg)
+    }, */
+    activeRow: function (obj) {
+      if (this.expandRowKeys.find(value => value === obj.row.projectId)) {
+        return 'active-row'
+      }
+    },
+    cellMouseEnter: function (row) {
+      this.expandRowKeys = [row.projectId]
     }
   },
   activated: function () {
@@ -223,6 +253,23 @@ export default {
 }
 </script>
 <style>
+
+  .project-table-expand-column {
+    visibility: hidden;
+  }
+
+  .project-table-expand {
+    margin: 0px 60px;
+  }
+
+  .project-table-expand .el-form-item {
+    margin-bottom: 5px;
+  }
+
+  .projectList .active-row {
+    background-color: #f5f7fa;
+  }
+
   .projectList .activeNum {
     min-width: 160px;
     text-align: left;

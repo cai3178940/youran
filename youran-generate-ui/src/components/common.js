@@ -89,6 +89,10 @@ export const CommonPlugin = {
         }
         // 程序指定字符串异常信息
         if ((typeof error === 'string' && error.constructor === String)) {
+          // 如果是确认窗口点击取消按钮，则不报任何错
+          if (error === 'cancel') {
+            return
+          }
           return this.showNotify('error', '出错了', error)
         }
         if ((typeof error === 'object')) {
