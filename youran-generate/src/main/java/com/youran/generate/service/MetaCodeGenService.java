@@ -49,17 +49,15 @@ public class MetaCodeGenService {
     @Autowired
     private MetaQueryAssembleService metaQueryAssembleService;
     @Autowired
-    private MetaEntityService metaEntityService;
-    @Autowired
     private MetaProjectService metaProjectService;
     @Autowired
     private JGitService jGitService;
-    @Value("${spring.application.name}")
-    private String appName;
     @Autowired
     private GenerateProperties generateProperties;
     @Autowired
     private GenHistoryService genHistoryService;
+    @Value("${spring.application.name}")
+    private String appName;
 
     /**
      * 输出建表语句
@@ -215,11 +213,9 @@ public class MetaCodeGenService {
     private void renderCommonFTL(MetaProjectPO project, String tmpDir, TemplateEnum templateEnum) {
         String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(), null, null);
         BaseModel model = new BaseModel(project);
-        LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
-        String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), model);
-        LOGGER.debug(text);
-        this.writeToFile(text, outFilePath);
+        doRenderFTL(templateEnum, outFilePath, model);
     }
+
     /**
      * 渲染实体freemarker模版
      * @param project      项目
@@ -228,10 +224,7 @@ public class MetaCodeGenService {
     private void renderEntityFTL(MetaProjectPO project, String tmpDir, TemplateEnum templateEnum, MetaEntityPO metaEntityPO) {
         String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(), metaEntityPO.getClassName(),null);
         EntityModel model = new EntityModel(project,metaEntityPO);
-        LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
-        String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), model);
-        LOGGER.debug(text);
-        this.writeToFile(text, outFilePath);
+        doRenderFTL(templateEnum, outFilePath, model);
     }
 
 
@@ -245,12 +238,21 @@ public class MetaCodeGenService {
     private void renderConstFTL(MetaProjectPO project, String tmpDir, TemplateEnum templateEnum, MetaConstPO metaConstPO) {
         String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(), null, metaConstPO.getConstName());
         ConstModel model = new ConstModel(project,metaConstPO);
+        doRenderFTL(templateEnum, outFilePath, model);
+    }
+
+    /**
+     * 执行模板渲染
+     * @param templateEnum
+     * @param outFilePath
+     * @param model
+     */
+    private void doRenderFTL(TemplateEnum templateEnum, String outFilePath, BaseModel model) {
         LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
         String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), model);
         LOGGER.debug(text);
         this.writeToFile(text, outFilePath);
     }
-
 
     /**
      * 获取文件输出路径
@@ -311,10 +313,9 @@ public class MetaCodeGenService {
      * @return
      */
     public String sqlPreview(Integer entityId) {
-        MetaEntityPO metaEntityPO = metaEntityService.getEntity(entityId,true);
+        MetaEntityPO metaEntityPO = metaQueryAssembleService.getAssembledEntity(entityId);
         MetaProjectPO project = metaProjectService.getProject(metaEntityPO.getProjectId(),true);
-        List<MetaEntityPO> metaEntities = Lists.newArrayList(metaQueryAssembleService.assembleEntity(metaEntityPO));
-        project.setEntities(metaEntities);
+        project.setEntities(Lists.newArrayList(metaEntityPO));
         return getSqlText(project);
     }
 
