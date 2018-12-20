@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 public class MetaQueryAssembleService {
 
     @Autowired
+    private MetaProjectService metaProjectService;
+    @Autowired
     private MetaEntityService metaEntityService;
     @Autowired
     private MetaFieldService metaFieldService;
@@ -34,6 +36,46 @@ public class MetaQueryAssembleService {
     private MetaConstDetailService metaConstDetailService;
     @Autowired
     private MetaCascadeExtService metaCascadeExtService;
+    @Autowired
+    private MetaManyToManyService metaManyToManyService;
+
+
+    public MetaProjectPO getAssembledProject(Integer projectId,boolean withConst,boolean withMtm,boolean withForeign){
+        MetaProjectPO project = metaProjectService.getProject(projectId,true);
+        // 查询实体id列表
+        List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
+        if (CollectionUtils.isEmpty(entityIds)) {
+            throw new GenerateException("项目中没有实体");
+        }
+        // 获取组装后的实体列表
+        List<MetaEntityPO> metaEntities = entityIds
+            .stream()
+            .map(this::getAssembledEntity).collect(Collectors.toList());
+        project.setEntities(metaEntities);
+        if(withForeign) {
+            // 组装外键实体和外键字段
+            this.assembleForeign(metaEntities);
+        }
+        if(withConst){
+            // 查询常量id列表
+            List<Integer> constIds = metaConstService.findIdsByProject(projectId);
+            // 获取组装后的常量列表
+            List<MetaConstPO> metaConstPOS = constIds
+                .stream()
+                .map(this::getAssembledConst).collect(Collectors.toList());
+            project.setConsts(metaConstPOS);
+        }
+        if(withMtm){
+            // 查询多对多列表
+            List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId);
+            // 组装多对多持有引用
+            this.assembleManyToManyWithEntities(metaEntities, manyToManies);
+            project.setMtms(manyToManies);
+        }
+        // 校验完整性
+        this.checkAssembledProject(project,withConst);
+        return project;
+    }
 
     /**
      * 获取组装完成的常量
@@ -278,7 +320,7 @@ public class MetaQueryAssembleService {
     /**
      * 校验组装后的项目完整性
      */
-    public void checkAssembledProject(MetaProjectPO project, boolean checkConst) {
+    private void checkAssembledProject(MetaProjectPO project, boolean checkConst) {
         List<MetaEntityPO> entities = project.getEntities();
 
         Map<String,MetaConstPO> constMap = null;

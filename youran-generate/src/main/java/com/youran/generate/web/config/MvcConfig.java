@@ -5,7 +5,7 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Title: 跨域支持
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * Create Time: 2018/1/16 09:32
  */
 @Configuration
-public class MvcConfig extends WebMvcConfigurerAdapter {
+public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -44,7 +44,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         registry.addViewController( "/ui" ).setViewName( "forward:/ui/index.html" );
         registry.addViewController( "/ui/" ).setViewName( "forward:/ui/index.html" );
         registry.setOrder( Ordered.HIGHEST_PRECEDENCE );
-        super.addViewControllers( registry );
     }
 
 }

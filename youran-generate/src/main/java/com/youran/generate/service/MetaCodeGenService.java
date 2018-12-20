@@ -10,13 +10,15 @@ import com.youran.generate.constant.TemplateEnum;
 import com.youran.generate.constant.TemplateType;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
-import com.youran.generate.pojo.po.*;
+import com.youran.generate.pojo.po.GenHistoryPO;
+import com.youran.generate.pojo.po.MetaConstPO;
+import com.youran.generate.pojo.po.MetaEntityPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.template.BaseModel;
 import com.youran.generate.pojo.template.ConstModel;
 import com.youran.generate.pojo.template.EntityModel;
 import com.youran.generate.util.FreeMakerUtil;
 import com.youran.generate.util.Zip4jUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,7 +33,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 /**
@@ -52,10 +53,6 @@ public class MetaCodeGenService {
     @Autowired
     private MetaProjectService metaProjectService;
     @Autowired
-    private MetaManyToManyService metaManyToManyService;
-    @Autowired
-    private MetaConstService metaConstService;
-    @Autowired
     private JGitService jGitService;
     @Value("${spring.application.name}")
     private String appName;
@@ -69,31 +66,22 @@ public class MetaCodeGenService {
      * @param projectId
      */
     public String genSql(Integer projectId) {
-        MetaProjectPO project = metaProjectService.getProject(projectId,true);
-        List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
-        if (CollectionUtils.isEmpty(entityIds)) {
-            return "";
-        }
-        List<MetaEntityPO> metaEntities = entityIds
-                .stream()
-                .map(metaQueryAssembleService::getAssembledEntity)
-                .collect(Collectors.toList());
-        List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId);
-        // 组装多对多对象引用
-        metaQueryAssembleService.assembleManyToManyWithEntities(metaEntities, manyToManies);
-        project.setMtms(manyToManies);
-        project.setEntities(metaEntities);
-        metaQueryAssembleService.checkAssembledProject(project,false);
-        String text = FreeMakerUtil.writeToStr("root/"+TemplateEnum.SQL.getTemplate(), new BaseModel(project));
+        // 获取组装后的项目
+        MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,false,true,false);
+        return getSqlText(project);
+    }
+
+    /**
+     * 打印sql脚本
+     * @param project
+     * @return
+     */
+    private String getSqlText(MetaProjectPO project) {
+        String text = FreeMakerUtil.writeToStr("root/"+ TemplateEnum.SQL.getTemplate(), new BaseModel(project));
         LOGGER.debug("------打印生成sql脚本-----");
         LOGGER.debug(text);
         return text;
     }
-
-
-
-
-
 
     /**
      * 生成代码压缩包
@@ -138,34 +126,8 @@ public class MetaCodeGenService {
 
 
     private String doGenCode(Integer projectId){
-        MetaProjectPO project = metaProjectService.getProject(projectId,true);
-        // 查询实体id列表
-        List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
-        if (CollectionUtils.isEmpty(entityIds)) {
-            throw new GenerateException("项目中没有实体");
-        }
-        // 获取组装后的实体列表
-        List<MetaEntityPO> metaEntities = entityIds
-            .stream()
-            .map(metaQueryAssembleService::getAssembledEntity).collect(Collectors.toList());
-        // 组装外键实体和外键字段
-        metaQueryAssembleService.assembleForeign(metaEntities);
-        // 查询常量id列表
-        List<Integer> constIds = metaConstService.findIdsByProject(projectId);
-        // 获取组装后的常量列表
-        List<MetaConstPO> metaConstPOS = constIds
-            .stream()
-            .map(metaQueryAssembleService::getAssembledConst).collect(Collectors.toList());
-        // 查询多对多列表
-        List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId);
-        // 组装多对多持有引用
-        metaQueryAssembleService.assembleManyToManyWithEntities(metaEntities, manyToManies);
-        project.setMtms(manyToManies);
-        project.setEntities(metaEntities);
-        project.setConsts(metaConstPOS);
-        // 校验组装后的项目完整性
-        metaQueryAssembleService.checkAssembledProject(project,true);
-
+        // 获取组装后的项目
+        MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,true,true,true);
         String tmpDir = H2Util.getTmpDir(appName, true, true);
         LOGGER.debug("------代码生成临时路径：" + tmpDir);
         for (TemplateEnum templateEnum : TemplateEnum.values()) {
@@ -174,12 +136,12 @@ public class MetaCodeGenService {
                 this.renderCommonFTL(project, tmpDir, templateEnum);
             } else if (templateEnum.getType() == TemplateType.ENTITY) {
                 //生成实体模版文件
-                for (MetaEntityPO metaEntityPO : metaEntities) {
+                for (MetaEntityPO metaEntityPO : project.getEntities()) {
                     this.renderEntityFTL(project, tmpDir, templateEnum, metaEntityPO);
                 }
             } else if (templateEnum.getType() == TemplateType.CONST) {
                 //生成实体模版文件
-                for (MetaConstPO metaConstPO : metaConstPOS) {
+                for (MetaConstPO metaConstPO : project.getConsts()) {
                     this.renderConstFTL(project, tmpDir, templateEnum, metaConstPO);
                 }
             }
@@ -353,11 +315,7 @@ public class MetaCodeGenService {
         MetaProjectPO project = metaProjectService.getProject(metaEntityPO.getProjectId(),true);
         List<MetaEntityPO> metaEntities = Lists.newArrayList(metaQueryAssembleService.assembleEntity(metaEntityPO));
         project.setEntities(metaEntities);
-        metaQueryAssembleService.checkAssembledProject(project,false);
-        String text = FreeMakerUtil.writeToStr("root/"+TemplateEnum.SQL.getTemplate(), new BaseModel(project));
-        LOGGER.debug("------打印生成sql脚本-----");
-        LOGGER.debug(text);
-        return text;
+        return getSqlText(project);
     }
 
     /**

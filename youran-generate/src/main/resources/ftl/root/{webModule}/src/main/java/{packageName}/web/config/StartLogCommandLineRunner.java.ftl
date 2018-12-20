@@ -8,9 +8,8 @@
 <@call this.addImport("org.springframework.boot.CommandLineRunner")/>
 <@call this.addImport("org.springframework.core.Ordered")/>
 <@call this.addImport("org.springframework.core.env.Environment")/>
-<@call this.addImport("org.springframework.core.io.ClassPathResource")/>
 <@call this.addImport("org.springframework.stereotype.Component")/>
-
+<@call this.addImport("org.springframework.beans.factory.annotation.Value")/>
 <@call this.addImport("java.util.Arrays")/>
 <@call this.addImport("java.util.stream.Collectors")/>
 <@call this.printClassCom("打印启动日志")/>
@@ -20,6 +19,9 @@ public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
     private static final Logger LOG = LoggerFactory.getLogger(StartLogCommandLineRunner.class);
 
     private final Environment env;
+
+    @Value("${r'$'}{swagger.enabled}")
+    private boolean swaggerEnabled;
 
     public StartLogCommandLineRunner(Environment env){
         this.env = env;
@@ -41,8 +43,7 @@ public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
             .append("\t访问路径:\n")
             .append("\t本地: \thttp://localhost:").append(port).append(contextPath).append("\n")
             .append("\t外部: \thttp://").append(IpUtil.getLocalIp()).append(":").append(port).append(contextPath).append("\n");
-        ClassPathResource swaggerUIResource = new ClassPathResource("META-INF/resources/swagger-ui.html");
-        if(swaggerUIResource.exists()){
+        if(swaggerEnabled){
             sb.append("\t文档:\thttp://").append(IpUtil.getLocalIp()).append(":").append(port).append(contextPath).append("swagger-ui.html");
         }
         sb.append("\n----------------------------------------------------------");
