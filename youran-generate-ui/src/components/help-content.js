@@ -20,7 +20,7 @@ export default {
     `,
     remoteUrl: `
 **Git仓库地址**：远程Git仓库地址，可以是github、码云、gitlab私有仓库等
-> 注意：最好是一个空库，否则出现意外情况概不负责。
+> 注意：请使用新创建的空仓库，不要有任何内容。
     `,
     username: `
 **Git用户名/oauth2**：请填写一个有代码提交权限的用户名,如果使用access token则填入oauth2
@@ -31,8 +31,6 @@ export default {
     feature: {
       bootVersion: `
 **spring-boot版本**：生成的基本框架所依赖的spring-boot版本
-> 注意：spring-boot1和2之间有很大差异，如果是全新的项目建议使用2；
-> 如果你们项目组之前的技术栈都是基于spring-boot1，则还是建议继续使用1
       `
     }
   },
@@ -62,7 +60,7 @@ export default {
   field: {
     jfieldName: `
 **java字段名**：Java类中的字段名称
-> 注意：请遵循Java字段命名规范
+> 注意：请遵循Java字段命名规范，尽量使用驼峰格式
     `,
     fieldName: `
 **mysql字段名**：业务表中的字段名称
@@ -73,11 +71,10 @@ export default {
 > 主要是给你自己看的，对于生成的代码来说没什么影响:grin::grin::grin:
     `,
     jfieldType: `
-**java字段类型**：这个简单，应该不需要我解释 :sweat_smile:
+**java字段类型**：实体类中的java字段类型
     `,
     fieldType: `
-**mysql字段类型**：这些常用类型的应该够了吧，如果不能满足你，请联系我
-> 注意：请跟Java字段类型保持接近，当然你不按常理出牌，我也不能怎么滴 :pig:
+**mysql字段类型**：数据库中的字段类型
     `,
     fieldLength: `
 **字段长度**：字段长度限制。
@@ -204,7 +201,6 @@ private Integer publishSignSortSign;
     `,
     orderNo: `
 **排序号**：只影响当前字段在实体中的先后顺序，将功能接近的字段放在一起，会比较美观。
-> 强迫症忍不了 :rage:
     `
   },
   'const': {
