@@ -26,8 +26,5 @@ module.exports = {
       .use('graphql-tag/loader')
       .loader('raw-loader')
       .end()
-  },
-  transpileDependencies: [
-    /\bvue-awesome\b/
-  ]
+  }
 }

@@ -95,7 +95,7 @@
         <template slot-scope="scope">
           <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
-          <el-button :disabled="ifCached(scope.row)" @click="handleCopyOne(scope.row,$event)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
+          <el-button :ref="'copyButton'+scope.row.fieldId" :disabled="ifCached(scope.row)" @click="handleCopyOne(scope.row,$event)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
           <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
             <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
           </el-badge>
@@ -165,7 +165,8 @@
     <el-dialog class="cascadeExtDialog" title="级联扩展" :visible.sync="cascadeExtListVisible" width="60%">
       <cascade-ext-list ref="cascadeExtList" @cascadeFieldNumChange="resetCascadeFieldNum" @cascadeFieldNumAdd="addCascadeFieldNum"></cascade-ext-list>
     </el-dialog>
-    <meteor ref="meteor"></meteor>
+    <!-- 所有复制按钮上的浮动小红点 -->
+    <meteor v-for="field in entities" :key="field.fieldId" :ref="'meteor'+field.fieldId"></meteor>
   </div>
 </template>
 
@@ -289,6 +290,7 @@ export default {
       for (const item of this.selectItems) {
         if (!this.cacheTemplate.find(t => t.fieldId === item.fieldId)) {
           this.cacheTemplate.push(item)
+          this.showMeteor(item.fieldId)
         }
       }
       this.cacheTemplateCount = this.cacheTemplate.length
@@ -296,14 +298,23 @@ export default {
     ifCached: function (row) {
       return !!this.cacheTemplate.find(t => t.fieldId === row.fieldId)
     },
+    /**
+     * 显示复制动画
+     * @param fieldId
+     */
+    showMeteor: function (fieldId) {
+      // 注意：这里返回的是数组，所以取里面第一个
+      const meteor = this.$refs['meteor' + fieldId][0]
+      const copyButton = this.$refs['copyButton' + fieldId]
+      meteor.init(copyButton.$el, this.$refs.copyButton.$el)
+      meteor.adjust(10, 0, 103, -8)
+      meteor.show(500)
+    },
     handleCopyOne: function (row, e) {
       if (!this.ifCached(row)) {
         this.cacheTemplate.push(row)
         this.cacheTemplateCount = this.cacheTemplate.length
-        const meteor = this.$refs.meteor
-        meteor.init(e.target, this.$refs.copyButton.$el)
-        meteor.adjust(10, 0, 103, -8)
-        meteor.show(500)
+        this.showMeteor(row.fieldId)
       }
     },
     initProjectOptions: function () {
