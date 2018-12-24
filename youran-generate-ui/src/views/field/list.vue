@@ -24,7 +24,7 @@
               <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加字段</el-button>
               <el-button @click.native="handleIndexAdd" type="primary">创建索引</el-button>
               <el-button @click.native="handleDel" type="danger">删除字段</el-button>
-              <el-badge :value="cacheTemplateCount" :hidden="!cacheTemplateCount" class="item">
+              <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
                 <el-button ref="copyButton" @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>
               </el-badge>
           </el-form-item>
@@ -95,7 +95,7 @@
         <template slot-scope="scope">
           <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
-          <el-button :ref="'copyButton'+scope.row.fieldId" :disabled="ifCached(scope.row)" @click="handleCopyOne(scope.row,$event)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
+          <el-button :ref="'copyButton'+scope.row.fieldId" :disabled="fieldCached(scope.row.fieldId)" @click="handleCopyOne(scope.row,$event)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
           <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
             <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
           </el-badge>
@@ -117,13 +117,13 @@
             <el-option-group>
               <el-option label="不使用模板" value=""></el-option>
             </el-option-group>
-            <el-option-group v-if="cacheTemplateCount>0" label="临时模板">
-              <el-option v-for="value in cacheTemplate"
+            <el-option-group v-if="cacheFieldTemplateCount>0" label="临时模板">
+              <el-option v-for="value in cacheFieldTemplate"
                          :key="value.fieldId"
                          :label="value.fieldDesc"
                          :value="value.fieldId">
                 <span style="float: left">{{ value.fieldDesc }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px"><i @click.stop="handleRemoveTemplate(value.fieldId)" class="el-icon-delete"></i></span>
+                <span style="float: right; color: #8492a6; font-size: 13px"><i @click.stop="removeFieldTemplate(value.fieldId)" class="el-icon-delete"></i></span>
               </el-option>
             </el-option-group>
             <el-option-group label="系统内置模板">
@@ -139,11 +139,13 @@
             v-model="templateForm.templates"
             multiple
             collapse-tags>
-            <el-option-group v-if="cacheTemplateCount>0" label="临时模板">
-              <el-option v-for="value in cacheTemplate"
+            <el-option-group v-if="cacheFieldTemplateCount>0" label="临时模板">
+              <el-option v-for="value in cacheFieldTemplate"
                          :key="value.fieldId"
                          :label="value.fieldDesc"
                          :value="value.fieldId">
+                <span style="float: left">{{ value.fieldDesc }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px"><i @click.stop="removeFieldTemplate(value.fieldId)" class="el-icon-delete"></i></span>
               </el-option>
             </el-option-group>
             <el-option-group label="系统内置模板">
@@ -178,6 +180,7 @@ import { apiPath } from '@/components/common'
 import fieldTemplate from '@/components/fieldTemplate'
 import copyFieldUrl from '@/assets/copyField.gif'
 import meteor from '@/components/meteor'
+import { mapGetters, mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'fieldList',
@@ -192,8 +195,6 @@ export default {
       copyFieldUrl: copyFieldUrl.replace('uistatic', 'ui/static'),
       addTemplateFormVisible: false,
       fieldTemplate,
-      cacheTemplateCount: 0,
-      cacheTemplate: [],
       templateForm: {
         multiple: '0',
         template: '',
@@ -216,6 +217,13 @@ export default {
       loading: false,
       cascadeExtListVisible: false
     }
+  },
+  computed: {
+    ...mapState([
+      'cacheFieldTemplateCount',
+      'cacheFieldTemplate'
+    ]),
+    ...mapGetters(['fieldCached'])
   },
   watch: {
     indexes (value) {
@@ -259,16 +267,13 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'removeFieldTemplate',
+      'addFieldTemplate'
+    ]),
     selectionChange (val) {
       this.selectItems = val
       this.activeNum = this.selectItems.length
-    },
-    handleRemoveTemplate (fieldId) {
-      const index = this.cacheTemplate.findIndex(item => item.fieldId === fieldId)
-      if (index > -1) {
-        this.cacheTemplate.splice(index, 1)
-        this.cacheTemplateCount--
-      }
     },
     handleDel () {
       if (this.activeNum <= 0) {
@@ -288,15 +293,11 @@ export default {
         return
       }
       for (const item of this.selectItems) {
-        if (!this.cacheTemplate.find(t => t.fieldId === item.fieldId)) {
-          this.cacheTemplate.push(item)
+        if (!this.fieldCached(item.fieldId)) {
+          this.addFieldTemplate(item)
           this.showMeteor(item.fieldId)
         }
       }
-      this.cacheTemplateCount = this.cacheTemplate.length
-    },
-    ifCached (row) {
-      return !!this.cacheTemplate.find(t => t.fieldId === row.fieldId)
     },
     /**
      * 显示复制动画
@@ -310,10 +311,9 @@ export default {
       meteor.adjust(10, 0, 103, -8)
       meteor.show(500)
     },
-    handleCopyOne (row, e) {
-      if (!this.ifCached(row)) {
-        this.cacheTemplate.push(row)
-        this.cacheTemplateCount = this.cacheTemplate.length
+    handleCopyOne (row) {
+      if (!this.fieldCached(row.fieldId)) {
+        this.addFieldTemplate(row)
         this.showMeteor(row.fieldId)
       }
     },

@@ -3,6 +3,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
+import store from './store'
 import { CommonPlugin } from './components/common'
 import './components/common.css'
 import './components/element-override.css'
@@ -17,6 +18,7 @@ Vue.use(CommonPlugin)
 Vue.component('icon', Icon)
 Vue.component('help-popover', helpPopover)
 new Vue({
+  store,
   router,
   render: h => h(App)
 }).$mount('#app')
