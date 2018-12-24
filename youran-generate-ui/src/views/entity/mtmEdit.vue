@@ -89,7 +89,7 @@ import { initMtmFormBean, getMtmRules } from './model'
 export default {
   name: 'mtmEdit',
   props: ['projectId', 'mtmId'],
-  data: function () {
+  data () {
     return {
       boolOptions: options.boolOptions,
       projectList: [],
@@ -100,28 +100,28 @@ export default {
     }
   },
   methods: {
-    queryProject: function () {
+    queryProject () {
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.projectList = result.data })
     },
-    queryEntity: function (projectId) {
+    queryEntity (projectId) {
       return this.$common.getEntityOptions(projectId)
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.entityList = result.data.entities })
     },
-    getMtm: function () {
+    getMtm () {
       return this.$ajax.get(`/${apiPath}/meta_mtm/${this.mtmId}`)
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.old = result.data })
         .catch(error => this.$common.showNotifyError(error))
     },
-    reset: function () {
+    reset () {
       for (const key in initMtmFormBean(true)) {
         this.form[key] = this.old[key]
       }
     },
-    submit: function () {
+    submit () {
       let loading = null
       // 校验表单
       this.$refs.editForm.validate()
@@ -144,11 +144,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push(`/project/${this.projectId}/entity`)
     }
   },
-  created: function () {
+  created () {
     Promise.all([this.getMtm(), this.queryProject(), this.queryEntity(this.projectId)])
       .then(() => this.reset())
   }

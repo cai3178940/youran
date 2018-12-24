@@ -84,7 +84,7 @@ import { initFormBean, getRules } from './model'
 export default {
   name: 'projectEdit',
   props: ['projectId'],
-  data: function () {
+  data () {
     return {
       boolOptions: options.boolOptions,
       old: initFormBean(true),
@@ -93,18 +93,18 @@ export default {
     }
   },
   methods: {
-    getProject: function () {
+    getProject () {
       return this.$ajax.get(`/${apiPath}/meta_project/${this.projectId}`)
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.old = result.data })
         .catch(error => this.$common.showNotifyError(error))
     },
-    reset: function () {
+    reset () {
       for (const key in initFormBean(true)) {
         this.form[key] = this.old[key]
       }
     },
-    submit: function () {
+    submit () {
       let loading = null
       // 校验表单
       this.$refs.editForm.validate()
@@ -127,11 +127,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push('/project')
     }
   },
-  created: function () {
+  created () {
     this.getProject().then(() => this.reset())
   }
 }

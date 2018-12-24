@@ -102,7 +102,7 @@ export default {
   name: 'entityList',
   components: { ErDiagram },
   props: ['projectId'],
-  data: function () {
+  data () {
     return {
       sqlPreview: '',
       sqlPreviewVisible: false,
@@ -128,7 +128,7 @@ export default {
     }
   },
   watch: {
-    'mtms': function (value) {
+    mtms (value) {
       if (!value) {
         return
       }
@@ -149,11 +149,11 @@ export default {
     }
   },
   methods: {
-    selectionChange: function (val) {
+    selectionChange (val) {
       this.selectItems = val
       this.activeNum = this.selectItems.length
     },
-    handleDel: function () {
+    handleDel () {
       if (this.activeNum <= 0) {
         this.$common.showMsg('warning', '请选择实体')
         return
@@ -165,20 +165,20 @@ export default {
         .then(() => this.doQueryMtm())
         .catch(error => this.$common.showNotifyError(error))
     },
-    sizeChange: function (pageSize) {
+    sizeChange (pageSize) {
       this.page.pageSize = pageSize
       this.doQuery()
     },
-    currentChange: function (pageNo) {
+    currentChange (pageNo) {
       this.page.pageNo = pageNo
       this.doQuery()
     },
-    queryProject: function () {
+    queryProject () {
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.projectList = result.data })
     },
-    handleQuery: function () {
+    handleQuery () {
       // 将查询表单参数赋值给查询参数
       this.query = {
         ...this.queryForm
@@ -190,7 +190,7 @@ export default {
         .then(() => this.doQueryMtm())
     },
     // 列表查询
-    doQuery: function () {
+    doQuery () {
       if (!this.query.projectId) {
         return
       }
@@ -213,7 +213,7 @@ export default {
         .finally(() => { this.loading = false })
     },
     // 索引查询
-    doQueryMtm: function () {
+    doQueryMtm () {
       if (!this.query.projectId) {
         return
       }
@@ -224,40 +224,40 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    handleMtmCommand: function (command) {
+    handleMtmCommand (command) {
       this[command.method](...command.arg)
     },
-    handleAdd: function () {
+    handleAdd () {
       this.$router.push(`/project/${this.projectId}/entity/add`)
     },
-    handleMtmAdd: function () {
+    handleMtmAdd () {
       const entityIds = this.selectItems.map(entity => entity.entityId).join('-')
       this.$router.push(`/project/${this.projectId}/entity/mtmAdd/${entityIds}`)
     },
-    handleMtmEdit: function (mtm) {
+    handleMtmEdit (mtm) {
       this.$router.push(`/project/${this.projectId}/entity/mtmEdit/${mtm.mtmId}`)
     },
-    handleMtmDel: function (mtm) {
+    handleMtmDel (mtm) {
       this.$common.confirm(`请确认是否删除多对多【${mtm.tableName}】`)
         .then(() => this.$ajax.delete(`/${apiPath}/meta_mtm/${mtm.mtmId}`))
         .then(response => this.$common.checkResult(response.data))
         .then(() => this.doQueryMtm())
         .catch(error => this.$common.showNotifyError(error))
     },
-    handleErDiagram: function () {
+    handleErDiagram () {
       const entityIds = this.selectItems.map(entity => entity.entityId)
       this.$refs.erDiagram.show(this.projectId, entityIds)
     },
-    handleField: function (row) {
+    handleField (row) {
       this.$router.push(`/project/${this.projectId}/entity/${row.entityId}/field`)
     },
-    handleEdit: function (row) {
+    handleEdit (row) {
       this.$router.push(`/project/${this.projectId}/entity/edit/${row.entityId}`)
     },
-    handleShow: function (row) {
+    handleShow (row) {
       this.$router.push(`/project/${this.projectId}/entity/show/${row.entityId}`)
     },
-    handleSqlPreview: function (row) {
+    handleSqlPreview (row) {
       this.$ajax.get(`/${apiPath}/code_gen/sqlPreview?entityId=${row.entityId}`)
         .then(response => this.$common.checkResult(response.data))
         .then(result => {
@@ -266,11 +266,11 @@ export default {
         })
         .catch(error => this.$common.showNotifyError(error))
     },
-    handleCommand: function (command) {
+    handleCommand (command) {
       this[command.method](command.arg)
     }
   },
-  activated: function () {
+  activated () {
     this.queryProject()
       .then(() => {
         this.queryForm.projectId = parseInt(this.projectId)

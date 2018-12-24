@@ -186,7 +186,7 @@ export default {
     'cascade-ext-list': cascadeExtList,
     meteor
   },
-  data: function () {
+  data () {
     return {
       // 此处不知为何，生产编译时，图片路径有误。本来应该是ui/static变成了uistatic
       copyFieldUrl: copyFieldUrl.replace('uistatic', 'ui/static'),
@@ -218,7 +218,7 @@ export default {
     }
   },
   watch: {
-    'indexes': function (value) {
+    indexes (value) {
       if (!value) {
         return
       }
@@ -237,7 +237,7 @@ export default {
     }
   },
   filters: {
-    optionLabel: function (value, optionType) {
+    optionLabel (value, optionType) {
       const ops = options[optionType]
       for (const op of ops) {
         if (op.value === value) {
@@ -246,7 +246,7 @@ export default {
       }
       return null
     },
-    lengthAndScale: function (row) {
+    lengthAndScale (row) {
       let rel = ''
       if (options.showFieldLength(row.fieldType)) {
         rel += '(' + row.fieldLength
@@ -259,18 +259,18 @@ export default {
     }
   },
   methods: {
-    selectionChange: function (val) {
+    selectionChange (val) {
       this.selectItems = val
       this.activeNum = this.selectItems.length
     },
-    handleRemoveTemplate: function (fieldId) {
+    handleRemoveTemplate (fieldId) {
       const index = this.cacheTemplate.findIndex(item => item.fieldId === fieldId)
       if (index > -1) {
         this.cacheTemplate.splice(index, 1)
         this.cacheTemplateCount--
       }
     },
-    handleDel: function () {
+    handleDel () {
       if (this.activeNum <= 0) {
         this.$common.showMsg('warning', '请选择字段')
         return
@@ -282,7 +282,7 @@ export default {
         .then(() => this.doQueryIndex())
         .catch(error => this.$common.showNotifyError(error))
     },
-    handleCopy: function () {
+    handleCopy () {
       if (this.activeNum <= 0) {
         this.$common.showMsg('warning', '请选择字段')
         return
@@ -295,14 +295,14 @@ export default {
       }
       this.cacheTemplateCount = this.cacheTemplate.length
     },
-    ifCached: function (row) {
+    ifCached (row) {
       return !!this.cacheTemplate.find(t => t.fieldId === row.fieldId)
     },
     /**
      * 显示复制动画
      * @param fieldId
      */
-    showMeteor: function (fieldId) {
+    showMeteor (fieldId) {
       // 注意：这里返回的是数组，所以取里面第一个
       const meteor = this.$refs['meteor' + fieldId][0]
       const copyButton = this.$refs['copyButton' + fieldId]
@@ -310,19 +310,19 @@ export default {
       meteor.adjust(10, 0, 103, -8)
       meteor.show(500)
     },
-    handleCopyOne: function (row, e) {
+    handleCopyOne (row, e) {
       if (!this.ifCached(row)) {
         this.cacheTemplate.push(row)
         this.cacheTemplateCount = this.cacheTemplate.length
         this.showMeteor(row.fieldId)
       }
     },
-    initProjectOptions: function () {
+    initProjectOptions () {
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.queryForm.projectEntityOptions = result.data.map(project => ({ value: project.projectId, label: project.projectDesc, children: [] })) })
     },
-    handleProjectChange: function (optionArray) {
+    handleProjectChange (optionArray) {
       const projectId = optionArray[0]
       // 获取被激活的option
       const project = this.queryForm.projectEntityOptions.find(option => option.value === projectId)
@@ -333,7 +333,7 @@ export default {
         .then(response => this.$common.checkResult(response.data))
         .then(result => { project.children = result.data.entities.map(entity => ({ value: entity.entityId, label: entity.title })) })
     },
-    handleQuery: function () {
+    handleQuery () {
       if (this.queryForm.projectEntity[1] == null) {
         this.$common.showNotifyError('请选择实体')
         return
@@ -348,7 +348,7 @@ export default {
         .then(() => this.doQueryIndex())
     },
     // 列表查询
-    doQuery: function () {
+    doQuery () {
       if (!this.query.projectId || !this.query.entityId) {
         return
       }
@@ -365,7 +365,7 @@ export default {
         .finally(() => { this.loading = false })
     },
     // 索引查询
-    doQueryIndex: function () {
+    doQueryIndex () {
       if (!this.query.projectId || !this.query.entityId) {
         return
       }
@@ -376,7 +376,7 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    handleAdd: function () {
+    handleAdd () {
       this.addTemplateFormVisible = false
       // 默认类型是系统内置模板
       let type = 'system'
@@ -386,18 +386,18 @@ export default {
       }
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/add?type=${type}&template=${this.templateForm.template}`)
     },
-    handleAddImm: function () {
+    handleAddImm () {
       this.addTemplateFormVisible = false
       const multiple = this.templateForm.multiple
       const templates = this.templateForm.templates
       const template = this.templateForm.template
-      const callback = function (form, refresh) {
+      const callback = (form, refresh) => {
         return this.$ajax.post(`/${apiPath}/meta_field/save`, {
           ...this.$common.removeBlankField(form),
           entityId: this.entityId
         })
           .then(response => this.$common.checkResult(response.data))
-        // 执行页面刷新
+          // 执行页面刷新
           .then(() => {
             if (refresh) {
               this.$common.showMsg('success', '添加成功')
@@ -406,8 +406,8 @@ export default {
             }
           })
           .catch(error => this.$common.showNotifyError(error))
-      }.bind(this)
-      const doAddImm = function (temp, refresh) {
+      }
+      const doAddImm = (temp, refresh) => {
         // 如果目标值是数字，则为临时模板
         if (typeof temp === 'number') {
           return this.$ajax.get(`/${apiPath}/meta_field/${temp}`)
@@ -418,7 +418,7 @@ export default {
           // 系统内置模板，直接保存
           return callback(fieldTemplate[temp], refresh)
         }
-      }.bind(this)
+      }
       const loading = this.$loading()
       let promise = null
       if (multiple === '0') {
@@ -433,51 +433,51 @@ export default {
       }
       promise.finally(() => loading.close())
     },
-    handleEdit: function (row) {
+    handleEdit (row) {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/edit/${row.fieldId}`)
     },
-    handleShow: function (row) {
+    handleShow (row) {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/show/${row.fieldId}`)
     },
-    handleShowCascadeExt: function (row) {
+    handleShowCascadeExt (row) {
       this.cascadeExtListVisible = true
       Vue.nextTick(() => this.$refs.cascadeExtList.init(row.entityId, row.fieldId, row.foreignEntityId))
     },
-    resetCascadeFieldNum: function (fieldId, cascadeFieldNum) {
+    resetCascadeFieldNum (fieldId, cascadeFieldNum) {
       const field = this.entities.find(field => field.fieldId === fieldId)
       field.cascadeFieldNum = cascadeFieldNum
     },
-    addCascadeFieldNum: function (fieldId, num) {
+    addCascadeFieldNum (fieldId, num) {
       const field = this.entities.find(field => field.fieldId === fieldId)
       field.cascadeFieldNum += num
     },
-    handleIndexCommand: function (command) {
+    handleIndexCommand (command) {
       this[command.method](...command.arg)
     },
-    handleDelIndexField: function (index, field) {
+    handleDelIndexField (index, field) {
       this.$common.confirm(`请确认是否从索引【${index.indexName}】中删除【${field.fieldDesc}】字段`)
         .then(() => this.$ajax.put(`/${apiPath}/meta_index/${index.indexId}/removeField`, [field.fieldId]))
         .then(response => this.$common.checkResult(response.data))
         .then(() => this.doQueryIndex())
         .catch(error => this.$common.showNotifyError(error))
     },
-    handleDelIndex: function (index) {
+    handleDelIndex (index) {
       this.$common.confirm(`请确认是否删除索引【${index.indexName}】`)
         .then(() => this.$ajax.delete(`/${apiPath}/meta_index/${index.indexId}`))
         .then(response => this.$common.checkResult(response.data))
         .then(() => this.doQueryIndex())
         .catch(error => this.$common.showNotifyError(error))
     },
-    handleIndexAdd: function () {
+    handleIndexAdd () {
       const fieldIdStr = this.selectItems.map(field => field.fieldId).join('-')
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexAdd/${fieldIdStr}`)
     },
-    handleIndexEdit: function (index) {
+    handleIndexEdit (index) {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexEdit/${index.indexId}`)
     }
 
   },
-  activated: function () {
+  activated () {
     const projectId = parseInt(this.projectId)
     const entityId = parseInt(this.entityId)
     this.queryForm.projectEntity[0] = projectId

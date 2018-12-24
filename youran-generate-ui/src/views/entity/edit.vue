@@ -65,7 +65,7 @@ import { initFormBean, getRules } from './model'
 export default {
   name: 'entityEdit',
   props: ['projectId', 'entityId'],
-  data: function () {
+  data () {
     return {
       boolOptions: options.boolOptions,
       projectList: [],
@@ -75,23 +75,23 @@ export default {
     }
   },
   methods: {
-    queryProject: function () {
+    queryProject () {
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.projectList = result.data })
     },
-    getEntity: function () {
+    getEntity () {
       return this.$ajax.get(`/${apiPath}/meta_entity/${this.entityId}`)
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.old = result.data })
         .catch(error => this.$common.showNotifyError(error))
     },
-    reset: function () {
+    reset () {
       for (const key in initFormBean(true)) {
         this.form[key] = this.old[key]
       }
     },
-    submit: function () {
+    submit () {
       let loading = null
       // 校验表单
       this.$refs.editForm.validate()
@@ -114,11 +114,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push(`/project/${this.projectId}/entity`)
     }
   },
-  created: function () {
+  created () {
     Promise.all([this.getEntity(), this.queryProject()])
       .then(() => this.reset())
   }

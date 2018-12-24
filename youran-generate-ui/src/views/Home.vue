@@ -14,7 +14,7 @@ import tutorial from './tutorial/tutorial.md'
 const converter = new showdown.Converter()
 const tutorialHtml = converter.makeHtml(tutorial)
 export default {
-  data: function () {
+  data () {
     return {
       tutorial: tutorialHtml
     }

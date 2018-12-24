@@ -1,6 +1,6 @@
 <template>
   <div class="erDiagram">
-    <el-dialog title="实体关系图" :visible.sync="visible" :fullscreen="true">
+    <el-dialog title="实体关系图" :class="{'hideTitle':hideTitle}" :visible.sync="visible" :fullscreen="true">
       <el-row type="flex" align="middle" v-loading="loading" style="height: 100%;">
         <div id="erDiagramDiv" class="erDiagramDiv"></div>
       </el-row>
@@ -13,7 +13,7 @@ import { apiPath } from '@/components/common'
 import go from 'gojs'
 export default {
   name: 'er-diagram',
-  data: function () {
+  data () {
     return {
       // 后端返回的json数据
       erDiagram: {
@@ -24,14 +24,13 @@ export default {
     }
   },
   methods: {
-
-    show: function (projectId, entityIds) {
+    show (projectId, entityIds) {
       this.visible = true
       this.queryErDiagram(projectId, entityIds)
         .then(() => this.renderDiagram())
     },
 
-    queryErDiagram: function (projectId, entityIds) {
+    queryErDiagram (projectId, entityIds) {
       this.loading = true
       return this.$ajax.get(`/${apiPath}/er_diagram/show`, { params: { projectId, entityIds } })
         .then(response => this.$common.checkResult(response.data))
@@ -40,7 +39,7 @@ export default {
         .finally(() => { this.loading = false })
     },
 
-    getBrush: function (key) {
+    getBrush (key) {
       if (!this.brush) {
         const $ = go.GraphObject.make
         this.brush = {
@@ -54,7 +53,7 @@ export default {
       return this.brush[key]
     },
 
-    initDiagram: function () {
+    initDiagram () {
       const $ = go.GraphObject.make
       this.diagram =
           $(go.Diagram, 'erDiagramDiv', // must name or refer to the DIV HTML element
@@ -98,7 +97,7 @@ export default {
             new go.Binding('location', 'location').makeTwoWay(),
             // whenever the PanelExpanderButton changes the visible property of the 'LIST' panel,
             // clear out any desiredSize set by the ResizingTool.
-            new go.Binding('desiredSize', 'visible', function (v) { return new go.Size(NaN, NaN) }).ofObject('LIST'),
+            new go.Binding('desiredSize', 'visible', () => new go.Size(NaN, NaN)).ofObject('LIST'),
             // define the node's outer shape, which will surround the Table
             $(go.Shape, 'Rectangle',
               { fill: this.getBrush('lightgrad'), stroke: '#756875', strokeWidth: 3 }),
@@ -168,7 +167,7 @@ export default {
           )
     },
 
-    updateModel: function () {
+    updateModel () {
       this.erDiagram.nodeData.forEach(v => v.fields.forEach(item => {
         if (item.type === 'pk') {
           item.iskey = true
@@ -194,7 +193,7 @@ export default {
       this.diagram.model = new go.GraphLinksModel(this.erDiagram.nodeData, this.erDiagram.linkData)
     },
 
-    renderDiagram: function () {
+    renderDiagram () {
       if (!this.diagram) {
         this.initDiagram()
         this.updateModel()
@@ -208,15 +207,19 @@ export default {
 </script>
 
 <style>
-  .erDiagramDiv{
+  .erDiagram .erDiagramDiv{
     width: 100%;
     height: 100%;
   }
   .erDiagram .el-dialog__header{
     background-color: #409EFF;
+    padding: 10px 20px 10px;
   }
   .erDiagram .el-dialog__title{
     color: #FFFFFF;
+  }
+  .erDiagram .el-dialog__headerbtn{
+    top: 15px;
   }
   .erDiagram .el-dialog__close{
     color: #FFFFFF;

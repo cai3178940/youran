@@ -61,7 +61,7 @@ import { initIndexFormBean, getIndexRules } from './model'
 export default {
   name: 'indexEdit',
   props: ['projectId', 'entityId', 'indexId'],
-  data: function () {
+  data () {
     return {
       boolOptions: options.boolOptions,
       fieldList: [],
@@ -72,13 +72,13 @@ export default {
     }
   },
   watch: {
-    'form.indexName': function (value) {
+    'form.indexName' (value) {
       const lc = /[a-z]/i
       if (lc.test(value)) {
         this.form.indexName = value.toUpperCase()
       }
     },
-    'form.unique': function (value) {
+    'form.unique' (value) {
       if (value === 1) {
         this.form.uniqueCheck = 1
         this.uniqueCheckDisabled = true
@@ -88,12 +88,12 @@ export default {
     }
   },
   methods: {
-    queryField: function (entityId) {
+    queryField (entityId) {
       return this.$common.getFieldOptions(entityId)
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.fieldList = result.data })
     },
-    getIndex: function () {
+    getIndex () {
       return this.$ajax.get(`/${apiPath}/meta_index/${this.indexId}`)
         .then(response => this.$common.checkResult(response.data))
         .then(result => {
@@ -106,12 +106,12 @@ export default {
         })
         .catch(error => this.$common.showNotifyError(error))
     },
-    reset: function () {
+    reset () {
       for (const key in initIndexFormBean(true)) {
         this.form[key] = this.old[key]
       }
     },
-    submit: function () {
+    submit () {
       const params = {
         ...this.form
       }
@@ -138,11 +138,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
     }
   },
-  created: function () {
+  created () {
     Promise.all([this.getIndex(), this.queryField(this.entityId)])
       .then(() => this.reset())
   }

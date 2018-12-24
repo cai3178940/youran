@@ -59,7 +59,7 @@ export default {
    * @param fieldType
    * @returns {boolean}
    */
-  showFieldLength: function (fieldType) {
+  showFieldLength (fieldType) {
     return fieldType !== 'datetime' && fieldType !== 'text'
   },
   /**
@@ -67,7 +67,7 @@ export default {
    * @param fieldType
    * @returns {boolean}
    */
-  showFieldScale: function (fieldType) {
+  showFieldScale (fieldType) {
     return fieldType === 'decimal' || fieldType === 'double' || fieldType === 'float'
   },
 

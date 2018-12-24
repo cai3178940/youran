@@ -65,7 +65,7 @@ import { initFormBean, getRules } from './model'
 export default {
   name: 'entityAdd',
   props: ['projectId'],
-  data: function () {
+  data () {
     return {
       boolOptions: options.boolOptions,
       projectList: [],
@@ -74,12 +74,12 @@ export default {
     }
   },
   methods: {
-    queryProject: function () {
+    queryProject () {
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.projectList = result.data })
     },
-    submit: function () {
+    submit () {
       let loading = null
       // 校验表单
       this.$refs.addForm.validate()
@@ -102,11 +102,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push(`/project/${this.projectId}/entity`)
     }
   },
-  created: function () {
+  created () {
     this.queryProject()
       .then(() => { this.form.projectId = parseInt(this.projectId) })
   }

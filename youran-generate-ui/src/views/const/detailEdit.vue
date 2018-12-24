@@ -41,7 +41,7 @@ import { initDetailFormBean, getDetailRules } from './model'
 export default {
   name: 'constDetailEdit',
   props: ['projectId', 'constId', 'constDetailId'],
-  data: function () {
+  data () {
     return {
       old: initDetailFormBean(true),
       form: initDetailFormBean(true),
@@ -49,18 +49,18 @@ export default {
     }
   },
   methods: {
-    getConstDetail: function () {
+    getConstDetail () {
       return this.$ajax.get(`/${apiPath}/meta_const_detail/${this.constDetailId}`)
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.old = result.data })
         .catch(error => this.$common.showNotifyError(error))
     },
-    reset: function () {
+    reset () {
       for (const key in initDetailFormBean(true)) {
         this.form[key] = this.old[key]
       }
     },
-    submit: function () {
+    submit () {
       let loading = null
       // 校验表单
       this.$refs.editForm.validate()
@@ -83,11 +83,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push(`/project/${this.projectId}/const/${this.constId}`)
     }
   },
-  created: function () {
+  created () {
     this.getConstDetail()
       .then(() => this.reset())
   }

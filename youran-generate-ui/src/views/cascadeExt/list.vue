@@ -100,7 +100,7 @@ const cascadeExtModel = {
 
 export default {
   name: 'cascadeExtList',
-  data: function () {
+  data () {
     return {
       entityId: null,
       fieldId: null,
@@ -113,24 +113,24 @@ export default {
     }
   },
   methods: {
-    init: function (entityId, fieldId, cascadeEntityId) {
+    init (entityId, fieldId, cascadeEntityId) {
       this.entityId = entityId
       this.fieldId = fieldId
       this.cascadeEntityId = cascadeEntityId
       this.initCascadeFieldOptions()
       this.doQuery()
     },
-    selectionChange: function (val) {
+    selectionChange (val) {
       this.selectItems = val
       this.activeNum = this.selectItems.length
     },
-    initCascadeFieldOptions: function () {
+    initCascadeFieldOptions () {
       this.$ajax.get(`/${apiPath}/meta_field/list`, { params: { entityId: this.cascadeEntityId } })
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.cascadeFieldList = result.data })
         .catch(error => this.$common.showNotifyError(error))
     },
-    doQuery: function () {
+    doQuery () {
       this.loading = true
       this.$ajax.get(`/${apiPath}/meta_cascade_ext/list`, { params: { fieldId: this.fieldId } })
         .then(response => this.$common.checkResult(response.data))
@@ -141,7 +141,7 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    handleAdd: function () {
+    handleAdd () {
       const newRow = Object.assign({}, cascadeExtModel, {
         entityId: this.entityId,
         fieldId: this.fieldId,
@@ -149,14 +149,14 @@ export default {
       })
       this.entities.unshift(newRow)
     },
-    handleEdit: function (row) {
+    handleEdit (row) {
       Vue.set(row, 'editFlag', true)
     },
-    handleCascadeFieldChange: function (row) {
+    handleCascadeFieldChange (row) {
       const cascadeField = this.cascadeFieldList.find(field => field.fieldId === row.cascadeFieldId)
       row.alias = cascadeField.jfieldName
     },
-    handleSave: function (row) {
+    handleSave (row) {
       let saveURL = `/${apiPath}/meta_cascade_ext/save`
       let method = 'post'
       if (row.cascadeExtId) {
@@ -190,7 +190,7 @@ export default {
           }
         })
     },
-    handleDel: function () {
+    handleDel () {
       if (this.activeNum <= 0) {
         this.$common.showMsg('warning', '请选择字段')
         return

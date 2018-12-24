@@ -89,7 +89,7 @@ import { initMtmFormBean, getMtmRules } from './model'
 export default {
   name: 'mtmAdd',
   props: ['projectId', 'entityIds'],
-  data: function () {
+  data () {
     return {
       boolOptions: options.boolOptions,
       projectList: [],
@@ -99,17 +99,17 @@ export default {
     }
   },
   methods: {
-    queryProject: function () {
+    queryProject () {
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.projectList = result.data })
     },
-    queryEntity: function (projectId) {
+    queryEntity (projectId) {
       return this.$common.getEntityOptions(projectId)
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.entityList = result.data.entities })
     },
-    submit: function () {
+    submit () {
       let loading = null
       // 校验表单
       this.$refs.addForm.validate()
@@ -132,11 +132,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push(`/project/${this.projectId}/entity`)
     }
   },
-  created: function () {
+  created () {
     this.form.projectId = parseInt(this.projectId)
     if (this.entityIds) {
       const array = this.entityIds.split('-').map(value => parseInt(value))

@@ -87,7 +87,7 @@ import { apiPath } from '@/components/common'
 export default {
   name: 'constList',
   props: ['projectId', 'constId'],
-  data: function () {
+  data () {
     return {
       // 查询参数
       query: {
@@ -113,7 +113,7 @@ export default {
     }
   },
   filters: {
-    optionLabel: function (value, optionType) {
+    optionLabel (value, optionType) {
       const ops = options[optionType]
       for (const op of ops) {
         if (op.value === value) {
@@ -124,11 +124,11 @@ export default {
     }
   },
   methods: {
-    selectionChange: function (val) {
+    selectionChange (val) {
       this.selectItems = val
       this.activeNum = this.selectItems.length
     },
-    handleDel: function () {
+    handleDel () {
       if (this.activeNum <= 0) {
         this.$common.showMsg('warning', '请选择枚举')
         return
@@ -139,20 +139,20 @@ export default {
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
     },
-    sizeChange: function (pageSize) {
+    sizeChange (pageSize) {
       this.page.pageSize = pageSize
       this.doQuery()
     },
-    currentChange: function (pageNo) {
+    currentChange (pageNo) {
       this.page.pageNo = pageNo
       this.doQuery()
     },
-    queryProject: function () {
+    queryProject () {
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.projectList = result.data })
     },
-    handleQuery: function () {
+    handleQuery () {
       // 将查询表单参数赋值给查询参数
       this.query = {
         ...this.queryForm
@@ -163,7 +163,7 @@ export default {
       this.doQuery()
     },
     // 列表查询
-    doQuery: function () {
+    doQuery () {
       if (!this.query.projectId) {
         return
       }
@@ -180,16 +180,16 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    handleAdd: function () {
+    handleAdd () {
       this.$router.push(`/project/${this.projectId}/const/add`)
     },
-    handleEdit: function (row) {
+    handleEdit (row) {
       this.$router.push(`/project/${this.projectId}/const/edit/${row.constId}`)
     },
-    handleShow: function (row) {
+    handleShow (row) {
       this.$router.push(`/project/${this.projectId}/const/show/${row.constId}`)
     },
-    expandChange: function (row, expandedRows) {
+    expandChange (row, expandedRows) {
       // 如果当前展开大于1行，则将另一行关闭
       if (expandedRows && expandedRows.length > 1) {
         const otherRow = expandedRows.find(r => r !== row)
@@ -207,7 +207,7 @@ export default {
       }
     },
     // 枚举值列表查询
-    doDetailQuery: function (constId) {
+    doDetailQuery (constId) {
       this.detailLoading = true
       this.$ajax.get(`/${apiPath}/meta_const_detail/list`, { params: { 'projectId': this.query.projectId, 'constId': constId } })
         .then(response => this.$common.checkResult(response.data))
@@ -215,13 +215,13 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.detailLoading = false })
     },
-    handleDetailAdd: function (row) {
+    handleDetailAdd (row) {
       this.$router.push(`/project/${this.projectId}/const/${row.constId}/constDetailAdd`)
     },
-    handleDetailEdit: function (theConst, detail) {
+    handleDetailEdit (theConst, detail) {
       this.$router.push(`/project/${this.projectId}/const/${theConst.constId}/constDetailEdit/${detail.constDetailId}`)
     },
-    handleDetailDel: function (theConst, detail) {
+    handleDetailDel (theConst, detail) {
       this.$common.confirm('是否确认删除枚举值')
         .then(() => this.$ajax.put(`/${apiPath}/meta_const_detail/deleteBatch`, [detail.constDetailId]))
         .then(response => this.$common.checkResult(response.data))
@@ -229,7 +229,7 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
     }
   },
-  activated: function () {
+  activated () {
     this.queryProject()
       .then(() => {
         this.queryForm.projectId = parseInt(this.projectId)

@@ -211,7 +211,7 @@ import { initFormBean, getRules } from './model'
 export default {
   name: 'fieldEdit',
   props: ['projectId', 'entityId', 'fieldId'],
-  data: function () {
+  data () {
     return {
       boolOptions: options.boolOptions,
       fieldTypeOptions: options.fieldTypeOptions,
@@ -232,18 +232,18 @@ export default {
     }
   },
   computed: {
-    dicTypeDisabled: function () {
+    dicTypeDisabled () {
       if (this.form.primaryKey === 1 || this.form.specialField) {
         return true
       }
       return false
     },
-    fieldScaleVisible: function () {
+    fieldScaleVisible () {
       return options.showFieldScale(this.form.fieldType)
     }
   },
   watch: {
-    'form.primaryKey': function (value) {
+    'form.primaryKey' (value) {
       if (value === 1) {
         this.form.notNull = 1
         this.notNullDisabled = true
@@ -257,14 +257,14 @@ export default {
         this.autoIncrementDisabled = true
       }
     },
-    'form.foreignKey': function (value) {
+    'form.foreignKey' (value) {
       if (value === 1) {
         this.foreignFieldDisabled = false
       } else {
         this.foreignFieldDisabled = true
       }
     },
-    'form.query': function (value) {
+    'form.query' (value) {
       if (value === 1) {
         this.queryTypeDisabled = false
       } else {
@@ -272,19 +272,19 @@ export default {
         this.queryType = ''
       }
     },
-    'dicTypeDisabled': function (value) {
+    'dicTypeDisabled' (value) {
       if (value) {
         this.form.dicType = ''
       }
     }
   },
   methods: {
-    initForeignEntityOptions: function () {
+    initForeignEntityOptions () {
       return this.$common.getEntityOptions(this.projectId)
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.entityFieldOptions = result.data.entities.map(entity => ({ value: entity.entityId, label: entity.title, children: [] })) })
     },
-    handleForeignEntityChange: function (optionArray) {
+    handleForeignEntityChange (optionArray) {
       const entityId = optionArray[0]
       // 获取被激活的option
       const entity = this.entityFieldOptions.find(option => option.value === entityId)
@@ -299,16 +299,16 @@ export default {
         })
     },
     // 查询可用枚举字典
-    queryDicType: function (queryString, cb) {
+    queryDicType (queryString, cb) {
       // 定义回调操作
-      const action = function () {
+      const action = () => {
         const constList = this.constList.slice(0)
         constList.push(...options.defaultConstList)
         const results = queryString ? constList.filter(
           c => c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
         ) : constList
         cb(results.map(c => ({ value: c.constName })))
-      }.bind(this)
+      }
       if (this.constList) {
         action()
       } else {
@@ -320,18 +320,18 @@ export default {
           })
       }
     },
-    getField: function () {
+    getField () {
       return this.$ajax.get(`/${apiPath}/meta_field/${this.fieldId}`)
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.old = result.data })
         .catch(error => this.$common.showNotifyError(error))
     },
-    reset: function () {
+    reset () {
       for (const key in initFormBean(true)) {
         this.form[key] = this.old[key]
       }
     },
-    submit: function () {
+    submit () {
       // 表单预处理
       if (!options.showFieldScale(this.form.fieldType)) {
         this.form.fieldScale = null
@@ -360,11 +360,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
     }
   },
-  created: function () {
+  created () {
     Promise.all([this.getField(), this.initForeignEntityOptions()])
       .then(() => this.reset())
       .then(() => this.handleForeignEntityChange([this.form.foreignEntityId]))

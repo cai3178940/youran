@@ -40,14 +40,14 @@ import { initDetailFormBean, getDetailRules } from './model'
 export default {
   name: 'constDetailAdd',
   props: ['projectId', 'constId'],
-  data: function () {
+  data () {
     return {
       form: initDetailFormBean(false),
       rules: getDetailRules()
     }
   },
   methods: {
-    submit: function () {
+    submit () {
       let loading = null
       // 校验表单
       this.$refs.addForm.validate()
@@ -70,11 +70,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push(`/project/${this.projectId}/const/${this.constId}`)
     }
   },
-  created: function () {
+  created () {
     this.form.constId = parseInt(this.constId)
   }
 }

@@ -29,7 +29,7 @@ function getElementPos (obj) {
 
 export default {
   name: 'meteor',
-  data: function () {
+  data () {
     return {
       visible: false,
       from: {
@@ -53,7 +53,7 @@ export default {
        * @param fromEl 起始位置的元素
        * @param toEl 结束位置的元素
        */
-    init: function (fromEl, toEl) {
+    init (fromEl, toEl) {
       this.from = getElementPos(fromEl)
       this.to = getElementPos(toEl)
       this.curr = getElementPos(this.$el)
@@ -65,7 +65,7 @@ export default {
        * @param tx
        * @param ty
        */
-    adjust: function (fx, fy, tx, ty) {
+    adjust (fx, fy, tx, ty) {
       this.from.x += fx
       this.from.y += fy
       this.to.x += tx
@@ -75,17 +75,17 @@ export default {
        * 显示动画
        * @param duration 持续时长
        */
-    show: function (duration) {
+    show (duration) {
       this.duration = duration
       this.visible = true
     },
     /**
        * 隐藏动画
        */
-    hide: function () {
+    hide () {
       this.visible = false
     },
-    beforeEnter: function (el) {
+    beforeEnter (el) {
       const deltX = this.from.x - this.curr.x
       const deltY = this.from.y - this.curr.y
       Velocity(el, {
@@ -96,7 +96,7 @@ export default {
         duration: 0
       })
     },
-    enter: function (el, done) {
+    enter (el, done) {
       const deltX = this.to.x - this.curr.x
       const deltY = this.to.y - this.curr.y
       Velocity(el, {
@@ -109,7 +109,7 @@ export default {
         complete: done
       })
     },
-    afterEnter: function (el) {
+    afterEnter (el) {
       this.hide()
     }
   }

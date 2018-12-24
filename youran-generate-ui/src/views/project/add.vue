@@ -83,7 +83,7 @@ import { initFormBean, getRules } from './model'
 
 export default {
   name: 'projectAdd',
-  data: function () {
+  data () {
     return {
       boolOptions: options.boolOptions,
       form: initFormBean(false),
@@ -91,7 +91,7 @@ export default {
     }
   },
   methods: {
-    submit: function () {
+    submit () {
       let loading = null
       // 校验表单
       this.$refs.addForm.validate()
@@ -114,11 +114,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push('/project')
     }
   },
-  created: function () {
+  created () {
 
   }
 }

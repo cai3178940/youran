@@ -41,24 +41,24 @@
 <script>
 export default {
   name: 'app',
-  data: function () {
+  data () {
     return {
 
     }
   },
   methods: {
-    isRoutePath: function (path) {
+    isRoutePath (path) {
       return this.$route.path === path
     },
-    isRouteIndexOf: function (path) {
+    isRouteIndexOf (path) {
       return this.$route.path.indexOf(path) === 0
     }
   },
-  created: function () {
+  created () {
 
   },
   watch: {
-    '$route': function (to, from) {
+    '$route' (to, from) {
       // console.info(to)
     }
   }

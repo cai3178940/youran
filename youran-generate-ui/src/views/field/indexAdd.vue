@@ -60,7 +60,7 @@ import { initIndexFormBean, getIndexRules } from './model'
 export default {
   name: 'indexAdd',
   props: ['projectId', 'entityId', 'fieldIds'],
-  data: function () {
+  data () {
     return {
       boolOptions: options.boolOptions,
       fieldList: [],
@@ -70,13 +70,13 @@ export default {
     }
   },
   watch: {
-    'form.indexName': function (value) {
+    'form.indexName' (value) {
       const lc = /[a-z]/i
       if (lc.test(value)) {
         this.form.indexName = value.toUpperCase()
       }
     },
-    'form.unique': function (value) {
+    'form.unique' (value) {
       if (value === 1) {
         this.form.uniqueCheck = 1
         this.uniqueCheckDisabled = true
@@ -86,12 +86,12 @@ export default {
     }
   },
   methods: {
-    queryField: function (entityId) {
+    queryField (entityId) {
       return this.$common.getFieldOptions(entityId)
         .then(response => this.$common.checkResult(response.data))
         .then(result => { this.fieldList = result.data })
     },
-    submit: function () {
+    submit () {
       const params = {
         ...this.form
       }
@@ -118,11 +118,11 @@ export default {
           }
         })
     },
-    goBack: function () {
+    goBack () {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
     }
   },
-  created: function () {
+  created () {
     // 将路径参数解析到form表单
     this.form.entityId = parseInt(this.entityId)
     if (this.fieldIds) {

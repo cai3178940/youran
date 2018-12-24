@@ -111,7 +111,7 @@ import { apiPath } from '@/components/common'
 
 export default {
   name: 'projectList',
-  data: function () {
+  data () {
     return {
       query: {},
       activeNum: 0,
@@ -134,11 +134,11 @@ export default {
     }
   },
   methods: {
-    selectionChange: function (val) {
+    selectionChange (val) {
       this.selectItems = val
       this.activeNum = this.selectItems.length
     },
-    handleDel: function (row) {
+    handleDel (row) {
       this.$common.confirm('是否确认删除')
         .then(() => this.$ajax.put(`/${apiPath}/meta_project/deleteBatch`, [row.projectId]))
         .then(response => this.$common.checkResult(response.data))
@@ -146,7 +146,7 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
     },
     // 列表查询
-    doQuery: function () {
+    doQuery () {
       this.loading = true
       this.$ajax.get(`/${apiPath}/meta_project/list`, { params: this.query })
         .then(response => this.$common.checkResult(response.data))
@@ -154,34 +154,34 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    handleAdd: function () {
+    handleAdd () {
       this.$router.push('/project/add')
     },
-    handleEntity: function (row) {
+    handleEntity (row) {
       this.$router.push(`/project/${row.projectId}/entity`)
     },
-    handleConst: function (row) {
+    handleConst (row) {
       this.$router.push(`/project/${row.projectId}/const`)
     },
-    handleEdit: function (row) {
+    handleEdit (row) {
       this.$router.push(`/project/edit/${row.projectId}`)
     },
-    handleShow: function (row) {
+    handleShow (row) {
       this.$router.push(`/project/show/${row.projectId}`)
     },
-    handleGenSql: function (row) {
+    handleGenSql (row) {
       window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genSql?projectId=${row.projectId}`)
     },
-    handleGenCode: function (row) {
+    handleGenCode (row) {
       this.$common.confirm('是否确认下载')
         .then(() => window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genCode?projectId=${row.projectId}`))
     },
-    handleReverseEngineering: function (row) {
+    handleReverseEngineering (row) {
       this.reverseEngineeringFormVisible = true
       this.reverseEngineeringForm.projectId = row.projectId
       this.reverseEngineeringForm.ddl = ''
     },
-    handleReverseEngineeringCheck: function () {
+    handleReverseEngineeringCheck () {
       let loading = null
       // 校验表单
       this.$refs.reverseEngineeringForm.validate()
@@ -202,7 +202,7 @@ export default {
           }
         })
     },
-    handleReverseEngineeringSubmit: function () {
+    handleReverseEngineeringSubmit () {
       let loading = null
       // 校验表单
       this.$refs.reverseEngineeringForm.validate()
@@ -224,7 +224,7 @@ export default {
           }
         })
     },
-    handleCommit: function (row) {
+    handleCommit (row) {
       this.$common.confirm('是否确认提交到远程git仓库')
         .then(() => {
           this.loading = true
@@ -235,19 +235,19 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    /* handleCommand: function (command) {
+    /* handleCommand (command) {
       this[command.method](command.arg)
     }, */
-    activeRow: function (obj) {
+    activeRow (obj) {
       if (this.expandRowKeys.find(value => value === obj.row.projectId)) {
         return 'active-row'
       }
     },
-    cellMouseEnter: function (row) {
+    cellMouseEnter (row) {
       this.expandRowKeys = [row.projectId]
     }
   },
-  activated: function () {
+  activated () {
     this.doQuery()
   }
 }
