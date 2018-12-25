@@ -4,7 +4,9 @@
 <@call this.addImport("${this.packageName}.pojo.po.${this.classNameUpper}PO")/>
 <@call this.addImport("${this.commonPackage}.dao.DAO")/>
 <@call this.addImport("org.apache.ibatis.annotations.Mapper")/>
+<@call this.addImport("org.springframework.stereotype.Repository")/>
 <@call this.printClassCom("【${this.title}】数据库操作")/>
+@Repository
 @Mapper
 public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO> {
 

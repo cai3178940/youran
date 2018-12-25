@@ -3,6 +3,7 @@ package com.youran.generate.dao;
 import com.youran.common.dao.DAO;
 import com.youran.generate.pojo.po.MetaCascadeExtPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * Author: cbb
  * Create Time:2017/5/12 10:27
  */
+@Repository
 @Mapper
 public interface MetaCascadeExtDAO extends DAO<MetaCascadeExtPO> {
 

@@ -2,10 +2,9 @@ package com.youran.generate.dao;
 
 import com.youran.common.dao.DAO;
 import com.youran.generate.pojo.po.MetaFieldPO;
-import com.youran.generate.pojo.qo.MetaFieldQO;
-import com.youran.generate.pojo.vo.MetaFieldListVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -15,6 +14,7 @@ import java.util.List;
  * Author: cbb
  * Create Time:2017/5/12 10:27
  */
+@Repository
 @Mapper
 public interface MetaFieldDAO extends DAO<MetaFieldPO> {
 

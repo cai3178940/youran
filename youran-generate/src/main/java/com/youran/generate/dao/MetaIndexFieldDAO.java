@@ -5,6 +5,7 @@ import com.youran.generate.pojo.po.MetaIndexFieldPO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * Author: cbb
  * Create Time:2017/5/12 10:27
  */
+@Repository
 @Mapper
 public interface MetaIndexFieldDAO extends DAO<MetaIndexFieldPO> {
 
