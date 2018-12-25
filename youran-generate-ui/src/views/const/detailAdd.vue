@@ -80,9 +80,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+  @import '../../assets/common.scss';
   .constDetailAdd .addForm {
-    padding: 30px 50px;
+    padding: $form-padding;
   }
 
 </style>

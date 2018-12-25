@@ -491,67 +491,80 @@ export default {
   }
 }
 </script>
-<style>
-  /**
-   * 调整表格行高
-   */
-  .fieldList .el-table td{
-    padding: 3px 0;
-  }
-  .fieldList .activeNum {
-    min-width: 160px;
-    text-align: left;
-    padding: 0 0 0 20px;
-  }
-  .fieldList .index_span {
-    font-size: 10px;
-    border-radius: 4px;
-    padding: 3px;
-    margin: 1px;
-  }
-  .fieldList .index_com_span {
-    color: #2759ff;
-    background-color: #d9e5f7;
-  }
+<style lang="scss">
+  @import '../../assets/common.scss';
+  .fieldList {
 
-  .fieldList .index_com_span:hover{
-    color: #0235ff;
-    background-color: #c2cdf7;
-  }
-  .fieldList .index_check_span {
-    color: #ff7f1d;
-    background-color: #f7ddd2;
-  }
+    /**
+     * 调整表格行高
+     */
+    .el-table td {
+      padding: $el-table-padding;
+    }
 
-  .fieldList .index_check_span:hover{
-    color: #ff6501;
-    background-color: #f7cac1;
-  }
+    .activeNum {
+      min-width: 160px;
+      text-align: left;
+      padding: 0 0 0 20px;
+    }
 
-  .fieldList .index_u_span {
-    color: #ff233b;
-    background-color: #f7def7;
-  }
-  .fieldList .index_u_span:hover{
-    color: #ff000e;
-    background-color: #f6c2f7;
-  }
+    .index_span {
+      font-size: 10px;
+      border-radius: 4px;
+      padding: 3px;
+      margin: 1px;
+    }
 
-  .demo-form-inline .el-select .el-input {
-    width: 150px;
-  }
+    .index_com_span {
+      color: #2759ff;
+      background-color: #d9e5f7;
+    }
 
-  .demo-form-inline .el-form-item {
-    margin-bottom: 0px;
-  }
-  .cascadeExtDialog .el-dialog__body {
-    padding-top: 10px;
-  }
-  .cascadeBadge .el-badge__content{
-    transform: translateY(-5%) translateX(120%);
-    font-size: 10px;
-    height: 12px;
-    line-height: 13px;
-    padding: 0 3px;
+    .index_com_span:hover {
+      color: #0235ff;
+      background-color: #c2cdf7;
+    }
+
+    .index_check_span {
+      color: #ff7f1d;
+      background-color: #f7ddd2;
+    }
+
+    .index_check_span:hover {
+      color: #ff6501;
+      background-color: #f7cac1;
+    }
+
+    .index_u_span {
+      color: #ff233b;
+      background-color: #f7def7;
+    }
+
+    .index_u_span:hover {
+      color: #ff000e;
+      background-color: #f6c2f7;
+    }
+
+    .demo-form-inline {
+      .el-select .el-input {
+        width: 150px;
+      }
+
+      .el-form-item {
+        margin-bottom: 0px;
+      }
+    }
+
+    .cascadeExtDialog .el-dialog__body {
+      padding-top: 10px;
+    }
+
+    .cascadeBadge .el-badge__content {
+      transform: translateY(-5%) translateX(120%);
+      font-size: 10px;
+      height: 12px;
+      line-height: 13px;
+      padding: 0 3px;
+    }
   }
 </style>

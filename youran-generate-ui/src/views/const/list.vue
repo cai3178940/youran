@@ -245,23 +245,31 @@ export default {
   }
 }
 </script>
-<style>
-  .constList .activeNum {
-    min-width: 160px;
-    text-align: left;
-    padding: 0 0 0 20px;
-  }
-  /**
-   * 调整表格行高
-   */
-  .constList .el-table td{
-    padding: 3px 0;
-  }
-  .constList .el-table .el-table__expanded-cell{
-    padding: 0px;
-    border-bottom: 0px;
-  }
-  .constList .detailTable{
-    color: #9ea0a7;
+<style lang="scss">
+  @import '../../assets/common.scss';
+  .constList {
+    .activeNum {
+      min-width: 160px;
+      text-align: left;
+      padding: 0 0 0 20px;
+    }
+
+    .el-table {
+      /**
+       * 调整表格行高
+       */
+      td {
+        padding: $el-table-padding;
+      }
+
+      .el-table__expanded-cell {
+        padding: 0px;
+        border-bottom: 0px;
+      }
+    }
+
+    .detailTable {
+      color: #9ea0a7;
+    }
   }
 </style>

@@ -206,30 +206,40 @@ export default {
 }
 </script>
 
-<style>
-  .erDiagram .erDiagramDiv{
-    width: 100%;
-    height: 100%;
-  }
-  .erDiagram .el-dialog__header{
-    background-color: #409EFF;
-    padding: 10px 20px 10px;
-  }
-  .erDiagram .el-dialog__title{
-    color: #FFFFFF;
-  }
-  .erDiagram .el-dialog__headerbtn{
-    top: 15px;
-  }
-  .erDiagram .el-dialog__close{
-    color: #FFFFFF;
-  }
-  .erDiagram .el-dialog__close:hover{
-    color: #FFFFFF;
-  }
-  .erDiagram .el-dialog__body{
-    height: calc(100% - 55px);
-    padding: 0px;
-  }
+<style lang="scss">
+  @import '../../assets/common.scss';
+  $white :  #FFFFFF;
 
+  .erDiagram {
+    .erDiagramDiv {
+      width: 100%;
+      height: 100%;
+    }
+
+    .el-dialog__header {
+      background-color: #409EFF;
+      padding: 10px 20px 10px;
+    }
+
+    .el-dialog__title {
+      color: $white;
+    }
+
+    .el-dialog__headerbtn {
+      top: 15px;
+    }
+
+    .el-dialog__close {
+      color: $white;
+    }
+
+    .el-dialog__close:hover {
+      color: $white;
+    }
+
+    .el-dialog__body {
+      height: calc(100% - 55px);
+      padding: 0px;
+    }
+  }
 </style>

@@ -281,45 +281,49 @@ export default {
   }
 }
 </script>
-<style>
-  .entityList .activeNum {
-    min-width: 160px;
-    text-align: left;
-    padding: 0 0 0 20px;
-  }
+<style lang="scss">
+  @import '../../assets/common.scss';
+  .entityList {
+    .activeNum {
+      min-width: 160px;
+      text-align: left;
+      padding: 0 0 0 20px;
+    }
 
-  /**
-   * 调整表格行高
-   */
-  .entityList .el-table td{
-    padding: 3px 0;
-  }
+    /**
+     * 调整表格行高
+     */
+    .el-table td {
+      padding: $el-table-padding;
+    }
 
-  .entityList .mtm_span {
-    font-size: 10px;
-    border-radius: 4px;
-    padding: 3px;
-    margin: 1px;
-  }
+    .mtm_span {
+      font-size: 10px;
+      border-radius: 4px;
+      padding: 3px;
+      margin: 1px;
+    }
 
-  .entityList .mtm_hold_span {
-    color: #ff7f1d;
-    background-color: #f7ddd2;
-  }
+    .mtm_hold_span {
+      color: #ff7f1d;
+      background-color: #f7ddd2;
+    }
 
-  .entityList .mtm_hold_span:hover{
-    color: #ff6501;
-    background-color: #f7cac1;
-  }
-  .entityList .mtm_unhold_span {
-    border:1px solid #ff7f1d;
-    color: #ff7f1d;
-    background-color: #ffffff;
-  }
+    .mtm_hold_span:hover {
+      color: #ff6501;
+      background-color: #f7cac1;
+    }
 
-  .entityList .mtm_unhold_span:hover{
-    border:1px solid #ff7304;
-    color: #ff7304;
-    background-color: #ffd3b7;
+    .mtm_unhold_span {
+      border: 1px solid #ff7f1d;
+      color: #ff7f1d;
+      background-color: #ffffff;
+    }
+
+    .mtm_unhold_span:hover {
+      border: 1px solid #ff7304;
+      color: #ff7304;
+      background-color: #ffd3b7;
+    }
   }
 </style>

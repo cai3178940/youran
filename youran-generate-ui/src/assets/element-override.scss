@@ -1,3 +1,5 @@
+@import 'common.scss';
+
 .el-menu {
   height: 100%;
 }
@@ -11,11 +13,11 @@
 
 .el-breadcrumb__inner.is-link{
   cursor:pointer;
-  color:#409EFF
+  color:$color-primary
 }
 
 
 .el-dropdown-link{
   cursor:pointer;
-  color:#409EFF
+  color:$color-primary
 }

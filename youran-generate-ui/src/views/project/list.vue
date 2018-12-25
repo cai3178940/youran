@@ -47,42 +47,6 @@
           <icon v-if="scope.row.remote!=1" name="times" class="color-danger"></icon>
         </template>
       </el-table-column>
-      <!--<el-table-column
-        label="操作"
-        width="100">
-        <template slot-scope="scope">
-          &lt;!&ndash;<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>
-          <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>&ndash;&gt;
-          <el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">
-            <span class="el-dropdown-link">
-              操作<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" >
-                <icon name="edit" scale="0.8" ></icon> 编辑
-              </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleEntity',arg:scope.row}" >
-                <icon name="cubes" scale="0.8" ></icon> 实体管理
-              </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleConst',arg:scope.row}" >
-                <icon name="align-justify" scale="0.8" ></icon> 枚举管理
-              </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" >
-                <icon name="object-group" scale="0.8" ></icon> 反向工程
-              </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
-                <icon name="file-archive" scale="0.8" ></icon> 生成代码
-              </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleGenSql',arg:scope.row}" >
-                <icon name="file-code" scale="0.8" ></icon> 生成sql
-              </el-dropdown-item>
-              <el-dropdown-item v-if="scope.row.remote==1" :command="{method:'handleCommit',arg:scope.row}" >
-                <icon name="brands/git" scale="0.8" ></icon> 提交Git
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>-->
     </el-table>
 
     <el-dialog title="反向工程" :visible.sync="reverseEngineeringFormVisible" width="60%">
@@ -235,9 +199,6 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    /* handleCommand (command) {
-      this[command.method](command.arg)
-    }, */
     activeRow (obj) {
       if (this.expandRowKeys.find(value => value === obj.row.projectId)) {
         return 'active-row'
@@ -252,34 +213,38 @@ export default {
   }
 }
 </script>
-<style>
-
+<style lang="scss">
+  @import '../../assets/common.scss';
   .project-table-expand-column {
     visibility: hidden;
   }
 
   .project-table-expand {
     margin: 0px 60px;
+
+    .el-form-item {
+      margin-bottom: 5px;
+    }
   }
 
-  .project-table-expand .el-form-item {
-    margin-bottom: 5px;
-  }
+  .projectList {
 
-  .projectList .active-row {
-    background-color: #f5f7fa;
-  }
+    .active-row {
+      background-color: #f5f7fa;
+    }
 
-  .projectList .activeNum {
-    min-width: 160px;
-    text-align: left;
-    padding: 0 0 0 20px;
-  }
+    .activeNum {
+      min-width: 160px;
+      text-align: left;
+      padding: 0 0 0 20px;
+    }
 
-  /**
-   * 调整表格行高
-   */
-  .projectList .el-table td{
-    padding: 6px 0;
+    /**
+     * 调整表格行高
+     */
+    .el-table td {
+      padding: $el-table-padding;
+    }
+
   }
 </style>
