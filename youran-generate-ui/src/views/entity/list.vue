@@ -283,6 +283,10 @@ export default {
 </script>
 <style lang="scss">
   @import '../../assets/common.scss';
+  $hold-color: #ff7f1d;
+  $hold-back-color: #f7ddd2;
+  $unhold-color: #ff7f1d;
+  $unhold-back-color: #ffffff;
 
   .entityList {
     .activeNum {
@@ -306,22 +310,22 @@ export default {
     }
 
     .mtm_hold_span {
-      color: #ff7f1d;
-      background-color: #f7ddd2;
+      color: $hold-color;
+      background-color: $hold-back-color;
       &:hover {
-        color: #ff6501;
-        background-color: #f7cac1;
+        color: darken($hold-color,8);
+        background-color: darken($hold-back-color,8);
       }
     }
 
     .mtm_unhold_span {
-      border: 1px solid #ff7f1d;
-      color: #ff7f1d;
-      background-color: #ffffff;
+      border: 1px solid $unhold-color;
+      color: $unhold-color;
+      background-color: $unhold-back-color;
       &:hover {
-        border: 1px solid #ff7304;
-        color: #ff7304;
-        background-color: #ffd3b7;
+        border: 1px solid darken($unhold-color,10);
+        color: darken($unhold-color,10);
+        background-color: darken($unhold-back-color,5);
       }
     }
 

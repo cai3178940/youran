@@ -493,6 +493,12 @@ export default {
 </script>
 <style lang="scss">
   @import '../../assets/common.scss';
+  $com-color: #2759ff;
+  $com-back-color: #d9e5f7;
+  $check-color: #ff7f1d;
+  $check-back-color: #f7ddd2;
+  $u-color: #ff233b;
+  $u-back-color: #f7def7;
 
   .fieldList {
 
@@ -517,32 +523,32 @@ export default {
     }
 
     .index_com_span {
-      color: #2759ff;
-      background-color: #d9e5f7;
+      color: $com-color;
+      background-color: $com-back-color;
 
       &:hover {
-        color: #0235ff;
-        background-color: #c2cdf7;
+        color: darken($com-color,8);
+        background-color: darken($com-back-color,8);
       }
     }
 
     .index_check_span {
-      color: #ff7f1d;
-      background-color: #f7ddd2;
+      color: $check-color;
+      background-color: $check-back-color;
 
       &:hover {
-        color: #ff6501;
-        background-color: #f7cac1;
+        color: darken($check-color,8);
+        background-color: darken($check-back-color,8);
       }
     }
 
     .index_u_span {
-      color: #ff233b;
-      background-color: #f7def7;
+      color: $u-color;
+      background-color: $u-back-color;
 
       &:hover {
-        color: #ff000e;
-        background-color: #f6c2f7;
+        color: darken($u-color,8);
+        background-color: darken($u-back-color,8);
       }
     }
 
