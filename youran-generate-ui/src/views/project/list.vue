@@ -215,6 +215,7 @@ export default {
 </script>
 <style lang="scss">
   @import '../../assets/common.scss';
+
   .project-table-expand-column {
     visibility: hidden;
   }

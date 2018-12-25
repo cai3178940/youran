@@ -106,6 +106,6 @@ export default {
 <style lang="scss">
   @import '../../assets/common.scss';
   .constAdd .addForm {
-    padding: $form-padding;
+    @include youran-form;
   }
 </style>

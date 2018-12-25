@@ -128,7 +128,7 @@ export default {
 <style lang="scss">
   @import '../../assets/common.scss';
   .entityEdit .editForm {
-    padding: $form-padding;
+    @include youran-form;
   }
 
 </style>

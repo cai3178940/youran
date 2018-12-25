@@ -152,7 +152,7 @@ export default {
 <style lang="scss">
   @import '../../assets/common.scss';
   .mtmAdd .addForm {
-    padding: $form-padding;
+    @include youran-form;
   }
 
 </style>

@@ -140,7 +140,7 @@ export default {
 <style lang="scss">
   @import '../../assets/common.scss';
   .projectEdit .editForm {
-    padding: $form-padding;
+    @include youran-form;
   }
 
 </style>

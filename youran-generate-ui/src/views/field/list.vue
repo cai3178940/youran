@@ -493,6 +493,7 @@ export default {
 </script>
 <style lang="scss">
   @import '../../assets/common.scss';
+
   .fieldList {
 
     /**
@@ -518,31 +519,31 @@ export default {
     .index_com_span {
       color: #2759ff;
       background-color: #d9e5f7;
-    }
 
-    .index_com_span:hover {
-      color: #0235ff;
-      background-color: #c2cdf7;
+      &:hover {
+        color: #0235ff;
+        background-color: #c2cdf7;
+      }
     }
 
     .index_check_span {
       color: #ff7f1d;
       background-color: #f7ddd2;
-    }
 
-    .index_check_span:hover {
-      color: #ff6501;
-      background-color: #f7cac1;
+      &:hover {
+        color: #ff6501;
+        background-color: #f7cac1;
+      }
     }
 
     .index_u_span {
       color: #ff233b;
       background-color: #f7def7;
-    }
 
-    .index_u_span:hover {
-      color: #ff000e;
-      background-color: #f6c2f7;
+      &:hover {
+        color: #ff000e;
+        background-color: #f6c2f7;
+      }
     }
 
     .demo-form-inline {

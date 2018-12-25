@@ -378,7 +378,7 @@ export default {
 <style lang="scss">
   @import '../../assets/common.scss';
   .fieldEdit .editForm {
-    padding: $form-padding;
+    @include youran-form;
   }
 
 </style>

@@ -283,6 +283,7 @@ export default {
 </script>
 <style lang="scss">
   @import '../../assets/common.scss';
+
   .entityList {
     .activeNum {
       min-width: 160px;
@@ -307,23 +308,22 @@ export default {
     .mtm_hold_span {
       color: #ff7f1d;
       background-color: #f7ddd2;
-    }
-
-    .mtm_hold_span:hover {
-      color: #ff6501;
-      background-color: #f7cac1;
+      &:hover {
+        color: #ff6501;
+        background-color: #f7cac1;
+      }
     }
 
     .mtm_unhold_span {
       border: 1px solid #ff7f1d;
       color: #ff7f1d;
       background-color: #ffffff;
+      &:hover {
+        border: 1px solid #ff7304;
+        color: #ff7304;
+        background-color: #ffd3b7;
+      }
     }
 
-    .mtm_unhold_span:hover {
-      border: 1px solid #ff7304;
-      color: #ff7304;
-      background-color: #ffd3b7;
-    }
   }
 </style>

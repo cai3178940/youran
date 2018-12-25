@@ -9,3 +9,8 @@ $form-padding: 30px 50px;
 
 // 表格行padding
 $el-table-padding: 3px 0;
+
+
+@mixin youran-form {
+    padding: 30px 50px;
+}
