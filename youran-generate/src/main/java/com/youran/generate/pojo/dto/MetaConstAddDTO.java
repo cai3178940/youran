@@ -29,13 +29,13 @@ public class MetaConstAddDTO extends AbstractDTO {
     private Integer projectId;
 
     @ApiModelProperty(notes = N_CONSTNAME, example = E_CONSTNAME)
-    @Length(max = 20, message = "constName最大长度不能超过20")
+    @Length(max = 20, message = "constName最大长度不能超过{max}")
     @Pattern(regexp = PatternConst.CLASS_NAME, message = PatternConst.CLASS_NAME_MSG)
     private String constName;
 
     @ApiModelProperty(notes = N_CONSTREMARK, example = E_CONSTREMARK)
     @NotNull
-    @Length(max = 50, message = "constRemark最大长度不能超过50")
+    @Length(max = 50, message = "constRemark最大长度不能超过{max}")
     private String constRemark;
 
     @ApiModelProperty(notes = N_CONSTTYPE, example = E_CONSTTYPE)

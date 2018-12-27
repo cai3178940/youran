@@ -22,26 +22,26 @@ public class MetaProjectAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_PACKAGENAME, example = E_PACKAGENAME)
     @NotNull
-    @Length(min=1, max = 100, message = "packageName最大长度不能超过100")
+    @Length(min=1, max = 100, message = "packageName最大长度不能超过{max}")
     private String packageName;
 
     @ApiModelProperty(notes = N_PROJECTNAME, example = E_PROJECTNAME)
     @NotNull
-    @Length(min=1, max = 50, message = "projectName最大长度不能超过50")
+    @Length(min=1, max = 50, message = "projectName最大长度不能超过{max}")
     private String projectName;
 
     @ApiModelProperty(notes = N_PROJECTDESC, example = E_PROJECTDESC)
     @NotNull
-    @Length(min=1, max = 100, message = "projectDesc最大长度不能超过100")
+    @Length(min=1, max = 100, message = "projectDesc最大长度不能超过{max}")
     private String projectDesc;
 
     @ApiModelProperty(notes = N_GROUPID, example = E_GROUPID)
     @NotNull
-    @Length(min=1, max = 50, message = "groupId最大长度不能超过50")
+    @Length(min=1, max = 50, message = "groupId最大长度不能超过{max}")
     private String groupId;
 
     @ApiModelProperty(notes = N_AUTHOR, example = E_AUTHOR)
-    @Length(min=1, max = 50, message = "author最大长度不能超过50")
+    @Length(min=1, max = 50, message = "author最大长度不能超过{max}")
     private String author;
 
     @ApiModelProperty(notes = N_REMOTE, example = E_REMOTE)
@@ -50,15 +50,15 @@ public class MetaProjectAddDTO extends AbstractDTO {
     private Integer remote;
 
     @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
-    @Length(max = 256, message = "remoteUrl最大长度不能超过256")
+    @Length(max = 256, message = "remoteUrl最大长度不能超过{max}")
     private String remoteUrl;
 
     @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME)
-    @Length(max = 32, message = "username最大长度不能超过32")
+    @Length(max = 32, message = "username最大长度不能超过{max}")
     private String username;
 
     @ApiModelProperty(notes = N_PASSWORD, example = E_PASSWORD)
-    @Length(max = 32, message = "password最大长度不能超过32")
+    @Length(max = 32, message = "password最大长度不能超过{max}")
     private String password;
 
     private MetaProjectFeatureDTO feature;

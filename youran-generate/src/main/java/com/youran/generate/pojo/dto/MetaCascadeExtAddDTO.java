@@ -42,7 +42,7 @@ public class MetaCascadeExtAddDTO extends AbstractDTO {
      */
     @ApiModelProperty(notes = N_ALIAS, example = E_ALIAS)
     @NotNull
-    @Length(max = 64, message = "alias最大长度不能超过64")
+    @Length(max = 64, message = "alias最大长度不能超过{max}")
     private String alias;
 
     /**

@@ -27,18 +27,18 @@ public class MetaConstDetailAddDTO extends AbstractDTO {
     private Integer constId;
 
     @ApiModelProperty(notes = N_DETAILNAME, example = E_DETAILNAME)
-    @Length(max = 50, message = "detailName最大长度不能超过50")
+    @Length(max = 50, message = "detailName最大长度不能超过{max}")
     @Pattern(regexp = PatternConst.CONST_NAME, message = PatternConst.CONST_NAME_MSG)
     private String detailName;
 
     @ApiModelProperty(notes = N_DETAILVALUE, example = E_DETAILVALUE)
     @NotNull
-    @Length(max = 50, message = "detailValue最大长度不能超过50")
+    @Length(max = 50, message = "detailValue最大长度不能超过{max}")
     private String detailValue;
 
     @ApiModelProperty(notes = N_DETAILREMARK, example = E_DETAILREMARK)
     @NotNull
-    @Length(max = 50, message = "detailRemark最大长度不能超过50")
+    @Length(max = 50, message = "detailRemark最大长度不能超过{max}")
     private String detailRemark;
 
     public Integer getConstId() {

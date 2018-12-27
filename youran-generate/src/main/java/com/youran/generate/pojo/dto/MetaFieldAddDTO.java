@@ -34,12 +34,12 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
 
     @ApiModelProperty(notes = N_DEFAULTVALUE, example = E_DEFAULTVALUE)
-    @Length(max = 100, message = "defaultValue最大长度不能超过100")
+    @Length(max = 40, message = "defaultValue最大长度不能超过{max}")
     private String defaultValue;
 
 
     @ApiModelProperty(notes = N_DICTYPE, example = E_DICTYPE)
-    @Length(max = 40, message = "dicType最大长度不能超过40")
+    @Length(max = 40, message = "dicType最大长度不能超过{max}")
     @Pattern(regexp = PatternConst.ALPHANUM, message = PatternConst.ALPHANUM_MSG)
     private String dicType;
 
@@ -50,17 +50,17 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_FIELDCOMMENT, example = E_FIELDCOMMENT)
     @NotNull
-    @Length(max = 100, message = "fieldComment最大长度不能超过100")
+    @Length(max = 200, message = "fieldComment最大长度不能超过{max}")
     private String fieldComment;
 
     @ApiModelProperty(notes = N_FIELDDESC, example = E_FIELDDESC)
     @NotNull
-    @Length(max = 20, message = "fieldDesc最大长度不能超过20")
+    @Length(max = 40, message = "fieldDesc最大长度不能超过{max}")
     private String fieldDesc;
 
     @ApiModelProperty(notes = N_FIELDEXAMPLE, example = E_FIELDEXAMPLE)
     @NotNull
-    @Length(max = 100, message = "fieldExample最大长度不能超过100")
+    @Length(max = 200, message = "fieldExample最大长度不能超过{max}")
     private String fieldExample;
 
     @ApiModelProperty(notes = N_FIELDLENGTH, example = E_FIELDLENGTH)
@@ -68,7 +68,7 @@ public class MetaFieldAddDTO extends AbstractDTO {
     private Integer fieldLength;
 
     @ApiModelProperty(notes = N_FIELDNAME, example = E_FIELDNAME)
-    @Length(max = 64, message = "fieldName最大长度不能超过64")
+    @Length(max = 64, message = "fieldName最大长度不能超过{max}")
     @Pattern(regexp = PatternConst.FIELD_NAME, message = PatternConst.FIELD_NAME_MSG)
     private String fieldName;
 
@@ -76,7 +76,7 @@ public class MetaFieldAddDTO extends AbstractDTO {
     private Integer fieldScale;
 
     @ApiModelProperty(notes = N_FIELDTYPE, example = E_FIELDTYPE)
-    @Length(max = 10, message = "fieldType最大长度不能超过10")
+    @Length(max = 10, message = "fieldType最大长度不能超过{max}")
     @Pattern(regexp = PatternConst.ALPHA, message = PatternConst.ALPHA_MSG)
     private String fieldType;
 
@@ -86,7 +86,7 @@ public class MetaFieldAddDTO extends AbstractDTO {
     private Integer insert;
 
     @ApiModelProperty(notes = N_JFIELDNAME, example = E_JFIELDNAME)
-    @Length(max = 50, message = "jfieldName最大长度不能超过50")
+    @Length(max = 50, message = "jfieldName最大长度不能超过{max}")
     @Pattern(regexp = PatternConst.J_FIELD_NAME, message = PatternConst.J_FIELD_NAME_MSG)
     private String jfieldName;
 

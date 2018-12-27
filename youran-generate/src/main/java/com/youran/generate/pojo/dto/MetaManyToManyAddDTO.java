@@ -27,15 +27,15 @@ public class MetaManyToManyAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_TABLENAME, example = E_TABLENAME)
     @NotNull
-    @Length(max = 50, message = "tableName最大长度不能超过50")
+    @Length(max = 50, message = "tableName最大长度不能超过{max}")
     private String tableName;
 
     @ApiModelProperty(notes = N_SCHEMANAME, example = E_SCHEMANAME)
-    @Length(max = 20, message = "schemaName最大长度不能超过20")
+    @Length(max = 20, message = "schemaName最大长度不能超过{max}")
     private String schemaName;
 
     @ApiModelProperty(notes = N_DESC, example = E_DESC)
-    @Length(max = 250, message = "desc最大长度不能超过250")
+    @Length(max = 250, message = "desc最大长度不能超过{max}")
     private String desc;
 
     @ApiModelProperty(notes = N_ENTITYID1, example = E_ENTITYID1)

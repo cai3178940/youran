@@ -22,7 +22,7 @@ public class MetaIndexAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_INDEXNAME, example = E_INDEXNAME)
     @NotNull
-    @Length(max = 40, message = "indexName最大长度不能超过40")
+    @Length(max = 40, message = "indexName最大长度不能超过{max}")
     @Pattern(regexp = PatternConst.FIELD_NAME, message = PatternConst.FIELD_NAME_MSG)
     private String indexName;
 
@@ -42,7 +42,7 @@ public class MetaIndexAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_FIELDIDS, example = E_FIELDIDS)
     @NotNull
-    @Length(max = 100, message = "fieldIds最大长度不能超过100")
+    @Length(max = 100, message = "fieldIds最大长度不能超过{max}")
     @Pattern(regexp = PatternConst.FIELD_IDS, message = PatternConst.FIELD_IDS_MSG)
     private String fieldIds;
 

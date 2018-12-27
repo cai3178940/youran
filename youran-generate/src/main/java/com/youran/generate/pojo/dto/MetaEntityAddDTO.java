@@ -29,27 +29,27 @@ public class MetaEntityAddDTO extends AbstractDTO {
     private Integer projectId;
 
     @ApiModelProperty(notes = N_SCHEMANAME, example = E_SCHEMANAME)
-    @Length(max = 20, message = "schemaName最大长度不能超过20")
+    @Length(max = 20, message = "schemaName最大长度不能超过{max}")
     private String schemaName;
 
     @ApiModelProperty(notes = N_CLASSNAME, example = E_CLASSNAME)
     @NotNull
-    @Length(max = 50, message = "className最大长度不能超过50")
+    @Length(max = 50, message = "className最大长度不能超过{max}")
     @Pattern(regexp = PatternConst.CLASS_NAME, message = PatternConst.CLASS_NAME_MSG)
     private String className;
 
     @ApiModelProperty(notes = N_TABLENAME, example = E_TABLENAME)
     @NotNull
-    @Length(max = 50, message = "tableName最大长度不能超过50")
+    @Length(max = 50, message = "tableName最大长度不能超过{max}")
     private String tableName;
 
     @ApiModelProperty(notes = N_TITLE, example = E_TITLE)
     @NotNull
-    @Length(max = 25, message = "title最大长度不能超过25")
+    @Length(max = 25, message = "title最大长度不能超过{max}")
     private String title;
 
     @ApiModelProperty(notes = N_DESC, example = E_DESC)
-    @Length(max = 250, message = "desc最大长度不能超过250")
+    @Length(max = 250, message = "desc最大长度不能超过{max}")
     private String desc;
 
     @ApiModelProperty(notes = N_COMMONCALL, example = E_COMMONCALL)
