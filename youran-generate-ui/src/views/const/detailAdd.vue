@@ -46,6 +46,14 @@ export default {
       rules: getDetailRules()
     }
   },
+  watch: {
+    'form.detailName' (value) {
+      const lc = /[a-z]/i
+      if (lc.test(value)) {
+        this.form.detailName = value.toUpperCase()
+      }
+    }
+  },
   methods: {
     submit () {
       let loading = null

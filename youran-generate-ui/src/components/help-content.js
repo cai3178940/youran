@@ -68,7 +68,7 @@ export default {
     `,
     fieldDesc: `
 **字段描述**：本字段的中文描述
-> 主要是给你自己看的，对于生成的代码来说没什么影响:grin::grin::grin:
+> 该描述不会对生成的代码产生影响
     `,
     jfieldType: `
 **java字段类型**：实体类中的java字段类型
@@ -219,10 +219,10 @@ private Integer publishSignSortSign;
   },
   constDetail: {
     detailName: `
-**枚举字段名**：Java枚举类中的字段名称，请符合Java字段命名规范
+**枚举字段名**：Java枚举类中的字段名称，必须是大写，单词间用下划线分隔
     `,
     detailValue: `
-**枚举值**：枚举字段的值，如果枚举类型是整数，这里就请老老实实输入数字。
+**枚举值**：枚举字段的值，如果枚举类型是整数，则必须是数字
     `,
     detailRemark: `
 **值描述**：枚举值的中文描述，对应枚举类中desc属性的值

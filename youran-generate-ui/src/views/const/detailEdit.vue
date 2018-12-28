@@ -48,6 +48,14 @@ export default {
       rules: getDetailRules()
     }
   },
+  watch: {
+    'form.detailName' (value) {
+      const lc = /[a-z]/i
+      if (lc.test(value)) {
+        this.form.detailName = value.toUpperCase()
+      }
+    }
+  },
   methods: {
     getConstDetail () {
       return this.$ajax.get(`/${apiPath}/meta_const_detail/${this.constDetailId}`)
