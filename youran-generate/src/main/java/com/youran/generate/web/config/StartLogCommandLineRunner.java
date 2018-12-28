@@ -26,7 +26,7 @@ public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
 
     private final Environment env;
 
-    @Value("${swagger.enabled}")
+    @Value("${swagger.enabled:false}")
     private boolean swaggerEnabled;
 
     public StartLogCommandLineRunner(Environment env){
