@@ -1,8 +1,10 @@
 package com.youran.generate.util;
 
 import com.google.common.base.Joiner;
+import com.youran.common.constant.BoolConst;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MySqlType;
+import com.youran.generate.pojo.po.MetaFieldPO;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -76,26 +78,6 @@ public class MetadataUtil {
         return alias;
     }
 
-    /**
-     * 是否需要展示字段长度
-     * @param fieldType
-     * @return
-     */
-    public static boolean showFieldLength(String fieldType){
-        return !MySqlType.DATETIME.equals(fieldType)
-            && !MySqlType.TEXT.equals(fieldType);
-    }
-    /**
-     * 是否需要展示字段精度
-     * @param fieldType
-     * @return
-     */
-    public static boolean showFieldScale(String fieldType){
-        return MySqlType.DECIMAL.equals(fieldType)
-            ||MySqlType.DOUBLE.equals(fieldType)
-            ||MySqlType.FLOAT.equals(fieldType);
-    }
-
 
     /**
      * 下划线转驼峰
@@ -130,6 +112,146 @@ public class MetadataUtil {
         }
         return stream.collect(Collectors.joining("_"));
     }
+
+
+
+    /**
+     * 是否需要展示字段长度
+     * @param fieldType
+     * @return
+     */
+    public static boolean showFieldLength(String fieldType){
+        return !MySqlType.DATETIME.equals(fieldType)
+            && !MySqlType.TEXT.equals(fieldType);
+    }
+    /**
+     * 是否需要展示字段精度
+     * @param fieldType
+     * @return
+     */
+    public static boolean showFieldScale(String fieldType){
+        return MySqlType.DECIMAL.equals(fieldType)
+            ||MySqlType.DOUBLE.equals(fieldType)
+            ||MySqlType.FLOAT.equals(fieldType);
+    }
+    /**
+     * 默认值是否需要展示单引号
+     * @param fieldType
+     * @return
+     */
+    public static boolean showDefaultValueApostrophe(String fieldType){
+        return MySqlType.TEXT.equals(fieldType)
+            ||MySqlType.VARCHAR.equals(fieldType)
+            ||MySqlType.CHAR.equals(fieldType)
+            ||MySqlType.DATETIME.equals(fieldType);
+    }
+
+    /**
+     * 获取【字段长度】展示
+     * @return
+     */
+    public static String getLengthDisplay(MetaFieldPO field){
+        if(!showFieldLength(field.getFieldType())){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder("(");
+        sb.append(field.getFieldLength());
+        if(showFieldScale(field.getFieldType())){
+            sb.append(",").append(field.getFieldScale());
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    /**
+     * 获取【字段自增】展示
+     * @return
+     */
+    public static String getAutoIncrementDisplay(MetaFieldPO field){
+        if(field.getPrimaryKey() == BoolConst.TRUE
+            && field.getAutoIncrement() == BoolConst.TRUE){
+            return " AUTO_INCREMENT";
+        }
+        return "";
+    }
+
+    /**
+     * 获取【字段非空】展示
+     * @return
+     */
+    public static String getNotNullDisplay(MetaFieldPO field){
+        if(field.getPrimaryKey() == BoolConst.FALSE
+            && field.getNotNull() == BoolConst.TRUE){
+            return " NOT NULL";
+        }
+        return "";
+
+    }
+
+    /**
+     * 获取【字段默认值】展示
+     * @return
+     */
+    public static String getDefaultDisplay(MetaFieldPO field){
+        // 主键无默认值
+        if(BoolConst.TRUE==field.getPrimaryKey()){
+            return "";
+        }
+        if("NULL".equals(field.getDefaultValue())) {
+            if (field.getNotNull() == BoolConst.FALSE){
+                return " DEFAULT NULL";
+            }else {
+                return "";
+            }
+        }else{
+            StringBuilder sb = new StringBuilder(" DEFAULT ");
+            boolean showApostrophe = showDefaultValueApostrophe(field.getFieldType());
+            if(showApostrophe){
+                sb.append("'");
+            }
+            sb.append(field.getDefaultValue());
+            if(showApostrophe){
+                sb.append("'");
+            }
+            return sb.toString();
+        }
+    }
+
+    /**
+     * 转换【备注】展示
+     * @param comment
+     * @return
+     */
+    public static String convertCommentDisplay(String comment){
+        if(StringUtils.isBlank(comment)){
+            return "";
+        }
+        return comment.replaceAll("\'","\"")
+            .replaceAll("\n","\\n");
+    }
+
+    /**
+     * 获取【备注】展示
+     * @param comment
+     * @param forField 字段或表
+     * @return
+     */
+    public static String getCommentDisplay(String comment,boolean forField){
+        if(StringUtils.isBlank(comment)){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder(" COMMENT");
+        if(forField){
+            sb.append(" ");
+        }else{
+            sb.append("=");
+        }
+        sb.append("'")
+            .append(convertCommentDisplay(comment))
+            .append("'");
+        return sb.toString();
+    }
+
 
 
 }
