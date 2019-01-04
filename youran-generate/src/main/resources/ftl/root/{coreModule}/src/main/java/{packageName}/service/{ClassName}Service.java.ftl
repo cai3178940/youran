@@ -79,9 +79,9 @@ public class ${this.classNameUpper}Service {
 
 </#if>
 <#-- 抽象出公共方法【校验外键字段对应实体是否存在】 -->
-<#macro checkForeignKeys fields isUpdate>
+<#macro checkForeignKeys fields>
     <#list fields as field>
-        <#if isTrue(field.foreignKey) && ((isUpdate && isTrue(field.update)) || (!isUpdate && isTrue(field.insert)))>
+        <#if isTrue(field.foreignKey)>
             <@call this.addImport("org.springframework.util.Assert")/>
             <#assign foreigncName=field.foreignEntity.className?uncapFirst>
         if(${this.className}.get${field.jfieldName?capFirst}() != null){
@@ -99,7 +99,7 @@ public class ${this.classNameUpper}Service {
     @Transactional
     public ${this.classNameUpper}PO save(${this.classNameUpper}AddDTO ${this.className}DTO) {
         ${this.classNameUpper}PO ${this.className} = ${this.classNameUpper}Mapper.INSTANCE.fromAddDTO(${this.className}DTO);
-        <@checkForeignKeys this.insertFields false/>
+        <@checkForeignKeys this.insertFields/>
 <#if this.metaEntity.checkUniqueIndexes?? && this.metaEntity.checkUniqueIndexes?size &gt; 0>
         // 唯一性校验
         this.checkUnique(${this.className},false);
@@ -135,7 +135,7 @@ public class ${this.classNameUpper}Service {
         ${this.type} ${this.id} = ${this.className}UpdateDTO.get${this.idUpper}();
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         ${this.classNameUpper}Mapper.INSTANCE.setUpdateDTO(${this.className},${this.className}UpdateDTO);
-        <@checkForeignKeys this.updateFields true/>
+        <@checkForeignKeys this.updateFields/>
 <#if this.metaEntity.checkUniqueIndexes?? && this.metaEntity.checkUniqueIndexes?size &gt; 0>
         // 唯一性校验
         this.checkUnique(${this.className},true);
