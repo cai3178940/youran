@@ -74,7 +74,8 @@ public class OptimisticLockAspect {
                 for (Class<? extends Exception> catchType : catchTypes) {
                     if (catchType.isInstance(throwable)) {
                         try {
-                            Thread.sleep(100);//睡100毫秒再试
+                            // 睡100毫秒再试
+                            Thread.sleep(100);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

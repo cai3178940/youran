@@ -5,7 +5,7 @@
 <@call this.printClassCom("布尔常量")/>
 public class BoolConst {
 
-    //数据库bool字段值
+    // 数据库bool字段值
     public static final int TRUE = 1;
 
     public static final int FALSE = 0;

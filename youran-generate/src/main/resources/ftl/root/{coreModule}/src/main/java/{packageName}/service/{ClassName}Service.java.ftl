@@ -101,7 +101,7 @@ public class ${this.classNameUpper}Service {
         ${this.classNameUpper}PO ${this.className} = ${this.classNameUpper}Mapper.INSTANCE.fromAddDTO(${this.className}DTO);
         <@checkForeignKeys this.insertFields/>
 <#if this.metaEntity.checkUniqueIndexes?? && this.metaEntity.checkUniqueIndexes?size &gt; 0>
-        //唯一性校验
+        // 唯一性校验
         this.checkUnique(${this.className},false);
 </#if>
         ${this.className}DAO.save(${this.className});
@@ -137,7 +137,7 @@ public class ${this.classNameUpper}Service {
         ${this.classNameUpper}Mapper.INSTANCE.setUpdateDTO(${this.className},${this.className}UpdateDTO);
         <@checkForeignKeys this.updateFields/>
 <#if this.metaEntity.checkUniqueIndexes?? && this.metaEntity.checkUniqueIndexes?size &gt; 0>
-        //唯一性校验
+        // 唯一性校验
         this.checkUnique(${this.className},true);
 </#if>
         ${this.className}DAO.update(${this.className});
@@ -221,7 +221,7 @@ public class ${this.classNameUpper}Service {
     <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        //设置【${otherEntity.title}】列表
+        // 设置【${otherEntity.title}】列表
         showVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(${this.id}));
     </#list>
 </#if>
@@ -246,7 +246,7 @@ public class ${this.classNameUpper}Service {
     <#if this.metaEntity.mtmUnHoldRefers??>
         <#list this.metaEntity.mtmUnHoldRefers as otherEntity>
             <#assign otherCName=otherEntity.className?capFirst>
-            //校验是否存在【${otherEntity.title}】关联
+            // 校验是否存在【${otherEntity.title}】关联
             this.checkDeleteBy${otherCName}(${this.id});
         </#list>
     </#if>

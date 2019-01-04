@@ -71,7 +71,7 @@ public class WebConfig {
         <@call this.addImport("org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter")/>
         return new WebMvcConfigurerAdapter() {
     </#if>
-            //拦截器
+            // 拦截器
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
                 LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();

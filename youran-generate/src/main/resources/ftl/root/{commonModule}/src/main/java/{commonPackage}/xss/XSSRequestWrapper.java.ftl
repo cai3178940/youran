@@ -14,7 +14,7 @@ public class XSSRequestWrapper  extends HttpServletRequestWrapper {
     public XSSRequestWrapper(HttpServletRequest request) {
         // 将request交给父类，以便于调用对应方法的时候，将其输出，其实父亲类的实现方式和第一种new的方式类似
         super(request);
-        //将参数表，赋予给当前的Map以便于持有request中的参数
+        // 将参数表，赋予给当前的Map以便于持有request中的参数
         this.params.putAll(request.getParameterMap());
     }
 
@@ -30,16 +30,18 @@ public class XSSRequestWrapper  extends HttpServletRequestWrapper {
             return null;
         }
         String result = values[0];
-        result = clean(result);//转码
+        // 转码
+        result = clean(result);
         return result;
     }
 
-    public String[] getParameterValues(String name) {//同上
-        if(params.get(name) instanceof String[]) {//数组
+    public String[] getParameterValues(String name) {
+        if(params.get(name) instanceof String[]) {
             int size = (params.get(name)).length;
             String[] vals = new String[size];
             for(int i=0;i<(params.get(name)).length;i++) {
-                String str = clean((params.get(name))[i]);//转码
+                // 转码
+                String str = clean((params.get(name))[i]);
                 vals[i] = str;
             }
             return  vals;

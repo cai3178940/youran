@@ -37,9 +37,10 @@ public class H2Flusher implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        //修改H2数据库配置
+        // 修改H2数据库配置
         Mode mode = Mode.getInstance("MYSQL");
-        mode.convertInsertNullToZero = false; //关闭null值自动转0或空串
+        // 关闭null值自动转0或空串
+        mode.convertInsertNullToZero = false;
     }
 
 }

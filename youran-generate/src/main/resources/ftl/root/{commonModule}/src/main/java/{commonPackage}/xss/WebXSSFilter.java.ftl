@@ -14,7 +14,7 @@ public class WebXSSFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        //自定义request包装类,并把它传入过滤器链
+        // 自定义request包装类,并把它传入过滤器链
         XSSRequestWrapper requestWrapper = new XSSRequestWrapper((HttpServletRequest) request);
         filterChain.doFilter(requestWrapper, servletResponse);
     }

@@ -25,7 +25,7 @@ public class PageQO extends AbstractQO {
     protected Integer pageNo;
 
     public PageQO() {
-        //默认第一页，每页20条
+        // 默认第一页，每页20条
         this(1, 20);
     }
 

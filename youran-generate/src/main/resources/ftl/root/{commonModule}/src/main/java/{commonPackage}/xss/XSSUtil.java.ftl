@@ -11,7 +11,7 @@ public class XSSUtil {
         if(value==null){
             return null;
         }
-        //允许base64格式的图片,字符串不进行美化
+        // 允许base64格式的图片,字符串不进行美化
         return Jsoup.clean(value,"",
             Whitelist.basicWithImages().addProtocols("img","src","data"),
             new Document.OutputSettings().prettyPrint(false));

@@ -14,16 +14,16 @@ public class PageVO<T> extends AbstractVO {
     @ApiModelProperty(notes = "页码",example = "1",required = true)
     private int pageNo;
     @ApiModelProperty(notes = "开始序号",example = "0",required = true)
-    private int firstEntityIndex;//开始序号
+    private int firstEntityIndex;
     @ApiModelProperty(notes = "结束序号",example = "10",required = true)
-    private int lastEntityIndex;//结束序号
+    private int lastEntityIndex;
 
     @ApiModelProperty(notes = "数据列表",required = true)
     private List<T> entities;
     @ApiModelProperty(notes = "总条数",example = "100",required = true)
-    private int entityCount;//总数
+    private int entityCount;
     @ApiModelProperty(notes = "总页数",example = "10",required = true)
-    private int pageCount;//总页数
+    private int pageCount;
 
     public PageVO() {
     }
