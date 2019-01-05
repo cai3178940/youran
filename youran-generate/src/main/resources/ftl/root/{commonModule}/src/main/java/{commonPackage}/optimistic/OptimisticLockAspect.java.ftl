@@ -25,7 +25,7 @@ public class OptimisticLockAspect {
      * 拦截AbstractDAO的update方法
      * 用于抛出乐观锁冲突时的异常
      */
-    @Pointcut("execution(int ${this.commonPackage}.dao.DAO._update(${this.commonPackage}.pojo.po.AbstractPO))")
+    @Pointcut("execution(int ${this.commonPackage}.dao.DAO.update(${this.commonPackage}.pojo.po.AbstractPO))")
     public void daoPointcut(){}
 
     @Around("daoPointcut()")
