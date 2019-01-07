@@ -1,6 +1,11 @@
 package com.youran.generate.pojo.po;
 
-import java.util.*;
+import org.apache.commons.lang3.builder.CompareToBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Title:实体
@@ -8,7 +13,7 @@ import java.util.*;
  * Author: cbb
  * Create Time:2017/4/11 10:49
  */
-public class MetaEntityPO extends GeneralPO {
+public class MetaEntityPO extends GeneralPO implements Comparable<MetaEntityPO> {
 
 
     /**
@@ -468,4 +473,13 @@ public class MetaEntityPO extends GeneralPO {
         this.commonCall = commonCall;
     }
 
+
+
+
+    @Override
+    public int compareTo(MetaEntityPO o) {
+        return new CompareToBuilder()
+            .append(this.entityId,o.entityId)
+            .toComparison();
+    }
 }
