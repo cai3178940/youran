@@ -1,9 +1,6 @@
 package com.youran.generate.pojo.po;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Title:实体
@@ -172,7 +169,7 @@ public class MetaEntityPO extends GeneralPO {
 
     public MetaEntityPO addForeignEntity(MetaEntityPO foreignEntity){
         if(foreignEntities==null){
-            foreignEntities = new HashSet<>();
+            foreignEntities = new TreeSet<>();
         }
         foreignEntities.add(foreignEntity);
         return this;
