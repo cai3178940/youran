@@ -98,7 +98,11 @@ public interface DAO<PO extends AbstractPO> {
     default int update(PO po){
         LoginContext loginContext = SpringUtil.getBean(LoginContext.class);
         po.preUpdate(loginContext.getCurrentOperatorId());
-        return this._update(po);
+        int count = this._update(po);
+        if(count > 0){
+            po.postUpdate();
+        }
+        return count;
     }
     
     /**

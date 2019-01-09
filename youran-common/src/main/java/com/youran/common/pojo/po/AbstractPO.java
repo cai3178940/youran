@@ -40,4 +40,12 @@ public abstract class AbstractPO {
             ((OperatedBy)this).setOperatedBy(operatedBy);
         }
     }
+
+    public void postUpdate() {
+        if (this instanceof Version) {
+            Version version = (Version) this;
+            version.setVersion(version.getVersion() + 1);
+        }
+    }
+
 }
