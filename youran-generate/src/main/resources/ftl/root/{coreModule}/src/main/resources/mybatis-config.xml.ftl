@@ -12,8 +12,6 @@
         <package name="${this.packageName}.pojo"/>
     </typeAliases>
     <mappers>
-    <#list metaEntities as metaEntity>
-        <mapper resource="${packageName?replace('.','/')}/dao/${metaEntity.className?capFirst}DAO.xml"/>
-    </#list>
+        <package name="${this.packageName}.dao"/>
     </mappers>
 </configuration>
