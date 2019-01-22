@@ -35,7 +35,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table :data="entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
+    <el-table :data="entities" style="width: 100%" @selection-change="selectionChange" :row-class-name="rowClassName" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="字段描述">
         <template slot-scope="scope">
@@ -214,6 +214,7 @@ export default {
       selectItems: [],
       entities: [],
       indexes: [],
+      addImmFieldIds: [],
       loading: false,
       cascadeExtListVisible: false
     }
@@ -271,6 +272,11 @@ export default {
       'removeFieldTemplate',
       'addFieldTemplate'
     ]),
+    rowClassName ({ row }) {
+      if (this.addImmFieldIds.includes(row.fieldId)) {
+        return 'add-imm-field'
+      }
+    },
     selectionChange (val) {
       this.selectItems = val
       this.activeNum = this.selectItems.length
@@ -398,7 +404,8 @@ export default {
         })
           .then(response => this.$common.checkResult(response.data))
           // 执行页面刷新
-          .then(() => {
+          .then(result => {
+            this.addImmFieldIds.push(result.data.fieldId)
             if (refresh) {
               this.$common.showMsg('success', '添加成功')
               this.doQuery()
@@ -427,11 +434,16 @@ export default {
         promise = Promise.all(templates.map(temp => doAddImm(temp)))
           .then(() => {
             this.$common.showMsg('success', '添加成功')
-            this.doQuery()
+            return this.doQuery()
               .then(() => this.doQueryIndex())
           })
       }
-      promise.finally(() => loading.close())
+      promise.finally(() => {
+        setTimeout(() => {
+          this.addImmFieldIds = []
+        }, 6000)
+        loading.close()
+      })
     },
     handleEdit (row) {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/edit/${row.fieldId}`)
@@ -499,6 +511,16 @@ export default {
   $check-back-color: #f7ddd2;
   $u-color: #ff233b;
   $u-back-color: #f7def7;
+  $add-imm-color: #ff3300;
+
+  @keyframes fade {
+    from{
+      background-color: $add-imm-color;
+    }
+    to{
+      background-color: #FFFFFF;
+    }
+  }
 
   .fieldList {
 
@@ -507,6 +529,10 @@ export default {
      */
     .el-table td {
       padding: $el-table-padding;
+    }
+
+    .add-imm-field {
+      animation: fade 3s linear;
     }
 
     .activeNum {

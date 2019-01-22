@@ -302,6 +302,10 @@ export default {
       const entityId = optionArray[0]
       // 获取被激活的option
       const entity = this.entityFieldOptions.find(option => option.value === entityId)
+      // 没找到则直接返回
+      if (!entity) {
+        return
+      }
       if (entity.children.length) {
         return
       }
