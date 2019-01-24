@@ -46,6 +46,10 @@ export default {
       label: 'BIGINT'
     },
     {
+      value: 'mediumint',
+      label: 'MEDIUMINT'
+    },
+    {
       value: 'smallint',
       label: 'SMALLINT'
     },

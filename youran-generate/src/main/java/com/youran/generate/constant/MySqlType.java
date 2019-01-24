@@ -27,6 +27,8 @@ public class MySqlType {
 
     public static final  String SMALLINT = "smallint";
 
+    public static final  String MEDIUMINT = "mediumint";
+
     public static final  String TINYINT = "tinyint";
 
     public static final  String TIMESTAMP = "timestamp";
@@ -48,6 +50,7 @@ public class MySqlType {
             DECIMAL.equals(mysqlType)||
             BIGINT.equals(mysqlType)||
             SMALLINT.equals(mysqlType)||
+            MEDIUMINT.equals(mysqlType)||
             TINYINT.equals(mysqlType)||
             TIMESTAMP.equals(mysqlType)||
             CHAR.equals(mysqlType);
@@ -79,6 +82,9 @@ public class MySqlType {
             return JFieldType.LONG;
         }
         if(SMALLINT.equals(mySqlType)){
+            return JFieldType.INTEGER;
+        }
+        if(MEDIUMINT.equals(mySqlType)){
             return JFieldType.INTEGER;
         }
         if(TINYINT.equals(mySqlType)){
