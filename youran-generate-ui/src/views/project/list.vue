@@ -15,24 +15,29 @@
     <el-table ref="projectTable" :data="entities"
               row-key="projectId"
               :expand-row-keys="expandRowKeys"
-              :row-class-name="activeRow"
               style="width: 100%"
-              @cell-mouse-enter="cellMouseEnter"
               v-loading="loading">
+              <!--:row-class-name="activeRow"-->
+              <!--@cell-mouse-enter="cellMouseEnter"-->
       <el-table-column type="expand"  width="0" class-name="project-table-expand-column">
         <template slot-scope="scope">
-          <el-form label-position="left" inline class="project-table-expand">
-            <el-form-item>
-              <el-button @click="handleEdit(scope.row)" type="primary" size="small"><icon name="edit" scale="0.8" ></icon> 编辑</el-button>
-              <el-button @click="handleEntity(scope.row)" type="primary" size="small"><icon name="cubes" scale="0.8" ></icon> 实体管理</el-button>
-              <el-button @click="handleConst(scope.row)" type="primary" size="small"><icon name="align-justify" scale="0.8" ></icon> 枚举管理</el-button>
-              <el-button @click="handleReverseEngineering(scope.row)" type="primary" size="small"><icon name="object-group" scale="0.8" ></icon> 反向工程</el-button>
-              <el-button @click="handleGenCode(scope.row)" type="primary" size="small"><icon name="file-archive" scale="0.8" ></icon> 下载代码</el-button>
-              <el-button @click="handleGenSql(scope.row)" type="primary" size="small"><icon name="file-code" scale="0.8" ></icon> 下载sql</el-button>
-              <el-button v-if="scope.row.remote==1" @click="handleCommit(scope.row)" type="warning" size="small"><icon name="brands/git" scale="0.8" ></icon> 提交Git</el-button>
-              <el-button @click="handleDel(scope.row)" type="danger" size="small"><icon name="trash-alt" scale="0.8" ></icon> 删除</el-button>
-            </el-form-item>
-          </el-form>
+          <el-row>
+            <el-col :span="24">
+              <el-progress :text-inside="true" :stroke-width="18" :percentage="scope.row.genCodePercent" :status="scope.row.genCodeStatus"></el-progress>
+            </el-col>
+          </el-row>
+          <!--<el-form label-position="left" inline class="project-table-expand">-->
+            <!--<el-form-item>-->
+              <!--<el-button @click="handleEdit(scope.row)" type="primary" size="small"><icon name="edit" scale="0.8" ></icon> 编辑</el-button>-->
+              <!--<el-button @click="handleEntity(scope.row)" type="primary" size="small"><icon name="cubes" scale="0.8" ></icon> 实体管理</el-button>-->
+              <!--<el-button @click="handleConst(scope.row)" type="primary" size="small"><icon name="align-justify" scale="0.8" ></icon> 枚举管理</el-button>-->
+              <!--<el-button @click="handleReverseEngineering(scope.row)" type="primary" size="small"><icon name="object-group" scale="0.8" ></icon> 反向工程</el-button>-->
+              <!--<el-button @click="handleGenCode(scope.row)" type="primary" size="small"><icon name="file-archive" scale="0.8" ></icon> 下载代码</el-button>-->
+              <!--<el-button @click="handleGenSql(scope.row)" type="primary" size="small"><icon name="file-code" scale="0.8" ></icon> 下载sql</el-button>-->
+              <!--<el-button v-if="scope.row.remote==1" @click="handleCommit(scope.row)" type="warning" size="small"><icon name="brands/git" scale="0.8" ></icon> 提交Git</el-button>-->
+              <!--<el-button @click="handleDel(scope.row)" type="danger" size="small"><icon name="trash-alt" scale="0.8" ></icon> 删除</el-button>-->
+            <!--</el-form-item>-->
+          <!--</el-form>-->
         </template>
       </el-table-column>
       <el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -41,10 +46,40 @@
       <el-table-column property="projectDesc" label="项目名称" width="200"></el-table-column>
       <el-table-column property="author" label="作者" width="120"></el-table-column>
       <el-table-column property="packageName" label="包名"></el-table-column>
-      <el-table-column label="启用Git仓库" width="120px">
+      <el-table-column label="Git仓库" width="90px">
         <template slot-scope="scope">
           <icon v-if="scope.row.remote==1" name="check" class="color-success"></icon>
           <icon v-if="scope.row.remote!=1" name="times" class="color-danger"></icon>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label=""
+        width="200">
+        <template slot-scope="scope">
+          <el-button @click="handleEntity(scope.row)" type="text" size="medium">实体管理</el-button>
+          <el-button @click="handleConst(scope.row)" type="text" size="medium">枚举管理</el-button>
+          <el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">
+            <span class="el-dropdown-link button-font">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" >
+                <icon name="edit" scale="0.8" ></icon> 编辑
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" >
+                <icon name="object-group" scale="0.8" ></icon> 反向工程
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
+                <icon name="file-archive" scale="0.8" ></icon> 生成代码
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleGenSql',arg:scope.row}" >
+                <icon name="file-code" scale="0.8" ></icon> 生成sql
+              </el-dropdown-item>
+              <el-dropdown-item v-if="scope.row.remote==1" :command="{method:'handleCommit',arg:scope.row}" >
+                <icon name="brands/git" scale="0.8" ></icon> 提交Git
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -71,7 +106,10 @@
 </template>
 
 <script>
-import { apiPath } from '@/components/common'
+import { apiPath, wsApiPath } from '@/components/common'
+import webstomp from 'webstomp-client'
+import SockJS from 'sockjs-client'
+import shortid from 'shortid'
 
 export default {
   name: 'projectList',
@@ -114,7 +152,15 @@ export default {
       this.loading = true
       this.$ajax.get(`/${apiPath}/meta_project/list`, { params: this.query })
         .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.entities = result.data })
+        .then(result => {
+          // 下载进度条数据初始化
+          result.data.forEach(r => {
+            r.genCodeStatus = 'success'
+            r.genCodePercent = 0
+            r.genCodeMsg = ''
+          })
+          this.entities = result.data
+        })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
@@ -138,8 +184,46 @@ export default {
     },
     handleGenCode (row) {
       this.$common.confirm('是否确认下载')
+        .then(() => {
+          const sock = new SockJS(`${this.$common.BASE_API_URL}/${wsApiPath}`)
+          const stompClient = webstomp.over(sock)
+          stompClient.connect({}, () => {
+            // 生成随机sessionId
+            const sessionId = shortid.generate()
+            const projectId = row.projectId
+            this.expandRowKeys.push(projectId)
+            // 订阅随机主题
+            stompClient.subscribe(`/code_gen/genCode_progress/${sessionId}`, (frame) => {
+              const replyVO = JSON.parse(frame.body)
+              if (replyVO.code === '0') {
+                const progressVO = replyVO.data
+                row.genCodePercent = progressVO.percentage
+                row.genCodeMsg = progressVO.msg
+                if (progressVO.status === 2) {
+                  stompClient.disconnect()
+                  window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/downloadCode/${sessionId}`)
+                  this.expandRowKeys.splice(this.expandRowKeys.findIndex(v => v === projectId), 1)
+                } else if (progressVO.status === 3) {
+                  stompClient.disconnect()
+                  row.genCodeStatus = 'exception'
+                  // console.error(progressVO.percentage + ' : ' + progressVO.msg)
+                }
+              } else {
+                row.genCodeStatus = 'exception'
+                stompClient.disconnect()
+              }
+            })
+            // 请求生成代码
+            stompClient.send(`/code_gen/genCode/${sessionId}`, '', { 'projectId': projectId })
+          })
+        })
+    },
+    /*
+    handleGenCode (row) {
+      this.$common.confirm('是否确认下载')
         .then(() => window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genCode?projectId=${row.projectId}`))
     },
+    */
     handleReverseEngineering (row) {
       this.reverseEngineeringFormVisible = true
       this.reverseEngineeringForm.projectId = row.projectId
@@ -199,11 +283,16 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
+    handleCommand: function (command) {
+      this[command.method](command.arg)
+    },
+    /*
     activeRow (obj) {
       if (this.expandRowKeys.find(value => value === obj.row.projectId)) {
         return 'active-row'
       }
     },
+    */
     cellMouseEnter (row) {
       this.expandRowKeys = [row.projectId]
     }
@@ -245,6 +334,13 @@ export default {
      */
     .el-table td {
       padding: $el-table-padding;
+    }
+
+    /**
+     * 操作按钮字体
+     */
+    .button-font {
+      font: 400 13.3333px Arial;
     }
 
   }

@@ -10,6 +10,7 @@ import com.youran.generate.constant.TemplateEnum;
 import com.youran.generate.constant.TemplateType;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
+import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
@@ -33,6 +34,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 
 /**
@@ -84,12 +86,13 @@ public class MetaCodeGenService {
     /**
      * 生成代码压缩包
      * @param projectId
+     * @param progressConsumer 实时反馈进度
      * @return
      */
-    public File genCodeZip(Integer projectId) {
-
-        String tmpDir = this.doGenCode(projectId);
+    public File genCodeZip(Integer projectId, Consumer<ProgressVO> progressConsumer) {
+        String tmpDir = this.doGenCode(projectId,progressConsumer);
         //压缩src目录到zip文件
+        progressConsumer.accept(ProgressVO.progressing(1,"将项目打包成zip格式"));
         String outFilePath = tmpDir + ".zip";
         Zip4jUtil.compressFolder(tmpDir, outFilePath);
 
@@ -102,6 +105,7 @@ public class MetaCodeGenService {
                     throw new GenerateException("请配置本地开发工程路径youran.generate.devProjectDir");
                 }
                 LOGGER.debug("------全部替换开发工程：" + devProjectDir);
+                progressConsumer.accept(ProgressVO.progressing(1,"全部替换开发工程" + devProjectDir));
                 FileUtils.deleteDirectory(new File(devProjectDir));
                 FileUtils.copyDirectory(new File(tmpDir), new File(devProjectDir));
             } else if (generateProperties.getDevMode() == 2) {
@@ -109,26 +113,38 @@ public class MetaCodeGenService {
                     throw new GenerateException("请配置本地开发工程路径youran.generate.devProjectDir");
                 }
                 LOGGER.debug("------部分替换开发工程：" + devProjectDir);
+                progressConsumer.accept(ProgressVO.progressing(1,"部分替换开发工程" + devProjectDir));
                 this.compareAndCoverFile(new File(tmpDir), new File(devProjectDir));
             }
             if (generateProperties.isDelTemp()) {
-                LOGGER.debug("------删除临时目录：" + tmpDir);
+                LOGGER.debug("------删除临时文件夹：" + tmpDir);
+                progressConsumer.accept(ProgressVO.progressing(1 ,"删除临时文件夹"));
                 FileUtils.deleteDirectory(new File(tmpDir));
             }
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
+        progressConsumer.accept(ProgressVO.done("代码生成完毕"));
         //返回zip文件
         return new File(outFilePath);
     }
 
 
-    private String doGenCode(Integer projectId){
+    private String doGenCode(Integer projectId,Consumer<ProgressVO> progressConsumer){
         // 获取组装后的项目
+        progressConsumer.accept(ProgressVO.progressing(1,"获取并组装项目元数据"));
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,true,true,true);
         String tmpDir = H2Util.getTmpDir(appName, true, true);
         LOGGER.debug("------代码生成临时路径：" + tmpDir);
+        progressConsumer.accept(ProgressVO.progressing(0,"渲染代码模板"));
         for (TemplateEnum templateEnum : TemplateEnum.values()) {
+            try {
+                // 睡20毫秒，故意慢一点，好让前端进度条反应缓慢增长
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            progressConsumer.accept(ProgressVO.progressing(1,null));
             //生成全局文件
             if (templateEnum.getType() == TemplateType.COMMON) {
                 this.renderCommonFTL(project, tmpDir, templateEnum);
@@ -322,9 +338,10 @@ public class MetaCodeGenService {
     /**
      * 提交到仓库
      * @param projectId
+     * @param progressConsumer
      * @return
      */
-    public GenHistoryPO gitCommit(Integer projectId) {
+    public GenHistoryPO gitCommit(Integer projectId,Consumer<ProgressVO> progressConsumer) {
         MetaProjectPO project = metaProjectService.getProject(projectId,true);
         Integer remote = project.getRemote();
         if(BoolConst.TRUE!=remote){
@@ -344,21 +361,25 @@ public class MetaCodeGenService {
         }
         String newBranchName = "auto"+ DateUtil.getDateStr(now,"yyyyMMddHHmmss");
         GitCredentialDTO credential = this.getCredentialDTO(project);
+        progressConsumer.accept(ProgressVO.progressing(10,"克隆远程仓库"));
         String repository = jGitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
             credential, oldBranchName, newBranchName);
         File repoDir = new File(repository);
         File[] oldFiles = repoDir.listFiles((dir, name) -> !name.equals(".git"));
         try {
+            progressConsumer.accept(ProgressVO.progressing(1,"清空旧代码"));
             for (File oldFile : oldFiles) {
                 FileUtils.forceDelete(oldFile);
             }
             //生成代码
-            String genDir = this.doGenCode(projectId);
+            String genDir = this.doGenCode(projectId,progressConsumer);
+            progressConsumer.accept(ProgressVO.progressing(1,"拷贝新生成的代码"));
             FileUtils.copyDirectory(new File(genDir), repoDir);
         } catch (IOException e) {
             LOGGER.error("IO异常",e);
             throw new GenerateException("操作失败");
         }
+        progressConsumer.accept(ProgressVO.progressing(1,"提交到远程仓库"));
         String commit = jGitService.commitAll(repository,
             DateUtil.getDateStr(now,"yyyy-MM-dd HH:mm:ss")+"自动生成代码",
             credential);
@@ -366,6 +387,7 @@ public class MetaCodeGenService {
         GenHistoryPO history = genHistoryService.save(project, commit, newBranchName);
         // 更新项目的最终提交历史
         metaProjectService.updateLastHistory(projectId,history.getHistoryId());
+        progressConsumer.accept(ProgressVO.done("执行完成"));
         return history;
     }
 

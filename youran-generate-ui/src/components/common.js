@@ -17,6 +17,7 @@ const ajax = axios.create({
 })
 
 export const apiPath = process.env.VUE_APP_API_PATH
+export const wsApiPath = process.env.VUE_APP_WS_API_PATH
 
 export const CommonPlugin = {
   install (Vue, options) {

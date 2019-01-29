@@ -65,7 +65,7 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
     @GetMapping(value = "/genCode")
     public void genCode(Integer projectId, HttpServletResponse response) {
         try {
-            File zipFile = metaCodeGenService.genCodeZip(projectId);
+            File zipFile = metaCodeGenService.genCodeZip(projectId,progressVO -> {});
             if (zipFile == null) {
                 response.setStatus(HttpStatus.NOT_FOUND.value());
                 ReplyVO fail = ReplyVO.fail("not found");
@@ -90,7 +90,7 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
     public ReplyVO<Void> gitCommit(Integer projectId) {
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
-        GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId);
+        GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, progressVO -> {});
         ReplyVO replyVO = ReplyVO.success();
         replyVO.setMessage("已创建自动分支【"+ genHistory.getBranch() +"】，并提交到远程");
         return replyVO;
