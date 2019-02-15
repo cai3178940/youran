@@ -2,16 +2,13 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.DateUtil;
-import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.service.MetaCodeGenService;
 import com.youran.generate.service.MetaProjectService;
+import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaCodeGenAPI;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -30,7 +26,7 @@ import java.util.Date;
  */
 @Controller
 @RequestMapping(GenerateConst.API_PATH + "/code_gen")
-public class MetaCodeGenController implements MetaCodeGenAPI {
+public class MetaCodeGenController extends AbstractController implements MetaCodeGenAPI {
 
     @Autowired
     private MetaCodeGenService metaCodeGenService;
@@ -40,16 +36,8 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
     @Override
     @GetMapping(value = "/genSql")
     public void genSql(Integer projectId, HttpServletResponse response) {
-        try {
-            String text = metaCodeGenService.genSql(projectId);
-            response.setContentType("application/octet-stream");
-            String headerKey = "Content-Disposition";
-            String headerValue = String.format("attachment; filename=\"%s\"", "db.sql");
-            response.setHeader(headerKey, headerValue);
-            IOUtils.write(text, response.getOutputStream(),"UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String text = metaCodeGenService.genSql(projectId);
+        this.replyDownloadText(response,text,"db.sql");
     }
 
     @Override
@@ -64,23 +52,13 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
     @Override
     @GetMapping(value = "/genCode")
     public void genCode(Integer projectId, HttpServletResponse response) {
-        try {
-            File zipFile = metaCodeGenService.genCodeZip(projectId,progressVO -> {});
-            if (zipFile == null) {
-                response.setStatus(HttpStatus.NOT_FOUND.value());
-                ReplyVO fail = ReplyVO.fail("not found");
-                IOUtils.write(JsonUtil.toJSONString(fail), response.getOutputStream(),"UTF-8");
-                return;
-            }
-            response.setContentType("application/octet-stream");
-            String headerKey = "Content-Disposition";
+        File zipFile = metaCodeGenService.genCodeZip(projectId,null);
+        if (zipFile == null || !zipFile.exists()) {
+            this.replyNotFound(response);
+        }else {
             String normalProjectName = metaProjectService.getNormalProjectName(projectId);
-            String headerValue = String.format("attachment; filename=\"%s\"", normalProjectName+ DateUtil.getDateStr(new Date(),"yyyyMMddHHmmss")+".zip");
-            response.setHeader(headerKey, headerValue);
-            byte[] bytes = FileUtils.readFileToByteArray(zipFile);
-            IOUtils.write(bytes, response.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
+            String downloadFileName = normalProjectName + DateUtil.getDateStr(new Date(), "yyyyMMddHHmmss") + ".zip";
+            this.replyDownloadFile(response, zipFile, downloadFileName);
         }
     }
 
@@ -90,7 +68,7 @@ public class MetaCodeGenController implements MetaCodeGenAPI {
     public ReplyVO<Void> gitCommit(Integer projectId) {
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
-        GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, progressVO -> {});
+        GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, null);
         ReplyVO replyVO = ReplyVO.success();
         replyVO.setMessage("已创建自动分支【"+ genHistory.getBranch() +"】，并提交到远程");
         return replyVO;

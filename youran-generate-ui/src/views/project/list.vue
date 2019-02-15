@@ -26,18 +26,6 @@
               <el-progress :text-inside="true" :stroke-width="18" :percentage="scope.row.genCodePercent" :status="scope.row.genCodeStatus"></el-progress>
             </el-col>
           </el-row>
-          <!--<el-form label-position="left" inline class="project-table-expand">-->
-            <!--<el-form-item>-->
-              <!--<el-button @click="handleEdit(scope.row)" type="primary" size="small"><icon name="edit" scale="0.8" ></icon> 编辑</el-button>-->
-              <!--<el-button @click="handleEntity(scope.row)" type="primary" size="small"><icon name="cubes" scale="0.8" ></icon> 实体管理</el-button>-->
-              <!--<el-button @click="handleConst(scope.row)" type="primary" size="small"><icon name="align-justify" scale="0.8" ></icon> 枚举管理</el-button>-->
-              <!--<el-button @click="handleReverseEngineering(scope.row)" type="primary" size="small"><icon name="object-group" scale="0.8" ></icon> 反向工程</el-button>-->
-              <!--<el-button @click="handleGenCode(scope.row)" type="primary" size="small"><icon name="file-archive" scale="0.8" ></icon> 下载代码</el-button>-->
-              <!--<el-button @click="handleGenSql(scope.row)" type="primary" size="small"><icon name="file-code" scale="0.8" ></icon> 下载sql</el-button>-->
-              <!--<el-button v-if="scope.row.remote==1" @click="handleCommit(scope.row)" type="warning" size="small"><icon name="brands/git" scale="0.8" ></icon> 提交Git</el-button>-->
-              <!--<el-button @click="handleDel(scope.row)" type="danger" size="small"><icon name="trash-alt" scale="0.8" ></icon> 删除</el-button>-->
-            <!--</el-form-item>-->
-          <!--</el-form>-->
         </template>
       </el-table-column>
       <el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -182,41 +170,75 @@ export default {
     handleGenSql (row) {
       window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genSql?projectId=${row.projectId}`)
     },
-    handleGenCode (row) {
-      this.$common.confirm('是否确认下载')
-        .then(() => {
-          const sock = new SockJS(`${this.$common.BASE_API_URL}/${wsApiPath}`)
-          const stompClient = webstomp.over(sock)
-          stompClient.connect({}, () => {
-            // 生成随机sessionId
-            const sessionId = shortid.generate()
-            const projectId = row.projectId
-            this.expandRowKeys.push(projectId)
-            // 订阅随机主题
-            stompClient.subscribe(`/code_gen/genCode_progress/${sessionId}`, (frame) => {
-              const replyVO = JSON.parse(frame.body)
-              if (replyVO.code === '0') {
-                const progressVO = replyVO.data
-                row.genCodePercent = progressVO.percentage
-                row.genCodeMsg = progressVO.msg
-                if (progressVO.status === 2) {
-                  stompClient.disconnect()
-                  window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/downloadCode/${sessionId}`)
-                  this.expandRowKeys.splice(this.expandRowKeys.findIndex(v => v === projectId), 1)
-                } else if (progressVO.status === 3) {
-                  stompClient.disconnect()
-                  row.genCodeStatus = 'exception'
-                  // console.error(progressVO.percentage + ' : ' + progressVO.msg)
-                }
-              } else {
-                row.genCodeStatus = 'exception'
-                stompClient.disconnect()
-              }
-            })
-            // 请求生成代码
-            stompClient.send(`/code_gen/genCode/${sessionId}`, '', { 'projectId': projectId })
+    /**
+     * 行进度条改变
+     * @return boolean 进度是否结束
+     */
+    rowProgressChange (row, progressVO) {
+      let done = false
+      row.genCodePercent = progressVO.percentage
+      row.genCodeMsg = progressVO.msg
+      row.genCodeStatus = 'text'
+      // 进度完成
+      if (progressVO.status === 2) {
+        row.genCodeStatus = 'success'
+        done = true
+      }
+      // 进度异常
+      if (progressVO.status === 3) {
+        row.genCodeStatus = 'exception'
+        done = true
+      }
+      return done
+    },
+    /**
+     * 调用代码生成相关websocket服务
+     * @param serviceName 服务名
+     * @param params 请求参数
+     * @param afterConnect 连接建立之后的回调
+     * @param doProgress 处理进度消息回调
+     */
+    callCodeGenWebSocketService (serviceName, params, afterConnect, doProgress) {
+      return new Promise((resolve, reject) => {
+        const sock = new SockJS(`${this.$common.BASE_API_URL}/${wsApiPath}`)
+        const stompClient = webstomp.over(sock)
+        stompClient.connect({}, () => {
+          // 生成随机sessionId
+          const sessionId = shortid.generate()
+          afterConnect()
+          // 订阅进度变化的topic
+          stompClient.subscribe(`/code_gen/${serviceName}_progress/${sessionId}`, (frame) => {
+            const progressVO = JSON.parse(frame.body)
+            const done = doProgress(progressVO)
+            if (done) {
+              // 如果进度结束，则断开websocket连接
+              stompClient.disconnect()
+              resolve(progressVO)
+            }
           })
+          // 请求生成代码
+          stompClient.send(`/code_gen/${serviceName}/${sessionId}`, '', params)
         })
+      })
+    },
+    handleGenCode (row) {
+      const projectId = row.projectId
+      this.$common.confirm('是否确认下载')
+        .then(() => this.callCodeGenWebSocketService(
+          'genCode',
+          { 'projectId': projectId },
+          () => this.expandRowKeys.push(projectId),
+          progressVO => this.rowProgressChange(row, progressVO)
+        ))
+        .then(progressVO => {
+          if (progressVO.status === 2) {
+            window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/downloadCode/${progressVO.sessionId}`)
+            this.$common.showMsg('success', progressVO.msg)
+          } else {
+            this.$common.showNotifyError(progressVO.msg)
+          }
+        })
+        .finally(() => this.expandRowKeys.splice(this.expandRowKeys.findIndex(v => v === projectId), 1))
     },
     /*
     handleGenCode (row) {
@@ -273,6 +295,25 @@ export default {
         })
     },
     handleCommit (row) {
+      const projectId = row.projectId
+      this.$common.confirm('是否确认提交到远程git仓库')
+        .then(() => this.callCodeGenWebSocketService(
+          'gitCommit',
+          { 'projectId': projectId },
+          () => this.expandRowKeys.push(projectId),
+          progressVO => this.rowProgressChange(row, progressVO)
+        ))
+        .then(progressVO => {
+          if (progressVO.status === 2) {
+            this.$common.showMsg('success', progressVO.msg)
+          } else {
+            this.$common.showNotifyError(progressVO.msg)
+          }
+        })
+        .finally(() => this.expandRowKeys.splice(this.expandRowKeys.findIndex(v => v === projectId), 1))
+    },
+    /*
+    handleCommit (row) {
       this.$common.confirm('是否确认提交到远程git仓库')
         .then(() => {
           this.loading = true
@@ -283,18 +324,9 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
+    */
     handleCommand: function (command) {
       this[command.method](command.arg)
-    },
-    /*
-    activeRow (obj) {
-      if (this.expandRowKeys.find(value => value === obj.row.projectId)) {
-        return 'active-row'
-      }
-    },
-    */
-    cellMouseEnter (row) {
-      this.expandRowKeys = [row.projectId]
     }
   },
   activated () {

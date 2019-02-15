@@ -20,6 +20,10 @@ public class ProgressVO {
     private static ThreadLocal<ProgressVO> threadLocal = new ThreadLocal<>();
 
     /**
+     * ws会话id
+     */
+    private String sessionId;
+    /**
      * 状态
      */
     private Integer status;
@@ -32,10 +36,11 @@ public class ProgressVO {
      */
     private String msg;
 
-    public static ProgressVO initThreadLocal(){
+    public static ProgressVO initProgress(String sessionId){
         ProgressVO vo = new ProgressVO();
         vo.setStatus(PROGRESSING);
         vo.setPercentage(0);
+        vo.setSessionId(sessionId);
         threadLocal.set(vo);
         return vo;
     }
@@ -44,7 +49,7 @@ public class ProgressVO {
     public static ProgressVO progressing(int addPercent,String msg){
         ProgressVO vo = threadLocal.get();
         if(vo==null){
-            vo = initThreadLocal();
+            throw new RuntimeException("进度条VO未初始化");
         }
         // 如果不是进行中，则直接返回
         if(!Objects.equals(vo.getStatus(),PROGRESSING)){
@@ -66,7 +71,10 @@ public class ProgressVO {
 
 
     public static ProgressVO done(String msg){
-        ProgressVO vo = new ProgressVO();
+        ProgressVO vo = threadLocal.get();
+        if(vo==null){
+            throw new RuntimeException("进度条VO未初始化");
+        }
         vo.setStatus(DONE);
         vo.setPercentage(100);
         vo.setMsg(msg);
@@ -75,7 +83,10 @@ public class ProgressVO {
 
 
     public static ProgressVO error(String msg){
-        ProgressVO vo = new ProgressVO();
+        ProgressVO vo = threadLocal.get();
+        if(vo==null){
+            throw new RuntimeException("进度条VO未初始化");
+        }
         vo.setStatus(ERROR);
         vo.setPercentage(-1);
         vo.setMsg(msg);
@@ -83,6 +94,13 @@ public class ProgressVO {
     }
 
 
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     public Integer getStatus() {
         return status;
