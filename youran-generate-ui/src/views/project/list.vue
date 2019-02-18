@@ -192,7 +192,7 @@ export default {
       return done
     },
     /**
-     * 调用代码生成相关websocket服务
+     * 调用【代码生成】相关websocket服务
      * @param serviceName 服务名
      * @param params 请求参数
      * @param afterConnect 连接建立之后的回调
