@@ -89,7 +89,8 @@
         <el-button type="success" @click="handleReverseEngineeringSubmit">反向生成</el-button>
       </div>
     </el-dialog>
-
+    <!-- 文件下载专用iframe -->
+    <iframe style="display:none;" :src="downloadUrl"></iframe>
   </div>
 </template>
 
@@ -120,7 +121,8 @@ export default {
           { max: 10000, message: '长度不能超过10000个字符', trigger: 'blur' }
         ]
       },
-      expandRowKeys: []
+      expandRowKeys: [],
+      downloadUrl: ''
     }
   },
   methods: {
@@ -232,7 +234,8 @@ export default {
         ))
         .then(progressVO => {
           if (progressVO.status === 2) {
-            window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/downloadCode/${progressVO.sessionId}`)
+            // 修改iframe的地址，进行文件下载
+            this.downloadUrl = `${this.$common.BASE_API_URL}/${apiPath}/code_gen/downloadCode/${progressVO.sessionId}`
             this.$common.showMsg('success', progressVO.msg)
           } else {
             this.$common.showNotifyError(progressVO.msg)
