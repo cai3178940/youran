@@ -120,10 +120,10 @@ public class MetaCodeGenWsController extends AbstractController {
         // 进度响应主题
         String topic = "/code_gen/gitCommit_progress/"+sessionId;
         try {
-            // 校验操作人
-            metaProjectService.checkOperatorByProjectId(projectId);
             // 初始化进度条
             ProgressVO.initProgress(sessionId);
+            // 校验操作人
+            metaProjectService.checkOperatorByProjectId(projectId);
             // 提交到仓库
             GenHistoryPO history = metaCodeGenService.gitCommit(projectId,
                 progressVO -> this.replyProgress(topic, progressVO));
