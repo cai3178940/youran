@@ -1,7 +1,5 @@
 package com.youran.common.pojo.qo;
 
-import com.youran.common.util.JsonUtil;
-
 import java.io.Serializable;
 
 /**
@@ -12,9 +10,5 @@ import java.io.Serializable;
  */
 public abstract class AbstractQO  implements Serializable {
 
-    @Override
-    public String toString() {
-        return JsonUtil.toJSONString(this);
-    }
 
 }
