@@ -18,9 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Title:级联扩展增删改查服务
- * Description:
- * Author: cbb
+ * <p>Title:级联扩展增删改查服务</p>
+ * <p>Description:</p>
+ * @author: cbb
  * Create Time:2017/5/24
  */
 @Service

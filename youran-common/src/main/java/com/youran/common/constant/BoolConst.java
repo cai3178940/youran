@@ -4,10 +4,10 @@ package com.youran.common.constant;
 import com.youran.common.validator.Check;
 
 /**
- * Title:布尔常量
- * Description:
- * Author: cbb
- * Create Time:2017/6/19 09:31
+ * <p>Title:布尔常量</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/6/19
  */
 public class BoolConst {
 

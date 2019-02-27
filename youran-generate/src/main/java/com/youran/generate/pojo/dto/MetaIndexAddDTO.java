@@ -13,10 +13,10 @@ import javax.validation.constraints.Pattern;
 import static com.youran.generate.pojo.example.MetaIndexExample.*;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 11:12
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 public class MetaIndexAddDTO extends AbstractDTO {
 

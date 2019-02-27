@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time: 2018/3/2 19:11
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/3/2
  */
 public class XSSRequestWrapper  extends HttpServletRequestWrapper {
 

@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * Title: 单元测试专用配置类
- * Description:
- * Author: cbb
- * Create Time:2017/9/19 14:16
+ * <p>Title:单元测试专用配置类</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/9/19
  */
 @Configuration()
 public class TestConfiguration {

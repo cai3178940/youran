@@ -8,10 +8,10 @@ import java.util.List;
 import static com.youran.generate.pojo.example.MetaIndexExample.*;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/5/16 22:34
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/16
  */
 public class MetaIndexShowVO extends AbstractVO {
 

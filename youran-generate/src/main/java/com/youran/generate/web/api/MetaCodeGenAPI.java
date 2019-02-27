@@ -9,10 +9,10 @@ import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Title:【代码生成】api
- * Description:
- * Author: cbb
- * Create Time:2017/5/13 22:47
+ * <p>Title:【代码生成】api</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/13
  */
 @Api(tags = "MetaCodeGen", description = "代码生成")
 public interface MetaCodeGenAPI {

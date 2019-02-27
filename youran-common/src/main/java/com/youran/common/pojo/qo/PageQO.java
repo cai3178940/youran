@@ -6,10 +6,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 /**
- * Title:分页查询dto
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 21:26
+ * <p>Title:分页查询dto</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 public class PageQO extends AbstractQO {
 

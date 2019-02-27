@@ -1,10 +1,10 @@
 package com.youran.common.constant;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/5/31 17:48
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/31
  */
 public class JsonFieldConst {
 

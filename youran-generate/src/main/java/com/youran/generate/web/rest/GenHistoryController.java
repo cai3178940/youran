@@ -16,11 +16,11 @@ import javax.validation.Valid;
 
 
 /**
- * Title: 【生成历史】控制器
- * Description:
+ * <p>Title:【生成历史】控制器</p>
+ * <p>Description:</p>
  * Project: bbs
- * Author: cbb
- * Create Time: 2018-03-17 16:47
+ * @author: cbb
+ * @date: 2018-03-17
  */
 @RestController
 @RequestMapping(GenerateConst.API_PATH +"/gen_history")

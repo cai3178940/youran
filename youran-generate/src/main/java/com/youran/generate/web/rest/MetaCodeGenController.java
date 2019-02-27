@@ -19,10 +19,10 @@ import java.io.File;
 import java.util.Date;
 
 /**
- * Title:【代码生成】控制器
- * Description:
- * Author: cbb
- * Create Time:2017/5/13 23:00
+ * <p>Title:【代码生成】控制器</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/13
  */
 @Controller
 @RequestMapping(GenerateConst.API_PATH + "/code_gen")

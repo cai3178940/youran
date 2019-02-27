@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 /**
- * Title:封装单元测试使用的元数据基本操作
- * Description:
- * Author: cbb
- * Create Time:2017/5/18 11:33
+ * <p>Title:封装单元测试使用的元数据基本操作</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/18
  */
 @Component
 public class GenerateHelper{

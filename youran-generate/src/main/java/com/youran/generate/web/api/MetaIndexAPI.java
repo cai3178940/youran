@@ -14,9 +14,9 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
 /**
- * Title: 【索引】api
- * Description:
- * Author: cbb
+ * <p>Title:【索引】api</p>
+ * <p>Description:</p>
+ * @author: cbb
  * Create Time:2017/5/16
  */
 @Api(tags = "MetaIndexPO", description = "索引")

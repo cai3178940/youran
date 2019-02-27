@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Title: DAO父接口
- * Description:
- * Author: cbb
- * Create Time:2017/9/20 15:46
+ * <p>Title:DAO父接口</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/9/20
  */
 public interface DAO<PO extends AbstractPO> {
 

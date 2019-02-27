@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Title:spring配置
- * Description:
- * Author: cbb
- * Create Time:2017/8/24 16:14
+ * <p>Title:spring配置</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/8/24
  */
 @Configuration
 public class GenerateConfiguration {

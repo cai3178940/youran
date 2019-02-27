@@ -6,10 +6,10 @@ import com.youran.common.pojo.po.CreatedOperatedDeletedVersion;
 import java.util.Date;
 
 /**
- * Title: 常规抽象PO
- * Description:
- * Author: cbb
- * Create Time:7/21/2018 16:30
+ * <p>Title:常规抽象PO</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 7/21/2018
  */
 public abstract class GeneralPO extends AbstractPO implements CreatedOperatedDeletedVersion {
 

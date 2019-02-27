@@ -3,10 +3,10 @@ package com.youran.common.pojo.vo;
 import com.youran.common.util.JsonUtil;
 
 /**
- * Title: 参数错误-错误字段信息
- * Description:
- * Author: cbb
- * Create Time:2017/8/24 15:51
+ * <p>Title:参数错误-错误字段信息</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/8/24
  */
 public class FieldErrorVO {
 

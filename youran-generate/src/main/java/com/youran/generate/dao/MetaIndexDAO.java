@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Title: 【索引】数据库操作
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 10:27
+ * <p>Title:【索引】数据库操作</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @Repository
 @Mapper

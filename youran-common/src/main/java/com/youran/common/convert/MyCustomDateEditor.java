@@ -7,10 +7,10 @@ import java.beans.PropertyEditorSupport;
 import java.util.Date;
 
 /**
- * Title: 自定义日期装换
- * Description:
- * Author: cbb
- * Create Time: 2018/2/23 15:25
+ * <p>Title:自定义日期装换</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/2/23
  */
 public class MyCustomDateEditor extends PropertyEditorSupport {
 

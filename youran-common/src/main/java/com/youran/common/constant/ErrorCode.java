@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Title: 错误代码枚举
- * Description:
- * Author: cbb
- * Create Time:2017/10/13 16:07
+ * <p>Title:错误代码枚举</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/10/13
  */
 public enum ErrorCode {
 

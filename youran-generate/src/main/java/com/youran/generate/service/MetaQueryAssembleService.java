@@ -14,10 +14,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Title: 统一查询组装服务类
- * Description:
- * Author: cbb
- * Create Time:2017/5/14 10:45
+ * <p>Title:统一查询组装服务类</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/14
  */
 @Service
 public class MetaQueryAssembleService {

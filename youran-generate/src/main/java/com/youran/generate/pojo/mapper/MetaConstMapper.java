@@ -9,10 +9,10 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 /**
- * Title: 常量映射
- * Description: 基于mapstruct来实现，编译器自动生成实现类
- * Author: cbb
- * Create Time:2017/5/12 11:52
+ * <p>Title:常量映射</p>
+ * <p>Description:基于mapstruct来实现，编译器自动生成实现类</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @Mapper
 public interface MetaConstMapper {

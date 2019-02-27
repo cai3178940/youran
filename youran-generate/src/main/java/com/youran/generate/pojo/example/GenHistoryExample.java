@@ -3,10 +3,10 @@ package com.youran.generate.pojo.example;
 import com.youran.common.pojo.example.AbstractExample;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time: 2018/3/17 15:39
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/3/17
  */
 public class GenHistoryExample extends AbstractExample {
 

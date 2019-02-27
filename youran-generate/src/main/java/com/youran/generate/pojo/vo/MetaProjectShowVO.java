@@ -7,9 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
 /**
- * Title:项目详情展示对象
- * Description:
- * Author: cbb
+ * <p>Title:项目详情展示对象</p>
+ * <p>Description:</p>
+ * @author: cbb
  * Create Time:2017/5/24
  */
 public class MetaProjectShowVO extends AbstractVO {

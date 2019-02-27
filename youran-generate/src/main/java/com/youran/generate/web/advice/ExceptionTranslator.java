@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Title:异常信息展示
- * Description:
- * Author: cbb
- * Create Time:2017/10/13 15:30
+ * <p>Title:异常信息展示</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/10/13
  */
 @ControllerAdvice
 public class ExceptionTranslator {

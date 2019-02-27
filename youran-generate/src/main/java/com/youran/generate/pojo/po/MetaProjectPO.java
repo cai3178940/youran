@@ -8,10 +8,10 @@ import java.util.List;
 import static java.util.Arrays.stream;
 
 /**
- * Title: 项目
- * Description:
- * Author: cbb
- * Create Time:2017/5/24 11:45
+ * <p>Title:项目</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/24
  */
 public class MetaProjectPO extends GeneralPO {
 

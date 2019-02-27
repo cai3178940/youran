@@ -12,10 +12,10 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaCascadeExtExample.*;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time: 2018/5/28 15:08
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/5/28
  */
 @ApiModel(description = "新增级联展示入参")
 public class MetaCascadeExtAddDTO extends AbstractDTO {

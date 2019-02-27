@@ -9,10 +9,10 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/7/4 16:43
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/7/4
  */
 @Mapper
 public interface MetaManyToManyMapper {

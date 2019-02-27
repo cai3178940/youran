@@ -1,10 +1,10 @@
 package com.youran.generate.pojo.dto;
 
 /**
- * Title: git认证对象
- * Description:
- * Author: cbb
- * Create Time: 2018/3/17 13:36
+ * <p>Title:git认证对象</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/3/17
  */
 public class GitCredentialDTO {
 

@@ -13,10 +13,10 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * Title: 【实体】api
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 13:40
+ * <p>Title:【实体】api</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @Api(tags = "MetaEntityPO", description = "实体")
 public interface MetaEntityAPI {

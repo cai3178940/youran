@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/5/21 22:51
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/21
  */
 public class MetadataUtil {
 

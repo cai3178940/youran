@@ -9,10 +9,10 @@ import static com.youran.generate.pojo.example.MetaConstDetailExample.*;
 
 
 /**
- * Title:修改常量值DTO
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 11:05
+ * <p>Title:修改常量值DTO</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @ApiModel(description = "修改常量值参数")
 public class MetaConstDetailUpdateDTO extends MetaConstDetailAddDTO {

@@ -8,10 +8,10 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Title: 跨域支持
- * Description:
- * Author: cbb
- * Create Time: 2018/1/16 09:32
+ * <p>Title:跨域支持</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/1/16
  */
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {

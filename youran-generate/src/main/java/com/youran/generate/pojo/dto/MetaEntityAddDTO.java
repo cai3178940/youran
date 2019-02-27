@@ -15,10 +15,10 @@ import static com.youran.generate.pojo.example.MetaEntityExample.*;
 
 
 /**
- * Title:新增实体DTO
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 11:05
+ * <p>Title:新增实体DTO</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @ApiModel(description = "新增实体参数")
 public class MetaEntityAddDTO extends AbstractDTO {

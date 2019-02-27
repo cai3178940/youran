@@ -20,10 +20,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/7/4 17:13
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/7/4
  */
 public class MetaManyToManyControllerTest extends AbstractWebTest {
 

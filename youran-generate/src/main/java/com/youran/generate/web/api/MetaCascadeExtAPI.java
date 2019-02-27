@@ -14,10 +14,10 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
 /**
- * Title:【级联扩展】api
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 13:40
+ * <p>Title:【级联扩展】api</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @Api(tags = "MetaCascadeExtPO", description = "级联扩展")
 public interface MetaCascadeExtAPI {

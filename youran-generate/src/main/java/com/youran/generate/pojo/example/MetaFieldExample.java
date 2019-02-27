@@ -3,10 +3,10 @@ package com.youran.generate.pojo.example;
 import com.youran.common.pojo.example.AbstractExample;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/5/14 11:41
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/14
  */
 public class MetaFieldExample extends AbstractExample {
 

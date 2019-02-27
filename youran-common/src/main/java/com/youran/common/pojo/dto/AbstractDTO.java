@@ -6,10 +6,10 @@ import com.youran.common.util.JsonUtil;
 import java.io.Serializable;
 
 /**
- * Title:数据传输对象超类
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 21:26
+ * <p>Title:数据传输对象超类</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 public abstract class AbstractDTO implements Serializable {
 

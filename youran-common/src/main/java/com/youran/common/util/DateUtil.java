@@ -8,10 +8,10 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
- * Title:日期工具
- * Description:
- * Author: cbb
- * Create Time:2017/9/19 14:43
+ * <p>Title:日期工具</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/9/19
  */
 public class DateUtil {
 

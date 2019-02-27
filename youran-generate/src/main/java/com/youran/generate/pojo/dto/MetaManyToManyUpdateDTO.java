@@ -7,10 +7,10 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/7/4 16:39
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/7/4
  */
 public class MetaManyToManyUpdateDTO extends MetaManyToManyAddDTO{
 

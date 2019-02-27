@@ -1,10 +1,10 @@
 package com.youran.common.pojo.example;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/9/14 15:42
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/9/14
  */
 public abstract class AbstractExample {
 

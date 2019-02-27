@@ -7,10 +7,10 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/9/20 18:00
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/9/20
  */
 @SpringBootApplication
 @EnableOptimisticLock

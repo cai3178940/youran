@@ -1,10 +1,10 @@
 package com.youran.generate.pojo.po;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time: 2018/3/17 15:14
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/3/17
  */
 public class GenHistoryPO extends GeneralPO{
 

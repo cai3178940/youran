@@ -8,10 +8,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Title:实体
- * Description:
- * Author: cbb
- * Create Time:2017/4/11 10:49
+ * <p>Title:实体</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/4/11
  */
 public class MetaEntityPO extends GeneralPO implements Comparable<MetaEntityPO> {
 

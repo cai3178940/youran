@@ -22,10 +22,10 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Title:自定义校验注解：常量校验
- * Description:校验常量值是否合法
- * Author: cbb
- * Create Time:2017/6/15 17:32
+ * <p>Title:自定义校验注解：常量校验</p>
+ * <p>Description:校验常量值是否合法</p>
+ * @author: cbb
+ * @date: 2017/6/15
  */
 @Target({FIELD, METHOD})
 @Retention(RUNTIME)

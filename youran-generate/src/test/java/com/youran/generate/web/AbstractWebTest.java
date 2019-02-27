@@ -10,10 +10,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * Title: web单元测试抽象类
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 14:54
+ * <p>Title:web单元测试抽象类</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @AutoConfigureMockMvc(printOnlyOnFailure=false)
 public abstract class AbstractWebTest extends AbstractTest {

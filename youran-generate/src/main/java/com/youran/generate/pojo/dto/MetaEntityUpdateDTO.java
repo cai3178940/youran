@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaEntityExample.*;
 
 /**
- * Title:修改实体DTO
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 11:05
+ * <p>Title:修改实体DTO</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @ApiModel(description = "修改实体参数")
 public class MetaEntityUpdateDTO extends MetaEntityAddDTO {

@@ -6,10 +6,10 @@ import io.swagger.annotations.ApiModelProperty;
 import static com.youran.generate.pojo.example.MetaEntityExample.*;
 
 /**
- * Title:实体详情展示对象
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 17:54
+ * <p>Title:实体详情展示对象</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 public class MetaEntityShowVO extends AbstractVO {
 

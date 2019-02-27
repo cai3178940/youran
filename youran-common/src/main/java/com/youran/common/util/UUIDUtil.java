@@ -3,10 +3,10 @@ package com.youran.common.util;
 import java.util.UUID;
 
 /**
- * Title:获取UUID
- * Description:
- * Author: cbb
- * Create Time:2017/5/20 12:59
+ * <p>Title:获取UUID</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/20
  */
 public class UUIDUtil {
 

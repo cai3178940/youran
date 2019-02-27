@@ -5,10 +5,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
 
 /**
- * Title: 过滤XSS工具
- * Description:
- * Author: cbb
- * Create Time: 2018/3/6 11:28
+ * <p>Title:过滤XSS工具</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/3/6
  */
 public class XSSUtil {
 

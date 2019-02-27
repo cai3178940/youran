@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Title: H2数据库刷新器
- * Description:
- * Author: cbb
- * Create Time: 2017-09-13 15:14
+ * <p>Title:H2数据库刷新器</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017-09-13
  */
 public class H2Flusher implements InitializingBean {
 

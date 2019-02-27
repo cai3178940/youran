@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Title:常量类
- * Description:
- * Author: cbb
- * Create Time:2017/6/13 15:25
+ * <p>Title:常量类</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/6/13
  */
 public class MetaConstPO extends GeneralPO {
 

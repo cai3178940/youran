@@ -3,10 +3,10 @@ package com.youran.generate.pojo.po;
 import java.util.List;
 
 /**
- * Title:字段
- * Description:
- * Author: cbb
- * Create Time:2017/4/11 10:49
+ * <p>Title:字段</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/4/11
  */
 public class MetaFieldPO extends GeneralPO {
 

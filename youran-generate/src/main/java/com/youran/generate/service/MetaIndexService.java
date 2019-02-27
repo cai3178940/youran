@@ -22,10 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Title:索引增删改查服务
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 11:17
+ * <p>Title:索引增删改查服务</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @Service
 public class MetaIndexService {

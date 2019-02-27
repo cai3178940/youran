@@ -10,10 +10,10 @@ import static com.youran.generate.pojo.example.MetaManyToManyExample.N_PROJECTID
 
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/7/4 16:42
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/7/4
  */
 public class MetaManyToManyQO extends AbstractQO {
 

@@ -3,10 +3,10 @@ package com.youran.generate.pojo.example;
 import com.youran.common.pojo.example.AbstractExample;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time: 2018/5/28 15:11
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/5/28
  */
 public class MetaCascadeExtExample extends AbstractExample {
 

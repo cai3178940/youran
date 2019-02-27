@@ -12,10 +12,10 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
 
 /**
- * Title:新增实体DTO
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 11:05
+ * <p>Title:新增实体DTO</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @ApiModel(description = "新增多对多关系参数")
 public class MetaManyToManyAddDTO extends AbstractDTO {

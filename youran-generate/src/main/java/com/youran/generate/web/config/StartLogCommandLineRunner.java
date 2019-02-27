@@ -14,10 +14,10 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
- * Title: 打印启动日志
- * Description:
- * Author: cbb
- * Create Time: 2018/1/16 09:32
+ * <p>Title:打印启动日志</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/1/16
  */
 @Component
 public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {

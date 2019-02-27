@@ -1,10 +1,10 @@
 package com.youran.common.context;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/9/18 17:28
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/9/18
  */
 public interface LoginContext {
 

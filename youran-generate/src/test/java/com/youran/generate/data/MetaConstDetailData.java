@@ -8,10 +8,10 @@ import com.youran.generate.pojo.po.MetaConstDetailPO;
 import static com.youran.generate.pojo.example.MetaConstDetailExample.*;
 
 /**
- * Title:测试数据
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 15:21
+ * <p>Title:测试数据</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 public class MetaConstDetailData {
 

@@ -1,10 +1,10 @@
 package com.youran.generate.pojo.po;
 
 /**
- * Title: 级联扩展
- * Description: 从外键字段对应的表中级联查出要展示的字段
- * Author: cbb
- * Create Time: 2018/5/28 14:53
+ * <p>Title:级联扩展</p>
+ * <p>Description:从外键字段对应的表中级联查出要展示的字段</p>
+ * @author: cbb
+ * @date: 2018/5/28
  */
 public class MetaCascadeExtPO extends GeneralPO {
 

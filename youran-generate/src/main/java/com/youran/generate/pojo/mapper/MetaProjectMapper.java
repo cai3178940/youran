@@ -10,9 +10,9 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 /**
- * Title: 项目映射
- * Description: 基于mapstruct来实现，编译器自动生成实现类
- * Author: cbb
+ * <p>Title:项目映射</p>
+ * <p>Description:基于mapstruct来实现，编译器自动生成实现类</p>
+ * @author: cbb
  * Create Time:2017/5/24
  */
 @Mapper(uses = FeatureMapper.class)

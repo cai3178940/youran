@@ -13,10 +13,10 @@ import static com.youran.generate.pojo.example.MetaConstDetailExample.*;
 
 
 /**
- * Title:新增常量值DTO
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 11:05
+ * <p>Title:新增常量值DTO</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @ApiModel(description = "新增常量值参数")
 public class MetaConstDetailAddDTO extends AbstractDTO {

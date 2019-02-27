@@ -8,10 +8,10 @@ import java.util.Date;
 import static com.youran.generate.pojo.example.MetaCascadeExtExample.*;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time: 2018/5/28 15:31
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/5/28
  */
 public class MetaCascadeExtShowVO extends AbstractVO {
 

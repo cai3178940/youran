@@ -9,10 +9,10 @@ import static com.youran.generate.pojo.example.MetaFieldExample.E_ENTITYID;
 import static com.youran.generate.pojo.example.MetaFieldExample.N_ENTITYID;
 
 /**
- * Title: 查询参数
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 18:32
+ * <p>Title:查询参数</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 public class MetaFieldQO extends AbstractQO {
 

@@ -9,10 +9,10 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Title: swagger配置引入
- * Description:
- * Author: cbb
- * Create Time: 2018/1/16 09:32
+ * <p>Title:swagger配置引入</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/1/16
  */
 @Configuration
 public class SwaggerConfig {

@@ -3,10 +3,10 @@ package com.youran.common.pojo.po;
 import java.util.Date;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/8/24 17:20
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/8/24
  */
 public abstract class AbstractPO {
 

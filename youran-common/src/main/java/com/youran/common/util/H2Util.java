@@ -14,7 +14,7 @@ import java.util.Date;
 /**
  * H2数据库工具类
  * @author cbb
- * @date 2017/3/27 14:37
+ * @date 2017/3/27
  */
 public class H2Util {
 

@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Title: 分页结果对象
- * Description:
- * Author: cbb
- * Create Time:2017/8/24 15:51
+ * <p>Title:分页结果对象</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/8/24
  */
 @ApiModel
 public class PageVO<T> extends AbstractVO {

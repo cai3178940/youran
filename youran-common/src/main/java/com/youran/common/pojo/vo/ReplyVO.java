@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Title: 通用响应对象
- * Description:
- * Author: cbb
- * Create Time:2017/8/24 15:51
+ * <p>Title:通用响应对象</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/8/24
  */
 @ApiModel
 public class ReplyVO<T> extends AbstractVO {

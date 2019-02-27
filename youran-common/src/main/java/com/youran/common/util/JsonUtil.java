@@ -16,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Title: 封装json操作
- * Description:
- * Author: cbb
- * Create Time:2017/5/20 12:59
+ * <p>Title:封装json操作</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/20
  */
 public class JsonUtil {
 

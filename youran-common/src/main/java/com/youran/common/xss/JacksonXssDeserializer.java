@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import java.io.IOException;
 
 /**
- * Title: jackson防XSS反序列化器
- * Description:
- * Author: cbb
- * Create Time: 2018/4/10 14:44
+ * <p>Title:jackson防XSS反序列化器</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/4/10
  */
 public class JacksonXssDeserializer extends StdScalarDeserializer<String> {
 

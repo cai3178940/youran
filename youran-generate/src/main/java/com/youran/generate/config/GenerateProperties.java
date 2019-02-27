@@ -4,10 +4,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * Title:配置参数类
- * Description:该类中的参数来自配置文件
- * Author: cbb
- * Create Time:2017/5/12 10:55
+ * <p>Title:配置参数类</p>
+ * <p>Description:该类中的参数来自配置文件</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @Component
 @ConfigurationProperties(prefix = "youran")

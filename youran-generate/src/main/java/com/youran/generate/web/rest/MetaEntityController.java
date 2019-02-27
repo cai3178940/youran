@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- * Title:【实体】控制器
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 13:42
+ * <p>Title:【实体】控制器</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @RestController
 @RequestMapping(GenerateConst.API_PATH +"/meta_entity")

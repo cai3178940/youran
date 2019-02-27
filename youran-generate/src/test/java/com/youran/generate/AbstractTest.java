@@ -8,10 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * Title: 单元测试抽象类
- * Description:
- * Author: cbb
- * Create Time: 2017-09-13 15:14
+ * <p>Title:单元测试抽象类</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017-09-13
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = GenerateApp.class)

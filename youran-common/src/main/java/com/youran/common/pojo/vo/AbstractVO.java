@@ -6,10 +6,10 @@ import com.youran.common.util.JsonUtil;
 import java.io.Serializable;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/10/17 15:41
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/10/17
  */
 public abstract class AbstractVO implements Serializable {
 

@@ -1,10 +1,10 @@
 package com.youran.generate.pojo.po;
 
 /**
- * Title:常量值
- * Description:
- * Author: cbb
- * Create Time:2017/6/13 15:25
+ * <p>Title:常量值</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/6/13
  */
 public class MetaConstDetailPO extends GeneralPO {
 

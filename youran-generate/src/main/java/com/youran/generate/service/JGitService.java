@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:3/16/2018 21:43
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 3/16/2018
  */
 @Service
 public class JGitService {

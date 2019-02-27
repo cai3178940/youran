@@ -5,10 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Title: 防止通过parameter传入XSS脚本
- * Description:
- * Author: cbb
- * Create Time: 2018/3/2 19:04
+ * <p>Title:防止通过parameter传入XSS脚本</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/3/2
  */
 public class WebXSSFilter implements Filter {
 

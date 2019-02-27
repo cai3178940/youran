@@ -3,10 +3,10 @@ package com.youran.generate.pojo.example;
 import com.youran.common.pojo.example.AbstractExample;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/7/4 16:26
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/7/4
  */
 public class MetaManyToManyExample extends AbstractExample {
 

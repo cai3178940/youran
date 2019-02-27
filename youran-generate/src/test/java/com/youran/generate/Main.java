@@ -5,10 +5,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- * Title: 合并测试类
- * Description:
- * Author: cbb
- * Create Time: 2017-09-13 15:14
+ * <p>Title:合并测试类</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017-09-13
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

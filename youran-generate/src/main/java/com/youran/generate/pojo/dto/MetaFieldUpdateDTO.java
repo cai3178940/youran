@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaFieldExample.*;
 
 /**
- * Title:修改字段DTO
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 11:05
+ * <p>Title:修改字段DTO</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @ApiModel(description = "修改字段参数")
 public class MetaFieldUpdateDTO extends MetaFieldAddDTO {

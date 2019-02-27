@@ -16,11 +16,11 @@ import java.util.Objects;
 
 
 /**
- * Title: 【生成历史】删改查服务
- * Description:
+ * <p>Title:【生成历史】删改查服务</p>
+ * <p>Description:</p>
  * Project: bbs
- * Author: cbb
- * Create Time: 2018-03-17 16:47
+ * @author: cbb
+ * @date: 2018-03-17
  */
 @Service
 public class GenHistoryService {

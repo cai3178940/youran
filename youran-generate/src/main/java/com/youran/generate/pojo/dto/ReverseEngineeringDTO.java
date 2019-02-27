@@ -8,10 +8,10 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotNull;
 
 /**
- * Title: 反向工程参数
- * Description:
- * Author: cbb
- * Create Time: 2018/5/30 17:49
+ * <p>Title:反向工程参数</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/5/30
  */
 @ApiModel(description = "反向工程参数")
 public class ReverseEngineeringDTO extends AbstractDTO {

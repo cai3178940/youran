@@ -15,10 +15,10 @@ import static com.youran.generate.pojo.example.MetaFieldExample.*;
 
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 11:11
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @ApiModel(description = "新增字段参数")
 public class MetaFieldAddDTO extends AbstractDTO {

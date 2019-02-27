@@ -7,10 +7,10 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Title:常量类中静态校验方法标记
- * Description: 标记了Check注解的方法会用在常量校验中
- * Author: cbb
- * Create Time:2017/6/15 17:30
+ * <p>Title:常量类中静态校验方法标记</p>
+ * <p>Description:标记了Check注解的方法会用在常量校验中</p>
+ * @author: cbb
+ * @date: 2017/6/15
  */
 @Target(METHOD)
 @Retention(RUNTIME)

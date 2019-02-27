@@ -9,11 +9,11 @@ import io.swagger.annotations.ApiOperation;
 
 
 /**
- * Title: 【生成历史】API
- * Description: swagger接口文档
+ * <p>Title:【生成历史】API</p>
+ * <p>Description:swagger接口文档</p>
  * Project: bbs
- * Author: cbb
- * Create Time: 2018-03-17 16:47
+ * @author: cbb
+ * @date: 2018-03-17
  */
 @Api(tags = "GenHistory", description = "生成历史")
 public interface GenHistoryAPI {

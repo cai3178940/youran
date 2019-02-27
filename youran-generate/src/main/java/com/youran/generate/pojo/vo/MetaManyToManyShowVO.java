@@ -6,10 +6,10 @@ import io.swagger.annotations.ApiModelProperty;
 import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/7/4 16:44
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/7/4
  */
 public class MetaManyToManyShowVO extends AbstractVO {
 

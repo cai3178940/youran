@@ -8,10 +8,10 @@ import java.util.Date;
 import static com.youran.generate.pojo.example.GenHistoryExample.*;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time: 2018/3/17 15:39
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/3/17
  */
 public class GenHistoryListVO extends AbstractVO {
 

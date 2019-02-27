@@ -20,10 +20,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * Title:FreeMaker工具类
- * Description:
- * Author: cbb
- * Create Time:2017/5/13 22:47
+ * <p>Title:FreeMaker工具类</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/13
  */
 public class FreeMakerUtil {
 

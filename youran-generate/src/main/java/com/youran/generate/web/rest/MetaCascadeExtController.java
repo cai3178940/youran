@@ -19,10 +19,10 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Title: 【级联扩展】控制器
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 13:42
+ * <p>Title:【级联扩展】控制器</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @RestController
 @RequestMapping(GenerateConst.API_PATH +"/meta_cascade_ext")

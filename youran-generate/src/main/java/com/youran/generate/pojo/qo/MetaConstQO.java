@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaConstExample.E_PROJECTID;
 import static com.youran.generate.pojo.example.MetaConstExample.N_PROJECTID;
 /**
- * Title: 分页查询参数
- * Description:
- * Author: cbb
- * Create Time:2017/6/14 9:32
+ * <p>Title:分页查询参数</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/6/14
  */
 public class MetaConstQO extends PageQO {
 

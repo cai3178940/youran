@@ -3,10 +3,10 @@ package com.youran.common.util;
 import java.math.BigDecimal;
 
 /**
- * Title: 空指针安全的类型转换工具
- * Description:
- * Author: cbb
- * Create Time:2017/5/20 12:59
+ * <p>Title:空指针安全的类型转换工具</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/20
  */
 public class SafeUtil {
 

@@ -38,10 +38,10 @@ import java.util.function.Consumer;
 
 
 /**
- * Title: 代码生成的核心service
- * Description:
- * Author: cbb
- * Create Time:2017/5/14 10:29
+ * <p>Title:代码生成的核心service</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/14
  */
 @Service
 public class MetaCodeGenService {

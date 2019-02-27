@@ -1,10 +1,10 @@
 package com.youran.generate.pojo.po;
 
 /**
- * Title: 多对多关联关系
- * Description:
- * Author: cbb
- * Create Time:2017/7/4 16:25
+ * <p>Title:多对多关联关系</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/7/4
  */
 public class MetaManyToManyPO extends GeneralPO {
 

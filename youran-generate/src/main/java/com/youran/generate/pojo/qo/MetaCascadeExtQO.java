@@ -9,10 +9,10 @@ import static com.youran.generate.pojo.example.MetaCascadeExtExample.E_FIELDID;
 import static com.youran.generate.pojo.example.MetaCascadeExtExample.N_FIELDID;
 
 /**
- * Title: 查询参数
- * Description:
- * Author: cbb
- * Create Time:2017/6/14 9:32
+ * <p>Title:查询参数</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/6/14
  */
 public class MetaCascadeExtQO extends AbstractQO {
 

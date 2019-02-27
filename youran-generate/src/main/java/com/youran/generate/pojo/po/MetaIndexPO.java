@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Title:索引
- * Description:
- * Author: cbb
- * Create Time:2017/4/11 12:38
+ * <p>Title:索引</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/4/11
  */
 public class MetaIndexPO extends GeneralPO {
 

@@ -9,10 +9,10 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 
 /**
- * Title: spring bean 工具类
- * Description:
- * Author: cbb
- * Create Time: 2018/6/15 15:16
+ * <p>Title:spring bean 工具类</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018/6/15
  */
 public class SpringUtil implements ApplicationContextAware {
 

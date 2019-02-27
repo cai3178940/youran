@@ -13,10 +13,10 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * Title:【常量】api
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 13:40
+ * <p>Title:【常量】api</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 @Api(tags = "MetaConstPO", description = "常量")
 public interface MetaConstAPI {

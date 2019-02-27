@@ -6,10 +6,10 @@ import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
 
 /**
- * Title:文件压缩工具
- * Description:
- * Author: cbb
- * Create Time:2017/5/20 13:35
+ * <p>Title:文件压缩工具</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/20
  */
 public class Zip4jUtil {
 

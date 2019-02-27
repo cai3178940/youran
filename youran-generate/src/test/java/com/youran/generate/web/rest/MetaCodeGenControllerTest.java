@@ -14,10 +14,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Title:
- * Description:
- * Author: cbb
- * Create Time:2017/5/14 11:38
+ * <p>Title:</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2017/5/14
  */
 public class MetaCodeGenControllerTest extends AbstractWebTest {
 
