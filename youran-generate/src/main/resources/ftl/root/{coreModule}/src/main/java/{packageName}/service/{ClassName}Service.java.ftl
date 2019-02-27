@@ -96,7 +96,7 @@ public class ${this.classNameUpper}Service {
      * @param ${this.className}DTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public ${this.classNameUpper}PO save(${this.classNameUpper}AddDTO ${this.className}DTO) {
         ${this.classNameUpper}PO ${this.className} = ${this.classNameUpper}Mapper.INSTANCE.fromAddDTO(${this.className}DTO);
         <@checkForeignKeys this.insertFields/>
@@ -126,7 +126,7 @@ public class ${this.classNameUpper}Service {
      * @param ${this.className}UpdateDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     <#if this.metaEntity.versionField??>
         <@call this.addImport("${this.commonPackage}.optimistic.OptimisticLock")/>
     @OptimisticLock
@@ -233,7 +233,7 @@ public class ${this.classNameUpper}Service {
      * @param ${this.id}s
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int delete(${this.type}... ${this.id}s) {
         int count = 0;
         for (${this.type} ${this.id} : ${this.id}s) {
@@ -324,7 +324,7 @@ public class ${this.classNameUpper}Service {
      * @param ${otherPkId}
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int add${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherPkId}) {
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         if(ArrayUtils.isEmpty(${otherPkId})){
@@ -339,7 +339,7 @@ public class ${this.classNameUpper}Service {
      * @param ${otherPkId}
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int remove${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherPkId}) {
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         if(ArrayUtils.isEmpty(${otherPkId})){
@@ -354,7 +354,7 @@ public class ${this.classNameUpper}Service {
      * @param ${otherPkId}
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int set${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}[] ${otherPkId}) {
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         ${this.className}DAO.removeAll${otherCName}(${this.id});

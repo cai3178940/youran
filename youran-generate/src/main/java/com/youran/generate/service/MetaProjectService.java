@@ -57,7 +57,7 @@ public class MetaProjectService {
      * @param metaProjectDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public MetaProjectPO save(MetaProjectAddDTO metaProjectDTO) {
         MetaProjectPO metaProject = MetaProjectMapper.INSTANCE.fromAddDTO(metaProjectDTO);
         String password = metaProject.getPassword();
@@ -81,7 +81,7 @@ public class MetaProjectService {
      * @param updateDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaProjectPO update(MetaProjectUpdateDTO updateDTO) {
         Integer projectId = updateDTO.getProjectId();
@@ -156,7 +156,7 @@ public class MetaProjectService {
      * @param projectId
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... projectId) {
         int count = 0;
         for (Integer id : projectId) {

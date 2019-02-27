@@ -39,7 +39,7 @@ public class MetaCascadeExtService {
      * @param addDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public MetaCascadeExtPO save(MetaCascadeExtAddDTO addDTO) {
         Integer entityId = addDTO.getEntityId();
         //校验操作人
@@ -55,7 +55,7 @@ public class MetaCascadeExtService {
      * @param updateDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaCascadeExtPO update(MetaCascadeExtUpdateDTO updateDTO) {
         MetaCascadeExtPO metaCascadeExt = this.getMetaCascadeExt(updateDTO.getCascadeExtId(),true);
@@ -110,7 +110,7 @@ public class MetaCascadeExtService {
      * @param cascadeExtId
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... cascadeExtId) {
         int count = 0;
         Integer entityId = null;

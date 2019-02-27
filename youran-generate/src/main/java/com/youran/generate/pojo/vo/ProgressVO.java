@@ -26,6 +26,10 @@ public class ProgressVO extends AbstractVO {
      * 异常
      */
     public static final int ERROR = 3;
+    /**
+     * 完成之前不再增长的百分比：99%
+     */
+    public static final int LAST_PERCENT = 99;
 
     private static ThreadLocal<ProgressVO> threadLocal = new ThreadLocal<>();
 
@@ -78,8 +82,8 @@ public class ProgressVO extends AbstractVO {
         }
         // 进度增长过程中，进度值不能超过99%
         int currentPercent = vo.getPercentage()+addPercent;
-        if(currentPercent>=99){
-            currentPercent = 99;
+        if(currentPercent >= LAST_PERCENT){
+            currentPercent = LAST_PERCENT;
         }
         vo.setPercentage(currentPercent);
         if(msg!=null) {

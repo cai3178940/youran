@@ -34,7 +34,7 @@ public class GenHistoryService {
      * 新增【生成历史】
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public GenHistoryPO save(MetaProjectPO project,String commit,String branch) {
         GenHistoryPO genHistory = new GenHistoryPO();
         genHistory.setProjectId(project.getProjectId());
@@ -78,7 +78,7 @@ public class GenHistoryService {
      * @param historyIds
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... historyIds) {
         int count = 0;
         for (Integer historyId : historyIds) {

@@ -34,7 +34,7 @@ public class MetaFieldService {
      * @param metaFieldDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public MetaFieldPO save(MetaFieldAddDTO metaFieldDTO) {
         Integer entityId = metaFieldDTO.getEntityId();
         //校验操作人
@@ -50,7 +50,7 @@ public class MetaFieldService {
      * @param metaFieldUpdateDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaFieldPO update(MetaFieldUpdateDTO metaFieldUpdateDTO) {
         Integer fieldId = metaFieldUpdateDTO.getFieldId();
@@ -104,7 +104,7 @@ public class MetaFieldService {
      * @param fieldId
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... fieldId) {
         int count = 0;
         Integer entityId = null;

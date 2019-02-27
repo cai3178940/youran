@@ -43,7 +43,7 @@ public class MetaIndexService {
      * @param metaIndexAddDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public MetaIndexPO save(MetaIndexAddDTO metaIndexAddDTO) {
         Integer entityId = metaIndexAddDTO.getEntityId();
         //校验操作人
@@ -73,7 +73,7 @@ public class MetaIndexService {
      * @param metaIndexUpdateDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaIndexPO update(MetaIndexUpdateDTO metaIndexUpdateDTO) {
         Integer entityId = metaIndexUpdateDTO.getEntityId();
@@ -146,7 +146,7 @@ public class MetaIndexService {
      * @param indexId
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... indexId) {
         int count = 0;
         Integer entityId = null;
@@ -173,7 +173,7 @@ public class MetaIndexService {
      * @param fieldIds
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int removeField(Integer indexId, List<Integer> fieldIds) {
         MetaIndexPO metaIndex = this.getIndex(indexId,false);
         if(metaIndex==null){

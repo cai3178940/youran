@@ -102,7 +102,7 @@ export default {
 
 **使用外键后的效果1**：新增或修改实体时会校验关联实体是否存在
 \`\`\`
-@Transactional
+@Transactional(rollbackFor = RuntimeException.class)
 public DeveloperPO save(DeveloperAddDTO developerDTO) {
     DeveloperPO developer = DeveloperMapper.INSTANCE.fromAddDTO(developerDTO);
     if(developer.getUserId() != null){
@@ -117,7 +117,7 @@ public DeveloperPO save(DeveloperAddDTO developerDTO) {
 
 **使用外键后的效果2**：删除实体时会校验当前实体是否有被其他实体的外键引用
 \`\`\`
-@Transactional
+@Transactional(rollbackFor = RuntimeException.class)
 public int delete(Long... userIds) {
     int count = 0;
     for (Long userId : userIds) {

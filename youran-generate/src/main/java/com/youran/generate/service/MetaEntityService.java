@@ -54,7 +54,7 @@ public class MetaEntityService {
      * @param metaEntityDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public MetaEntityPO save(MetaEntityAddDTO metaEntityDTO) {
         Integer projectId = metaEntityDTO.getProjectId();
         //校验操作人
@@ -72,7 +72,7 @@ public class MetaEntityService {
      * @param metaEntityUpdateDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaEntityPO update(MetaEntityUpdateDTO metaEntityUpdateDTO) {
         MetaEntityPO metaEntity = this.getEntity(metaEntityUpdateDTO.getEntityId(),true);
@@ -138,7 +138,7 @@ public class MetaEntityService {
      * @param entityId
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... entityId) {
         int count = 0;
         Integer projectId = null;

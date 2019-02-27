@@ -35,7 +35,7 @@ public class MetaConstService {
      * @param metaConstDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public MetaConstPO save(MetaConstAddDTO metaConstDTO) {
         Integer projectId = metaConstDTO.getProjectId();
         //校验操作人
@@ -51,7 +51,7 @@ public class MetaConstService {
      * @param metaConstUpdateDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaConstPO update(MetaConstUpdateDTO metaConstUpdateDTO) {
         Integer constId = metaConstUpdateDTO.getConstId();
@@ -105,7 +105,7 @@ public class MetaConstService {
      * @param constId
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... constId) {
         int count = 0;
         Integer projectId = null;

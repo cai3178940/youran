@@ -39,6 +39,11 @@ public class QueryType {
      */
     public static final int BETWEEN = 7;
 
+    /**
+     * 字符串使用模糊查询的长度阈值
+     */
+    public static final int LIKE_LENGTH_THRESHOLD = 32;
+
     @Check
     public static final boolean check(int value) {
         return EQ == value || LIKE == value
@@ -83,7 +88,7 @@ public class QueryType {
     public static int guessQueryType(JFieldType jFieldType,int length){
 
         if(jFieldType==JFieldType.STRING){
-            if(length>32){
+            if(length > LIKE_LENGTH_THRESHOLD){
                 return LIKE;
             }else{
                 return EQ;

@@ -38,7 +38,7 @@ public class MetaManyToManyService {
      * @param metaManyToManyDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public MetaManyToManyPO save(MetaManyToManyAddDTO metaManyToManyDTO) {
         Integer projectId = metaManyToManyDTO.getProjectId();
         //校验操作人
@@ -60,7 +60,7 @@ public class MetaManyToManyService {
      * @param metaManyToManyUpdateDTO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaManyToManyPO update(MetaManyToManyUpdateDTO metaManyToManyUpdateDTO) {
         if (!metaEntityDAO.exist(metaManyToManyUpdateDTO.getEntityId1())) {
@@ -120,7 +120,7 @@ public class MetaManyToManyService {
      * @param mtmId
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... mtmId) {
         int count = 0;
         Integer projectId = null;
