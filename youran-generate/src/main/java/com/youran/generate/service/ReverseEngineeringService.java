@@ -92,21 +92,12 @@ public class ReverseEngineeringService {
      */
     public void execute(ReverseEngineeringDTO dto) {
         MetaProjectPO project = metaProjectService.getProject(dto.getProjectId(),true);
-        //MetaProjectPO project = null;
-
         List<SQLStatement> list = this.parse(dto);
-
         for (SQLStatement sqlStatement : list) {
-
             SQLCreateTableStatement createTableStatement = (SQLCreateTableStatement)sqlStatement;
-
             String tableName = cleanQuote(createTableStatement.getTableSource().getName().getSimpleName());
-
             String comment = cleanQuote(SafeUtil.getString(createTableStatement.getComment()));
-
             MetaEntityPO entity = createEntity(project, tableName, comment);
-            //MetaEntityPO entity = null;
-
             SQLPrimaryKey primaryKey = createTableStatement.findPrimaryKey();
             if(primaryKey==null){
                 throw new GenerateException("表【"+tableName+"】不存在主键");
@@ -115,9 +106,7 @@ public class ReverseEngineeringService {
                 throw new GenerateException("表【"+tableName+"】存在联合主键，反向工程暂不支持联合主键");
             }
             String pkFieldName = cleanQuote(primaryKey.getColumns().get(0).getExpr().toString());
-
             List<SQLTableElement> tableElementList = createTableStatement.getTableElementList();
-
             int orderNo = 0;
             // 缓存遍历到的字段
             Map<String,MetaFieldPO> fieldMap = new HashMap<>(32);
@@ -147,7 +136,6 @@ public class ReverseEngineeringService {
                         fieldLength, fieldScale, pk,
                         autoIncrement, notNull, orderNo,
                         defaultValue, desc);
-
                     fieldMap.put(fieldName,field);
                     continue;
                 }
@@ -159,22 +147,15 @@ public class ReverseEngineeringService {
                     boolean unique = (element instanceof MySqlUnique);
                     MySqlKey sqlKey = (MySqlKey) element;
                     String indexName = cleanQuote(sqlKey.getName().toString());
-
                     List<MetaFieldPO> fields = new ArrayList<>();
                     for (SQLSelectOrderByItem item : sqlKey.getColumns()) {
                         String columnName = cleanQuote(item.getExpr().toString());
                         fields.add(fieldMap.get(columnName));
                     }
-
                     this.createIndex(entity,indexName,unique,fields);
-
                 }
             }
-
-
-
         }
-
     }
 
     /**

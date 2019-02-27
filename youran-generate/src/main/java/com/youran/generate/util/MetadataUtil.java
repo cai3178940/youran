@@ -2,6 +2,7 @@ package com.youran.generate.util;
 
 import com.google.common.base.Joiner;
 import com.youran.common.constant.BoolConst;
+import com.youran.generate.constant.DefaultValue;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MySqlType;
 import com.youran.generate.pojo.po.MetaFieldPO;
@@ -134,17 +135,7 @@ public class MetadataUtil {
             ||MySqlType.DOUBLE.equals(fieldType)
             ||MySqlType.FLOAT.equals(fieldType);
     }
-    /**
-     * 默认值是否需要展示单引号
-     * @param fieldType
-     * @return
-     */
-    public static boolean showDefaultValueApostrophe(String fieldType){
-        return MySqlType.TEXT.equals(fieldType)
-            ||MySqlType.VARCHAR.equals(fieldType)
-            ||MySqlType.CHAR.equals(fieldType)
-            ||MySqlType.DATETIME.equals(fieldType);
-    }
+
 
     /**
      * 获取【字段长度】展示
@@ -197,7 +188,7 @@ public class MetadataUtil {
         if(BoolConst.TRUE==field.getPrimaryKey()){
             return "";
         }
-        if("NULL".equals(field.getDefaultValue())) {
+        if(DefaultValue.NULL.equals(field.getDefaultValue())) {
             if (field.getNotNull() == BoolConst.FALSE){
                 return " DEFAULT NULL";
             }else {
@@ -205,16 +196,43 @@ public class MetadataUtil {
             }
         }else{
             StringBuilder sb = new StringBuilder(" DEFAULT ");
-            boolean showApostrophe = showDefaultValueApostrophe(field.getFieldType());
-            if(showApostrophe){
+            // 是否需要包装起来
+            boolean needWrap = MySqlType.isStringType(field.getFieldType())
+                                || MySqlType.isDateType(field.getFieldType());
+            if(needWrap){
                 sb.append("'");
             }
-            sb.append(field.getDefaultValue());
-            if(showApostrophe){
+            if(StringUtils.isBlank(field.getDefaultValue())){
+                sb.append(guessDefaultValueByFieldType(field.getFieldType()));
+            }else {
+                sb.append(field.getDefaultValue());
+            }
+            if(needWrap){
                 sb.append("'");
             }
             return sb.toString();
         }
+    }
+
+    /**
+     * 根据字段类型猜测默认值
+     * @param fieldType
+     * @return
+     */
+    public static String guessDefaultValueByFieldType(String fieldType){
+        if(MySqlType.isStringType(fieldType)){
+            return "";
+        }
+        if(MySqlType.isNumberType(fieldType)){
+            return "0";
+        }
+        if(MySqlType.isTimestampType(fieldType)){
+            return "0";
+        }
+        if(MySqlType.isDateType(fieldType)){
+            return "1900-01-01 00:00:00";
+        }
+        return "";
     }
 
     /**

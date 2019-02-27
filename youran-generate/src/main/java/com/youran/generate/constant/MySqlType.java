@@ -101,4 +101,50 @@ public class MySqlType {
     }
 
 
+    /**
+     * 判断字段类型是否字符串格式
+     * @param mySqlType
+     * @return
+     */
+    public static boolean isStringType(String mySqlType){
+        return TEXT.equals(mySqlType)
+            ||VARCHAR.equals(mySqlType)
+            ||CHAR.equals(mySqlType);
+    }
+
+    /**
+     * 判断字段类型是否数字格式
+     * @param mySqlType
+     * @return
+     */
+    public static boolean isNumberType(String mySqlType){
+        return INT.equals(mySqlType)
+            ||BIGINT.equals(mySqlType)
+            ||SMALLINT.equals(mySqlType)
+            ||MEDIUMINT.equals(mySqlType)
+            ||TINYINT.equals(mySqlType)
+            ||FLOAT.equals(mySqlType)
+            ||DOUBLE.equals(mySqlType)
+            ||DECIMAL.equals(mySqlType);
+    }
+    /**
+     * 判断字段类型是否时间戳格式
+     * @param mySqlType
+     * @return
+     */
+    public static boolean isTimestampType(String mySqlType){
+        return TIMESTAMP.equals(mySqlType);
+    }
+
+    /**
+     * 判断字段类型是否日期格式
+     * @param mySqlType
+     * @return
+     */
+    public static boolean isDateType(String mySqlType){
+        return DATETIME.equals(mySqlType);
+    }
+
+
+
 }
