@@ -73,7 +73,7 @@ public class MetaCodeGenWsController extends AbstractController {
                 progressVO -> this.replyProgress(topic,progressVO));
             // 将zip文件路径存入缓存，随后浏览器就能下载了
             lruCache.put(sessionId,new Object[]{projectId,zipFile.getPath()});
-            this.replyProgress(topic,ProgressVO.done("代码生成完毕"));
+            this.replyProgress(topic,ProgressVO.success("代码生成完毕"));
         } catch (GenerateException e){
             // 如果捕获到异常，则将异常也通知给前端浏览器
             this.replyProgress(topic,ProgressVO.error(e.getMessage()));
@@ -127,7 +127,7 @@ public class MetaCodeGenWsController extends AbstractController {
             // 提交到仓库
             GenHistoryPO history = metaCodeGenService.gitCommit(projectId,
                 progressVO -> this.replyProgress(topic, progressVO));
-            this.replyProgress(topic,ProgressVO.done("已创建自动分支【"+ history.getBranch() +"】，并提交到远程"));
+            this.replyProgress(topic,ProgressVO.success("已创建自动分支【"+ history.getBranch() +"】，并提交到远程"));
         } catch (GenerateException e){
             // 如果捕获到异常，则将异常也通知给前端浏览器
             this.replyProgress(topic,ProgressVO.error(e.getMessage()));

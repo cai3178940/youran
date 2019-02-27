@@ -51,6 +51,7 @@ public class MetaProjectController implements MetaProjectAPI {
         List<MetaProjectListVO> list = metaProjectService.list(metaProjectQO);
         ReplyVO<List<MetaProjectListVO>> result = ReplyVO.success();
         result.setData(list);
+        System.out.println(result);
         return result;
     }
 

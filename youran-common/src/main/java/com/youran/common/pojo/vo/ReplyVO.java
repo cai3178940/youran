@@ -4,6 +4,8 @@ import com.youran.common.constant.ErrorCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -76,7 +78,7 @@ public class ReplyVO<T> extends AbstractVO {
     public ReplyVO add(String key, Object value) {
         Map<String, Object> map;
         if (this.data == null) {
-            map = new HashMap<>();
+            map = new HashMap<>(16);
         } else if (this.data instanceof Map) {
             map = (Map<String, Object>) this.data;
         } else {
@@ -149,5 +151,14 @@ public class ReplyVO<T> extends AbstractVO {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("code", code)
+            .append("message", message)
+            .append("data", data)
+            .toString();
     }
 }

@@ -2,6 +2,8 @@ package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static com.youran.generate.pojo.example.MetaEntityExample.*;
 
@@ -111,4 +113,18 @@ public class MetaEntityShowVO extends AbstractVO {
         this.desc = desc;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("entityId", entityId)
+            .append("projectId", projectId)
+            .append("schemaName", schemaName)
+            .append("className", className)
+            .append("tableName", tableName)
+            .append("title", title)
+            .append("desc", desc)
+            .append("commonCall", commonCall)
+            .append("pageSign", pageSign)
+            .toString();
+    }
 }

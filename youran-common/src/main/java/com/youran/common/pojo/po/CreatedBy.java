@@ -8,8 +8,16 @@ package com.youran.common.pojo.po;
  */
 public interface CreatedBy {
 
+    /**
+     * 获取创建人
+     * @return
+     */
     String getCreatedBy();
 
+    /**
+     * 设置创建人
+     * @param createdBy
+     */
     void setCreatedBy(String createdBy);
 
 }

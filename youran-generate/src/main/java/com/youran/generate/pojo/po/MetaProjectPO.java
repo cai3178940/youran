@@ -13,7 +13,7 @@ import static java.util.Arrays.stream;
  * @author: cbb
  * @date: 2017/5/24
  */
-public class MetaProjectPO extends GeneralPO {
+public class MetaProjectPO extends BasePO {
 
     private Integer projectId;
 

@@ -1,9 +1,11 @@
 package com.youran.generate.pojo.vo;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * <p>Title: </p>
  * <p>Description: </p>
- *
  * @author cbb
  * @date 2018/7/17
  */
@@ -50,5 +52,14 @@ public class FieldDiagramVO {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("name", name)
+            .append("type", type)
+            .append("desc", desc)
+            .toString();
     }
 }

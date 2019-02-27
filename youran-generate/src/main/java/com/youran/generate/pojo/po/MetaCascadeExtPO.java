@@ -6,7 +6,7 @@ package com.youran.generate.pojo.po;
  * @author: cbb
  * @date: 2018/5/28
  */
-public class MetaCascadeExtPO extends GeneralPO {
+public class MetaCascadeExtPO extends BasePO {
 
     /**
      * 主键id

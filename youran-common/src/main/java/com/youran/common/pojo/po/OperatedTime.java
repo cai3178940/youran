@@ -10,7 +10,16 @@ import java.util.Date;
  */
 public interface OperatedTime {
 
+    /**
+     * 获取操作时间
+     * @return
+     */
     Date getOperatedTime();
 
+    /**
+     * 设置操作时间
+     * @param operatedTime
+     */
     void setOperatedTime(Date operatedTime);
+
 }

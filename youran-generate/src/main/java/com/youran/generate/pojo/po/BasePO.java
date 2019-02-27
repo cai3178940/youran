@@ -11,7 +11,7 @@ import java.util.Date;
  * @author: cbb
  * @date: 7/21/2018
  */
-public abstract class GeneralPO extends AbstractPO implements CreatedOperatedDeletedVersion {
+public abstract class BasePO extends AbstractPO implements CreatedOperatedDeletedVersion {
 
     private Date createdTime;
 

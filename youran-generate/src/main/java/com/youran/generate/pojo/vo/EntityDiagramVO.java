@@ -1,12 +1,14 @@
 package com.youran.generate.pojo.vo;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * <p>Title: </p>
  * <p>Description: </p>
- *
  * @author cbb
  * @date 2018/7/17
  */
@@ -43,5 +45,13 @@ public class EntityDiagramVO {
 
     public void setFields(List<FieldDiagramVO> fields) {
         this.fields = fields;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("key", key)
+            .append("fields", fields)
+            .toString();
     }
 }

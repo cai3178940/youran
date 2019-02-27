@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 /**
  * <p>Title:【生成历史】API</p>
  * <p>Description:swagger接口文档</p>
- * Project: bbs
  * @author: cbb
  * @date: 2018-03-17
  */
@@ -20,6 +19,8 @@ public interface GenHistoryAPI {
 
     /**
      * 分页查询【生成历史】
+     * @param genHistoryQO
+     * @return
      */
     @ApiOperation(value="分页查询【生成历史】")
     ReplyVO<PageVO<GenHistoryListVO>> list(GenHistoryQO genHistoryQO);

@@ -2,6 +2,8 @@ package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
 
@@ -101,5 +103,19 @@ public class GenHistoryListVO extends AbstractVO {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("historyId", historyId)
+            .append("projectId", projectId)
+            .append("remoteUrl", remoteUrl)
+            .append("commit", commit)
+            .append("branch", branch)
+            .append("sysVersion", sysVersion)
+            .append("projectVersion", projectVersion)
+            .append("createdTime", createdTime)
+            .toString();
     }
 }

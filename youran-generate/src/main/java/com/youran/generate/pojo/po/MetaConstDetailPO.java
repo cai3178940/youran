@@ -6,7 +6,7 @@ package com.youran.generate.pojo.po;
  * @author: cbb
  * @date: 2017/6/13
  */
-public class MetaConstDetailPO extends GeneralPO {
+public class MetaConstDetailPO extends BasePO {
 
 
     /**

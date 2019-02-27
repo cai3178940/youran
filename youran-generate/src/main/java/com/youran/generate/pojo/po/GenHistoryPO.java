@@ -6,7 +6,7 @@ package com.youran.generate.pojo.po;
  * @author: cbb
  * @date: 2018/3/17
  */
-public class GenHistoryPO extends GeneralPO{
+public class GenHistoryPO extends BasePO {
 
     private Integer historyId;
 

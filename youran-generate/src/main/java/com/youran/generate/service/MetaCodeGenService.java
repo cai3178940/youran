@@ -53,7 +53,7 @@ public class MetaCodeGenService {
     @Autowired
     private MetaProjectService metaProjectService;
     @Autowired
-    private JGitService jGitService;
+    private GitService gitService;
     @Autowired
     private GenerateProperties generateProperties;
     @Autowired
@@ -178,7 +178,6 @@ public class MetaCodeGenService {
             File file = fileIterator.next();
             String path = file.getPath();
             String relativePath = path.substring(sourcePath.length());
-            //LOGGER.debug("relativePath={}",relativePath);
             File targetFile = new File(targetPath + relativePath);
             if (!targetFile.exists()) {
                 LOGGER.debug("目标文件不存在={}", targetPath + relativePath);
@@ -199,8 +198,8 @@ public class MetaCodeGenService {
         if (!file1Exists) {
             return true;
         }
-        List<String> file1Content = FileUtils.readLines(file1);
-        List<String> file2Content = FileUtils.readLines(file2);
+        List<String> file1Content = FileUtils.readLines(file1,"utf-8");
+        List<String> file2Content = FileUtils.readLines(file2,"utf-8");
         for (int i = 0; i < file1Content.size(); i++) {
             String l1 = file1Content.get(i);
             String l2 = file2Content.get(i);
@@ -363,10 +362,10 @@ public class MetaCodeGenService {
         String newBranchName = "auto"+ DateUtil.getDateStr(now,"yyyyMMddHHmmss");
         GitCredentialDTO credential = this.getCredentialDTO(project);
         this.progressing(progressConsumer,10,"克隆远程仓库");
-        String repository = jGitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
+        String repository = gitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
             credential, oldBranchName, newBranchName);
         File repoDir = new File(repository);
-        File[] oldFiles = repoDir.listFiles((dir, name) -> !name.equals(".git"));
+        File[] oldFiles = repoDir.listFiles((dir, name) -> !".git".equals(name));
         try {
             this.progressing(progressConsumer,1,"清空旧代码");
             for (File oldFile : oldFiles) {
@@ -381,7 +380,7 @@ public class MetaCodeGenService {
             throw new GenerateException("操作失败");
         }
         this.progressing(progressConsumer,1,"提交到远程仓库");
-        String commit = jGitService.commitAll(repository,
+        String commit = gitService.commitAll(repository,
             DateUtil.getDateStr(now,"yyyy-MM-dd HH:mm:ss")+"自动生成代码",
             credential);
         // 创建提交历史

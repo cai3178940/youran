@@ -2,6 +2,8 @@ package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static com.youran.generate.pojo.example.MetaFieldExample.*;
 
@@ -330,5 +332,40 @@ public class MetaFieldShowVO extends AbstractVO {
 
     public void setSpecialField(String specialField) {
         this.specialField = specialField;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("fieldId", fieldId)
+            .append("entityId", entityId)
+            .append("autoIncrement", autoIncrement)
+            .append("defaultValue", defaultValue)
+            .append("dicType", dicType)
+            .append("editType", editType)
+            .append("fieldComment", fieldComment)
+            .append("fieldExample", fieldExample)
+            .append("fieldDesc", fieldDesc)
+            .append("fieldLength", fieldLength)
+            .append("fieldName", fieldName)
+            .append("fieldScale", fieldScale)
+            .append("fieldType", fieldType)
+            .append("insert", insert)
+            .append("jfieldName", jfieldName)
+            .append("jfieldType", jfieldType)
+            .append("list", list)
+            .append("listSort", listSort)
+            .append("notNull", notNull)
+            .append("orderNo", orderNo)
+            .append("primaryKey", primaryKey)
+            .append("foreignKey", foreignKey)
+            .append("foreignEntityId", foreignEntityId)
+            .append("foreignFieldId", foreignFieldId)
+            .append("query", query)
+            .append("queryType", queryType)
+            .append("show", show)
+            .append("update", update)
+            .append("specialField", specialField)
+            .toString();
     }
 }

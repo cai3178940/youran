@@ -174,7 +174,6 @@ public class MetaQueryAssembleService {
             for (MetaIndexPO metaIndex : metaIndexes) {
                 List<Integer> fieldIds = metaIndexService.findFieldIdsByIndexId(metaIndex.getIndexId());
                 if (CollectionUtils.isEmpty(fieldIds)) {
-                    //throw new GenerateException("索引有误，缺少索引字段，entityId=" + entityId + ",indexId=" + metaIndex.getIndexId());
                     continue;
                 }
                 fieldIds.stream().forEach(fieldId -> {

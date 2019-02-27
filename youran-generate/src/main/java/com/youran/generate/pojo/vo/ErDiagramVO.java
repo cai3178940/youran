@@ -1,13 +1,14 @@
 package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
 /**
  * <p>Title: 实体关系图VO</p>
  * <p>Description: </p>
- *
  * @author cbb
  * @date 2018/7/17
  */
@@ -39,5 +40,13 @@ public class ErDiagramVO extends AbstractVO {
 
     public void setLinkData(List<RelationDiagramVO> linkData) {
         this.linkData = linkData;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("nodeData", nodeData)
+            .append("linkData", linkData)
+            .toString();
     }
 }

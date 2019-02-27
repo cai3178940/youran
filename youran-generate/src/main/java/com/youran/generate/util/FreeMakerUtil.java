@@ -10,7 +10,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,18 +126,13 @@ public class FreeMakerUtil {
      * @param outFilePath：输出路径(全路径名)
      */
     public static void generateFile(String templateName, Object dataModel, String outFilePath) {
-
-        FileWriter out = null;
-        try {
-            // 通过一个文件输出流，就可以写到相应的文件中，此处用的是绝对路径
-            out = new FileWriter(outFilePath);
+        // 通过一个文件输出流，就可以写到相应的文件中，此处用的是绝对路径
+        try (FileWriter out = new FileWriter(outFilePath)) {
             Template temp = getTemplate(templateName);
             temp.process(dataModel, out);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new RuntimeException("freemarker解析异常");
-        } finally {
-            IOUtils.closeQuietly(out);
         }
     }
 

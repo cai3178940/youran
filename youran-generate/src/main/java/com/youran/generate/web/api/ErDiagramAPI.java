@@ -19,6 +19,9 @@ public interface ErDiagramAPI {
 
     /**
      * ER图查看
+     * @param projectId 项目id
+     * @param entityIds 实体id
+     * @return
      */
     @ApiOperation(value = "ER图查看")
     @ApiImplicitParams({

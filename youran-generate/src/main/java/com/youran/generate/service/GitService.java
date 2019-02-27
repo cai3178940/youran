@@ -22,15 +22,15 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * <p>Title:</p>
+ * <p>Title:Git操作业务类</p>
  * <p>Description:</p>
  * @author: cbb
  * @date: 3/16/2018
  */
 @Service
-public class JGitService {
+public class GitService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(JGitService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(GitService.class);
 
     /**
      * clone远程仓库+checkout旧分支+创建新分支
@@ -56,11 +56,11 @@ public class JGitService {
                 .setURI(remoteUrl)
                 .setCloneAllBranches(true)
                 .setDirectory(repoDir);
-            //如果指定了旧分支，则只clone该分支
+            // 如果指定了旧分支，则只clone该分支
             /*if(StringUtils.isNotBlank(oldBranchName)){
                 cloneCommand.setBranchesToClone(Arrays.asList(oldBranchName));
             }*/
-            //认证
+            // 认证
             CredentialsProvider credentialsProvider = null;
             if(credential!=null) {
                 credentialsProvider = new UsernamePasswordCredentialsProvider(credential.getUsername(), credential.getPassword());
@@ -68,30 +68,30 @@ public class JGitService {
             try (Git git = cloneCommand
                 .setCredentialsProvider(credentialsProvider)
                 .call()) {
-                //列出远程所有分支
+                // 列出远程所有分支
                 Collection<Ref> refs = git.lsRemote()
                     .setCredentialsProvider(credentialsProvider)
                     .call();
-                //如果没有任何分支,或不存在旧分支则进行一次提交
+                // 如果没有任何分支,或不存在旧分支则进行一次提交
                 if(CollectionUtils.isEmpty(refs) || StringUtils.isBlank(oldBranchName)){
                     git.commit()
                         .setAll(true)
                         .setMessage("首次提交")
                         .call();
                 }else{
-                    //创建本地老分支
+                    // 创建本地老分支
                     git.branchCreate()
                         .setForce(true)
                         .setName(oldBranchName)
                         .setStartPoint("origin/" + oldBranchName).call();
-                    //check到老分支
+                    // check到老分支
                     git.checkout().setName(oldBranchName).call();
                 }
-                //创建分支
+                // 创建分支
                 git.branchCreate()
                     .setName(newBranchName)
                     .call();
-                //checkout分支
+                // checkout分支
                 git.checkout().setName(newBranchName).call();
                 return git.getRepository().getDirectory().getParent();
             }
@@ -144,12 +144,12 @@ public class JGitService {
      * @return
      */
     private Repository openRepository(String repoDir){
-        File _gitDir = new File(repoDir,".git");
+        File gitDir = new File(repoDir,".git");
         // now open the resulting repository with a FileRepositoryBuilder
         FileRepositoryBuilder builder = new FileRepositoryBuilder();
         Repository repository;
         try {
-            repository = builder.setGitDir(_gitDir)
+            repository = builder.setGitDir(gitDir)
                 .readEnvironment() // scan environment GIT_* variables
                 .findGitDir() // scan up the file system tree
                 .build();
@@ -161,29 +161,4 @@ public class JGitService {
     }
 
 
-
-
-
-
-    /*public static void main(String[] args) throws IOException {
-        JGitService jGitService = new JGitService();
-        GitCredentialDTO credentialDTO = new GitCredentialDTO("caibinbing", "CaiXiaoGe0611@");
-        String repository = jGitService.cloneRemoteRepository(
-            "cbbTest",
-            "http://git.jd.com/cbb/my-test2.git",
-            credentialDTO,
-            "branch2",
-            "branch3");
-
-        System.out.println(repository);
-        // create the file
-        File myfile = new File(repository, "testfile3");
-        myfile.createNewFile();
-        try(PrintWriter writer = new PrintWriter(myfile)) {
-            writer.append("Hello, world!3");
-        }
-
-        jGitService.commitAll(repository,"branch3 commit",credentialDTO);
-
-    }*/
 }

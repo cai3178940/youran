@@ -8,8 +8,16 @@ package com.youran.common.pojo.po;
  */
 public interface Version {
 
+    /**
+     * 获取乐观锁版本号
+     * @return
+     */
     Integer getVersion();
 
+    /**
+     * 设置乐观锁版本号
+     * @param version
+     */
     void setVersion(Integer version);
 
 }

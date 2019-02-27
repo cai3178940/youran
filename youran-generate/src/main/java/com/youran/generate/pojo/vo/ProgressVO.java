@@ -1,5 +1,9 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Objects;
 
 /**
@@ -8,13 +12,19 @@ import java.util.Objects;
  * @author cbb
  * @date 2019/1/28
  */
-public class ProgressVO {
+public class ProgressVO extends AbstractVO {
 
-    // 进行中
+    /**
+     * 进行中
+     */
     public static final int PROGRESSING = 1;
-    // 完成
-    public static final int DONE = 2;
-    // 异常
+    /**
+     * 完成
+     */
+    public static final int SUCCESS = 2;
+    /**
+     * 异常
+     */
     public static final int ERROR = 3;
 
     private static ThreadLocal<ProgressVO> threadLocal = new ThreadLocal<>();
@@ -36,6 +46,11 @@ public class ProgressVO {
      */
     private String msg;
 
+    /**
+     * 初始化进度条
+     * @param sessionId
+     * @return
+     */
     public static ProgressVO initProgress(String sessionId){
         ProgressVO vo = new ProgressVO();
         vo.setStatus(PROGRESSING);
@@ -46,6 +61,12 @@ public class ProgressVO {
     }
 
 
+    /**
+     * 进度增加
+     * @param addPercent
+     * @param msg
+     * @return
+     */
     public static ProgressVO progressing(int addPercent,String msg){
         ProgressVO vo = threadLocal.get();
         if(vo==null){
@@ -68,31 +89,42 @@ public class ProgressVO {
     }
 
 
-
-
-    public static ProgressVO done(String msg){
-        ProgressVO vo = threadLocal.get();
-        if(vo==null){
-            throw new RuntimeException("进度条VO未初始化");
-        }
-        vo.setStatus(DONE);
-        vo.setPercentage(100);
-        vo.setMsg(msg);
-        return vo;
+    /**
+     * 返回成功
+     * @param msg
+     * @return
+     */
+    public static ProgressVO success(String msg){
+        return done(msg,SUCCESS,100);
     }
 
-
+    /**
+     * 返回异常
+     * @param msg
+     * @return
+     */
     public static ProgressVO error(String msg){
+        return done(msg,ERROR,-1);
+    }
+
+    /**
+     * 进度条完成
+     * @param msg
+     * @param status
+     * @param percent
+     * @return
+     */
+    private static ProgressVO done(String msg,int status, int percent){
         ProgressVO vo = threadLocal.get();
+        threadLocal.remove();
         if(vo==null){
             throw new RuntimeException("进度条VO未初始化");
         }
-        vo.setStatus(ERROR);
-        vo.setPercentage(-1);
+        vo.setStatus(status);
+        vo.setPercentage(percent);
         vo.setMsg(msg);
         return vo;
     }
-
 
     public String getSessionId() {
         return sessionId;
@@ -126,4 +158,13 @@ public class ProgressVO {
         this.msg = msg;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("sessionId", sessionId)
+            .append("status", status)
+            .append("percentage", percentage)
+            .append("msg", msg)
+            .toString();
+    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
  * @author: cbb
  * @date: 2017/4/11
  */
-public class MetaFieldPO extends GeneralPO {
+public class MetaFieldPO extends BasePO {
 
     private Integer fieldId;
     private Integer entityId;

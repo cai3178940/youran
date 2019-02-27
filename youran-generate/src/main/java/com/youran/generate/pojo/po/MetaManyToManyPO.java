@@ -6,7 +6,7 @@ package com.youran.generate.pojo.po;
  * @author: cbb
  * @date: 2017/7/4
  */
-public class MetaManyToManyPO extends GeneralPO {
+public class MetaManyToManyPO extends BasePO {
 
     private Integer mtmId;
     /**

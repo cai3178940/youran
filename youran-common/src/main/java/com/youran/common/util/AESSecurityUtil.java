@@ -8,6 +8,12 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 
+/**
+ * <p>Title:AES加密工具类</p>
+ * <p>Description:</p>
+ * @author: cbb
+ * @date: 2018-03-17
+ */
 public class AESSecurityUtil {
     /** 密钥算法 */
     private static final String KEY_ALGORITHM = "AES";
@@ -53,10 +59,10 @@ public class AESSecurityUtil {
     private static String decrypt(byte[] data,byte[] key) throws Exception{
         //还原密钥
         Key k = new SecretKeySpec(key,KEY_ALGORITHM);
-        /**
+        /*
          * 实例化
-         * 使用PKCS7Padding填充方式，按如下方式实现
-         * Cipher.getInstance(CIPHER_ALGORITHM,"BC");
+         * 如果使用PKCS7Padding填充方式
+         * 请按如下方式实现:Cipher.getInstance(CIPHER_ALGORITHM,"BC")
          */
         Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
         //初始化，设置解密模式
@@ -86,11 +92,6 @@ public class AESSecurityUtil {
     public static byte[] encrypt(byte[] data,byte[] key) throws Exception{
         //还原密钥
         Key k = new SecretKeySpec(key,KEY_ALGORITHM);
-        /**
-         * 实例化
-         * 使用PKCS7Padding填充方式，按如下方式实现
-         * Cipher.getInstance(CIPHER_ALGORITHM,"BC");
-         */
         Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
         //初始化，设置为加密模式
         cipher.init(Cipher.ENCRYPT_MODE,k);
@@ -113,20 +114,4 @@ public class AESSecurityUtil {
         return Base64.encodeBase64String(getKey().getEncoded());
     }
 
-    /*public static void main(String[] args) throws Exception{
-        String key = getKeyStr();
-        System.out.println("key="+key);
-        String wenjian = "1234567";
-        StringBuffer buffer = new StringBuffer();
-        for(int index = 0;index < 1;index ++){
-            buffer.append(wenjian);
-        }
-        String jimm = buffer.toString();
-
-        String mw = AESSecurityUtil.encrypt(jimm,key);
-        System.out.println("密文:" + mw);
-
-        String jm = AESSecurityUtil.decrypt(mw,key);
-        System.out.println("明文:" + jm);
-    }*/
 }

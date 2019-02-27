@@ -3,6 +3,8 @@ package com.youran.generate.pojo.vo;
 import com.youran.common.pojo.vo.AbstractVO;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
@@ -121,5 +123,21 @@ public class MetaProjectShowVO extends AbstractVO {
 
     public void setProjectDesc(String projectDesc) {
         this.projectDesc = projectDesc;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("projectId", projectId)
+            .append("packageName", packageName)
+            .append("projectName", projectName)
+            .append("projectDesc", projectDesc)
+            .append("groupId", groupId)
+            .append("author", author)
+            .append("remote", remote)
+            .append("remoteUrl", remoteUrl)
+            .append("username", username)
+            .append("feature", feature)
+            .toString();
     }
 }

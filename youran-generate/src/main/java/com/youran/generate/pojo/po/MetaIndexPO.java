@@ -9,7 +9,7 @@ import java.util.List;
  * @author: cbb
  * @date: 2017/4/11
  */
-public class MetaIndexPO extends GeneralPO {
+public class MetaIndexPO extends BasePO {
 
     private Integer indexId;
 
@@ -21,9 +21,15 @@ public class MetaIndexPO extends GeneralPO {
 
     private Integer uniqueCheck;
 
-    private List<MetaFieldPO> fields;//索引字段
+    /**
+     * 索引字段
+     */
+    private List<MetaFieldPO> fields;
 
-    //添加字段
+    /**
+     * 添加字段
+     * @param metaFieldPO
+     */
     public void addMetaField(MetaFieldPO metaFieldPO) {
         if (fields == null) {
             fields = new ArrayList<>();

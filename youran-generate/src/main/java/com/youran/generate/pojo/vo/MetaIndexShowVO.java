@@ -2,6 +2,8 @@ package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
@@ -79,5 +81,17 @@ public class MetaIndexShowVO extends AbstractVO {
 
     public void setFields(List<MetaFieldListVO> fields) {
         this.fields = fields;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("indexId", indexId)
+            .append("indexName", indexName)
+            .append("entityId", entityId)
+            .append("unique", unique)
+            .append("uniqueCheck", uniqueCheck)
+            .append("fields", fields)
+            .toString();
     }
 }

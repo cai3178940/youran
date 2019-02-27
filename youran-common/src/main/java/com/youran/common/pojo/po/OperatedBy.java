@@ -8,8 +8,16 @@ package com.youran.common.pojo.po;
  */
 public interface OperatedBy {
 
+    /**
+     * 获取操作人
+     * @return
+     */
     String getOperatedBy();
 
+    /**
+     * 设置操作人
+     * @param operatedBy
+     */
     void setOperatedBy(String operatedBy);
 
 }

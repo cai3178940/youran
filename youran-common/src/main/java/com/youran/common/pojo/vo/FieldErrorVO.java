@@ -1,6 +1,7 @@
 package com.youran.common.pojo.vo;
 
-import com.youran.common.util.JsonUtil;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * <p>Title:参数错误-错误字段信息</p>
@@ -36,6 +37,10 @@ public class FieldErrorVO {
 
     @Override
     public String toString() {
-        return JsonUtil.toJSONString(this);
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("objectName", objectName)
+            .append("field", field)
+            .append("errorMsg", errorMsg)
+            .toString();
     }
 }

@@ -2,6 +2,8 @@ package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static com.youran.generate.pojo.example.MetaConstExample.*;
 
@@ -66,5 +68,16 @@ public class MetaConstListVO extends AbstractVO {
 
     public void setConstType(Integer constType) {
         this.constType = constType;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("constId", constId)
+            .append("projectId", projectId)
+            .append("constName", constName)
+            .append("constRemark", constRemark)
+            .append("constType", constType)
+            .toString();
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
  * @author: cbb
  * @date: 2017/6/13
  */
-public class MetaConstPO extends GeneralPO {
+public class MetaConstPO extends BasePO {
 
     /**
      * 常量id

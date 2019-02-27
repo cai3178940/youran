@@ -2,6 +2,8 @@ package com.youran.common.pojo.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,20 +18,20 @@ import java.util.List;
 public class PageVO<T> extends AbstractVO {
 
     @ApiModelProperty(notes = "每页条数",example = "10",required = true)
-    private int pageSize;
+    private Integer pageSize;
     @ApiModelProperty(notes = "页码",example = "1",required = true)
-    private int pageNo;
+    private Integer pageNo;
     @ApiModelProperty(notes = "开始序号",example = "0",required = true)
-    private int firstEntityIndex;//开始序号
+    private Integer firstEntityIndex;
     @ApiModelProperty(notes = "结束序号",example = "10",required = true)
-    private int lastEntityIndex;//结束序号
+    private Integer lastEntityIndex;
 
     @ApiModelProperty(notes = "数据列表",required = true)
     private List<T> entities;
     @ApiModelProperty(notes = "总条数",example = "100",required = true)
-    private int entityCount;//总数
+    private Integer entityCount;
     @ApiModelProperty(notes = "总页数",example = "10",required = true)
-    private int pageCount;//总页数
+    private Integer pageCount;
 
     public PageVO() {
     }
@@ -128,51 +130,64 @@ public class PageVO<T> extends AbstractVO {
         this.entities = entities;
     }
 
-    public int getEntityCount() {
+    public Integer getEntityCount() {
         return entityCount;
     }
 
-    public void setEntityCount(int entityCount) {
+    public void setEntityCount(Integer entityCount) {
         this.entityCount = entityCount;
     }
 
-    public int getFirstEntityIndex() {
+    public Integer getFirstEntityIndex() {
         return firstEntityIndex;
     }
 
-    public void setFirstEntityIndex(int firstEntityIndex) {
+    public void setFirstEntityIndex(Integer firstEntityIndex) {
         this.firstEntityIndex = firstEntityIndex;
     }
 
-    public int getLastEntityIndex() {
+    public Integer getLastEntityIndex() {
         return lastEntityIndex;
     }
 
-    public void setLastEntityIndex(int lastEntityIndex) {
+    public void setLastEntityIndex(Integer lastEntityIndex) {
         this.lastEntityIndex = lastEntityIndex;
     }
 
-    public int getPageCount() {
+    public Integer getPageCount() {
         return pageCount;
     }
 
-    public void setPageCount(int pageCount) {
+    public void setPageCount(Integer pageCount) {
         this.pageCount = pageCount;
     }
 
-    public int getPageNo() {
+    public Integer getPageNo() {
         return pageNo;
     }
 
-    public void setPageNo(int pageNo) {
+    public void setPageNo(Integer pageNo) {
         this.pageNo = pageNo;
     }
 
-    public int getPageSize() {
+    public Integer getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("pageSize", pageSize)
+            .append("pageNo", pageNo)
+            .append("firstEntityIndex", firstEntityIndex)
+            .append("lastEntityIndex", lastEntityIndex)
+            .append("entities", entities)
+            .append("entityCount", entityCount)
+            .append("pageCount", pageCount)
+            .toString();
     }
 }

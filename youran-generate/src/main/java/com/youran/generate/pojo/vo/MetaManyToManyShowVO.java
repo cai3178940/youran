@@ -2,6 +2,8 @@ package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
 
@@ -109,5 +111,20 @@ public class MetaManyToManyShowVO extends AbstractVO {
 
     public void setHoldRefer2(Integer holdRefer2) {
         this.holdRefer2 = holdRefer2;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("mtmId", mtmId)
+            .append("projectId", projectId)
+            .append("tableName", tableName)
+            .append("schemaName", schemaName)
+            .append("desc", desc)
+            .append("entityId1", entityId1)
+            .append("entityId2", entityId2)
+            .append("holdRefer1", holdRefer1)
+            .append("holdRefer2", holdRefer2)
+            .toString();
     }
 }
