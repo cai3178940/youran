@@ -65,10 +65,14 @@ public @interface Const {
             if (checkMethod == null) {
                 return false;
             }
-            Boolean success;
+            boolean success;
             try {
                 Object result = checkMethod.invoke(null, value);
-                success = (Boolean) result;
+                if(result instanceof Boolean){
+                    success = (Boolean) result;
+                }else{
+                    throw new RuntimeException("校验方法返回值类型必须是boolean");
+                }
             } catch (IllegalAccessException e) {
                 logger.error("自定义校验异常", e);
                 throw new RuntimeException("自定义校验异常", e);

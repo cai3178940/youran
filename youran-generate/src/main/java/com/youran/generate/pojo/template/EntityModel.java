@@ -179,7 +179,7 @@ public class EntityModel extends BaseModel{
      */
     public List<String> getPrintingSaveExample(){
         // 定义保存所有树节点的map
-        Map<Integer, ForeignEntityTreeNode> theMap = new HashMap<>();
+        Map<Integer, ForeignEntityTreeNode> theMap = new HashMap<>(16);
         // 构建树
         buildForeignTreeForSave(metaEntity,null, theMap);
         // 遍历外键树节点，生成叶子优先的有序集合
@@ -199,8 +199,8 @@ public class EntityModel extends BaseModel{
      */
     public List<String> getPrintingSaveExampleForMtm(MetaEntityPO otherEntity){
         // 定义保存所有树1和树2的所有节点的map
-        Map<Integer, ForeignEntityTreeNode> theMap = new HashMap<>();
-        Map<Integer, ForeignEntityTreeNode> otherMap = new HashMap<>();
+        Map<Integer, ForeignEntityTreeNode> theMap = new HashMap<>(16);
+        Map<Integer, ForeignEntityTreeNode> otherMap = new HashMap<>(16);
         // 构建树1和树2
         buildForeignTreeForSave(metaEntity,null, theMap);
         buildForeignTreeForSave(otherEntity,null, otherMap);

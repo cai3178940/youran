@@ -120,7 +120,7 @@ public class ReverseEngineeringService {
 
             int orderNo = 0;
             // 缓存遍历到的字段
-            Map<String,MetaFieldPO> fieldMap = new HashMap<>();
+            Map<String,MetaFieldPO> fieldMap = new HashMap<>(32);
             for (SQLTableElement element : tableElementList) {
                 // 创建字段
                 if (element instanceof SQLColumnDefinition) {
@@ -286,9 +286,9 @@ public class ReverseEngineeringService {
         if(StringUtils.isBlank(value)){
             return value;
         }
-        if((value.startsWith("`")&&value.endsWith("`"))
-            ||
-            (value.startsWith("'")&&value.endsWith("'"))){
+        boolean surroundedByBackQuotes = value.startsWith("`")&&value.endsWith("`");
+        boolean surroundedBySingleQuotes = value.startsWith("'")&&value.endsWith("'");
+        if(surroundedByBackQuotes || surroundedBySingleQuotes){
             return value.substring(1,value.length()-1);
         }
         return value;

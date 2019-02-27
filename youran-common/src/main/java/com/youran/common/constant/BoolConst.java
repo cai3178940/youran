@@ -20,4 +20,5 @@ public class BoolConst {
     public static final boolean check(int value) {
         return TRUE == value || FALSE == value;
     }
+
 }
