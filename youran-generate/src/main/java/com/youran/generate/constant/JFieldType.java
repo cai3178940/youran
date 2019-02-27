@@ -14,6 +14,7 @@ import java.util.Map;
 public enum JFieldType {
 
     INTEGER("Integer",MySqlType.INT,"INTEGER"),
+    BOOLEAN("Boolean",MySqlType.TINYINT,"BOOLEAN"),
     SHORT("Short",MySqlType.SMALLINT,"SMALLINT"),
     LONG("Long",MySqlType.BIGINT,"BIGINT"),
     STRING("String",MySqlType.VARCHAR,"VARCHAR"),

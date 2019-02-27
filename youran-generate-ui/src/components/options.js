@@ -77,6 +77,10 @@ export default {
 
   jfieldTypeOptions: [
     {
+      value: 'String',
+      label: 'String'
+    },
+    {
       value: 'Integer',
       label: 'Integer'
     },
@@ -89,10 +93,6 @@ export default {
       label: 'Long'
     },
     {
-      value: 'String',
-      label: 'String'
-    },
-    {
       value: 'Date',
       label: 'Date'
     },
@@ -103,6 +103,10 @@ export default {
     {
       value: 'Float',
       label: 'Float'
+    },
+    {
+      value: 'Boolean',
+      label: 'Boolean'
     },
     {
       value: 'BigDecimal',
@@ -178,9 +182,9 @@ export default {
 
   // 默认常量列表
   defaultConstList: [
-    {
-      constName: 'BoolConst'
-    }
+    // {
+    //   constName: 'BoolConst'
+    // }
   ]
 
 }

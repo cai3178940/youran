@@ -99,6 +99,9 @@ java -jar youran-generate/target/youran-generate.war
 
 ## 升级日志
 
+#### 2019-02-27
+- 新增java类型Boolean
+
 #### 2018-11-29
 - 支持spring-boot1和2两个版本的自由选择
 
