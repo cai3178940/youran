@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Title:字段类型对应关系
- * Description:
- * Author: cbb
- * Create Time:2017/9/20 15:19
+ * <p>Title: 字段类型对应关系</p>
+ * <p>Description: </p>
+ * @author: cbb
+ * @date: 2017/9/20
  */
 public enum JFieldType {
 

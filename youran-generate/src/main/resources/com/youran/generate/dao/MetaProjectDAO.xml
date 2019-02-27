@@ -6,13 +6,13 @@
 
     <select id="findById" resultType="MetaProjectPO">
         select * from meta_project
-        where deleted=0
+        where deleted = 0
         and project_id = #{projectId,jdbcType=INTEGER}
     </select>
 
     <select id="exist" resultType="boolean">
         select count(*) from meta_project
-        where deleted=0
+        where deleted = 0
         and project_id = #{projectId,jdbcType=INTEGER}
     </select>
 
@@ -54,19 +54,19 @@
             version = #{version,jdbcType=INTEGER}
         where project_id = #{projectId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
-        and deleted=0
+        and deleted = 0
     </update>
 
     <delete id="delete">
         update meta_project set
-        deleted=1
+        deleted = 1
         where project_id = #{projectId,jdbcType=INTEGER}
-        and deleted=0
+        and deleted = 0
     </delete>
 
     <select id="findListByQuery" parameterType="MetaProjectQO" resultType="MetaProjectListVO">
         select * from meta_project t
-        where t.deleted=0
+        where t.deleted = 0
         order by t.created_time
     </select>
 </mapper>

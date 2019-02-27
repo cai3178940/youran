@@ -2,10 +2,10 @@ package com.youran.generate.constant;
 
 
 /**
- * Title:常量
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 11:51
+ * <p>Title: 系统常量</p>
+ * <p>Description: </p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 public class GenerateConst {
 

@@ -1,10 +1,10 @@
 package com.youran.generate.constant;
 
 /**
- * Title:DTO校验正则
- * Description:
- * Author: cbb
- * Create Time:2017/5/12 14:09
+ * <p>Title: DTO校验正则</p>
+ * <p>Description: </p>
+ * @author: cbb
+ * @date: 2017/5/12
  */
 public class PatternConst {
 

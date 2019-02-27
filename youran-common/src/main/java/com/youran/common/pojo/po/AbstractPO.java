@@ -13,7 +13,7 @@ public abstract class AbstractPO {
     public void preInsert(String createdBy){
         Date now=new Date();
         if(this instanceof Deleted) {
-            ((Deleted)this).setDeleted(0);
+            ((Deleted)this).setDeleted(false);
         }
         if(this instanceof CreatedTime) {
             ((CreatedTime)this).setCreatedTime(now);

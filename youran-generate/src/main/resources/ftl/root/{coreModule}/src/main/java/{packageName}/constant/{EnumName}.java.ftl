@@ -20,11 +20,11 @@ public enum ${this.constNameUpper} {
     private final ${this.constTypeStr} value;
     private final String desc;
 
-    private static final Map<${this.constTypeStr}, ${this.constNameUpper}> lookup = new HashMap<>();
+    private static final Map<${this.constTypeStr}, ${this.constNameUpper}> LOOKUP = new HashMap<>();
 
     static {
         for (${this.constNameUpper} e : ${this.constNameUpper}.values()) {
-            lookup.put(e.value, e);
+            LOOKUP.put(e.value, e);
         }
     }
 
@@ -35,7 +35,7 @@ public enum ${this.constNameUpper} {
     }
 
     public static ${this.constNameUpper} find(${this.constTypeStr} value) {
-        return lookup.get(value);
+        return LOOKUP.get(value);
     }
 
     public static ${this.constNameUpper} findByDesc(String desc){

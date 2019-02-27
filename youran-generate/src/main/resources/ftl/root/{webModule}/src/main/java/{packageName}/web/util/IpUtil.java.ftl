@@ -88,10 +88,13 @@ public class IpUtil {
                     }
                     if ((ip.isSiteLocalAddress()) &&
                             (!ip.isLoopbackAddress()) &&
-                            (ip.getHostAddress().indexOf(":") == -1))
+                            (ip.getHostAddress().indexOf(":") == -1)) {
                         localip = ip.getHostAddress();
+                    }
                 }
-                if (!netInterfaces.hasMoreElements()) break;
+                if (!netInterfaces.hasMoreElements()) {
+                    break;
+                }
             } while (!finded);
         } catch (SocketException e) {
             e.printStackTrace();

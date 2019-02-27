@@ -107,17 +107,17 @@ public class ${this.classNameUpper}PO extends AbstractPO${implementsStr} {
 </#if>
 
 <#list this.fields as field>
-    <@call TemplateUtil.printGetterSetter(field)/>
+    <@call TemplateUtil.printGetterSetterForPO(field)/>
 </#list>
 
 <#if implementsDeleteSign && this.delField.jfieldName!="deleted">
     @Override
-    public Integer getDeleted() {
+    public Boolean getDeleted() {
         return this.${this.delField.jfieldName};
     }
 
     @Override
-    public void setDeleted(Integer deleted) {
+    public void setDeleted(Boolean deleted) {
         this.${this.delField.jfieldName} = deleted;
     }
 

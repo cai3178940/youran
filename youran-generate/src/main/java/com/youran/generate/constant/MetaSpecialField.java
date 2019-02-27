@@ -3,10 +3,10 @@ package com.youran.generate.constant;
 import com.youran.common.validator.Check;
 
 /**
- * Title: java特殊字段常量
- * Description:
- * Author: cbb
- * Create Time:2017/9/20 15:18
+ * <p>Title: java特殊字段常量</p>
+ * <p>Description: </p>
+ * @author: cbb
+ * @date: 2017/9/20
  */
 public class MetaSpecialField {
 

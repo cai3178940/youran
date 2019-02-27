@@ -35,6 +35,7 @@ public class XSSRequestWrapper  extends HttpServletRequestWrapper {
         return result;
     }
 
+    @Override
     public String[] getParameterValues(String name) {
         if(params.get(name) instanceof String[]) {
             int size = (params.get(name)).length;

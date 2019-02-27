@@ -54,12 +54,12 @@ public class PageVO<T> extends AbstractVO {
                     "Illegal paging arguments. [pageSize=" + pageSize
                             + ", pageIndex=" + pageNo + "]");
         }
-
-        if (pageSize < 0)
+        if (pageSize < 0) {
             pageSize = 0;
-        if (pageNo < 1)
+        }
+        if (pageNo < 1) {
             pageNo = 1;
-
+        }
         this.entities = new ArrayList<>();
         this.pageSize = pageSize;
         this.pageNo = pageNo;
@@ -79,13 +79,13 @@ public class PageVO<T> extends AbstractVO {
                     "Illegal paging arguments. [pageSize=" + pageSize
                             + ", firstEntityIndex=" + firstEntityIndex + "]");
         }
-
-        if (pageSize < 0)
+        if (pageSize < 0) {
             pageSize = 0;
+        }
         this.firstEntityIndex = (int)firstEntityIndex;
-        if (firstEntityIndex < 0)
+        if (firstEntityIndex < 0) {
             this.firstEntityIndex = 0;
-
+        }
         this.pageSize = pageSize;
         this.entityCount = entityCount;
         lastEntityIndex = pageSize + (int)firstEntityIndex;
@@ -108,12 +108,12 @@ public class PageVO<T> extends AbstractVO {
                     "Illegal paging arguments. [pageSize=" + pageSize
                             + ", pageIndex=" + pageNo + "]");
         }
-
-        if (pageSize < 0)
+        if (pageSize < 0) {
             pageSize = 0;
-        if (pageNo < 1)
+        }
+        if (pageNo < 1) {
             pageNo = 1;
-
+        }
         this.pageSize = pageSize;
         this.pageNo = pageNo;
         firstEntityIndex = (pageNo - 1) * pageSize;

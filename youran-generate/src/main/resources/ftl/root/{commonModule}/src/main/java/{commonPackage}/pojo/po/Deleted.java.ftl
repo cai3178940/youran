@@ -4,9 +4,9 @@
 <@call this.printClassCom("是否逻辑删除接口")/>
 public interface Deleted {
 
-    Integer getDeleted();
+    Boolean getDeleted();
 
-    void setDeleted(Integer deleted);
+    void setDeleted(Boolean deleted);
 
 }
 </#assign>

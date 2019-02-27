@@ -3,20 +3,41 @@ package com.youran.generate.constant;
 import com.youran.common.validator.Check;
 
 /**
- * Title:查询方式
- * Description:
- * Author: cbb
- * Create Time:2017/9/20 15:19
+ * <p>Title: 查询方式</p>
+ * <p>Description: </p>
+ * @author: cbb
+ * @date: 2017/9/20
  */
 public class QueryType {
 
-    public static final int EQ = 1;//等于
-    public static final int LIKE = 2;//like
-    public static final int GT = 3;//大于
-    public static final int GE = 4;//大于等于
-    public static final int LT = 5;//小于
-    public static final int LE = 6;//小于等于
-    public static final int BETWEEN = 7;//between
+    /**
+     * 等于
+     */
+    public static final int EQ = 1;
+    /**
+     * like
+     */
+    public static final int LIKE = 2;
+    /**
+     * 大于
+     */
+    public static final int GT = 3;
+    /**
+     * 大于等于
+     */
+    public static final int GE = 4;
+    /**
+     * 小于
+     */
+    public static final int LT = 5;
+    /**
+     * 小于等于
+     */
+    public static final int LE = 6;
+    /**
+     * between
+     */
+    public static final int BETWEEN = 7;
 
     @Check
     public static final boolean check(int value) {

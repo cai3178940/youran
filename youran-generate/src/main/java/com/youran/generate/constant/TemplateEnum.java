@@ -3,12 +3,11 @@ package com.youran.generate.constant;
 
 import static com.youran.generate.constant.TemplateType.*;
 
-
 /**
- * Title:模板枚举
- * Description: 模板必须再次注册才能生效
- * Author: cbb
- * Create Time:2017/9/20 15:19
+ * <p>Title: 模板枚举</p>
+ * <p>Description: 模板必须再次注册才能生效</p>
+ * @author: cbb
+ * @date: 2017/9/20
  */
 public enum TemplateEnum {
 

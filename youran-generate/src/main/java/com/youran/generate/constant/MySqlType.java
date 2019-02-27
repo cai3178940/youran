@@ -3,7 +3,8 @@ package com.youran.generate.constant;
 import com.youran.common.validator.Check;
 
 /**
- * Mysql字段类型常量
+ * <p>Title: Mysql字段类型常量</p>
+ * <p>Description: </p>
  * @author cbb
  * @date 2017/4/11 13:20
  */

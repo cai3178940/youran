@@ -1,10 +1,10 @@
 package com.youran.generate.constant;
 
 /**
- * Title:模版类型
- * Description:
- * Author: cbb
- * Create Time:2017/5/19 12:47
+ * <p>Title: 模版类型</p>
+ * <p>Description: </p>
+ * @author: cbb
+ * @date: 2017/5/19
  */
 public class TemplateType {
     /**

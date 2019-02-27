@@ -23,7 +23,7 @@ public abstract class GeneralPO extends AbstractPO implements CreatedOperatedDel
 
     private Integer version;
 
-    private Integer deleted;
+    private Boolean deleted;
 
     @Override
     public Date getCreatedTime() {
@@ -76,12 +76,12 @@ public abstract class GeneralPO extends AbstractPO implements CreatedOperatedDel
     }
 
     @Override
-    public Integer getDeleted() {
+    public Boolean getDeleted() {
         return deleted;
     }
 
     @Override
-    public void setDeleted(Integer deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 }

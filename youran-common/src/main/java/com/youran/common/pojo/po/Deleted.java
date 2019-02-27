@@ -8,8 +8,8 @@ package com.youran.common.pojo.po;
  */
 public interface Deleted {
 
-    Integer getDeleted();
+    Boolean getDeleted();
 
-    void setDeleted(Integer deleted);
+    void setDeleted(Boolean deleted);
 
 }
