@@ -35,17 +35,20 @@ public class XSSRequestWrapper  extends HttpServletRequestWrapper {
             return null;
         }
         String result = values[0];
-        result = clean(result);//转码
+        //转码
+        result = clean(result);
         return result;
     }
 
     @Override
-    public String[] getParameterValues(String name) {//同上
-        if(params.get(name) instanceof String[]) {//数组
+    public String[] getParameterValues(String name) {
+        //数组
+        if(params.get(name) instanceof String[]) {
             int size = (params.get(name)).length;
             String[] vals = new String[size];
             for(int i=0;i<(params.get(name)).length;i++) {
-                String str = clean((params.get(name))[i]);//转码
+                //转码
+                String str = clean((params.get(name))[i]);
                 vals[i] = str;
             }
             return  vals;

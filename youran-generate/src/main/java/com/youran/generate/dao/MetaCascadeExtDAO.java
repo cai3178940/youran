@@ -17,5 +17,10 @@ import java.util.List;
 @Mapper
 public interface MetaCascadeExtDAO extends DAO<MetaCascadeExtPO> {
 
+    /**
+     * 根据字段id查询【级联扩展】
+     * @param fieldId
+     * @return
+     */
     List<MetaCascadeExtPO> findByFieldId(Integer fieldId) ;
 }

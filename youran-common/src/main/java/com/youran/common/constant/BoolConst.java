@@ -5,13 +5,12 @@ import com.youran.common.validator.Check;
 
 /**
  * <p>Title:布尔常量</p>
- * <p>Description:</p>
+ * <p>Description:如果系统中使用整型0、1代表布尔值，则可以使用本常量</p>
  * @author: cbb
  * @date: 2017/6/19
  */
 public class BoolConst {
 
-    //数据库bool字段值
     public static final int TRUE = 1;
 
     public static final int FALSE = 0;

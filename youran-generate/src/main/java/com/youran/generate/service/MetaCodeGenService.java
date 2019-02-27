@@ -6,6 +6,7 @@ import com.youran.common.util.AESSecurityUtil;
 import com.youran.common.util.DateUtil;
 import com.youran.common.util.H2Util;
 import com.youran.generate.config.GenerateProperties;
+import com.youran.generate.constant.DevMode;
 import com.youran.generate.constant.TemplateEnum;
 import com.youran.generate.constant.TemplateType;
 import com.youran.generate.exception.GenerateException;
@@ -99,7 +100,7 @@ public class MetaCodeGenService {
         try {
             //方便本地调试，直接将代码生成在项目中
             String devProjectDir = generateProperties.getDevProjectDir();
-            if (generateProperties.getDevMode() == 1) {
+            if (generateProperties.getDevMode() == DevMode.ALL_REPLACE) {
                 if (StringUtils.isBlank(devProjectDir)) {
                     throw new GenerateException("请配置本地开发工程路径youran.generate.devProjectDir");
                 }
@@ -107,7 +108,7 @@ public class MetaCodeGenService {
                 this.progressing(progressConsumer,1,"全部替换开发工程" + devProjectDir);
                 FileUtils.deleteDirectory(new File(devProjectDir));
                 FileUtils.copyDirectory(new File(tmpDir), new File(devProjectDir));
-            } else if (generateProperties.getDevMode() == 2) {
+            } else if (generateProperties.getDevMode() == DevMode.INCREMENT_REPLACE) {
                 if (StringUtils.isBlank(devProjectDir)) {
                     throw new GenerateException("请配置本地开发工程路径youran.generate.devProjectDir");
                 }
@@ -165,9 +166,12 @@ public class MetaCodeGenService {
     }
 
 
-
-
-    //对比原目录下文件与目标目录，并覆盖
+    /**
+     * 对比原目录下文件与目标目录，并覆盖
+     * @param sourceDir
+     * @param targetDir
+     * @throws IOException
+     */
     private void compareAndCoverFile(File sourceDir, File targetDir) throws IOException {
         String sourcePath = sourceDir.getPath();
         String targetPath = targetDir.getPath();

@@ -1,5 +1,6 @@
 package com.youran.generate.config;
 
+import com.youran.generate.constant.DevMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,7 @@ public class GenerateProperties {
 
     /**
      * 开发模式：0非开发模式，1本地工程全替换，2本地工程部分替换
+     * @see DevMode
      */
     private Integer devMode = 0;
 
