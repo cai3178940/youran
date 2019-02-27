@@ -16,6 +16,7 @@ public enum TemplateEnum {
     /******** 根Pom *********/
     RootPom(COMMON, "pom.xml.ftl"),
     README(COMMON, "README.md.ftl"),
+    GITIGNORE(COMMON, ".gitignore.ftl"),
     /******** Common模块 Pom *********/
     CommonPom(COMMON, "{commonModule}/pom.xml.ftl"),
     /******** Common模块 源码 *********/
