@@ -324,14 +324,8 @@ public class MetaQueryAssembleService {
 
         Map<String,MetaConstPO> constMap = null;
         if(checkConst) {
-            List<MetaConstPO> consts = project.getConsts();
-            constMap = new HashMap<>(consts.size());
-            for (MetaConstPO constPO : consts) {
-                if(constMap.containsKey(constPO.getConstName())){
-                    throw new GenerateException("枚举类名冲突："+constPO.getConstName());
-                }
-                constMap.put(constPO.getConstName(),constPO);
-            }
+            // 校验并获取常量Map
+            constMap = checkAndGetConstMap(project.getConsts());
         }
         Set<String> defaultConst = Sets.newHashSet("BoolConst");
 
@@ -402,5 +396,22 @@ public class MetaQueryAssembleService {
         }
 
 
+    }
+
+
+    /**
+     * 校验并获取常量Map
+     * @param consts
+     * @return
+     */
+    private Map<String, MetaConstPO> checkAndGetConstMap(List<MetaConstPO> consts) {
+        Map<String, MetaConstPO> constMap = new HashMap<>(consts.size());
+        for (MetaConstPO constPO : consts) {
+            if(constMap.containsKey(constPO.getConstName())){
+                throw new GenerateException("枚举类名冲突："+constPO.getConstName());
+            }
+            constMap.put(constPO.getConstName(),constPO);
+        }
+        return constMap;
     }
 }
