@@ -208,13 +208,13 @@ public class MetaProjectService {
      * @param projectPO
      */
     private void doCheckOperator(MetaProjectPO projectPO) {
-        String currentUser = loginContext.getCurrentOperatorId();
+        /*String currentUser = loginContext.getCurrentOperatorId();
         if(StringUtils.isBlank(currentUser)){
             throw new GenerateException("获取当前登录用户失败");
         }
         if(!currentUser.equals(projectPO.getCreatedBy())){
             throw new GenerateException("您不是该项目的创建者，无此操作权限");
-        }
+        }*/
     }
 
 
