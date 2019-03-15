@@ -203,7 +203,7 @@ public class MetadataUtil {
                 sb.append("'");
             }
             if(StringUtils.isBlank(field.getDefaultValue())){
-                sb.append(guessDefaultValueByFieldType(field.getFieldType()));
+                sb.append(GuessUtil.guessDefaultValueByFieldType(field.getFieldType()));
             }else {
                 sb.append(field.getDefaultValue());
             }
@@ -214,26 +214,7 @@ public class MetadataUtil {
         }
     }
 
-    /**
-     * 根据字段类型猜测默认值
-     * @param fieldType
-     * @return
-     */
-    public static String guessDefaultValueByFieldType(String fieldType){
-        if(MySqlType.isStringType(fieldType)){
-            return "";
-        }
-        if(MySqlType.isNumberType(fieldType)){
-            return "0";
-        }
-        if(MySqlType.isTimestampType(fieldType)){
-            return "0";
-        }
-        if(MySqlType.isDateType(fieldType)){
-            return "1900-01-01 00:00:00";
-        }
-        return "";
-    }
+
 
     /**
      * 转换【备注】展示

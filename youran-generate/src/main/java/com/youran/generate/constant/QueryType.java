@@ -79,37 +79,6 @@ public class QueryType {
     }
 
 
-    /**
-     * 根据java字段类型和长度猜测queryType
-     * @param jFieldType
-     * @param length
-     * @return
-     */
-    public static int guessQueryType(JFieldType jFieldType,int length){
 
-        if(jFieldType==JFieldType.STRING){
-            if(length > LIKE_LENGTH_THRESHOLD){
-                return LIKE;
-            }else{
-                return EQ;
-            }
-        }else if(jFieldType==JFieldType.INTEGER){
-            return EQ;
-        }else if(jFieldType==JFieldType.SHORT){
-            return EQ;
-        }else if(jFieldType==JFieldType.LONG){
-            return EQ;
-        }else if(jFieldType==JFieldType.FLOAT){
-            return BETWEEN;
-        }else if(jFieldType==JFieldType.DOUBLE){
-            return BETWEEN;
-        }else if(jFieldType==JFieldType.BIGDECIMAL){
-            return BETWEEN;
-        }else if(jFieldType==JFieldType.DATE){
-            return BETWEEN;
-        }
-
-        return EQ;
-    }
 
 }

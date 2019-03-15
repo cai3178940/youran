@@ -12,7 +12,6 @@ import com.youran.common.constant.BoolConst;
 import com.youran.common.util.SafeUtil;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MySqlType;
-import com.youran.generate.constant.QueryType;
 import com.youran.generate.exception.GenerateException;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
@@ -22,6 +21,7 @@ import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.util.GuessUtil;
 import com.youran.generate.util.MetadataUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -228,10 +228,10 @@ public class ReverseEngineeringService {
         metaFieldDTO.setForeignEntityId(null);
         metaFieldDTO.setForeignFieldId(null);
         metaFieldDTO.setQuery(pk?BoolConst.FALSE:BoolConst.TRUE);
-        metaFieldDTO.setQueryType(QueryType.guessQueryType(jFieldType,fieldLength));
+        metaFieldDTO.setQueryType(GuessUtil.guessQueryType(jFieldType,fieldLength));
         metaFieldDTO.setShow(BoolConst.TRUE);
         metaFieldDTO.setUpdate(pk?BoolConst.FALSE:BoolConst.TRUE);
-        metaFieldDTO.setSpecialField(null);
+        metaFieldDTO.setSpecialField(GuessUtil.guessSpecialField(fieldName,jFieldType));
 
         return metaFieldService.save(metaFieldDTO);
     }

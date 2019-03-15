@@ -11,6 +11,6 @@
         <package name="com.youran.generate.pojo"/>
     </typeAliases>
     <mappers>
-        <package name="com.youran.generate.dao"></package>
+        <package name="com.youran.generate.dao"/>
     </mappers>
 </configuration>
