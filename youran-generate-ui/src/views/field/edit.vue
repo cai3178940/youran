@@ -52,12 +52,13 @@
           </el-form-item>
           <el-form-item label="mysql字段类型" prop="fieldType">
             <help-popover name="field.fieldType">
-              <el-select v-model="form.fieldType" style="width:100%;" filterable placeholder="请选择">
+              <el-select v-model="form.fieldType" @change="fieldTypeChange" style="width:100%;" filterable placeholder="请选择">
                 <el-option
                   v-for="item in fieldTypeOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
+                  <span style="float: left">{{ item.selectLabel }}</span>
                 </el-option>
               </el-select>
             </help-popover>
@@ -279,6 +280,20 @@ export default {
     }
   },
   methods: {
+    /**
+     * mysql字段类型变化后，触发字段长度变化
+     * 这里没有用watch是为了首次加载不调用
+     * @param value
+     */
+    fieldTypeChange (value) {
+      if (!value) {
+        return
+      }
+      const typeObj = this.fieldTypeOptions.find(obj => obj.value === value)
+      if (typeObj && typeObj.fieldLength) {
+        this.form.fieldLength = typeObj.fieldLength
+      }
+    },
     initForeignEntityOptions () {
       return this.$common.getEntityOptions(this.projectId)
         .then(response => this.$common.checkResult(response.data))
