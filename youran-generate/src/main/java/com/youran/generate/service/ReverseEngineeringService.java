@@ -129,6 +129,9 @@ public class ReverseEngineeringService {
                     }
                     boolean autoIncrement = sqlColumnDefinition.isAutoIncrement();
                     boolean notNull = sqlColumnDefinition.containsNotNullConstaint();
+                    if(pk){
+                        notNull = true;
+                    }
                     String defaultValue = sqlColumnDefinition.getDefaultExpr()==null?"NULL":sqlColumnDefinition.getDefaultExpr().toString();
                     String desc = sqlColumnDefinition.getComment()==null?"":cleanQuote(sqlColumnDefinition.getComment().toString());
 
@@ -199,7 +202,6 @@ public class ReverseEngineeringService {
                                     boolean pk,boolean autoIncrement,
                                     boolean notNull,int orderNo,
                                     String defaultValue,String desc){
-
         JFieldType jFieldType = MySqlType.mapperJFieldType(fieldType,fieldLength);
 
         MetaFieldAddDTO metaFieldDTO =  new MetaFieldAddDTO();
@@ -221,10 +223,10 @@ public class ReverseEngineeringService {
         metaFieldDTO.setJfieldType(jFieldType.getJavaType());
         metaFieldDTO.setList(BoolConst.TRUE);
         metaFieldDTO.setListSort(BoolConst.TRUE);
-        metaFieldDTO.setNotNull(notNull?BoolConst.TRUE:BoolConst.FALSE);
         metaFieldDTO.setOrderNo(orderNo);
         metaFieldDTO.setPrimaryKey(pk?BoolConst.TRUE:BoolConst.FALSE);
         metaFieldDTO.setForeignKey(BoolConst.FALSE);
+        metaFieldDTO.setNotNull(notNull?BoolConst.TRUE:BoolConst.FALSE);
         metaFieldDTO.setForeignEntityId(null);
         metaFieldDTO.setForeignFieldId(null);
         metaFieldDTO.setQuery(pk?BoolConst.FALSE:BoolConst.TRUE);
