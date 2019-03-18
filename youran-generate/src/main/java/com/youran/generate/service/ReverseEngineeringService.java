@@ -200,7 +200,7 @@ public class ReverseEngineeringService {
                                     boolean notNull,int orderNo,
                                     String defaultValue,String desc){
 
-        JFieldType jFieldType = MySqlType.mapperJFieldType(fieldType);
+        JFieldType jFieldType = MySqlType.mapperJFieldType(fieldType,fieldLength);
 
         MetaFieldAddDTO metaFieldDTO =  new MetaFieldAddDTO();
 

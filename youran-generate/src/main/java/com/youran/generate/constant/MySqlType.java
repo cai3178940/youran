@@ -57,7 +57,7 @@ public class MySqlType {
             CHAR.equals(mysqlType);
     }
 
-    public static final JFieldType mapperJFieldType(String mySqlType){
+    public static final JFieldType mapperJFieldType(String mySqlType, int fieldLength){
         if(INT.equals(mySqlType)){
             return JFieldType.INTEGER;
         }
@@ -89,7 +89,11 @@ public class MySqlType {
             return JFieldType.INTEGER;
         }
         if(TINYINT.equals(mySqlType)){
-            return JFieldType.INTEGER;
+            if(fieldLength==1){
+                return JFieldType.BOOLEAN;
+            }else {
+                return JFieldType.INTEGER;
+            }
         }
         if(TIMESTAMP.equals(mySqlType)){
             return JFieldType.DATE;
