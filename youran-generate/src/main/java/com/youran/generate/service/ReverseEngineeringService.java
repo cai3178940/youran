@@ -211,7 +211,7 @@ public class ReverseEngineeringService {
         metaFieldDTO.setEditType(null);
         metaFieldDTO.setFieldComment(desc);
         metaFieldDTO.setFieldDesc(desc);
-        metaFieldDTO.setFieldExample("");
+        metaFieldDTO.setFieldExample(GuessUtil.guessFieldExample(fieldName,jFieldType,fieldLength));
         metaFieldDTO.setFieldLength(fieldLength);
         metaFieldDTO.setFieldName(fieldName);
         metaFieldDTO.setFieldScale(fieldScale);

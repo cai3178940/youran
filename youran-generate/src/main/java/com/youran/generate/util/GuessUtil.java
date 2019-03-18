@@ -1,9 +1,12 @@
 package com.youran.generate.util;
 
+import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.constant.MySqlType;
 import com.youran.generate.constant.QueryType;
+
+import java.util.Date;
 
 /**
  * <p>Title: 猜测工具类</p>
@@ -18,6 +21,9 @@ public class GuessUtil {
     public static final String[] OPERATE_PREFIX = {"operate","operated","update","updated","modify","modified"};
     public static final String[] TIME_SUFFIX = {"time","date","at"};
     public static final String[] USER_SUFFIX = {"by","user","er","or"};
+    public static final String DELETED_LABEL = "deleted";
+    public static final String VERSION_LABEL = "version";
+    public static final String NAME_LABEL = "name";
 
     /**
      * 根据字段类型猜测默认值
@@ -121,8 +127,48 @@ public class GuessUtil {
                 return MetaSpecialField.OPERATED_BY;
             }
         }
+        if(VERSION_LABEL.equals(lowerCase) && jFieldType == JFieldType.INTEGER){
+            return MetaSpecialField.VERSION;
+        }
+        if(DELETED_LABEL.equals(lowerCase) && jFieldType == JFieldType.INTEGER){
+            return MetaSpecialField.DELETED;
+        }
         return null;
     }
+
+    /**
+     * 猜测字段示例值
+     * @param fieldName
+     * @param jFieldType
+     * @param fieldLength
+     * @return
+     */
+    public static String guessFieldExample(String fieldName, JFieldType jFieldType,int fieldLength){
+        String lowerCase = fieldName.toLowerCase();
+        if(jFieldType==JFieldType.STRING) {
+            if(lowerCase.endsWith(NAME_LABEL)){
+                if(fieldLength >= 5){
+                    return "name1";
+                }else{
+                    return "X";
+                }
+            }
+
+        }
+        if(jFieldType==JFieldType.INTEGER || jFieldType==JFieldType.LONG
+            || jFieldType==JFieldType.SHORT || jFieldType==JFieldType.FLOAT
+            || jFieldType==JFieldType.DOUBLE || jFieldType==JFieldType.BIGDECIMAL){
+            return "1";
+        }
+        if(jFieldType==JFieldType.BOOLEAN){
+            return "true";
+        }
+        if(jFieldType==JFieldType.DATE){
+            return DateUtil.getDateStr(new Date(),DateUtil.DATE_FORMAT_2);
+        }
+        return "";
+    }
+
 
 
 
