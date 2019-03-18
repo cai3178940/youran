@@ -15,47 +15,63 @@ export default {
   fieldTypeOptions: [
     {
       value: 'int',
-      label: 'INT'
+      label: 'INT',
+      selectLabel: 'INT(11)',
+      fieldLength: 11
     },
     {
       value: 'varchar',
-      label: 'VARCHAR'
+      label: 'VARCHAR',
+      selectLabel: 'VARCHAR'
     },
     {
       value: 'text',
-      label: 'TEXT'
+      label: 'TEXT',
+      selectLabel: 'TEXT'
     },
     {
       value: 'datetime',
-      label: 'DATETIME'
+      label: 'DATETIME',
+      selectLabel: 'DATETIME'
     },
     {
       value: 'float',
-      label: 'FLOAT'
+      label: 'FLOAT',
+      selectLabel: 'FLOAT'
     },
     {
       value: 'double',
-      label: 'DOUBLE'
+      label: 'DOUBLE',
+      selectLabel: 'DOUBLE'
     },
     {
       value: 'decimal',
-      label: 'DECIMAL'
+      label: 'DECIMAL',
+      selectLabel: 'DECIMAL'
     },
     {
       value: 'bigint',
-      label: 'BIGINT'
+      label: 'BIGINT',
+      selectLabel: 'BIGINT(20)',
+      fieldLength: 20
     },
     {
       value: 'mediumint',
-      label: 'MEDIUMINT'
+      label: 'MEDIUMINT',
+      selectLabel: 'MEDIUMINT(9)',
+      fieldLength: 9
     },
     {
       value: 'smallint',
-      label: 'SMALLINT'
+      label: 'SMALLINT',
+      selectLabel: 'SMALLINT(6)',
+      fieldLength: 6
     },
     {
       value: 'tinyint',
-      label: 'TINYINT'
+      label: 'TINYINT',
+      selectLabel: 'TINYINT(4)',
+      fieldLength: 4
     }
   ],
   /**
