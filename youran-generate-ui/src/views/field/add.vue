@@ -46,7 +46,6 @@
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
-                  <span style="float: left">{{ item.selectLabel }}</span>
                 </el-option>
               </el-select>
             </help-popover>
