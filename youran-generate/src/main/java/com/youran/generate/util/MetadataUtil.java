@@ -147,6 +147,10 @@ public class MetadataUtil {
         if(!showFieldLength(field.getFieldType())){
             return "";
         }
+        // 如果字段长度为0,则直接返回空串
+        if(field.getFieldLength()<=0){
+            return "";
+        }
         StringBuilder sb = new StringBuilder("(");
         sb.append(field.getFieldLength());
         if(showFieldScale(field.getFieldType())){
