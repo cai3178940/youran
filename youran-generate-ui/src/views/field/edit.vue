@@ -6,8 +6,8 @@
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity/${this.entityId}/field` }">字段管理</el-breadcrumb-item>
       <el-breadcrumb-item>编辑</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row type="flex" align="middle" :gutter="20">
-      <el-col :span="12">
+    <el-row type="flex" align="middle" :gutter="10">
+      <el-col :span="16">
         <el-form ref="editForm" class="editForm" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="java字段名" prop="jfieldName">
             <help-popover name="field.jfieldName">
@@ -52,25 +52,30 @@
           </el-form-item>
           <el-form-item label="mysql字段类型" prop="fieldType">
             <help-popover name="field.fieldType">
-              <el-select v-model="form.fieldType" @change="fieldTypeChange" style="width:100%;" filterable placeholder="请选择">
-                <el-option
-                  v-for="item in fieldTypeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                  <span style="float: left">{{ item.selectLabel }}</span>
-                </el-option>
-              </el-select>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="字段长度" prop="fieldLength">
-            <help-popover name="field.fieldLength">
-              <el-input-number v-model="form.fieldLength" style="width:100%;" :min="0" placeholder="字段长度，例如：10"></el-input-number>
-            </help-popover>
-          </el-form-item>
-          <el-form-item v-if="fieldScaleVisible" label="字段精度" prop="fieldScale">
-            <help-popover name="field.fieldScale">
-              <el-input-number v-model="form.fieldScale" style="width:100%;" :min="0" placeholder="字段精度，例如：2"></el-input-number>
+              <el-col :span="10" style="padding-left: 0px;">
+                <el-select v-model="form.fieldType" @change="fieldTypeChange" style="width:100%;" filterable placeholder="请选择">
+                  <el-option
+                    v-for="item in fieldTypeOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    <span style="float: left">{{ item.selectLabel }}</span>
+                  </el-option>
+                </el-select>
+              </el-col>
+              <template v-if="fieldScaleVisible">
+                <el-col :span="7">
+                  <el-input-number v-model="form.fieldLength" controls-position="right" style="width:100%;" :min="0" placeholder="长度"></el-input-number>
+                </el-col>
+                <el-col :span="7" style="padding-right: 0px;">
+                    <el-input-number v-model="form.fieldScale" controls-position="right" style="width:100%;" :min="0" placeholder="精度"></el-input-number>
+                </el-col>
+              </template>
+              <template v-if="!fieldScaleVisible">
+                <el-col :span="14" style="padding-right: 0px;">
+                  <el-input-number v-model="form.fieldLength" controls-position="right" style="width:100%;" :min="0" placeholder="长度"></el-input-number>
+                </el-col>
+              </template>
             </help-popover>
           </el-form-item>
           <el-form-item label="是否主键" prop="primaryKey">
@@ -110,18 +115,6 @@
                 v-model="foreignField"
                 @active-item-change="handleForeignEntityChange">
               </el-cascader>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="特殊字段类型" prop="specialField">
-            <help-popover name="field.specialField">
-              <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
-                <el-option
-                  v-for="item in specialFieldOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
             </help-popover>
           </el-form-item>
           <el-form-item label="枚举字典" prop="dicType">
@@ -185,6 +178,18 @@
               <el-radio-group v-model="form.show">
                 <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
               </el-radio-group>
+            </help-popover>
+          </el-form-item>
+          <el-form-item label="特殊字段类型" prop="specialField">
+            <help-popover name="field.specialField">
+              <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField" style="width:100%;" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in specialFieldOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </help-popover>
           </el-form-item>
           <el-form-item label="排序号" prop="orderNo">
