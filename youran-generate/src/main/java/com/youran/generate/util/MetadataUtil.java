@@ -26,6 +26,8 @@ public class MetadataUtil {
 
     public static List<String> MYSQL_KEYWORD;
 
+    private static final String[] SPECIAL_DEFAULT_VALUE = {"NOW","CURRENT_TIMESTAMP"};
+
     static{
         try {
             InputStream stream = MetadataUtil.class.getClassLoader().getResourceAsStream("mysql_keyword.txt");
@@ -196,9 +198,8 @@ public class MetadataUtil {
             }
         }else{
             StringBuilder sb = new StringBuilder(" DEFAULT ");
-            // 是否需要包装起来
-            boolean needWrap = MySqlType.isStringType(field.getFieldType())
-                                || MySqlType.isDateType(field.getFieldType());
+            // 是否需要引号包裹
+            boolean needWrap = ifDefaultValueNeedWrap(field);
             if(needWrap){
                 sb.append("'");
             }
@@ -212,6 +213,32 @@ public class MetadataUtil {
             }
             return sb.toString();
         }
+    }
+
+    /**
+     * 判断默认值是否需要引号包裹
+     * @param field
+     * @return
+     */
+    public static boolean ifDefaultValueNeedWrap(MetaFieldPO field){
+        // 字符型需要引号包裹
+        if(MySqlType.isStringType(field.getFieldType())){
+            return true;
+        }
+        // 日期字段特殊默认值不需要引号包裹
+        if(MySqlType.isDateType(field.getFieldType())){
+            String defaultValue = field.getDefaultValue();
+            if(StringUtils.isNotBlank(defaultValue)){
+                for (String specialValue : SPECIAL_DEFAULT_VALUE) {
+                    if(defaultValue.toUpperCase().indexOf(specialValue) > -1){
+                        return false;
+                    }
+                }
+            }
+            // 非特殊默认值，需要引号包裹
+            return true;
+        }
+        return false;
     }
 
 
