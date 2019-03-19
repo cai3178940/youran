@@ -36,38 +36,38 @@ public class DateUtil {
 
     /**
      * 解析日期字符串
-     * @param datatime
+     * @param datetime
      * @param dateFormat
      * @return
      */
-    public static Date parseDate(String datatime,String dateFormat){
-        if(StringUtils.isBlank(datatime)){
+    public static Date parseDate(String datetime,String dateFormat){
+        if(StringUtils.isBlank(datetime)){
             return null;
         }
         try {
-            return DateUtils.parseDate(datatime,dateFormat);
+            return DateUtils.parseDate(datetime,dateFormat);
         } catch (ParseException e) {
             throw new IllegalArgumentException(e);
         }
     }
     /**
      * 解析日期字符串yyyy-MM-dd
-     * @param datatime
+     * @param datetime
      * @return
      */
-    public static Date parseDate(String datatime){
-        if(StringUtils.isBlank(datatime)){
+    public static Date parseDate(String datetime){
+        if(StringUtils.isBlank(datetime)){
             return null;
         }
         String dateFormat;
-        if(datatime.length()==DATE_FORMAT_1.length()){
+        if(datetime.length()==DATE_FORMAT_1.length()){
             dateFormat = DATE_FORMAT_1;
-        }else if(datatime.length()==DATE_FORMAT_2.length()){
+        }else if(datetime.length()==DATE_FORMAT_2.length()){
             dateFormat = DATE_FORMAT_2;
         }else{
-            throw new IllegalArgumentException(MessageSourceUtil.getMessage("error.data_format_error")+",datatime="+datatime);
+            throw new IllegalArgumentException(MessageSourceUtil.getMessage("error.data_format_error")+",datetime="+datetime);
         }
-        return parseDate(datatime,dateFormat);
+        return parseDate(datetime,dateFormat);
     }
 
 }

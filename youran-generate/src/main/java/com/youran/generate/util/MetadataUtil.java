@@ -124,7 +124,8 @@ public class MetadataUtil {
      * @return
      */
     public static boolean showFieldLength(String fieldType){
-        return !MySqlType.DATETIME.equals(fieldType)
+        return !MySqlType.DATE.equals(fieldType)
+            && !MySqlType.DATETIME.equals(fieldType)
             && !MySqlType.TEXT.equals(fieldType);
     }
     /**
@@ -230,7 +231,7 @@ public class MetadataUtil {
             return true;
         }
         // 日期字段特殊默认值不需要引号包裹
-        if(MySqlType.isDateType(field.getFieldType())){
+        if(MySqlType.isDateType(field.getFieldType()) || MySqlType.isDateTimeType(field.getFieldType())){
             String defaultValue = field.getDefaultValue();
             if(StringUtils.isNotBlank(defaultValue)){
                 for (String specialValue : SPECIAL_DEFAULT_VALUE) {

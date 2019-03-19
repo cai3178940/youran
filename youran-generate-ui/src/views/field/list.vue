@@ -257,7 +257,7 @@ export default {
     },
     lengthAndScale (row) {
       let rel = ''
-      if (options.showFieldLength(row.fieldType)) {
+      if (options.showFieldLength(row.fieldType, row.fieldLength)) {
         rel += '(' + row.fieldLength
         if (options.showFieldScale(row.fieldType)) {
           rel += ',' + row.fieldScale

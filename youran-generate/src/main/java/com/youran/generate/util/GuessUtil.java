@@ -41,6 +41,9 @@ public class GuessUtil {
             return "0";
         }
         if(MySqlType.isDateType(fieldType)){
+            return "1900-01-01";
+        }
+        if(MySqlType.isDateTimeType(fieldType)){
             return "1900-01-01 00:00:00";
         }
         return "";

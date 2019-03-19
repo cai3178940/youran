@@ -16,6 +16,8 @@ public class MySqlType {
 
     public static final  String TEXT = "text";
 
+    public static final  String DATE = "date";
+
     public static final  String DATETIME = "datetime";
 
     public static final  String FLOAT = "float";
@@ -45,6 +47,7 @@ public class MySqlType {
         return INT.equals(mysqlType)||
             VARCHAR.equals(mysqlType)||
             TEXT.equals(mysqlType)||
+            DATE.equals(mysqlType)||
             DATETIME.equals(mysqlType)||
             FLOAT.equals(mysqlType)||
             DOUBLE.equals(mysqlType)||
@@ -66,6 +69,9 @@ public class MySqlType {
         }
         if(TEXT.equals(mySqlType)){
             return JFieldType.STRING;
+        }
+        if(DATE.equals(mySqlType)){
+            return JFieldType.DATE;
         }
         if(DATETIME.equals(mySqlType)){
             return JFieldType.DATE;
@@ -146,6 +152,14 @@ public class MySqlType {
      * @return
      */
     public static boolean isDateType(String mySqlType){
+        return DATE.equals(mySqlType);
+    }
+    /**
+     * 判断字段类型是否日期时间格式
+     * @param mySqlType
+     * @return
+     */
+    public static boolean isDateTimeType(String mySqlType){
         return DATETIME.equals(mySqlType);
     }
 

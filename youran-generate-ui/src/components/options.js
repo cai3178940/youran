@@ -30,6 +30,11 @@ export default {
       selectLabel: 'TEXT'
     },
     {
+      value: 'date',
+      label: 'DATE',
+      selectLabel: 'DATE'
+    },
+    {
       value: 'datetime',
       label: 'DATETIME',
       selectLabel: 'DATETIME'
@@ -77,10 +82,14 @@ export default {
   /**
    * 根据字段类型判断是否需要显示长度
    * @param fieldType
+   * @param fieldLength
    * @returns {boolean}
    */
-  showFieldLength (fieldType) {
-    return fieldType !== 'datetime' && fieldType !== 'text'
+  showFieldLength (fieldType, fieldLength) {
+    if (fieldType === 'date' || fieldType === 'datetime' || fieldType === 'text') {
+      return false
+    }
+    return fieldLength > 0
   },
   /**
    * 根据字段类型判断是否需要显示精度
