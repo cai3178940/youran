@@ -112,7 +112,7 @@
                 <version>${r'$'}{org.mapstruct.version}</version>
             </dependency>
 
-            <!-- swagger依赖 -->
+            <!-- swagger依赖 @ https://github.com/SpringForAll/spring-boot-starter-swagger -->
             <dependency>
                 <groupId>com.spring4all</groupId>
                 <artifactId>swagger-spring-boot-starter</artifactId>
