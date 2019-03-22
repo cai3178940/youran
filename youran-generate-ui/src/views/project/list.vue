@@ -66,6 +66,9 @@
               <el-dropdown-item v-if="scope.row.remote==1" :command="{method:'handleCommit',arg:scope.row}" >
                 <icon name="brands/git" scale="0.8" ></icon> 提交Git
               </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleDel',arg:scope.row}" >
+                <icon name="trash-alt" scale="0.8" ></icon> 删除
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
