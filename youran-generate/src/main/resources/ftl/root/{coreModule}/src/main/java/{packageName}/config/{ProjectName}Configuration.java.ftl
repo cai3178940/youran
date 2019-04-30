@@ -3,6 +3,7 @@
 <#assign code>
 <@call this.addImport("${this.commonPackage}.util.SpringUtil")/>
 <@call this.addImport("org.springframework.boot.autoconfigure.condition.ConditionalOnClass")/>
+<@call this.addImport("org.springframework.boot.context.properties.ConfigurationProperties")/>
 <@call this.addImport("org.springframework.context.MessageSource")/>
 <@call this.addImport("org.springframework.context.annotation.*")/>
 <@call this.addImport("org.springframework.validation.beanvalidation.LocalValidatorFactoryBean")/>
@@ -37,6 +38,7 @@ public class ${this.projectNameUpper}Configuration {
     }
 
     @Bean
+    @ConfigurationProperties(prefix = "${this.packageName}")
     public ${this.projectNameUpper}Properties ${this.projectName}Properties(){
         return new ${this.projectNameUpper}Properties();
     }
