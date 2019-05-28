@@ -2,7 +2,7 @@ package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaConstDetailDAO;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaConstDetailMapper;
@@ -72,7 +72,7 @@ public class MetaConstDetailService {
     public MetaConstDetailPO getMetaConstDetail(Integer constDetailId,boolean force){
         MetaConstDetailPO constDetailPO = metaConstDetailDAO.findById(constDetailId);
         if(force && constDetailPO==null){
-            throw new GenerateException("枚举值未找到");
+            throw new BusinessException("枚举值未找到");
         }
         return constDetailPO;
     }

@@ -12,7 +12,7 @@ import com.youran.common.constant.BoolConst;
 import com.youran.common.util.SafeUtil;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MySqlType;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
@@ -73,14 +73,14 @@ public class ReverseEngineeringService {
             sqlStatements = SQLUtils.parseStatements(dto.getDdl(), dto.getDbType());
         } catch (ParserException e) {
             LOGGER.warn("反向工程校验失败：{}",e);
-            throw new GenerateException(e.getMessage());
+            throw new BusinessException(e.getMessage());
         }
         if(CollectionUtils.isEmpty(sqlStatements)){
-            throw new GenerateException("未找到有效DDL语句");
+            throw new BusinessException("未找到有效DDL语句");
         }
         for (SQLStatement sqlStatement : sqlStatements) {
             if(!(sqlStatement instanceof SQLCreateTableStatement)){
-                throw new GenerateException("只支持create table语句，请删除多余的sql");
+                throw new BusinessException("只支持create table语句，请删除多余的sql");
             }
         }
         return sqlStatements;
@@ -100,10 +100,10 @@ public class ReverseEngineeringService {
             MetaEntityPO entity = createEntity(project, tableName, comment);
             SQLPrimaryKey primaryKey = createTableStatement.findPrimaryKey();
             if(primaryKey==null){
-                throw new GenerateException("表【"+tableName+"】不存在主键");
+                throw new BusinessException("表【"+tableName+"】不存在主键");
             }
             if(primaryKey.getColumns().size()>1){
-                throw new GenerateException("表【"+tableName+"】存在联合主键，反向工程暂不支持联合主键");
+                throw new BusinessException("表【"+tableName+"】存在联合主键，反向工程暂不支持联合主键");
             }
             String pkFieldName = cleanQuote(primaryKey.getColumns().get(0).getExpr().toString());
             List<SQLTableElement> tableElementList = createTableStatement.getTableElementList();

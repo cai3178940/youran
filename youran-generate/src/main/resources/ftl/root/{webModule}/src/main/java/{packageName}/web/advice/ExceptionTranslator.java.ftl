@@ -2,11 +2,11 @@
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
+<@call this.addImport("${this.commonPackage}.exception.BusinessException")/>
 <@call this.addImport("${this.commonPackage}.pojo.vo.FieldErrorVO")/>
 <@call this.addImport("${this.commonPackage}.pojo.vo.ReplyVO")/>
 <@call this.addImport("${this.commonPackage}.util.JsonUtil")/>
 <@call this.addImport("${this.commonPackage}.util.MessageSourceUtil")/>
-<@call this.addImport("${this.packageName}.exception.${this.projectNameUpper}Exception")/>
 <@call this.addImport("org.slf4j.Logger")/>
 <@call this.addImport("org.slf4j.LoggerFactory")/>
 <@call this.addImport("org.springframework.core.annotation.AnnotationUtils")/>
@@ -138,9 +138,9 @@ public class ExceptionTranslator {
      * @param ex
      * @return
      */
-    @ExceptionHandler(${this.projectNameUpper}Exception.class)
+    @ExceptionHandler(BusinessException.class)
     @ResponseBody
-    public ResponseEntity<ReplyVO> process${this.projectNameUpper}Exception(${this.projectNameUpper}Exception ex) {
+    public ResponseEntity<ReplyVO> processBusinessException(BusinessException ex) {
         ex.printStackTrace();
         ResponseEntity.BodyBuilder builder = ResponseEntity.status(HttpStatus.OK);
         ErrorCode code = ex.getErrorCode();

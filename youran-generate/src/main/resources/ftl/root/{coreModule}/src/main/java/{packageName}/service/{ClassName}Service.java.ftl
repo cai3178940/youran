@@ -2,6 +2,7 @@
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
+<@call this.addImport("${this.commonPackage}.exception.BusinessException")/>
 <@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}AddDTO")/>
 <@call this.addImport("${this.packageName}.pojo.qo.${this.classNameUpper}QO")/>
 <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
@@ -9,7 +10,6 @@
 <@call this.addImport("${this.packageName}.pojo.mapper.${this.classNameUpper}Mapper")/>
 <@call this.addImport("${this.packageName}.pojo.po.${this.classNameUpper}PO")/>
 <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ShowVO")/>
-<@call this.addImport("${this.packageName}.exception.${this.projectNameUpper}Exception")/>
 <@call this.addImport("org.springframework.beans.factory.annotation.Autowired")/>
 <@call this.addImport("org.springframework.stereotype.Service")/>
 <@call this.addImport("org.springframework.transaction.annotation.Transactional")/>
@@ -72,7 +72,7 @@ public class ${this.classNameUpper}Service {
             <#assign params+=this.className+'.get'+field.jfieldName?capFirst+'(), '>
         </#list>
         if(${this.className}DAO.notUnique${suffix}(${params}isUpdate?${this.className}.get${this.idUpper}():null)){
-            throw new ${this.projectNameUpper}Exception(ErrorCode.DUPLICATE_KEY);
+            throw new BusinessException(ErrorCode.DUPLICATE_KEY);
         }
     </#list>
     }
@@ -190,7 +190,7 @@ public class ${this.classNameUpper}Service {
     public ${this.classNameUpper}PO get${this.classNameUpper}(${this.type} ${this.id}, boolean force){
         ${this.classNameUpper}PO ${this.className} = ${this.className}DAO.findById(${this.id});
         if (force && ${this.className} == null) {
-            throw new ${this.projectNameUpper}Exception(ErrorCode.RECORD_NOT_FIND);
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
         }
         return ${this.className};
     }
@@ -269,7 +269,7 @@ public class ${this.classNameUpper}Service {
             <#if foreignField.entityId==foreignEntity.entityId>
         <#if !alreadyFind>int </#if>count = ${foreigncName}DAO.getCountBy${foreignField.jfieldName?capFirst}(${this.id});
         if(count>0){
-            throw new ${this.projectNameUpper}Exception(ErrorCode.CASCADE_DELETE_ERROR);
+            throw new BusinessException(ErrorCode.CASCADE_DELETE_ERROR);
         }
                 <#assign alreadyFind=true>
             </#if>
@@ -289,7 +289,7 @@ public class ${this.classNameUpper}Service {
     private void checkDeleteBy${otherCName}(${this.type} ${this.id}) {
         int count = ${othercName}DAO.getCountBy${this.classNameUpper}(${this.id});
         if(count>0){
-            throw new ${this.projectNameUpper}Exception(ErrorCode.CASCADE_DELETE_ERROR);
+            throw new BusinessException(ErrorCode.CASCADE_DELETE_ERROR);
         }
     }
 
@@ -328,7 +328,7 @@ public class ${this.classNameUpper}Service {
     public int add${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherPkId}) {
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         if(ArrayUtils.isEmpty(${otherPkId})){
-            throw new ${this.projectNameUpper}Exception(ErrorCode.PARAM_IS_NULL);
+            throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         return doAdd${otherCName}(${this.id}, ${otherPkId});
     }
@@ -343,7 +343,7 @@ public class ${this.classNameUpper}Service {
     public int remove${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherPkId}) {
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         if(ArrayUtils.isEmpty(${otherPkId})){
-            throw new ${this.projectNameUpper}Exception(ErrorCode.PARAM_IS_NULL);
+            throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         return ${this.className}DAO.remove${otherCName}(${this.id}, ${otherPkId});
     }

@@ -2,7 +2,7 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.ReverseEngineeringDTO;
 import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.service.ReverseEngineeringService;
@@ -38,7 +38,7 @@ public class ReverseEngineeringController implements ReverseEngineeringAPI {
     public ReplyVO<Void> check(@Valid @RequestBody ReverseEngineeringDTO dto) {
         try {
             reverseEngineeringService.parse(dto);
-        } catch (GenerateException e) {
+        } catch (BusinessException e) {
             return ReplyVO.fail(e.getMessage());
         }
         return ReplyVO.success();
@@ -51,7 +51,7 @@ public class ReverseEngineeringController implements ReverseEngineeringAPI {
             //校验操作人
             metaProjectService.checkOperatorByProjectId(dto.getProjectId());
             reverseEngineeringService.execute(dto);
-        } catch (GenerateException e) {
+        } catch (BusinessException e) {
             return ReplyVO.fail(e.getMessage());
         }
         return ReplyVO.success();

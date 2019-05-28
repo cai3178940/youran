@@ -2,7 +2,7 @@ package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaFieldDAO;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaFieldMapper;
@@ -73,7 +73,7 @@ public class MetaFieldService {
     public MetaFieldPO getField(Integer fieldId, boolean force){
         MetaFieldPO fieldPO = metaFieldDAO.findById(fieldId);
         if(force && fieldPO == null){
-            throw new GenerateException("字段未找到");
+            throw new BusinessException("字段未找到");
         }
         return fieldPO;
     }

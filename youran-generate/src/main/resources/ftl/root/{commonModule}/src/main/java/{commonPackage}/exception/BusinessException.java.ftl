@@ -3,34 +3,39 @@
 <#assign code>
 <@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
 <@call this.addImport("${this.commonPackage}.util.MessageSourceUtil")/>
-<@call this.printClassCom("自定义异常")/>
-public class ${this.projectNameUpper}Exception extends RuntimeException{
+<@call this.printClassCom("业务异常")/>
+public class BusinessException extends RuntimeException{
 
     private ErrorCode code;
 
-    public ${this.projectNameUpper}Exception() {
+    public BusinessException() {
         super(MessageSourceUtil.getMessage(ErrorCode.INTERNAL_SERVER_ERROR.getDesc()));
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
 
     }
 
-    public ${this.projectNameUpper}Exception(String message) {
+    public BusinessException(String message) {
         super(message);
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
-    public ${this.projectNameUpper}Exception(Throwable cause) {
+    public BusinessException(Throwable cause) {
         super(cause.getMessage(),cause);
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
-    public ${this.projectNameUpper}Exception(String message,Throwable cause) {
+    public BusinessException(String message,Throwable cause) {
         super(message,cause);
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
-    public ${this.projectNameUpper}Exception(ErrorCode code) {
+    public BusinessException(ErrorCode code) {
         super(MessageSourceUtil.getMessage(code.getDesc()));
+        this.code = code;
+    }
+
+    public BusinessException(ErrorCode code,String message) {
+        super(message);
         this.code = code;
     }
 
@@ -44,7 +49,7 @@ public class ${this.projectNameUpper}Exception extends RuntimeException{
 }
 </#assign>
 <#--开始渲染代码-->
-package ${this.packageName}.exception;
+package ${this.commonPackage}.exception;
 
 <@call this.printImport()/>
 

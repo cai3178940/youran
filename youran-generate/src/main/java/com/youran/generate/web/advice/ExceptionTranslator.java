@@ -4,7 +4,7 @@ import com.youran.common.constant.ErrorCode;
 import com.youran.common.pojo.vo.FieldErrorVO;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -133,13 +133,13 @@ public class ExceptionTranslator {
 
 
     /**
-     * 自定义异常捕获
+     * 业务异常捕获
      * @param ex
      * @return
      */
-    @ExceptionHandler(GenerateException.class)
+    @ExceptionHandler(BusinessException.class)
     @ResponseBody
-    public ResponseEntity<ReplyVO> processGenerateException(GenerateException ex) {
+    public ResponseEntity<ReplyVO> processBusinessException(BusinessException ex) {
         ex.printStackTrace();
         ResponseEntity.BodyBuilder builder = ResponseEntity.status(HttpStatus.OK);
         ErrorCode errorCode = ex.getErrorCode();

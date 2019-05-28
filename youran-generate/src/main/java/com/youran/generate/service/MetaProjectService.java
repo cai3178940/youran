@@ -5,7 +5,7 @@ import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.dao.MetaProjectDAO;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
@@ -67,7 +67,7 @@ public class MetaProjectService {
                 encrypt = AESSecurityUtil.encrypt(password, generateProperties.getAesKey());
             } catch (Exception e) {
                 LOGGER.error("密码加密异常",e);
-                throw new GenerateException("密码加密异常");
+                throw new BusinessException("密码加密异常");
             }
             metaProject.setPassword(encrypt);
         }
@@ -94,7 +94,7 @@ public class MetaProjectService {
                 encrypt = AESSecurityUtil.encrypt(updateDTO.getPassword(), generateProperties.getAesKey());
             } catch (Exception e) {
                 LOGGER.error("密码加密异常",e);
-                throw new GenerateException("密码加密异常");
+                throw new BusinessException("密码加密异常");
             }
             project.setPassword(encrypt);
         }
@@ -113,7 +113,7 @@ public class MetaProjectService {
     public MetaProjectPO getProject(Integer projectId, boolean force) {
         MetaProjectPO metaProject = metaProjectDAO.findById(projectId);
         if (force && metaProject == null) {
-            throw new GenerateException("项目不存在");
+            throw new BusinessException("项目不存在");
         }
         return metaProject;
     }
@@ -210,10 +210,10 @@ public class MetaProjectService {
     private void doCheckOperator(MetaProjectPO projectPO) {
         /*String currentUser = loginContext.getCurrentOperatorId();
         if(StringUtils.isBlank(currentUser)){
-            throw new GenerateException("获取当前登录用户失败");
+            throw new BusinessException("获取当前登录用户失败");
         }
         if(!currentUser.equals(projectPO.getCreatedBy())){
-            throw new GenerateException("您不是该项目的创建者，无此操作权限");
+            throw new BusinessException("您不是该项目的创建者，无此操作权限");
         }*/
     }
 

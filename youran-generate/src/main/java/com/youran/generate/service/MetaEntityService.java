@@ -4,7 +4,7 @@ import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaManyToManyDAO;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaEntityMapper;
@@ -43,10 +43,10 @@ public class MetaEntityService {
      */
     private void checkUnique(MetaEntityPO entity, boolean isUpdate){
         if(metaEntityDAO.classNameNotUnique(entity.getProjectId(),entity.getClassName(), isUpdate?entity.getEntityId():null)){
-            throw new GenerateException("类名重复");
+            throw new BusinessException("类名重复");
         }
         if(metaEntityDAO.tableNameNotUnique(entity.getProjectId(),entity.getTableName(), isUpdate?entity.getEntityId():null)){
-            throw new GenerateException("表名重复");
+            throw new BusinessException("表名重复");
         }
     }
     /**
@@ -97,7 +97,7 @@ public class MetaEntityService {
     public MetaEntityPO getEntity(Integer entityId,boolean force){
         MetaEntityPO metaEntity = metaEntityDAO.findById(entityId);
         if (force && metaEntity == null) {
-            throw new GenerateException("实体不存在");
+            throw new BusinessException("实体不存在");
         }
         return metaEntity;
     }
@@ -166,7 +166,7 @@ public class MetaEntityService {
     private void checkDeleteByMtm(Integer entityId) {
         int count = metaManyToManyDAO.getCountByEntityId(entityId);
         if(count>0){
-            throw new GenerateException("请先删除多对多关联");
+            throw new BusinessException("请先删除多对多关联");
         }
     }
 

@@ -3,7 +3,7 @@ package com.youran.generate.service;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaManyToManyDAO;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaManyToManyMapper;
@@ -44,10 +44,10 @@ public class MetaManyToManyService {
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
         if (!metaEntityDAO.exist(metaManyToManyDTO.getEntityId1())) {
-            throw new GenerateException("entityId1参数有误");
+            throw new BusinessException("entityId1参数有误");
         }
         if (!metaEntityDAO.exist(metaManyToManyDTO.getEntityId2())) {
-            throw new GenerateException("entityId2参数有误");
+            throw new BusinessException("entityId2参数有误");
         }
         MetaManyToManyPO metaManyToMany = MetaManyToManyMapper.INSTANCE.fromAddDTO(metaManyToManyDTO);
         metaManyToManyDAO.save(metaManyToMany);
@@ -64,10 +64,10 @@ public class MetaManyToManyService {
     @OptimisticLock
     public MetaManyToManyPO update(MetaManyToManyUpdateDTO metaManyToManyUpdateDTO) {
         if (!metaEntityDAO.exist(metaManyToManyUpdateDTO.getEntityId1())) {
-            throw new GenerateException("entityId1参数有误");
+            throw new BusinessException("entityId1参数有误");
         }
         if (!metaEntityDAO.exist(metaManyToManyUpdateDTO.getEntityId2())) {
-            throw new GenerateException("entityId2参数有误");
+            throw new BusinessException("entityId2参数有误");
         }
         Integer mtmId = metaManyToManyUpdateDTO.getMtmId();
         MetaManyToManyPO metaManyToMany = this.getMetaManyToMany(mtmId,true);
@@ -89,7 +89,7 @@ public class MetaManyToManyService {
     public MetaManyToManyPO getMetaManyToMany(Integer mtmId, boolean force){
         MetaManyToManyPO manyToManyPO = metaManyToManyDAO.findById(mtmId);
         if(force && manyToManyPO==null){
-            throw new GenerateException("多对多关系未找到");
+            throw new BusinessException("多对多关系未找到");
         }
         return manyToManyPO;
     }

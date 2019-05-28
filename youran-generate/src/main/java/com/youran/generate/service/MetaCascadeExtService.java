@@ -2,7 +2,7 @@ package com.youran.generate.service;
 
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaCascadeExtDAO;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaCascadeExtUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaCascadeExtMapper;
@@ -77,7 +77,7 @@ public class MetaCascadeExtService {
     public MetaCascadeExtPO getMetaCascadeExt(Integer cascadeExtId,boolean force){
         MetaCascadeExtPO cascadeExtPO = metaCascadeExtDAO.findById(cascadeExtId);
         if(force && cascadeExtPO == null){
-            throw new GenerateException("级联扩展未找到");
+            throw new BusinessException("级联扩展未找到");
         }
         return cascadeExtPO;
     }

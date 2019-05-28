@@ -1,4 +1,4 @@
-package com.youran.generate.exception;
+package com.youran.common.exception;
 
 import com.youran.common.constant.ErrorCode;
 
@@ -8,30 +8,30 @@ import com.youran.common.constant.ErrorCode;
  * @author: cbb
  * @date: 2017/9/20
  */
-public class GenerateException extends RuntimeException{
+public class BusinessException extends RuntimeException{
 
     private ErrorCode errorCode;
 
-    public GenerateException() {
+    public BusinessException() {
         this.errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
-    public GenerateException(String message) {
+    public BusinessException(String message) {
         super(message);
         this.errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
-    public GenerateException(Throwable cause) {
+    public BusinessException(Throwable cause) {
         super(cause.getMessage(),cause);
         this.errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
-    public GenerateException(String message,Throwable cause) {
+    public BusinessException(String message, Throwable cause) {
         super(message,cause);
         this.errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
-    public GenerateException(ErrorCode errorCode) {
+    public BusinessException(ErrorCode errorCode) {
         super(errorCode.getDesc());
         this.errorCode = errorCode;
     }

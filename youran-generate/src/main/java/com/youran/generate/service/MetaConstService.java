@@ -3,7 +3,7 @@ package com.youran.generate.service;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.MetaConstDAO;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaConstAddDTO;
 import com.youran.generate.pojo.dto.MetaConstUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaConstMapper;
@@ -74,7 +74,7 @@ public class MetaConstService {
     public MetaConstPO getConst(Integer constId, boolean force){
         MetaConstPO metaConstPO = metaConstDAO.findById(constId);
         if(force && metaConstPO==null){
-            throw new GenerateException("常量不存在");
+            throw new BusinessException("常量不存在");
         }
         return metaConstPO;
     }

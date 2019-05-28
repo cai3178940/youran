@@ -2,7 +2,7 @@ package com.youran.generate.web.ws;
 
 import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.GenerateConst;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.service.MetaCodeGenService;
@@ -74,7 +74,7 @@ public class MetaCodeGenWsController extends AbstractController {
             // 将zip文件路径存入缓存，随后浏览器就能下载了
             lruCache.put(sessionId,new Object[]{projectId,zipFile.getPath()});
             this.replyProgress(topic,ProgressVO.success("代码生成完毕"));
-        } catch (GenerateException e){
+        } catch (BusinessException e){
             // 如果捕获到异常，则将异常也通知给前端浏览器
             this.replyProgress(topic,ProgressVO.error(e.getMessage()));
         } catch (Throwable e) {
@@ -128,7 +128,7 @@ public class MetaCodeGenWsController extends AbstractController {
             GenHistoryPO history = metaCodeGenService.gitCommit(projectId,
                 progressVO -> this.replyProgress(topic, progressVO));
             this.replyProgress(topic,ProgressVO.success("已创建自动分支【"+ history.getBranch() +"】，并提交到远程"));
-        } catch (GenerateException e){
+        } catch (BusinessException e){
             // 如果捕获到异常，则将异常也通知给前端浏览器
             this.replyProgress(topic,ProgressVO.error(e.getMessage()));
         } catch (Exception e) {

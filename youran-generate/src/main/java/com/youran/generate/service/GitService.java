@@ -1,6 +1,6 @@
 package com.youran.generate.service;
 
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -97,10 +97,10 @@ public class GitService {
             }
         } catch (IOException e) {
             LOGGER.error("clone仓库异常",e);
-            throw new GenerateException("clone仓库异常");
+            throw new BusinessException("clone仓库异常");
         } catch (GitAPIException e) {
             LOGGER.error("clone仓库异常",e);
-            throw new GenerateException("clone仓库异常");
+            throw new BusinessException("clone仓库异常");
         }
     }
 
@@ -134,7 +134,7 @@ public class GitService {
             return commit.getName();
         }catch (GitAPIException e) {
             LOGGER.error("提交仓库异常",e);
-            throw new GenerateException("提交仓库异常");
+            throw new BusinessException("提交仓库异常");
         }
     }
 
@@ -155,7 +155,7 @@ public class GitService {
                 .build();
         } catch (IOException e) {
             LOGGER.error("打开仓库异常",e);
-            throw new GenerateException("打开仓库异常");
+            throw new BusinessException("打开仓库异常");
         }
         return repository;
     }

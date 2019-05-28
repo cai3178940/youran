@@ -3,7 +3,7 @@ package com.youran.generate.service;
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.dao.GenHistoryDAO;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.GenHistoryQO;
@@ -67,7 +67,7 @@ public class GenHistoryService {
     public GenHistoryPO getGenHistory(Integer historyId, boolean force){
         GenHistoryPO genHistory = genHistoryDAO.findById(historyId);
         if (force && genHistory == null) {
-            throw new GenerateException("未查询到记录");
+            throw new BusinessException("未查询到记录");
         }
         return genHistory;
     }
@@ -96,7 +96,7 @@ public class GenHistoryService {
     public void checkVersion(MetaProjectPO project, GenHistoryPO genHistory) {
         if(Objects.equals(genHistory.getProjectVersion(),project.getProjectVersion())
             && Objects.equals(genHistory.getSysVersion(),generateProperties.getVersion())){
-            throw new GenerateException("远程仓库分支【"+genHistory.getBranch()+"】已经是最新版本");
+            throw new BusinessException("远程仓库分支【"+genHistory.getBranch()+"】已经是最新版本");
         }
     }
 }

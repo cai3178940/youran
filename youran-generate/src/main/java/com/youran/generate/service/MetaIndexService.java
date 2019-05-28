@@ -5,7 +5,7 @@ import com.youran.common.util.ConvertUtil;
 import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.dao.MetaIndexDAO;
 import com.youran.generate.dao.MetaIndexFieldDAO;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaIndexMapper;
@@ -53,7 +53,7 @@ public class MetaIndexService {
         List<Integer> fieldIdList =  ConvertUtil.convertIntegerList(fieldIds);
         int fieldCount = metaFieldDAO.findCount(entityId, fieldIdList);
         if (fieldCount != fieldIdList.size()) {
-            throw new GenerateException("索引字段异常");
+            throw new BusinessException("索引字段异常");
         }
         //映射属性
         MetaIndexPO metaIndex = MetaIndexMapper.INSTANCE.fromAddDTO(metaIndexAddDTO);
@@ -62,7 +62,7 @@ public class MetaIndexService {
         //保存关联关系
         int count = metaIndexFieldDAO.saveBatch(metaIndex.getIndexId(), fieldIdList);
         if (count == 0 || fieldIdList.size() != count) {
-            throw new GenerateException("索引保存异常");
+            throw new BusinessException("索引保存异常");
         }
         metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaIndex;
@@ -86,7 +86,7 @@ public class MetaIndexService {
         List<Integer> fieldIdList = ConvertUtil.convertIntegerList(fieldIds);
         int fieldCount = metaFieldDAO.findCount(entityId, fieldIdList);
         if (fieldCount != fieldIdList.size()) {
-            throw new GenerateException("索引字段异常");
+            throw new BusinessException("索引字段异常");
         }
         //映射属性
         MetaIndexMapper.INSTANCE.setPO(metaIndex, metaIndexUpdateDTO);
@@ -97,7 +97,7 @@ public class MetaIndexService {
         //保存新的关联关系
         int count = metaIndexFieldDAO.saveBatch(metaIndex.getIndexId(), fieldIdList);
         if (count == 0 || fieldIdList.size() != count) {
-            throw new GenerateException("索引更新异常");
+            throw new BusinessException("索引更新异常");
         }
 
         metaProjectService.updateProjectVersionByEntityId(entityId);
@@ -113,7 +113,7 @@ public class MetaIndexService {
     public MetaIndexPO getIndex(Integer indexId,boolean force){
         MetaIndexPO indexPO = metaIndexDAO.findById(indexId);
         if(force && indexPO == null){
-            throw new GenerateException("索引未找到");
+            throw new BusinessException("索引未找到");
         }
         return indexPO;
     }

@@ -2,6 +2,7 @@
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
+<@call this.addImport("${this.commonPackage}.exception.BusinessException")/>
 <@call this.addImport("${this.commonPackage}.pojo.vo.ReplyVO")/>
 <@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}AddDTO")/>
 <@call this.addImport("${this.packageName}.pojo.po.${this.classNameUpper}PO")/>
@@ -75,7 +76,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     @DeleteMapping
     public ReplyVO<Integer> deleteBatch(@RequestBody ${this.type}[] id) {
         if(ArrayUtils.isEmpty(id)){
-            return ReplyVO.fail(ErrorCode.PARAM_IS_NULL);
+            throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = ${this.className}Service.delete(id);
         return ReplyVO.success().data(count);

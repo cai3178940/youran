@@ -3,7 +3,7 @@ package com.youran.generate.service;
 import com.google.common.collect.Sets;
 import com.youran.common.constant.BoolConst;
 import com.youran.generate.constant.MetaSpecialField;
-import com.youran.generate.exception.GenerateException;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.po.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +45,7 @@ public class MetaQueryAssembleService {
         // 查询实体id列表
         List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
         if (CollectionUtils.isEmpty(entityIds)) {
-            throw new GenerateException("项目中没有实体");
+            throw new BusinessException("项目中没有实体");
         }
         // 获取组装后的实体列表
         List<MetaEntityPO> metaEntities = entityIds
@@ -86,7 +86,7 @@ public class MetaQueryAssembleService {
         MetaConstPO metaConst = metaConstService.getConst(constId,true);
         List<MetaConstDetailPO> detailList = metaConstDetailService.findByConstId(constId);
         if (CollectionUtils.isEmpty(detailList)) {
-            throw new GenerateException("常量无对应常量值，constId=" + constId);
+            throw new BusinessException("常量无对应常量值，constId=" + constId);
         }
         metaConst.setDetailList(detailList);
         return metaConst;
@@ -111,7 +111,7 @@ public class MetaQueryAssembleService {
         Integer entityId = metaEntity.getEntityId();
         List<MetaFieldPO> fieldList = metaFieldService.findByEntityId(entityId);
         if (CollectionUtils.isEmpty(fieldList)) {
-            throw new GenerateException("实体无对应字段，entityId=" + entityId);
+            throw new BusinessException("实体无对应字段，entityId=" + entityId);
         }
         //将list转化为map,并组装实体内部字段
         Map<Integer, MetaFieldPO> fieldMap = new HashMap<>(fieldList.size());
@@ -179,7 +179,7 @@ public class MetaQueryAssembleService {
                 fieldIds.stream().forEach(fieldId -> {
                     MetaFieldPO field = fieldMap.get(fieldId);
                     if (field == null) {
-                        throw new GenerateException("索引字段非本实体字段，indexId=" +
+                        throw new BusinessException("索引字段非本实体字段，indexId=" +
                                 metaIndex.getIndexId() + ",fieldId=" + fieldId);
                     }
                     metaIndex.addMetaField(field);
@@ -250,11 +250,11 @@ public class MetaQueryAssembleService {
                 //获取外键关联的主键字段
                 MetaFieldPO foreignField = foreignEntity.getPkField();
                 if(!Objects.equals(foreignField.getFieldType(),metaFieldPO.getFieldType())){
-                    throw new GenerateException("外键字段"+metaEntity.getTableName()+"."+metaFieldPO.getFieldName()+"与"
+                    throw new BusinessException("外键字段"+metaEntity.getTableName()+"."+metaFieldPO.getFieldName()+"与"
                         +foreignEntity.getTableName()+"."+foreignField.getFieldName()+"字段类型不一致");
                 }
                 if(!Objects.equals(foreignField.getJfieldType(),metaFieldPO.getJfieldType())){
-                    throw new GenerateException("java字段"+metaEntity.getClassName()+"."+metaFieldPO.getJfieldName()+"与"
+                    throw new BusinessException("java字段"+metaEntity.getClassName()+"."+metaFieldPO.getJfieldName()+"与"
                         +foreignEntity.getClassName()+"."+foreignField.getJfieldName()+"字段类型不一致");
                 }
                 metaFieldPO.setForeignField(foreignField);
@@ -280,7 +280,7 @@ public class MetaQueryAssembleService {
                 .filter(field -> field.getFieldId().equals(cascadeExt.getCascadeFieldId()))
                 .findFirst();
             if(!first.isPresent()) {
-                throw new GenerateException(metaFieldPO.getFieldDesc()+"的级联扩展字段有误");
+                throw new BusinessException(metaFieldPO.getFieldDesc()+"的级联扩展字段有误");
             }
             cascadeExt.setCascadeField(first.get());
             if(BoolConst.TRUE==cascadeExt.getQuery()){
@@ -343,7 +343,7 @@ public class MetaQueryAssembleService {
                 if(BoolConst.TRUE == field.getPrimaryKey()){
                     pkCount++;
                     if(StringUtils.isNotBlank(specialField)){
-                        throw new GenerateException("实体【"+entity.getTitle()+"】的主键【"+field.getFieldDesc()+"】不可以是特殊字段");
+                        throw new BusinessException("实体【"+entity.getTitle()+"】的主键【"+field.getFieldDesc()+"】不可以是特殊字段");
                     }
                 }
                 if (Objects.equals(specialField, MetaSpecialField.DELETED)) {
@@ -364,33 +364,33 @@ public class MetaQueryAssembleService {
                     &&checkConst
                     &&!constMap.containsKey(field.getDicType())
                     &&!defaultConst.contains(field.getDicType())){
-                    throw new GenerateException("实体【"+entity.getTitle()+"】的字段【"+field.getFieldDesc()+"】中指定的枚举字典【"+field.getDicType()+"】不存在");
+                    throw new BusinessException("实体【"+entity.getTitle()+"】的字段【"+field.getFieldDesc()+"】中指定的枚举字典【"+field.getDicType()+"】不存在");
                 }
 
             }
             if(pkCount==0){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中未找到主键");
+                throw new BusinessException("实体【"+entity.getTitle()+"】中未找到主键");
             }
             if(pkCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+pkCount+"个主键");
+                throw new BusinessException("实体【"+entity.getTitle()+"】中存在"+pkCount+"个主键");
             }
             if(deletedCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+deletedCount+"个逻辑删除字段");
+                throw new BusinessException("实体【"+entity.getTitle()+"】中存在"+deletedCount+"个逻辑删除字段");
             }
             if(createdByCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+createdByCount+"个创建人员字段");
+                throw new BusinessException("实体【"+entity.getTitle()+"】中存在"+createdByCount+"个创建人员字段");
             }
             if(createdTimeCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+createdTimeCount+"个创建时间字段");
+                throw new BusinessException("实体【"+entity.getTitle()+"】中存在"+createdTimeCount+"个创建时间字段");
             }
             if(operatedByCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+operatedByCount+"个更新人员字段");
+                throw new BusinessException("实体【"+entity.getTitle()+"】中存在"+operatedByCount+"个更新人员字段");
             }
             if(operatedTimeCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+operatedTimeCount+"个更新时间字段");
+                throw new BusinessException("实体【"+entity.getTitle()+"】中存在"+operatedTimeCount+"个更新时间字段");
             }
             if(versionCount>1){
-                throw new GenerateException("实体【"+entity.getTitle()+"】中存在"+versionCount+"个乐观锁版本字段");
+                throw new BusinessException("实体【"+entity.getTitle()+"】中存在"+versionCount+"个乐观锁版本字段");
             }
 
         }
@@ -408,7 +408,7 @@ public class MetaQueryAssembleService {
         Map<String, MetaConstPO> constMap = new HashMap<>(consts.size());
         for (MetaConstPO constPO : consts) {
             if(constMap.containsKey(constPO.getConstName())){
-                throw new GenerateException("枚举类名冲突："+constPO.getConstName());
+                throw new BusinessException("枚举类名冲突："+constPO.getConstName());
             }
             constMap.put(constPO.getConstName(),constPO);
         }
