@@ -2,6 +2,7 @@
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.commonPackage}.validator.Check")/>
+<@call this.addImport("com.fasterxml.jackson.annotation.JsonValue")/>
 <@call this.addImport("java.util.HashMap")/>
 <@call this.addImport("java.util.Map")/>
 <@call this.printClassCom("枚举【${this.remark}】")/>
@@ -59,6 +60,7 @@ public enum ${this.constNameUpper} {
         return theEnum!=null;
     }
 
+    @JsonValue
     public ${this.constTypeStr} getValue() {
         return value;
     }

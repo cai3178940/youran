@@ -156,15 +156,24 @@ public class BaseModel {
     }
 
     /**
+     * 获取常量类的全路径
+     * @param constName
+     * @return
+     */
+    public String getConstFullClassPath(String constName){
+        if(TemplateUtil.isCommonConst(constName)){
+            return this.commonPackage+".constant."+constName;
+        }else{
+            return this.packageName+".constant."+constName;
+        }
+    }
+
+    /**
      * 导入常量依赖
      * @param constName
      */
     public void addConstImport(String constName){
-        if(TemplateUtil.isCommonConst(constName)){
-            this.addImport(this.commonPackage+".constant."+constName);
-        }else{
-            this.addImport(this.packageName+".constant."+constName);
-        }
+        this.addImport(this.getConstFullClassPath(constName));
     }
 
 

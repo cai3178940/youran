@@ -24,15 +24,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <mybatis-spring-boot.version>1.3.2</mybatis-spring-boot.version>
+        <mybatis-spring-boot.version><#if this.bootVersion==2>2.0.1<#else>1.3.4</#if></mybatis-spring-boot.version>
         <springfox.version><#if this.bootVersion==2>2.9.2<#else>2.7.0</#if></springfox.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections.version>3.2.2</commons-collections.version>
-        <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
+        <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
         <jsoup.version>1.11.2</jsoup.version>
         <h2.version>1.4.193</h2.version>
-        <spring-boot-swagger.version><#if this.bootVersion==2>1.8.0.RELEASE<#else>1.6.0.RELEASE</#if></spring-boot-swagger.version>
+        <spring-boot-swagger.version><#if this.bootVersion==2>1.9.0.RELEASE<#else>1.6.0.RELEASE</#if></spring-boot-swagger.version>
     </properties>
 
     <dependencyManagement>
