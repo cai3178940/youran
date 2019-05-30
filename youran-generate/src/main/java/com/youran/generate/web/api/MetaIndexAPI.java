@@ -1,6 +1,5 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.qo.MetaIndexQO;
@@ -19,7 +18,7 @@ import java.util.List;
  * @author: cbb
  * Create Time:2017/5/16
  */
-@Api(tags = "MetaIndexPO", description = "索引")
+@Api(tags = "MetaIndexPO")
 public interface MetaIndexAPI {
 
     /**
@@ -29,7 +28,7 @@ public interface MetaIndexAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaIndexAddDTO", dataType = "MetaIndexAddDTO", value = "新增索引参数", paramType = "body"),
     })
-    ReplyVO<MetaIndexShowVO> save(MetaIndexAddDTO metaIndexAddDTO);
+    MetaIndexShowVO save(MetaIndexAddDTO metaIndexAddDTO);
 
     /**
      * 修改索引
@@ -38,7 +37,7 @@ public interface MetaIndexAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaIndexUpdateDTO", dataType = "MetaIndexUpdateDTO", value = "修改索引参数", paramType = "body"),
     })
-    ReplyVO<MetaIndexShowVO> update(MetaIndexUpdateDTO metaIndexUpdateDTO);
+    MetaIndexShowVO update(MetaIndexUpdateDTO metaIndexUpdateDTO);
 
     /**
      * 索引列表查询
@@ -47,7 +46,7 @@ public interface MetaIndexAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaIndexQO", dataType = "MetaIndexQO", value = "查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaIndexListVO>> list(MetaIndexQO metaIndexQO);
+    List<MetaIndexListVO> list(MetaIndexQO metaIndexQO);
 
     /**
      * 查看索引详情
@@ -56,7 +55,7 @@ public interface MetaIndexAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "indexId", dataType = "int", value = "索引id", paramType = "path"),
     })
-    ReplyVO<MetaIndexShowVO> show(Integer indexId);
+    MetaIndexShowVO show(Integer indexId);
 
     /**
      * 删除索引
@@ -65,7 +64,7 @@ public interface MetaIndexAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "indexId", dataType = "int", value = "索引id", paramType = "path"),
     })
-    ReplyVO<Integer> delete(Integer indexId);
+    Integer delete(Integer indexId);
 
     /**
      * 批量删除索引
@@ -74,7 +73,7 @@ public interface MetaIndexAPI {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "indexId", dataType = "int", value = "索引id数组", paramType = "body"),
     })
-    ReplyVO<Integer> deleteBatch(Integer[] indexId);
+    Integer deleteBatch(Integer[] indexId);
 
 
     /**
@@ -85,5 +84,5 @@ public interface MetaIndexAPI {
         @ApiImplicitParam(name = "indexId", dataType = "int", value = "索引id", paramType = "path"),
         @ApiImplicitParam(name = "fieldIds", dataType = "int", value = "字段id数组", paramType = "body"),
     })
-    ReplyVO<Integer> removeField(Integer indexId, List<Integer> fieldIds);
+    Integer removeField(Integer indexId, List<Integer> fieldIds);
 }

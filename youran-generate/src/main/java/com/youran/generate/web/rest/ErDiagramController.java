@@ -1,7 +1,6 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.constant.BoolConst;
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.pojo.po.MetaEntityPO;
@@ -14,6 +13,7 @@ import com.youran.generate.pojo.vo.RelationDiagramVO;
 import com.youran.generate.service.MetaEntityService;
 import com.youran.generate.service.MetaManyToManyService;
 import com.youran.generate.service.MetaQueryAssembleService;
+import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.ErDiagramAPI;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping(GenerateConst.API_PATH +"/er_diagram")
-public class ErDiagramController implements ErDiagramAPI {
+public class ErDiagramController extends AbstractController implements ErDiagramAPI {
 
     @Autowired
     private MetaQueryAssembleService metaQueryAssembleService;
@@ -47,7 +47,7 @@ public class ErDiagramController implements ErDiagramAPI {
 
     @Override
     @GetMapping(value = "/show")
-    public ReplyVO<ErDiagramVO> show(@RequestParam Integer projectId, @RequestParam(required = false) List<Integer> entityIds) {
+    public ErDiagramVO show(@RequestParam Integer projectId, @RequestParam(required = false) List<Integer> entityIds) {
 
         // 如果没有传入实体id列表，则获取项目下所有实体id
         if(CollectionUtils.isEmpty(entityIds)){
@@ -116,6 +116,6 @@ public class ErDiagramController implements ErDiagramAPI {
 
         ErDiagramVO vo = new ErDiagramVO(nodeData,linkData);
 
-        return ReplyVO.success().data(vo);
+        return vo;
     }
 }

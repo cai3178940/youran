@@ -101,13 +101,13 @@ export default {
   methods: {
     queryProject () {
       return this.$common.getProjectOptions()
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.projectList = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.projectList = data })
     },
     queryEntity (projectId) {
       return this.$common.getEntityOptions(projectId)
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.entityList = result.data.entities })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.entityList = data.entities })
     },
     submit () {
       let loading = null
@@ -119,7 +119,7 @@ export default {
           return this.$ajax.post(`/${apiPath}/meta_mtm/save`, this.form)
         })
       // 校验返回结果
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '添加成功')

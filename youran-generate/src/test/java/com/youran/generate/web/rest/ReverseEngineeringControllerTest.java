@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.ReverseEngineeringDTO;
@@ -10,10 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 /**
  * <p>Title:</p>
  * <p>Description:</p>
@@ -65,12 +63,12 @@ public class ReverseEngineeringControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/reverse_engineering/check")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(dto)))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+            .andExpect(MockMvcResultMatchers.status().isOk());
 
         restMockMvc.perform(post(getApiPath()+"/reverse_engineering/execute")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(dto)))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+            .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 

@@ -136,7 +136,7 @@ export default {
     handleDel (row) {
       this.$common.confirm('是否确认删除')
         .then(() => this.$ajax.put(`/${apiPath}/meta_project/deleteBatch`, [row.projectId]))
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
     },
@@ -144,15 +144,15 @@ export default {
     doQuery () {
       this.loading = true
       this.$ajax.get(`/${apiPath}/meta_project/list`, { params: this.query })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => {
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
           // 下载进度条数据初始化
-          result.data.forEach(r => {
+          data.forEach(r => {
             r.genCodeStatus = 'success'
             r.genCodePercent = 0
             r.genCodeMsg = ''
           })
-          this.entities = result.data
+          this.entities = data
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
@@ -267,7 +267,7 @@ export default {
           return this.$ajax.post(`/${apiPath}/reverse_engineering/check`, this.reverseEngineeringForm)
         })
       // 校验返回结果
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => {
           this.$common.showMsg('success', '校验通过')
         })
@@ -288,7 +288,7 @@ export default {
           return this.$ajax.post(`/${apiPath}/reverse_engineering/execute`, this.reverseEngineeringForm)
         })
         // 校验返回结果
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => {
           this.$common.showMsg('success', '执行成功')
           this.reverseEngineeringFormVisible = false
@@ -325,7 +325,7 @@ export default {
           this.loading = true
           return this.$ajax.get(`/${apiPath}/code_gen/gitCommit?projectId=${row.projectId}`)
         })
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(result => this.$common.showMsg('success', result.message))
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })

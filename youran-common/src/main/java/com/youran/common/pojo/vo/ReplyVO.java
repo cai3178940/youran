@@ -20,12 +20,11 @@ import java.util.Map;
 public class ReplyVO<T> extends AbstractVO {
 
 
-    public static final String SUCCESS_CODE="0";
+    public static final String SUCCESS_CODE="200";
     public static final String SUCCESS_MSG="执行成功！";
-    public static final String ERROR_CODE="-1";
+    public static final String DEFAULT_ERROR_CODE="500";
 
-
-    @ApiModelProperty(notes = "响应代码【0正确,非0错误】",example = SUCCESS_CODE,required = true)
+    @ApiModelProperty(notes = "响应代码【2xx正确,4xx客户端错误,5xx服务端错误】",example = SUCCESS_CODE,required = true)
     private String code;
 
     @ApiModelProperty(notes = "结果描述",example = SUCCESS_MSG,required = true)
@@ -47,11 +46,11 @@ public class ReplyVO<T> extends AbstractVO {
     }
 
     public static ReplyVO fail(String message) {
-        return new ReplyVO(ERROR_CODE, message);
+        return new ReplyVO(DEFAULT_ERROR_CODE, message);
     }
 
     public static ReplyVO fail(ErrorCode errorCode) {
-        return new ReplyVO(errorCode.getValue(), errorCode.getDesc());
+        return new ReplyVO(errorCode.getValue().toString(), errorCode.getDesc());
     }
 
     public static ReplyVO success() {

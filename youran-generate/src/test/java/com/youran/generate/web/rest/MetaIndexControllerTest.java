@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaIndexData;
 import com.youran.generate.help.GenerateHelper;
@@ -15,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -49,7 +49,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_index/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 
@@ -61,7 +61,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getApiPath()+"/meta_index/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 
@@ -70,8 +70,8 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         generateHelper.saveIndexExample(metaField.getFieldId());
         restMockMvc.perform(get(getApiPath()+"/meta_index/list")
                 .param("entityId",metaEntity.getEntityId()+""))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data.length()").value(is(1)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.length()").value(is(1)));
     }
 
     @Test
@@ -79,8 +79,8 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         MetaIndexPO metaIndex = generateHelper.saveIndexExample(metaField.getFieldId());
 
         restMockMvc.perform(get(getApiPath()+"/meta_index/{indexId}",metaIndex.getIndexId()))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data.indexId").value(is(metaIndex.getIndexId())));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.indexId").value(is(metaIndex.getIndexId())));
     }
 
     @Test
@@ -88,8 +88,8 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         MetaIndexPO metaIndex = generateHelper.saveIndexExample(metaField.getFieldId());
 
         restMockMvc.perform(delete(getApiPath()+"/meta_index/{indexId}",metaIndex.getIndexId()))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data").value(is(1)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$").value(is(1)));
     }
 
 

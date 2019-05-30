@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaConstData;
 import com.youran.generate.help.GenerateHelper;
@@ -13,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,7 +42,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_const/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 
@@ -53,7 +53,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getApiPath()+"/meta_const/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 
@@ -62,24 +62,24 @@ public class MetaConstControllerTest extends AbstractWebTest {
         generateHelper.saveConstExample(metaProject.getProjectId());
         restMockMvc.perform(get(getApiPath()+"/meta_const/list")
                 .param("projectId",metaProject.getProjectId()+""))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.entities.length()").value(is(1)));
     }
 
     @Test
     public void show() throws Exception {
         MetaConstPO metaConst = generateHelper.saveConstExample(metaProject.getProjectId());
         restMockMvc.perform(get(getApiPath()+"/meta_const/{constId}",metaConst.getConstId()))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data.constId").value(is(metaConst.getConstId())));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.constId").value(is(metaConst.getConstId())));
     }
 
     @Test
     public void del() throws Exception {
         MetaConstPO metaConst = generateHelper.saveConstExample(metaProject.getProjectId());
         restMockMvc.perform(delete(getApiPath()+"/meta_const/{constId}",metaConst.getConstId()))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data").value(is(1)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$").value(is(1)));
     }
 
 

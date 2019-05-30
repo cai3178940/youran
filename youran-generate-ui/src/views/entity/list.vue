@@ -160,7 +160,7 @@ export default {
       }
       this.$common.confirm('是否确认删除')
         .then(() => this.$ajax.put(`/${apiPath}/meta_entity/deleteBatch`, this.selectItems.map(entity => entity.entityId)))
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .then(() => this.doQueryMtm())
         .catch(error => this.$common.showNotifyError(error))
@@ -175,8 +175,8 @@ export default {
     },
     queryProject () {
       return this.$common.getProjectOptions()
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.projectList = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(response => { this.projectList = response.data })
     },
     handleQuery () {
       // 将查询表单参数赋值给查询参数
@@ -202,12 +202,12 @@ export default {
       }
       this.loading = true
       return this.$ajax.get(`/${apiPath}/meta_entity/list`, { params: params })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => {
-          result.data.entities.forEach(value => {
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          data.entities.forEach(value => {
             value.mtms = []
           })
-          this.page = result.data
+          this.page = data
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
@@ -219,8 +219,8 @@ export default {
       }
       this.loading = true
       return this.$ajax.get(`/${apiPath}/meta_mtm/list`, { params: { projectId: this.query.projectId } })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.mtms = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.mtms = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
@@ -240,7 +240,7 @@ export default {
     handleMtmDel (mtm) {
       this.$common.confirm(`请确认是否删除多对多【${mtm.tableName}】`)
         .then(() => this.$ajax.delete(`/${apiPath}/meta_mtm/${mtm.mtmId}`))
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => this.doQueryMtm())
         .catch(error => this.$common.showNotifyError(error))
     },
@@ -259,9 +259,9 @@ export default {
     },
     handleSqlPreview (row) {
       this.$ajax.get(`/${apiPath}/code_gen/sqlPreview?entityId=${row.entityId}`)
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => {
-          this.sqlPreview = result.data
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          this.sqlPreview = data
           this.sqlPreviewVisible = true
         })
         .catch(error => this.$common.showNotifyError(error))

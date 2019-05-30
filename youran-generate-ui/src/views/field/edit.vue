@@ -301,8 +301,8 @@ export default {
     },
     initForeignEntityOptions () {
       return this.$common.getEntityOptions(this.projectId)
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.entityFieldOptions = result.data.entities.map(entity => ({ value: entity.entityId, label: entity.title, children: [] })) })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.entityFieldOptions = data.entities.map(entity => ({ value: entity.entityId, label: entity.title, children: [] })) })
     },
     handleForeignEntityChange (optionArray) {
       const entityId = optionArray[0]
@@ -316,9 +316,9 @@ export default {
         return
       }
       return this.$common.getFieldOptions(entityId)
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => {
-          entity.children = result.data.filter(field => field.primaryKey === 1)
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          entity.children = data.filter(field => field.primaryKey === 1)
             .map(field => ({ value: field.fieldId, label: field.fieldDesc }))
         })
     },
@@ -337,17 +337,17 @@ export default {
         action()
       } else {
         this.$common.getConstOptions(this.projectId)
-          .then(response => this.$common.checkResult(response.data))
-          .then(result => {
-            this.constList = result.data.entities
+          .then(response => this.$common.checkResult(response))
+          .then(data => {
+            this.constList = data.entities
             action()
           })
       }
     },
     getField () {
       return this.$ajax.get(`/${apiPath}/meta_field/${this.fieldId}`)
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.old = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
     },
     reset () {
@@ -371,7 +371,7 @@ export default {
           return this.$ajax.put(`/${apiPath}/meta_field/update`, this.$common.removeBlankField(this.form))
         })
       // 校验返回结果
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '修改成功')

@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaManyToManyData;
 import com.youran.generate.help.GenerateHelper;
@@ -14,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -50,7 +50,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_mtm/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 
@@ -62,7 +62,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getApiPath()+"/meta_mtm/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 
@@ -72,8 +72,8 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
         restMockMvc.perform(get(getApiPath()+"/meta_mtm/list")
                 .param("projectId",metaProject.getProjectId()+""))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data.length()").value(is(1)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.length()").value(is(1)));
     }
 
     @Test
@@ -81,8 +81,8 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
         restMockMvc.perform(get(getApiPath()+"/meta_mtm/{fieldId}",metaManyToMany.getMtmId()))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data.mtmId").value(is(metaManyToMany.getMtmId())));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.mtmId").value(is(metaManyToMany.getMtmId())));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
         restMockMvc.perform(delete(getApiPath()+"/meta_mtm/{fieldId}",metaManyToMany.getMtmId()))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data").value(is(1)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$").value(is(1)));
     }
 }

@@ -1,9 +1,8 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
-import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
+import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
 import com.youran.generate.pojo.vo.MetaConstDetailShowVO;
 import io.swagger.annotations.Api;
@@ -19,7 +18,7 @@ import java.util.List;
  * @author: cbb
  * @date: 2017/5/12
  */
-@Api(tags = "MetaConstDetailPO", description = "常量值")
+@Api(tags = "MetaConstDetailPO")
 public interface MetaConstDetailAPI {
 
     /**
@@ -29,7 +28,7 @@ public interface MetaConstDetailAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstDetailAddDTO", dataType = "MetaConstDetailAddDTO", value = "新增常量值参数", paramType = "body"),
     })
-    ReplyVO<MetaConstDetailShowVO> save(MetaConstDetailAddDTO metaConstDetailAddDTO);
+    MetaConstDetailShowVO save(MetaConstDetailAddDTO metaConstDetailAddDTO);
 
     /**
      * 修改常量值
@@ -38,7 +37,7 @@ public interface MetaConstDetailAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstDetailUpdateDTO", dataType = "MetaConstDetailUpdateDTO", value = "修改常量值参数", paramType = "body"),
     })
-    ReplyVO<MetaConstDetailShowVO> update(MetaConstDetailUpdateDTO metaConstDetailUpdateDTO);
+    MetaConstDetailShowVO update(MetaConstDetailUpdateDTO metaConstDetailUpdateDTO);
 
     /**
      * 查询常量值列表
@@ -47,7 +46,7 @@ public interface MetaConstDetailAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstDetailQO", dataType = "MetaConstDetailQO", value = "分页查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaConstDetailListVO>> list(MetaConstDetailQO metaConstDetailQO);
+    List<MetaConstDetailListVO> list(MetaConstDetailQO metaConstDetailQO);
 
     /**
      * 查看常量值详情
@@ -56,7 +55,7 @@ public interface MetaConstDetailAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "constDetailId", dataType = "int", value = "常量值id", paramType = "path"),
     })
-    ReplyVO<MetaConstDetailShowVO> show(Integer constDetailId);
+    MetaConstDetailShowVO show(Integer constDetailId);
 
     /**
      * 删除常量值
@@ -65,7 +64,7 @@ public interface MetaConstDetailAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "constDetailId", dataType = "int", value = "常量值id", paramType = "path"),
     })
-    ReplyVO<Integer> delete(Integer constDetailId);
+    Integer delete(Integer constDetailId);
 
     /**
      * 批量删除常量值
@@ -74,7 +73,7 @@ public interface MetaConstDetailAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "constDetailId", dataType = "int", value = "常量值id数组", paramType = "body"),
     })
-    ReplyVO<Integer> deleteBatch(Integer[] constDetailId);
+    Integer deleteBatch(Integer[] constDetailId);
 
 
 }

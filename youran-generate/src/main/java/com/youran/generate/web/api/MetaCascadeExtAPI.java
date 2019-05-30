@@ -1,6 +1,5 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaCascadeExtUpdateDTO;
 import com.youran.generate.pojo.qo.MetaCascadeExtQO;
@@ -19,7 +18,7 @@ import java.util.List;
  * @author: cbb
  * @date: 2017/5/12
  */
-@Api(tags = "MetaCascadeExtPO", description = "级联扩展")
+@Api(tags = "MetaCascadeExtPO")
 public interface MetaCascadeExtAPI {
 
     /**
@@ -29,7 +28,7 @@ public interface MetaCascadeExtAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaCascadeExtAddDTO", dataType = "MetaCascadeExtAddDTO", value = "新增级联扩展参数", paramType = "body"),
     })
-    ReplyVO<MetaCascadeExtShowVO> save(MetaCascadeExtAddDTO metaCascadeExtAddDTO);
+    MetaCascadeExtShowVO save(MetaCascadeExtAddDTO metaCascadeExtAddDTO);
 
     /**
      * 修改级联扩展
@@ -38,7 +37,7 @@ public interface MetaCascadeExtAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaCascadeExtUpdateDTO", dataType = "MetaCascadeExtUpdateDTO", value = "修改级联扩展参数", paramType = "body"),
     })
-    ReplyVO<MetaCascadeExtShowVO> update(MetaCascadeExtUpdateDTO metaCascadeExtUpdateDTO);
+    MetaCascadeExtShowVO update(MetaCascadeExtUpdateDTO metaCascadeExtUpdateDTO);
 
     /**
      * 查询级联扩展列表
@@ -47,7 +46,7 @@ public interface MetaCascadeExtAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaCascadeExtQO", dataType = "MetaCascadeExtQO", value = "分页查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaCascadeExtListVO>> list(MetaCascadeExtQO metaCascadeExtQO);
+    List<MetaCascadeExtListVO> list(MetaCascadeExtQO metaCascadeExtQO);
 
     /**
      * 查看级联扩展详情
@@ -56,7 +55,7 @@ public interface MetaCascadeExtAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "cascadeExtId", dataType = "int", value = "级联扩展id", paramType = "path"),
     })
-    ReplyVO<MetaCascadeExtShowVO> show(Integer cascadeExtId);
+    MetaCascadeExtShowVO show(Integer cascadeExtId);
 
     /**
      * 删除级联扩展
@@ -65,7 +64,7 @@ public interface MetaCascadeExtAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "cascadeExtId", dataType = "int", value = "级联扩展id", paramType = "path"),
     })
-    ReplyVO<Integer> delete(Integer cascadeExtId);
+    Integer delete(Integer cascadeExtId);
 
     /**
      * 批量删除级联扩展
@@ -74,7 +73,7 @@ public interface MetaCascadeExtAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "cascadeExtId", dataType = "int", value = "级联扩展id数组", paramType = "body"),
     })
-    ReplyVO<Integer> deleteBatch(Integer[] cascadeExtId);
+    Integer deleteBatch(Integer[] cascadeExtId);
 
 
 }

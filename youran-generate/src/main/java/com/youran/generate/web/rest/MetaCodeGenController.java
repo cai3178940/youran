@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.po.GenHistoryPO;
@@ -43,9 +42,9 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     @Override
     @GetMapping(value = "/sqlPreview")
     @ResponseBody
-    public ReplyVO<String> sqlPreview(Integer entityId) {
+    public String sqlPreview(Integer entityId) {
         String text = metaCodeGenService.sqlPreview(entityId);
-        return ReplyVO.success().data(text);
+        return text;
     }
 
 
@@ -65,13 +64,11 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     @Override
     @GetMapping(value = "/gitCommit")
     @ResponseBody
-    public ReplyVO<Void> gitCommit(Integer projectId) {
+    public String gitCommit(Integer projectId) {
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
         GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, null);
-        ReplyVO replyVO = ReplyVO.success();
-        replyVO.setMessage("已创建自动分支【"+ genHistory.getBranch() +"】，并提交到远程");
-        return replyVO;
+        return "已创建自动分支【"+ genHistory.getBranch() +"】，并提交到远程";
     }
 
 }

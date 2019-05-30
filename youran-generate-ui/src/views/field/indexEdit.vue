@@ -90,15 +90,15 @@ export default {
   methods: {
     queryField (entityId) {
       return this.$common.getFieldOptions(entityId)
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.fieldList = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.fieldList = data })
     },
     getIndex () {
       return this.$ajax.get(`/${apiPath}/meta_index/${this.indexId}`)
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => {
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
           const old = {
-            ...result.data
+            ...data
           }
           old.fieldIds = old.fields.map(field => field.fieldId)
           old.fields = null
@@ -125,7 +125,7 @@ export default {
           return this.$ajax.put(`/${apiPath}/meta_index/update`, this.$common.removeBlankField(params))
         })
       // 校验返回结果
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '修改成功')

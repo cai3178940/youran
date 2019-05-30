@@ -1,9 +1,8 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
-import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
+import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
 import io.swagger.annotations.Api;
@@ -19,7 +18,7 @@ import java.util.List;
  * @author: cbb
  * @date: 2017/5/12
  */
-@Api(tags = "MetaFieldPO", description = "字段")
+@Api(tags = "MetaFieldPO")
 public interface MetaFieldAPI {
 
     /**
@@ -29,7 +28,7 @@ public interface MetaFieldAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaFieldAddDTO", dataType = "MetaFieldAddDTO", value = "新增字段参数", paramType = "body"),
     })
-    ReplyVO<MetaFieldShowVO> save(MetaFieldAddDTO metaFieldAddDTO);
+    MetaFieldShowVO save(MetaFieldAddDTO metaFieldAddDTO);
 
     /**
      * 修改字段
@@ -38,7 +37,7 @@ public interface MetaFieldAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaFieldUpdateDTO", dataType = "MetaFieldUpdateDTO", value = "修改字段参数", paramType = "body"),
     })
-    ReplyVO<MetaFieldShowVO> update(MetaFieldUpdateDTO metaFieldUpdateDTO);
+    MetaFieldShowVO update(MetaFieldUpdateDTO metaFieldUpdateDTO);
 
     /**
      * 字段列表查询
@@ -47,7 +46,7 @@ public interface MetaFieldAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaFieldQO", dataType = "MetaFieldQO", value = "查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaFieldListVO>> list(MetaFieldQO metaFieldQO);
+    List<MetaFieldListVO> list(MetaFieldQO metaFieldQO);
 
     /**
      * 查看字段详情
@@ -56,7 +55,7 @@ public interface MetaFieldAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "fieldId", dataType = "int", value = "字段id", paramType = "path"),
     })
-    ReplyVO<MetaFieldShowVO> show(Integer fieldId);
+    MetaFieldShowVO show(Integer fieldId);
 
     /**
      * 删除字段
@@ -65,7 +64,7 @@ public interface MetaFieldAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "fieldId", dataType = "int", value = "字段id", paramType = "path"),
     })
-    ReplyVO<Integer> delete(Integer fieldId);
+    Integer delete(Integer fieldId);
 
     /**
      * 批量删除字段
@@ -74,6 +73,6 @@ public interface MetaFieldAPI {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "fieldId", dataType = "int", value = "字段id数组", paramType = "body"),
     })
-    ReplyVO<Integer> deleteBatch(Integer[] fieldId);
+    Integer deleteBatch(Integer[] fieldId);
 
 }

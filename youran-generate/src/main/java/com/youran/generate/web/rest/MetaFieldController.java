@@ -1,6 +1,6 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.ReplyVO;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
@@ -33,61 +33,53 @@ public class MetaFieldController implements MetaFieldAPI {
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<MetaFieldShowVO> save(@Valid @RequestBody MetaFieldAddDTO metaFieldAddDTO) {
+    public MetaFieldShowVO save(@Valid @RequestBody MetaFieldAddDTO metaFieldAddDTO) {
         if(metaFieldAddDTO.getDefaultValue()==null){
             metaFieldAddDTO.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         }
         MetaFieldPO metaFieldPO = metaFieldService.save(metaFieldAddDTO);
-        return ReplyVO.success().data(MetaFieldMapper.INSTANCE.toShowVO(metaFieldPO));
+        return MetaFieldMapper.INSTANCE.toShowVO(metaFieldPO);
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<MetaFieldShowVO> update(@Valid @RequestBody MetaFieldUpdateDTO metaFieldUpdateDTO) {
+    public MetaFieldShowVO update(@Valid @RequestBody MetaFieldUpdateDTO metaFieldUpdateDTO) {
         if(metaFieldUpdateDTO.getDefaultValue()==null){
             metaFieldUpdateDTO.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         }
         MetaFieldPO metaFieldPO = metaFieldService.update(metaFieldUpdateDTO);
-        return ReplyVO.success().data(MetaFieldMapper.INSTANCE.toShowVO(metaFieldPO));
+        return MetaFieldMapper.INSTANCE.toShowVO(metaFieldPO);
     }
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<List<MetaFieldListVO>> list(@Valid MetaFieldQO metaFieldQO) {
+    public List<MetaFieldListVO> list(@Valid MetaFieldQO metaFieldQO) {
         List<MetaFieldListVO> list = metaFieldService.list(metaFieldQO);
-        ReplyVO<List<MetaFieldListVO>> result = ReplyVO.success();
-        result.setData(list);
-        return result;
+        return list;
     }
 
     @Override
     @GetMapping(value = "/{fieldId}")
-    public ReplyVO<MetaFieldShowVO> show(@PathVariable Integer fieldId) {
+    public MetaFieldShowVO show(@PathVariable Integer fieldId) {
         MetaFieldShowVO metaFieldShowVO = metaFieldService.show(fieldId);
-        ReplyVO<MetaFieldShowVO> result = ReplyVO.success();
-        result.setData(metaFieldShowVO);
-        return result;
+        return metaFieldShowVO;
     }
 
     @Override
     @DeleteMapping(value = "/{fieldId}")
-    public ReplyVO<Integer> delete(@PathVariable Integer fieldId) {
+    public Integer delete(@PathVariable Integer fieldId) {
         int count = metaFieldService.delete(fieldId);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(count);
-        return result;
+        return count;
     }
 
 
     @Override
     @PutMapping(value = "deleteBatch")
-    public ReplyVO<Integer> deleteBatch(@RequestBody Integer[] fieldId) {
+    public Integer deleteBatch(@RequestBody Integer[] fieldId) {
         if(ArrayUtils.isEmpty(fieldId)){
-            return ReplyVO.fail("参数为空");
+            throw new BusinessException("参数为空");
         }
         int count = metaFieldService.delete(fieldId);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(count);
-        return result;
+        return count;
     }
 }

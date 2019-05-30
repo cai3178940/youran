@@ -88,8 +88,8 @@ export default {
   methods: {
     queryField (entityId) {
       return this.$common.getFieldOptions(entityId)
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.fieldList = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.fieldList = data })
     },
     submit () {
       const params = {
@@ -105,7 +105,7 @@ export default {
           return this.$ajax.post(`/${apiPath}/meta_index/save`, this.$common.removeBlankField(params))
         })
       // 校验返回结果
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '添加成功')

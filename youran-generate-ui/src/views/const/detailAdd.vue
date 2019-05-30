@@ -65,7 +65,7 @@ export default {
           return this.$ajax.post(`/${apiPath}/meta_const_detail/save`, this.form)
         })
       // 校验返回结果
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '添加成功')

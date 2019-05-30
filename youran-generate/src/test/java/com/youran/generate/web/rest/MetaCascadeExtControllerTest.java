@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaCascadeExtData;
 import com.youran.generate.help.GenerateHelper;
@@ -15,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -53,7 +53,7 @@ public class MetaCascadeExtControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_cascade_ext/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 
@@ -65,7 +65,7 @@ public class MetaCascadeExtControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getApiPath()+"/meta_cascade_ext/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 
@@ -75,8 +75,8 @@ public class MetaCascadeExtControllerTest extends AbstractWebTest {
             metaField2.getFieldId(),metaEntity2.getEntityId());
         restMockMvc.perform(get(getApiPath()+"/meta_cascade_ext/list")
                 .param("fieldId",metaField1.getFieldId()+""))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data.length()").value(is(1)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.length()").value(is(1)));
     }
 
     @Test
@@ -84,8 +84,8 @@ public class MetaCascadeExtControllerTest extends AbstractWebTest {
         MetaCascadeExtPO metaCascadeExt = generateHelper.saveCascadeExtExample(metaField1.getFieldId(),metaEntity1.getEntityId(),
             metaField2.getFieldId(),metaEntity2.getEntityId());
         restMockMvc.perform(get(getApiPath()+"/meta_cascade_ext/{cascadeExtId}",metaCascadeExt.getCascadeExtId()))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data.cascadeExtId").value(is(metaCascadeExt.getCascadeExtId())));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.cascadeExtId").value(is(metaCascadeExt.getCascadeExtId())));
     }
 
     @Test
@@ -93,8 +93,8 @@ public class MetaCascadeExtControllerTest extends AbstractWebTest {
         MetaCascadeExtPO metaCascadeExt = generateHelper.saveCascadeExtExample(metaField1.getFieldId(),metaEntity1.getEntityId(),
             metaField2.getFieldId(),metaEntity2.getEntityId());
         restMockMvc.perform(delete(getApiPath()+"/meta_cascade_ext/{cascadeExtId}",metaCascadeExt.getCascadeExtId()))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data").value(is(1)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$").value(is(1)));
     }
 
 

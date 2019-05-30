@@ -1,9 +1,8 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
-import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
+import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.vo.MetaManyToManyListVO;
 import com.youran.generate.pojo.vo.MetaManyToManyShowVO;
 import io.swagger.annotations.Api;
@@ -19,7 +18,7 @@ import java.util.List;
  * @author: cbb
  * @date: 2017/5/12
  */
-@Api(tags = "MetaManyToManyPO", description = "多对多关联")
+@Api(tags = "MetaManyToManyPO")
 public interface MetaManyToManyAPI {
 
     /**
@@ -29,7 +28,7 @@ public interface MetaManyToManyAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaManyToManyAddDTO", dataType = "MetaManyToManyAddDTO", value = "新增多对多关联参数", paramType = "body"),
     })
-    ReplyVO<MetaManyToManyShowVO> save(MetaManyToManyAddDTO metaManyToManyAddDTO);
+    MetaManyToManyShowVO save(MetaManyToManyAddDTO metaManyToManyAddDTO);
 
     /**
      * 修改多对多关联
@@ -38,7 +37,7 @@ public interface MetaManyToManyAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaManyToManyUpdateDTO", dataType = "MetaManyToManyUpdateDTO", value = "修改多对多关联参数", paramType = "body"),
     })
-    ReplyVO<MetaManyToManyShowVO> update(MetaManyToManyUpdateDTO metaManyToManyUpdateDTO);
+    MetaManyToManyShowVO update(MetaManyToManyUpdateDTO metaManyToManyUpdateDTO);
 
     /**
      * 多对多关联列表查询
@@ -47,7 +46,7 @@ public interface MetaManyToManyAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaManyToManyQO", dataType = "MetaManyToManyQO", value = "查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaManyToManyListVO>> list(MetaManyToManyQO metaManyToManyQO);
+    List<MetaManyToManyListVO> list(MetaManyToManyQO metaManyToManyQO);
 
     /**
      * 查看多对多关联详情
@@ -56,7 +55,7 @@ public interface MetaManyToManyAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "mtmId", dataType = "int", value = "多对多关联id", paramType = "path"),
     })
-    ReplyVO<MetaManyToManyShowVO> show(Integer mtmId);
+    MetaManyToManyShowVO show(Integer mtmId);
 
     /**
      * 删除多对多关联
@@ -65,7 +64,7 @@ public interface MetaManyToManyAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "mtmId", dataType = "int", value = "多对多关联id", paramType = "path"),
     })
-    ReplyVO<Integer> delete(Integer mtmId);
+    Integer delete(Integer mtmId);
     /**
      * 批量删除多对多关联
      */
@@ -73,7 +72,7 @@ public interface MetaManyToManyAPI {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "mtmId", dataType = "int", value = "多对多关联id数组", paramType = "body"),
     })
-    ReplyVO<Integer> deleteBatch(Integer[] mtmId);
+    Integer deleteBatch(Integer[] mtmId);
 
 
 }

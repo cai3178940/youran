@@ -66,8 +66,8 @@ export default {
   methods: {
     queryProject () {
       return this.$common.getProjectOptions()
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.projectList = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.projectList = data })
     },
     submit () {
       let loading = null
@@ -79,7 +79,7 @@ export default {
           return this.$ajax.post(`/${apiPath}/meta_const/save`, this.form)
         })
       // 校验返回结果
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '添加成功')

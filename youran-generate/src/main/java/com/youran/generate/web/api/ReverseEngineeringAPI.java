@@ -1,6 +1,5 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.ReverseEngineeringDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -13,7 +12,7 @@ import io.swagger.annotations.ApiOperation;
  * @author: cbb
  * Create Time:2017/5/24
  */
-@Api(tags = "ReverseEngineering", description = "反向工程")
+@Api(tags = "ReverseEngineering")
 public interface ReverseEngineeringAPI {
 
     /**
@@ -25,7 +24,7 @@ public interface ReverseEngineeringAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dto", dataType = "ReverseEngineeringDTO", value = "反向工程参数", paramType = "body"),
     })
-    ReplyVO<Void> check(ReverseEngineeringDTO dto);
+    void check(ReverseEngineeringDTO dto);
 
     /**
      * 执行DDL反向工程
@@ -36,7 +35,7 @@ public interface ReverseEngineeringAPI {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "dto", dataType = "ReverseEngineeringDTO", value = "反向工程参数", paramType = "body"),
     })
-    ReplyVO<Void> execute(ReverseEngineeringDTO dto);
+    void execute(ReverseEngineeringDTO dto);
 
 
 

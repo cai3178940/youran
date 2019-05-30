@@ -1,10 +1,8 @@
 package com.youran.generate.web;
 
-import com.youran.common.pojo.vo.ReplyVO;
-import com.youran.common.util.JsonUtil;
+import com.youran.common.constant.ErrorCode;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -23,10 +21,9 @@ public abstract class AbstractController {
      * @param response
      */
     protected void replyNotFound(HttpServletResponse response){
-        response.setStatus(HttpStatus.NOT_FOUND.value());
-        ReplyVO fail = ReplyVO.fail("not found");
+        response.setStatus(ErrorCode.NOT_FOUND.getValue());
         try {
-            IOUtils.write(JsonUtil.toJSONString(fail), response.getOutputStream(),"UTF-8");
+            IOUtils.write(ErrorCode.NOT_FOUND.getDesc(), response.getOutputStream(),"UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         }

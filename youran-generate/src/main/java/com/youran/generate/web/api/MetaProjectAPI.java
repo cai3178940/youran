@@ -1,9 +1,8 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
-import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
+import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
 import io.swagger.annotations.Api;
@@ -32,7 +31,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectAddDTO", dataType = "MetaProjectAddDTO", value = "新增项目参数", paramType = "body"),
     })
-    ReplyVO<MetaProjectShowVO> save(MetaProjectAddDTO metaProjectAddDTO);
+    MetaProjectShowVO save(MetaProjectAddDTO metaProjectAddDTO);
 
     /**
      * 修改项目
@@ -43,7 +42,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectUpdateDTO", dataType = "MetaProjectUpdateDTO", value = "修改项目参数", paramType = "body"),
     })
-    ReplyVO<MetaProjectShowVO> update(MetaProjectUpdateDTO metaProjectUpdateDTO);
+    MetaProjectShowVO update(MetaProjectUpdateDTO metaProjectUpdateDTO);
 
     /**
      * 查询项目列表
@@ -54,7 +53,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectQO", dataType = "MetaProjectQO", value = "分页查询参数", paramType = "body"),
     })
-    ReplyVO<List<MetaProjectListVO>> list(MetaProjectQO metaProjectQO);
+    List<MetaProjectListVO> list(MetaProjectQO metaProjectQO);
 
     /**
      * 查看项目详情
@@ -65,7 +64,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "path"),
     })
-    ReplyVO<MetaProjectShowVO> show(Integer projectId);
+    MetaProjectShowVO show(Integer projectId);
 
 
     /**
@@ -77,7 +76,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "path"),
     })
-    ReplyVO<Integer> delete(Integer projectId);
+    Integer delete(Integer projectId);
 
     /**
      * 批量删除项目
@@ -88,7 +87,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id数组", paramType = "body"),
     })
-    ReplyVO<Integer> deleteBatch(Integer[] projectId);
+    Integer deleteBatch(Integer[] projectId);
 
 
 }

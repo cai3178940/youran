@@ -1,6 +1,5 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.pojo.vo.ErDiagramVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -28,7 +27,7 @@ public interface ErDiagramAPI {
         @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
         @ApiImplicitParam(name = "entityIds", dataType = "int", value = "实体id", paramType = "query"),
     })
-    ReplyVO<ErDiagramVO> show(Integer projectId, List<Integer> entityIds);
+    ErDiagramVO show(Integer projectId, List<Integer> entityIds);
 
 
 }

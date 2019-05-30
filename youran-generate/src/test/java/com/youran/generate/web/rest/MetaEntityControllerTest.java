@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.data.MetaEntityData;
 import com.youran.generate.help.GenerateHelper;
@@ -13,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,7 +42,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_entity/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 
@@ -53,7 +53,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         restMockMvc.perform(put(getApiPath()+"/meta_entity/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 
@@ -62,24 +62,24 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         generateHelper.saveEntityExample(metaProject.getProjectId(),0);
         restMockMvc.perform(get(getApiPath()+"/meta_entity/list")
                 .param("projectId",metaProject.getProjectId()+""))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.entities.length()").value(is(1)));
     }
 
     @Test
     public void show() throws Exception {
         MetaEntityPO metaEntity = generateHelper.saveEntityExample(metaProject.getProjectId(),0);
         restMockMvc.perform(get(getApiPath()+"/meta_entity/{entityId}",metaEntity.getEntityId()))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data.entityId").value(is(metaEntity.getEntityId())));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.entityId").value(is(metaEntity.getEntityId())));
     }
 
     @Test
     public void del() throws Exception {
         MetaEntityPO metaEntity = generateHelper.saveEntityExample(metaProject.getProjectId(),0);
         restMockMvc.perform(delete(getApiPath()+"/meta_entity/{entityId}",metaEntity.getEntityId()))
-                .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-                .andExpect(jsonPath("$.data").value(is(1)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$").value(is(1)));
     }
 
 

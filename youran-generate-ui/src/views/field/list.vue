@@ -288,7 +288,7 @@ export default {
       }
       this.$common.confirm('是否确认删除')
         .then(() => this.$ajax.put(`/${apiPath}/meta_field/deleteBatch`, this.selectItems.map(field => field.fieldId)))
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .then(() => this.doQueryIndex())
         .catch(error => this.$common.showNotifyError(error))
@@ -325,8 +325,8 @@ export default {
     },
     initProjectOptions () {
       return this.$common.getProjectOptions()
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.queryForm.projectEntityOptions = result.data.map(project => ({ value: project.projectId, label: project.projectDesc, children: [] })) })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.queryForm.projectEntityOptions = data.map(project => ({ value: project.projectId, label: project.projectDesc, children: [] })) })
     },
     handleProjectChange (optionArray) {
       const projectId = optionArray[0]
@@ -336,8 +336,8 @@ export default {
         return
       }
       return this.$common.getEntityOptions(projectId)
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { project.children = result.data.entities.map(entity => ({ value: entity.entityId, label: entity.title })) })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { project.children = data.entities.map(entity => ({ value: entity.entityId, label: entity.title })) })
     },
     handleQuery () {
       if (this.queryForm.projectEntity[1] == null) {
@@ -360,12 +360,12 @@ export default {
       }
       this.loading = true
       return this.$ajax.get(`/${apiPath}/meta_field/list`, { params: { ...this.query, withCascadeFieldNum: 1 } })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => {
-          result.data.forEach(value => {
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          data.forEach(value => {
             value.indexes = []
           })
-          this.entities = result.data
+          this.entities = data
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
@@ -377,8 +377,8 @@ export default {
       }
       this.loading = true
       return this.$ajax.get(`/${apiPath}/meta_index/list`, { params: this.query })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.indexes = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.indexes = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
@@ -402,10 +402,10 @@ export default {
           ...this.$common.removeBlankField(form),
           entityId: this.entityId
         })
-          .then(response => this.$common.checkResult(response.data))
+          .then(response => this.$common.checkResult(response))
           // 执行页面刷新
-          .then(result => {
-            this.addImmFieldIds.push(result.data.fieldId)
+          .then(data => {
+            this.addImmFieldIds.push(data.fieldId)
             if (refresh) {
               this.$common.showMsg('success', '添加成功')
               this.doQuery()
@@ -418,8 +418,8 @@ export default {
         // 如果目标值是数字，则为临时模板
         if (typeof temp === 'number') {
           return this.$ajax.get(`/${apiPath}/meta_field/${temp}`)
-            .then(response => this.$common.checkResult(response.data))
-            .then(result => callback(result.data, refresh))
+            .then(response => this.$common.checkResult(response))
+            .then(data => callback(data, refresh))
             .catch(error => this.$common.showNotifyError(error))
         } else {
           // 系统内置模板，直接保存
@@ -469,14 +469,14 @@ export default {
     handleDelIndexField (index, field) {
       this.$common.confirm(`请确认是否从索引【${index.indexName}】中删除【${field.fieldDesc}】字段`)
         .then(() => this.$ajax.put(`/${apiPath}/meta_index/${index.indexId}/removeField`, [field.fieldId]))
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => this.doQueryIndex())
         .catch(error => this.$common.showNotifyError(error))
     },
     handleDelIndex (index) {
       this.$common.confirm(`请确认是否删除索引【${index.indexName}】`)
         .then(() => this.$ajax.delete(`/${apiPath}/meta_index/${index.indexId}`))
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => this.doQueryIndex())
         .catch(error => this.$common.showNotifyError(error))
     },

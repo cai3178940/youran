@@ -1,16 +1,14 @@
 package com.youran.generate.web.advice;
 
 import com.youran.common.constant.ErrorCode;
-import com.youran.common.pojo.vo.FieldErrorVO;
-import com.youran.common.pojo.vo.ReplyVO;
-import com.youran.common.util.JsonUtil;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.JsonUtil;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -21,9 +19,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,9 +40,8 @@ public class ExceptionTranslator {
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ReplyVO processValidationError(MethodArgumentNotValidException ex) {
+    public ResponseEntity<String> processValidationError(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         return processBindingResult(result);
     }
@@ -56,28 +51,26 @@ public class ExceptionTranslator {
      * @return
      */
     @ExceptionHandler(BindException.class)
-    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ReplyVO processValidationError(BindException ex) {
+    public ResponseEntity<String> processValidationError(BindException ex) {
         BindingResult result = ex.getBindingResult();
         return processBindingResult(result);
     }
 
-    private ReplyVO processBindingResult(BindingResult result) {
+    /**
+     * 参数校验
+     * @param result
+     * @return
+     */
+    private ResponseEntity<String> processBindingResult(BindingResult result) {
         List<FieldError> fieldErrors = result.getFieldErrors();
-        LOGGER.warn(JsonUtil.toJSONString(fieldErrors));
-        ReplyVO replyVO = new ReplyVO();
-        List<FieldErrorVO> errorVOList = new ArrayList<>();
-        for (FieldError fieldError : fieldErrors) {
-            errorVOList.add(new FieldErrorVO(fieldError.getObjectName(), fieldError.getField(), fieldError.getDefaultMessage()));
+        LOGGER.warn("参数校验失败：{}", JsonUtil.toJSONString(fieldErrors));
+        String errorMsg = null;
+        if (CollectionUtils.isNotEmpty(fieldErrors)) {
+            errorMsg = fieldErrors.get(0).getDefaultMessage();
         }
-        if(fieldErrors.size()>0){
-            replyVO.setCode(ErrorCode.ERR_VALIDATION.getValue());
-            replyVO.setMessage(fieldErrors.get(0).getDefaultMessage());
-            replyVO.setData(errorVOList);
-        }
-
-        return replyVO;
+        return ResponseEntity.status(ErrorCode.BAD_PARAMETER.getValue())
+            .body(errorMsg);
     }
 
 
@@ -88,9 +81,8 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public ReplyVO processMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
-        return new ReplyVO(ErrorCode.METHOD_NOT_SUPPORTED.getValue(), ErrorCode.METHOD_NOT_SUPPORTED.getDesc());
+    public ResponseEntity<String> processMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
+        return buildErrorResponse(ErrorCode.METHOD_NOT_ALLOWED);
     }
 
     /**
@@ -100,9 +92,8 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ReplyVO processHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        return new ReplyVO("-1", "HttpMessageNotReadableException");
+    public ResponseEntity<String> processHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        return buildErrorResponse(ErrorCode.BAD_REQUEST,"HttpMessageNotReadableException");
     }
 
     /**
@@ -111,10 +102,9 @@ public class ExceptionTranslator {
      * @return
      */
     @ExceptionHandler(ConcurrencyFailureException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
-    public ReplyVO processConcurencyError(ConcurrencyFailureException ex) {
-        return new ReplyVO(ErrorCode.CONCURRENCY_FAILURE.getValue(), ErrorCode.CONCURRENCY_FAILURE.getDesc());
+    public ResponseEntity<String> processConcurencyError(ConcurrencyFailureException ex) {
+        return buildErrorResponse(ErrorCode.CONFLICT);
     }
 
 
@@ -124,10 +114,9 @@ public class ExceptionTranslator {
      * @return
      */
     @ExceptionHandler(DuplicateKeyException.class)
-    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ReplyVO processDuplicateKeyException(DuplicateKeyException ex) {
-        return new ReplyVO(ErrorCode.INTERNAL_SERVER_ERROR.getValue(), "重复操作");
+    public ResponseEntity<String> processDuplicateKeyException(DuplicateKeyException ex) {
+        return buildErrorResponse(ErrorCode.DUPLICATE_KEY);
     }
 
 
@@ -139,12 +128,9 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(BusinessException.class)
     @ResponseBody
-    public ResponseEntity<ReplyVO> processBusinessException(BusinessException ex) {
+    public ResponseEntity<String> processBusinessException(BusinessException ex) {
         ex.printStackTrace();
-        ResponseEntity.BodyBuilder builder = ResponseEntity.status(HttpStatus.OK);
-        ErrorCode errorCode = ex.getErrorCode();
-        ReplyVO replyVO = new ReplyVO(errorCode.getValue(), ex.getMessage());
-        return builder.body(replyVO);
+        return buildErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR,ex.getMessage());
     }
 
 
@@ -156,19 +142,24 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public ResponseEntity<ReplyVO> processRuntimeException(Exception ex) {
+    public ResponseEntity<String> processRuntimeException(Exception ex) {
         LOGGER.error("系统内部错误",ex);
-        ResponseEntity.BodyBuilder builder;
-        ReplyVO replyVO;
-        ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
-        if (responseStatus != null) {
-            builder = ResponseEntity.status(responseStatus.value());
-            replyVO = new ReplyVO(responseStatus.value().value()+"", responseStatus.reason());
-        } else {
-            builder = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
-            replyVO = ReplyVO.fail(ErrorCode.INTERNAL_SERVER_ERROR);
+        return buildErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
+
+
+
+
+    private ResponseEntity<String> buildErrorResponse(ErrorCode errorCode){
+        return buildErrorResponse(errorCode,null);
+    }
+
+    private ResponseEntity<String> buildErrorResponse(ErrorCode errorCode,String message){
+        if(StringUtils.isBlank(message)){
+            message = errorCode.getDesc();
         }
-        return builder.body(replyVO);
+        return ResponseEntity.status(errorCode.getValue())
+            .body(message);
     }
 
 }

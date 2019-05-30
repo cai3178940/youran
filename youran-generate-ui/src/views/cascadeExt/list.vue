@@ -126,16 +126,16 @@ export default {
     },
     initCascadeFieldOptions () {
       this.$ajax.get(`/${apiPath}/meta_field/list`, { params: { entityId: this.cascadeEntityId } })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.cascadeFieldList = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.cascadeFieldList = data })
         .catch(error => this.$common.showNotifyError(error))
     },
     doQuery () {
       this.loading = true
       this.$ajax.get(`/${apiPath}/meta_cascade_ext/list`, { params: { fieldId: this.fieldId } })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => {
-          this.entities = result.data
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          this.entities = data
           this.$emit('cascadeFieldNumChange', this.fieldId, this.entities.length)
         })
         .catch(error => this.$common.showNotifyError(error))
@@ -167,19 +167,19 @@ export default {
       // 提交
       this.$ajax[method](saveURL, row)
       // 校验返回结果
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
       // 执行页面跳转
-        .then(result => {
+        .then(data => {
           this.$common.showMsg('success', '保存成功')
           if (!row.cascadeExtId) {
-            row.cascadeExtId = result.data.cascadeExtId
+            row.cascadeExtId = data.cascadeExtId
             this.$emit('cascadeFieldNumAdd', this.fieldId, 1)
           }
           return this.$ajax.get(`/${apiPath}/meta_cascade_ext/${row.cascadeExtId}`)
         })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => {
-          Object.assign(row, result.data, {
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          Object.assign(row, data, {
             editFlag: false
           })
         })
@@ -202,7 +202,7 @@ export default {
             return this.$ajax.put(`/${apiPath}/meta_cascade_ext/deleteBatch`, params)
           }
         })
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
     }

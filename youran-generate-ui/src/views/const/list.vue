@@ -135,7 +135,7 @@ export default {
       }
       this.$common.confirm('是否确认删除')
         .then(() => this.$ajax.put(`/${apiPath}/meta_const/deleteBatch`, this.selectItems.map(c => c.constId)))
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
     },
@@ -149,8 +149,8 @@ export default {
     },
     queryProject () {
       return this.$common.getProjectOptions()
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.projectList = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.projectList = data })
     },
     handleQuery () {
       // 将查询表单参数赋值给查询参数
@@ -175,8 +175,8 @@ export default {
       }
       this.loading = true
       return this.$ajax.get(`/${apiPath}/meta_const/list`, { params: params })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.page = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.page = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
@@ -210,8 +210,8 @@ export default {
     doDetailQuery (constId) {
       this.detailLoading = true
       this.$ajax.get(`/${apiPath}/meta_const_detail/list`, { params: { 'projectId': this.query.projectId, 'constId': constId } })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.detailList = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.detailList = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.detailLoading = false })
     },
@@ -224,7 +224,7 @@ export default {
     handleDetailDel (theConst, detail) {
       this.$common.confirm('是否确认删除枚举值')
         .then(() => this.$ajax.put(`/${apiPath}/meta_const_detail/deleteBatch`, [detail.constDetailId]))
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
         .then(() => this.doDetailQuery(theConst.constId))
         .catch(error => this.$common.showNotifyError(error))
     }

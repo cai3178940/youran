@@ -33,8 +33,8 @@ export default {
     queryErDiagram (projectId, entityIds) {
       this.loading = true
       return this.$ajax.get(`/${apiPath}/er_diagram/show`, { params: { projectId, entityIds } })
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.erDiagram = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.erDiagram = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },

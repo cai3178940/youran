@@ -1,6 +1,6 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.ReplyVO;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
@@ -33,55 +33,46 @@ public class MetaProjectController implements MetaProjectAPI {
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<MetaProjectShowVO> save(@Valid @RequestBody MetaProjectAddDTO metaProjectAddDTO) {
+    public MetaProjectShowVO save(@Valid @RequestBody MetaProjectAddDTO metaProjectAddDTO) {
         MetaProjectPO metaProjectPO = metaProjectService.save(metaProjectAddDTO);
-        return ReplyVO.success().data(MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO));
+        return MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO);
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<MetaProjectShowVO> update(@Valid @RequestBody MetaProjectUpdateDTO metaProjectUpdateDTO) {
+    public MetaProjectShowVO update(@Valid @RequestBody MetaProjectUpdateDTO metaProjectUpdateDTO) {
         MetaProjectPO metaProjectPO = metaProjectService.update(metaProjectUpdateDTO);
-        return ReplyVO.success().data(MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO));
+        return MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO);
     }
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<List<MetaProjectListVO>> list(@Valid MetaProjectQO metaProjectQO) {
+    public List<MetaProjectListVO> list(@Valid MetaProjectQO metaProjectQO) {
         List<MetaProjectListVO> list = metaProjectService.list(metaProjectQO);
-        ReplyVO<List<MetaProjectListVO>> result = ReplyVO.success();
-        result.setData(list);
-        System.out.println(result);
-        return result;
+        return list;
     }
 
     @Override
     @GetMapping(value = "/{projectId}")
-    public ReplyVO<MetaProjectShowVO> show(@PathVariable Integer projectId) {
+    public MetaProjectShowVO show(@PathVariable Integer projectId) {
         MetaProjectShowVO metaProjectShowVO = metaProjectService.show(projectId);
-        ReplyVO<MetaProjectShowVO> result = ReplyVO.success();
-        result.setData(metaProjectShowVO);
-        return result;
+        return metaProjectShowVO;
     }
 
     @Override
     @DeleteMapping(value = "/{projectId}")
-    public ReplyVO<Integer> delete(@PathVariable Integer projectId) {
+    public Integer delete(@PathVariable Integer projectId) {
         int count = metaProjectService.delete(projectId);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(count);
-        return result;
+        return count;
     }
 
     @Override
     @PutMapping(value = "deleteBatch")
-    public ReplyVO<Integer> deleteBatch(@RequestBody Integer[] projectId) {
+    public Integer deleteBatch(@RequestBody Integer[] projectId) {
         if(ArrayUtils.isEmpty(projectId)){
-            return ReplyVO.fail("参数为空");
+            throw new BusinessException("参数为空");
         }
         int count = metaProjectService.delete(projectId);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(count);
-        return result;
+        return count;
     }
 }

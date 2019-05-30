@@ -95,8 +95,8 @@ export default {
   methods: {
     getProject () {
       return this.$ajax.get(`/${apiPath}/meta_project/${this.projectId}`)
-        .then(response => this.$common.checkResult(response.data))
-        .then(result => { this.old = result.data })
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
     },
     reset () {
@@ -114,7 +114,7 @@ export default {
           return this.$ajax.put(`/${apiPath}/meta_project/update`, this.form)
         })
       // 校验返回结果
-        .then(response => this.$common.checkResult(response.data))
+        .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '修改成功')

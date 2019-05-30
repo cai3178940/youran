@@ -1,6 +1,5 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.ReplyVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author: cbb
  * @date: 2017/5/13
  */
-@Api(tags = "MetaCodeGen", description = "代码生成")
+@Api(tags = "MetaCodeGen")
 public interface MetaCodeGenAPI {
 
     /**
@@ -42,7 +41,7 @@ public interface MetaCodeGenAPI {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "query"),
     })
-    ReplyVO<String> sqlPreview(Integer entityId);
+    String sqlPreview(Integer entityId);
 
     /**
      * 提交到仓库
@@ -51,5 +50,5 @@ public interface MetaCodeGenAPI {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
     })
-    ReplyVO<Void> gitCommit(Integer entityId);
+    String gitCommit(Integer entityId);
 }

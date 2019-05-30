@@ -124,16 +124,12 @@ export const CommonPlugin = {
       },
 
       // 校验服务器返回结果
-      checkResult (result) {
+      checkResult (response) {
         return new Promise((resolve, reject) => {
-          if (result) {
-            if (result.code === '0') {
-              return resolve(result)
-            } else {
-              return reject(new Error(result.message))
-            }
+          if (response.status === 200) {
+            return resolve(response.data)
           } else {
-            return reject(new Error('返回结果有误'))
+            return reject(new Error(response.data))
           }
         })
       },

@@ -1,6 +1,6 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.pojo.vo.ReplyVO;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
@@ -33,63 +33,53 @@ public class MetaIndexController implements MetaIndexAPI {
 
     @Override
     @PostMapping(value = "/save")
-    public ReplyVO<MetaIndexShowVO> save(@Valid @RequestBody MetaIndexAddDTO metaIndexAddDTO) {
+    public MetaIndexShowVO save(@Valid @RequestBody MetaIndexAddDTO metaIndexAddDTO) {
         MetaIndexPO metaIndex = metaIndexService.save(metaIndexAddDTO);
-        return ReplyVO.success().data(MetaIndexMapper.INSTANCE.toShowVO(metaIndex));
+        return MetaIndexMapper.INSTANCE.toShowVO(metaIndex);
     }
 
     @Override
     @PutMapping(value = "/update")
-    public ReplyVO<MetaIndexShowVO> update(@Valid @RequestBody MetaIndexUpdateDTO metaIndexUpdateDTO) {
+    public MetaIndexShowVO update(@Valid @RequestBody MetaIndexUpdateDTO metaIndexUpdateDTO) {
         MetaIndexPO metaIndex = metaIndexService.update(metaIndexUpdateDTO);
-        return ReplyVO.success().data(MetaIndexMapper.INSTANCE.toShowVO(metaIndex));
+        return MetaIndexMapper.INSTANCE.toShowVO(metaIndex);
     }
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<List<MetaIndexListVO>> list(@Valid MetaIndexQO metaIndexQO) {
+    public List<MetaIndexListVO> list(@Valid MetaIndexQO metaIndexQO) {
         List<MetaIndexListVO> list = metaIndexService.list(metaIndexQO);
-        ReplyVO<List<MetaIndexListVO>> result = ReplyVO.success();
-        result.setData(list);
-        return result;
+        return list;
     }
 
     @Override
     @GetMapping(value = "/{indexId}")
-    public ReplyVO<MetaIndexShowVO> show(@PathVariable Integer indexId) {
+    public MetaIndexShowVO show(@PathVariable Integer indexId) {
         MetaIndexShowVO metaIndexShowVO = metaIndexService.show(indexId);
-        ReplyVO<MetaIndexShowVO> result = ReplyVO.success();
-        result.setData(metaIndexShowVO);
-        return result;
+        return metaIndexShowVO;
     }
 
     @Override
     @DeleteMapping(value = "/{indexId}")
-    public ReplyVO<Integer> delete(@PathVariable Integer indexId) {
+    public Integer delete(@PathVariable Integer indexId) {
         int count = metaIndexService.delete(indexId);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(count);
-        return result;
+        return count;
     }
 
     @Override
     @PutMapping(value = "deleteBatch")
-    public ReplyVO<Integer> deleteBatch(@RequestBody Integer[] indexId) {
+    public Integer deleteBatch(@RequestBody Integer[] indexId) {
         if(ArrayUtils.isEmpty(indexId)){
-            return ReplyVO.fail("参数为空");
+            throw new BusinessException("参数为空");
         }
         int count = metaIndexService.delete(indexId);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(count);
-        return result;
+        return count;
     }
 
     @Override
     @PutMapping(value = "/{indexId}/removeField")
-    public ReplyVO<Integer> removeField(@PathVariable Integer indexId, @RequestBody List<Integer> fieldIds){
+    public Integer removeField(@PathVariable Integer indexId, @RequestBody List<Integer> fieldIds){
         int count = metaIndexService.removeField(indexId,fieldIds);
-        ReplyVO<Integer> result = ReplyVO.success();
-        result.setData(count);
-        return result;
+        return count;
     }
 }

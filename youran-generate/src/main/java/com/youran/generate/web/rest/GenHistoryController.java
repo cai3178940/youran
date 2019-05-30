@@ -1,11 +1,11 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.PageVO;
-import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.qo.GenHistoryQO;
 import com.youran.generate.pojo.vo.GenHistoryListVO;
 import com.youran.generate.service.GenHistoryService;
+import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.GenHistoryAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(GenerateConst.API_PATH +"/gen_history")
-public class GenHistoryController implements GenHistoryAPI {
+public class GenHistoryController extends AbstractController implements GenHistoryAPI {
 
     @Autowired
     private GenHistoryService genHistoryService;
@@ -32,9 +32,9 @@ public class GenHistoryController implements GenHistoryAPI {
 
     @Override
     @GetMapping(value = "/list")
-    public ReplyVO<PageVO<GenHistoryListVO>> list(@Valid GenHistoryQO genHistoryQO) {
+    public PageVO<GenHistoryListVO> list(@Valid GenHistoryQO genHistoryQO) {
         PageVO<GenHistoryListVO> page = genHistoryService.list(genHistoryQO);
-        return ReplyVO.success().data(page);
+        return page;
     }
 
 
