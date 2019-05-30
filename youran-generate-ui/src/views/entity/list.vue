@@ -258,7 +258,7 @@ export default {
       this.$router.push(`/project/${this.projectId}/entity/show/${row.entityId}`)
     },
     handleSqlPreview (row) {
-      this.$ajax.get(`/${apiPath}/code_gen/sqlPreview?entityId=${row.entityId}`)
+      this.$ajax.get(`/${apiPath}/code_gen/sqlPreview?entityId=${row.entityId}`, { responseType: 'text' })
         .then(response => this.$common.checkResult(response))
         .then(data => {
           this.sqlPreview = data

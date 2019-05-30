@@ -1,6 +1,6 @@
 <template>
   <div class="erDiagram">
-    <el-dialog title="实体关系图" :class="{'hideTitle':hideTitle}" :visible.sync="visible" :fullscreen="true">
+    <el-dialog title="实体关系图" :visible.sync="visible" :fullscreen="true">
       <el-row type="flex" align="middle" v-loading="loading" style="height: 100%;">
         <div id="erDiagramDiv" class="erDiagramDiv"></div>
       </el-row>

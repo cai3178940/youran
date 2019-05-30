@@ -8,6 +8,7 @@ import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaCodeGenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     }
 
     @Override
-    @GetMapping(value = "/sqlPreview")
+    @GetMapping(value = "/sqlPreview",produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String sqlPreview(Integer entityId) {
         String text = metaCodeGenService.sqlPreview(entityId);
