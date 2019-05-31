@@ -84,7 +84,6 @@ export const CommonPlugin = {
       },
       // 打印常用异常
       showNotifyError (error) {
-        console.info(error)
         // 表单校验异常
         if (error === false) {
           return this.showNotify('error', '出错了', '表单校验失败')
