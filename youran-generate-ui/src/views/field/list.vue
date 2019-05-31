@@ -35,7 +35,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table :data="entities" style="width: 100%" @selection-change="selectionChange" :row-class-name="rowClassName" v-loading="loading">
+    <el-table :data="list" style="width: 100%" @selection-change="selectionChange" :row-class-name="rowClassName" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="字段描述">
         <template slot-scope="scope">
@@ -168,7 +168,7 @@
       <cascade-ext-list ref="cascadeExtList" @cascadeFieldNumChange="resetCascadeFieldNum" @cascadeFieldNumAdd="addCascadeFieldNum"></cascade-ext-list>
     </el-dialog>
     <!-- 所有复制按钮上的浮动小红点 -->
-    <meteor v-for="field in entities" :key="field.fieldId" :ref="'meteor'+field.fieldId"></meteor>
+    <meteor v-for="field in list" :key="field.fieldId" :ref="'meteor'+field.fieldId"></meteor>
   </div>
 </template>
 
@@ -212,7 +212,7 @@ export default {
       },
       activeNum: 0,
       selectItems: [],
-      entities: [],
+      list: [],
       indexes: [],
       addImmFieldIds: [],
       loading: false,
@@ -232,12 +232,12 @@ export default {
         return
       }
       // 首先将每个field中的indexes置空
-      this.entities.forEach(field => {
+      this.list.forEach(field => {
         field.indexes = []
       })
       value.forEach(index => {
         index.fields.forEach(field => {
-          const f = this.entities.find(item => item.fieldId === field.fieldId)
+          const f = this.list.find(item => item.fieldId === field.fieldId)
           if (f) {
             f.indexes.push(index)
           }
@@ -337,7 +337,7 @@ export default {
       }
       return this.$common.getEntityOptions(projectId)
         .then(response => this.$common.checkResult(response))
-        .then(data => { project.children = data.entities.map(entity => ({ value: entity.entityId, label: entity.title })) })
+        .then(data => { project.children = data.list.map(entity => ({ value: entity.entityId, label: entity.title })) })
     },
     handleQuery () {
       if (this.queryForm.projectEntity[1] == null) {
@@ -365,7 +365,7 @@ export default {
           data.forEach(value => {
             value.indexes = []
           })
-          this.entities = data
+          this.list = data
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
@@ -456,11 +456,11 @@ export default {
       Vue.nextTick(() => this.$refs.cascadeExtList.init(row.entityId, row.fieldId, row.foreignEntityId))
     },
     resetCascadeFieldNum (fieldId, cascadeFieldNum) {
-      const field = this.entities.find(field => field.fieldId === fieldId)
+      const field = this.list.find(field => field.fieldId === fieldId)
       field.cascadeFieldNum = cascadeFieldNum
     },
     addCascadeFieldNum (fieldId, num) {
-      const field = this.entities.find(field => field.fieldId === fieldId)
+      const field = this.list.find(field => field.fieldId === fieldId)
       field.cascadeFieldNum += num
     },
     handleIndexCommand (command) {

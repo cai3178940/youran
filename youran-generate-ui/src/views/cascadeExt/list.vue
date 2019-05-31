@@ -9,7 +9,7 @@
         <el-button @click.native="handleDel" type="danger">删除</el-button>
       </el-col>
     </el-row>
-    <el-table :data="entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
+    <el-table :data="list" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="展示字段">
         <template slot-scope="scope">
@@ -108,7 +108,7 @@ export default {
       cascadeFieldList: [],
       activeNum: 0,
       selectItems: [],
-      entities: [],
+      list: [],
       loading: false
     }
   },
@@ -135,8 +135,8 @@ export default {
       this.$ajax.get(`/${apiPath}/meta_cascade_ext/list`, { params: { fieldId: this.fieldId } })
         .then(response => this.$common.checkResult(response))
         .then(data => {
-          this.entities = data
-          this.$emit('cascadeFieldNumChange', this.fieldId, this.entities.length)
+          this.list = data
+          this.$emit('cascadeFieldNumChange', this.fieldId, this.list.length)
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
@@ -147,7 +147,7 @@ export default {
         fieldId: this.fieldId,
         cascadeEntityId: this.cascadeEntityId
       })
-      this.entities.unshift(newRow)
+      this.list.unshift(newRow)
     },
     handleEdit (row) {
       Vue.set(row, 'editFlag', true)

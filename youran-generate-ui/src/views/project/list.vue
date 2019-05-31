@@ -12,7 +12,7 @@
       </el-col>
     </el-row>
 
-    <el-table ref="projectTable" :data="entities"
+    <el-table ref="projectTable" :data="list"
               row-key="projectId"
               :expand-row-keys="expandRowKeys"
               style="width: 100%"
@@ -110,7 +110,7 @@ export default {
       query: {},
       activeNum: 0,
       selectItems: [],
-      entities: [],
+      list: [],
       loading: false,
       reverseEngineeringFormVisible: false,
       reverseEngineeringForm: {
@@ -152,7 +152,7 @@ export default {
             r.genCodePercent = 0
             r.genCodeMsg = ''
           })
-          this.entities = data
+          this.list = data
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })

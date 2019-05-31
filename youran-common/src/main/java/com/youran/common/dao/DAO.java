@@ -40,7 +40,7 @@ public interface DAO<PO extends AbstractPO> {
         } else {
             list = new ArrayList<>();
         }
-        PageVO<VO> pageVO = new PageVO<>(list, qo.getPageNo(), qo.getPageSize(), count);
+        PageVO<VO> pageVO = new PageVO<>(list, qo.getCurrentPage(), qo.getPageSize(), count);
         return pageVO;
     }
 

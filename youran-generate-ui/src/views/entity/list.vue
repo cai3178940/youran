@@ -29,7 +29,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table :data="page.entities" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
+    <el-table :data="page.list" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="实体名">
         <template slot-scope="scope">
@@ -76,11 +76,11 @@
       <el-pagination
         @size-change="sizeChange"
         @current-change="currentChange"
-        :current-page="page.pageNo"
+        :current-page="page.currentPage"
         :page-sizes="[10, 20, 30, 40]"
         :page-size="page.pageSize"
         layout="sizes, prev, pager, next"
-        :total="page.entityCount">
+        :total="page.total">
       </el-pagination>
     </el-row>
 
@@ -118,10 +118,10 @@ export default {
       activeNum: 0,
       selectItems: [],
       page: {
-        pageNo: 1,
-        entityCount: 0,
+        currentPage: 1,
+        total: 0,
         pageSize: 20,
-        entities: []
+        list: []
       },
       mtms: [],
       loading: false
@@ -133,12 +133,12 @@ export default {
         return
       }
       // 首先将每个entity中的mtms置空
-      this.page.entities.forEach(entity => {
+      this.page.list.forEach(entity => {
         entity.mtms = []
       })
       value.forEach(mtm => {
-        const entity1 = this.page.entities.find(entity => entity.entityId === mtm.entityId1)
-        const entity2 = this.page.entities.find(entity => entity.entityId === mtm.entityId2)
+        const entity1 = this.page.list.find(entity => entity.entityId === mtm.entityId1)
+        const entity2 = this.page.list.find(entity => entity.entityId === mtm.entityId2)
         if (entity1) {
           entity1.mtms.push(mtm)
         }
@@ -169,8 +169,8 @@ export default {
       this.page.pageSize = pageSize
       this.doQuery()
     },
-    currentChange (pageNo) {
-      this.page.pageNo = pageNo
+    currentChange (currentPage) {
+      this.page.currentPage = currentPage
       this.doQuery()
     },
     queryProject () {
@@ -197,14 +197,14 @@ export default {
       // 将查询参数和分页参数合并
       const params = {
         ...this.query,
-        pageNo: this.page.pageNo,
+        currentPage: this.page.currentPage,
         pageSize: this.page.pageSize
       }
       this.loading = true
       return this.$ajax.get(`/${apiPath}/meta_entity/list`, { params: params })
         .then(response => this.$common.checkResult(response))
         .then(data => {
-          data.entities.forEach(value => {
+          data.list.forEach(value => {
             value.mtms = []
           })
           this.page = data

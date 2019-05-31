@@ -27,22 +27,22 @@ public class PageQO extends AbstractQO {
      * 当前第几页
      */
     @ApiParam(value = "分页参数，第几页", example = "1")
-    @Min(value = 1, message = "pageNo不能小于1")
-    protected Integer pageNo;
+    @Min(value = 1, message = "currentPage不能小于1")
+    protected Integer currentPage;
 
     public PageQO() {
         //默认第一页，每页20条
         this(1, 20);
     }
 
-    public PageQO(Integer pageNo, Integer pageSize) {
-        if (pageNo == null) {
-            pageNo = DEFAULT_PAGE_NO;
+    public PageQO(Integer currentPage, Integer pageSize) {
+        if (currentPage == null) {
+            currentPage = DEFAULT_PAGE_NO;
         }
         if (pageSize == null) {
             pageSize = DEFAULT_PAGE_SIZE;
         }
-        this.pageNo = pageNo;
+        this.currentPage = currentPage;
         this.pageSize = pageSize;
     }
 
@@ -54,19 +54,19 @@ public class PageQO extends AbstractQO {
         this.pageSize = pageSize;
     }
 
-    public Integer getPageNo() {
-        return pageNo;
+    public Integer getCurrentPage() {
+        return currentPage;
     }
 
-    public void setPageNo(Integer pageNo) {
-        this.pageNo = pageNo;
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
     }
 
     public int getStartIndex(){
-        return (pageNo - 1) * pageSize;
+        return (currentPage - 1) * pageSize;
     }
     public int getEndIndex(){
-        return pageNo * pageSize;
+        return currentPage * pageSize;
     }
 
 }

@@ -27,7 +27,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table ref="constTable" :data="page.entities" style="width: 100%" @selection-change="selectionChange" @expand-change="expandChange" v-loading="loading">
+    <el-table ref="constTable" :data="page.list" style="width: 100%" @selection-change="selectionChange" @expand-change="expandChange" v-loading="loading">
       <el-table-column type="expand" width="50">
         <template slot-scope="scope">
           <el-table class="detailTable" :data="detailList" v-loading="detailLoading" :show-header="false">
@@ -70,11 +70,11 @@
       <el-pagination
         @size-change="sizeChange"
         @current-change="currentChange"
-        :current-page="page.pageNo"
+        :current-page="page.currentPage"
         :page-sizes="[10, 20, 30, 40]"
         :page-size="page.pageSize"
         layout="sizes, prev, pager, next"
-        :total="page.entityCount">
+        :total="page.total">
       </el-pagination>
     </el-row>
   </div>
@@ -101,10 +101,10 @@ export default {
       activeNum: 0,
       selectItems: [],
       page: {
-        pageNo: 1,
-        entityCount: 0,
+        currentPage: 1,
+        total: 0,
         pageSize: 20,
-        entities: []
+        list: []
       },
       expandedRow: null,
       loading: false,
@@ -143,8 +143,8 @@ export default {
       this.page.pageSize = pageSize
       this.doQuery()
     },
-    currentChange (pageNo) {
-      this.page.pageNo = pageNo
+    currentChange (currentPage) {
+      this.page.currentPage = currentPage
       this.doQuery()
     },
     queryProject () {
@@ -170,7 +170,7 @@ export default {
       // 将查询参数和分页参数合并
       const params = {
         ...this.query,
-        pageNo: this.page.pageNo,
+        currentPage: this.page.currentPage,
         pageSize: this.page.pageSize
       }
       this.loading = true
@@ -238,7 +238,7 @@ export default {
       .then(() => this.doQuery())
       .then(() => {
         if (this.constId) {
-          const row = this.page.entities.find(e => e.constId === parseInt(this.constId))
+          const row = this.page.list.find(e => e.constId === parseInt(this.constId))
           this.$refs.constTable.toggleRowExpansion(row, true)
         }
       })

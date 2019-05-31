@@ -44,7 +44,7 @@ export const CommonPlugin = {
           params: {
             projectId,
             pageSize: 1000,
-            pageNo: 1
+            currentPage: 1
           }
         })
       },
@@ -62,7 +62,7 @@ export const CommonPlugin = {
           params: {
             projectId,
             pageSize: 1000,
-            pageNo: 1
+            currentPage: 1
           }
         })
       },

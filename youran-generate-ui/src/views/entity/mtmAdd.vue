@@ -107,7 +107,7 @@ export default {
     queryEntity (projectId) {
       return this.$common.getEntityOptions(projectId)
         .then(response => this.$common.checkResult(response))
-        .then(data => { this.entityList = data.entities })
+        .then(data => { this.entityList = data.list })
     },
     submit () {
       let loading = null

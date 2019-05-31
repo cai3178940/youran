@@ -302,7 +302,7 @@ export default {
     initForeignEntityOptions () {
       return this.$common.getEntityOptions(this.projectId)
         .then(response => this.$common.checkResult(response))
-        .then(data => { this.entityFieldOptions = data.entities.map(entity => ({ value: entity.entityId, label: entity.title, children: [] })) })
+        .then(data => { this.entityFieldOptions = data.list.map(entity => ({ value: entity.entityId, label: entity.title, children: [] })) })
     },
     handleForeignEntityChange (optionArray) {
       const entityId = optionArray[0]
@@ -339,7 +339,7 @@ export default {
         this.$common.getConstOptions(this.projectId)
           .then(response => this.$common.checkResult(response))
           .then(data => {
-            this.constList = data.entities
+            this.constList = data.list
             action()
           })
       }
