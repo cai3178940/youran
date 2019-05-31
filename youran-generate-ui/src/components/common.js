@@ -84,6 +84,7 @@ export const CommonPlugin = {
       },
       // 打印常用异常
       showNotifyError (error) {
+        console.info(error)
         // 表单校验异常
         if (error === false) {
           return this.showNotify('error', '出错了', '表单校验失败')
@@ -99,8 +100,10 @@ export const CommonPlugin = {
         if ((typeof error === 'object')) {
           if (error.constructor === Error) {
             if (error.response) {
-              if (error.response.status === 500) {
+              if (error.response.status >= 500) {
                 return this.showNotify('error', '出错了', '系统内部错误')
+              } else {
+                return this.showErrorVO(error.response.data)
               }
             }
             if (error.message) {
@@ -109,11 +112,15 @@ export const CommonPlugin = {
           }
           // 远程200返回结果中的异常
           if (error.code && error.code !== '0') {
-            return this.showNotify('error', '出错了', error.message)
+            return this.showErrorVO(error)
           }
         }
         // 未知异常
         return this.showNotify('error', '出错了', '')
+      },
+
+      showErrorVO (errorVO) {
+        return this.showNotify('error', '出错了', errorVO.message)
       },
 
       showMsg (type, msg) {

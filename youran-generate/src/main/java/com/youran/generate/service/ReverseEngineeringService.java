@@ -9,6 +9,7 @@ import com.alibaba.druid.sql.dialect.mysql.ast.MySqlPrimaryKey;
 import com.alibaba.druid.sql.dialect.mysql.ast.MySqlUnique;
 import com.alibaba.druid.sql.parser.ParserException;
 import com.youran.common.constant.BoolConst;
+import com.youran.common.constant.ErrorCode;
 import com.youran.common.util.SafeUtil;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MySqlType;
@@ -73,7 +74,7 @@ public class ReverseEngineeringService {
             sqlStatements = SQLUtils.parseStatements(dto.getDdl(), dto.getDbType());
         } catch (ParserException e) {
             LOGGER.warn("反向工程校验失败：{}",e);
-            throw new BusinessException(e.getMessage());
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"DDL解析失败:"+e.getMessage());
         }
         if(CollectionUtils.isEmpty(sqlStatements)){
             throw new BusinessException("未找到有效DDL语句");

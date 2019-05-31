@@ -2,6 +2,8 @@ package com.youran.generate.web.advice;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.pojo.vo.FieldErrorVO;
+import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>Title:异常信息展示</p>
@@ -31,7 +34,6 @@ import java.util.List;
 @ControllerAdvice
 public class ExceptionTranslator {
 
-
     private final static Logger LOGGER = LoggerFactory.getLogger(ExceptionTranslator.class);
 
     /**
@@ -41,7 +43,7 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public ResponseEntity<String> processValidationError(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ReplyVO> processValidationError(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         return processBindingResult(result);
     }
@@ -52,7 +54,7 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(BindException.class)
     @ResponseBody
-    public ResponseEntity<String> processValidationError(BindException ex) {
+    public ResponseEntity<ReplyVO> processValidationError(BindException ex) {
         BindingResult result = ex.getBindingResult();
         return processBindingResult(result);
     }
@@ -62,15 +64,20 @@ public class ExceptionTranslator {
      * @param result
      * @return
      */
-    private ResponseEntity<String> processBindingResult(BindingResult result) {
+    private ResponseEntity<ReplyVO> processBindingResult(BindingResult result) {
         List<FieldError> fieldErrors = result.getFieldErrors();
         LOGGER.warn("参数校验失败：{}", JsonUtil.toJSONString(fieldErrors));
         String errorMsg = null;
         if (CollectionUtils.isNotEmpty(fieldErrors)) {
             errorMsg = fieldErrors.get(0).getDefaultMessage();
         }
-        return ResponseEntity.status(ErrorCode.BAD_PARAMETER.getValue())
-            .body(errorMsg);
+        return buildErrorResponse(ErrorCode.BAD_PARAMETER,errorMsg,this.mapFieldErrorVO(fieldErrors));
+    }
+
+    private List<FieldErrorVO> mapFieldErrorVO(List<FieldError> fieldErrors){
+        return fieldErrors.stream()
+            .map(fieldError -> new FieldErrorVO(fieldError.getObjectName(), fieldError.getField(), fieldError.getDefaultMessage()))
+            .collect(Collectors.toList());
     }
 
 
@@ -81,7 +88,7 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseBody
-    public ResponseEntity<String> processMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
+    public ResponseEntity<ReplyVO> processMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
         return buildErrorResponse(ErrorCode.METHOD_NOT_ALLOWED);
     }
 
@@ -92,7 +99,7 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseBody
-    public ResponseEntity<String> processHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+    public ResponseEntity<ReplyVO> processHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
         return buildErrorResponse(ErrorCode.BAD_REQUEST,"HttpMessageNotReadableException");
     }
 
@@ -103,7 +110,7 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(ConcurrencyFailureException.class)
     @ResponseBody
-    public ResponseEntity<String> processConcurencyError(ConcurrencyFailureException ex) {
+    public ResponseEntity<ReplyVO> processConcurencyError(ConcurrencyFailureException ex) {
         return buildErrorResponse(ErrorCode.CONFLICT);
     }
 
@@ -115,7 +122,7 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(DuplicateKeyException.class)
     @ResponseBody
-    public ResponseEntity<String> processDuplicateKeyException(DuplicateKeyException ex) {
+    public ResponseEntity<ReplyVO> processDuplicateKeyException(DuplicateKeyException ex) {
         return buildErrorResponse(ErrorCode.DUPLICATE_KEY);
     }
 
@@ -128,9 +135,13 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(BusinessException.class)
     @ResponseBody
-    public ResponseEntity<String> processBusinessException(BusinessException ex) {
+    public ResponseEntity<ReplyVO> processBusinessException(BusinessException ex) {
         ex.printStackTrace();
-        return buildErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR,ex.getMessage());
+        ErrorCode errorCode = ex.getErrorCode();
+        if (errorCode == null) {
+            errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+        }
+        return buildErrorResponse(errorCode, ex.getMessage());
     }
 
 
@@ -142,24 +153,26 @@ public class ExceptionTranslator {
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public ResponseEntity<String> processRuntimeException(Exception ex) {
+    public ResponseEntity<ReplyVO> processRuntimeException(Exception ex) {
         LOGGER.error("系统内部错误",ex);
         return buildErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
 
-
-
-    private ResponseEntity<String> buildErrorResponse(ErrorCode errorCode){
-        return buildErrorResponse(errorCode,null);
+    private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode){
+        return buildErrorResponse(errorCode,null, null);
     }
 
-    private ResponseEntity<String> buildErrorResponse(ErrorCode errorCode,String message){
+    private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode,String message){
+        return buildErrorResponse(errorCode, message, null);
+    }
+
+    private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode,String message,Object data){
         if(StringUtils.isBlank(message)){
             message = errorCode.getDesc();
         }
         return ResponseEntity.status(errorCode.getValue())
-            .body(message);
+            .body(ReplyVO.fail(message).data(data));
     }
 
 }

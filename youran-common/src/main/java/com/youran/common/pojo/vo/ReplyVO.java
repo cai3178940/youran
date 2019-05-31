@@ -1,14 +1,11 @@
 package com.youran.common.pojo.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.youran.common.constant.ErrorCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * <p>Title:通用响应对象</p>
@@ -17,14 +14,14 @@ import java.util.Map;
  * @date: 2017/8/24
  */
 @ApiModel
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReplyVO<T> extends AbstractVO {
 
-
-    public static final String SUCCESS_CODE="200";
+    public static final String SUCCESS_CODE="0";
     public static final String SUCCESS_MSG="执行成功！";
-    public static final String DEFAULT_ERROR_CODE="500";
+    public static final String DEFAULT_ERROR_CODE="-1";
 
-    @ApiModelProperty(notes = "响应代码【2xx正确,4xx客户端错误,5xx服务端错误】",example = SUCCESS_CODE,required = true)
+    @ApiModelProperty(notes = "响应代码【0成功，非0失败】",example = SUCCESS_CODE,required = true)
     private String code;
 
     @ApiModelProperty(notes = "结果描述",example = SUCCESS_MSG,required = true)
@@ -69,39 +66,12 @@ public class ReplyVO<T> extends AbstractVO {
     }
 
     /**
-     * 添加返回数据
-     * @param key
-     * @param value
+     * 设置消息
+     * @param message
      * @return
      */
-    public ReplyVO add(String key, Object value) {
-        Map<String, Object> map;
-        if (this.data == null) {
-            map = new HashMap<>(16);
-        } else if (this.data instanceof Map) {
-            map = (Map<String, Object>) this.data;
-        } else {
-            throw new RuntimeException("not support");
-        }
-        map.put(key, value);
-        setData((T) map);
-        return this;
-    }
-
-
-    /**
-     * 删除数据
-     * @param keys
-     * @return
-     */
-    public ReplyVO remove(String... keys) {
-        if (this.data == null || !(this.data instanceof Map)) {
-            return this;
-        }
-        Map<String, Object> map = (Map<String, Object>) this.data;
-        for (String key : keys) {
-            map.remove(key);
-        }
+    public ReplyVO message(String message){
+        this.setMessage(message);
         return this;
     }
 
@@ -113,20 +83,6 @@ public class ReplyVO<T> extends AbstractVO {
         this.data = null;
         return this;
     }
-
-    /**
-     * 获取dataMap 的值
-     * @param key key
-     * @return
-     */
-    public Object get(String key) {
-        if (this.data == null || StringUtils.isBlank(key) || !(this.data instanceof Map)) {
-            return null;
-        }
-        Map<String, Object> map = (Map<String, Object>) this.data;
-        return map.get(key);
-    }
-
 
     public String getCode() {
         return code;
