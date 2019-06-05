@@ -1,5 +1,12 @@
 <#include "/common.ftl">
 # ${this.projectDesc}
+
+## 关于项目
+
+- web项目启动类：[${this.projectNameUpper}App.java](/${this.projectNameSplit}-web/src/main/java/${this.packageName?replace('.','/')}/${this.projectNameUpper}App.java)
+- 单元测试入口类：[Main.java](/${this.projectNameSplit}-web/src/test/java/${this.packageName?replace('.','/')}/Main.java)
+- mysql建表语句：[${this.projectName}.sql](/${this.projectNameSplit}-web/src/test/resources/DB/${this.projectName}.sql)
+
 ## 表结构
 <#list this.metaEntities as metaEntity>
 
