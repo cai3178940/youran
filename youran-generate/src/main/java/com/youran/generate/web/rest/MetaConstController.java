@@ -1,5 +1,6 @@
 package com.youran.generate.web.rest;
 
+import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.constant.GenerateConst;
@@ -76,7 +77,7 @@ public class MetaConstController extends AbstractController implements MetaConst
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] constId) {
         if(ArrayUtils.isEmpty(constId)){
-            throw new BusinessException("参数为空");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"参数为空");
         }
         int count = metaConstService.delete(constId);
         return ResponseEntity.ok(count);

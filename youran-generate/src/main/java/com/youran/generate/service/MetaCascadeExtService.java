@@ -1,8 +1,10 @@
 package com.youran.generate.service;
 
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaCascadeExtDAO;
-import com.youran.common.exception.BusinessException;
+import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.pojo.dto.MetaCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaCascadeExtUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaCascadeExtMapper;
@@ -32,6 +34,8 @@ public class MetaCascadeExtService {
     private MetaProjectService metaProjectService;
     @Autowired
     private MetaFieldService metaFieldService;
+    @Autowired
+    private MetaFieldDAO metaFieldDAO;
 
 
     /**
@@ -42,9 +46,11 @@ public class MetaCascadeExtService {
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaCascadeExtPO save(MetaCascadeExtAddDTO addDTO) {
         Integer entityId = addDTO.getEntityId();
-        //校验操作人
+        // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
         MetaCascadeExtPO metaCascadeExt = MetaCascadeExtMapper.INSTANCE.fromAddDTO(addDTO);
+        // 校验级联扩展
+        this.checkCascadeExtPO(metaCascadeExt);
         metaCascadeExtDAO.save(metaCascadeExt);
         metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaCascadeExt;
@@ -60,13 +66,29 @@ public class MetaCascadeExtService {
     public MetaCascadeExtPO update(MetaCascadeExtUpdateDTO updateDTO) {
         MetaCascadeExtPO metaCascadeExt = this.getMetaCascadeExt(updateDTO.getCascadeExtId(),true);
         Integer entityId = metaCascadeExt.getEntityId();
-        //校验操作人
+        // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
         MetaCascadeExtMapper.INSTANCE.setPO(metaCascadeExt, updateDTO);
+        // 校验级联扩展
+        this.checkCascadeExtPO(metaCascadeExt);
         metaCascadeExtDAO.update(metaCascadeExt);
         metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaCascadeExt;
     }
+
+    /**
+     * 校验级联扩展
+     * @param metaCascadeExt
+     */
+    private void checkCascadeExtPO(MetaCascadeExtPO metaCascadeExt){
+        List<String> jFieldNames = metaFieldDAO.findJFieldNames(metaCascadeExt.getEntityId());
+        if(jFieldNames.contains(metaCascadeExt.getAlias())){
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"当前实体中存在字段名："+metaCascadeExt.getAlias());
+        }
+
+        // TODO 校验当前实体下其他级联扩展字段
+    }
+
 
     /**
      * 获取级联扩展对象
@@ -77,7 +99,7 @@ public class MetaCascadeExtService {
     public MetaCascadeExtPO getMetaCascadeExt(Integer cascadeExtId,boolean force){
         MetaCascadeExtPO cascadeExtPO = metaCascadeExtDAO.findById(cascadeExtId);
         if(force && cascadeExtPO == null){
-            throw new BusinessException("级联扩展未找到");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"级联扩展未找到");
         }
         return cascadeExtPO;
     }

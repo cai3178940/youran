@@ -23,4 +23,5 @@ public interface MetaCascadeExtDAO extends DAO<MetaCascadeExtPO> {
      * @return
      */
     List<MetaCascadeExtPO> findByFieldId(Integer fieldId) ;
+
 }

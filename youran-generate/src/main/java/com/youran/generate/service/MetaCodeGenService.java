@@ -2,6 +2,8 @@ package com.youran.generate.service;
 
 import com.google.common.collect.Lists;
 import com.youran.common.constant.BoolConst;
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.common.util.DateUtil;
 import com.youran.common.util.H2Util;
@@ -9,9 +11,7 @@ import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.constant.DevMode;
 import com.youran.generate.constant.TemplateEnum;
 import com.youran.generate.constant.TemplateType;
-import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
-import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
@@ -19,6 +19,7 @@ import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.template.BaseModel;
 import com.youran.generate.pojo.template.ConstModel;
 import com.youran.generate.pojo.template.EntityModel;
+import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.util.FreeMakerUtil;
 import com.youran.generate.util.Zip4jUtil;
 import org.apache.commons.io.FileUtils;
@@ -102,7 +103,8 @@ public class MetaCodeGenService {
             String devProjectDir = generateProperties.getDevProjectDir();
             if (generateProperties.getDevMode() == DevMode.ALL_REPLACE) {
                 if (StringUtils.isBlank(devProjectDir)) {
-                    throw new BusinessException("请配置本地开发工程路径youran.generate.devProjectDir");
+                    throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,
+                        "请配置本地开发工程路径youran.generate.devProjectDir");
                 }
                 LOGGER.debug("------全部替换开发工程：" + devProjectDir);
                 this.progressing(progressConsumer,1,"全部替换开发工程" + devProjectDir);
@@ -110,7 +112,8 @@ public class MetaCodeGenService {
                 FileUtils.copyDirectory(new File(tmpDir), new File(devProjectDir));
             } else if (generateProperties.getDevMode() == DevMode.INCREMENT_REPLACE) {
                 if (StringUtils.isBlank(devProjectDir)) {
-                    throw new BusinessException("请配置本地开发工程路径youran.generate.devProjectDir");
+                    throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,
+                        "请配置本地开发工程路径youran.generate.devProjectDir");
                 }
                 LOGGER.debug("------部分替换开发工程：" + devProjectDir);
                 this.progressing(progressConsumer,1,"部分替换开发工程" + devProjectDir);
@@ -286,7 +289,7 @@ public class MetaCodeGenService {
     private String getOutFilePath(MetaProjectPO project,String tmpDir,String templatePath,String entityClassName,String constName){
         String packageName = project.getPackageName();
         if (StringUtils.isBlank(packageName)) {
-            throw new BusinessException("包名未设置");
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"包名未设置");
         }
         templatePath = templatePath
                 .replace("{commonModule}",project.getProjectName()+"-common")
@@ -323,7 +326,7 @@ public class MetaCodeGenService {
             FileUtils.write(file, text,"UTF-8");
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
-            throw new BusinessException("写文件异常");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"写文件异常");
         }
     }
 
@@ -349,11 +352,11 @@ public class MetaCodeGenService {
         MetaProjectPO project = metaProjectService.getProject(projectId,true);
         Integer remote = project.getRemote();
         if(BoolConst.TRUE!=remote){
-            throw new BusinessException("当前项目未开启Git仓库");
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"当前项目未开启Git仓库");
         }
         String remoteUrl = project.getRemoteUrl();
         if(StringUtils.isBlank(remoteUrl)){
-            throw new BusinessException("仓库地址为空");
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"仓库地址为空");
         }
         Date now = new Date();
         Integer lastHistoryId = project.getLastHistoryId();
@@ -381,7 +384,7 @@ public class MetaCodeGenService {
             FileUtils.copyDirectory(new File(genDir), repoDir);
         } catch (IOException e) {
             LOGGER.error("IO异常",e);
-            throw new BusinessException("操作失败");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"操作失败");
         }
         this.progressing(progressConsumer,1,"提交到远程仓库");
         String commit = gitService.commitAll(repository,
@@ -411,7 +414,7 @@ public class MetaCodeGenService {
             password = AESSecurityUtil.decrypt(project.getPassword(), generateProperties.getAesKey());
         } catch (Exception e) {
             LOGGER.error("密码解密异常",e);
-            throw new BusinessException("密码解密异常");
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"密码解密异常");
         }
         return new GitCredentialDTO(project.getUsername(), password);
     }

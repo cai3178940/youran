@@ -1,5 +1,6 @@
 package com.youran.generate.web.rest;
 
+import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
@@ -76,7 +77,7 @@ public class MetaProjectController extends AbstractController implements MetaPro
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] projectId) {
         if(ArrayUtils.isEmpty(projectId)){
-            throw new BusinessException("参数为空");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"参数为空");
         }
         int count = metaProjectService.delete(projectId);
         return ResponseEntity.ok(count);

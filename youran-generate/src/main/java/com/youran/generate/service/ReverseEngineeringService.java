@@ -77,11 +77,11 @@ public class ReverseEngineeringService {
             throw new BusinessException(ErrorCode.BAD_PARAMETER,"DDL解析失败:"+e.getMessage());
         }
         if(CollectionUtils.isEmpty(sqlStatements)){
-            throw new BusinessException("未找到有效DDL语句");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"未找到有效DDL语句");
         }
         for (SQLStatement sqlStatement : sqlStatements) {
             if(!(sqlStatement instanceof SQLCreateTableStatement)){
-                throw new BusinessException("只支持create table语句，请删除多余的sql");
+                throw new BusinessException(ErrorCode.BAD_PARAMETER,"只支持create table语句，请删除多余的sql");
             }
         }
         return sqlStatements;
@@ -101,10 +101,10 @@ public class ReverseEngineeringService {
             MetaEntityPO entity = createEntity(project, tableName, comment);
             SQLPrimaryKey primaryKey = createTableStatement.findPrimaryKey();
             if(primaryKey==null){
-                throw new BusinessException("表【"+tableName+"】不存在主键");
+                throw new BusinessException(ErrorCode.BAD_PARAMETER,"表【"+tableName+"】不存在主键");
             }
             if(primaryKey.getColumns().size()>1){
-                throw new BusinessException("表【"+tableName+"】存在联合主键，反向工程暂不支持联合主键");
+                throw new BusinessException(ErrorCode.BAD_PARAMETER,"表【"+tableName+"】存在联合主键，反向工程暂不支持联合主键");
             }
             String pkFieldName = cleanQuote(primaryKey.getColumns().get(0).getExpr().toString());
             List<SQLTableElement> tableElementList = createTableStatement.getTableElementList();

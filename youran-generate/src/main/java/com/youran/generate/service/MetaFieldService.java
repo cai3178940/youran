@@ -1,5 +1,6 @@
 package com.youran.generate.service;
 
+import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaFieldDAO;
@@ -78,7 +79,7 @@ public class MetaFieldService {
     public MetaFieldPO getField(Integer fieldId, boolean force){
         MetaFieldPO fieldPO = metaFieldDAO.findById(fieldId);
         if(force && fieldPO == null){
-            throw new BusinessException("字段未找到");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"字段未找到");
         }
         return fieldPO;
     }
@@ -138,4 +139,5 @@ public class MetaFieldService {
         return metaFieldDAO.findByEntityId(entityId);
 
     }
+
 }

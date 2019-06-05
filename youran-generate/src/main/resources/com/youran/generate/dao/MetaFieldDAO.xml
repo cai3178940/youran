@@ -122,4 +122,9 @@
         and t.entity_id = #{entityId,jdbcType=INTEGER}
         order by t.order_no, t.field_id
     </select>
+    <select id="findJFieldNames" resultType="java.lang.String">
+        select jfield_name from meta_field t
+        where t.deleted=0
+        and t.entity_id = #{entityId,jdbcType=INTEGER}
+    </select>
 </mapper>

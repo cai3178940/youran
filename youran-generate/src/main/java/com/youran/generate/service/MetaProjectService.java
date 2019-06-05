@@ -1,11 +1,12 @@
 package com.youran.generate.service;
 
+import com.youran.common.constant.ErrorCode;
 import com.youran.common.context.LoginContext;
+import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.dao.MetaProjectDAO;
-import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
@@ -67,7 +68,7 @@ public class MetaProjectService {
                 encrypt = AESSecurityUtil.encrypt(password, generateProperties.getAesKey());
             } catch (Exception e) {
                 LOGGER.error("密码加密异常",e);
-                throw new BusinessException("密码加密异常");
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"密码加密异常");
             }
             metaProject.setPassword(encrypt);
         }
@@ -94,7 +95,7 @@ public class MetaProjectService {
                 encrypt = AESSecurityUtil.encrypt(updateDTO.getPassword(), generateProperties.getAesKey());
             } catch (Exception e) {
                 LOGGER.error("密码加密异常",e);
-                throw new BusinessException("密码加密异常");
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"密码加密异常");
             }
             project.setPassword(encrypt);
         }
@@ -113,7 +114,7 @@ public class MetaProjectService {
     public MetaProjectPO getProject(Integer projectId, boolean force) {
         MetaProjectPO metaProject = metaProjectDAO.findById(projectId);
         if (force && metaProject == null) {
-            throw new BusinessException("项目不存在");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"项目不存在");
         }
         return metaProject;
     }

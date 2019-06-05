@@ -32,4 +32,13 @@ public interface MetaFieldDAO extends DAO<MetaFieldPO> {
      * @return
      */
     int findCount(@Param("entityId")Integer entityId, @Param("fieldIdList")List<Integer> fieldIdList) ;
+
+    /**
+     * 查询
+     * @param entityId
+     * @return
+     */
+    List<String> findJFieldNames(Integer entityId);
+
+
 }

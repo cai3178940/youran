@@ -1,6 +1,7 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.constant.BoolConst;
+import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.constant.GenerateConst;
@@ -83,7 +84,7 @@ public class MetaEntityController extends AbstractController implements MetaEnti
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] entityId) {
         if(ArrayUtils.isEmpty(entityId)){
-            throw new BusinessException("参数为空");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"参数为空");
         }
         int count = metaEntityService.delete(entityId);
         return ResponseEntity.ok(count);

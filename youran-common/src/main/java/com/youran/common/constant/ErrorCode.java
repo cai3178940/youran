@@ -263,6 +263,10 @@ public enum ErrorCode {
      * 唯一键重复
      */
     DUPLICATE_KEY(520,"唯一键重复"),
+    /**
+     * 内部数据校验失败
+     */
+    INNER_DATA_ERROR(560,"内部数据校验失败"),
     ;
 
 

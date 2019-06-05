@@ -1,5 +1,6 @@
 package com.youran.generate.web.rest;
 
+import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
@@ -76,7 +77,7 @@ public class MetaIndexController extends AbstractController implements MetaIndex
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] indexId) {
         if(ArrayUtils.isEmpty(indexId)){
-            throw new BusinessException("参数为空");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"参数为空");
         }
         int count = metaIndexService.delete(indexId);
         return ResponseEntity.ok(count);

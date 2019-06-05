@@ -1,5 +1,6 @@
 package com.youran.generate.web.rest;
 
+import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
@@ -76,7 +77,7 @@ public class MetaConstDetailController extends AbstractController implements Met
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] constDetailId) {
         if(ArrayUtils.isEmpty(constDetailId)){
-            throw new BusinessException("参数为空");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"参数为空");
         }
         int count = metaConstDetailService.delete(constDetailId);
         return ResponseEntity.ok(count);

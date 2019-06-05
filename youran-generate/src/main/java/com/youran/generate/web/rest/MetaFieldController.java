@@ -1,5 +1,6 @@
 package com.youran.generate.web.rest;
 
+import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
@@ -83,7 +84,7 @@ public class MetaFieldController extends AbstractController implements MetaField
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] fieldId) {
         if(ArrayUtils.isEmpty(fieldId)){
-            throw new BusinessException("参数为空");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"参数为空");
         }
         int count = metaFieldService.delete(fieldId);
         return ResponseEntity.ok(count);
