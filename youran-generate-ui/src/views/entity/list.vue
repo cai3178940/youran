@@ -176,7 +176,7 @@ export default {
     queryProject () {
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response))
-        .then(response => { this.projectList = response.data })
+        .then(data => { this.projectList = data })
     },
     handleQuery () {
       // 将查询表单参数赋值给查询参数
