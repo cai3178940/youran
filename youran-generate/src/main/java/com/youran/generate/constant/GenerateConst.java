@@ -9,8 +9,8 @@ package com.youran.generate.constant;
  */
 public class GenerateConst {
 
-    public static final String API_PATH = "${youran.apiPath:}";
-    public static final String WS_API_PATH = "${youran.wsApiPath:}";
+    public static final String API_PATH = "${youran.apiPath:/}";
+    public static final String WS_API_PATH = "${youran.wsApiPath:/}";
 
     /**
      * 字段空值常量

@@ -9,6 +9,7 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaCodeGenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,9 +44,9 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     @Override
     @GetMapping(value = "/sqlPreview",produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
-    public String sqlPreview(Integer entityId) {
+    public ResponseEntity<String> sqlPreview(Integer entityId) {
         String text = metaCodeGenService.sqlPreview(entityId);
-        return text;
+        return ResponseEntity.ok(text);
     }
 
 
@@ -65,11 +66,11 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     @Override
     @GetMapping(value = "/gitCommit")
     @ResponseBody
-    public String gitCommit(Integer projectId) {
+    public ResponseEntity<String> gitCommit(Integer projectId) {
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
         GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, null);
-        return "已创建自动分支【"+ genHistory.getBranch() +"】，并提交到远程";
+        return ResponseEntity.ok("已创建自动分支【"+ genHistory.getBranch() +"】，并提交到远程");
     }
 
 }

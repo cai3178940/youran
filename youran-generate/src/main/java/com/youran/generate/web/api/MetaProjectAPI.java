@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectAddDTO", dataType = "MetaProjectAddDTO", value = "新增项目参数", paramType = "body"),
     })
-    MetaProjectShowVO save(MetaProjectAddDTO metaProjectAddDTO);
+    ResponseEntity<MetaProjectShowVO> save(MetaProjectAddDTO metaProjectAddDTO) throws Exception;
 
     /**
      * 修改项目
@@ -42,7 +43,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectUpdateDTO", dataType = "MetaProjectUpdateDTO", value = "修改项目参数", paramType = "body"),
     })
-    MetaProjectShowVO update(MetaProjectUpdateDTO metaProjectUpdateDTO);
+    ResponseEntity<MetaProjectShowVO> update(MetaProjectUpdateDTO metaProjectUpdateDTO);
 
     /**
      * 查询项目列表
@@ -53,7 +54,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaProjectQO", dataType = "MetaProjectQO", value = "分页查询参数", paramType = "body"),
     })
-    List<MetaProjectListVO> list(MetaProjectQO metaProjectQO);
+    ResponseEntity<List<MetaProjectListVO>> list(MetaProjectQO metaProjectQO);
 
     /**
      * 查看项目详情
@@ -64,7 +65,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "path"),
     })
-    MetaProjectShowVO show(Integer projectId);
+    ResponseEntity<MetaProjectShowVO> show(Integer projectId);
 
 
     /**
@@ -76,7 +77,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "path"),
     })
-    Integer delete(Integer projectId);
+    ResponseEntity<Integer> delete(Integer projectId);
 
     /**
      * 批量删除项目
@@ -87,7 +88,7 @@ public interface MetaProjectAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id数组", paramType = "body"),
     })
-    Integer deleteBatch(Integer[] projectId);
+    ResponseEntity<Integer> deleteBatch(Integer[] projectId);
 
 
 }

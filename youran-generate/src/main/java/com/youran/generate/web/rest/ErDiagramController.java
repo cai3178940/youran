@@ -17,6 +17,7 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.ErDiagramAPI;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,7 +48,7 @@ public class ErDiagramController extends AbstractController implements ErDiagram
 
     @Override
     @GetMapping(value = "/show")
-    public ErDiagramVO show(@RequestParam Integer projectId, @RequestParam(required = false) List<Integer> entityIds) {
+    public ResponseEntity<ErDiagramVO> show(@RequestParam Integer projectId, @RequestParam(required = false) List<Integer> entityIds) {
 
         // 如果没有传入实体id列表，则获取项目下所有实体id
         if(CollectionUtils.isEmpty(entityIds)){
@@ -116,6 +117,6 @@ public class ErDiagramController extends AbstractController implements ErDiagram
 
         ErDiagramVO vo = new ErDiagramVO(nodeData,linkData);
 
-        return vo;
+        return ResponseEntity.ok(vo);
     }
 }

@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.ResponseEntity;
 
 /**
  * <p>Title:【实体】api</p>
@@ -27,7 +28,7 @@ public interface MetaEntityAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaEntityAddDTO", dataType = "MetaEntityAddDTO", value = "新增实体参数", paramType = "body"),
     })
-    MetaEntityShowVO save(MetaEntityAddDTO metaEntityAddDTO);
+    ResponseEntity<MetaEntityShowVO> save(MetaEntityAddDTO metaEntityAddDTO) throws Exception;
 
     /**
      * 修改实体
@@ -36,7 +37,7 @@ public interface MetaEntityAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaEntityUpdateDTO", dataType = "MetaEntityUpdateDTO", value = "修改实体参数", paramType = "body"),
     })
-    MetaEntityShowVO update(MetaEntityUpdateDTO metaEntityUpdateDTO);
+    ResponseEntity<MetaEntityShowVO> update(MetaEntityUpdateDTO metaEntityUpdateDTO);
 
     /**
      * 分页查询实体
@@ -45,7 +46,7 @@ public interface MetaEntityAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaEntityQO", dataType = "MetaEntityQO", value = "分页查询参数", paramType = "body"),
     })
-    PageVO<MetaEntityListVO> list(MetaEntityQO metaEntityQO);
+    ResponseEntity<PageVO<MetaEntityListVO>> list(MetaEntityQO metaEntityQO);
 
     /**
      * 查看实体详情
@@ -54,7 +55,7 @@ public interface MetaEntityAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
     })
-    MetaEntityShowVO show(Integer entityId);
+    ResponseEntity<MetaEntityShowVO> show(Integer entityId);
 
     /**
      * 删除实体
@@ -63,7 +64,7 @@ public interface MetaEntityAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
     })
-    Integer delete(Integer entityId);
+    ResponseEntity<Integer> delete(Integer entityId);
     /**
      * 批量删除实体
      */
@@ -71,7 +72,7 @@ public interface MetaEntityAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id数组", paramType = "body"),
     })
-    Integer deleteBatch(Integer[] entityId);
+    ResponseEntity<Integer> deleteBatch(Integer[] entityId);
 
 
 }

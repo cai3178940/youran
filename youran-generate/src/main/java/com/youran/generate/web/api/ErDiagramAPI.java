@@ -4,6 +4,7 @@ import com.youran.generate.pojo.vo.ErDiagramVO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface ErDiagramAPI {
         @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
         @ApiImplicitParam(name = "entityIds", dataType = "int", value = "实体id", paramType = "query"),
     })
-    ErDiagramVO show(Integer projectId, List<Integer> entityIds);
+    ResponseEntity<ErDiagramVO> show(Integer projectId, List<Integer> entityIds);
 
 
 }

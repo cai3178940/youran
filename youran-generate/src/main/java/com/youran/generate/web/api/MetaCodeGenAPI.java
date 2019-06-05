@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,7 +42,7 @@ public interface MetaCodeGenAPI {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "query"),
     })
-    String sqlPreview(Integer entityId);
+    ResponseEntity<String> sqlPreview(Integer entityId);
 
     /**
      * 提交到仓库
@@ -50,5 +51,5 @@ public interface MetaCodeGenAPI {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
     })
-    String gitCommit(Integer entityId);
+    ResponseEntity<String> gitCommit(Integer entityId);
 }

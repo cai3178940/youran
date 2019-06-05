@@ -8,6 +8,7 @@ import com.youran.generate.service.GenHistoryService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.GenHistoryAPI;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,9 +33,9 @@ public class GenHistoryController extends AbstractController implements GenHisto
 
     @Override
     @GetMapping(value = "/list")
-    public PageVO<GenHistoryListVO> list(@Valid GenHistoryQO genHistoryQO) {
+    public ResponseEntity<PageVO<GenHistoryListVO>> list(@Valid GenHistoryQO genHistoryQO) {
         PageVO<GenHistoryListVO> page = genHistoryService.list(genHistoryQO);
-        return page;
+        return ResponseEntity.ok(page);
     }
 
 

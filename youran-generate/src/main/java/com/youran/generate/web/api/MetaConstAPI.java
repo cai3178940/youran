@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.ResponseEntity;
 
 /**
  * <p>Title:【常量】api</p>
@@ -27,7 +28,7 @@ public interface MetaConstAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstAddDTO", dataType = "MetaConstAddDTO", value = "新增常量参数", paramType = "body"),
     })
-    MetaConstShowVO save(MetaConstAddDTO metaConstAddDTO);
+    ResponseEntity<MetaConstShowVO> save(MetaConstAddDTO metaConstAddDTO) throws Exception;
 
     /**
      * 修改常量
@@ -36,7 +37,7 @@ public interface MetaConstAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstUpdateDTO", dataType = "MetaConstUpdateDTO", value = "修改常量参数", paramType = "body"),
     })
-    MetaConstShowVO update(MetaConstUpdateDTO metaConstUpdateDTO);
+    ResponseEntity<MetaConstShowVO> update(MetaConstUpdateDTO metaConstUpdateDTO);
 
     /**
      * 分页查询常量
@@ -45,7 +46,7 @@ public interface MetaConstAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "metaConstQO", dataType = "MetaConstQO", value = "分页查询参数", paramType = "body"),
     })
-    PageVO<MetaConstListVO> list(MetaConstQO metaConstQO);
+    ResponseEntity<PageVO<MetaConstListVO>> list(MetaConstQO metaConstQO);
 
     /**
      * 查看常量详情
@@ -54,7 +55,7 @@ public interface MetaConstAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "constId", dataType = "int", value = "常量id", paramType = "path"),
     })
-    MetaConstShowVO show(Integer constId);
+    ResponseEntity<MetaConstShowVO> show(Integer constId);
 
     /**
      * 删除常量
@@ -63,7 +64,7 @@ public interface MetaConstAPI {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "constId", dataType = "int", value = "常量id", paramType = "path"),
     })
-    Integer delete(Integer constId);
+    ResponseEntity<Integer> delete(Integer constId);
 
     /**
      * 批量删除常量
@@ -72,5 +73,5 @@ public interface MetaConstAPI {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "constId", dataType = "int", value = "常量id数组", paramType = "body"),
     })
-    Integer deleteBatch(Integer[] constId);
+    ResponseEntity<Integer> deleteBatch(Integer[] constId);
 }

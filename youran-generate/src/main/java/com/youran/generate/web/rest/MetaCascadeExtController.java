@@ -14,9 +14,11 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaCascadeExtAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -34,46 +36,47 @@ public class MetaCascadeExtController extends AbstractController implements Meta
 
     @Override
     @PostMapping(value = "/save")
-    public MetaCascadeExtShowVO save(@Valid @RequestBody MetaCascadeExtAddDTO metaCascadeExtAddDTO) {
+    public ResponseEntity<MetaCascadeExtShowVO> save(@Valid @RequestBody MetaCascadeExtAddDTO metaCascadeExtAddDTO) throws Exception {
         MetaCascadeExtPO metaCascadeExtPO = metaCascadeExtService.save(metaCascadeExtAddDTO);
-        return MetaCascadeExtMapper.INSTANCE.toShowVO(metaCascadeExtPO);
+        return ResponseEntity.created(new URI(apiPath +"/meta_cascade_ext/" + metaCascadeExtPO.getCascadeExtId()))
+            .body(MetaCascadeExtMapper.INSTANCE.toShowVO(metaCascadeExtPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public MetaCascadeExtShowVO update(@Valid @RequestBody MetaCascadeExtUpdateDTO metaCascadeExtUpdateDTO) {
+    public ResponseEntity<MetaCascadeExtShowVO> update(@Valid @RequestBody MetaCascadeExtUpdateDTO metaCascadeExtUpdateDTO) {
         MetaCascadeExtPO metaCascadeExtPO = metaCascadeExtService.update(metaCascadeExtUpdateDTO);
-        return MetaCascadeExtMapper.INSTANCE.toShowVO(metaCascadeExtPO);
+        return ResponseEntity.ok(MetaCascadeExtMapper.INSTANCE.toShowVO(metaCascadeExtPO));
     }
 
     @Override
     @GetMapping(value = "/list")
-    public List<MetaCascadeExtListVO> list(@Valid MetaCascadeExtQO metaCascadeExtQO) {
+    public ResponseEntity<List<MetaCascadeExtListVO>> list(@Valid MetaCascadeExtQO metaCascadeExtQO) {
         List<MetaCascadeExtListVO> list = metaCascadeExtService.list(metaCascadeExtQO);
-        return list;
+        return ResponseEntity.ok(list);
     }
 
     @Override
     @GetMapping(value = "/{cascadeExtId}")
-    public MetaCascadeExtShowVO show(@PathVariable Integer cascadeExtId) {
+    public ResponseEntity<MetaCascadeExtShowVO> show(@PathVariable Integer cascadeExtId) {
         MetaCascadeExtShowVO metaCascadeExtShowVO = metaCascadeExtService.show(cascadeExtId);
-        return metaCascadeExtShowVO;
+        return ResponseEntity.ok(metaCascadeExtShowVO);
     }
 
     @Override
     @DeleteMapping(value = "/{cascadeExtId}")
-    public Integer delete(@PathVariable Integer cascadeExtId) {
+    public ResponseEntity<Integer> delete(@PathVariable Integer cascadeExtId) {
         int count = metaCascadeExtService.delete(cascadeExtId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 
     @Override
     @PutMapping(value = "deleteBatch")
-    public Integer deleteBatch(@RequestBody Integer[] cascadeExtId) {
+    public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] cascadeExtId) {
         if(ArrayUtils.isEmpty(cascadeExtId)){
             throw new BusinessException("参数为空");
         }
         int count = metaCascadeExtService.delete(cascadeExtId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 }

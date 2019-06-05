@@ -5,6 +5,7 @@ import com.youran.generate.pojo.qo.GenHistoryQO;
 import com.youran.generate.pojo.vo.GenHistoryListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.ResponseEntity;
 
 
 /**
@@ -22,7 +23,7 @@ public interface GenHistoryAPI {
      * @return
      */
     @ApiOperation(value="分页查询【生成历史】")
-    PageVO<GenHistoryListVO> list(GenHistoryQO genHistoryQO);
+    ResponseEntity<PageVO<GenHistoryListVO>> list(GenHistoryQO genHistoryQO);
 
 }
 

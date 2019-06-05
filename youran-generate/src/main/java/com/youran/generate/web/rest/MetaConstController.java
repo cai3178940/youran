@@ -15,9 +15,11 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaConstAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 
 /**
  * <p>Title:【常量】控制器</p>
@@ -34,46 +36,47 @@ public class MetaConstController extends AbstractController implements MetaConst
 
     @Override
     @PostMapping(value = "/save")
-    public MetaConstShowVO save(@Valid @RequestBody MetaConstAddDTO metaConstAddDTO) {
+    public ResponseEntity<MetaConstShowVO> save(@Valid @RequestBody MetaConstAddDTO metaConstAddDTO) throws Exception {
         MetaConstPO metaConstPO = metaConstService.save(metaConstAddDTO);
-        return MetaConstMapper.INSTANCE.toShowVO(metaConstPO);
+        return ResponseEntity.created(new URI(apiPath +"/meta_const/" + metaConstPO.getConstId()))
+            .body(MetaConstMapper.INSTANCE.toShowVO(metaConstPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public MetaConstShowVO update(@Valid @RequestBody MetaConstUpdateDTO metaConstUpdateDTO) {
+    public ResponseEntity<MetaConstShowVO> update(@Valid @RequestBody MetaConstUpdateDTO metaConstUpdateDTO) {
         MetaConstPO metaConstPO = metaConstService.update(metaConstUpdateDTO);
-        return MetaConstMapper.INSTANCE.toShowVO(metaConstPO);
+        return ResponseEntity.ok(MetaConstMapper.INSTANCE.toShowVO(metaConstPO));
     }
 
     @Override
     @GetMapping(value = "/list")
-    public PageVO<MetaConstListVO> list(@Valid MetaConstQO metaConstQO) {
+    public ResponseEntity<PageVO<MetaConstListVO>> list(@Valid MetaConstQO metaConstQO) {
         PageVO<MetaConstListVO> page = metaConstService.list(metaConstQO);
-        return page;
+        return ResponseEntity.ok(page);
     }
 
     @Override
     @GetMapping(value = "/{constId}")
-    public MetaConstShowVO show(@PathVariable Integer constId) {
+    public ResponseEntity<MetaConstShowVO> show(@PathVariable Integer constId) {
         MetaConstShowVO metaConstShowVO = metaConstService.show(constId);
-        return metaConstShowVO;
+        return ResponseEntity.ok(metaConstShowVO);
     }
 
     @Override
     @DeleteMapping(value = "/{constId}")
-    public Integer delete(@PathVariable Integer constId) {
+    public ResponseEntity<Integer> delete(@PathVariable Integer constId) {
         int count = metaConstService.delete(constId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 
     @Override
     @PutMapping(value = "deleteBatch")
-    public Integer deleteBatch(@RequestBody Integer[] constId) {
+    public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] constId) {
         if(ArrayUtils.isEmpty(constId)){
             throw new BusinessException("参数为空");
         }
         int count = metaConstService.delete(constId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 }

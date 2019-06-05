@@ -10,12 +10,15 @@ import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
 import com.youran.generate.pojo.vo.MetaConstDetailShowVO;
 import com.youran.generate.service.MetaConstDetailService;
+import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaConstDetailAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -26,53 +29,54 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(GenerateConst.API_PATH +"/meta_const_detail")
-public class MetaConstDetailController implements MetaConstDetailAPI {
+public class MetaConstDetailController extends AbstractController implements MetaConstDetailAPI {
 
     @Autowired
     private MetaConstDetailService metaConstDetailService;
 
     @Override
     @PostMapping(value = "/save")
-    public MetaConstDetailShowVO save(@Valid @RequestBody MetaConstDetailAddDTO metaConstDetailAddDTO) {
+    public ResponseEntity<MetaConstDetailShowVO> save(@Valid @RequestBody MetaConstDetailAddDTO metaConstDetailAddDTO) throws Exception {
         MetaConstDetailPO metaConstDetailPO = metaConstDetailService.save(metaConstDetailAddDTO);
-        return MetaConstDetailMapper.INSTANCE.toShowVO(metaConstDetailPO);
+        return ResponseEntity.created(new URI(apiPath +"/meta_const_detail/" + metaConstDetailPO.getConstDetailId()))
+            .body(MetaConstDetailMapper.INSTANCE.toShowVO(metaConstDetailPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public MetaConstDetailShowVO update(@Valid @RequestBody MetaConstDetailUpdateDTO metaConstDetailUpdateDTO) {
+    public ResponseEntity<MetaConstDetailShowVO> update(@Valid @RequestBody MetaConstDetailUpdateDTO metaConstDetailUpdateDTO) {
         MetaConstDetailPO metaConstDetailPO = metaConstDetailService.update(metaConstDetailUpdateDTO);
-        return MetaConstDetailMapper.INSTANCE.toShowVO(metaConstDetailPO);
+        return ResponseEntity.ok(MetaConstDetailMapper.INSTANCE.toShowVO(metaConstDetailPO));
     }
 
     @Override
     @GetMapping(value = "/list")
-    public List<MetaConstDetailListVO> list(@Valid MetaConstDetailQO metaConstDetailQO) {
+    public ResponseEntity<List<MetaConstDetailListVO>> list(@Valid MetaConstDetailQO metaConstDetailQO) {
         List<MetaConstDetailListVO> list = metaConstDetailService.list(metaConstDetailQO);
-        return list;
+        return ResponseEntity.ok(list);
     }
 
     @Override
     @GetMapping(value = "/{constDetailId}")
-    public MetaConstDetailShowVO show(@PathVariable Integer constDetailId) {
+    public ResponseEntity<MetaConstDetailShowVO> show(@PathVariable Integer constDetailId) {
         MetaConstDetailShowVO metaConstDetailShowVO = metaConstDetailService.show(constDetailId);
-        return metaConstDetailShowVO;
+        return ResponseEntity.ok(metaConstDetailShowVO);
     }
 
     @Override
     @DeleteMapping(value = "/{constDetailId}")
-    public Integer delete(@PathVariable Integer constDetailId) {
+    public ResponseEntity<Integer> delete(@PathVariable Integer constDetailId) {
         int count = metaConstDetailService.delete(constDetailId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 
     @Override
     @PutMapping(value = "deleteBatch")
-    public Integer deleteBatch(@RequestBody Integer[] constDetailId) {
+    public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] constDetailId) {
         if(ArrayUtils.isEmpty(constDetailId)){
             throw new BusinessException("参数为空");
         }
         int count = metaConstDetailService.delete(constDetailId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 }

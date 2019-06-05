@@ -12,12 +12,15 @@ import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
 import com.youran.generate.service.MetaEntityService;
+import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaEntityAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 
 /**
  * <p>Title:【实体】控制器</p>
@@ -27,59 +30,60 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(GenerateConst.API_PATH +"/meta_entity")
-public class MetaEntityController implements MetaEntityAPI {
+public class MetaEntityController extends AbstractController implements MetaEntityAPI {
 
     @Autowired
     private MetaEntityService metaEntityService;
 
     @Override
     @PostMapping(value = "/save")
-    public MetaEntityShowVO save(@Valid @RequestBody MetaEntityAddDTO metaEntityAddDTO) {
+    public ResponseEntity<MetaEntityShowVO> save(@Valid @RequestBody MetaEntityAddDTO metaEntityAddDTO) throws Exception {
         if(metaEntityAddDTO.getCommonCall()==null){
             metaEntityAddDTO.setCommonCall(BoolConst.FALSE);
         }
         MetaEntityPO metaEntityPO = metaEntityService.save(metaEntityAddDTO);
-        return MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO);
+        return ResponseEntity.created(new URI(apiPath +"/meta_entity/" + metaEntityPO.getEntityId()))
+            .body(MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public MetaEntityShowVO update(@Valid @RequestBody MetaEntityUpdateDTO metaEntityUpdateDTO) {
+    public ResponseEntity<MetaEntityShowVO> update(@Valid @RequestBody MetaEntityUpdateDTO metaEntityUpdateDTO) {
         if(metaEntityUpdateDTO.getCommonCall()==null){
             metaEntityUpdateDTO.setCommonCall(BoolConst.FALSE);
         }
         MetaEntityPO metaEntityPO = metaEntityService.update(metaEntityUpdateDTO);
-        return MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO);
+        return ResponseEntity.ok(MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO));
     }
 
     @Override
     @GetMapping(value = "/list")
-    public PageVO<MetaEntityListVO> list(@Valid MetaEntityQO metaEntityQO) {
+    public ResponseEntity<PageVO<MetaEntityListVO>> list(@Valid MetaEntityQO metaEntityQO) {
         PageVO<MetaEntityListVO> page = metaEntityService.list(metaEntityQO);
-        return page;
+        return ResponseEntity.ok(page);
     }
 
     @Override
     @GetMapping(value = "/{entityId}")
-    public MetaEntityShowVO show(@PathVariable Integer entityId) {
+    public ResponseEntity<MetaEntityShowVO> show(@PathVariable Integer entityId) {
         MetaEntityShowVO metaEntityShowVO = metaEntityService.show(entityId);
-        return metaEntityShowVO;
+        return ResponseEntity.ok(metaEntityShowVO);
     }
 
     @Override
     @DeleteMapping(value = "/{entityId}")
-    public Integer delete(@PathVariable Integer entityId) {
+    public ResponseEntity<Integer> delete(@PathVariable Integer entityId) {
         int count = metaEntityService.delete(entityId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 
     @Override
     @PutMapping(value = "deleteBatch")
-    public Integer deleteBatch(@RequestBody Integer[] entityId) {
+    public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] entityId) {
         if(ArrayUtils.isEmpty(entityId)){
             throw new BusinessException("参数为空");
         }
         int count = metaEntityService.delete(entityId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 }

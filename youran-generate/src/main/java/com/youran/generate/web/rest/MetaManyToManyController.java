@@ -10,12 +10,15 @@ import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.vo.MetaManyToManyListVO;
 import com.youran.generate.pojo.vo.MetaManyToManyShowVO;
 import com.youran.generate.service.MetaManyToManyService;
+import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaManyToManyAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -26,53 +29,54 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(GenerateConst.API_PATH +"/meta_mtm")
-public class MetaManyToManyController implements MetaManyToManyAPI {
+public class MetaManyToManyController extends AbstractController implements MetaManyToManyAPI {
 
     @Autowired
     private MetaManyToManyService metaManyToManyService;
 
     @Override
     @PostMapping(value = "/save")
-    public MetaManyToManyShowVO save(@Valid @RequestBody MetaManyToManyAddDTO metaManyToManyAddDTO) {
+    public ResponseEntity<MetaManyToManyShowVO> save(@Valid @RequestBody MetaManyToManyAddDTO metaManyToManyAddDTO) throws Exception {
         MetaManyToManyPO metaManyToManyPO = metaManyToManyService.save(metaManyToManyAddDTO);
-        return MetaManyToManyMapper.INSTANCE.toShowVO(metaManyToManyPO);
+        return ResponseEntity.created(new URI(apiPath +"/meta_mtm/" + metaManyToManyPO.getMtmId()))
+            .body(MetaManyToManyMapper.INSTANCE.toShowVO(metaManyToManyPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public MetaManyToManyShowVO update(@Valid @RequestBody MetaManyToManyUpdateDTO metaManyToManyUpdateDTO) {
+    public ResponseEntity<MetaManyToManyShowVO> update(@Valid @RequestBody MetaManyToManyUpdateDTO metaManyToManyUpdateDTO) {
         MetaManyToManyPO metaManyToManyPO = metaManyToManyService.update(metaManyToManyUpdateDTO);
-        return MetaManyToManyMapper.INSTANCE.toShowVO(metaManyToManyPO);
+        return ResponseEntity.ok(MetaManyToManyMapper.INSTANCE.toShowVO(metaManyToManyPO));
     }
 
     @Override
     @GetMapping(value = "/list")
-    public List<MetaManyToManyListVO> list(@Valid MetaManyToManyQO metaManyToManyQO) {
+    public ResponseEntity<List<MetaManyToManyListVO>> list(@Valid MetaManyToManyQO metaManyToManyQO) {
         List<MetaManyToManyListVO> list = metaManyToManyService.list(metaManyToManyQO);
-        return list;
+        return ResponseEntity.ok(list);
     }
 
     @Override
     @GetMapping(value = "/{mtmId}")
-    public MetaManyToManyShowVO show(@PathVariable Integer mtmId) {
+    public ResponseEntity<MetaManyToManyShowVO> show(@PathVariable Integer mtmId) {
         MetaManyToManyShowVO metaManyToManyShowVO = metaManyToManyService.show(mtmId);
-        return metaManyToManyShowVO;
+        return ResponseEntity.ok(metaManyToManyShowVO);
     }
 
     @Override
     @DeleteMapping(value = "/{mtmId}")
-    public Integer delete(@PathVariable Integer mtmId) {
+    public ResponseEntity<Integer> delete(@PathVariable Integer mtmId) {
         int count = metaManyToManyService.delete(mtmId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 
     @Override
     @PutMapping(value = "deleteBatch")
-    public Integer deleteBatch(@RequestBody Integer[] mtmId) {
+    public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] mtmId) {
         if(ArrayUtils.isEmpty(mtmId)){
             throw new BusinessException("参数为空");
         }
         int count = metaManyToManyService.delete(mtmId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 }

@@ -10,12 +10,15 @@ import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
 import com.youran.generate.service.MetaProjectService;
+import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaProjectAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -26,53 +29,54 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(GenerateConst.API_PATH +"/meta_project")
-public class MetaProjectController implements MetaProjectAPI {
+public class MetaProjectController extends AbstractController implements MetaProjectAPI {
 
     @Autowired
     private MetaProjectService metaProjectService;
 
     @Override
     @PostMapping(value = "/save")
-    public MetaProjectShowVO save(@Valid @RequestBody MetaProjectAddDTO metaProjectAddDTO) {
+    public ResponseEntity<MetaProjectShowVO> save(@Valid @RequestBody MetaProjectAddDTO metaProjectAddDTO) throws Exception {
         MetaProjectPO metaProjectPO = metaProjectService.save(metaProjectAddDTO);
-        return MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO);
+        return ResponseEntity.created(new URI(apiPath +"/meta_project/" + metaProjectPO.getProjectId()))
+            .body(MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO));
     }
 
     @Override
     @PutMapping(value = "/update")
-    public MetaProjectShowVO update(@Valid @RequestBody MetaProjectUpdateDTO metaProjectUpdateDTO) {
+    public ResponseEntity<MetaProjectShowVO> update(@Valid @RequestBody MetaProjectUpdateDTO metaProjectUpdateDTO) {
         MetaProjectPO metaProjectPO = metaProjectService.update(metaProjectUpdateDTO);
-        return MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO);
+        return ResponseEntity.ok(MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO));
     }
 
     @Override
     @GetMapping(value = "/list")
-    public List<MetaProjectListVO> list(@Valid MetaProjectQO metaProjectQO) {
+    public ResponseEntity<List<MetaProjectListVO>> list(@Valid MetaProjectQO metaProjectQO) {
         List<MetaProjectListVO> list = metaProjectService.list(metaProjectQO);
-        return list;
+        return ResponseEntity.ok(list);
     }
 
     @Override
     @GetMapping(value = "/{projectId}")
-    public MetaProjectShowVO show(@PathVariable Integer projectId) {
+    public ResponseEntity<MetaProjectShowVO> show(@PathVariable Integer projectId) {
         MetaProjectShowVO metaProjectShowVO = metaProjectService.show(projectId);
-        return metaProjectShowVO;
+        return ResponseEntity.ok(metaProjectShowVO);
     }
 
     @Override
     @DeleteMapping(value = "/{projectId}")
-    public Integer delete(@PathVariable Integer projectId) {
+    public ResponseEntity<Integer> delete(@PathVariable Integer projectId) {
         int count = metaProjectService.delete(projectId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 
     @Override
     @PutMapping(value = "deleteBatch")
-    public Integer deleteBatch(@RequestBody Integer[] projectId) {
+    public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] projectId) {
         if(ArrayUtils.isEmpty(projectId)){
             throw new BusinessException("参数为空");
         }
         int count = metaProjectService.delete(projectId);
-        return count;
+        return ResponseEntity.ok(count);
     }
 }

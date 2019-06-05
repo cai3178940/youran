@@ -1,8 +1,10 @@
 package com.youran.generate.web;
 
 import com.youran.common.constant.ErrorCode;
+import com.youran.generate.constant.GenerateConst;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -15,6 +17,9 @@ import java.io.IOException;
  * @date 2019/2/15
  */
 public abstract class AbstractController {
+
+    @Value(GenerateConst.API_PATH)
+    protected String apiPath;
 
     /**
      * 响应Not found
