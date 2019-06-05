@@ -1,6 +1,6 @@
 # youran代码自动化平台
 
-> 通过维护元数据，一键生成java后端基础架构，同时还能生成增删改查代码和单元测试。
+通过维护元数据，一键生成java后端基础架构，同时还能生成增删改查代码和单元测试。
 生成的项目是基于[spring-boot](https://spring.io/projects/spring-boot/)+[mybatis](http://www.mybatis.org/mybatis-3/)架构；其他附属技术栈包括：
 - [hibernate-validator](http://hibernate.org/validator/releases/)
 - [swagger](https://swagger.io/)(API文档自动生成)

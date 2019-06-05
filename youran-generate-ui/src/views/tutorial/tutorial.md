@@ -1,15 +1,16 @@
 ## 项目介绍
 
-> 通过维护元数据，一键生成java后端基础架构，同时还能生成增删改查代码和单元测试。
+通过维护元数据，一键生成java后端基础架构，同时还能生成增删改查代码和单元测试。
 生成的项目是基于[spring-boot](https://spring.io/projects/spring-boot/)+[mybatis](http://www.mybatis.org/mybatis-3/)架构；其他附属技术栈包括：
 - [hibernate-validator](http://hibernate.org/validator/releases/)
 - [swagger](https://swagger.io/)(API文档自动生成)
 - [mapstruct](http://mapstruct.org/)(属性映射)
 - 基于[H2](http://www.h2database.com)内存数据库的单元测试
 
-> 源码地址：[http://git.jd.com/cbb/youran](http://git.jd.com/cbb/youran)
-> 开发本平台的主要目的是减少java后端程序员的重复性工作，将没有技术含量的增删改查等重复性工作，
-> 通过在本系统简单录入即可实现，减少不必要的加班。
+源码地址：[http://git.jd.com/cbb/youran](http://git.jd.com/cbb/youran)
+
+开发本平台的主要目的是减少java后端程序员的重复性工作，将没有技术含量的增删改查等重复性工作，
+通过在本系统简单录入即可实现，减少不必要的加班。
 
 ## 术语解析
 1. 项目：项目就是一个独立的应用系统，可以基于一个项目生成一整套JavaWeb后端服务系统。
