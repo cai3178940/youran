@@ -14,6 +14,7 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaFieldAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class MetaFieldController extends AbstractController implements MetaField
 
     @Override
     @PostMapping(value = "/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaFieldShowVO> save(@Valid @RequestBody MetaFieldAddDTO metaFieldAddDTO) throws Exception {
         if(metaFieldAddDTO.getDefaultValue()==null){
             metaFieldAddDTO.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);

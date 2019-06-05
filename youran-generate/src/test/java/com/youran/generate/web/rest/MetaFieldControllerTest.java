@@ -45,7 +45,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_field/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
 

@@ -14,6 +14,7 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaManyToManyAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class MetaManyToManyController extends AbstractController implements Meta
 
     @Override
     @PostMapping(value = "/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaManyToManyShowVO> save(@Valid @RequestBody MetaManyToManyAddDTO metaManyToManyAddDTO) throws Exception {
         MetaManyToManyPO metaManyToManyPO = metaManyToManyService.save(metaManyToManyAddDTO);
         return ResponseEntity.created(new URI(apiPath +"/meta_mtm/" + metaManyToManyPO.getMtmId()))

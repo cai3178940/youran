@@ -1,6 +1,5 @@
 <#include "/common.ftl">
 <@call this.addImport("com.google.common.collect.Lists")/>
-<@call this.addImport("${this.commonPackage}.pojo.vo.ReplyVO")/>
 <@call this.addImport("${this.commonPackage}.util.JsonUtil")/>
 <@call this.addImport("${this.packageName}.help.${this.classNameUpper}Helper")/>
 <@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}AddDTO")/>
@@ -14,6 +13,7 @@
 <@call this.addStaticImport("org.hamcrest.Matchers.is")/>
 <@call this.addStaticImport("org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*")/>
 <@call this.addStaticImport("org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath")/>
+<@call this.addStaticImport("org.springframework.test.web.servlet.result.MockMvcResultMatchers.status")/>
 <#--获取保存Example的代码-->
 <#assign saveExampleCode=this.getPrintingSaveExample()/>
 <#--定义方法区代码-->
@@ -30,7 +30,7 @@
         restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(addDTO)))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+            .andExpect(status().isCreated());
     }
 
     @Test
@@ -42,7 +42,7 @@
         restMockMvc.perform(put(WebConst.API_PATH + "/${this.className}")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(updateDTO)))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+            .andExpect(status().isOk());
     }
 
     @Test
@@ -51,11 +51,11 @@
         ${saveExample}
     </#list>
         restMockMvc.perform(get(WebConst.API_PATH + "/${this.className}"))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
+            .andExpect(status().isOk())
     <#if isTrue(this.pageSign)>
-            .andExpect(jsonPath("$.data.entities.length()").value(is(1)));
+            .andExpect(jsonPath("$.list.length()").value(is(1)));
     <#else>
-            .andExpect(jsonPath("$.data.length()").value(is(1)));
+            .andExpect(jsonPath("$.length()").value(is(1)));
     </#if>
     }
 
@@ -65,7 +65,7 @@
         ${saveExample}
     </#list>
         restMockMvc.perform(get(WebConst.API_PATH + "/${this.className}/{${this.id}}",${this.className}.get${this.idUpper}()))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)));
+            .andExpect(status().isOk());
     }
 
     @Test
@@ -74,8 +74,8 @@
         ${saveExample}
     </#list>
         restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}/{${this.id}}",${this.className}.get${this.idUpper}()))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-            .andExpect(jsonPath("$.data").value(is(1)));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(is(1)));
     }
 
     @Test
@@ -86,8 +86,8 @@
         restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${this.className}.get${this.idUpper}()))))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-            .andExpect(jsonPath("$.data").value(is(1)));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(is(1)));
     }
 
 <#if this.metaEntity.mtmHoldRefers??>
@@ -104,12 +104,12 @@
         </#list>
         restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-            .andExpect(jsonPath("$.data").value(is(1)));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(is(1)));
         restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}/{${MetadataUtil.getPkAlias(othercName,false)}}",
             ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-            .andExpect(jsonPath("$.data").value(is(1)));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(is(1)));
     }
 
     @Test
@@ -121,14 +121,14 @@
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-            .andExpect(jsonPath("$.data").value(is(1)));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(is(1)));
         restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}",
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-            .andExpect(jsonPath("$.data").value(is(1)));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(is(1)));
     }
 
     @Test
@@ -140,8 +140,8 @@
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
-            .andExpect(jsonPath("$.code").value(is(ReplyVO.SUCCESS_CODE)))
-            .andExpect(jsonPath("$.data").value(is(1)));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").value(is(1)));
     }
 
     </#list>

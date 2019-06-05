@@ -45,7 +45,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_const_detail/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
 

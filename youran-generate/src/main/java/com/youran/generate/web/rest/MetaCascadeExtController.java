@@ -14,6 +14,7 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaCascadeExtAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class MetaCascadeExtController extends AbstractController implements Meta
 
     @Override
     @PostMapping(value = "/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaCascadeExtShowVO> save(@Valid @RequestBody MetaCascadeExtAddDTO metaCascadeExtAddDTO) throws Exception {
         MetaCascadeExtPO metaCascadeExtPO = metaCascadeExtService.save(metaCascadeExtAddDTO);
         return ResponseEntity.created(new URI(apiPath +"/meta_cascade_ext/" + metaCascadeExtPO.getCascadeExtId()))

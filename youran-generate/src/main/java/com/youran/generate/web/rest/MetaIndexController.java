@@ -14,6 +14,7 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaIndexAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class MetaIndexController extends AbstractController implements MetaIndex
 
     @Override
     @PostMapping(value = "/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaIndexShowVO> save(@Valid @RequestBody MetaIndexAddDTO metaIndexAddDTO) throws Exception {
         MetaIndexPO metaIndex = metaIndexService.save(metaIndexAddDTO);
         return ResponseEntity.created(new URI(apiPath +"/meta_index/" + metaIndex.getIndexId()))

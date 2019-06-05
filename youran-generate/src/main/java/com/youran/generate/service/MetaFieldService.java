@@ -1,8 +1,8 @@
 package com.youran.generate.service;
 
+import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaFieldDAO;
-import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaFieldMapper;
@@ -10,6 +10,7 @@ import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
+import com.youran.generate.util.MetaFieldCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,9 +38,11 @@ public class MetaFieldService {
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaFieldPO save(MetaFieldAddDTO metaFieldDTO) {
         Integer entityId = metaFieldDTO.getEntityId();
-        //校验操作人
+        // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
         MetaFieldPO metaField = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
+        // 校验字段属性
+        MetaFieldCheckUtil.checkFieldPO(metaField);
         metaFieldDAO.save(metaField);
         metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaField;
@@ -56,9 +59,11 @@ public class MetaFieldService {
         Integer fieldId = metaFieldUpdateDTO.getFieldId();
         MetaFieldPO metaField = this.getField(fieldId,true);
         Integer entityId = metaField.getEntityId();
-        //校验操作人
+        // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
         MetaFieldMapper.INSTANCE.setPO(metaField, metaFieldUpdateDTO);
+        // 校验字段属性
+        MetaFieldCheckUtil.checkFieldPO(metaField);
         metaFieldDAO.update(metaField);
         metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaField;
@@ -114,7 +119,7 @@ public class MetaFieldService {
                 continue;
             }
             entityId = metaField.getEntityId();
-            //校验操作人
+            // 校验操作人
             metaProjectService.checkOperatorByEntityId(entityId);
             count += metaFieldDAO.delete(id);
         }

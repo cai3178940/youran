@@ -14,6 +14,7 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaConstDetailAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class MetaConstDetailController extends AbstractController implements Met
 
     @Override
     @PostMapping(value = "/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaConstDetailShowVO> save(@Valid @RequestBody MetaConstDetailAddDTO metaConstDetailAddDTO) throws Exception {
         MetaConstDetailPO metaConstDetailPO = metaConstDetailService.save(metaConstDetailAddDTO);
         return ResponseEntity.created(new URI(apiPath +"/meta_const_detail/" + metaConstDetailPO.getConstDetailId()))

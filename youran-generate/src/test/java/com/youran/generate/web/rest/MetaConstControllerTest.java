@@ -42,7 +42,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_const/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
 
@@ -63,7 +63,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
         restMockMvc.perform(get(getApiPath()+"/meta_const/list")
                 .param("projectId",metaProject.getProjectId()+""))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.entities.length()").value(is(1)));
+                .andExpect(jsonPath("$.list.length()").value(is(1)));
     }
 
     @Test

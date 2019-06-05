@@ -16,6 +16,7 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaEntityAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class MetaEntityController extends AbstractController implements MetaEnti
 
     @Override
     @PostMapping(value = "/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaEntityShowVO> save(@Valid @RequestBody MetaEntityAddDTO metaEntityAddDTO) throws Exception {
         if(metaEntityAddDTO.getCommonCall()==null){
             metaEntityAddDTO.setCommonCall(BoolConst.FALSE);

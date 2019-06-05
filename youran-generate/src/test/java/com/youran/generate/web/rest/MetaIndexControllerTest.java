@@ -49,7 +49,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_index/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
 

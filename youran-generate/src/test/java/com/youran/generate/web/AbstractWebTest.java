@@ -31,7 +31,7 @@ public abstract class AbstractWebTest extends AbstractTest {
         if(StringUtils.isBlank(apiPath)){
             return "";
         }
-        return "/"+ apiPath;
+        return apiPath;
     }
 
 }

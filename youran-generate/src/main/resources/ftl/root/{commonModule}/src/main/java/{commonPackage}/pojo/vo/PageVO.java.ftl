@@ -5,169 +5,185 @@
 <@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
 <@call this.addImport("java.util.ArrayList")/>
 <@call this.addImport("java.util.List")/>
+<@call this.addImport("org.apache.commons.lang3.builder.ToStringBuilder")/>
+<@call this.addImport("org.apache.commons.lang3.builder.ToStringStyle")/>
 <@call this.printClassCom("分页结果对象")/>
 @ApiModel
 public class PageVO<T> extends AbstractVO {
 
     @ApiModelProperty(notes = "每页条数",example = "10",required = true)
-    private int pageSize;
+    private Integer pageSize;
     @ApiModelProperty(notes = "页码",example = "1",required = true)
-    private int pageNo;
+    private Integer currentPage;
     @ApiModelProperty(notes = "开始序号",example = "0",required = true)
-    private int firstEntityIndex;
+    private Integer firstIndex;
     @ApiModelProperty(notes = "结束序号",example = "10",required = true)
-    private int lastEntityIndex;
+    private Integer lastIndex;
 
     @ApiModelProperty(notes = "数据列表",required = true)
-    private List<T> entities;
+    private List<T> list;
     @ApiModelProperty(notes = "总条数",example = "100",required = true)
-    private int entityCount;
+    private Integer total;
     @ApiModelProperty(notes = "总页数",example = "10",required = true)
-    private int pageCount;
+    private Integer pageCount;
 
     public PageVO() {
     }
 
-    public PageVO(List<T> entities, int pageNo, int pageSize, int entityCount) {
-        this.entities = entities;
-        this.pageNo = pageNo;
+    public PageVO(List<T> list, int currentPage, int pageSize, int total) {
+        this.list = list;
+        this.currentPage = currentPage;
         this.pageSize = pageSize;
-        this.entityCount = entityCount;
-        firstEntityIndex = (pageNo - 1) * pageSize;
-        lastEntityIndex = pageNo * pageSize;
-        if ( entityCount % pageSize > 0 ) {
-            pageCount = entityCount / pageSize + 1;
+        this.total = total;
+        this.firstIndex = (currentPage - 1) * pageSize;
+        this.lastIndex = currentPage * pageSize;
+        if ( total % pageSize > 0 ) {
+            this.pageCount = total / pageSize + 1;
         } else {
-            pageCount = entityCount / pageSize;
+            this.pageCount = total / pageSize;
         }
     }
 
-    public PageVO(int pageSize, int pageNo, int entityCount) {
-        if (pageNo > 1 && pageSize <= 0) {
+    public PageVO(int pageSize, int currentPage, int total) {
+        if (currentPage > 1 && pageSize <= 0) {
             throw new IllegalArgumentException(
                     "Illegal paging arguments. [pageSize=" + pageSize
-                            + ", pageIndex=" + pageNo + "]");
+                            + ", currentPage=" + currentPage + "]");
         }
         if (pageSize < 0) {
             pageSize = 0;
         }
-        if (pageNo < 1) {
-            pageNo = 1;
+        if (currentPage < 1) {
+            currentPage = 1;
         }
-        this.entities = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.pageSize = pageSize;
-        this.pageNo = pageNo;
-        this.entityCount = entityCount;
-        firstEntityIndex = (pageNo - 1) * pageSize;
-        lastEntityIndex = pageNo * pageSize;
-        if ( entityCount % pageSize > 0 ) {
-            pageCount = entityCount / pageSize + 1;
+        this.currentPage = currentPage;
+        this.total = total;
+        this.firstIndex = (currentPage - 1) * pageSize;
+        this.lastIndex = currentPage * pageSize;
+        if ( total % pageSize > 0 ) {
+            this.pageCount = total / pageSize + 1;
         } else {
-            pageCount = entityCount / pageSize;
+            this.pageCount = total / pageSize;
         }
     }
 
-    public PageVO(int pageSize, long firstEntityIndex, int entityCount) {
-        if (firstEntityIndex > 1 && pageSize <= 0) {
+    public PageVO(int pageSize, long firstIndex, int total) {
+        if (firstIndex > 1 && pageSize <= 0) {
             throw new IllegalArgumentException(
                     "Illegal paging arguments. [pageSize=" + pageSize
-                            + ", firstEntityIndex=" + firstEntityIndex + "]");
+                            + ", firstIndex=" + firstIndex + "]");
         }
         if (pageSize < 0) {
             pageSize = 0;
         }
-        this.firstEntityIndex = (int)firstEntityIndex;
-        if (firstEntityIndex < 0) {
-            this.firstEntityIndex = 0;
+        this.firstIndex = (int)firstIndex;
+        if (firstIndex < 0) {
+            this.firstIndex = 0;
         }
         this.pageSize = pageSize;
-        this.entityCount = entityCount;
-        lastEntityIndex = pageSize + (int)firstEntityIndex;
-        if ( entityCount % pageSize > 0 ) {
-            pageCount = entityCount / pageSize + 1;
+        this.total = total;
+        this.lastIndex = pageSize + (int)firstIndex;
+        if ( total % pageSize > 0 ) {
+            this.pageCount = total / pageSize + 1;
         } else {
-            pageCount = entityCount / pageSize;
+            this.pageCount = total / pageSize;
         }
     }
 
     /**
      * @param pageSize
      *            每页记录数
-     * @param pageNo
+     * @param currentPage
      *            页号
      */
-    public PageVO(int pageSize, int pageNo) {
-        if (pageNo > 1 && pageSize <= 0) {
+    public PageVO(int pageSize, int currentPage) {
+        if (currentPage > 1 && pageSize <= 0) {
             throw new IllegalArgumentException(
                     "Illegal paging arguments. [pageSize=" + pageSize
-                            + ", pageIndex=" + pageNo + "]");
+                            + ", currentPage=" + currentPage + "]");
         }
         if (pageSize < 0) {
             pageSize = 0;
         }
-        if (pageNo < 1) {
-            pageNo = 1;
+        if (currentPage < 1) {
+            currentPage = 1;
         }
         this.pageSize = pageSize;
-        this.pageNo = pageNo;
-        firstEntityIndex = (pageNo - 1) * pageSize;
-        lastEntityIndex = pageNo * pageSize;
+        this.currentPage = currentPage;
+        this.firstIndex = (currentPage - 1) * pageSize;
+        this.lastIndex = currentPage * pageSize;
     }
 
-    public List<T> getEntities() {
-        return entities;
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("pageSize", pageSize)
+            .append("currentPage", currentPage)
+            .append("firstIndex", firstIndex)
+            .append("lastIndex", lastIndex)
+            .append("list", list)
+            .append("total", total)
+            .append("pageCount", pageCount)
+            .toString();
     }
 
-    public void setEntities(List<T> entities) {
-        this.entities = entities;
-    }
-
-    public int getEntityCount() {
-        return entityCount;
-    }
-
-    public void setEntityCount(int entityCount) {
-        this.entityCount = entityCount;
-    }
-
-    public int getFirstEntityIndex() {
-        return firstEntityIndex;
-    }
-
-    public void setFirstEntityIndex(int firstEntityIndex) {
-        this.firstEntityIndex = firstEntityIndex;
-    }
-
-    public int getLastEntityIndex() {
-        return lastEntityIndex;
-    }
-
-    public void setLastEntityIndex(int lastEntityIndex) {
-        this.lastEntityIndex = lastEntityIndex;
-    }
-
-    public int getPageCount() {
-        return pageCount;
-    }
-
-    public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
-    }
-
-    public int getPageNo() {
-        return pageNo;
-    }
-
-    public void setPageNo(int pageNo) {
-        this.pageNo = pageNo;
-    }
-
-    public int getPageSize() {
+    public Integer getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public Integer getFirstIndex() {
+        return firstIndex;
+    }
+
+    public void setFirstIndex(Integer firstIndex) {
+        this.firstIndex = firstIndex;
+    }
+
+    public Integer getLastIndex() {
+        return lastIndex;
+    }
+
+    public void setLastIndex(Integer lastIndex) {
+        this.lastIndex = lastIndex;
+    }
+
+    public List<T> getList() {
+        return list;
+    }
+
+    public void setList(List<T> list) {
+        this.list = list;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
+    public Integer getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(Integer pageCount) {
+        this.pageCount = pageCount;
     }
 }
 </#assign>

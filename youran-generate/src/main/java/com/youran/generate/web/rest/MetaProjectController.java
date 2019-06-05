@@ -14,6 +14,7 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaProjectAPI;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +37,10 @@ public class MetaProjectController extends AbstractController implements MetaPro
 
     @Override
     @PostMapping(value = "/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaProjectShowVO> save(@Valid @RequestBody MetaProjectAddDTO metaProjectAddDTO) throws Exception {
         MetaProjectPO metaProjectPO = metaProjectService.save(metaProjectAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/meta_project/" + metaProjectPO.getProjectId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_project/" + metaProjectPO.getProjectId()))
             .body(MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO));
     }
 

@@ -43,7 +43,9 @@ public class TemplateUtil {
      */
     public static String printGetterSetterForPO(MetaFieldPO metaFieldPO){
         boolean override = false;
-        if(MetaSpecialField.check(metaFieldPO.getSpecialField())){
+        // 特殊字段标记+字段名都符合，才加override注解
+        if(MetaSpecialField.check(metaFieldPO.getSpecialField())
+            && MetaSpecialField.check(metaFieldPO.getJfieldName())){
             override = true;
         }
         return printGetterSetter(metaFieldPO.getJfieldName(),metaFieldPO.getJfieldType(),override);

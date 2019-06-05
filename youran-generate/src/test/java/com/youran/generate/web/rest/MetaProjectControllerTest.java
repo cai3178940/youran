@@ -34,7 +34,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_project/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
 

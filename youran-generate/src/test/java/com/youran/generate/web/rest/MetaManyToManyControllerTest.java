@@ -50,7 +50,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath()+"/meta_mtm/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
 
