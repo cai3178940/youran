@@ -99,9 +99,7 @@ export const CommonPlugin = {
         if ((typeof error === 'object')) {
           if (error.constructor === Error) {
             if (error.response) {
-              if (error.response.status >= 500) {
-                return this.showNotify('error', '出错了', '系统内部错误')
-              } else {
+              if (error.response.status >= 400) {
                 return this.showErrorVO(error.response.data)
               }
             }
