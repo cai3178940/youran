@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author: cbb
  * @date: 2018/1/24
  */
-public abstract class AbstractQO  implements Serializable {
+public abstract class AbstractQO implements Serializable {
 
 
 }

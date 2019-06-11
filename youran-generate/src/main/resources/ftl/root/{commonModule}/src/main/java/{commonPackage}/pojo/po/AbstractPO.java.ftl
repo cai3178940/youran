@@ -2,8 +2,9 @@
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("java.util.Date")/>
+<@call this.addImport("java.io.Serializable")/>
 <@call this.printClassCom("抽象PO")/>
-public abstract class AbstractPO{
+public abstract class AbstractPO implements Serializable{
 
     public void preInsert(String createdBy){
         Date now=new Date();

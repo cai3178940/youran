@@ -1,5 +1,6 @@
 package com.youran.common.pojo.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  * @author: cbb
  * @date: 2017/8/24
  */
-public abstract class AbstractPO {
+public abstract class AbstractPO implements Serializable {
 
     public void preInsert(String createdBy){
         Date now=new Date();
