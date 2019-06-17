@@ -76,7 +76,8 @@ public class H2Util {
      * @return
      */
     public static String filterScript(String script) {
-        script = script.replaceAll("(CHARSET=[a-zA-Z0-9]+)\\s(ROW_FORMAT=[a-zA-Z]+\\s)?(COMMENT=.*)?;","$1;");
+        script = script.replaceAll("(row_format|ROW_FORMAT)\\s*=\\s*[a-zA-Z]+\\s*","");
+        script = script.replaceAll("(comment|COMMENT)\\s*=.*;",";");
         script = script.replaceAll("(double|DOUBLE)\\([0-9,]+\\)","$1");
         script = script.replaceAll("(float|FLOAT)\\([0-9,]+\\)","$1");
         return script;
