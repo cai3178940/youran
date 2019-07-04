@@ -42,15 +42,15 @@ public class ReplyVO<T> extends AbstractVO {
         this.message = message;
     }
 
-    public static ReplyVO fail(String message) {
+    public static <T> ReplyVO<T> fail(String message) {
         return new ReplyVO(DEFAULT_ERROR_CODE, message);
     }
 
-    public static ReplyVO fail(ErrorCode errorCode) {
+    public static <T> ReplyVO<T> fail(ErrorCode errorCode) {
         return new ReplyVO(errorCode.getValue().toString(), errorCode.getDesc());
     }
 
-    public static ReplyVO success() {
+    public static <T> ReplyVO<T> success() {
         return new ReplyVO(SUCCESS_CODE, SUCCESS_MSG);
     }
 
@@ -60,7 +60,7 @@ public class ReplyVO<T> extends AbstractVO {
      * @param data
      * @return
      */
-    public ReplyVO data(T data){
+    public ReplyVO<T> data(T data){
         setData(data);
         return this;
     }
@@ -70,17 +70,8 @@ public class ReplyVO<T> extends AbstractVO {
      * @param message
      * @return
      */
-    public ReplyVO message(String message){
+    public ReplyVO<T> message(String message){
         this.setMessage(message);
-        return this;
-    }
-
-    /**
-     * 清空返回数据
-     * @return
-     */
-    public ReplyVO clear() {
-        this.data = null;
         return this;
     }
 
