@@ -43,17 +43,21 @@ public class ReplyVO<T> extends AbstractVO {
     }
 
     public static <T> ReplyVO<T> fail(String message) {
-        return new ReplyVO(DEFAULT_ERROR_CODE, message);
+        return new ReplyVO<>(DEFAULT_ERROR_CODE, message);
     }
 
     public static <T> ReplyVO<T> fail(ErrorCode errorCode) {
-        return new ReplyVO(errorCode.getValue().toString(), errorCode.getDesc());
+        return new ReplyVO<>(errorCode.getValue().toString(), errorCode.getDesc());
     }
 
     public static <T> ReplyVO<T> success() {
-        return new ReplyVO(SUCCESS_CODE, SUCCESS_MSG);
+        return new ReplyVO<>(SUCCESS_CODE, SUCCESS_MSG);
     }
 
+    public static <T> ReplyVO<T> success(T data) {
+        ReplyVO<T> replyVO = new ReplyVO<>(SUCCESS_CODE, SUCCESS_MSG);
+        return replyVO.data(data);
+    }
 
     /**
      * 设置数据
