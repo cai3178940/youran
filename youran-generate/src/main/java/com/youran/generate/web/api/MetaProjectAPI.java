@@ -19,7 +19,7 @@ import java.util.List;
  * @author: cbb
  * Create Time:2017/5/24
  */
-@Api(tags = "MetaProjectPO", description = "项目")
+@Api(tags = "MetaProjectPO")
 public interface MetaProjectAPI {
 
     /**
