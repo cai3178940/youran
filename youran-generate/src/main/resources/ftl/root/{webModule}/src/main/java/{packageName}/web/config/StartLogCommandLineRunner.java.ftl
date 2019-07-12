@@ -30,7 +30,11 @@ public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
     @Override
     public void run(String... args) throws Exception {
         String port = env.getProperty("server.port","8080");
+    <#if this.bootVersion==2>
+        String contextPath = env.getProperty("server.servlet.context-path","/");
+    <#else>
         String contextPath = env.getProperty("server.context-path","/");
+    </#if>
         String applicationName = env.getProperty("spring.application.name","");
         String profiles = "";
         if(ArrayUtils.isNotEmpty(env.getActiveProfiles())) {
