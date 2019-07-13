@@ -43,10 +43,10 @@
           </el-form-item>
           <el-form-item label="启用Git仓库" prop="remote">
             <help-popover name="project.remote">
-              <el-radio-group v-model="form.remote">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch v-model="form.remote"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <template v-if="form.remote==1">

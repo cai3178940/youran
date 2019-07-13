@@ -15,7 +15,7 @@
     <el-table ref="projectTable" :data="list"
               row-key="projectId"
               :expand-row-keys="expandRowKeys"
-              style="width: 100%"
+              style="min-width: 1200px;"
               v-loading="loading">
               <!--:row-class-name="activeRow"-->
               <!--@cell-mouse-enter="cellMouseEnter"-->

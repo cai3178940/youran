@@ -80,34 +80,34 @@
           </el-form-item>
           <el-form-item label="是否主键" prop="primaryKey">
             <help-popover name="field.primaryKey">
-              <el-radio-group v-model="form.primaryKey">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch v-model="form.primaryKey"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="是否自增" prop="autoIncrement">
             <help-popover name="field.autoIncrement">
-              <el-radio-group :disabled="autoIncrementDisabled" v-model="form.autoIncrement">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch :disabled="autoIncrementDisabled" v-model="form.autoIncrement"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="不能为空" prop="notNull">
             <help-popover name="field.notNull">
-              <el-radio-group :disabled="notNullDisabled" v-model="form.notNull">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch :disabled="notNullDisabled" v-model="form.notNull"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="是否外键" prop="foreignKey">
             <help-popover name="field.foreignKey">
-              <el-radio-group v-model="form.foreignKey">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch v-model="form.foreignKey"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="外键字段">
@@ -132,10 +132,10 @@
           </el-form-item>
           <el-form-item label="是否查询字段" prop="query">
             <help-popover name="field.query">
-              <el-radio-group v-model="form.query">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch v-model="form.query"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="查询方式" prop="queryType">
@@ -153,42 +153,42 @@
           </el-form-item>
           <el-form-item label="是否新增字段" prop="insert">
             <help-popover name="field.insert">
-              <el-radio-group v-model="form.insert">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch v-model="form.insert"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="是否编辑字段" prop="update">
             <help-popover name="field.update">
-              <el-radio-group v-model="form.update">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch v-model="form.update"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="是否列表字段" prop="list">
             <help-popover name="field.list">
-              <el-radio-group v-model="form.list">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch v-model="form.list"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="是否支持排序" prop="listSort">
             <help-popover name="field.listSort">
-              <el-radio-group v-model="form.listSort">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch v-model="form.listSort"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="是否详情字段" prop="show">
             <help-popover name="field.show">
-              <el-radio-group v-model="form.show">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+              <el-switch v-model="form.show"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="特殊字段类型" prop="specialField">
@@ -217,6 +217,7 @@
         </el-form>
       </el-col>
     </el-row>
+    <el-backtop target=".el-main"></el-backtop>
   </div>
 </template>
 
