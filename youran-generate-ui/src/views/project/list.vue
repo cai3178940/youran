@@ -15,7 +15,7 @@
     <el-table ref="projectTable" :data="list"
               row-key="projectId"
               :expand-row-keys="expandRowKeys"
-              style="min-width: 1200px;"
+              style="min-width: 1255px;"
               v-loading="loading">
               <!--:row-class-name="activeRow"-->
               <!--@cell-mouse-enter="cellMouseEnter"-->
@@ -33,7 +33,7 @@
       <el-table-column property="projectName" label="项目标识" width="200"></el-table-column>
       <el-table-column property="projectDesc" label="项目名称" width="200"></el-table-column>
       <el-table-column property="author" label="作者" width="120"></el-table-column>
-      <el-table-column property="packageName" label="包名"></el-table-column>
+      <el-table-column property="packageName" label="包名" width="180"></el-table-column>
       <el-table-column label="Git仓库" width="90px">
         <template slot-scope="scope">
           <icon v-if="scope.row.remote==1" name="check" class="color-success"></icon>
@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column
         label=""
-        width="200">
+        width="205">
         <template slot-scope="scope">
           <el-button @click="handleEntity(scope.row)" type="text" size="medium">实体管理</el-button>
           <el-button @click="handleConst(scope.row)" type="text" size="medium">枚举管理</el-button>
@@ -83,7 +83,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="DDL脚本：" label-width="100px" prop="ddl">
-          <el-input v-model="reverseEngineeringForm.ddl" type="textarea" :rows="10"></el-input>
+          <el-input v-model="reverseEngineeringForm.ddl" type="textarea" :autosize="{ minRows: 10, maxRows: 1000}"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

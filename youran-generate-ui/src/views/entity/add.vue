@@ -45,7 +45,7 @@
           </el-form-item>
           <el-form-item label="描述" prop="desc">
             <help-popover name="entity.desc">
-              <el-input v-model="form.desc" type="textarea" :rows="2"></el-input>
+              <el-input v-model="form.desc" type="textarea" :autosize="{ minRows: 2, maxRows: 100}"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item>

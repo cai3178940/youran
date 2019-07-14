@@ -38,7 +38,9 @@ export function initDetailFormBean (forEdit) {
     // 枚举值
     detailValue: '',
     // 值描述
-    detailRemark: ''
+    detailRemark: '',
+    // 是否编辑
+    editFlag: true
   }
   if (forEdit) {
     formBean['constDetailId'] = null
