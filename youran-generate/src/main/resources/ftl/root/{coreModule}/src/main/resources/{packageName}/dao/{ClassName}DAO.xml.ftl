@@ -86,23 +86,32 @@
 
     <sql id="queryCondition">
     <#list this.queryFields as field>
-        <#--非between类型查询-->
-        <#if field.queryType!=QueryType.BETWEEN>
-        <if test="${field.jfieldName} != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName} !=''</#if> ">
-            <#if field.queryType==QueryType.LIKE>
-            <bind name="${field.jfieldName}_pattern" value="'%' + ${field.jfieldName} + '%'" />
-            and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} ${QueryType.mapperSymbol(field.queryType)} ${r'#'}{${field.jfieldName}_pattern}
-            <#else>
-            and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} ${QueryType.mapperSymbol(field.queryType)} ${r'#'}{${field.jfieldName}}
-            </#if>
-        </if>
-        <#else>
+        <#if field.queryType==QueryType.BETWEEN>
         <#--between类型查询-->
         <if test="${field.jfieldName}Start != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName}Start !=''</#if> ">
             and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} >= ${r'#'}{${field.jfieldName}Start}
         </if>
         <if test="${field.jfieldName}End != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName}End !=''</#if> ">
             and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} &lt;= ${r'#'}{${field.jfieldName}End}
+        </if>
+        <#elseIf field.queryType==QueryType.IN>
+        <#--in类型查询-->
+        <if test="${field.jfieldName} != null and ${field.jfieldName}.size() >0 ">
+            and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} in
+            <foreach collection="${field.jfieldName}" item="_value" open="(" separator="," close=")">
+            ${r'#'}{_value}
+            </foreach>
+        </if>
+        <#elseIf field.queryType==QueryType.LIKE>
+        <#--like类型查询-->
+        <if test="${field.jfieldName} != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName} !=''</#if> ">
+            <bind name="${field.jfieldName}_pattern" value="'%' + ${field.jfieldName} + '%'" />
+            and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} like ${r'#'}{${field.jfieldName}_pattern}
+        </if>
+        <#else>
+        <#--其他类型查询-->
+        <if test="${field.jfieldName} != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName} !=''</#if> ">
+            and t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} ${QueryType.mapperSymbol(field.queryType)} ${r'#'}{${field.jfieldName}}
         </if>
         </#if>
     </#list>

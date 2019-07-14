@@ -11,7 +11,11 @@
 <@call this.printClassCom("查询【${this.title}】的参数")/>
 public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<#else>AbstractQO</#if> {
 
-<#--定义宏-查询字段申明模块-->
+<#--定义宏-查询字段申明模块
+    field-字段对象
+    alias-字段别名
+    examplePackage-示例包路径
+-->
 <#macro queryField field alias="" examplePackage="">
     <#if alias?hasContent>
         <#assign jfieldName=alias>
@@ -31,7 +35,10 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     private ${field.jfieldType} ${jfieldName};
 
 </#macro>
-<#--定义宏-查询字段getter-setter模块-->
+<#--定义宏-查询字段getter-setter模块
+    field-字段对象
+    alias-字段别名
+-->
 <#macro queryMethod field alias="">
     <#if alias?hasContent>
         <#assign jfieldName=alias>
@@ -40,6 +47,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     </#if>
     <@call TemplateUtil.printGetterSetter("${jfieldName}" "${field.jfieldType}")/>
 </#macro>
+<#--开始渲染查询字段声明语句-->
 <#list this.queryFields as field>
     <#if field.queryType!=QueryType.BETWEEN>
         <@queryField field></@queryField>
@@ -48,6 +56,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         <@queryField field field.jfieldName+"End"></@queryField>
     </#if>
 </#list>
+<#--开始渲染级联扩展字段声明语句-->
 <#list this.fields as field>
     <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
         <#assign examplePackage="">
@@ -66,6 +75,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     </#if>
 </#list>
 
+<#--开始渲染排序条件声明语句-->
 <#list this.listSortFields as field>
     @ApiParam(value = "${field.fieldDesc}排序标识【1升序,-1降序,0不排序】",example = "1")
     private Integer ${field.jfieldName}SortSign;
@@ -73,6 +83,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 </#list>
 
 
+<#--开始渲染查询字段getter-setter方法-->
 <#list this.queryFields as field>
     <#if field.queryType!=QueryType.BETWEEN>
         <@queryMethod field></@queryMethod>
@@ -81,6 +92,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         <@queryMethod field field.jfieldName+"End"></@queryMethod>
     </#if>
 </#list>
+<#--开始渲染级联扩展字段getter-setter方法-->
 <#list this.fields as field>
     <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
         <#list field.cascadeQueryExts as cascadeExt>
@@ -94,6 +106,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         </#list>
     </#if>
 </#list>
+<#--开始渲染排序字段getter-setter方法-->
 <#list this.listSortFields as field>
     <@call TemplateUtil.printGetterSetter("${field.jfieldName}SortSign" "Integer")/>
 </#list>
