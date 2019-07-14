@@ -55,7 +55,7 @@ public class QueryType {
         return EQ == value || LIKE == value
             || GT == value || GE == value
             || LT == value || LE == value
-            || BETWEEN == value;
+            || BETWEEN == value || IN == value;
     }
 
     /**

@@ -166,6 +166,10 @@ export default {
     {
       value: 7,
       label: 'between'
+    },
+    {
+      value: 8,
+      label: 'in'
     }
   ],
   specialFieldOptions: [
