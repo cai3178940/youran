@@ -22,17 +22,25 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     <#else>
         <#assign jfieldName=field.jfieldName>
     </#if>
+    <#--查询方式：IN-->
+    <#if field.queryType==QueryType.IN>
+        <@call this.addImport("java.util.List")/>
+    @ApiParam(value = ${examplePackage}N_${field.jfieldName?upperCase})
+    private List<${field.jfieldType}> ${jfieldName};
+    <#else>
+    <#--其他查询方式-->
     @ApiParam(value = ${examplePackage}N_${field.jfieldName?upperCase},example = ${examplePackage}E_${field.jfieldName?upperCase})
-    <#if field.jfieldType==JFieldType.STRING.getJavaType()>
-        <@call this.addImport("org.hibernate.validator.constraints.Length")/>
+        <#if field.jfieldType==JFieldType.STRING.getJavaType()>
+            <@call this.addImport("org.hibernate.validator.constraints.Length")/>
     @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
-    <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
-        <@call this.addImport("java.util.Date")/>
-        <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
-        <@call this.addImport("${this.commonPackage}.constant.JsonFieldConst")/>
+        <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
+            <@call this.addImport("java.util.Date")/>
+            <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
+            <@call this.addImport("${this.commonPackage}.constant.JsonFieldConst")/>
     @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
-    </#if>
+        </#if>
     private ${field.jfieldType} ${jfieldName};
+    </#if>
 
 </#macro>
 <#--定义宏-查询字段getter-setter模块
@@ -45,7 +53,13 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     <#else>
         <#assign jfieldName=field.jfieldName>
     </#if>
-    <@call TemplateUtil.printGetterSetter("${jfieldName}" "${field.jfieldType}")/>
+    <#--查询方式：IN-->
+    <#if field.queryType==QueryType.IN>
+        <@call TemplateUtil.printGetterSetterList("${jfieldName}","${field.jfieldType}",false)/>
+    <#else>
+    <#--其他查询方式-->
+        <@call TemplateUtil.printGetterSetter("${jfieldName}","${field.jfieldType}")/>
+    </#if>
 </#macro>
 <#--开始渲染查询字段声明语句-->
 <#list this.queryFields as field>
@@ -108,7 +122,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 </#list>
 <#--开始渲染排序字段getter-setter方法-->
 <#list this.listSortFields as field>
-    <@call TemplateUtil.printGetterSetter("${field.jfieldName}SortSign" "Integer")/>
+    <@call TemplateUtil.printGetterSetter("${field.jfieldName}SortSign","Integer")/>
 </#list>
 }
 </#assign>

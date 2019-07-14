@@ -101,15 +101,27 @@ public class TemplateUtil {
      * @return
      */
     public static String printGetterSetterList(String jfieldName,String jfieldType){
+        return printGetterSetterList(jfieldName, jfieldType, true);
+    }
+
+    /**
+     * 打印gettersetter list方法
+     * @param jfieldName
+     * @param jfieldType
+     * @param listSuffix 字段名加List后置
+     * @return
+     */
+    public static String printGetterSetterList(String jfieldName,String jfieldType, boolean listSuffix){
         String cap = StringUtils.capitalize(jfieldName);
         String uncap = StringUtils.uncapitalize(jfieldName);
         StringBuilder sb = new StringBuilder();
-        sb.append("    public List<").append(jfieldType).append("> get").append(cap).append("List() {\n")
-            .append("        return this.").append(uncap).append("List;\n")
+        String suffix = listSuffix?"List":"";
+        sb.append("    public List<").append(jfieldType).append("> get").append(cap).append(suffix).append("() {\n")
+            .append("        return this.").append(uncap).append(suffix).append(";\n")
             .append("    }\n")
             .append("\n")
-            .append("    public void set").append(cap).append("List(List<").append(jfieldType).append("> ").append(uncap).append("List) {\n")
-            .append("        this.").append(uncap).append("List = ").append(uncap).append("List;\n")
+            .append("    public void set").append(cap).append(suffix).append("(List<").append(jfieldType).append("> ").append(uncap).append(suffix).append(") {\n")
+            .append("        this.").append(uncap).append(suffix).append(" = ").append(uncap).append(suffix).append(";\n")
             .append("    }\n\n");
         return sb.toString();
     }

@@ -63,7 +63,7 @@ public class ${this.classNameUpper}ShowVO extends AbstractVO {
 <#list this.fields as field>
     <#if field.cascadeShowExts?? && field.cascadeShowExts?size &gt; 0>
         <#list field.cascadeShowExts as cascadeExt>
-            <@call TemplateUtil.printGetterSetter(cascadeExt.alias cascadeExt.cascadeField.jfieldType)/>
+            <@call TemplateUtil.printGetterSetter(cascadeExt.alias,cascadeExt.cascadeField.jfieldType)/>
         </#list>
     </#if>
 </#list>
@@ -71,7 +71,7 @@ public class ${this.classNameUpper}ShowVO extends AbstractVO {
     <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherCName=otherEntity.className/>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <@call TemplateUtil.printGetterSetterList(othercName "${otherCName}ListVO")/>
+        <@call TemplateUtil.printGetterSetterList(othercName,"${otherCName}ListVO")/>
     </#list>
 </#if>
 
