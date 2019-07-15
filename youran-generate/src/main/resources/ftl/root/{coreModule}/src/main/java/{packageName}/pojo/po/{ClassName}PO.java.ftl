@@ -95,6 +95,12 @@ public class ${this.classNameUpper}PO extends AbstractPO${implementsStr} {
     <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
         <@call this.addImport("java.math.BigDecimal")/>
     </#if>
+    /**
+     * ${field.fieldComment}
+    <#if field.dicType??>
+     * @see ${this.getConstFullClassPath(field.dicType)}
+    </#if>
+     */
     private ${field.jfieldType} ${field.jfieldName};
 
 </#list>
