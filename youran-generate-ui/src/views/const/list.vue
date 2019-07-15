@@ -104,8 +104,7 @@
 import Vue from 'vue'
 import options from '@/components/options'
 import { apiPath } from '@/components/common'
-import { initDetailFormBean, getDetailRules } from './model'
-
+import { initDetailFormBean } from './model'
 
 const constDetailModel = initDetailFormBean(false)
 export default {
@@ -221,7 +220,7 @@ export default {
         this.$refs.constTable.toggleRowExpansion(otherRow, false)
         this.doDetailQuery(row.constId)
         this.expandedRow = row
-      }else if (expandedRows && expandedRows.length === 1 && this.expandedRow !== row) {
+      } else if (expandedRows && expandedRows.length === 1 && this.expandedRow !== row) {
         // 如果当前展开行等于1行，则加载枚举值列表
         this.doDetailQuery(expandedRows[0].constId)
         this.expandedRow = expandedRows[0]

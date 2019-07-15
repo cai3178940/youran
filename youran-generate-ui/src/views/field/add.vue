@@ -58,7 +58,8 @@
                     v-for="item in fieldTypeOptions"
                     :key="item.value"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                    :disabled="item.disabled">
                     <span style="float: left">{{ item.selectLabel }}</span>
                   </el-option>
                 </el-select>
@@ -233,7 +234,7 @@ export default {
   data () {
     return {
       boolOptions: options.boolOptions,
-      fieldTypeOptions: options.fieldTypeOptions,
+      fieldTypeOptions: options.getFieldTypeOptions(),
       jfieldTypeOptions: options.jfieldTypeOptions,
       queryTypeOptions: options.queryTypeOptions,
       specialFieldOptions: options.specialFieldOptions,
@@ -308,6 +309,9 @@ export default {
       }
       const typeObj = this.jfieldTypeOptions.find(obj => obj.value === value)
       if (typeObj && typeObj.allowFieldTypes) {
+        if (!typeObj.allowFieldTypes.includes(this.form.fieldType)) {
+          this.form.fieldType = typeObj.defaultFieldType
+        }
         this.fieldTypeOptions.forEach(fieldType => {
           if (typeObj.allowFieldTypes.includes(fieldType.value)) {
             fieldType.disabled = false

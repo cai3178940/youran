@@ -128,46 +128,55 @@ export default {
     {
       value: 'String',
       label: 'String',
+      defaultFieldType: 'varchar',
       allowFieldTypes: ['varchar', 'text']
     },
     {
       value: 'Integer',
       label: 'Integer',
+      defaultFieldType: 'int',
       allowFieldTypes: ['int', 'mediumint', 'smallint', 'tinyint']
     },
     {
       value: 'Short',
       label: 'Short',
+      defaultFieldType: 'smallint',
       allowFieldTypes: ['smallint']
     },
     {
       value: 'Long',
       label: 'Long',
+      defaultFieldType: 'bigint',
       allowFieldTypes: ['bigint']
     },
     {
       value: 'Date',
       label: 'Date',
+      defaultFieldType: 'datetime',
       allowFieldTypes: ['date', 'datetime']
     },
     {
       value: 'Double',
       label: 'Double',
+      defaultFieldType: 'double',
       allowFieldTypes: ['double', 'decimal']
     },
     {
       value: 'Float',
       label: 'Float',
+      defaultFieldType: 'float',
       allowFieldTypes: ['float', 'decimal']
     },
     {
       value: 'Boolean',
       label: 'Boolean',
+      defaultFieldType: 'tinyint',
       allowFieldTypes: ['tinyint']
     },
     {
       value: 'BigDecimal',
       label: 'BigDecimal',
+      defaultFieldType: 'decimal',
       allowFieldTypes: ['decimal']
     }
   ],

@@ -40,7 +40,7 @@
           </el-form-item>
           <el-form-item label="java字段类型" prop="jfieldType">
             <help-popover name="field.jfieldType">
-              <el-select v-model="form.jfieldType" style="width:100%;" filterable placeholder="请选择">
+              <el-select v-model="form.jfieldType" @change="jfieldTypeChange" style="width:100%;" filterable placeholder="请选择">
                 <el-option
                   v-for="item in jfieldTypeOptions"
                   :key="item.value"
@@ -58,7 +58,8 @@
                     v-for="item in fieldTypeOptions"
                     :key="item.value"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                    :disabled="item.disabled">
                     <span style="float: left">{{ item.selectLabel }}</span>
                   </el-option>
                 </el-select>
@@ -231,7 +232,7 @@ export default {
   data () {
     return {
       boolOptions: options.boolOptions,
-      fieldTypeOptions: options.fieldTypeOptions,
+      fieldTypeOptions: options.getFieldTypeOptions(),
       jfieldTypeOptions: options.jfieldTypeOptions,
       queryTypeOptions: options.queryTypeOptions,
       specialFieldOptions: options.specialFieldOptions,
@@ -296,6 +297,28 @@ export default {
     }
   },
   methods: {
+    /**
+     * java字段类型变化后，
+     */
+    jfieldTypeChange (value) {
+      if (!value) {
+        this.fieldTypeOptions = options.getFieldTypeOptions()
+        return
+      }
+      const typeObj = this.jfieldTypeOptions.find(obj => obj.value === value)
+      if (typeObj && typeObj.allowFieldTypes) {
+        if (!typeObj.allowFieldTypes.includes(this.form.fieldType)) {
+          this.form.fieldType = typeObj.defaultFieldType
+        }
+        this.fieldTypeOptions.forEach(fieldType => {
+          if (typeObj.allowFieldTypes.includes(fieldType.value)) {
+            fieldType.disabled = false
+          } else {
+            fieldType.disabled = true
+          }
+        })
+      }
+    },
     /**
      * mysql字段类型变化后，触发字段长度变化
      * 这里没有用watch是为了首次加载不调用
