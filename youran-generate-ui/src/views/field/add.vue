@@ -40,7 +40,7 @@
           </el-form-item>
           <el-form-item label="java字段类型" prop="jfieldType">
             <help-popover name="field.jfieldType">
-              <el-select v-model="form.jfieldType" style="width:100%;" filterable placeholder="请选择">
+              <el-select v-model="form.jfieldType" @change="jfieldTypeChange" style="width:100%;" filterable placeholder="请选择">
                 <el-option
                   v-for="item in jfieldTypeOptions"
                   :key="item.value"
@@ -297,6 +297,25 @@ export default {
     }
   },
   methods: {
+    /**
+     * java字段类型变化后，
+     */
+    jfieldTypeChange (value) {
+      if (!value) {
+        this.fieldTypeOptions = options.getFieldTypeOptions()
+        return
+      }
+      const typeObj = this.jfieldTypeOptions.find(obj => obj.value === value)
+      if (typeObj && typeObj.allowFieldTypes) {
+        this.fieldTypeOptions.forEach(fieldType => {
+          if (typeObj.allowFieldTypes.includes(fieldType.value)) {
+            fieldType.disabled = false
+          } else {
+            fieldType.disabled = true
+          }
+        })
+      }
+    },
     /**
      * mysql字段类型变化后，触发字段长度变化
      * 这里没有用watch是为了首次加载不调用

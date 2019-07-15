@@ -1,3 +1,85 @@
+function getFieldTypeOptions () {
+  return [
+    {
+      value: 'int',
+      label: 'INT',
+      selectLabel: 'INT(11)',
+      fieldLength: 11,
+      disabled: false
+    },
+    {
+      value: 'varchar',
+      label: 'VARCHAR',
+      selectLabel: 'VARCHAR',
+      disabled: false
+    },
+    {
+      value: 'text',
+      label: 'TEXT',
+      selectLabel: 'TEXT',
+      disabled: false
+    },
+    {
+      value: 'date',
+      label: 'DATE',
+      selectLabel: 'DATE',
+      disabled: false
+    },
+    {
+      value: 'datetime',
+      label: 'DATETIME',
+      selectLabel: 'DATETIME',
+      disabled: false
+    },
+    {
+      value: 'float',
+      label: 'FLOAT',
+      selectLabel: 'FLOAT',
+      disabled: false
+    },
+    {
+      value: 'double',
+      label: 'DOUBLE',
+      selectLabel: 'DOUBLE',
+      disabled: false
+    },
+    {
+      value: 'decimal',
+      label: 'DECIMAL',
+      selectLabel: 'DECIMAL',
+      disabled: false
+    },
+    {
+      value: 'bigint',
+      label: 'BIGINT',
+      selectLabel: 'BIGINT(20)',
+      fieldLength: 20,
+      disabled: false
+    },
+    {
+      value: 'mediumint',
+      label: 'MEDIUMINT',
+      selectLabel: 'MEDIUMINT(9)',
+      fieldLength: 9,
+      disabled: false
+    },
+    {
+      value: 'smallint',
+      label: 'SMALLINT',
+      selectLabel: 'SMALLINT(6)',
+      fieldLength: 6,
+      disabled: false
+    },
+    {
+      value: 'tinyint',
+      label: 'TINYINT',
+      selectLabel: 'TINYINT(4)',
+      fieldLength: 4,
+      disabled: false
+    }
+  ]
+}
+
 export default {
 
   // 布尔枚举
@@ -11,74 +93,16 @@ export default {
       label: '否'
     }
   ],
-
-  fieldTypeOptions: [
-    {
-      value: 'int',
-      label: 'INT',
-      selectLabel: 'INT(11)',
-      fieldLength: 11
-    },
-    {
-      value: 'varchar',
-      label: 'VARCHAR',
-      selectLabel: 'VARCHAR'
-    },
-    {
-      value: 'text',
-      label: 'TEXT',
-      selectLabel: 'TEXT'
-    },
-    {
-      value: 'date',
-      label: 'DATE',
-      selectLabel: 'DATE'
-    },
-    {
-      value: 'datetime',
-      label: 'DATETIME',
-      selectLabel: 'DATETIME'
-    },
-    {
-      value: 'float',
-      label: 'FLOAT',
-      selectLabel: 'FLOAT'
-    },
-    {
-      value: 'double',
-      label: 'DOUBLE',
-      selectLabel: 'DOUBLE'
-    },
-    {
-      value: 'decimal',
-      label: 'DECIMAL',
-      selectLabel: 'DECIMAL'
-    },
-    {
-      value: 'bigint',
-      label: 'BIGINT',
-      selectLabel: 'BIGINT(20)',
-      fieldLength: 20
-    },
-    {
-      value: 'mediumint',
-      label: 'MEDIUMINT',
-      selectLabel: 'MEDIUMINT(9)',
-      fieldLength: 9
-    },
-    {
-      value: 'smallint',
-      label: 'SMALLINT',
-      selectLabel: 'SMALLINT(6)',
-      fieldLength: 6
-    },
-    {
-      value: 'tinyint',
-      label: 'TINYINT',
-      selectLabel: 'TINYINT(4)',
-      fieldLength: 4
-    }
-  ],
+  /**
+   * 获取新的字段类型
+   */
+  getFieldTypeOptions () {
+    return getFieldTypeOptions()
+  },
+  /**
+   * 获取字段类型常量
+   */
+  fieldTypeOptions: getFieldTypeOptions(),
   /**
    * 根据字段类型判断是否需要显示长度
    * @param fieldType
@@ -103,39 +127,48 @@ export default {
   jfieldTypeOptions: [
     {
       value: 'String',
-      label: 'String'
+      label: 'String',
+      allowFieldTypes: ['varchar', 'text']
     },
     {
       value: 'Integer',
-      label: 'Integer'
+      label: 'Integer',
+      allowFieldTypes: ['int', 'mediumint', 'smallint', 'tinyint']
     },
     {
       value: 'Short',
-      label: 'Short'
+      label: 'Short',
+      allowFieldTypes: ['smallint']
     },
     {
       value: 'Long',
-      label: 'Long'
+      label: 'Long',
+      allowFieldTypes: ['bigint']
     },
     {
       value: 'Date',
-      label: 'Date'
+      label: 'Date',
+      allowFieldTypes: ['date', 'datetime']
     },
     {
       value: 'Double',
-      label: 'Double'
+      label: 'Double',
+      allowFieldTypes: ['double', 'decimal']
     },
     {
       value: 'Float',
-      label: 'Float'
+      label: 'Float',
+      allowFieldTypes: ['float', 'decimal']
     },
     {
       value: 'Boolean',
-      label: 'Boolean'
+      label: 'Boolean',
+      allowFieldTypes: ['tinyint']
     },
     {
       value: 'BigDecimal',
-      label: 'BigDecimal'
+      label: 'BigDecimal',
+      allowFieldTypes: ['decimal']
     }
   ],
   queryTypeOptions: [
