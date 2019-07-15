@@ -96,7 +96,7 @@ public class ${this.classNameUpper}PO extends AbstractPO${implementsStr} {
         <@call this.addImport("java.math.BigDecimal")/>
     </#if>
     /**
-     * ${field.fieldComment}
+${MetadataUtil.convertCommentDisplayWithIndentStar(field.fieldComment)}
     <#if field.dicType??>
      * @see ${this.getConstFullClassPath(field.dicType)}
     </#if>

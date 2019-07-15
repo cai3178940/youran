@@ -87,7 +87,7 @@ public class MetaQueryAssembleService {
         MetaConstPO metaConst = metaConstService.getConst(constId,true);
         List<MetaConstDetailPO> detailList = metaConstDetailService.findByConstId(constId);
         if (CollectionUtils.isEmpty(detailList)) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"常量无对应常量值，constId=" + constId);
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"枚举【"+metaConst.getConstName()+"】缺少枚举值");
         }
         metaConst.setDetailList(detailList);
         return metaConst;

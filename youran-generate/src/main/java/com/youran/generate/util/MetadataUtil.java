@@ -258,7 +258,28 @@ public class MetadataUtil {
             return "";
         }
         return comment.replaceAll("\'","\"")
-            .replaceAll("\n","\\n");
+            .replaceAll("\n","");
+    }
+
+    /**
+     * 转换【备注】展示，增加缩进星号
+     * @param comment
+     * @return
+     */
+    public static String convertCommentDisplayWithIndentStar(String comment){
+        if(StringUtils.isBlank(comment)){
+            return "     *";
+        }
+        String[] lines = comment.split("\n");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+            sb.append("     * ").append(line);
+            if(i<lines.length-1){
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
     }
 
     /**
