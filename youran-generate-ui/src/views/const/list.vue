@@ -32,14 +32,36 @@
         <template slot-scope="scope">
           <el-table class="detailTable" :data="detailList" v-loading="detailLoading" :show-header="false">
             <el-table-column width="100"></el-table-column>
-            <el-table-column property="detailRemark" label="备注" width="250"></el-table-column>
-            <el-table-column property="detailName" label="枚举字段名" width="250"></el-table-column>
-            <el-table-column property="detailValue" label="枚举值"></el-table-column>
+            <el-table-column label="枚举值描述" width="250">
+              <template slot-scope="detail">
+                <span v-if="!detail.row.editFlag">{{ detail.row.detailRemark }}</span>
+                <span v-if="detail.row.editFlag">
+                  <el-input v-model="detail.row.detailRemark" placeholder="值描述，如：女"></el-input>
+                </span>
+              </template>
+            </el-table-column>
+            <el-table-column label="枚举字段名" width="250">
+              <template slot-scope="detail">
+                <span v-if="!detail.row.editFlag">{{ detail.row.detailName }}</span>
+                <span v-if="detail.row.editFlag">
+                  <el-input v-model="detail.row.detailName" @change="detailNameChange(detail.row)" placeholder="字段名，如：WOMAN"></el-input>
+                </span>
+              </template>
+            </el-table-column>
+            <el-table-column label="枚举值">
+              <template slot-scope="detail">
+                <span v-if="!detail.row.editFlag">{{ detail.row.detailValue }}</span>
+                <span v-if="detail.row.editFlag">
+                  <el-input v-model="detail.row.detailValue" placeholder="枚举值，如：2"></el-input>
+                </span>
+              </template>
+            </el-table-column>
             <el-table-column
               label="操作"
               width="150">
               <template slot-scope="detail">
-                <el-button @click="handleDetailEdit(scope.row,detail.row)" type="text" size="medium">编辑</el-button>
+                <el-button v-if="!detail.row.editFlag" @click="handleDetailEdit(detail.row)" type="text" size="medium">编辑</el-button>
+                <el-button v-if="detail.row.editFlag" @click="handleDetailSave(detail.row)" type="text" size="medium">保存</el-button>
                 <el-button @click="handleDetailDel(scope.row,detail.row)" type="text" size="medium">删除</el-button>
               </template>
             </el-table-column>
@@ -58,10 +80,8 @@
         label="操作"
         width="150">
         <template slot-scope="scope">
-          <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
-          <el-button @click="handleDetailAdd(scope.row)" type="text" size="medium">添加枚举值</el-button>
-          <!--<el-button @click="handleConstDetail(scope.row)" type="text" size="medium">枚举值管理</el-button>-->
+          <el-button :disabled="expandedRow!==scope.row" @click="handleDetailAdd(scope.row)" type="text" size="medium">添加枚举值</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -81,9 +101,13 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import options from '@/components/options'
 import { apiPath } from '@/components/common'
+import { initDetailFormBean, getDetailRules } from './model'
 
+
+const constDetailModel = initDetailFormBean(false)
 export default {
   name: 'constList',
   props: ['projectId', 'constId'],
@@ -192,11 +216,13 @@ export default {
     expandChange (row, expandedRows) {
       // 如果当前展开大于1行，则将另一行关闭
       if (expandedRows && expandedRows.length > 1) {
+        this.detailList = []
         const otherRow = expandedRows.find(r => r !== row)
         this.$refs.constTable.toggleRowExpansion(otherRow, false)
-      }
-      // 如果当前展开行等于1行，则加载枚举值列表
-      if (expandedRows && expandedRows.length === 1 && this.expandedRow !== row) {
+        this.doDetailQuery(row.constId)
+        this.expandedRow = row
+      }else if (expandedRows && expandedRows.length === 1 && this.expandedRow !== row) {
+        // 如果当前展开行等于1行，则加载枚举值列表
         this.doDetailQuery(expandedRows[0].constId)
         this.expandedRow = expandedRows[0]
       }
@@ -216,10 +242,46 @@ export default {
         .finally(() => { this.detailLoading = false })
     },
     handleDetailAdd (row) {
-      this.$router.push(`/project/${this.projectId}/const/${row.constId}/constDetailAdd`)
+      const newRow = Object.assign({}, constDetailModel, {
+        constId: row.constId
+      })
+      this.detailList.unshift(newRow)
     },
-    handleDetailEdit (theConst, detail) {
-      this.$router.push(`/project/${this.projectId}/const/${theConst.constId}/constDetailEdit/${detail.constDetailId}`)
+    handleDetailEdit (detail) {
+      Vue.set(detail, 'editFlag', true)
+    },
+    handleDetailSave (detail) {
+      let saveURL = `/${apiPath}/meta_const_detail/save`
+      let method = 'post'
+      if (detail.constDetailId) {
+        saveURL = `/${apiPath}/meta_const_detail/update`
+        method = 'put'
+      }
+      const loading = this.$loading()
+      // 提交
+      this.$ajax[method](saveURL, detail)
+      // 校验返回结果
+        .then(response => this.$common.checkResult(response))
+        // 执行页面跳转
+        .then(data => {
+          this.$common.showMsg('success', '保存成功')
+          if (!detail.constDetailId) {
+            detail.constDetailId = data.constDetailId
+          }
+          return this.$ajax.get(`/${apiPath}/meta_const_detail/${detail.constDetailId}`)
+        })
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          Object.assign(detail, data, {
+            editFlag: false
+          })
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
     },
     handleDetailDel (theConst, detail) {
       this.$common.confirm('是否确认删除枚举值')
@@ -227,6 +289,17 @@ export default {
         .then(response => this.$common.checkResult(response))
         .then(() => this.doDetailQuery(theConst.constId))
         .catch(error => this.$common.showNotifyError(error))
+    },
+    /**
+     * 枚举字段名变更事件
+     * @param detail
+     * @returns {Function}
+     */
+    detailNameChange (detail) {
+      const lc = /[a-z]/i
+      if (lc.test(detail.detailName)) {
+        detail.detailName = detail.detailName.toUpperCase()
+      }
     }
   },
   activated () {

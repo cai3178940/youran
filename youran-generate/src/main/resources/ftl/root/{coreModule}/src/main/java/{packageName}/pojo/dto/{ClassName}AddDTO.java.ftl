@@ -50,7 +50,7 @@ public class ${this.classNameUpper}AddDTO extends AbstractDTO {
     <#list this.metaEntity.mtmHoldRefers as otherEntity>
         <#assign otherPk=otherEntity.pkField>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <@call TemplateUtil.printGetterSetterList(othercName otherPk.jfieldType)/>
+        <@call TemplateUtil.printGetterSetterList(othercName,otherPk.jfieldType)/>
     </#list>
 </#if>
 }

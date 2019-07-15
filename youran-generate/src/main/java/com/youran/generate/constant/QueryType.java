@@ -38,6 +38,12 @@ public class QueryType {
      * between
      */
     public static final int BETWEEN = 7;
+    /**
+     * in
+     */
+    public static final int IN = 8;
+
+
 
     /**
      * 字符串使用模糊查询的长度阈值
@@ -49,7 +55,7 @@ public class QueryType {
         return EQ == value || LIKE == value
             || GT == value || GE == value
             || LT == value || LE == value
-            || BETWEEN == value;
+            || BETWEEN == value || IN == value;
     }
 
     /**
@@ -73,6 +79,8 @@ public class QueryType {
                 return "&lt;=";
             case BETWEEN:
                 return "between";
+            case IN:
+                return "in";
             default:
                 return null;
         }

@@ -37,14 +37,15 @@
           </el-form-item>
           <el-form-item label="分页" prop="pageSign">
             <help-popover name="entity.pageSign">
-              <el-radio-group v-model="form.pageSign">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
-              </el-radio-group>
+              <el-switch v-model="form.pageSign"
+                         :active-value="1"
+                         :inactive-value="0">
+              </el-switch>
             </help-popover>
           </el-form-item>
           <el-form-item label="描述" prop="desc">
             <help-popover name="entity.desc">
-              <el-input v-model="form.desc" type="textarea" :rows="2"></el-input>
+              <el-input v-model="form.desc" type="textarea" :autosize="{ minRows: 2, maxRows: 100}"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item>
