@@ -10,7 +10,7 @@
 public class ${this.classNameUpper}ListVO extends AbstractVO {
 
 <#list this.listFields as field>
-    @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase})
+    @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase}<#if field.dicType??>, dataType = "${this.getConstFullClassPath(field.dicType)}"</#if>)
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
         <@call this.addImport("java.util.Date")/>
         <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
@@ -30,7 +30,7 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
             <#if field.foreignEntity!=this.metaEntity>
                 <#assign examplePackage="${this.packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example.">
             </#if>
-    @ApiModelProperty(notes = ${examplePackage}N_${cascadeField.jfieldName?upperCase},example = ${examplePackage}E_${cascadeField.jfieldName?upperCase})
+    @ApiModelProperty(notes = ${examplePackage}N_${cascadeField.jfieldName?upperCase},example = ${examplePackage}E_${cascadeField.jfieldName?upperCase}<#if cascadeField.dicType??>, dataType = "${this.getConstFullClassPath(cascadeField.dicType)}"</#if>)
             <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
                 <@call this.addImport("java.util.Date")/>
                 <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
