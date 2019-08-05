@@ -300,7 +300,7 @@ export default {
   },
   methods: {
     /**
-     * java字段类型变化后，
+     * java字段类型变化后
      */
     jfieldTypeChange (value) {
       if (!value) {
@@ -310,8 +310,13 @@ export default {
       const typeObj = this.jfieldTypeOptions.find(obj => obj.value === value)
       if (typeObj && typeObj.allowFieldTypes) {
         if (!typeObj.allowFieldTypes.includes(this.form.fieldType)) {
+          // 设置默认字段类型
           this.form.fieldType = typeObj.defaultFieldType
+          // 查找默认字段类型，并设置默认长度
+          const defaultField = this.fieldTypeOptions.find(fieldType => fieldType.value === typeObj.defaultFieldType)
+          this.form.fieldLength = defaultField.fieldLength
         }
+        // 下拉列表项设置是否可选
         this.fieldTypeOptions.forEach(fieldType => {
           if (typeObj.allowFieldTypes.includes(fieldType.value)) {
             fieldType.disabled = false
