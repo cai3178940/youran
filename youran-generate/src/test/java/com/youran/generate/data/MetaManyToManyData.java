@@ -1,6 +1,7 @@
 package com.youran.generate.data;
 
 
+import com.youran.common.util.SafeUtil;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
@@ -29,6 +30,13 @@ public class MetaManyToManyData {
         dto.setTableName(E_TABLENAME);
         dto.setSchemaName(E_SCHEMANAME);
         dto.setDesc(E_DESC);
+        dto.setEntityIdField1(E_ENTITYIDFIELD1);
+        dto.setEntityIdField2(E_ENTITYIDFIELD2);
+        dto.setNeedId(SafeUtil.getBoolean(E_NEEDID));
+        dto.setBigId(SafeUtil.getBoolean(E_BIGID));
+        dto.setSorted(SafeUtil.getBoolean(E_SORTED));
+        dto.setSortField(E_SORTFIELD);
+
         return dto;
     }
 
@@ -48,6 +56,12 @@ public class MetaManyToManyData {
         dto.setTableName(metaManyToMany.getTableName());
         dto.setSchemaName(metaManyToMany.getSchemaName());
         dto.setDesc(metaManyToMany.getDesc());
+        dto.setEntityIdField1(metaManyToMany.getEntityIdField1());
+        dto.setEntityIdField2(metaManyToMany.getEntityIdField2());
+        dto.setNeedId(metaManyToMany.getNeedId());
+        dto.setBigId(metaManyToMany.getBigId());
+        dto.setSorted(metaManyToMany.getSorted());
+        dto.setSortField(metaManyToMany.getSortField());
         return dto;
     }
 

@@ -28,5 +28,17 @@ public class MetaManyToManyExample extends AbstractExample {
     public static final String E_HOLDREFER1 = "1";
     public static final String N_HOLDREFER2 = "实体B是否持有A的引用";
     public static final String E_HOLDREFER2 = "1";
+    public static final String N_ENTITYIDFIELD1 = "实体A对应多对多关联表的id字段名";
+    public static final String E_ENTITYIDFIELD1 = "id_1";
+    public static final String N_ENTITYIDFIELD2 = "实体B对应多对多关联表的id字段名";
+    public static final String E_ENTITYIDFIELD2 = "id_2";
+    public static final String N_NEEDID = "是否需要自增id字段";
+    public static final String E_NEEDID = "true";
+    public static final String N_BIGID = "id字段是否bigint";
+    public static final String E_BIGID = "true";
+    public static final String N_SORTED = "是否需要排序";
+    public static final String E_SORTED = "true";
+    public static final String N_SORTFIELD = "排序字段名";
+    public static final String E_SORTFIELD = "order_no";
 
 }

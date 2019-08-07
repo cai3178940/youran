@@ -59,7 +59,7 @@
         <#list this.fields as field>
             <#if field.specialField?? && field.specialField==MetaSpecialField.VERSION>
             ${MetadataUtil.wrapMysqlKeyword(field.fieldName)} = ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}+1<#if field_has_next>,</#if>
-            <#else>
+            <#elseIf isFalse(field.primaryKey) && !MetaSpecialField.isCreatedBy(field.specialField)  && !MetaSpecialField.isCreatedTime(field.specialField) >
             ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}=${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>
             </#if>
         </#list>

@@ -78,9 +78,9 @@ public class ErDiagramController extends AbstractController implements ErDiagram
                     type = FieldDiagramVO.PRIMARY_KEY;
                 }else if(field.getForeignKey() == BoolConst.TRUE){
                     type = FieldDiagramVO.FOREIGN_KEY;
-                }else if(MetaSpecialField.VERSION.equals(field.getSpecialField())){
+                }else if(MetaSpecialField.isVersion(field.getSpecialField())){
                     type = FieldDiagramVO.VERSION;
-                }else if(MetaSpecialField.DELETED.equals(field.getSpecialField())){
+                }else if(MetaSpecialField.isDeleted(field.getSpecialField())){
                     type = FieldDiagramVO.DELETE;
                 }
                 entityDiagramVO.addField(field.getFieldName(),type,field.getFieldDesc());

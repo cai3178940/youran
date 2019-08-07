@@ -28,4 +28,31 @@ public class MetaSpecialField {
             || CREATED_BY.equals(value) || OPERATED_TIME.equals(value)
             || OPERATED_BY.equals(value) || VERSION.equals(value);
     }
+
+    public static final boolean isCreatedBy(String value){
+        return CREATED_BY.equals(value);
+    }
+
+    public static final boolean isCreatedTime(String value){
+        return OPERATED_TIME.equals(value);
+    }
+
+    public static final boolean isOperatedBy(String value){
+        return OPERATED_BY.equals(value);
+    }
+
+    public static final boolean isOperatedTime(String value){
+        return OPERATED_TIME.equals(value);
+    }
+
+    public static final boolean isVersion(String value){
+        return VERSION.equals(value);
+    }
+
+    public static final boolean isDeleted(String value){
+        return DELETED.equals(value);
+    }
+
+
+
 }

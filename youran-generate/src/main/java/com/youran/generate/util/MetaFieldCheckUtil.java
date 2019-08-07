@@ -22,32 +22,32 @@ public class MetaFieldCheckUtil {
      */
     public static void checkFieldPO(MetaFieldPO metaField){
         String specialField = metaField.getSpecialField();
-        if (MetaSpecialField.DELETED.equals(specialField)) {
+        if (MetaSpecialField.isDeleted(specialField)) {
             if (!Objects.equals(metaField.getJfieldType(), JFieldType.BOOLEAN.getJavaType())) {
                 throw new BusinessException(ErrorCode.BAD_PARAMETER,"逻辑删除字段必须是Boolean类型");
             }
         }
-        if (MetaSpecialField.VERSION.equals(specialField)) {
+        if (MetaSpecialField.isVersion(specialField)) {
             if (!Objects.equals(metaField.getJfieldType(), JFieldType.INTEGER.getJavaType())) {
                 throw new BusinessException(ErrorCode.BAD_PARAMETER,"乐观锁版本字段必须是Integer类型");
             }
         }
-        if (MetaSpecialField.CREATED_BY.equals(specialField)) {
+        if (MetaSpecialField.isCreatedBy(specialField)) {
             if (!Objects.equals(metaField.getJfieldType(), JFieldType.STRING.getJavaType())) {
                 throw new BusinessException(ErrorCode.BAD_PARAMETER,"创建人员字段必须是String类型");
             }
         }
-        if (MetaSpecialField.OPERATED_BY.equals(specialField)) {
+        if (MetaSpecialField.isOperatedBy(specialField)) {
             if (!Objects.equals(metaField.getJfieldType(), JFieldType.STRING.getJavaType())) {
                 throw new BusinessException(ErrorCode.BAD_PARAMETER,"更新人员字段必须是String类型");
             }
         }
-        if (MetaSpecialField.CREATED_TIME.equals(specialField)) {
+        if (MetaSpecialField.isCreatedTime(specialField)) {
             if (!Objects.equals(metaField.getJfieldType(), JFieldType.DATE.getJavaType())) {
                 throw new BusinessException(ErrorCode.BAD_PARAMETER,"创建时间字段必须是Date类型");
             }
         }
-        if (MetaSpecialField.OPERATED_TIME.equals(specialField)) {
+        if (MetaSpecialField.isOperatedTime(specialField)) {
             if (!Objects.equals(metaField.getJfieldType(), JFieldType.DATE.getJavaType())) {
                 throw new BusinessException(ErrorCode.BAD_PARAMETER,"更新时间字段必须是Date类型");
             }

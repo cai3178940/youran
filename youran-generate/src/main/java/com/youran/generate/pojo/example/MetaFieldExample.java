@@ -39,9 +39,9 @@ public class MetaFieldExample extends AbstractExample {
     public static final String N_INSERT = "是否新增字段";
     public static final String E_INSERT = "0";
     public static final String N_JFIELDNAME = "java字段名称";
-    public static final String E_JFIELDNAME = "id";
+    public static final String E_JFIELDNAME = "deleted";
     public static final String N_JFIELDTYPE = "java字段类型";
-    public static final String E_JFIELDTYPE = "Integer";
+    public static final String E_JFIELDTYPE = "Boolean";
     public static final String N_LIST = "是否列表字段";
     public static final String E_LIST = "1";
     public static final String N_LIST_SORT = "是否支持排序";
@@ -51,7 +51,7 @@ public class MetaFieldExample extends AbstractExample {
     public static final String N_ORDERNO = "排序号";
     public static final String E_ORDERNO = "1";
     public static final String N_PRIMARYKEY = "是否主键";
-    public static final String E_PRIMARYKEY = "1";
+    public static final String E_PRIMARYKEY = "0";
     public static final String N_FOREIGNKEY = "是否外键";
     public static final String E_FOREIGNKEY = "0";
     public static final String N_FOREIGNENTITYID = "外键实体id";

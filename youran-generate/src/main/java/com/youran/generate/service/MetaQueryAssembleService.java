@@ -126,17 +126,17 @@ public class MetaQueryAssembleService {
             String specialField = metaField.getSpecialField();
             if (BoolConst.TRUE == metaField.getPrimaryKey()) {
                 metaEntity.setPkField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.DELETED)) {
+            } else if (MetaSpecialField.isDeleted(specialField)) {
                 metaEntity.setDelField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.CREATED_BY)) {
+            } else if (MetaSpecialField.isCreatedBy(specialField)) {
                 metaEntity.setCreatedByField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.CREATED_TIME)) {
+            } else if (MetaSpecialField.isCreatedTime(specialField)) {
                 metaEntity.setCreatedTimeField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.OPERATED_BY)) {
+            } else if (MetaSpecialField.isOperatedBy(specialField)) {
                 metaEntity.setOperatedByField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.OPERATED_TIME)) {
+            } else if (MetaSpecialField.isOperatedTime(specialField)) {
                 metaEntity.setOperatedTimeField(metaField);
-            } else if (Objects.equals(specialField, MetaSpecialField.VERSION)) {
+            } else if (MetaSpecialField.isVersion(specialField)) {
                 metaEntity.setVersionField(metaField);
             }
             if (BoolConst.TRUE == metaField.getQuery()) {
@@ -347,17 +347,17 @@ public class MetaQueryAssembleService {
                         throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】的主键【"+field.getFieldDesc()+"】不可以是特殊字段");
                     }
                 }
-                if (Objects.equals(specialField, MetaSpecialField.DELETED)) {
+                if (MetaSpecialField.isDeleted(specialField)) {
                     deletedCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.CREATED_BY)) {
+                } else if (MetaSpecialField.isCreatedBy(specialField)) {
                     createdByCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.CREATED_TIME)) {
+                } else if (MetaSpecialField.isCreatedTime(specialField)) {
                     createdTimeCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.OPERATED_BY)) {
+                } else if (MetaSpecialField.isOperatedBy(specialField)) {
                     operatedByCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.OPERATED_TIME)) {
+                } else if (MetaSpecialField.isOperatedTime(specialField)) {
                     operatedTimeCount++;
-                } else if (Objects.equals(specialField, MetaSpecialField.VERSION)) {
+                } else if (MetaSpecialField.isVersion(specialField)) {
                     versionCount++;
                 }
 

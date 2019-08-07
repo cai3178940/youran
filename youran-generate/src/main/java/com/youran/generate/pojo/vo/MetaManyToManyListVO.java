@@ -40,6 +40,46 @@ public class MetaManyToManyListVO extends AbstractVO {
     @ApiModelProperty(notes = N_HOLDREFER2, example = E_HOLDREFER2)
     private Integer holdRefer2;
 
+    /**
+     * 实体A对应多对多关联表的id字段名
+     * 2019-08-07新增
+     */
+    @ApiModelProperty(notes = N_ENTITYIDFIELD1, example = E_ENTITYIDFIELD1)
+    private String entityIdField1;
+
+    /**
+     * 实体B对应多对多关联表的id字段名
+     * 2019-08-07新增
+     */
+    @ApiModelProperty(notes = N_ENTITYIDFIELD2, example = E_ENTITYIDFIELD2)
+    private String entityIdField2;
+
+    /**
+     * 是否需要自增id字段
+     * 2019-08-07新增
+     */
+    @ApiModelProperty(notes = N_NEEDID, example = E_NEEDID)
+    private Boolean needId;
+    /**
+     * id字段是否bigint
+     * 2019-08-07新增
+     */
+    @ApiModelProperty(notes = N_BIGID, example = E_BIGID)
+    private Boolean bigId;
+    /**
+     * 是否需要排序
+     * 2019-08-07新增
+     */
+    @ApiModelProperty(notes = N_SORTED, example = E_SORTED)
+    private Boolean sorted;
+    /**
+     * 排序字段名
+     * 2019-08-07新增
+     */
+    @ApiModelProperty(notes = N_SORTFIELD, example = E_SORTFIELD)
+    private String sortField;
+
+
     public String getTableName() {
         return tableName;
     }
@@ -112,6 +152,54 @@ public class MetaManyToManyListVO extends AbstractVO {
         this.desc = desc;
     }
 
+    public String getEntityIdField1() {
+        return entityIdField1;
+    }
+
+    public void setEntityIdField1(String entityIdField1) {
+        this.entityIdField1 = entityIdField1;
+    }
+
+    public String getEntityIdField2() {
+        return entityIdField2;
+    }
+
+    public void setEntityIdField2(String entityIdField2) {
+        this.entityIdField2 = entityIdField2;
+    }
+
+    public Boolean getNeedId() {
+        return needId;
+    }
+
+    public void setNeedId(Boolean needId) {
+        this.needId = needId;
+    }
+
+    public Boolean getBigId() {
+        return bigId;
+    }
+
+    public void setBigId(Boolean bigId) {
+        this.bigId = bigId;
+    }
+
+    public Boolean getSorted() {
+        return sorted;
+    }
+
+    public void setSorted(Boolean sorted) {
+        this.sorted = sorted;
+    }
+
+    public String getSortField() {
+        return sortField;
+    }
+
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
@@ -124,6 +212,12 @@ public class MetaManyToManyListVO extends AbstractVO {
             .append("entityId2", entityId2)
             .append("holdRefer1", holdRefer1)
             .append("holdRefer2", holdRefer2)
+            .append("entityIdField1", entityIdField1)
+            .append("entityIdField2", entityIdField2)
+            .append("needId", needId)
+            .append("bigId", bigId)
+            .append("sorted", sorted)
+            .append("sortField", sortField)
             .toString();
     }
 }

@@ -32,7 +32,6 @@ public class MetaManyToManyPO extends BasePO {
      * 实体A的id
      */
     private Integer entityId1;
-
     /**
      * 实体B的id
      */
@@ -46,6 +45,39 @@ public class MetaManyToManyPO extends BasePO {
      * 实体B是否持有A引用
      */
     private Integer holdRefer2;
+
+    /**
+     * 实体A对应多对多关联表的id字段名
+     * 2019-08-07新增
+     */
+    private String entityIdField1;
+
+    /**
+     * 实体B对应多对多关联表的id字段名
+     * 2019-08-07新增
+     */
+    private String entityIdField2;
+
+    /**
+     * 是否需要自增id字段
+     * 2019-08-07新增
+     */
+    private Boolean needId;
+    /**
+     * id字段是否bigint
+     * 2019-08-07新增
+     */
+    private Boolean bigId;
+    /**
+     * 是否需要排序
+     * 2019-08-07新增
+     */
+    private Boolean sorted;
+    /**
+     * 排序字段名
+     * 2019-08-07新增
+     */
+    private String sortField;
 
     /**
      * 引用实体A
@@ -144,4 +176,51 @@ public class MetaManyToManyPO extends BasePO {
         this.holdRefer2 = holdRefer2;
     }
 
+    public String getEntityIdField1() {
+        return entityIdField1;
+    }
+
+    public void setEntityIdField1(String entityIdField1) {
+        this.entityIdField1 = entityIdField1;
+    }
+
+    public String getEntityIdField2() {
+        return entityIdField2;
+    }
+
+    public void setEntityIdField2(String entityIdField2) {
+        this.entityIdField2 = entityIdField2;
+    }
+
+    public Boolean getNeedId() {
+        return needId;
+    }
+
+    public void setNeedId(Boolean needId) {
+        this.needId = needId;
+    }
+
+    public Boolean getBigId() {
+        return bigId;
+    }
+
+    public void setBigId(Boolean bigId) {
+        this.bigId = bigId;
+    }
+
+    public Boolean getSorted() {
+        return sorted;
+    }
+
+    public void setSorted(Boolean sorted) {
+        this.sorted = sorted;
+    }
+
+    public String getSortField() {
+        return sortField;
+    }
+
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
+    }
 }

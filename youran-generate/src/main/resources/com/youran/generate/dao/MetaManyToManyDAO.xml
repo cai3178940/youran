@@ -18,18 +18,50 @@
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="mtmId" parameterType="MetaManyToManyPO">
         insert into meta_mtm (
-          mtm_id, project_id, `table_name`,
-          `schema_name`, `desc`, entity_id1,
-          entity_id2, hold_refer1, hold_refer2,
-          created_time, created_by, operated_time,
-          operated_by, deleted, version
-          )
-        values (#{mtmId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR},
-          #{schemaName,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{entityId1,jdbcType=INTEGER},
-          #{entityId2,jdbcType=INTEGER}, #{holdRefer1,jdbcType=SMALLINT}, #{holdRefer2,jdbcType=SMALLINT},
-          #{createdTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{operatedTime,jdbcType=TIMESTAMP},
-          #{operatedBy,jdbcType=VARCHAR}, #{deleted,jdbcType=SMALLINT}, #{version,jdbcType=INTEGER}
-          )
+            mtm_id,
+            project_id,
+            `table_name`,
+            `schema_name`,
+            `desc`, entity_id1,
+            entity_id2,
+            hold_refer1,
+            hold_refer2,
+            entity_id_field1,
+            entity_id_field2,
+            need_id,
+            big_id,
+            sorted,
+            sort_field,
+            created_time,
+            created_by,
+            operated_time,
+            operated_by,
+            deleted,
+            version
+        )
+        values (
+            #{mtmId,jdbcType=INTEGER},
+            #{projectId,jdbcType=INTEGER},
+            #{tableName,jdbcType=VARCHAR},
+            #{schemaName,jdbcType=VARCHAR},
+            #{desc,jdbcType=VARCHAR},
+            #{entityId1,jdbcType=INTEGER},
+            #{entityId2,jdbcType=INTEGER},
+            #{holdRefer1,jdbcType=SMALLINT},
+            #{holdRefer2,jdbcType=SMALLINT},
+            #{entityIdField1,jdbcType=VARCHAR},
+            #{entityIdField2,jdbcType=VARCHAR},
+            #{needId,jdbcType=BOOLEAN},
+            #{bigId,jdbcType=BOOLEAN},
+            #{sorted,jdbcType=BOOLEAN},
+            #{sortField,jdbcType=VARCHAR},
+            #{createdTime,jdbcType=TIMESTAMP},
+            #{createdBy,jdbcType=VARCHAR},
+            #{operatedTime,jdbcType=TIMESTAMP},
+            #{operatedBy,jdbcType=VARCHAR},
+            #{deleted,jdbcType=SMALLINT},
+            #{version,jdbcType=INTEGER}
+        )
     </insert>
 
     <update id="_update" parameterType="MetaManyToManyPO">
@@ -42,6 +74,12 @@
         entity_id2 = #{entityId2,jdbcType=INTEGER},
         hold_refer1 = #{holdRefer1,jdbcType=SMALLINT},
         hold_refer2 = #{holdRefer2,jdbcType=SMALLINT},
+        entity_id_field1=#{entityIdField1,jdbcType=VARCHAR},
+        entity_id_field2=#{entityIdField2,jdbcType=VARCHAR},
+        need_id=#{needId,jdbcType=BOOLEAN},
+        big_id=#{bigId,jdbcType=BOOLEAN},
+        sorted=#{sorted,jdbcType=BOOLEAN},
+        sort_field=#{sortField,jdbcType=VARCHAR},
         operated_time = #{operatedTime,jdbcType=TIMESTAMP},
         operated_by = #{operatedBy,jdbcType=VARCHAR},
         version = #{version,jdbcType=INTEGER}
