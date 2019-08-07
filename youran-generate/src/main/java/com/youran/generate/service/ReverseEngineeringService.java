@@ -10,10 +10,9 @@ import com.alibaba.druid.sql.dialect.mysql.ast.MySqlUnique;
 import com.alibaba.druid.sql.parser.ParserException;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import com.youran.common.util.SafeUtil;
 import com.youran.generate.constant.JFieldType;
-import com.youran.generate.constant.MySqlType;
-import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
@@ -203,7 +202,8 @@ public class ReverseEngineeringService {
                                     boolean pk,boolean autoIncrement,
                                     boolean notNull,int orderNo,
                                     String defaultValue,String desc){
-        JFieldType jFieldType = MySqlType.mapperJFieldType(fieldType,fieldLength);
+        JFieldType jFieldType = GuessUtil.guessJFieldType(fieldName, fieldType,fieldLength);
+        String specialField = GuessUtil.guessSpecialField(fieldName, jFieldType);
 
         MetaFieldAddDTO metaFieldDTO =  new MetaFieldAddDTO();
 
@@ -234,7 +234,7 @@ public class ReverseEngineeringService {
         metaFieldDTO.setQueryType(GuessUtil.guessQueryType(jFieldType,fieldLength));
         metaFieldDTO.setShow(BoolConst.TRUE);
         metaFieldDTO.setUpdate(pk?BoolConst.FALSE:BoolConst.TRUE);
-        metaFieldDTO.setSpecialField(GuessUtil.guessSpecialField(fieldName,jFieldType));
+        metaFieldDTO.setSpecialField(specialField);
 
         return metaFieldService.save(metaFieldDTO);
     }

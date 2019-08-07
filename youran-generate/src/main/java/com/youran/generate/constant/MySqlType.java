@@ -60,57 +60,6 @@ public class MySqlType {
             CHAR.equals(mysqlType);
     }
 
-    public static final JFieldType mapperJFieldType(String mySqlType, int fieldLength){
-        if(INT.equals(mySqlType)){
-            return JFieldType.INTEGER;
-        }
-        if(VARCHAR.equals(mySqlType)){
-            return JFieldType.STRING;
-        }
-        if(TEXT.equals(mySqlType)){
-            return JFieldType.STRING;
-        }
-        if(DATE.equals(mySqlType)){
-            return JFieldType.DATE;
-        }
-        if(DATETIME.equals(mySqlType)){
-            return JFieldType.DATE;
-        }
-        if(FLOAT.equals(mySqlType)){
-            return JFieldType.FLOAT;
-        }
-        if(DOUBLE.equals(mySqlType)){
-            return JFieldType.DOUBLE;
-        }
-        if(DECIMAL.equals(mySqlType)){
-            return JFieldType.BIGDECIMAL;
-        }
-        if(BIGINT.equals(mySqlType)){
-            return JFieldType.LONG;
-        }
-        if(SMALLINT.equals(mySqlType)){
-            return JFieldType.INTEGER;
-        }
-        if(MEDIUMINT.equals(mySqlType)){
-            return JFieldType.INTEGER;
-        }
-        if(TINYINT.equals(mySqlType)){
-            if(fieldLength==1){
-                return JFieldType.BOOLEAN;
-            }else {
-                return JFieldType.INTEGER;
-            }
-        }
-        if(TIMESTAMP.equals(mySqlType)){
-            return JFieldType.DATE;
-        }
-        if(CHAR.equals(mySqlType)){
-            return JFieldType.STRING;
-        }
-        return JFieldType.STRING;
-    }
-
-
     /**
      * 判断字段类型是否字符串格式
      * @param mySqlType

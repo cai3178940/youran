@@ -102,6 +102,53 @@ public class GuessUtil {
         return false;
     }
 
+    public static final JFieldType guessJFieldType(String fieldName, String mySqlType, int fieldLength){
+        JFieldType jFieldType;
+        if(MySqlType.VARCHAR.equals(mySqlType)){
+            jFieldType = JFieldType.STRING;
+        }else if(MySqlType.TEXT.equals(mySqlType)){
+            jFieldType = JFieldType.STRING;
+        }else if(MySqlType.DATE.equals(mySqlType)){
+            jFieldType = JFieldType.DATE;
+        }else if(MySqlType.DATETIME.equals(mySqlType)){
+            jFieldType = JFieldType.DATE;
+        }else if(MySqlType.FLOAT.equals(mySqlType)){
+            jFieldType = JFieldType.FLOAT;
+        }else if(MySqlType.DOUBLE.equals(mySqlType)){
+            jFieldType = JFieldType.DOUBLE;
+        }else if(MySqlType.DECIMAL.equals(mySqlType)){
+            jFieldType = JFieldType.BIGDECIMAL;
+        }else if(MySqlType.BIGINT.equals(mySqlType)){
+            jFieldType = JFieldType.LONG;
+        }else if(MySqlType.TIMESTAMP.equals(mySqlType)){
+            jFieldType = JFieldType.DATE;
+        }else if(MySqlType.CHAR.equals(mySqlType)){
+            jFieldType = JFieldType.STRING;
+        }else if(MySqlType.SMALLINT.equals(mySqlType)){
+            jFieldType = JFieldType.INTEGER;
+        }else if(MySqlType.MEDIUMINT.equals(mySqlType)){
+            jFieldType = JFieldType.INTEGER;
+        }else if(MySqlType.TINYINT.equals(mySqlType)){
+            if(fieldLength==1){
+                jFieldType = JFieldType.BOOLEAN;
+            }else {
+                jFieldType = JFieldType.INTEGER;
+            }
+        }else if(MySqlType.INT.equals(mySqlType)){
+            jFieldType = JFieldType.INTEGER;
+        }else {
+            jFieldType = JFieldType.STRING;
+        }
+        /**
+         * 修正deleted字段的类型为boolean
+         */
+        if(jFieldType == JFieldType.INTEGER && DELETED_LABEL.equals(fieldName.toLowerCase())){
+            jFieldType = JFieldType.BOOLEAN;
+        }
+        return jFieldType;
+    }
+
+
     /**
      * 猜测
      * @param fieldName
@@ -133,7 +180,7 @@ public class GuessUtil {
         if(VERSION_LABEL.equals(lowerCase) && jFieldType == JFieldType.INTEGER){
             return MetaSpecialField.VERSION;
         }
-        if(DELETED_LABEL.equals(lowerCase) && jFieldType == JFieldType.INTEGER){
+        if(DELETED_LABEL.equals(lowerCase) && jFieldType == JFieldType.BOOLEAN){
             return MetaSpecialField.DELETED;
         }
         return null;

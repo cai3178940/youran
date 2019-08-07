@@ -259,7 +259,7 @@ public class GenerateHelper{
         dto.setFieldLength(1);
         dto.setFieldDesc("是否删除");
         dto.setJfieldName("deleted");
-        dto.setJfieldType(JFieldType.INTEGER.getJavaType());
+        dto.setJfieldType(JFieldType.BOOLEAN.getJavaType());
         dto.setEditType(null);
         dto.setOrderNo(1006);
         dto.setInsert(0);
