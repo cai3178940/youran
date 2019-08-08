@@ -76,21 +76,20 @@ public interface ${this.classNameUpper}API {
     ResponseEntity<Integer> deleteBatch(${this.type}[] id);
 
 
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
+        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
     /**
      * 添加单个【${otherEntity.title}】关联
      */
     @ApiOperation(value="添加单个【${otherEntity.title}】关联")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${otherFkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
     })
-    ResponseEntity<Integer> add${otherCName}(${this.type} ${this.id},${otherPk.jfieldType} ${otherPkId});
+    ResponseEntity<Integer> add${otherCName}(${this.type} ${this.id},${otherPk.jfieldType} ${otherFkId});
 
     /**
      * 添加多个【${otherEntity.title}】关联
@@ -98,9 +97,9 @@ public interface ${this.classNameUpper}API {
     @ApiOperation(value="添加多个【${otherEntity.title}】关联")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
+        @ApiImplicitParam(name = "${otherFkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
     })
-    ResponseEntity<Integer> add${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherPkId});
+    ResponseEntity<Integer> add${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherFkId});
 
     /**
      * 移除单个【${otherEntity.title}】关联
@@ -108,9 +107,9 @@ public interface ${this.classNameUpper}API {
     @ApiOperation(value="移除单个【${otherEntity.title}】关联")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
+        @ApiImplicitParam(name = "${otherFkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
     })
-    ResponseEntity<Integer> remove${otherCName}(${this.type} ${this.id},${otherPk.jfieldType} ${otherPkId});
+    ResponseEntity<Integer> remove${otherCName}(${this.type} ${this.id},${otherPk.jfieldType} ${otherFkId});
 
     /**
      * 移除多个【${otherEntity.title}】关联
@@ -118,9 +117,9 @@ public interface ${this.classNameUpper}API {
     @ApiOperation(value="移除多个【${otherEntity.title}】关联")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
+        @ApiImplicitParam(name = "${otherFkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
     })
-    ResponseEntity<Integer> remove${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherPkId});
+    ResponseEntity<Integer> remove${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherFkId});
 
     /**
      * 设置【${otherEntity.title}】关联
@@ -128,9 +127,9 @@ public interface ${this.classNameUpper}API {
     @ApiOperation(value="设置【${otherEntity.title}】关联")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${otherPkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
+        @ApiImplicitParam(name = "${otherFkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
     })
-    ResponseEntity<Integer> set${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherPkId});
+    ResponseEntity<Integer> set${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherFkId});
 
     </#list>
 </#if>

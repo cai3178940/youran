@@ -214,18 +214,14 @@ public class MetaQueryAssembleService {
                 continue;
             }
             if (BoolConst.FALSE == manyToMany.getHoldRefer1()) {
-                entity1.addUnHoldRefer(entity2);
-                entity1.addUnHoldMtms(manyToMany);
+                entity1.addUnHold(entity2,manyToMany);
             } else {
-                entity1.addHoldRefer(entity2);
-                entity1.addHoldMtms(manyToMany);
+                entity1.addHold(entity2,manyToMany);
             }
             if (BoolConst.FALSE == manyToMany.getHoldRefer2()) {
-                entity2.addUnHoldRefer(entity1);
-                entity2.addUnHoldMtms(manyToMany);
+                entity2.addUnHold(entity1,manyToMany);
             } else {
-                entity2.addHoldRefer(entity1);
-                entity2.addHoldMtms(manyToMany);
+                entity2.addHold(entity1,manyToMany);
             }
             manyToMany.setRefer1(entity1);
             manyToMany.setRefer2(entity2);

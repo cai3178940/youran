@@ -252,25 +252,23 @@
 
     </#if>
 </#list>
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as entity>
-        <#assign mtm=this.metaEntity.holdMtms[entity_index]/>
-        <#assign otherCName=entity.className?capFirst>
-        <#assign othercName=entity.className?uncapFirst>
-        <#assign otherPk=entity.pkField>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign otherPk=otherEntity.pkField>
         <#assign otherType=otherPk.jfieldType>
-        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
-        <#assign thePkId=MetadataUtil.getPkAlias(this.className,false)>
-        <#assign other_pk_id=MetadataUtil.getPkAlias(othercName,true)>
-        <#assign the_pk_id=MetadataUtil.getPkAlias(this.className,true)>
+        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+        <#assign theFkId=MetadataUtil.getMtmFkAlias(mtm,this.metaEntity,false)>
+        <#assign other_fk_id=MetadataUtil.getMtmFkAlias(mtm,otherEntity,true)>
+        <#assign the_fk_id=MetadataUtil.getMtmFkAlias(mtm,this.metaEntity,true)>
         <#assign wrapMtmTableName=MetadataUtil.wrapMysqlKeyword(mtm.tableName)>
     <select id="getCountBy${otherCName}" parameterType="${otherType}" resultType="int">
         select count(1)
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${pk.fieldName}=r.${the_pk_id}
+            on t.${pk.fieldName}=r.${the_fk_id}
         where
-            r.${other_pk_id}=${r'#'}{arg0}
+            r.${other_fk_id}=${r'#'}{arg0}
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
@@ -281,9 +279,9 @@
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${pk.fieldName}=r.${the_pk_id}
+            on t.${pk.fieldName}=r.${the_fk_id}
         where
-            r.${other_pk_id}=${r'#'}{arg0}
+            r.${other_fk_id}=${r'#'}{arg0}
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
@@ -295,9 +293,9 @@
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${pk.fieldName}=r.${the_pk_id}
+            on t.${pk.fieldName}=r.${the_fk_id}
         where
-            r.${other_pk_id}=${r'#'}{arg0}
+            r.${other_fk_id}=${r'#'}{arg0}
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
@@ -305,34 +303,32 @@
     </select>
 
     <insert id="add${otherCName}" parameterType="map">
-        insert into ${mtm.tableName}(${the_pk_id},${other_pk_id},created_time)
-        values(${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}},${r'#'}{${otherPkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}},now())
+        insert into ${mtm.tableName}(${the_fk_id},${other_fk_id},created_time)
+        values(${r'#'}{${theFkId},jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}},${r'#'}{${otherFkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}},now())
     </insert>
 
     <delete id="remove${otherCName}" parameterType="map">
         delete from ${mtm.tableName}
-        where ${the_pk_id}=${r'#'}{${thePkId},jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}} and ${other_pk_id} in
-        <foreach collection="${otherPkId}" item="_id" open="(" separator="," close=")">
+        where ${the_fk_id}=${r'#'}{${theFkId},jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}} and ${other_fk_id} in
+        <foreach collection="${otherFkId}" item="_id" open="(" separator="," close=")">
             ${r'#'}{_id}
         </foreach>
     </delete>
 
     <delete id="removeAll${otherCName}">
         delete from ${wrapMtmTableName}
-        where ${the_pk_id}=${r'#'}{arg0}
+        where ${the_fk_id}=${r'#'}{arg0}
     </delete>
 
     </#list>
 </#if>
-<#if this.metaEntity.mtmUnHoldRefers??>
-    <#list this.metaEntity.mtmUnHoldRefers as entity>
-        <#assign mtm=this.metaEntity.unHoldMtms[entity_index]/>
-        <#assign otherCName=entity.className?capFirst>
-        <#assign othercName=entity.className?uncapFirst>
-        <#assign otherPk=entity.pkField>
+<#if this.metaEntity.unHolds??>
+    <#list this.metaEntity.unHolds as otherEntity,mtm>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign otherPk=otherEntity.pkField>
         <#assign otherType=otherPk.jfieldType>
-        <#assign other_pk_id=MetadataUtil.getPkAlias(othercName,true)>
-        <#assign the_pk_id=MetadataUtil.getPkAlias(this.className,true)>
+        <#assign other_fk_id=MetadataUtil.getMtmFkAlias(mtm,otherEntity,true)>
+        <#assign the_fk_id=MetadataUtil.getMtmFkAlias(mtm,this.metaEntity,true)>
         <#assign wrapMtmTableName=MetadataUtil.wrapMysqlKeyword(mtm.tableName)>
 
     <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}PO">
@@ -340,9 +336,9 @@
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${this.pk.fieldName}=r.${the_pk_id}
+            on t.${this.pk.fieldName}=r.${the_fk_id}
         where
-            r.${other_pk_id}=${r'#'}{arg0}
+            r.${other_fk_id}=${r'#'}{arg0}
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
@@ -354,9 +350,9 @@
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${this.pk.fieldName}=r.${the_pk_id}
+            on t.${this.pk.fieldName}=r.${the_fk_id}
         where
-            r.${other_pk_id}=${r'#'}{arg0}
+            r.${other_fk_id}=${r'#'}{arg0}
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>

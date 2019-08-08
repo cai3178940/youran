@@ -4,10 +4,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * <p>Title:实体</p>
@@ -124,19 +121,11 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     /**
      * 持有引用的多对多关系
      */
-    private List<MetaManyToManyPO> holdMtms;
-    /**
-     * 持有的引用实体
-     */
-    private List<MetaEntityPO> mtmHoldRefers;
+    private Map<MetaEntityPO,MetaManyToManyPO> holds;
     /**
      * 未持有引用的多对多关系
      */
-    private List<MetaManyToManyPO> unHoldMtms;
-    /**
-     * 未持的引用实体
-     */
-    private List<MetaEntityPO> mtmUnHoldRefers;
+    private Map<MetaEntityPO,MetaManyToManyPO> unHolds;
 
     /**
      * 对应的外键列表(当前主键对应的其他实体外键字段)
@@ -193,33 +182,19 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
         return this;
     }
 
-    public MetaEntityPO addHoldRefer(MetaEntityPO metaEntityPO){
-        if(mtmHoldRefers==null){
-            mtmHoldRefers = new ArrayList<>();
+    public MetaEntityPO addHold(MetaEntityPO entity,MetaManyToManyPO mtm){
+        if(holds==null){
+            holds = new TreeMap<>();
         }
-        mtmHoldRefers.add(metaEntityPO);
-        return this;
-    }
-    public MetaEntityPO addHoldMtms(MetaManyToManyPO mtm){
-        if(holdMtms==null){
-            holdMtms = new ArrayList<>();
-        }
-        holdMtms.add(mtm);
+        holds.put(entity,mtm);
         return this;
     }
 
-    public MetaEntityPO addUnHoldRefer(MetaEntityPO metaEntityPO){
-        if(mtmUnHoldRefers==null){
-            mtmUnHoldRefers = new ArrayList<>();
+    public MetaEntityPO addUnHold(MetaEntityPO entity,MetaManyToManyPO mtm){
+        if(unHolds==null){
+            unHolds = new TreeMap<>();
         }
-        mtmUnHoldRefers.add(metaEntityPO);
-        return this;
-    }
-    public MetaEntityPO addUnHoldMtms(MetaManyToManyPO mtm){
-        if(unHoldMtms==null){
-            unHoldMtms = new ArrayList<>();
-        }
-        unHoldMtms.add(mtm);
+        unHolds.put(entity,mtm);
         return this;
     }
 
@@ -249,36 +224,20 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
         this.pageSign = pageSign;
     }
 
-    public List<MetaManyToManyPO> getHoldMtms() {
-        return holdMtms;
+    public Map<MetaEntityPO, MetaManyToManyPO> getHolds() {
+        return holds;
     }
 
-    public void setHoldMtms(List<MetaManyToManyPO> holdMtms) {
-        this.holdMtms = holdMtms;
+    public void setHolds(Map<MetaEntityPO, MetaManyToManyPO> holds) {
+        this.holds = holds;
     }
 
-    public List<MetaManyToManyPO> getUnHoldMtms() {
-        return unHoldMtms;
+    public Map<MetaEntityPO, MetaManyToManyPO> getUnHolds() {
+        return unHolds;
     }
 
-    public void setUnHoldMtms(List<MetaManyToManyPO> unHoldMtms) {
-        this.unHoldMtms = unHoldMtms;
-    }
-
-    public List<MetaEntityPO> getMtmHoldRefers() {
-        return mtmHoldRefers;
-    }
-
-    public void setMtmHoldRefers(List<MetaEntityPO> mtmHoldRefers) {
-        this.mtmHoldRefers = mtmHoldRefers;
-    }
-
-    public List<MetaEntityPO> getMtmUnHoldRefers() {
-        return mtmUnHoldRefers;
-    }
-
-    public void setMtmUnHoldRefers(List<MetaEntityPO> mtmUnHoldRefers) {
-        this.mtmUnHoldRefers = mtmUnHoldRefers;
+    public void setUnHolds(Map<MetaEntityPO, MetaManyToManyPO> unHolds) {
+        this.unHolds = unHolds;
     }
 
     public MetaFieldPO getVersionField() {

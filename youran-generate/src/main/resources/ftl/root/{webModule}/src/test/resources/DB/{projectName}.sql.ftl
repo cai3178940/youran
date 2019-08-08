@@ -22,16 +22,16 @@ CREATE TABLE `${metaEntity.tableName}` (
     <#list this.mtms as manyTomany>
         <#assign field1=manyTomany.refer1.pkField>
         <#assign field2=manyTomany.refer2.pkField>
-        <#assign pkId1=MetadataUtil.getPkAlias(manyTomany.refer1.className,true)>
-        <#assign pkId2=MetadataUtil.getPkAlias(manyTomany.refer2.className,true)>
+        <#assign fkId1=MetadataUtil.getMtmFkAlias(manyTomany,manyTomany.refer1,true)>
+        <#assign fkId2=MetadataUtil.getMtmFkAlias(manyTomany,manyTomany.refer2,true)>
 DROP TABLE IF EXISTS `${manyTomany.tableName}`;
 
 CREATE TABLE `${manyTomany.tableName}` (
-    `${pkId1}` ${field1.fieldType}${MetadataUtil.getLengthDisplay(field1)} NOT NULL${MetadataUtil.getCommentDisplay(field1.fieldComment,true)},
-    `${pkId2}` ${field2.fieldType}${MetadataUtil.getLengthDisplay(field2)} NOT NULL${MetadataUtil.getCommentDisplay(field2.fieldComment,true)},
+    `${fkId1}` ${field1.fieldType}${MetadataUtil.getLengthDisplay(field1)} NOT NULL${MetadataUtil.getCommentDisplay(field1.fieldComment,true)},
+    `${fkId2}` ${field2.fieldType}${MetadataUtil.getLengthDisplay(field2)} NOT NULL${MetadataUtil.getCommentDisplay(field2.fieldComment,true)},
     `created_time` datetime DEFAULT NULL COMMENT '创建时间',
-    KEY `i_${manyTomany.tableName}_1` (`${pkId1}`),
-    KEY `i_${manyTomany.tableName}_2` (`${pkId2}`)
+    KEY `i_${manyTomany.tableName}_1` (`${fkId1}`),
+    KEY `i_${manyTomany.tableName}_2` (`${fkId2}`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${manyTomany.desc?replace('\'','"')?replace('\n','\\n')}';
 
     </#list>

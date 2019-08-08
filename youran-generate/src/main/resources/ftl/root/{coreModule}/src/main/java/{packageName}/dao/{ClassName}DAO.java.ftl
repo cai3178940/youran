@@ -28,41 +28,39 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
 
     </#if>
 </#list>
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as entity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
         <@call this.addImport("java.util.List")/>
         <@call this.addImport("org.apache.ibatis.annotations.Param")/>
-        <#assign otherCName=entity.className?capFirst>
-        <#assign othercName=entity.className?uncapFirst>
-        <#assign otherType=entity.pkField.jfieldType>
-        <#assign thePkId=MetadataUtil.getPkAlias(this.className,false)>
-        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
-    int getCountBy${otherCName}(${otherType} ${otherPkId});
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign otherType=otherEntity.pkField.jfieldType>
+        <#assign theFkId=MetadataUtil.getMtmFkAlias(mtm,this.metaEntity,false)>
+        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+    int getCountBy${otherCName}(${otherType} ${otherFkId});
 
-    List<${this.classNameUpper}PO> findBy${otherCName}(${otherType} ${otherPkId});
+    List<${this.classNameUpper}PO> findBy${otherCName}(${otherType} ${otherFkId});
 
-    List<${this.classNameUpper}ListVO> findVOBy${otherCName}(${otherType} ${otherPkId});
+    List<${this.classNameUpper}ListVO> findVOBy${otherCName}(${otherType} ${otherFkId});
 
-    int add${otherCName}(@Param("${thePkId}")${this.type} ${thePkId},@Param("${otherPkId}")${otherType} ${otherPkId});
+    int add${otherCName}(@Param("${theFkId}")${this.type} ${theFkId},@Param("${otherFkId}")${otherType} ${otherFkId});
 
-    int remove${otherCName}(@Param("${thePkId}")${this.type} ${thePkId},@Param("${otherPkId}")${otherType}[] ${otherPkId});
+    int remove${otherCName}(@Param("${theFkId}")${this.type} ${theFkId},@Param("${otherFkId}")${otherType}[] ${otherFkId});
 
-    int removeAll${otherCName}(${this.type} ${thePkId});
+    int removeAll${otherCName}(${this.type} ${theFkId});
 
     </#list>
 </#if>
-<#if this.metaEntity.mtmUnHoldRefers??>
-    <#list this.metaEntity.mtmUnHoldRefers as entity>
+<#if this.metaEntity.unHolds??>
+    <#list this.metaEntity.unHolds as otherEntity,mtm>
         <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
         <@call this.addImport("java.util.List")/>
-        <#assign otherCName=entity.className/>
-        <#assign othercName=entity.className?uncapFirst>
-        <#assign otherType=entity.pkField.jfieldType>
-        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
-    List<${this.classNameUpper}PO> findBy${otherCName}(${otherType} ${otherPkId});
+        <#assign otherCName=otherEntity.className/>
+        <#assign otherType=otherEntity.pkField.jfieldType>
+        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+    List<${this.classNameUpper}PO> findBy${otherCName}(${otherType} ${otherFkId});
 
-    List<${this.classNameUpper}ListVO> findVOBy${otherCName}(${otherType} ${otherPkId});
+    List<${this.classNameUpper}ListVO> findVOBy${otherCName}(${otherType} ${otherFkId});
 
     </#list>
 </#if>

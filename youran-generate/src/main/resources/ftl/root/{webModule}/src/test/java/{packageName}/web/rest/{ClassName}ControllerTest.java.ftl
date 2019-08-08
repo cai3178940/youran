@@ -90,11 +90,12 @@
             .andExpect(jsonPath("$").value(is(1)));
     }
 
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
         <#--获取保存Example的代码-->
         <#assign saveExampleCode=this.getPrintingSaveExampleForMtm(otherEntity)/>
     @Test
@@ -102,11 +103,11 @@
         <#list saveExampleCode as saveExample>
         ${saveExample}
         </#list>
-        restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}/{${MetadataUtil.getPkAlias(othercName,false)}}",
+        restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}/{${otherFkId}}",
             ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));
-        restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}/{${MetadataUtil.getPkAlias(othercName,false)}}",
+        restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}/{${otherFkId}}",
             ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));

@@ -20,15 +20,15 @@ public class ${this.classNameUpper}Service {
     <#-- 引入当前实体的DAO -->
     <@call this.addAutowired("${this.packageName}.dao" "${this.classNameUpper}DAO")/>
 <#-- 引入多对多关联实体的DAO（当前持有） -->
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
     </#list>
 </#if>
 <#-- 引入多对多关联实体的DAO（非当前持有） -->
-<#if this.metaEntity.mtmUnHoldRefers??>
-    <#list this.metaEntity.mtmUnHoldRefers as otherEntity>
+<#if this.metaEntity.unHolds??>
+    <#list this.metaEntity.unHolds as otherEntity,mtm>
         <@call this.addAutowired("${this.packageName}.dao" "${otherEntity.className?capFirst}DAO")/>
     </#list>
 </#if>
@@ -105,8 +105,8 @@ public class ${this.classNameUpper}Service {
         this.checkUnique(${this.className},false);
 </#if>
         ${this.className}DAO.save(${this.className});
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <@call this.addImport("java.util.List")/>
         <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
         <#assign otherPk=otherEntity.pkField>
@@ -141,8 +141,8 @@ public class ${this.classNameUpper}Service {
         this.checkUnique(${this.className},true);
 </#if>
         ${this.className}DAO.update(${this.className});
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <@call this.addImport("java.util.List")/>
         <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
         <#assign otherPk=otherEntity.pkField>
@@ -217,8 +217,8 @@ public class ${this.classNameUpper}Service {
         }
     </#if>
 </#list>
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
         // 设置【${otherEntity.title}】列表
@@ -243,8 +243,8 @@ public class ${this.classNameUpper}Service {
             this.checkDeleteBy${foreignCName}(${this.id});
         </#list>
     </#if>
-    <#if this.metaEntity.mtmUnHoldRefers??>
-        <#list this.metaEntity.mtmUnHoldRefers as otherEntity>
+    <#if this.metaEntity.unHolds??>
+        <#list this.metaEntity.unHolds as otherEntity,mtm>
             <#assign otherCName=otherEntity.className?capFirst>
             // 校验是否存在【${otherEntity.title}】关联
             this.checkDeleteBy${otherCName}(${this.id});
@@ -278,8 +278,8 @@ public class ${this.classNameUpper}Service {
 
     </#list>
 </#if>
-<#if this.metaEntity.mtmUnHoldRefers??>
-    <#list this.metaEntity.mtmUnHoldRefers as otherEntity>
+<#if this.metaEntity.unHolds??>
+    <#list this.metaEntity.unHolds as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
     /**
@@ -295,22 +295,22 @@ public class ${this.classNameUpper}Service {
 
     </#list>
 </#if>
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <@call this.addImport("org.apache.commons.lang3.ArrayUtils")/>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
+        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
     /**
      * 执行【${otherEntity.title}】添加
      * @param ${this.id}
-     * @param ${otherPkId}
+     * @param ${otherFkId}
      * @return
      */
-    private int doAdd${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherPkId}) {
+    private int doAdd${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherFkId}) {
         int count = 0;
-        for (${otherPk.jfieldType} _id : ${otherPkId}) {
+        for (${otherPk.jfieldType} _id : ${otherFkId}) {
             if(${othercName}DAO.exist(_id)){
                 count += ${this.className}DAO.add${otherCName}(${this.id},_id);
             }
@@ -321,47 +321,47 @@ public class ${this.classNameUpper}Service {
     /**
      * 添加【${otherEntity.title}】
      * @param ${this.id}
-     * @param ${otherPkId}
+     * @param ${otherFkId}
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public int add${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherPkId}) {
+    public int add${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherFkId}) {
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
-        if(ArrayUtils.isEmpty(${otherPkId})){
+        if(ArrayUtils.isEmpty(${otherFkId})){
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
-        return doAdd${otherCName}(${this.id}, ${otherPkId});
+        return doAdd${otherCName}(${this.id}, ${otherFkId});
     }
 
     /**
      * 移除【${otherEntity.title}】
      * @param ${this.id}
-     * @param ${otherPkId}
+     * @param ${otherFkId}
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public int remove${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherPkId}) {
+    public int remove${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}... ${otherFkId}) {
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
-        if(ArrayUtils.isEmpty(${otherPkId})){
+        if(ArrayUtils.isEmpty(${otherFkId})){
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
-        return ${this.className}DAO.remove${otherCName}(${this.id}, ${otherPkId});
+        return ${this.className}DAO.remove${otherCName}(${this.id}, ${otherFkId});
     }
 
     /**
      * 设置【${otherEntity.title}】
      * @param ${this.id}
-     * @param ${otherPkId}
+     * @param ${otherFkId}
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public int set${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}[] ${otherPkId}) {
+    public int set${otherCName}(${this.type} ${this.id}, ${otherPk.jfieldType}[] ${otherFkId}) {
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         ${this.className}DAO.removeAll${otherCName}(${this.id});
-        if(ArrayUtils.isEmpty(${otherPkId})){
+        if(ArrayUtils.isEmpty(${otherFkId})){
             return 0;
         }
-        return doAdd${otherCName}(${this.id}, ${otherPkId});
+        return doAdd${otherCName}(${this.id}, ${otherFkId});
     }
 
     </#list>

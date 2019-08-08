@@ -5,7 +5,9 @@ import com.youran.common.constant.BoolConst;
 import com.youran.generate.constant.DefaultValue;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MySqlType;
+import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
+import com.youran.generate.pojo.po.MetaManyToManyPO;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -66,12 +68,39 @@ public class MetadataUtil {
 
 
     /**
-     * 获取主键别名
+     * 获取多对多外键别名
+     * @param mtm
+     * @param refer
+     * @param forSql
+     * @return
+     */
+    public static String getMtmFkAlias(MetaManyToManyPO mtm,MetaEntityPO refer, boolean forSql){
+        String fkAlias;
+        if(refer.equals(mtm.getRefer1())){
+            fkAlias = mtm.getEntityIdField1();
+        }else if(refer.equals(mtm.getRefer2())){
+            fkAlias = mtm.getEntityIdField2();
+        }else{
+            throw new IllegalStateException("特殊异常");
+        }
+        if(StringUtils.isNotBlank(fkAlias)){
+            if(forSql) {
+                return fkAlias;
+            }else{
+                return underlineToCamelCase(fkAlias,false);
+            }
+        }
+        // 未指定外键字段名的情况下自动生成
+        return buildDefaultMtmFkAlias(refer.getClassName(),forSql);
+    }
+
+    /**
+     * 构建默认多对多外键别名
      * @param className
      * @param forSql
      * @return
      */
-    public static String getPkAlias(String className,boolean forSql){
+    private static String buildDefaultMtmFkAlias(String className,boolean forSql){
         String alias = StringUtils.uncapitalize(className)+"Id";
         if(forSql){
             String[] split = StringUtils.splitByCharacterTypeCamelCase(alias);

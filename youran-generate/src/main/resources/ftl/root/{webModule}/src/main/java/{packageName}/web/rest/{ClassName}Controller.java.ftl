@@ -87,49 +87,49 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
         return ResponseEntity.ok(count);
     }
 
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
+        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
     @Override
-    @PostMapping(value = "/{${this.id}}/${othercName}/{${otherPkId}}")
+    @PostMapping(value = "/{${this.id}}/${othercName}/{${otherFkId}}")
     public ResponseEntity<Integer> add${otherCName}(@PathVariable ${this.type} ${this.id},
-                        @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
-        int count = ${this.className}Service.add${otherCName}(${this.id}, ${otherPkId});
+                        @PathVariable ${otherPk.jfieldType} ${otherFkId}) {
+        int count = ${this.className}Service.add${otherCName}(${this.id}, ${otherFkId});
         return ResponseEntity.ok(count);
     }
 
     @Override
     @PostMapping(value = "/{${this.id}}/${othercName}")
     public ResponseEntity<Integer> add${otherCName}(@PathVariable ${this.type} ${this.id},
-                        @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
-        int count = ${this.className}Service.add${otherCName}(${this.id}, ${otherPkId});
+                        @RequestBody ${otherPk.jfieldType}[] ${otherFkId}) {
+        int count = ${this.className}Service.add${otherCName}(${this.id}, ${otherFkId});
         return ResponseEntity.ok(count);
     }
 
     @Override
-    @DeleteMapping(value = "/{${this.id}}/${othercName}/{${otherPkId}}")
+    @DeleteMapping(value = "/{${this.id}}/${othercName}/{${otherFkId}}")
     public ResponseEntity<Integer> remove${otherCName}(@PathVariable ${this.type} ${this.id},
-                        @PathVariable ${otherPk.jfieldType} ${otherPkId}) {
-        int count = ${this.className}Service.remove${otherCName}(${this.id}, ${otherPkId});
+                        @PathVariable ${otherPk.jfieldType} ${otherFkId}) {
+        int count = ${this.className}Service.remove${otherCName}(${this.id}, ${otherFkId});
         return ResponseEntity.ok(count);
     }
 
     @Override
     @DeleteMapping(value = "/{${this.id}}/${othercName}")
     public ResponseEntity<Integer> remove${otherCName}(@PathVariable ${this.type} ${this.id},
-                        @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
-        int count = ${this.className}Service.remove${otherCName}(${this.id}, ${otherPkId});
+                        @RequestBody ${otherPk.jfieldType}[] ${otherFkId}) {
+        int count = ${this.className}Service.remove${otherCName}(${this.id}, ${otherFkId});
         return ResponseEntity.ok(count);
     }
 
     @Override
     @PutMapping(value = "/{${this.id}}/${othercName}")
     public ResponseEntity<Integer> set${otherCName}(@PathVariable ${this.type} ${this.id},
-        @RequestBody ${otherPk.jfieldType}[] ${otherPkId}) {
-        int count = ${this.className}Service.set${otherCName}(${this.id}, ${otherPkId});
+        @RequestBody ${otherPk.jfieldType}[] ${otherFkId}) {
+        int count = ${this.className}Service.set${otherCName}(${this.id}, ${otherFkId});
         return ResponseEntity.ok(count);
     }
     </#list>

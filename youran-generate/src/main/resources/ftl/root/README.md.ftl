@@ -24,12 +24,12 @@
 
         <#assign field1=manyTomany.refer1.pkField>
         <#assign field2=manyTomany.refer2.pkField>
-        <#assign pkId1=MetadataUtil.getPkAlias(manyTomany.refer1.className,true)>
-        <#assign pkId2=MetadataUtil.getPkAlias(manyTomany.refer2.className,true)>
+        <#assign fkId1=MetadataUtil.getMtmFkAlias(manyTomany,manyTomany.refer1,true)>
+        <#assign fkId2=MetadataUtil.getMtmFkAlias(manyTomany,manyTomany.refer2,true)>
 ### ${manyTomany.desc?replace('\'','"')?replace('\n','\\n')}【${manyTomany.tableName}】
 |字段名 | 类型 | 非空 | 键 | 注释 |
 |------ | ---- | --- | --- | ---- |
-| ${pkId1} | ${field1.fieldType}${MetadataUtil.getLengthDisplay(field1)} | 是 |  | ${MetadataUtil.convertCommentDisplay(field1.fieldComment)} |
-| ${pkId2} | ${field2.fieldType}${MetadataUtil.getLengthDisplay(field2)} | 是 |  | ${MetadataUtil.convertCommentDisplay(field2.fieldComment)} |
+| ${fkId1} | ${field1.fieldType}${MetadataUtil.getLengthDisplay(field1)} | 是 |  | ${MetadataUtil.convertCommentDisplay(field1.fieldComment)} |
+| ${fkId2} | ${field2.fieldType}${MetadataUtil.getLengthDisplay(field2)} | 是 |  | ${MetadataUtil.convertCommentDisplay(field2.fieldComment)} |
     </#list>
 </#if>

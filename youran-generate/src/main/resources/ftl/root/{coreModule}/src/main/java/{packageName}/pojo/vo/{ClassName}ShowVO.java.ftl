@@ -44,13 +44,11 @@ public class ${this.classNameUpper}ShowVO extends AbstractVO {
         </#list>
     </#if>
 </#list>
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <@call this.addImport("java.util.List")/>
         <#assign otherCName=otherEntity.className/>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign otherType=otherEntity.pkField.jfieldType>
-        <#assign otherPkId=MetadataUtil.getPkAlias(othercName,false)>
     @ApiModelProperty(notes = "【${otherEntity.title}】列表")
     private List<${otherCName}ListVO> ${othercName}List;
 
@@ -67,8 +65,8 @@ public class ${this.classNameUpper}ShowVO extends AbstractVO {
         </#list>
     </#if>
 </#list>
-<#if this.metaEntity.mtmHoldRefers??>
-    <#list this.metaEntity.mtmHoldRefers as otherEntity>
+<#if this.metaEntity.holds??>
+    <#list this.metaEntity.holds as otherEntity,mtm>
         <#assign otherCName=otherEntity.className/>
         <#assign othercName=otherEntity.className?uncapFirst>
         <@call TemplateUtil.printGetterSetterList(othercName,"${otherCName}ListVO")/>
