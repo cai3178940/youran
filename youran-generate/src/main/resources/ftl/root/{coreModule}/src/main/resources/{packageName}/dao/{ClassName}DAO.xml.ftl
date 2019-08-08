@@ -285,7 +285,12 @@
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
-        order by r.created_time
+        order by
+        <#if mtm.needId>
+            r.id
+        <#else>
+            r.created_time
+        </#if>
     </select>
 
     <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}ListVO">
@@ -299,12 +304,24 @@
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
-        order by r.created_time
+        order by
+        <#if mtm.needId>
+            r.id
+        <#else>
+            r.created_time
+        </#if>
     </select>
 
     <insert id="add${otherCName}" parameterType="map">
-        insert into ${mtm.tableName}(${the_fk_id},${other_fk_id},created_time)
-        values(${r'#'}{${theFkId},jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}},${r'#'}{${otherFkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}},now())
+        insert into ${mtm.tableName}(
+            ${the_fk_id},
+            ${other_fk_id},
+            created_time
+        )values(
+            ${r'#'}{${theFkId},jdbcType=${JFieldType.mapperJdbcType(this.pk.jfieldType)}},
+            ${r'#'}{${otherFkId},jdbcType=${JFieldType.mapperJdbcType(otherType)}},
+            now()
+        )
     </insert>
 
     <delete id="remove${otherCName}" parameterType="map">
@@ -342,7 +359,12 @@
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
-        order by r.created_time
+        order by
+        <#if mtm.needId>
+            r.id
+        <#else>
+            r.created_time
+        </#if>
     </select>
 
     <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}ListVO">
@@ -356,7 +378,12 @@
         <#if delField??>
             and t.${wrapDelFieldName}=0
         </#if>
-        order by r.created_time
+        order by
+        <#if mtm.needId>
+            r.id
+        <#else>
+            r.created_time
+        </#if>
     </select>
 
     </#list>

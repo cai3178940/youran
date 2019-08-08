@@ -85,20 +85,6 @@ public class MetaManyToManyAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_BIGID, example = E_BIGID)
     @NotNull
     private Boolean bigId;
-    /**
-     * 是否需要排序
-     * 2019-08-07新增
-     */
-    @ApiModelProperty(notes = N_SORTED, example = E_SORTED)
-    @NotNull
-    private Boolean sorted;
-    /**
-     * 排序字段名
-     * 2019-08-07新增
-     */
-    @ApiModelProperty(notes = N_SORTFIELD, example = E_SORTFIELD)
-    @NotNull
-    private String sortField;
 
     public String getEntityIdField1() {
         return entityIdField1;
@@ -130,22 +116,6 @@ public class MetaManyToManyAddDTO extends AbstractDTO {
 
     public void setBigId(Boolean bigId) {
         this.bigId = bigId;
-    }
-
-    public Boolean getSorted() {
-        return sorted;
-    }
-
-    public void setSorted(Boolean sorted) {
-        this.sorted = sorted;
-    }
-
-    public String getSortField() {
-        return sortField;
-    }
-
-    public void setSortField(String sortField) {
-        this.sortField = sortField;
     }
 
     public String getSchemaName() {

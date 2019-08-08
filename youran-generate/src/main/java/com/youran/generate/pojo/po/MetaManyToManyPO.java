@@ -69,17 +69,6 @@ public class MetaManyToManyPO extends BasePO {
      */
     private Boolean bigId;
     /**
-     * 是否需要排序
-     * 2019-08-07新增
-     */
-    private Boolean sorted;
-    /**
-     * 排序字段名
-     * 2019-08-07新增
-     */
-    private String sortField;
-
-    /**
      * 引用实体A
      */
     private MetaEntityPO refer1;
@@ -87,6 +76,7 @@ public class MetaManyToManyPO extends BasePO {
      * 引用实体B
      */
     private MetaEntityPO refer2;
+
 
     public String getSchemaName() {
         return schemaName;
@@ -208,19 +198,5 @@ public class MetaManyToManyPO extends BasePO {
         this.bigId = bigId;
     }
 
-    public Boolean getSorted() {
-        return sorted;
-    }
 
-    public void setSorted(Boolean sorted) {
-        this.sorted = sorted;
-    }
-
-    public String getSortField() {
-        return sortField;
-    }
-
-    public void setSortField(String sortField) {
-        this.sortField = sortField;
-    }
 }

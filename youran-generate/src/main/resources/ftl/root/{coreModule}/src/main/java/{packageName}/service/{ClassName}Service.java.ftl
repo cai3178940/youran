@@ -312,7 +312,7 @@ public class ${this.classNameUpper}Service {
         int count = 0;
         for (${otherPk.jfieldType} _id : ${otherFkId}) {
             if(${othercName}DAO.exist(_id)){
-                count += ${this.className}DAO.add${otherCName}(${this.id},_id);
+                count += ${this.className}DAO.add${otherCName}(${this.id}, _id);
             }
         }
         return count;

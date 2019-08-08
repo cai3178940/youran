@@ -34,9 +34,6 @@ public class MetaManyToManyData {
         dto.setEntityIdField2(E_ENTITYIDFIELD2);
         dto.setNeedId(SafeUtil.getBoolean(E_NEEDID));
         dto.setBigId(SafeUtil.getBoolean(E_BIGID));
-        dto.setSorted(SafeUtil.getBoolean(E_SORTED));
-        dto.setSortField(E_SORTFIELD);
-
         return dto;
     }
 
@@ -60,8 +57,6 @@ public class MetaManyToManyData {
         dto.setEntityIdField2(metaManyToMany.getEntityIdField2());
         dto.setNeedId(metaManyToMany.getNeedId());
         dto.setBigId(metaManyToMany.getBigId());
-        dto.setSorted(metaManyToMany.getSorted());
-        dto.setSortField(metaManyToMany.getSortField());
         return dto;
     }
 

@@ -66,18 +66,6 @@ public class MetaManyToManyListVO extends AbstractVO {
      */
     @ApiModelProperty(notes = N_BIGID, example = E_BIGID)
     private Boolean bigId;
-    /**
-     * 是否需要排序
-     * 2019-08-07新增
-     */
-    @ApiModelProperty(notes = N_SORTED, example = E_SORTED)
-    private Boolean sorted;
-    /**
-     * 排序字段名
-     * 2019-08-07新增
-     */
-    @ApiModelProperty(notes = N_SORTFIELD, example = E_SORTFIELD)
-    private String sortField;
 
 
     public String getTableName() {
@@ -184,22 +172,6 @@ public class MetaManyToManyListVO extends AbstractVO {
         this.bigId = bigId;
     }
 
-    public Boolean getSorted() {
-        return sorted;
-    }
-
-    public void setSorted(Boolean sorted) {
-        this.sorted = sorted;
-    }
-
-    public String getSortField() {
-        return sortField;
-    }
-
-    public void setSortField(String sortField) {
-        this.sortField = sortField;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
@@ -216,8 +188,6 @@ public class MetaManyToManyListVO extends AbstractVO {
             .append("entityIdField2", entityIdField2)
             .append("needId", needId)
             .append("bigId", bigId)
-            .append("sorted", sorted)
-            .append("sortField", sortField)
             .toString();
     }
 }

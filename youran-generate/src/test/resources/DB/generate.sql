@@ -169,8 +169,6 @@ CREATE TABLE `meta_mtm` (
   `entity_id_field2` varchar(64) DEFAULT '' NOT NULL COMMENT '实体B对应多对多关联表的id字段名',
   `need_id` tinyint(1) DEFAULT 0 NOT NULL COMMENT '是否需要自增id字段',
   `big_id` tinyint(1) DEFAULT 0 NOT NULL COMMENT 'id字段是否bigint',
-  `sorted` tinyint(1) DEFAULT 0 NOT NULL COMMENT '是否需要排序',
-  `sort_field` varchar(64) DEFAULT '' NOT NULL COMMENT '排序字段名',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `created_by` varchar(32) DEFAULT NULL COMMENT '创建人',
   `operated_time` datetime DEFAULT NULL COMMENT '操作时间',

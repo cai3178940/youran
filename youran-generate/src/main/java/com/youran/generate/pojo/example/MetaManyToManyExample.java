@@ -36,9 +36,5 @@ public class MetaManyToManyExample extends AbstractExample {
     public static final String E_NEEDID = "true";
     public static final String N_BIGID = "id字段是否bigint";
     public static final String E_BIGID = "true";
-    public static final String N_SORTED = "是否需要排序";
-    public static final String E_SORTED = "true";
-    public static final String N_SORTFIELD = "排序字段名";
-    public static final String E_SORTFIELD = "order_no";
 
 }
