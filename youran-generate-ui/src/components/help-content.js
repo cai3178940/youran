@@ -292,7 +292,7 @@ public enum DevType {
     needId: `
 **自增id**：关联表是否需要生成一个自增主键id
 
-**id类型**：可选择bigint和int两种，一般情况使用int类型即可
+**id类型**：可选择长整型bigint和整型int两种，一般情况使用整型int即可
     `
   },
   index: {

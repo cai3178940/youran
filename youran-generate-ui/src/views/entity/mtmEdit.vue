@@ -90,8 +90,8 @@
               </el-col>
               <el-col  :span="12" style="padding-right: 0px;">
                 <el-radio-group :disabled="!form.needId" v-model="form.bigId" size="medium">
-                  <el-radio-button :key="true" :label="true">bigint类型</el-radio-button>
-                  <el-radio-button :key="false" :label="false">int类型</el-radio-button>
+                  <el-radio-button :key="false" :label="false">整型</el-radio-button>
+                  <el-radio-button :key="true" :label="true">长整型</el-radio-button>
                 </el-radio-group>
               </el-col>
             </help-popover>
