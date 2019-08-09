@@ -43,6 +43,8 @@ export function getRules () {
 export function initMtmFormBean (forEdit) {
   const formBean = {
     projectId: null,
+    needId: false,
+    bigId: false,
     tableName: '',
     desc: '',
     entityId1: null,
@@ -65,8 +67,11 @@ export function getMtmRules () {
       { required: true, message: '请输入关联表名', trigger: 'blur' },
       { max: 50, message: '长度不能超过50个字符', trigger: 'blur' }
     ],
-    desc: [
-      { max: 250, message: '长度不能超过250个字符', trigger: 'blur' }
+    needId: [
+      { required: true, type: 'boolean', message: '请选择是否需要自增id', trigger: 'change' }
+    ],
+    bigId: [
+      { required: true, type: 'boolean', message: '请选择id字段类型', trigger: 'change' }
     ],
     entityId1: [
       { required: true, type: 'number', message: '请选择实体1', trigger: 'change' }

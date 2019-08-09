@@ -32,45 +32,60 @@
           </el-form-item>
           <el-form-item label="实体1" prop="entityId1">
             <help-popover name="mtm.entityId1">
-              <el-select v-model="form.entityId1" style="width:100%;" filterable placeholder="请选择实体1">
-                <el-option
-                  v-for="item in entityList"
-                  :key="item.entityId"
-                  :label="item.title"
-                  :value="item.entityId">
-                </el-option>
-              </el-select>
+              <el-col :span="12" style="padding-left: 0px;">
+                <el-select v-model="form.entityId1" style="width:100%;" filterable placeholder="请选择实体1">
+                  <el-option
+                    v-for="item in entityList"
+                    :key="item.entityId"
+                    :label="item.title"
+                    :value="item.entityId">
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="12" style="padding-right: 0px;">
+                <el-radio-group v-model="form.holdRefer1" size="medium">
+                  <el-radio-button :key="1" :label="1">持有引用</el-radio-button>
+                  <el-radio-button :key="0" :label="0">不持有</el-radio-button>
+                </el-radio-group>
+              </el-col>
             </help-popover>
           </el-form-item>
           <el-form-item label="实体2" prop="entityId2">
             <help-popover name="mtm.entityId2">
-              <el-select v-model="form.entityId2" style="width:100%;" filterable placeholder="请选择实体2">
-                <el-option
-                  v-for="item in entityList"
-                  :key="item.entityId"
-                  :label="item.title"
-                  :value="item.entityId">
-                </el-option>
-              </el-select>
+              <el-col :span="12" style="padding-left: 0px;">
+                <el-select v-model="form.entityId2" style="width:100%;" filterable placeholder="请选择实体2">
+                  <el-option
+                    v-for="item in entityList"
+                    :key="item.entityId"
+                    :label="item.title"
+                    :value="item.entityId">
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="12" style="padding-right: 0px;">
+                <el-radio-group v-model="form.holdRefer2" size="medium">
+                  <el-radio-button :key="1" :label="1">持有引用</el-radio-button>
+                  <el-radio-button :key="0" :label="0">不持有</el-radio-button>
+                </el-radio-group>
+              </el-col>
             </help-popover>
           </el-form-item>
-          <el-form-item label="实体1持有引用" prop="holdRefer1">
-            <help-popover name="mtm.holdRefer1">
-              <el-radio-group v-model="form.holdRefer1">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
+          <el-form-item label="自增id" prop="needId">
+            <help-popover name="mtm.needId">
+              <el-col :span="12" style="padding-left: 0px;">
+                <el-radio-group v-model="form.needId" size="medium">
+                  <el-radio-button :key="true" :label="true">需要</el-radio-button>
+                  <el-radio-button :key="false" :label="false">不需要</el-radio-button>
+                </el-radio-group>
+              </el-col>
+              <el-col  :span="12" style="padding-right: 0px;">
+                <el-radio-group :disabled="!form.needId" v-model="form.bigId" size="medium">
+                  <el-radio-button :key="true" :label="true">bigint类型</el-radio-button>
+                  <el-radio-button :key="false" :label="false">int类型</el-radio-button>
+                </el-radio-group>
+              </el-col>
             </help-popover>
           </el-form-item>
-          <el-form-item label="实体2持有引用" prop="holdRefer2">
-            <help-popover name="mtm.holdRefer2">
-              <el-radio-group v-model="form.holdRefer2">
-                <el-radio border v-for="item in boolOptions" :key="item.value" :label="item.value">{{item.label}}
-                </el-radio>
-              </el-radio-group>
-            </help-popover>
-          </el-form-item>
-
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
             <el-button @click="goBack()">返回</el-button>
@@ -153,6 +168,9 @@ export default {
   @import '../../assets/common.scss';
   .mtmAdd .addForm {
     @include youran-form;
+    .el-radio-button__inner {
+      padding: 10px 10px;
+    }
   }
 
 </style>
