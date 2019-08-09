@@ -49,6 +49,8 @@ export function initMtmFormBean (forEdit) {
     desc: '',
     entityId1: null,
     entityId2: null,
+    entityIdField1: '',
+    entityIdField2: '',
     holdRefer1: 1,
     holdRefer2: 1
   }
@@ -66,6 +68,14 @@ export function getMtmRules () {
     tableName: [
       { required: true, message: '请输入关联表名', trigger: 'blur' },
       { max: 50, message: '长度不能超过50个字符', trigger: 'blur' }
+    ],
+    entityIdField1: [
+      { required: false, message: '请输入外键字段', trigger: 'blur' },
+      { max: 64, message: '长度不能超过64个字符', trigger: 'blur' }
+    ],
+    entityIdField2: [
+      { required: false, message: '请输入外键字段', trigger: 'blur' },
+      { max: 64, message: '长度不能超过64个字符', trigger: 'blur' }
     ],
     needId: [
       { required: true, type: 'boolean', message: '请选择是否需要自增id', trigger: 'change' }

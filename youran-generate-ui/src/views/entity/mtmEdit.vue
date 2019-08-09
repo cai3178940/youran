@@ -70,6 +70,16 @@
               </el-col>
             </help-popover>
           </el-form-item>
+          <el-form-item label="实体1外键字段" prop="entityIdField1">
+            <help-popover name="mtm.entityIdField1">
+              <el-input v-model="form.entityIdField1" placeholder="默认自动生成"></el-input>
+            </help-popover>
+          </el-form-item>
+          <el-form-item label="实体2外键字段" prop="entityIdField2">
+            <help-popover name="mtm.entityIdField2">
+              <el-input v-model="form.entityIdField2" placeholder="默认自动生成"></el-input>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="自增id" prop="needId">
             <help-popover name="mtm.needId">
               <el-col :span="12" style="padding-left: 0px;">

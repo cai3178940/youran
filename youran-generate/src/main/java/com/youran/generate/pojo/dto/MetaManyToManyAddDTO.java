@@ -60,7 +60,7 @@ public class MetaManyToManyAddDTO extends AbstractDTO {
      * 2019-08-07新增
      */
     @ApiModelProperty(notes = N_ENTITYIDFIELD1, example = E_ENTITYIDFIELD1)
-    @NotNull
+    @Length(max = 64, message = "entityIdField1最大长度不能超过{max}")
     private String entityIdField1;
 
     /**
@@ -68,7 +68,7 @@ public class MetaManyToManyAddDTO extends AbstractDTO {
      * 2019-08-07新增
      */
     @ApiModelProperty(notes = N_ENTITYIDFIELD2, example = E_ENTITYIDFIELD2)
-    @NotNull
+    @Length(max = 64, message = "entityIdField2最大长度不能超过{max}")
     private String entityIdField2;
 
     /**
