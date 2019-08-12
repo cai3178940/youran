@@ -34,7 +34,7 @@ public class MetaSpecialField {
     }
 
     public static final boolean isCreatedTime(String value){
-        return OPERATED_TIME.equals(value);
+        return CREATED_TIME.equals(value);
     }
 
     public static final boolean isOperatedBy(String value){
