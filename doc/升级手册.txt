@@ -1,0 +1,5 @@
+ALTER TABLE `youran`.`meta_mtm`
+ADD COLUMN `entity_id_field1` varchar(64) NOT NULL DEFAULT '' COMMENT '实体A对应多对多关联表的id字段名' AFTER `hold_refer2`,
+ADD COLUMN `entity_id_field2` varchar(64) NOT NULL DEFAULT '' COMMENT '实体B对应多对多关联表的id字段名' AFTER `entity_id_field1`,
+ADD COLUMN `need_id` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否需要自增id字段' AFTER `entity_id_field2`,
+ADD COLUMN `big_id` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'id字段是否bigint' AFTER `need_id`;
