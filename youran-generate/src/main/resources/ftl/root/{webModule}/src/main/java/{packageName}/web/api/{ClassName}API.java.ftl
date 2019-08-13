@@ -1,7 +1,6 @@
 <#include "/common.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@call this.addImport("${this.commonPackage}.pojo.vo.ReplyVO")/>
 <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ShowVO")/>
 <@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}AddDTO")/>
 <@call this.addImport("${this.packageName}.pojo.qo.${this.classNameUpper}QO")/>

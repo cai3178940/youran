@@ -3,7 +3,6 @@
 <#assign code>
 <@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
 <@call this.addImport("${this.commonPackage}.exception.BusinessException")/>
-<@call this.addImport("${this.commonPackage}.pojo.vo.ReplyVO")/>
 <@call this.addImport("${this.packageName}.pojo.dto.${this.classNameUpper}AddDTO")/>
 <@call this.addImport("${this.packageName}.pojo.po.${this.classNameUpper}PO")/>
 <@call this.addImport("${this.packageName}.pojo.qo.${this.classNameUpper}QO")/>
