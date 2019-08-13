@@ -24,7 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <mybatis-spring-boot.version><#if this.bootVersion==2>2.0.1<#else>1.3.4</#if></mybatis-spring-boot.version>
+        <mybatis-spring-boot.version><#if this.bootVersion==2>2.1.0<#else>1.3.4</#if></mybatis-spring-boot.version>
         <springfox.version><#if this.bootVersion==2>2.9.2<#else>2.7.0</#if></springfox.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <commons-io.version>2.6</commons-io.version>
@@ -53,21 +53,25 @@
                 <artifactId>${this.originProjectName}-web</artifactId>
                 <version>${r'$'}{project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${r'$'}{commons-io.version}</version>
-            </dependency>
+            <!-- apache常用工具包 -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${r'$'}{commons-lang3.version}</version>
             </dependency>
+            <!-- apache io流工具包 -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${r'$'}{commons-io.version}</version>
+            </dependency>
+            <!-- apache集合工具包 -->
             <dependency>
                 <groupId>commons-collections</groupId>
                 <artifactId>commons-collections</artifactId>
                 <version>${r'$'}{commons-collections.version}</version>
             </dependency>
+            <!-- spring集成swagger第三方包 http://springfox.github.io/springfox/ -->
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
@@ -84,42 +88,38 @@
                 <artifactId>springfox-bean-validators</artifactId>
                 <version>${r'$'}{springfox.version}</version>
             </dependency>
-
+            <!-- 集成mybatis http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/index.html -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${r'$'}{mybatis-spring-boot.version}</version>
             </dependency>
-
             <!-- 单元测试使用H2内存数据库 -->
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${r'$'}{h2.version}</version>
             </dependency>
-
-            <!-- mapstruct提供属性映射功能 -->
+            <!-- mapstruct提供属性映射功能 http://mapstruct.org/ -->
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-jdk8</artifactId>
                 <version>${r'$'}{org.mapstruct.version}</version>
             </dependency>
-
             <!-- idea下使用mapstruct必须添加本依赖，用于编译期生成mapper实现类 -->
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${r'$'}{org.mapstruct.version}</version>
             </dependency>
-
             <!-- swagger依赖 @ https://github.com/SpringForAll/spring-boot-starter-swagger -->
             <dependency>
                 <groupId>com.spring4all</groupId>
                 <artifactId>swagger-spring-boot-starter</artifactId>
                 <version>${r'$'}{spring-boot-swagger.version}</version>
             </dependency>
+            <!-- jsoup HTML parser library（用于过滤XSS） https://jsoup.org/ -->
             <dependency>
-                <!-- jsoup HTML parser library @ https://jsoup.org/ -->
                 <groupId>org.jsoup</groupId>
                 <artifactId>jsoup</artifactId>
                 <version>${r'$'}{jsoup.version}</version>
