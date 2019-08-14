@@ -40,7 +40,7 @@ public class ExceptionTranslator {
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ReplyVO processValidationError(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
@@ -54,7 +54,7 @@ public class ExceptionTranslator {
      * @return
      */
     @ExceptionHandler(BindException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ReplyVO processValidationError(BindException ex) {
         BindingResult result = ex.getBindingResult();
@@ -126,7 +126,7 @@ public class ExceptionTranslator {
      * @return
      */
     @ExceptionHandler(DuplicateKeyException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
     public ReplyVO processDuplicateKeyException(DuplicateKeyException ex) {
         return ReplyVO.fail(ErrorCode.DUPLICATE_KEY);
@@ -142,8 +142,8 @@ public class ExceptionTranslator {
     @ResponseBody
     public ResponseEntity<ReplyVO> processBusinessException(BusinessException ex) {
         ex.printStackTrace();
-        ResponseEntity.BodyBuilder builder = ResponseEntity.status(HttpStatus.OK);
         ErrorCode code = ex.getErrorCode();
+        ResponseEntity.BodyBuilder builder = ResponseEntity.status(Integer.parseInt(code.getValue()));
         ReplyVO replyVO = new ReplyVO(code.getValue(), ex.getMessage());
         return builder.body(replyVO);
     }
