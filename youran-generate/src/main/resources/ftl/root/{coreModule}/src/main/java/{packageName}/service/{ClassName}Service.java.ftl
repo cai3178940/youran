@@ -172,18 +172,48 @@ public class ${this.classNameUpper}Service {
     }
 </#if>
 
-
+    <#if this.metaEntity.holds?? && this.metaEntity.holds?size &gt; 0>
     /**
      * 根据主键获取【${this.title}】
-     * @param ${this.id}
-     * @param force
+     * 不获取多对多级联对象
+     * @param ${this.id} 主键
+     * @param force 是否强制获取
      * @return
      */
     public ${this.classNameUpper}PO get${this.classNameUpper}(${this.type} ${this.id}, boolean force){
+        <#assign withFalseCode="">
+        <#list this.metaEntity.holds! as otherEntity,mtm>
+            <#assign withFalseCode=withFalseCode+"false, ">
+        </#list>
+        return this.get${this.classNameUpper}(${this.id}, ${withFalseCode}force);
+    }
+
+    </#if>
+    /**
+     * 根据主键获取【${this.title}】
+     * @param ${this.id} 主键
+    <#assign withHoldParam="">
+    <#list this.metaEntity.holds! as otherEntity,mtm>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign withParamName="with"+otherCName>
+        <#assign withHoldParam=withHoldParam+"boolean with"+otherCName+", ">
+     * @param ${withParamName} 是否级联获取【${otherEntity.title}】
+    </#list>
+     * @param force 是否强制获取
+     * @return
+     */
+    public ${this.classNameUpper}PO get${this.classNameUpper}(${this.type} ${this.id}, ${withHoldParam}boolean force){
         ${this.classNameUpper}PO ${this.className} = ${this.className}DAO.findById(${this.id});
         if (force && ${this.className} == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
         }
+    <#list this.metaEntity.holds! as otherEntity,mtm>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        if (with${otherCName}){
+            ${this.className}.set${otherCName}POList(${othercName}DAO.findBy${this.classNameUpper}(${this.id}));
+        }
+    </#list>
         return ${this.className};
     }
 
