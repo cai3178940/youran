@@ -10,20 +10,17 @@ CREATE TABLE `${metaEntity.tableName}` (
     <#if metaEntity.pkField??>
     PRIMARY KEY (`${metaEntity.pkField.fieldName}`)<#if metaEntity.indexes?? && (metaEntity.indexes?size > 0)>,</#if>
     </#if>
-    <#if metaEntity.indexes??>
-        <#list metaEntity.indexes as index>
+    <#list metaEntity.indexes! as index>
     <#if isTrue(index.unique)>UNIQUE </#if>KEY `${index.indexName}` (<#list index.fields as field>`${field.fieldName}`<#if field_has_next >,</#if></#list>) USING BTREE<#if index_has_next>,</#if>
-        </#list>
-    </#if>
+    </#list>
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8${MetadataUtil.getCommentDisplay(metaEntity.desc,false)};
 
 </#list>
-<#if this.mtms??>
-    <#list this.mtms as mtm>
-        <#assign field1=mtm.refer1.pkField>
-        <#assign field2=mtm.refer2.pkField>
-        <#assign fkId1=MetadataUtil.getMtmFkAlias(mtm,mtm.refer1,true)>
-        <#assign fkId2=MetadataUtil.getMtmFkAlias(mtm,mtm.refer2,true)>
+<#list this.mtms! as mtm>
+    <#assign field1=mtm.refer1.pkField>
+    <#assign field2=mtm.refer2.pkField>
+    <#assign fkId1=MetadataUtil.getMtmFkAlias(mtm,mtm.refer1,true)>
+    <#assign fkId2=MetadataUtil.getMtmFkAlias(mtm,mtm.refer2,true)>
 DROP TABLE IF EXISTS `${mtm.tableName}`;
 
 CREATE TABLE `${mtm.tableName}` (
@@ -37,5 +34,4 @@ CREATE TABLE `${mtm.tableName}` (
     KEY `IDX_${mtm.tableName?upper_case}_2` (`${fkId2}`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${mtm.desc?replace('\'','"')?replace('\n','\\n')}';
 
-    </#list>
-</#if>
+</#list>

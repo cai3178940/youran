@@ -28,8 +28,7 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
 
     </#if>
 </#list>
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
+    <#list this.metaEntity.holds! as otherEntity,mtm>
         <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
         <@call this.addImport("java.util.List")/>
         <@call this.addImport("org.apache.ibatis.annotations.Param")/>
@@ -50,9 +49,7 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
     int removeAll${otherCName}(${this.type} ${theFkId});
 
     </#list>
-</#if>
-<#if this.metaEntity.unHolds??>
-    <#list this.metaEntity.unHolds as otherEntity,mtm>
+    <#list this.metaEntity.unHolds! as otherEntity,mtm>
         <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
         <@call this.addImport("java.util.List")/>
         <#assign otherCName=otherEntity.className/>
@@ -63,7 +60,6 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
     List<${this.classNameUpper}ListVO> findVOBy${otherCName}(${otherType} ${otherFkId});
 
     </#list>
-</#if>
 <#list this.metaEntity.checkUniqueIndexes as index>
     <@call this.addImport("org.apache.ibatis.annotations.Param")/>
     <#assign suffix=(index_index==0)?string('',''+index_index)>

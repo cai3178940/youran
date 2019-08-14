@@ -33,26 +33,22 @@ public class ${this.classNameUpper}AddDTO extends AbstractDTO {
     private ${field.jfieldType} ${field.jfieldName};
 
 </#list>
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
+    <#list this.metaEntity.holds! as otherEntity,mtm>
         <@call this.addImport("java.util.List")/>
         <#assign otherPk=otherEntity.pkField>
         <#assign othercName=otherEntity.className?uncapFirst>
     private List<${otherPk.jfieldType}> ${othercName}List;
 
     </#list>
-</#if>
 
 <#list this.insertFields as field>
     <@call TemplateUtil.printGetterSetter(field)/>
 </#list>
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
+    <#list this.metaEntity.holds! as otherEntity,mtm>
         <#assign otherPk=otherEntity.pkField>
         <#assign othercName=otherEntity.className?uncapFirst>
         <@call TemplateUtil.printGetterSetterList(othercName,otherPk.jfieldType)/>
     </#list>
-</#if>
 }
 </#assign>
 <#--开始渲染代码-->

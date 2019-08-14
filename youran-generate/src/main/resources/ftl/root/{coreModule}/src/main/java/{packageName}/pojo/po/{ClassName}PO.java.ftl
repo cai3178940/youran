@@ -104,13 +104,11 @@ ${MetadataUtil.convertCommentDisplayWithIndentStar(field.fieldComment)}
     private ${field.jfieldType} ${field.jfieldName};
 
 </#list>
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
+    <#list this.metaEntity.holds! as otherEntity,mtm>
         <@call this.addImport("java.util.List")/>
     private List<${otherEntity.className}PO> ${otherEntity.className?uncapFirst}POList;
 
     </#list>
-</#if>
 
 <#list this.fields as field>
     <@call TemplateUtil.printGetterSetterForPO(field)/>
@@ -188,11 +186,9 @@ ${MetadataUtil.convertCommentDisplayWithIndentStar(field.fieldComment)}
     }
 
 </#if>
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
+    <#list this.metaEntity.holds! as otherEntity,mtm>
     <@call TemplateUtil.printGetterSetterList("${otherEntity.className}PO","${otherEntity.className}PO")/>
     </#list>
-</#if>
 
 }
 </#assign>

@@ -20,18 +20,16 @@ public class ${this.classNameUpper}Service {
     <#-- 引入当前实体的DAO -->
     <@call this.addAutowired("${this.packageName}.dao" "${this.classNameUpper}DAO")/>
 <#-- 引入多对多关联实体的DAO（当前持有） -->
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
+
+    <#list this.metaEntity.holds! as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
     </#list>
-</#if>
+
 <#-- 引入多对多关联实体的DAO（非当前持有） -->
-<#if this.metaEntity.unHolds??>
-    <#list this.metaEntity.unHolds as otherEntity,mtm>
+    <#list this.metaEntity.unHolds! as otherEntity,mtm>
         <@call this.addAutowired("${this.packageName}.dao" "${otherEntity.className?capFirst}DAO")/>
     </#list>
-</#if>
 <#-- 引入外键对应的DAO （插入字段对应的外键）-->
 <#list this.insertFields as field>
     <#if isTrue(field.foreignKey)>
@@ -45,11 +43,9 @@ public class ${this.classNameUpper}Service {
     </#if>
 </#list>
 <#-- 被其他实体外键关联时，引入其他实体DAO -->
-<#if this.metaEntity.foreignEntities??>
-    <#list this.metaEntity.foreignEntities as foreignEntity>
+    <#list this.metaEntity.foreignEntities! as foreignEntity>
         <@call this.addAutowired("${this.packageName}.dao" "${foreignEntity.className?capFirst}DAO")/>
     </#list>
-</#if>
 <#-- 当前实体的外键字段存在级联扩展时，引入对应实体的DAO -->
 <#list this.fields as field>
     <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
@@ -105,19 +101,17 @@ public class ${this.classNameUpper}Service {
         this.checkUnique(${this.className},false);
 </#if>
         ${this.className}DAO.save(${this.className});
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
-        <@call this.addImport("java.util.List")/>
-        <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
-        <#assign otherPk=otherEntity.pkField>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
+<#list this.metaEntity.holds! as otherEntity,mtm>
+    <@call this.addImport("java.util.List")/>
+    <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
+    <#assign otherPk=otherEntity.pkField>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign othercName=otherEntity.className?uncapFirst>
         List<${otherPk.jfieldType}> ${othercName}List = ${this.className}DTO.get${otherCName}List();
         if(CollectionUtils.isNotEmpty(${othercName}List)) {
             this.doAdd${otherCName}(${this.className}.get${this.idUpper}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
         }
-    </#list>
-</#if>
+</#list>
         return ${this.className};
     }
 
@@ -141,19 +135,17 @@ public class ${this.classNameUpper}Service {
         this.checkUnique(${this.className},true);
 </#if>
         ${this.className}DAO.update(${this.className});
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
-        <@call this.addImport("java.util.List")/>
-        <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
-        <#assign otherPk=otherEntity.pkField>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
+<#list this.metaEntity.holds! as otherEntity,mtm>
+    <@call this.addImport("java.util.List")/>
+    <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
+    <#assign otherPk=otherEntity.pkField>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign othercName=otherEntity.className?uncapFirst>
         List<${otherPk.jfieldType}> ${othercName}List = ${this.className}UpdateDTO.get${otherCName}List();
         if(${othercName}List != null) {
             this.set${otherCName}(${this.className}.get${this.idUpper}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
         }
-    </#list>
-</#if>
+</#list>
         return ${this.className};
     }
 <#if isTrue(this.pageSign)>
@@ -217,14 +209,12 @@ public class ${this.classNameUpper}Service {
         }
     </#if>
 </#list>
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
+<#list this.metaEntity.holds! as otherEntity,mtm>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign othercName=otherEntity.className?uncapFirst>
         // 设置【${otherEntity.title}】列表
         showVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(${this.id}));
-    </#list>
-</#if>
+</#list>
         return showVO;
     }
 
@@ -237,51 +227,44 @@ public class ${this.classNameUpper}Service {
     public int delete(${this.type}... ${this.id}s) {
         int count = 0;
         for (${this.type} ${this.id} : ${this.id}s) {
-    <#if this.metaEntity.foreignEntities??>
-        <#list this.metaEntity.foreignEntities as foreignEntity>
-            <#assign foreignCName=foreignEntity.className?capFirst>
+<#list this.metaEntity.foreignEntities! as foreignEntity>
+    <#assign foreignCName=foreignEntity.className?capFirst>
             this.checkDeleteBy${foreignCName}(${this.id});
-        </#list>
-    </#if>
-    <#if this.metaEntity.unHolds??>
-        <#list this.metaEntity.unHolds as otherEntity,mtm>
-            <#assign otherCName=otherEntity.className?capFirst>
+</#list>
+<#list this.metaEntity.unHolds! as otherEntity,mtm>
+    <#assign otherCName=otherEntity.className?capFirst>
             // 校验是否存在【${otherEntity.title}】关联
             this.checkDeleteBy${otherCName}(${this.id});
-        </#list>
-    </#if>
+</#list>
             count += ${this.className}DAO.delete(${this.id});
         }
         return count;
     }
 
-<#if this.metaEntity.foreignEntities??>
-    <#list this.metaEntity.foreignEntities as foreignEntity>
-        <#assign foreignCName=foreignEntity.className?capFirst>
-        <#assign foreigncName=foreignEntity.className?uncapFirst>
-        <#assign alreadyFind=false>
+<#list this.metaEntity.foreignEntities! as foreignEntity>
+    <#assign foreignCName=foreignEntity.className?capFirst>
+    <#assign foreigncName=foreignEntity.className?uncapFirst>
+    <#assign alreadyFind=false>
     /**
      * 校验是否存在【${foreignEntity.title}】关联
      * @param ${this.id}
      */
     private void checkDeleteBy${foreignCName}(${this.type} ${this.id}) {
-        <#list this.metaEntity.foreignFields as foreignField>
-            <#if foreignField.entityId==foreignEntity.entityId>
+    <#list this.metaEntity.foreignFields as foreignField>
+        <#if foreignField.entityId==foreignEntity.entityId>
         <#if !alreadyFind>int </#if>count = ${foreigncName}DAO.getCountBy${foreignField.jfieldName?capFirst}(${this.id});
         if(count>0){
             throw new BusinessException(ErrorCode.CASCADE_DELETE_ERROR);
         }
-                <#assign alreadyFind=true>
-            </#if>
-        </#list>
+            <#assign alreadyFind=true>
+        </#if>
+    </#list>
     }
 
-    </#list>
-</#if>
-<#if this.metaEntity.unHolds??>
-    <#list this.metaEntity.unHolds as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
+</#list>
+<#list this.metaEntity.unHolds! as otherEntity,mtm>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign othercName=otherEntity.className?uncapFirst>
     /**
      * 校验是否存在【${otherEntity.title}】关联
      * @param ${this.id}
@@ -293,15 +276,13 @@ public class ${this.classNameUpper}Service {
         }
     }
 
-    </#list>
-</#if>
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
-        <@call this.addImport("org.apache.commons.lang3.ArrayUtils")/>
-        <#assign otherPk=otherEntity.pkField>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+</#list>
+<#list this.metaEntity.holds! as otherEntity,mtm>
+    <@call this.addImport("org.apache.commons.lang3.ArrayUtils")/>
+    <#assign otherPk=otherEntity.pkField>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
     /**
      * 执行【${otherEntity.title}】添加
      * @param ${this.id}
@@ -364,8 +345,7 @@ public class ${this.classNameUpper}Service {
         return doAdd${otherCName}(${this.id}, ${otherFkId});
     }
 
-    </#list>
-</#if>
+</#list>
 
 }
 

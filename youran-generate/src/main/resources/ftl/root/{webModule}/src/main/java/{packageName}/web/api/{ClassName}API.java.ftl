@@ -75,11 +75,10 @@ public interface ${this.classNameUpper}API {
     ResponseEntity<Integer> deleteBatch(${this.type}[] id);
 
 
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
-        <#assign otherPk=otherEntity.pkField>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+<#list this.metaEntity.holds! as otherEntity,mtm>
+    <#assign otherPk=otherEntity.pkField>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
     /**
      * 添加单个【${otherEntity.title}】关联
      */
@@ -130,8 +129,7 @@ public interface ${this.classNameUpper}API {
     })
     ResponseEntity<Integer> set${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherFkId});
 
-    </#list>
-</#if>
+</#list>
 
 }
 </#assign>

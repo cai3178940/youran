@@ -90,8 +90,7 @@
             .andExpect(jsonPath("$").value(is(1)));
     }
 
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
+    <#list this.metaEntity.holds! as otherEntity,mtm>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
@@ -146,7 +145,6 @@
     }
 
     </#list>
-</#if>
 </#assign>
 <#--开始渲染代码-->
 package ${this.packageName}.web.rest;

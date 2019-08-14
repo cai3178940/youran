@@ -108,17 +108,15 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 </#list>
 <#--开始渲染级联扩展字段getter-setter方法-->
 <#list this.fields as field>
-    <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
-        <#list field.cascadeQueryExts as cascadeExt>
-            <#assign cascadeField=cascadeExt.cascadeField>
-            <#if cascadeField.queryType!=QueryType.BETWEEN>
-                <@queryMethod cascadeField cascadeExt.alias></@queryMethod>
-            <#else>
-                <@queryMethod cascadeField cascadeExt.alias+"Start"></@queryMethod>
-                <@queryMethod cascadeField cascadeExt.alias+"End"></@queryMethod>
-            </#if>
-        </#list>
-    </#if>
+    <#list field.cascadeQueryExts! as cascadeExt>
+        <#assign cascadeField=cascadeExt.cascadeField>
+        <#if cascadeField.queryType!=QueryType.BETWEEN>
+            <@queryMethod cascadeField cascadeExt.alias></@queryMethod>
+        <#else>
+            <@queryMethod cascadeField cascadeExt.alias+"Start"></@queryMethod>
+            <@queryMethod cascadeField cascadeExt.alias+"End"></@queryMethod>
+        </#if>
+    </#list>
 </#list>
 <#--开始渲染排序字段getter-setter方法-->
 <#list this.listSortFields as field>

@@ -23,37 +23,33 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
 
 </#list>
 <#list this.fields as field>
-    <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
-        <#list field.cascadeListExts as cascadeExt>
-            <#assign cascadeField=cascadeExt.cascadeField>
-            <#assign examplePackage="">
-            <#if field.foreignEntity!=this.metaEntity>
-                <#assign examplePackage="${this.packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example.">
-            </#if>
+    <#list field.cascadeListExts! as cascadeExt>
+        <#assign cascadeField=cascadeExt.cascadeField>
+        <#assign examplePackage="">
+        <#if field.foreignEntity!=this.metaEntity>
+            <#assign examplePackage="${this.packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example.">
+        </#if>
     @ApiModelProperty(notes = ${examplePackage}N_${cascadeField.jfieldName?upperCase},example = ${examplePackage}E_${cascadeField.jfieldName?upperCase}<#if cascadeField.dicType??>, dataType = "${this.getConstFullClassPath(cascadeField.dicType)}"</#if>)
-            <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
-                <@call this.addImport("java.util.Date")/>
-                <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
-                <@call this.addImport("${this.commonPackage}.constant.JsonFieldConst")/>
+        <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
+            <@call this.addImport("java.util.Date")/>
+            <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
+            <@call this.addImport("${this.commonPackage}.constant.JsonFieldConst")/>
     @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
-            <#elseIf cascadeField.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-                <@call this.addImport("java.math.BigDecimal")/>
-            </#if>
+        <#elseIf cascadeField.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
+            <@call this.addImport("java.math.BigDecimal")/>
+        </#if>
     private ${cascadeField.jfieldType} ${cascadeExt.alias};
 
-        </#list>
-    </#if>
+    </#list>
 </#list>
 
 <#list this.listFields as field>
     <@call TemplateUtil.printGetterSetter(field)/>
 </#list>
 <#list this.fields as field>
-    <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
-        <#list field.cascadeListExts as cascadeExt>
-            <@call TemplateUtil.printGetterSetter(cascadeExt.alias,cascadeExt.cascadeField.jfieldType)/>
-        </#list>
-    </#if>
+    <#list field.cascadeListExts! as cascadeExt>
+        <@call TemplateUtil.printGetterSetter(cascadeExt.alias,cascadeExt.cascadeField.jfieldType)/>
+    </#list>
 </#list>
 
 

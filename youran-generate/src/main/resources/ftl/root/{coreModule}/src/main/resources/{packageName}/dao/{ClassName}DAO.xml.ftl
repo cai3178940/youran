@@ -252,8 +252,7 @@
 
     </#if>
 </#list>
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
+    <#list this.metaEntity.holds! as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherType=otherPk.jfieldType>
@@ -338,9 +337,7 @@
     </delete>
 
     </#list>
-</#if>
-<#if this.metaEntity.unHolds??>
-    <#list this.metaEntity.unHolds as otherEntity,mtm>
+    <#list this.metaEntity.unHolds! as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherType=otherPk.jfieldType>
@@ -387,7 +384,6 @@
     </select>
 
     </#list>
-</#if>
 <#list this.metaEntity.checkUniqueIndexes as index>
     <#assign suffix=(index_index==0)?string('',''+index_index)>
     <select id="notUnique${suffix}" resultType="boolean">

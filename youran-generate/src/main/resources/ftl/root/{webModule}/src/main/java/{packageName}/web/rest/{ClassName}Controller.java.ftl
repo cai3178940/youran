@@ -86,12 +86,11 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
         return ResponseEntity.ok(count);
     }
 
-<#if this.metaEntity.holds??>
-    <#list this.metaEntity.holds as otherEntity,mtm>
-        <#assign otherPk=otherEntity.pkField>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+<#list this.metaEntity.holds! as otherEntity,mtm>
+    <#assign otherPk=otherEntity.pkField>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
     @Override
     @PostMapping(value = "/{${this.id}}/${othercName}/{${otherFkId}}")
     public ResponseEntity<Integer> add${otherCName}(@PathVariable ${this.type} ${this.id},
@@ -131,8 +130,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
         int count = ${this.className}Service.set${otherCName}(${this.id}, ${otherFkId});
         return ResponseEntity.ok(count);
     }
-    </#list>
-</#if>
+</#list>
 
 }
 
