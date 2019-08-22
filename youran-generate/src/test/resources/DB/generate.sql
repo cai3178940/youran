@@ -103,7 +103,8 @@ CREATE TABLE `meta_index` (
   `operated_by` varchar(32) DEFAULT NULL COMMENT '操作人',
   `deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
   `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
-  PRIMARY KEY (`index_id`)
+  PRIMARY KEY (`index_id`),
+  KEY `i_meta_index_0` (`entity_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_index';
 
 DROP TABLE IF EXISTS `meta_index_field`;
