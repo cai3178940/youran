@@ -10,6 +10,9 @@
 public class ${this.classNameUpper}ListVO extends AbstractVO {
 
 <#list this.listFields as field>
+    <#if field.dicType??>
+        <@call this.addConstImport(field.dicType)/>
+    </#if>
     @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase}<#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
         <@call this.addImport("java.util.Date")/>
@@ -26,6 +29,9 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
     <#list field.cascadeListExts! as cascadeExt>
         <#assign cascadeField=cascadeExt.cascadeField>
         <#assign examplePackage="">
+        <#if cascadeField.dicType??>
+            <@call this.addConstImport(cascadeField.dicType)/>
+        </#if>
         <#if field.foreignEntity!=this.metaEntity>
             <#assign examplePackage="${this.packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example.">
         </#if>

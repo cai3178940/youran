@@ -10,6 +10,11 @@ public class BoolConst {
 
     public static final int FALSE = 0;
 
+    /**
+     * 枚举值罗列，给swagger接口文档展示用
+     */
+    public static final String VALUES_STR = "0,1";
+
     @Check(message = "只允许输入0或1")
     public static final boolean check(int value) {
         return TRUE == value || FALSE == value;
