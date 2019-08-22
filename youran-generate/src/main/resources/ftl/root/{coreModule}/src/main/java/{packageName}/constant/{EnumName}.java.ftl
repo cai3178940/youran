@@ -2,17 +2,22 @@
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.commonPackage}.validator.Check")/>
-<@call this.addImport("com.fasterxml.jackson.annotation.JsonValue")/>
 <@call this.addImport("java.util.HashMap")/>
 <@call this.addImport("java.util.Map")/>
 <@call this.printClassCom("枚举【${this.remark}】")/>
 public enum ${this.constNameUpper} {
 
+<#assign allValuesStr="">
 <#list this.detailList as detail>
     <#if this.constType==MetaConstType.INTEGER>
         <#assign valueStr>${detail.detailValue}</#assign>
     <#elseif this.constType==MetaConstType.STRING>
         <#assign valueStr>"${detail.detailValue}"</#assign>
+    </#if>
+    <#if detail_has_next>
+        <#assign allValuesStr+=detail.detailValue+",">
+    <#else>
+        <#assign allValuesStr+=detail.detailValue>
     </#if>
     /**
      * ${detail.detailRemark}
@@ -23,6 +28,11 @@ public enum ${this.constNameUpper} {
 
     private final ${this.constTypeStr} value;
     private final String desc;
+
+    /**
+     * 枚举值罗列，给swagger接口文档展示用
+     */
+    public static final String VALUES_STR = "${allValuesStr}";
 
     private static final Map<${this.constTypeStr}, ${this.constNameUpper}> LOOKUP = new HashMap<>();
 
@@ -60,7 +70,6 @@ public enum ${this.constNameUpper} {
         return theEnum!=null;
     }
 
-    @JsonValue
     public ${this.constTypeStr} getValue() {
         return value;
     }
