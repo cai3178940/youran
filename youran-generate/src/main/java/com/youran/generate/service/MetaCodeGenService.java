@@ -26,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ import java.util.function.Consumer;
  * @date: 2017/5/14
  */
 @Service
-public class MetaCodeGenService {
+public class MetaCodeGenService implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetaCodeGenService.class);
 
@@ -62,6 +63,19 @@ public class MetaCodeGenService {
     private GenHistoryService genHistoryService;
     @Value("${spring.application.name}")
     private String appName;
+
+    /**
+     * 启动以后清空代码目录
+     * /[tmp目录]/[spring.application.name]
+     * @throws Exception
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // 获取代码目录
+        String appCodeDir = H2Util.getTmpDir(appName, false, false);
+        File tmpDirFile = new File(appCodeDir);
+        FileUtils.deleteDirectory(tmpDirFile);
+    }
 
     /**
      * 输出建表语句
@@ -92,7 +106,7 @@ public class MetaCodeGenService {
      * @return
      */
     public File genCodeZip(Integer projectId, Consumer<ProgressVO> progressConsumer) {
-        String tmpDir = this.doGenCode(projectId,progressConsumer);
+        String tmpDir = this.genProjectCodeIfNotExists(projectId,progressConsumer);
         //压缩src目录到zip文件
         this.progressing(progressConsumer,1,"将项目打包成zip格式");
         String outFilePath = tmpDir + ".zip";
@@ -132,15 +146,48 @@ public class MetaCodeGenService {
     }
 
 
+    /**
+     * 如果当天尚未生成过最新版本的代码，则生成代码
+     * @param projectId 项目id
+     * @param progressConsumer 进度条
+     * @return 代码目录
+     */
+    private String genProjectCodeIfNotExists(Integer projectId,Consumer<ProgressVO> progressConsumer){
+        MetaProjectPO project = metaProjectService.getProject(projectId,true);
+        // 获取最新代码目录
+        String projectDir = this.getProjectRecentDir(project);
+        File dir = new File(projectDir);
+        // 如果当天尚未生成过同一个版本的代码，则执行代码生成
+        if(!dir.exists()){
+            this.doGenCode(projectDir,projectId,progressConsumer);
+        }
+        return projectDir;
+    }
 
+    /**
+     * 获取最新代码目录
+     * @param project
+     * @return /[tmp目录]/[spring.application.name]/[youran.version]/[projectId]/[projectVersion]
+     */
+    public String getProjectRecentDir(MetaProjectPO project){
+        String projectDir = H2Util.getTmpDir(appName, false, false)
+            +File.separator+generateProperties.getVersion()
+            +File.separator+project.getProjectId()
+            +File.separator+project.getProjectVersion();
+        return projectDir;
+    }
 
-
-    private String doGenCode(Integer projectId,Consumer<ProgressVO> progressConsumer){
+    /**
+     * 在指定目录中生成代码
+     * @param projectDir
+     * @param projectId
+     * @param progressConsumer
+     */
+    private void doGenCode(String projectDir, Integer projectId,Consumer<ProgressVO> progressConsumer){
         // 获取组装后的项目
         this.progressing(progressConsumer,1,"获取并组装项目元数据");
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,true,true,true);
-        String tmpDir = H2Util.getTmpDir(appName, true, true);
-        LOGGER.debug("------代码生成临时路径：" + tmpDir);
+        LOGGER.debug("------代码生成临时路径：" + projectDir);
         this.progressing(progressConsumer,0,"渲染代码模板");
         for (TemplateEnum templateEnum : TemplateEnum.values()) {
             try {
@@ -152,20 +199,19 @@ public class MetaCodeGenService {
             this.progressing(progressConsumer,1,null);
             //生成全局文件
             if (templateEnum.getType() == TemplateType.COMMON) {
-                this.renderCommonFTL(project, tmpDir, templateEnum);
+                this.renderCommonFTL(project, projectDir, templateEnum);
             } else if (templateEnum.getType() == TemplateType.ENTITY) {
                 //生成实体模版文件
                 for (MetaEntityPO metaEntityPO : project.getEntities()) {
-                    this.renderEntityFTL(project, tmpDir, templateEnum, metaEntityPO);
+                    this.renderEntityFTL(project, projectDir, templateEnum, metaEntityPO);
                 }
             } else if (templateEnum.getType() == TemplateType.CONST) {
                 //生成实体模版文件
                 for (MetaConstPO metaConstPO : project.getConsts()) {
-                    this.renderConstFTL(project, tmpDir, templateEnum, metaConstPO);
+                    this.renderConstFTL(project, projectDir, templateEnum, metaConstPO);
                 }
             }
         }
-        return tmpDir;
     }
 
 
@@ -197,6 +243,13 @@ public class MetaCodeGenService {
 
     }
 
+    /**
+     * 比对文件内容是否相同（无视创建时间注释）
+     * @param file1
+     * @param file2
+     * @return
+     * @throws IOException
+     */
     private boolean compareFile(File file1, File file2) throws IOException {
         boolean file1Exists = file1.exists();
         if (file1Exists != file2.exists()) {
@@ -220,6 +273,12 @@ public class MetaCodeGenService {
         return true;
     }
 
+    /**
+     * 执行文件覆盖
+     * @param targetFile
+     * @param file
+     * @throws IOException
+     */
     private void doCover(File targetFile, File file) throws IOException {
         LOGGER.debug("进行文件覆盖={}", targetFile.getPath());
         FileUtils.copyFile(file, targetFile);
@@ -379,7 +438,7 @@ public class MetaCodeGenService {
                 FileUtils.forceDelete(oldFile);
             }
             //生成代码
-            String genDir = this.doGenCode(projectId,progressConsumer);
+            String genDir = this.genProjectCodeIfNotExists(projectId,progressConsumer);
             this.progressing(progressConsumer,1,"拷贝新生成的代码");
             FileUtils.copyDirectory(new File(genDir), repoDir);
         } catch (IOException e) {
@@ -431,5 +490,6 @@ public class MetaCodeGenService {
             progressConsumer.accept(ProgressVO.progressing(addPercent,msg));
         }
     }
+
 
 }

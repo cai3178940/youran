@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * <p>Title:【索引】控制器</p>
- * <p>Description:</p>
+ * <p>Description: 索引增删改查</p>
  * @author: cbb
  * @date: 2017/5/12
  */

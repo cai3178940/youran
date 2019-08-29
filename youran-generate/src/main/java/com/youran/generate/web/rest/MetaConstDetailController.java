@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * <p>Title:【常量值】控制器</p>
- * <p>Description:</p>
+ * <p>Description: 常量值增删改查</p>
  * @author: cbb
  * @date: 2017/5/12
  */

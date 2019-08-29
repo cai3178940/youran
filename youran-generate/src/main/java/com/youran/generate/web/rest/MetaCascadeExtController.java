@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * <p>Title:【级联扩展】控制器</p>
- * <p>Description:</p>
+ * <p>Description: 级联扩展增删改查</p>
  * @author: cbb
  * @date: 2017/5/12
  */

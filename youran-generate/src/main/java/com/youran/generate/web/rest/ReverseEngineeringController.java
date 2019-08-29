@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 /**
  * <p>Title:【反向工程】控制器</p>
- * <p>Description:</p>
+ * <p>Description: 通过SQL生成实体及字段</p>
  * Project: bbs
  * @author: cbb
  * @date: 2018-03-17

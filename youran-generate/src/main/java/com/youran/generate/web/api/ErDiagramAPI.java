@@ -1,6 +1,7 @@
 package com.youran.generate.web.api;
 
 import com.youran.generate.pojo.vo.ErDiagramVO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -11,10 +12,10 @@ import java.util.List;
 /**
  * <p>Title: 实体关系图</p>
  * <p>Description: </p>
- *
  * @author cbb
  * @date 2018/7/17
  */
+@Api(tags = "ErDiagram")
 public interface ErDiagramAPI {
 
     /**

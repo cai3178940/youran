@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 /**
  * <p>Title:【生成历史】控制器</p>
- * <p>Description:</p>
+ * <p>Description: Git提交历史相关的服务接口</p>
  * Project: bbs
  * @author: cbb
  * @date: 2018-03-17

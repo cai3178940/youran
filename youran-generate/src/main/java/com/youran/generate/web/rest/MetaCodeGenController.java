@@ -21,7 +21,7 @@ import java.util.Date;
 
 /**
  * <p>Title:【代码生成】控制器</p>
- * <p>Description:</p>
+ * <p>Description: 生成代码的服务接口</p>
  * @author: cbb
  * @date: 2017/5/13
  */

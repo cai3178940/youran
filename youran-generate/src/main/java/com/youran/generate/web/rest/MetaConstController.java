@@ -25,7 +25,7 @@ import java.net.URI;
 
 /**
  * <p>Title:【常量】控制器</p>
- * <p>Description:</p>
+ * <p>Description: 常量增删改查</p>
  * @author: cbb
  * @date: 2017/5/12
  */

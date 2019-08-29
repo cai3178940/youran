@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * <p>Title:【项目】控制器</p>
- * <p>Description:</p>
+ * <p>Description: 项目增删改查功能</p>
  * @author: cbb
  * Create Time:2017/5/24
  */
