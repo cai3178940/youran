@@ -1,5 +1,6 @@
 package com.youran.generate.web.rest;
 
+import com.google.common.collect.Lists;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.po.MetaProjectPO;
@@ -9,9 +10,12 @@ import com.youran.generate.service.MetaCodeGenService;
 import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.CodePreviewAPI;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.OrFileFilter;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +24,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -110,12 +114,17 @@ public class CodePreviewController extends AbstractController implements CodePre
         return ResponseEntity.ok(treeVO);
     }
 
+    private static FileFilter getFileFilter(){
+        IOFileFilter suffixFileFilter = new SuffixFileFilter(EXTENSIONS_FILTER);
+        return new OrFileFilter(Lists.newArrayList(suffixFileFilter, DirectoryFileFilter.INSTANCE));
+    }
+
     private List<FileNodeVO> recurCodeTree(File dirFile,File basePath){
-        Collection<File> files = FileUtils.listFiles(dirFile, EXTENSIONS_FILTER, false);
-        if(CollectionUtils.isEmpty(files)){
+        File[] files = dirFile.listFiles(getFileFilter());
+        if(ArrayUtils.isEmpty(files)){
             return Collections.emptyList();
         }
-        List<FileNodeVO> list = new ArrayList<>(files.size());
+        List<FileNodeVO> list = new ArrayList<>(files.length);
         for (File file : files) {
             FileNodeVO nodeVO = this.fileToNodeVO(file,basePath);
             if(file.isDirectory()){

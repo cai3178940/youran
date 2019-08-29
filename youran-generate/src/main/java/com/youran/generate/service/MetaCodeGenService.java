@@ -133,11 +133,11 @@ public class MetaCodeGenService implements InitializingBean {
                 this.progressing(progressConsumer,1,"部分替换开发工程" + devProjectDir);
                 this.compareAndCoverFile(new File(tmpDir), new File(devProjectDir));
             }
-            if (generateProperties.isDelTemp()) {
+            /*if (generateProperties.isDelTemp()) {
                 LOGGER.debug("------删除临时文件夹：" + tmpDir);
                 this.progressing(progressConsumer,1 ,"删除临时文件夹");
                 FileUtils.deleteDirectory(new File(tmpDir));
-            }
+            }*/
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }

@@ -26,11 +26,6 @@ public class GenerateProperties {
     private Integer devMode = 0;
 
     /**
-     * 是否删除临时代码文件
-     */
-    private boolean delTemp = true;
-
-    /**
      * 本地开发工程路径
      */
     private String devProjectDir;
@@ -87,14 +82,6 @@ public class GenerateProperties {
 
     public void setDevMode(Integer devMode) {
         this.devMode = devMode;
-    }
-
-    public boolean isDelTemp() {
-        return delTemp;
-    }
-
-    public void setDelTemp(boolean delTemp) {
-        this.delTemp = delTemp;
     }
 
     public String getDevProjectDir() {
