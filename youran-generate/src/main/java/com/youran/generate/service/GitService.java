@@ -46,6 +46,7 @@ public class GitService {
                                         String oldBranchName, String newBranchName){
 
         try {
+            // 创建临时文件，并删除该文件，通过该方式防止文件夹已经被占用
             File repoDir = File.createTempFile(projectName, "");
             if(!repoDir.delete()) {
                 throw new IOException("Could not delete temporary file " + repoDir);

@@ -152,7 +152,7 @@ public class MetaCodeGenService implements InitializingBean {
      * @param progressConsumer 进度条
      * @return 代码目录
      */
-    private String genProjectCodeIfNotExists(Integer projectId,Consumer<ProgressVO> progressConsumer){
+    public String genProjectCodeIfNotExists(Integer projectId,Consumer<ProgressVO> progressConsumer){
         MetaProjectPO project = metaProjectService.getProject(projectId,true);
         // 获取最新代码目录
         String projectDir = this.getProjectRecentDir(project);
@@ -160,6 +160,8 @@ public class MetaCodeGenService implements InitializingBean {
         // 如果当天尚未生成过同一个版本的代码，则执行代码生成
         if(!dir.exists()){
             this.doGenCode(projectDir,projectId,progressConsumer);
+        }else{
+            LOGGER.info("代码已经存在，无需生成：{}",projectDir);
         }
         return projectDir;
     }

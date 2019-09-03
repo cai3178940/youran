@@ -36,6 +36,7 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
 
     @Override
     @GetMapping(value = "/genSql")
+    @Deprecated
     public void genSql(Integer projectId, HttpServletResponse response) {
         String text = metaCodeGenService.genSql(projectId);
         this.replyDownloadText(response,text,"db.sql");
@@ -52,7 +53,14 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
 
     @Override
     @GetMapping(value = "/genCode")
-    public void genCode(Integer projectId, HttpServletResponse response) {
+    public ResponseEntity<Void> genCode(Integer projectId) {
+        metaCodeGenService.genProjectCodeIfNotExists(projectId,null);
+        return ResponseEntity.ok(null);
+    }
+
+    @Override
+    @GetMapping(value = "/genCodeAndDownload")
+    public void genCodeAndDownload(Integer projectId, HttpServletResponse response) {
         File zipFile = metaCodeGenService.genCodeZip(projectId,null);
         if (zipFile == null || !zipFile.exists()) {
             this.replyNotFound(response);

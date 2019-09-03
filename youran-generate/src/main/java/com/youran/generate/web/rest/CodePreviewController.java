@@ -12,6 +12,9 @@ import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.CodePreviewAPI;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.comparator.CompositeFileComparator;
+import org.apache.commons.io.comparator.DirectoryFileComparator;
+import org.apache.commons.io.comparator.NameFileComparator;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.OrFileFilter;
@@ -20,15 +23,17 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>Title: 【代码预览】控制器</p>
@@ -52,7 +57,7 @@ public class CodePreviewController extends AbstractController implements CodePre
 
 
     @Override
-    @GetMapping(value = "/{projectId}/file_content")
+    @GetMapping(value = "/{projectId}/file_content",produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public ResponseEntity<String> getFileContent(@PathVariable Integer projectId,
                                                  @RequestParam Integer projectVersion,
@@ -124,16 +129,17 @@ public class CodePreviewController extends AbstractController implements CodePre
         if(ArrayUtils.isEmpty(files)){
             return Collections.emptyList();
         }
-        List<FileNodeVO> list = new ArrayList<>(files.length);
-        for (File file : files) {
-            FileNodeVO nodeVO = this.fileToNodeVO(file,basePath);
-            if(file.isDirectory()){
-                List<FileNodeVO> children = recurCodeTree(file,basePath);
-                nodeVO.setChildren(children);
-            }
-            list.add(nodeVO);
-        }
-        return list;
+        return Arrays.stream(files)
+            .sorted(new CompositeFileComparator(DirectoryFileComparator.DIRECTORY_COMPARATOR,NameFileComparator.NAME_COMPARATOR))
+            .map(file -> {
+                FileNodeVO nodeVO = this.fileToNodeVO(file, basePath);
+                if(file.isDirectory()){
+                    List<FileNodeVO> children = recurCodeTree(file,basePath);
+                    nodeVO.setChildren(children);
+                }
+                return nodeVO;
+            })
+            .collect(Collectors.toList());
     }
 
     private FileNodeVO fileToNodeVO(File file,File basePath){

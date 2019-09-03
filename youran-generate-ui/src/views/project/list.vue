@@ -57,11 +57,14 @@
               <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" >
                 <icon name="object-group" scale="0.8" ></icon> 反向工程
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
-                <icon name="file-archive" scale="0.8" ></icon> 生成代码
+              <el-dropdown-item :command="{method:'handlePreView',arg:scope.row}" >
+                <icon name="eye" scale="0.8" ></icon> 代码预览
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleGenSql',arg:scope.row}" >
-                <icon name="file-code" scale="0.8" ></icon> 生成sql
+              <el-dropdown-item :command="{method:'handlePreViewSql',arg:scope.row}" >
+                <icon name="file-code" scale="0.8" ></icon> sql预览
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
+                <icon name="download" scale="0.8" ></icon> 下载代码
               </el-dropdown-item>
               <el-dropdown-item v-if="scope.row.remote==1" :command="{method:'handleCommit',arg:scope.row}" >
                 <icon name="brands/git" scale="0.8" ></icon> 提交Git
@@ -92,6 +95,7 @@
         <el-button type="success" @click="handleReverseEngineeringSubmit">反向生成</el-button>
       </div>
     </el-dialog>
+    <code-preview ref="codePreview"></code-preview>
     <!-- 文件下载专用iframe -->
     <iframe style="display:none;" :src="downloadUrl"></iframe>
   </div>
@@ -102,9 +106,11 @@ import { apiPath, wsApiPath } from '@/components/common'
 import webstomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import shortid from 'shortid'
+import CodePreview from './codePreview'
 
 export default {
   name: 'projectList',
+  components: { CodePreview },
   data () {
     return {
       query: {},
@@ -172,8 +178,28 @@ export default {
     handleShow (row) {
       this.$router.push(`/project/show/${row.projectId}`)
     },
+    /*
     handleGenSql (row) {
       window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genSql?projectId=${row.projectId}`)
+    },
+    */
+    handlePreView (row) {
+      this.loading = true
+      this.$ajax.get(`/${apiPath}/code_gen/genCode?projectId=${row.projectId}`)
+        .then(response => this.$common.checkResult(response))
+        .then(() => {
+          this.$refs.codePreview.show(row.projectId)
+        })
+        .finally(() => { this.loading = false })
+    },
+    handlePreViewSql (row) {
+      this.loading = true
+      this.$ajax.get(`/${apiPath}/code_gen/genCode?projectId=${row.projectId}`)
+        .then(response => this.$common.checkResult(response))
+        .then(() => {
+          this.$refs.codePreview.show(row.projectId)
+        })
+        .finally(() => { this.loading = false })
     },
     /**
      * 行进度条改变
@@ -249,7 +275,7 @@ export default {
     /*
     handleGenCode (row) {
       this.$common.confirm('是否确认下载')
-        .then(() => window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genCode?projectId=${row.projectId}`))
+        .then(() => window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genCodeAndDownload?projectId=${row.projectId}`))
     },
     */
     handleReverseEngineering (row) {

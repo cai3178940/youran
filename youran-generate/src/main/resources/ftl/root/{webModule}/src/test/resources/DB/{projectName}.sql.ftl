@@ -30,6 +30,9 @@ CREATE TABLE `${mtm.tableName}` (
     `${fkId1}` ${field1.fieldType}${MetadataUtil.getLengthDisplay(field1)} NOT NULL${MetadataUtil.getCommentDisplay(field1.fieldComment,true)},
     `${fkId2}` ${field2.fieldType}${MetadataUtil.getLengthDisplay(field2)} NOT NULL${MetadataUtil.getCommentDisplay(field2.fieldComment,true)},
     `created_time` datetime DEFAULT NULL COMMENT '创建时间',
+    <#if mtm.needId>
+    PRIMARY KEY (`id`),
+    </#if>
     KEY `IDX_${mtm.tableName?upper_case}_1` (`${fkId1}`),
     KEY `IDX_${mtm.tableName?upper_case}_2` (`${fkId2}`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${mtm.desc?replace('\'','"')?replace('\n','\\n')}';

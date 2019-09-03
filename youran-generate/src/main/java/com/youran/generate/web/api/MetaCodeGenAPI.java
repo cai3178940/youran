@@ -20,6 +20,7 @@ public interface MetaCodeGenAPI {
     /**
      * 生成建表语句
      */
+    @Deprecated
     @ApiOperation(value = "生成建表语句")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
@@ -27,13 +28,22 @@ public interface MetaCodeGenAPI {
     void genSql(Integer projectId, HttpServletResponse response);
 
     /**
-     * 生成代码压缩包
+     * 仅生成代码，不下载
      */
-    @ApiOperation(value = "生成代码压缩包")
+    @ApiOperation(value = "仅生成代码，不下载")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
     })
-    void genCode(Integer projectId, HttpServletResponse response);
+    ResponseEntity<Void> genCode(Integer projectId);
+
+    /**
+     * 生成代码并下载压缩包
+     */
+    @ApiOperation(value = "生成代码并下载压缩包")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
+    })
+    void genCodeAndDownload(Integer projectId, HttpServletResponse response);
 
     /**
      * sql预览
