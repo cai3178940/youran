@@ -21,6 +21,7 @@
     "velocity-animate": "^1.5.2",
     "vue": "^2.6.10",
     "vue-awesome": "^3.5.4",
+    "vue-codemirror": "^4.0.6",
     "vue-router": "^3.0.7",
     "vuex": "^3.1.1",
     "webstomp-client": "^1.2.6"

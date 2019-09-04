@@ -14,7 +14,7 @@
             这是导航条
           </el-header>-->
           <el-main v-loading="fileContentLoading">
-            <div class="codeDiv" v-html="fileContent"></div>
+            <codemirror v-model="fileContent" :options="cmOptions"></codemirror>
           </el-main>
         </el-container>
       </el-container>
@@ -24,13 +24,16 @@
 
 <script>
 import { apiPath } from '@/components/common'
-import TypeToIcon from '@/components/type-to-icon'
+import FileTypeUtil from '@/components/file-type-util'
 import '@/assets/Hawcons/style.css'
-import showdown from 'showdown'
-const converter = new showdown.Converter()
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
 
 export default {
   name: 'code-preview',
+  components: {
+    codemirror
+  },
   data () {
     return {
       treeProps: {
@@ -42,6 +45,13 @@ export default {
         projectId: null,
         projectVersion: null,
         tree: []
+      },
+      cmOptions: {
+        readOnly: true,
+        mode: 'text/javascript',
+        theme: 'base16-dark',
+        lineNumbers: true,
+        line: true
       },
       codeTreeLoading: false,
       currentNode: null,
@@ -65,7 +75,7 @@ export default {
         .finally(() => { this.codeTreeLoading = false })
     },
     renderTreeNode (h, { node, data, store }) {
-      const icon = data.dir ? 'hawcons-icon-94-folder' : TypeToIcon.getIcon(data.type)
+      const icon = data.dir ? 'hawcons-icon-94-folder' : FileTypeUtil.getIcon(data.type)
       return h('span', [
         h('i', { attrs: { class: icon } }),
         h('span', '     '),
@@ -73,10 +83,15 @@ export default {
       ])
     },
     nodeClick (data, node) {
+      if (data.dir) {
+        return
+      }
       this.$ajax.get(`/${apiPath}/code_preview/${this.codeTree.projectId}/file_content?projectVersion=${this.codeTree.projectId}&filePath=${encodeURIComponent(data.path)}`, { responseType: 'text' })
         .then(response => this.$common.checkResult(response))
-        .then(data => {
-          this.fileContent = converter.makeHtml('```\n' + data + '\n```')
+        .then(fileData => {
+          this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
+          console.info(this.cmOptions)
+          this.fileContent = fileData
         })
         .catch(error => this.$common.showNotifyError(error))
     }
@@ -122,6 +137,10 @@ export default {
     .el-tree {
       min-width: 100%;
       display:inline-block !important;
+    }
+    .CodeMirror {
+      border: 1px solid #eee;
+      height: auto;
     }
   }
 </style>
