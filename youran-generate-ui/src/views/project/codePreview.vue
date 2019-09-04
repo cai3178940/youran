@@ -99,7 +99,6 @@ export default {
         .then(response => this.$common.checkResult(response))
         .then(fileData => {
           this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
-          console.info(this.cmOptions)
           this.fileContent = fileData
         })
         .catch(error => this.$common.showNotifyError(error))
