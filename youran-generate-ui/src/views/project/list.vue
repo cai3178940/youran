@@ -188,7 +188,7 @@ export default {
       this.$ajax.get(`/${apiPath}/code_gen/genCode?projectId=${row.projectId}`)
         .then(response => this.$common.checkResult(response))
         .then(() => {
-          this.$refs.codePreview.show(row.projectId)
+          this.$refs.codePreview.show(row.projectId, row.projectName)
         })
         .finally(() => { this.loading = false })
     },
@@ -197,7 +197,7 @@ export default {
       this.$ajax.get(`/${apiPath}/code_gen/genCode?projectId=${row.projectId}`)
         .then(response => this.$common.checkResult(response))
         .then(() => {
-          this.$refs.codePreview.show(row.projectId)
+          this.$refs.codePreview.show(row.projectId, row.projectName)
         })
         .finally(() => { this.loading = false })
     },

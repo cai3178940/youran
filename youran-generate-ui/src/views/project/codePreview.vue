@@ -1,8 +1,8 @@
 <template>
   <div class="codePreview">
-    <el-dialog title="代码预览" :visible.sync="visible" :fullscreen="true">
-      <el-container style="height: 100%; border: 1px solid #eee">
-        <el-aside width="250px" v-loading="codeTreeLoading" style="background-color: rgb(238, 241, 246)">
+    <el-dialog :title="title" :visible.sync="visible" :fullscreen="true">
+      <el-container class="codeContainer">
+        <el-aside width="250px" v-loading="codeTreeLoading" class="codeAside">
           <el-tree :props="treeProps"
                    :data="codeTree.tree"
                    :render-content="renderTreeNode"
@@ -13,7 +13,7 @@
           <!--<el-header style="text-align: right; font-size: 12px">
             这是导航条
           </el-header>-->
-          <el-main v-loading="fileContentLoading">
+          <el-main v-loading="fileContentLoading" class="codeMain">
             <codemirror v-model="fileContent" :options="cmOptions"></codemirror>
           </el-main>
         </el-container>
@@ -28,6 +28,13 @@ import FileTypeUtil from '@/components/file-type-util'
 import '@/assets/Hawcons/style.css'
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
+import 'codemirror/theme/base16-dark.css'
+import 'codemirror/mode/clike/clike.js'
+import 'codemirror/mode/xml/xml.js'
+import 'codemirror/mode/yaml/yaml.js'
+import 'codemirror/mode/properties/properties.js'
+import 'codemirror/mode/sql/sql.js'
+import 'codemirror/mode/markdown/markdown.js'
 
 export default {
   name: 'code-preview',
@@ -36,6 +43,7 @@ export default {
   },
   data () {
     return {
+      title: '',
       treeProps: {
         children: 'children',
         label: 'name'
@@ -48,7 +56,7 @@ export default {
       },
       cmOptions: {
         readOnly: true,
-        mode: 'text/javascript',
+        mode: 'text/x-java',
         theme: 'base16-dark',
         lineNumbers: true,
         line: true
@@ -61,8 +69,9 @@ export default {
     }
   },
   methods: {
-    show (projectId) {
+    show (projectId, title) {
       this.visible = true
+      this.title = title
       this.queryCodeTree(projectId)
     },
 
@@ -110,7 +119,7 @@ export default {
     }
 
     .el-dialog__header {
-      background-color: #409EFF;
+      background-color: #3c3f41;
       padding: 10px 20px 10px;
     }
 
@@ -125,7 +134,6 @@ export default {
     .el-dialog__close {
       color: $white;
     }
-
     .el-dialog__close:hover {
       color: $white;
     }
@@ -139,8 +147,27 @@ export default {
       display:inline-block !important;
     }
     .CodeMirror {
-      border: 1px solid #eee;
+      border: 1px solid #313335;
       height: auto;
+    }
+    .codeContainer {
+      height: 100%;
+      border: 1px solid #2a2424;
+    }
+    .codeMain {
+      background-color: #313335;
+    }
+    .codeAside {
+      background-color: #3c3f41;
+    }
+    .el-tree-node__content{
+      background-color: #3c3f41;
+    }
+    .el-tree-node:focus>.el-tree-node__content {
+      background-color: #0d293e;
+    }
+    .el-tree{
+      color: #adadad;
     }
   }
 </style>
