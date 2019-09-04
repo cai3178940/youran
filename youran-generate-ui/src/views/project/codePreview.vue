@@ -72,6 +72,8 @@ export default {
     show (projectId, title) {
       this.visible = true
       this.title = title
+      this.tree = []
+      this.fileContent = ''
       this.queryCodeTree(projectId)
     },
 
@@ -137,6 +139,9 @@ export default {
       color: $white;
     }
 
+    .el-loading-mask{
+      background-color: #5d6164;
+    }
     .el-dialog__body {
       height: calc(100% - 55px);
       padding: 0px;
