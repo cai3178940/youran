@@ -13,8 +13,19 @@
           <!--<el-header style="text-align: right; font-size: 12px">
             这是导航条
           </el-header>-->
-          <el-main v-loading="fileContentLoading" class="codeMain">
-            <codemirror v-model="fileContent" :options="cmOptions"></codemirror>
+          <el-main class="codeMain">
+            <el-tabs v-model="currentTabName" type="border-card" closable @tab-remove="removeTab">
+              <el-tab-pane
+                v-for="tab in codeTabs"
+                :key="tab.name"
+                :label="tab.title"
+                :name="tab.name"
+                v-loading="tab.loading"
+                element-loading-text="加载中..."
+                element-loading-background="#313335">
+                <codemirror v-model="tab.content" :options="cmOptions"></codemirror>
+              </el-tab-pane>
+            </el-tabs>
           </el-main>
         </el-container>
       </el-container>
@@ -63,8 +74,9 @@ export default {
       },
       codeTreeLoading: false,
       currentNode: null,
-      fileContent: '',
-      fileContentLoading: false,
+      fileLoading: false,
+      codeTabs: [],
+      currentTabName: '',
       visible: false
     }
   },
@@ -73,7 +85,6 @@ export default {
       this.visible = true
       this.title = title
       this.tree = []
-      this.fileContent = ''
       this.queryCodeTree(projectId)
     },
 
@@ -97,13 +108,44 @@ export default {
       if (data.dir) {
         return
       }
+      const oldTab = this.codeTabs.find(tab => tab.name === data.path)
+      if(oldTab){
+        this.currentTabName = oldTab.name
+        return
+      }
+      const tab = this.addTab(data)
       this.$ajax.get(`/${apiPath}/code_preview/${this.codeTree.projectId}/file_content?projectVersion=${this.codeTree.projectId}&filePath=${encodeURIComponent(data.path)}`, { responseType: 'text' })
         .then(response => this.$common.checkResult(response))
         .then(fileData => {
           this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
-          this.fileContent = fileData
+          tab.content = fileData
         })
         .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { tab.loading = false })
+    },
+    addTab(nodeData) {
+      const tab = {
+        name: nodeData.path,
+        title: nodeData.name,
+        loading: true,
+        content: '\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
+      }
+      this.codeTabs.push(tab)
+      this.currentTabName = nodeData.path
+      return tab
+    },
+    removeTab(tabName) {
+      if (this.currentTabName === tabName) {
+        this.codeTabs.forEach((tab, index) => {
+          if (tab.name === tabName) {
+            let nextTab = this.codeTabs[index + 1] || this.codeTabs[index - 1]
+            if (nextTab) {
+              this.currentTabName = nextTab.name
+            }
+          }
+        })
+      }
+      this.codeTabs = this.codeTabs.filter(tab => tab.name !== tabName);
     }
   }
 }
@@ -112,6 +154,8 @@ export default {
 <style lang="scss">
   @import '../../assets/common.scss';
   $white :  #FFFFFF;
+  $border-color : #4a4e50;
+  $back-color : #313335;
 
   .codePreview {
     .codeDiv {
@@ -151,15 +195,16 @@ export default {
       display:inline-block !important;
     }
     .CodeMirror {
-      border: 1px solid #313335;
+      border: 1px solid $back-color;
       height: auto;
     }
     .codeContainer {
       height: 100%;
-      border: 1px solid #2a2424;
+      border: 1px solid $border-color;
     }
     .codeMain {
-      background-color: #313335;
+      background-color: $back-color;
+      padding: 0px;
     }
     .codeAside {
       background-color: #3c3f41;
@@ -173,5 +218,26 @@ export default {
     .el-tree{
       color: #adadad;
     }
+    .el-tabs--border-card {
+      border: 0px;
+      border-left: 1px solid $border-color !important;
+    }
+    .el-tabs__item {
+      color: #adadad !important;
+
+      border-right: 1px solid $border-color !important;
+    }
+    .el-tabs__item.is-active {
+      background-color: #515658 !important;
+      border-bottom: 3px solid #4a7a88;
+    }
+    .el-tabs__header {
+      background-color: #3c3f41;
+      border-bottom: 1px solid $back-color;
+    }
+    .el-tabs__content {
+      padding: 0px;
+    }
+
   }
 </style>
