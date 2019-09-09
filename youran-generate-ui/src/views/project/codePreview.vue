@@ -124,7 +124,7 @@ export default {
         return
       }
       const oldTab = this.codeTabs.find(tab => tab.name === data.path)
-      if(oldTab){
+      if (oldTab) {
         this.currentTabName = oldTab.name
         return
       }
@@ -138,7 +138,7 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { tab.loading = false })
     },
-    addTab(nodeData) {
+    addTab (nodeData) {
       const tab = {
         name: nodeData.path,
         title: nodeData.name,
@@ -149,7 +149,7 @@ export default {
       this.currentTabName = nodeData.path
       return tab
     },
-    removeTab(tabName) {
+    removeTab (tabName) {
       if (this.currentTabName === tabName) {
         this.codeTabs.forEach((tab, index) => {
           if (tab.name === tabName) {
@@ -160,7 +160,7 @@ export default {
           }
         })
       }
-      this.codeTabs = this.codeTabs.filter(tab => tab.name !== tabName);
+      this.codeTabs = this.codeTabs.filter(tab => tab.name !== tabName)
     }
   }
 }
