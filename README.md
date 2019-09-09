@@ -99,6 +99,9 @@ java -jar youran-generate/target/youran-generate.war
 
 ## 升级日志
 
+#### 2019-09-09
+- 支持代码预览功能
+
 #### 2019-02-27
 - 新增java类型Boolean
 
