@@ -1,6 +1,11 @@
 <template>
   <div class="codePreview">
     <el-dialog :title="title" :visible.sync="visible" :fullscreen="true">
+      <el-header class="codePath">
+        <template v-for="node in paths">
+          <span :key="node.key">{{node.name}}</span>
+        </template>
+      </el-header>
       <el-container class="codeContainer">
         <el-aside width="250px" v-loading="codeTreeLoading" class="codeAside">
           <el-tree :props="treeProps"
@@ -10,9 +15,6 @@
           </el-tree>
         </el-aside>
         <el-container>
-          <!--<el-header style="text-align: right; font-size: 12px">
-            这是导航条
-          </el-header>-->
           <el-main v-loading="fileContentLoading" class="codeMain">
             <codemirror v-model="fileContent" :options="cmOptions"></codemirror>
           </el-main>
@@ -63,6 +65,7 @@ export default {
       },
       codeTreeLoading: false,
       currentNode: null,
+      paths: [],
       fileContent: '',
       fileContentLoading: false,
       visible: false
@@ -93,7 +96,16 @@ export default {
         h('span', node.label)
       ])
     },
+    parsePath (path) {
+      const paths = path.split('/').filter(p => p)
+      console.info(paths)
+    },
     nodeClick (data, node) {
+      if (this.currentNode === data) {
+        return
+      }
+      this.currentNode = data
+      this.parsePath(data.path)
       if (data.dir) {
         return
       }
@@ -151,18 +163,23 @@ export default {
       display:inline-block !important;
     }
     .CodeMirror {
-      border: 1px solid #313335;
+      border: 1px solid #5a5b5f;
       height: auto;
     }
     .codeContainer {
       height: 100%;
-      border: 1px solid #2a2424;
+      border: 1px solid #5a5b5f;
     }
     .codeMain {
       background-color: #313335;
     }
     .codeAside {
       background-color: #3c3f41;
+    }
+    .codePath {
+      background-color: #3c3f41;
+      border: 1px solid #5a5b5f;
+      height: 20px !important;
     }
     .el-tree-node__content{
       background-color: #3c3f41;

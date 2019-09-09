@@ -16,7 +16,8 @@
               row-key="projectId"
               :expand-row-keys="expandRowKeys"
               style="min-width: 1255px;"
-              v-loading="loading">
+              v-loading="loading"
+              :element-loading-text="loadingText">
               <!--:row-class-name="activeRow"-->
               <!--@cell-mouse-enter="cellMouseEnter"-->
       <el-table-column type="expand"  width="0" class-name="project-table-expand-column">
@@ -60,9 +61,9 @@
               <el-dropdown-item :command="{method:'handlePreView',arg:scope.row}" >
                 <icon name="eye" scale="0.8" ></icon> 代码预览
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handlePreViewSql',arg:scope.row}" >
+              <!--<el-dropdown-item :command="{method:'handlePreViewSql',arg:scope.row}" >
                 <icon name="file-code" scale="0.8" ></icon> sql预览
-              </el-dropdown-item>
+              </el-dropdown-item>-->
               <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
                 <icon name="download" scale="0.8" ></icon> 下载代码
               </el-dropdown-item>
@@ -118,6 +119,7 @@ export default {
       selectItems: [],
       list: [],
       loading: false,
+      loadingText: '',
       reverseEngineeringFormVisible: false,
       reverseEngineeringForm: {
         projectId: null,
@@ -149,6 +151,7 @@ export default {
     // 列表查询
     doQuery () {
       this.loading = true
+      this.loadingText = '列表加载中'
       this.$ajax.get(`/${apiPath}/meta_project/list`, { params: this.query })
         .then(response => this.$common.checkResult(response))
         .then(data => {
@@ -185,15 +188,7 @@ export default {
     */
     handlePreView (row) {
       this.loading = true
-      this.$ajax.get(`/${apiPath}/code_gen/genCode?projectId=${row.projectId}`)
-        .then(response => this.$common.checkResult(response))
-        .then(() => {
-          this.$refs.codePreview.show(row.projectId, row.projectName)
-        })
-        .finally(() => { this.loading = false })
-    },
-    handlePreViewSql (row) {
-      this.loading = true
+      this.loadingText = '代码生成中'
       this.$ajax.get(`/${apiPath}/code_gen/genCode?projectId=${row.projectId}`)
         .then(response => this.$common.checkResult(response))
         .then(() => {
