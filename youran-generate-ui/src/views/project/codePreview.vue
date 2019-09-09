@@ -1,9 +1,12 @@
 <template>
   <div class="codePreview">
-    <el-dialog :title="title" :visible.sync="visible" :fullscreen="true">
+    <el-dialog :title="projectName" :visible.sync="visible" :fullscreen="true">
       <el-header class="codePath">
-        <template v-for="node in paths">
-          <span :key="node.key">{{node.name}}</span>
+        <template v-for="(node,index) in paths">
+          <span :key="node.key" style="line-height: 23px;">
+            <i v-if="index>0"  class="el-icon-arrow-right"></i>
+            <span><i :class="node.icon"></i> {{node.name}}</span>
+          </span>
         </template>
       </el-header>
       <el-container class="codeContainer">
@@ -59,7 +62,7 @@ export default {
   },
   data () {
     return {
-      title: '',
+      projectName: '',
       treeProps: {
         children: 'children',
         label: 'name'
@@ -87,10 +90,9 @@ export default {
     }
   },
   methods: {
-    show (projectId, title) {
+    show (projectId, projectName) {
       this.visible = true
-      this.title = title
-      this.tree = []
+      this.projectName = projectName
       this.queryCodeTree(projectId)
     },
 
@@ -111,15 +113,27 @@ export default {
       ])
     },
     parsePath (path) {
+      this.paths = [{
+        name: this.projectName,
+        key: this.projectName,
+        icon: 'hawcons-icon-94-folder'
+      }]
       const paths = path.split('/').filter(p => p)
-      console.info(paths)
+      for (let i = 0; i < paths.length; i++) {
+        let p = paths[i]
+        const item = {
+          name: p,
+          key: i + '_' + p,
+          icon: 'hawcons-icon-94-folder'
+        }
+        this.paths.push(item)
+      }
     },
     nodeClick (data, node) {
       if (this.currentNode === data) {
         return
       }
       this.currentNode = data
-      this.parsePath(data.path)
       if (data.dir) {
         return
       }
@@ -128,6 +142,7 @@ export default {
         this.currentTabName = oldTab.name
         return
       }
+      this.parsePath(data.path)
       const tab = this.addTab(data)
       this.$ajax.get(`/${apiPath}/code_preview/${this.codeTree.projectId}/file_content?projectVersion=${this.codeTree.projectId}&filePath=${encodeURIComponent(data.path)}`, { responseType: 'text' })
         .then(response => this.$common.checkResult(response))
@@ -215,7 +230,6 @@ export default {
     }
     .codeContainer {
       height: 100%;
-      border: 1px solid $border-color;
     }
     .codeMain {
       background-color: $back-color;
@@ -227,7 +241,8 @@ export default {
     .codePath {
       background-color: #3c3f41;
       border: 1px solid #5a5b5f;
-      height: 20px !important;
+      font-size: 16px;
+      height: 25px !important;
     }
     .el-tree-node__content{
       background-color: #3c3f41;

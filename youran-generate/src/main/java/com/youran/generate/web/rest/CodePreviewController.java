@@ -147,7 +147,8 @@ public class CodePreviewController extends AbstractController implements CodePre
         String fileName = file.getName();
         nodeVO.setName(fileName);
         nodeVO.setDir(file.isDirectory());
-        nodeVO.setPath(file.getPath().substring(basePath.getPath().length()));
+        String path = file.getPath().substring(basePath.getPath().length());
+        nodeVO.setPath(path.replaceAll("\\\\","/"));
         nodeVO.setType(FilenameUtils.getExtension(fileName));
         return nodeVO;
     }
