@@ -18,9 +18,6 @@
           </el-tree>
         </el-aside>
         <el-container>
-          <!--<el-header style="text-align: right; font-size: 12px">
-            这是导航条
-          </el-header>-->
           <el-main class="codeMain">
             <el-tabs v-model="currentTabName" type="border-card" closable @tab-remove="removeTab">
               <el-tab-pane
@@ -62,6 +59,7 @@ export default {
   },
   data () {
     return {
+      projectId: null,
       projectName: '',
       treeProps: {
         children: 'children',
@@ -90,12 +88,17 @@ export default {
     }
   },
   methods: {
+    initData (projectId, projectName) {
+      this.projectId = projectId
+      this.projectName = projectName
+      this.codeTree.tree = []
+      this.paths = []
+    },
     show (projectId, projectName) {
       this.visible = true
-      this.projectName = projectName
+      this.initData(projectId, projectName)
       this.queryCodeTree(projectId)
     },
-
     queryCodeTree (projectId) {
       this.codeTreeLoading = true
       return this.$ajax.get(`/${apiPath}/code_preview/${projectId}/code_tree`)
@@ -185,7 +188,8 @@ export default {
   @import '../../assets/common.scss';
   $white :  #FFFFFF;
   $border-color : #4a4e50;
-  $back-color : #313335;
+  $back-color-1 : #313335;
+  $back-color-2 : #3c3f41;
 
   .codePreview {
     .codeDiv {
@@ -194,7 +198,7 @@ export default {
     }
 
     .el-dialog__header {
-      background-color: #3c3f41;
+      background-color: $back-color-2;
       padding: 10px 20px 10px;
     }
 
@@ -225,27 +229,27 @@ export default {
       display:inline-block !important;
     }
     .CodeMirror {
-      border: 1px solid $back-color;
+      border: 1px solid $back-color-1;
       height: auto;
     }
     .codeContainer {
       height: 100%;
     }
     .codeMain {
-      background-color: $back-color;
+      background-color: $back-color-1;
       padding: 0px;
     }
     .codeAside {
-      background-color: #3c3f41;
+      background-color: $back-color-2;
     }
     .codePath {
-      background-color: #3c3f41;
+      background-color: $back-color-2;
       border: 1px solid #5a5b5f;
       font-size: 16px;
       height: 25px !important;
     }
     .el-tree-node__content{
-      background-color: #3c3f41;
+      background-color: $back-color-2;
     }
     .el-tree-node:focus>.el-tree-node__content {
       background-color: #0d293e;
@@ -267,8 +271,8 @@ export default {
       border-bottom: 3px solid #4a7a88;
     }
     .el-tabs__header {
-      background-color: #3c3f41;
-      border-bottom: 1px solid $back-color;
+      background-color: $back-color-2;
+      border-bottom: 1px solid $back-color-1;
     }
     .el-tabs__content {
       padding: 0px;
