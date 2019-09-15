@@ -159,7 +159,16 @@ public class MetaCodeGenService implements InitializingBean {
         File dir = new File(projectDir);
         // 如果当天尚未生成过同一个版本的代码，则执行代码生成
         if(!dir.exists()){
-            this.doGenCode(projectDir,projectId,progressConsumer);
+            try {
+                this.doGenCode(projectDir,projectId,progressConsumer);
+            } catch (Exception e) {
+                LOGGER.error("代码生成异常", e);
+                try {
+                    FileUtils.forceDeleteOnExit(dir);
+                } catch (IOException e1) {
+                }
+                throw new BusinessException("代码生成异常");
+            }
         }else{
             LOGGER.info("代码已经存在，无需生成：{}",projectDir);
         }

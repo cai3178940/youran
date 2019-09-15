@@ -35,8 +35,8 @@
           <el-form-item label="spring-boot版本" prop="feature.bootVersion">
             <help-popover name="project.feature.bootVersion">
               <el-radio-group v-model="form.feature.bootVersion">
-                <el-radio border :label="1">1.5.x.RELEASE</el-radio>
-                <el-radio border :label="2">2.1.x.RELEASE</el-radio>
+                <el-radio border :label="1">1.5.x</el-radio>
+                <el-radio border :label="2">2.1.x</el-radio>
               </el-radio-group>
             </help-popover>
           </el-form-item>

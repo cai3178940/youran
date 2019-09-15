@@ -36,7 +36,13 @@
           {{ scope.row.title }}
           <template v-for="mtm in scope.row.mtms">
             <el-dropdown @command="handleMtmCommand" :key="mtm.mtmId" size="mini" placement="bottom-start" trigger="click" style="margin-left:5px;cursor:pointer;">
-              <span :class="['mtm_span',((mtm.holdRefer1==1&&mtm.entityId1==scope.row.entityId)||(mtm.holdRefer2==1&&mtm.entityId2==scope.row.entityId))?'mtm_hold_span':'mtm_unhold_span']" title="多对多">
+              <span @mouseover="setActiveMtm(mtm)" @mouseout="clearActiveMtm()"
+                    :class="[
+                      'mtm_span',
+                      (activeMtmId==mtm.mtmId)?'mtmActive':'',
+                      ((mtm.holdRefer1==1&&mtm.entityId1==scope.row.entityId)||(mtm.holdRefer2==1&&mtm.entityId2==scope.row.entityId))?'mtm_hold_span':'mtm_unhold_span'
+                    ]"
+                title="多对多">
                 {{mtm.tableName}}
               </span>
               <el-dropdown-menu slot="dropdown">
@@ -98,6 +104,7 @@
 <script>
 import { apiPath } from '@/components/common'
 import ErDiagram from './erDiagram'
+
 export default {
   name: 'entityList',
   components: { ErDiagram },
@@ -123,6 +130,7 @@ export default {
         pageSize: 20,
         list: []
       },
+      activeMtmId: null,
       mtms: [],
       loading: false
     }
@@ -149,6 +157,12 @@ export default {
     }
   },
   methods: {
+    setActiveMtm (mtm) {
+      this.activeMtmId = mtm.mtmId
+    },
+    clearActiveMtm () {
+      this.activeMtmId = null
+    },
     selectionChange (val) {
       this.selectItems = val
       this.activeNum = this.selectItems.length
@@ -287,6 +301,7 @@ export default {
   $hold-back-color: #f7ddd2;
   $unhold-color: #ff7f1d;
   $unhold-back-color: #ffffff;
+  $active-color: #ffffff;
 
   .entityList {
     .activeNum {
@@ -312,21 +327,23 @@ export default {
     .mtm_hold_span {
       color: $hold-color;
       background-color: $hold-back-color;
-      &:hover {
-        color: darken($hold-color,8);
-        background-color: darken($hold-back-color,8);
-      }
+    }
+
+    .mtm_hold_span.mtmActive {
+      color: darken($hold-color,8);
+      background-color: darken($hold-back-color,8);
     }
 
     .mtm_unhold_span {
       border: 1px solid $unhold-color;
       color: $unhold-color;
       background-color: $unhold-back-color;
-      &:hover {
-        border: 1px solid darken($unhold-color,10);
-        color: darken($unhold-color,10);
-        background-color: darken($unhold-back-color,5);
-      }
+
+    }
+    .mtm_unhold_span.mtmActive {
+      border: 1px solid darken($unhold-color,10);
+      color: darken($unhold-color,10);
+      background-color: darken($unhold-back-color,5);
     }
 
   }
