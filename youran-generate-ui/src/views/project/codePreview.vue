@@ -233,7 +233,7 @@ export default {
       height: auto;
     }
     .codeContainer {
-      height: 100%;
+      height: calc(100% - 15px);
     }
     .codeMain {
       background-color: $back-color-1;
