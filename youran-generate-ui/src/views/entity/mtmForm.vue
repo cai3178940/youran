@@ -1,13 +1,15 @@
 <template>
-  <div class="mtmEdit">
+  <div class="mtmFormDiv">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
-      <el-breadcrumb-item>编辑多对多</el-breadcrumb-item>
+      <el-breadcrumb-item>
+        {{edit?'编辑多对多':'添加多对多'}}
+      </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="editForm" class="editForm" :rules="rules" :model="form" label-width="140px">
+        <el-form ref="mtmForm" class="mtmForm" :rules="rules" :model="form" label-width="140px">
           <el-form-item label="项目" prop="projectId">
             <help-popover name="mtm.projectId">
               <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
@@ -98,7 +100,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
-            <el-button type="warning" @click="reset()">重置</el-button>
+            <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
             <el-button @click="goBack()">返回</el-button>
           </el-form-item>
         </el-form>
@@ -113,15 +115,17 @@ import { apiPath } from '@/components/common'
 import { initMtmFormBean, getMtmRules } from './model'
 
 export default {
-  name: 'mtmEdit',
-  props: ['projectId', 'mtmId'],
+  name: 'mtmForm',
+  props: ['projectId', 'mtmId', 'entityIds'],
   data () {
+    const edit = !!this.mtmId
     return {
+      edit: edit,
       boolOptions: options.boolOptions,
       projectList: [],
       entityList: [],
-      old: initMtmFormBean(true),
-      form: initMtmFormBean(true),
+      old: initMtmFormBean(edit),
+      form: initMtmFormBean(edit),
       rules: getMtmRules()
     }
   },
@@ -150,17 +154,21 @@ export default {
     submit () {
       let loading = null
       // 校验表单
-      this.$refs.editForm.validate()
+      this.$refs.mtmForm.validate()
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          return this.$ajax.put(`/${apiPath}/meta_mtm/update`, this.form)
+          if (this.edit) {
+            return this.$ajax.put(`/${apiPath}/meta_mtm/update`, this.form)
+          } else {
+            return this.$ajax.post(`/${apiPath}/meta_mtm/save`, this.form)
+          }
         })
       // 校验返回结果
         .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
-          this.$common.showMsg('success', '修改成功')
+          this.$common.showMsg('success', '操作成功')
           this.goBack()
         })
         .catch(error => this.$common.showNotifyError(error))
@@ -175,15 +183,26 @@ export default {
     }
   },
   created () {
-    Promise.all([this.getMtm(), this.queryProject(), this.queryEntity(this.projectId)])
-      .then(() => this.reset())
+    if (this.edit) {
+      Promise.all([this.getMtm(), this.queryProject(), this.queryEntity(this.projectId)])
+        .then(() => this.reset())
+    } else {
+      this.form.projectId = parseInt(this.projectId)
+      if (this.entityIds) {
+        const array = this.entityIds.split('-').map(value => parseInt(value))
+        this.form.entityId1 = array[0]
+        this.form.entityId2 = array[1]
+      }
+      this.queryProject()
+        .then(() => this.queryEntity(this.form.projectId))
+    }
   }
 }
 </script>
 
 <style lang="scss">
   @import '../../assets/common.scss';
-  .mtmEdit .editForm {
+  .mtmFormDiv .mtmForm {
     @include youran-form;
     .el-radio-button__inner {
       padding: 10px 10px;

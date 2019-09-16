@@ -1,14 +1,16 @@
 <template>
-  <div class="indexAdd">
+  <div class="indexFormDiv">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity/${this.entityId}/field` }">字段管理</el-breadcrumb-item>
-      <el-breadcrumb-item>添加索引</el-breadcrumb-item>
+      <el-breadcrumb-item>
+        {{edit?'编辑索引':'添加索引'}}
+      </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="120px">
+        <el-form ref="indexForm" class="indexForm" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="索引名" prop="indexName">
             <help-popover name="index.indexName">
               <el-input v-model="form.indexName" placeholder="索引名，例如：IDX_ORDER_1"></el-input>
@@ -44,6 +46,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
+            <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
             <el-button @click="goBack()">返回</el-button>
           </el-form-item>
         </el-form>
@@ -58,13 +61,16 @@ import { apiPath } from '@/components/common'
 import { initIndexFormBean, getIndexRules } from './model'
 
 export default {
-  name: 'indexAdd',
-  props: ['projectId', 'entityId', 'fieldIds'],
+  name: 'indexForm',
+  props: ['projectId', 'entityId', 'indexId', 'fieldIds'],
   data () {
+    const edit = !!this.indexId
     return {
+      edit: edit,
       boolOptions: options.boolOptions,
       fieldList: [],
-      form: initIndexFormBean(false),
+      old: initIndexFormBean(edit),
+      form: initIndexFormBean(edit),
       uniqueCheckDisabled: false,
       rules: getIndexRules()
     }
@@ -91,6 +97,24 @@ export default {
         .then(response => this.$common.checkResult(response))
         .then(data => { this.fieldList = data })
     },
+    getIndex () {
+      return this.$ajax.get(`/${apiPath}/meta_index/${this.indexId}`)
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          const old = {
+            ...data
+          }
+          old.fieldIds = old.fields.map(field => field.fieldId)
+          old.fields = null
+          this.old = old
+        })
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    reset () {
+      for (const key in initIndexFormBean(true)) {
+        this.form[key] = this.old[key]
+      }
+    },
     submit () {
       const params = {
         ...this.form
@@ -98,17 +122,21 @@ export default {
       params.fieldIds = this.form.fieldIds.join(',')
       let loading = null
       // 校验表单
-      this.$refs.addForm.validate()
-      // 提交表单
+      this.$refs.indexForm.validate()
+        // 提交表单
         .then(() => {
           loading = this.$loading()
-          return this.$ajax.post(`/${apiPath}/meta_index/save`, this.$common.removeBlankField(params))
+          if (this.edit) {
+            return this.$ajax.put(`/${apiPath}/meta_index/update`, this.$common.removeBlankField(params))
+          } else {
+            return this.$ajax.post(`/${apiPath}/meta_index/save`, this.$common.removeBlankField(params))
+          }
         })
       // 校验返回结果
         .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
-          this.$common.showMsg('success', '添加成功')
+          this.$common.showMsg('success', '操作成功')
           this.goBack()
         })
         .catch(error => this.$common.showNotifyError(error))
@@ -123,19 +151,23 @@ export default {
     }
   },
   created () {
-    // 将路径参数解析到form表单
-    this.form.entityId = parseInt(this.entityId)
-    if (this.fieldIds) {
-      this.form.fieldIds = this.fieldIds.split('-').map(value => parseInt(value))
+    if (this.edit) {
+      Promise.all([this.getIndex(), this.queryField(this.entityId)])
+        .then(() => this.reset())
+    } else {
+      this.form.entityId = parseInt(this.entityId)
+      if (this.fieldIds) {
+        this.form.fieldIds = this.fieldIds.split('-').map(value => parseInt(value))
+      }
+      this.queryField(this.form.entityId)
     }
-    this.queryField(this.form.entityId)
   }
 }
 </script>
 
 <style lang="scss">
   @import '../../assets/common.scss';
-  .indexAdd .addForm {
+  .indexFormDiv .indexForm {
     @include youran-form;
   }
 

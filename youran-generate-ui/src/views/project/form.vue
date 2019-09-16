@@ -1,12 +1,14 @@
 <template>
-  <div class="projectEdit">
+  <div class="projectFormDiv">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
-      <el-breadcrumb-item>编辑</el-breadcrumb-item>
+      <el-breadcrumb-item>
+        {{edit?'编辑项目':'添加项目'}}
+      </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="editForm" class="editForm" :rules="rules" :model="form" label-width="120px">
+        <el-form ref="projectForm" class="projectForm" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="groupId" prop="groupId">
             <help-popover name="project.groupId">
               <el-input v-model="form.groupId" placeholder="例如：com.myGroup"></el-input>
@@ -67,7 +69,7 @@
           </template>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
-            <el-button type="warning" @click="reset()">重置</el-button>
+            <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
             <el-button @click="goBack()">返回</el-button>
           </el-form-item>
         </el-form>
@@ -82,13 +84,15 @@ import { apiPath } from '@/components/common'
 import { initFormBean, getRules } from './model'
 
 export default {
-  name: 'projectEdit',
+  name: 'projectForm',
   props: ['projectId'],
   data () {
+    const edit = !!this.projectId
     return {
+      edit: edit,
       boolOptions: options.boolOptions,
-      old: initFormBean(true),
-      form: initFormBean(true),
+      old: initFormBean(edit),
+      form: initFormBean(edit),
       rules: getRules()
     }
   },
@@ -107,17 +111,21 @@ export default {
     submit () {
       let loading = null
       // 校验表单
-      this.$refs.editForm.validate()
+      this.$refs.projectForm.validate()
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          return this.$ajax.put(`/${apiPath}/meta_project/update`, this.form)
+          if (this.edit) {
+            return this.$ajax.put(`/${apiPath}/meta_project/update`, this.form)
+          } else {
+            return this.$ajax.post(`/${apiPath}/meta_project/save`, this.form)
+          }
         })
       // 校验返回结果
         .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
-          this.$common.showMsg('success', '修改成功')
+          this.$common.showMsg('success', '操作成功')
           this.goBack()
         })
         .catch(error => this.$common.showNotifyError(error))
@@ -132,14 +140,16 @@ export default {
     }
   },
   created () {
-    this.getProject().then(() => this.reset())
+    if (this.edit) {
+      this.getProject().then(() => this.reset())
+    }
   }
 }
 </script>
 
 <style lang="scss">
   @import '../../assets/common.scss';
-  .projectEdit .editForm {
+  .projectFormDiv .projectForm {
     @include youran-form;
   }
 

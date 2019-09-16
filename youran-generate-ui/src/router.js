@@ -4,29 +4,21 @@ import home from './views/Home.vue'
 
 import project from './views/project/index.vue'
 import projectList from './views/project/list.vue'
-import projectAdd from './views/project/add.vue'
-import projectEdit from './views/project/edit.vue'
+import projectForm from './views/project/form.vue'
 
 import entity from './views/entity/index.vue'
 import entityList from './views/entity/list.vue'
-import entityAdd from './views/entity/add.vue'
-import entityEdit from './views/entity/edit.vue'
-import mtmAdd from './views/entity/mtmAdd.vue'
-import mtmEdit from './views/entity/mtmEdit.vue'
+import entityForm from './views/entity/form.vue'
+import mtmForm from './views/entity/mtmForm.vue'
 
 import field from './views/field/index.vue'
 import fieldList from './views/field/list.vue'
-import fieldAdd from './views/field/add.vue'
-import fieldEdit from './views/field/edit.vue'
-import fieldIndexAdd from './views/field/indexAdd.vue'
-import fieldIndexEdit from './views/field/indexEdit.vue'
+import fieldForm from './views/field/form.vue'
+import fieldIndexForm from './views/field/indexForm.vue'
 
 import constIndex from './views/const/index.vue'
 import constList from './views/const/list.vue'
-import constAdd from './views/const/add.vue'
-import constEdit from './views/const/edit.vue'
-import constDetailAdd from './views/const/detailAdd.vue'
-import constDetailEdit from './views/const/detailEdit.vue'
+import constForm from './views/const/form.vue'
 
 Vue.use(Router)
 
@@ -46,11 +38,11 @@ export default new Router({
         },
         {
           path: 'add',
-          component: projectAdd
+          component: projectForm
         },
         {
           path: 'edit/:projectId',
-          component: projectEdit,
+          component: projectForm,
           props: true
         }
       ]
@@ -67,22 +59,22 @@ export default new Router({
         },
         {
           path: 'add',
-          component: entityAdd,
+          component: entityForm,
           props: true
         },
         {
           path: 'edit/:entityId',
-          component: entityEdit,
+          component: entityForm,
           props: true
         },
         {
           path: 'mtmEdit/:mtmId',
-          component: mtmEdit,
+          component: mtmForm,
           props: true
         },
         {
           path: 'mtmAdd/:entityIds?',
-          component: mtmAdd,
+          component: mtmForm,
           props: true
         }
       ]
@@ -99,22 +91,22 @@ export default new Router({
         },
         {
           path: 'add',
-          component: fieldAdd,
+          component: fieldForm,
           props: true
         },
         {
           path: 'edit/:fieldId',
-          component: fieldEdit,
+          component: fieldForm,
           props: true
         },
         {
           path: 'indexAdd/:fieldIds?',
-          component: fieldIndexAdd,
+          component: fieldIndexForm,
           props: true
         },
         {
           path: 'indexEdit/:indexId',
-          component: fieldIndexEdit,
+          component: fieldIndexForm,
           props: true
         }
       ]
@@ -126,7 +118,7 @@ export default new Router({
       children: [
         {
           path: 'add',
-          component: constAdd,
+          component: constForm,
           props: true
         },
         {
@@ -136,17 +128,7 @@ export default new Router({
         },
         {
           path: 'edit/:constId',
-          component: constEdit,
-          props: true
-        },
-        {
-          path: ':constId/constDetailAdd',
-          component: constDetailAdd,
-          props: true
-        },
-        {
-          path: ':constId/constDetailEdit/:constDetailId',
-          component: constDetailEdit,
+          component: constForm,
           props: true
         }
       ]

@@ -1,14 +1,16 @@
 <template>
-  <div class="fieldAdd">
+  <div class="fieldFormDiv">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity/${this.entityId}/field` }">字段管理</el-breadcrumb-item>
-      <el-breadcrumb-item>添加</el-breadcrumb-item>
+      <el-breadcrumb-item>
+        {{edit?'编辑字段':'添加字段'}}
+      </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="10">
-      <el-col :span="12">
-        <el-form ref="addForm" class="addForm" :rules="rules" :model="form" label-width="120px">
+      <el-col :span="14">
+        <el-form ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px">
           <el-form-item label="java字段名" prop="jfieldName">
             <help-popover name="field.jfieldName">
               <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age"></el-input>
@@ -207,12 +209,13 @@
           </el-form-item>
           <el-form-item label="排序号" prop="orderNo">
             <help-popover name="field.orderNo">
-             <el-input-number v-model="form.orderNo" style="width:100%;" :min="1"></el-input-number>
+              <el-input-number v-model="form.orderNo" style="width:100%;" :min="1"></el-input-number>
             </help-popover>
           </el-form-item>
 
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
+            <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
             <el-button @click="goBack()">返回</el-button>
           </el-form-item>
         </el-form>
@@ -225,14 +228,16 @@
 <script>
 import options from '@/components/options'
 import { apiPath } from '@/components/common'
-import fieldTemplate from '@/components/fieldTemplate'
 import { initFormBean, getRules } from './model'
+import fieldTemplate from '@/components/fieldTemplate'
 
 export default {
-  name: 'fieldAdd',
-  props: ['projectId', 'entityId'],
+  name: 'fieldForm',
+  props: ['projectId', 'entityId', 'fieldId'],
   data () {
+    const edit = !!this.fieldId
     return {
+      edit: edit,
       boolOptions: options.boolOptions,
       fieldTypeOptions: options.getFieldTypeOptions(),
       jfieldTypeOptions: options.jfieldTypeOptions,
@@ -246,7 +251,8 @@ export default {
       specialFieldDisabled: false,
       foreignField: [0, 0],
       foreignFieldDisabled: true,
-      form: initFormBean(false),
+      old: initFormBean(edit),
+      form: initFormBean(edit),
       rules: getRules(this)
     }
   },
@@ -261,7 +267,6 @@ export default {
       return options.showFieldScale(this.form.fieldType)
     }
   },
-
   watch: {
     'form.primaryKey' (value) {
       if (value === 1) {
@@ -385,6 +390,17 @@ export default {
           })
       }
     },
+    getField () {
+      return this.$ajax.get(`/${apiPath}/meta_field/${this.fieldId}`)
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.old = data })
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    reset () {
+      for (const key in initFormBean(true)) {
+        this.form[key] = this.old[key]
+      }
+    },
     submit () {
       // 表单预处理
       if (!options.showFieldScale(this.form.fieldType)) {
@@ -394,17 +410,21 @@ export default {
       this.form.foreignFieldId = this.foreignField[1]
       let loading = null
       // 校验表单
-      this.$refs.addForm.validate()
+      this.$refs.fieldForm.validate()
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          return this.$ajax.post(`/${apiPath}/meta_field/save`, this.$common.removeBlankField(this.form))
+          if (this.edit) {
+            return this.$ajax.put(`/${apiPath}/meta_field/update`, this.$common.removeBlankField(this.form))
+          } else {
+            return this.$ajax.post(`/${apiPath}/meta_field/save`, this.$common.removeBlankField(this.form))
+          }
         })
       // 校验返回结果
         .then(response => this.$common.checkResult(response))
       // 执行页面跳转
         .then(() => {
-          this.$common.showMsg('success', '添加成功')
+          this.$common.showMsg('success', '操作成功')
           this.goBack()
         })
         .catch(error => this.$common.showNotifyError(error))
@@ -419,36 +439,46 @@ export default {
     }
   },
   created () {
-    const entityId = parseInt(this.entityId)
-    this.form.entityId = entityId
-    const promise = this.initForeignEntityOptions()
-    const type = this.$router.currentRoute.query.type
-    const template = this.$router.currentRoute.query.template
-    if (!template) {
-      return
-    }
-    if (type === 'system') {
-      this.form = fieldTemplate[template]
-      this.form.entityId = entityId
-    }
-    if (type === 'temp') {
-      const promise2 = this.$ajax.get(`/${apiPath}/meta_field/${template}`)
-        .then(response => this.$common.checkResult(response))
-        .then(data => new Promise((resolve, reject) => {
-          this.form = data
-          this.form.entityId = entityId
-          return resolve()
-        }))
-      Promise.all([promise, promise2])
+    if (this.edit) {
+      Promise.all([this.getField(), this.initForeignEntityOptions()])
+        .then(() => this.reset())
+        .then(() => this.handleForeignEntityChange([this.form.foreignEntityId]))
         .then(() => {
-          if (this.form.foreignFieldId && this.form.foreignEntityId) {
-            return this.handleForeignEntityChange([this.form.foreignEntityId])
-              .then(() => {
-                this.foreignField = [this.form.foreignEntityId, this.form.foreignFieldId]
-              })
-          }
+          this.foreignField = [this.form.foreignEntityId, this.form.foreignFieldId]
         })
         .catch(error => this.$common.showNotifyError(error))
+    } else {
+      const entityId = parseInt(this.entityId)
+      this.form.entityId = entityId
+      const promise = this.initForeignEntityOptions()
+      const type = this.$router.currentRoute.query.type
+      const template = this.$router.currentRoute.query.template
+      if (!template) {
+        return
+      }
+      if (type === 'system') {
+        this.form = fieldTemplate[template]
+        this.form.entityId = entityId
+      }
+      if (type === 'temp') {
+        const promise2 = this.$ajax.get(`/${apiPath}/meta_field/${template}`)
+          .then(response => this.$common.checkResult(response))
+          .then(data => new Promise((resolve, reject) => {
+            this.form = data
+            this.form.entityId = entityId
+            return resolve()
+          }))
+        Promise.all([promise, promise2])
+          .then(() => {
+            if (this.form.foreignFieldId && this.form.foreignEntityId) {
+              return this.handleForeignEntityChange([this.form.foreignEntityId])
+                .then(() => {
+                  this.foreignField = [this.form.foreignEntityId, this.form.foreignFieldId]
+                })
+            }
+          })
+          .catch(error => this.$common.showNotifyError(error))
+      }
     }
   }
 }
@@ -456,7 +486,7 @@ export default {
 
 <style lang="scss">
   @import '../../assets/common.scss';
-  .fieldAdd .addForm {
+  .fieldFormDiv .fieldForm {
     @include youran-form;
   }
 
