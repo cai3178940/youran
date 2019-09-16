@@ -66,7 +66,7 @@
                   </el-option>
                 </el-select>
               </el-col>
-              <template v-if="fieldScaleVisible">
+              <template v-if="fieldLengthVisible && fieldScaleVisible">
                 <el-col :span="7">
                   <el-input-number v-model="form.fieldLength" controls-position="right" style="width:100%;" :min="0" placeholder="长度"></el-input-number>
                 </el-col>
@@ -74,7 +74,7 @@
                   <el-input-number v-model="form.fieldScale" controls-position="right" style="width:100%;" :min="0" placeholder="精度"></el-input-number>
                 </el-col>
               </template>
-              <template v-if="!fieldScaleVisible">
+              <template v-if="fieldLengthVisible && !fieldScaleVisible">
                 <el-col :span="14" style="padding-right: 0px;">
                   <el-input-number v-model="form.fieldLength" controls-position="right" style="width:100%;" :min="0" placeholder="长度"></el-input-number>
                 </el-col>
@@ -262,6 +262,9 @@ export default {
         return true
       }
       return false
+    },
+    fieldLengthVisible () {
+      return options.showFieldLength(this.form.fieldType, 1)
     },
     fieldScaleVisible () {
       return options.showFieldScale(this.form.fieldType)
