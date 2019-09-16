@@ -337,7 +337,7 @@ export default {
       }
       return this.$common.getEntityOptions(projectId)
         .then(response => this.$common.checkResult(response))
-        .then(data => { project.children = data.list.map(entity => ({ value: entity.entityId, label: entity.title })) })
+        .then(data => { project.children = data.map(entity => ({ value: entity.entityId, label: entity.title })) })
     },
     handleQuery () {
       if (this.queryForm.projectEntity[1] == null) {

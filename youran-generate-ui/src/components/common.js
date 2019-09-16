@@ -42,9 +42,7 @@ export const CommonPlugin = {
       getEntityOptions (projectId) {
         return ajax.get(`/${apiPath}/meta_entity/list`, {
           params: {
-            projectId,
-            pageSize: 1000,
-            currentPage: 1
+            projectId
           }
         })
       },

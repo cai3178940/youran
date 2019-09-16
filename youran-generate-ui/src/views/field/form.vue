@@ -294,7 +294,7 @@ export default {
         this.queryTypeDisabled = false
       } else {
         this.queryTypeDisabled = true
-        this.queryType = ''
+        this.form.queryType = ''
       }
     },
     'dicTypeDisabled' (value) {
@@ -348,7 +348,7 @@ export default {
     initForeignEntityOptions () {
       return this.$common.getEntityOptions(this.projectId)
         .then(response => this.$common.checkResult(response))
-        .then(data => { this.entityFieldOptions = data.list.map(entity => ({ value: entity.entityId, label: entity.title, children: [] })) })
+        .then(data => { this.entityFieldOptions = data.map(entity => ({ value: entity.entityId, label: entity.title, children: [] })) })
     },
     handleForeignEntityChange (optionArray) {
       const entityId = optionArray[0]

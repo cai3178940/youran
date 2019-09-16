@@ -138,7 +138,7 @@ export default {
     queryEntity (projectId) {
       return this.$common.getEntityOptions(projectId)
         .then(response => this.$common.checkResult(response))
-        .then(data => { this.entityList = data.list })
+        .then(data => { this.entityList = data })
     },
     getMtm () {
       return this.$ajax.get(`/${apiPath}/meta_mtm/${this.mtmId}`)
