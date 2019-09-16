@@ -1,6 +1,5 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.qo.MetaEntityQO;
@@ -11,6 +10,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 /**
  * <p>Title:【实体】api</p>
@@ -40,13 +41,13 @@ public interface MetaEntityAPI {
     ResponseEntity<MetaEntityShowVO> update(MetaEntityUpdateDTO metaEntityUpdateDTO);
 
     /**
-     * 分页查询实体
+     * 查询实体列表
      */
-    @ApiOperation(value = "分页查询实体")
+    @ApiOperation(value = "查询实体列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaEntityQO", dataType = "MetaEntityQO", value = "分页查询参数", paramType = "body"),
+            @ApiImplicitParam(name = "metaEntityQO", dataType = "MetaEntityQO", value = "查询参数", paramType = "query"),
     })
-    ResponseEntity<PageVO<MetaEntityListVO>> list(MetaEntityQO metaEntityQO);
+    ResponseEntity<List<MetaEntityListVO>> list(MetaEntityQO metaEntityQO);
 
     /**
      * 查看实体详情

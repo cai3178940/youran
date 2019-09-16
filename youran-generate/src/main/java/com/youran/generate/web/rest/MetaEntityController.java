@@ -3,7 +3,6 @@ package com.youran.generate.web.rest;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 /**
  * <p>Title:【实体】控制器</p>
@@ -61,9 +61,9 @@ public class MetaEntityController extends AbstractController implements MetaEnti
 
     @Override
     @GetMapping(value = "/list")
-    public ResponseEntity<PageVO<MetaEntityListVO>> list(@Valid MetaEntityQO metaEntityQO) {
-        PageVO<MetaEntityListVO> page = metaEntityService.list(metaEntityQO);
-        return ResponseEntity.ok(page);
+    public ResponseEntity<List<MetaEntityListVO>> list(@Valid MetaEntityQO metaEntityQO) {
+        List<MetaEntityListVO> list = metaEntityService.list(metaEntityQO);
+        return ResponseEntity.ok(list);
     }
 
     @Override

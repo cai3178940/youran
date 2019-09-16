@@ -63,7 +63,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         restMockMvc.perform(get(getApiPath()+"/meta_entity/list")
                 .param("projectId",metaProject.getProjectId()+""))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.list.length()").value(is(1)));
+                .andExpect(jsonPath("$.length()").value(is(1)));
     }
 
     @Test

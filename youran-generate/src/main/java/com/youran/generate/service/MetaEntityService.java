@@ -3,7 +3,6 @@ package com.youran.generate.service;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaManyToManyDAO;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
@@ -114,12 +113,12 @@ public class MetaEntityService {
     }
 
     /**
-     * 查询分页列表
+     * 查询列表
      * @param metaEntityQO
      * @return
      */
-    public PageVO<MetaEntityListVO> list(MetaEntityQO metaEntityQO) {
-        PageVO<MetaEntityListVO> page = metaEntityDAO.findByPage(metaEntityQO);
+    public List<MetaEntityListVO> list(MetaEntityQO metaEntityQO) {
+        List<MetaEntityListVO> page = metaEntityDAO.findListByQuery(metaEntityQO);
         return page;
     }
 

@@ -29,7 +29,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table :data="page.list" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
+    <el-table :data="list" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="实体名">
         <template slot-scope="scope">
@@ -78,18 +78,6 @@
       </el-table-column>
     </el-table>
 
-    <el-row type="flex" justify="end" style="padding:20px 0; ">
-      <el-pagination
-        @size-change="sizeChange"
-        @current-change="currentChange"
-        :current-page="page.currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="page.pageSize"
-        layout="sizes, prev, pager, next"
-        :total="page.total">
-      </el-pagination>
-    </el-row>
-
     <el-dialog title="sql预览" :visible.sync="sqlPreviewVisible" width="50%">
       <el-input :readonly="true" v-model="sqlPreview" type="textarea" :autosize="{ minRows: 10, maxRows: 1000}"></el-input>
       <div slot="footer" class="dialog-footer">
@@ -124,12 +112,7 @@ export default {
       projectList: [],
       activeNum: 0,
       selectItems: [],
-      page: {
-        currentPage: 1,
-        total: 0,
-        pageSize: 20,
-        list: []
-      },
+      list: [],
       activeMtmId: null,
       mtms: [],
       loading: false
@@ -141,12 +124,12 @@ export default {
         return
       }
       // 首先将每个entity中的mtms置空
-      this.page.list.forEach(entity => {
+      this.list.forEach(entity => {
         entity.mtms = []
       })
       value.forEach(mtm => {
-        const entity1 = this.page.list.find(entity => entity.entityId === mtm.entityId1)
-        const entity2 = this.page.list.find(entity => entity.entityId === mtm.entityId2)
+        const entity1 = this.list.find(entity => entity.entityId === mtm.entityId1)
+        const entity2 = this.list.find(entity => entity.entityId === mtm.entityId2)
         if (entity1) {
           entity1.mtms.push(mtm)
         }
@@ -179,14 +162,6 @@ export default {
         .then(() => this.doQueryMtm())
         .catch(error => this.$common.showNotifyError(error))
     },
-    sizeChange (pageSize) {
-      this.page.pageSize = pageSize
-      this.doQuery()
-    },
-    currentChange (currentPage) {
-      this.page.currentPage = currentPage
-      this.doQuery()
-    },
     queryProject () {
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response))
@@ -208,20 +183,14 @@ export default {
       if (!this.query.projectId) {
         return
       }
-      // 将查询参数和分页参数合并
-      const params = {
-        ...this.query,
-        currentPage: this.page.currentPage,
-        pageSize: this.page.pageSize
-      }
       this.loading = true
-      return this.$ajax.get(`/${apiPath}/meta_entity/list`, { params: params })
+      return this.$ajax.get(`/${apiPath}/meta_entity/list`, { params: this.query })
         .then(response => this.$common.checkResult(response))
         .then(data => {
-          data.list.forEach(value => {
+          data.forEach(value => {
             value.mtms = []
           })
-          this.page = data
+          this.list = data
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
@@ -297,11 +266,11 @@ export default {
 </script>
 <style lang="scss">
   @import '../../assets/common.scss';
-  $hold-color: #ff7f1d;
-  $hold-back-color: #f7ddd2;
-  $unhold-color: #ff7f1d;
-  $unhold-back-color: #ffffff;
-  $active-color: #ffffff;
+  $hold-color: #ff1507;
+  $hold-back-color: #ebd9f7;
+  $unhold-color: #ff8d08;
+  $unhold-back-color: #fff2ce;
+  $active-color: #7a8cf5;
 
   .entityList {
     .activeNum {
@@ -319,9 +288,10 @@ export default {
 
     .mtm_span {
       font-size: 10px;
-      border-radius: 4px;
+      //border-radius: 4px;
       padding: 3px;
-      margin: 1px;
+      border: 2px solid transparent;
+      //margin: 1px;
     }
 
     .mtm_hold_span {
@@ -330,20 +300,16 @@ export default {
     }
 
     .mtm_hold_span.mtmActive {
-      color: darken($hold-color,8);
-      background-color: darken($hold-back-color,8);
+      border-color: $active-color;
     }
 
     .mtm_unhold_span {
-      border: 1px solid $unhold-color;
       color: $unhold-color;
       background-color: $unhold-back-color;
-
     }
+
     .mtm_unhold_span.mtmActive {
-      border: 1px solid darken($unhold-color,10);
-      color: darken($unhold-color,10);
-      background-color: darken($unhold-back-color,5);
+      border-color: $active-color;
     }
 
   }
