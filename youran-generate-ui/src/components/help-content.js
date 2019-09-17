@@ -59,8 +59,9 @@ export default {
   },
   field: {
     jfieldName: `
-**java字段名**：Java类中的字段名称
-> 注意：请遵循Java字段命名规范，尽量使用驼峰格式
+**java字段名**：Java类中的字段名称，请遵循Java字段命名规范，尽量使用驼峰格式
+
+**mysql字段名**：业务表中的字段名称，请遵循mysql字段命名规范，尽量使用下划线来分隔单词
     `,
     fieldName: `
 **mysql字段名**：业务表中的字段名称

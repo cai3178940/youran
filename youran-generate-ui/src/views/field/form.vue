@@ -10,19 +10,26 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="10">
       <el-col :span="14">
-        <el-form ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px">
-          <el-form-item label="java字段名" prop="jfieldName">
+        <el-form ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px" size="small">
+          <el-form-item label="字段名" prop="jfieldName">
             <help-popover name="field.jfieldName">
-              <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age"></el-input>
-              <el-button size="mini" type="text" @click="form.jfieldName = $common.snakeCase(form.jfieldName)">转下划线</el-button>
-              <el-button size="mini" type="text" @click="form.jfieldName = $common.camelCase(form.jfieldName)">转驼峰</el-button>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="mysql字段名" prop="fieldName">
-            <help-popover name="field.fieldName">
-              <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age"></el-input>
-              <el-button size="mini" type="text" @click="form.fieldName = $common.snakeCase(form.fieldName)">转下划线</el-button>
-              <el-button size="mini" type="text" @click="form.fieldName = $common.camelCase(form.fieldName)">转驼峰</el-button>
+              <el-col :span="11" class="col-left">
+                <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age"></el-input>
+                <el-button size="mini" type="text" @click="form.jfieldName = $common.snakeCase(form.jfieldName)">转下划线</el-button>
+                <el-button size="mini" type="text" @click="form.jfieldName = $common.camelCase(form.jfieldName)">转驼峰</el-button>
+              </el-col>
+              <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
+                <el-tooltip class="item" effect="dark" content="粘贴到右边" placement="top">
+                  <el-button type="text" @click="copyJfieldNameToFieldName()">
+                    <icon name="angle-double-right" style="vertical-align: middle;"></icon>
+                  </el-button>
+                </el-tooltip>
+              </el-col>
+              <el-col :span="11" class="col-right">
+                <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age"></el-input>
+                <el-button size="mini" type="text" @click="form.fieldName = $common.snakeCase(form.fieldName)">转下划线</el-button>
+                <el-button size="mini" type="text" @click="form.fieldName = $common.camelCase(form.fieldName)">转驼峰</el-button>
+              </el-col>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段描述" prop="fieldDesc">
@@ -54,7 +61,7 @@
           </el-form-item>
           <el-form-item label="mysql字段类型" prop="fieldType">
             <help-popover name="field.fieldType">
-              <el-col :span="10" style="padding-left: 0px;">
+              <el-col :span="10" class="col-left">
                 <el-select v-model="form.fieldType" @change="fieldTypeChange" style="width:100%;" filterable placeholder="请选择">
                   <el-option
                     v-for="item in fieldTypeOptions"
@@ -70,12 +77,12 @@
                 <el-col :span="7">
                   <el-input-number v-model="form.fieldLength" controls-position="right" style="width:100%;" :min="0" placeholder="长度"></el-input-number>
                 </el-col>
-                <el-col :span="7" style="padding-right: 0px;">
+                <el-col :span="7" class="col-right">
                   <el-input-number v-model="form.fieldScale" controls-position="right" style="width:100%;" :min="0" placeholder="精度"></el-input-number>
                 </el-col>
               </template>
               <template v-if="fieldLengthVisible && !fieldScaleVisible">
-                <el-col :span="14" style="padding-right: 0px;">
+                <el-col :span="14" class="col-right">
                   <el-input-number v-model="form.fieldLength" controls-position="right" style="width:100%;" :min="0" placeholder="长度"></el-input-number>
                 </el-col>
               </template>
@@ -439,6 +446,9 @@ export default {
     },
     goBack () {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
+    },
+    copyJfieldNameToFieldName () {
+      this.form.fieldName = this.form.jfieldName
     }
   },
   created () {
@@ -490,7 +500,29 @@ export default {
 <style lang="scss">
   @import '../../assets/common.scss';
   .fieldFormDiv .fieldForm {
+
     @include youran-form;
+
+    .el-button--mini {
+      padding: 1px 5px;
+    }
+
+    .col-left {
+      padding-left: 0px;
+      line-height: normal;
+    }
+    .col-right {
+      padding-right: 0px;
+      line-height: normal;
+    }
+
   }
 
+  //  popper-class="alert-tip"
+  .alert-tip{
+    background-color: #f56c6c!important;
+    .popper__arrow, .popper__arrow::after {
+      border-top-color: #f56c6c!important;
+    }
+  }
 </style>

@@ -65,7 +65,7 @@ export function initFormBean (forEdit) {
 export function getRules (vm) {
   return {
     jfieldName: [
-      { required: true, message: '请输入java字段名', trigger: 'blur' },
+      { required: true, message: '请输入字段名', trigger: 'blur' },
       { max: 50, message: '长度不能超过50个字符', trigger: 'blur' }
     ],
     fieldName: [
