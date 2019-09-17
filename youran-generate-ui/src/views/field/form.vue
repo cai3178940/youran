@@ -15,11 +15,13 @@
             <help-popover name="field.jfieldName">
               <el-col :span="11" class="col-left">
                 <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age"></el-input>
+                <!--
                 <el-button size="mini" type="text" @click="form.jfieldName = $common.snakeCase(form.jfieldName)">转下划线</el-button>
+                -->
                 <el-button size="mini" type="text" @click="form.jfieldName = $common.camelCase(form.jfieldName)">转驼峰</el-button>
               </el-col>
               <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
-                <el-tooltip class="item" effect="dark" content="粘贴到右边" placement="top">
+                <el-tooltip class="item" effect="dark" content="粘贴到右边并转下划线" placement="top">
                   <el-button type="text" @click="copyJfieldNameToFieldName()">
                     <icon name="angle-double-right" style="vertical-align: middle;"></icon>
                   </el-button>
@@ -28,7 +30,9 @@
               <el-col :span="11" class="col-right">
                 <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age"></el-input>
                 <el-button size="mini" type="text" @click="form.fieldName = $common.snakeCase(form.fieldName)">转下划线</el-button>
+                <!--
                 <el-button size="mini" type="text" @click="form.fieldName = $common.camelCase(form.fieldName)">转驼峰</el-button>
+                -->
               </el-col>
             </help-popover>
           </el-form-item>
@@ -448,7 +452,7 @@ export default {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
     },
     copyJfieldNameToFieldName () {
-      this.form.fieldName = this.form.jfieldName
+      this.form.fieldName = this.$common.snakeCase(this.form.jfieldName)
     }
   },
   created () {
@@ -459,7 +463,7 @@ export default {
         .then(() => {
           this.foreignField = [this.form.foreignEntityId, this.form.foreignFieldId]
         })
-        .catch(error => this.$common.showNotifyError(error))
+        .catch(error => this.this.$common.showNotifyError(error))
     } else {
       const entityId = parseInt(this.entityId)
       this.form.entityId = entityId
