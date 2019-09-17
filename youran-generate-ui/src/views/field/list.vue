@@ -77,7 +77,7 @@
           <icon v-if="scope.row.notNull!=1" name="times" class="color-danger"></icon>
         </template>
       </el-table-column>
-      <el-table-column label="主外键" width="70px">
+      <el-table-column label="特性" width="70px">
         <template slot-scope="scope">
           <el-tooltip v-if="scope.row.primaryKey==1" class="item" effect="dark" content="主键" placement="right">
             <icon name="key" class="color-warning"></icon>
@@ -85,6 +85,13 @@
           <el-tooltip v-if="scope.row.foreignKey==1" class="item" effect="dark" content="外键" placement="right">
             <icon name="key" class="color-primary"></icon>
           </el-tooltip>
+          <template v-if="scope.row.specialField">
+            <el-tooltip class="item" effect="dark" :content="getSpecialField(scope.row.specialField)['label']" placement="right">
+              <icon :name="getSpecialField(scope.row.specialField)['icon']"
+                    :style="getSpecialField(scope.row.specialField)['style']">
+              </icon>
+            </el-tooltip>
+          </template>
         </template>
       </el-table-column>
       <el-table-column property="orderNo" label="排序" width="50px"></el-table-column>
@@ -104,7 +111,7 @@
     </el-table>
 
     <el-dialog title="请选择字段模板" :visible.sync="addTemplateFormVisible" width="30%">
-      <el-form :model="templateForm">
+      <el-form :model="templateForm" size="small">
 
         <el-form-item label="模式：" label-width="100px">
           <el-radio-group v-model="templateForm.multiple">
@@ -122,15 +129,33 @@
                          :key="value.fieldId"
                          :label="value.fieldDesc"
                          :value="value.fieldId">
-                <span style="float: left">{{ value.fieldDesc }}</span>
+                <span style="float: left">
+                  <span class="template-option">
+                    <icon v-if="value.specialField"
+                          :name="getSpecialField(value.specialField)['icon']"
+                          :style="getSpecialField(value.specialField)['style']">
+                    </icon>
+                  </span>
+                  {{ value.fieldDesc }}
+                </span>
                 <span style="float: right; color: #8492a6; font-size: 13px"><i @click.stop="removeFieldTemplate(value.fieldId)" class="el-icon-delete"></i></span>
               </el-option>
             </el-option-group>
             <el-option-group label="系统内置模板">
-              <el-option v-for="(_,key) in fieldTemplate"
+              <el-option v-for="(value,key) in fieldTemplate"
                          :key="key"
                          :label="key"
-                         :value="key"></el-option>
+                         :value="key">
+                <span style="float: left">
+                  <span class="template-option">
+                    <icon v-if="value.specialField"
+                          :name="getSpecialField(value.specialField)['icon']"
+                          :style="getSpecialField(value.specialField)['style']">
+                    </icon>
+                  </span>
+                  {{ key }}
+                </span>
+              </el-option>
             </el-option-group>
           </el-select>
         </el-form-item>
@@ -144,15 +169,35 @@
                          :key="value.fieldId"
                          :label="value.fieldDesc"
                          :value="value.fieldId">
-                <span style="float: left">{{ value.fieldDesc }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px"><i @click.stop="removeFieldTemplate(value.fieldId)" class="el-icon-delete"></i></span>
+                <span style="float: left">
+                  <span class="template-option">
+                    <icon v-if="value.specialField"
+                          :name="getSpecialField(value.specialField)['icon']"
+                          :style="getSpecialField(value.specialField)['style']">
+                    </icon>
+                  </span>
+                  {{ value.fieldDesc }}
+                </span>
+                <span style="float: right; color: #8492a6; font-size: 13px">
+                  <i @click.stop="removeFieldTemplate(value.fieldId)" class="el-icon-delete"></i>
+                </span>
               </el-option>
             </el-option-group>
             <el-option-group label="系统内置模板">
               <el-option v-for="(value,key) in fieldTemplate"
                          :key="key"
                          :label="key"
-                         :value="key"></el-option>
+                         :value="key">
+                <span style="float: left">
+                  <span class="template-option">
+                    <icon v-if="value.specialField"
+                          :name="getSpecialField(value.specialField)['icon']"
+                          :style="getSpecialField(value.specialField)['style']">
+                    </icon>
+                  </span>
+                  {{ key }}
+                </span>
+              </el-option>
             </el-option-group>
           </el-select>
         </el-form-item>
@@ -272,6 +317,7 @@ export default {
       'removeFieldTemplate',
       'addFieldTemplate'
     ]),
+    getSpecialField: options.getSpecialField,
     rowClassName ({ row }) {
       if (this.addImmFieldIds.includes(row.fieldId)) {
         return 'add-imm-field'
@@ -598,6 +644,15 @@ export default {
       height: 12px;
       line-height: 13px;
       padding: 0 3px;
+    }
+
+
+  }
+  .template-option {
+    width: 15px;
+    display: inline-block;
+    .fa-icon {
+      vertical-align: text-top;
     }
   }
 </style>

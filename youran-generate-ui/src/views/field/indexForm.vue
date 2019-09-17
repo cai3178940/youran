@@ -10,7 +10,7 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="indexForm" class="indexForm" :rules="rules" :model="form" label-width="120px">
+        <el-form ref="indexForm" class="indexForm" :rules="rules" :model="form" label-width="120px" size="small">
           <el-form-item label="索引名" prop="indexName">
             <help-popover name="index.indexName">
               <el-input v-model="form.indexName" placeholder="索引名，例如：IDX_ORDER_1"></el-input>

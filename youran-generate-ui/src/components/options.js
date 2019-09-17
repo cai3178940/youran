@@ -80,6 +80,51 @@ function getFieldTypeOptions () {
   ]
 }
 
+const specialFieldOptions = [
+  {
+    value: 'deleted',
+    label: '逻辑删除',
+    icon: 'ban',
+    style: 'color: #ff3366;'
+  },
+  {
+    value: 'createdTime',
+    label: '创建时间',
+    icon: 'calendar-alt',
+    style: 'color: #33cc66;'
+  },
+  {
+    value: 'createdBy',
+    label: '创建人员',
+    icon: 'user',
+    style: 'color: #33cc66;'
+  },
+  {
+    value: 'operatedTime',
+    label: '更新时间',
+    icon: 'calendar-alt',
+    style: 'color: #1C86EE;'
+  },
+  {
+    value: 'operatedBy',
+    label: '更新人员',
+    icon: 'user',
+    style: 'color: #1C86EE;'
+  },
+  {
+    value: 'version',
+    label: '乐观锁版本号',
+    icon: 'unlock-alt',
+    style: 'color: #AB82FF;'
+  }
+]
+
+// 将上面的数组转成map
+const specialFieldOptionsMap = {};
+for (const option of specialFieldOptions) {
+  specialFieldOptionsMap[option.value] = option;
+}
+
 export default {
 
   // 布尔枚举
@@ -214,32 +259,10 @@ export default {
       label: 'in'
     }
   ],
-  specialFieldOptions: [
-    {
-      value: 'deleted',
-      label: '逻辑删除'
-    },
-    {
-      value: 'createdTime',
-      label: '创建时间'
-    },
-    {
-      value: 'createdBy',
-      label: '创建人员'
-    },
-    {
-      value: 'operatedTime',
-      label: '更新时间'
-    },
-    {
-      value: 'operatedBy',
-      label: '更新人员'
-    },
-    {
-      value: 'version',
-      label: '乐观锁版本'
-    }
-  ],
+  getSpecialField (key) {
+    return specialFieldOptionsMap[key]
+  },
+  specialFieldOptions: specialFieldOptions,
   constTypeOptions: [
     {
       value: 1,

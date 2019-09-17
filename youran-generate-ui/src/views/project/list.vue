@@ -80,7 +80,7 @@
     </el-table>
 
     <el-dialog title="反向工程" :visible.sync="reverseEngineeringFormVisible" width="60%">
-      <el-form ref="reverseEngineeringForm" :model="reverseEngineeringForm" :rules="reverseEngineeringFormRules">
+      <el-form ref="reverseEngineeringForm" :model="reverseEngineeringForm" :rules="reverseEngineeringFormRules" size="small">
         <el-form-item label="脚本语言：" label-width="100px">
           <el-radio-group v-model="reverseEngineeringForm.dbType">
             <el-radio border label="mysql">MySql</el-radio>

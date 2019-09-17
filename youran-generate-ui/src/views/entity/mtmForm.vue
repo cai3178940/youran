@@ -9,7 +9,7 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="mtmForm" class="mtmForm" :rules="rules" :model="form" label-width="140px">
+        <el-form ref="mtmForm" class="mtmForm" :rules="rules" :model="form" label-width="140px" size="small">
           <el-form-item label="项目" prop="projectId">
             <help-popover name="mtm.projectId">
               <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">

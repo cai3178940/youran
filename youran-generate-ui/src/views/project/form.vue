@@ -8,7 +8,7 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="projectForm" class="projectForm" :rules="rules" :model="form" label-width="120px">
+        <el-form ref="projectForm" class="projectForm" :rules="rules" :model="form" label-width="120px" size="small">
           <el-form-item label="groupId" prop="groupId">
             <help-popover name="project.groupId">
               <el-input v-model="form.groupId" placeholder="例如：com.myGroup"></el-input>
