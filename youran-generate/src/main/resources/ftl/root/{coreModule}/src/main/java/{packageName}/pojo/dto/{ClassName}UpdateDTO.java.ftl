@@ -10,7 +10,9 @@
 public class ${this.classNameUpper}UpdateDTO extends AbstractDTO {
 
     <@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
-    @ApiModelProperty(notes = N_${this.pk.jfieldName?upperCase},example = E_${this.pk.jfieldName?upperCase},required = true)
+    <#--字段名转下划线大写-->
+    <#assign pkNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(this.pk.jfieldName,true)>
+    @ApiModelProperty(notes = N_${pkNameSnakeCase},example = E_${pkNameSnakeCase},required = true)
     @NotNull
     <#if this.pk.jfieldType==JFieldType.STRING.getJavaType()>
         <@call this.addImport("org.hibernate.validator.constraints.Length")/>
@@ -20,7 +22,9 @@ public class ${this.classNameUpper}UpdateDTO extends AbstractDTO {
 
 <#list this.updateFields as field>
     <@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
-    @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase}<#if isTrue(field.notNull)>,required = true</#if><#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
+    <#--字段名转下划线大写-->
+    <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
+    @ApiModelProperty(notes = N_${jfieldNameSnakeCase},example = E_${jfieldNameSnakeCase}<#if isTrue(field.notNull)>,required = true</#if><#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
     <#if isTrue(field.notNull)>
     @NotNull
     </#if>

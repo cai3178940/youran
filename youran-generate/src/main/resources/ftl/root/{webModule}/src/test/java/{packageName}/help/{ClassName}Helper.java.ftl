@@ -31,20 +31,22 @@ public class ${this.classNameUpper}Helper {
     public ${this.classNameUpper}AddDTO get${this.classNameUpper}AddDTO(${foreignArg}){
         ${this.classNameUpper}AddDTO dto = new ${this.classNameUpper}AddDTO();
     <#list this.metaEntity.insertFields as field>
+        <#--字段名转下划线大写-->
+        <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
         <#assign arg="">
         <#if isTrue(field.foreignKey)>
             <#assign arg="${field.jfieldName}">
         <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
-            <#assign arg="E_${field.jfieldName?upperCase}">
+            <#assign arg="E_${jfieldNameSnakeCase}">
         <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
             <@call this.addImport("${this.commonPackage}.util.DateUtil")/>
-            <#assign arg="DateUtil.parseDate(E_${field.jfieldName?upperCase})">
+            <#assign arg="DateUtil.parseDate(E_${jfieldNameSnakeCase})">
         <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
             <@call this.addImport("java.math.BigDecimal")/>
-            <#assign arg="SafeUtil.get${field.jfieldType}(E_${field.jfieldName?upperCase})">
+            <#assign arg="SafeUtil.get${field.jfieldType}(E_${jfieldNameSnakeCase})">
         <#else>
             <@call this.addImport("${this.commonPackage}.util.SafeUtil")/>
-            <#assign arg="SafeUtil.get${field.jfieldType}(E_${field.jfieldName?upperCase})">
+            <#assign arg="SafeUtil.get${field.jfieldType}(E_${jfieldNameSnakeCase})">
         </#if>
         dto.set${field.jfieldName?capFirst}(${arg});
     </#list>

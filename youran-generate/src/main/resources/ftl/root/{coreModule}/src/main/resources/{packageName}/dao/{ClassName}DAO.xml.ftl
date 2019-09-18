@@ -124,13 +124,13 @@
                 <#assign cascadeField=cascadeExt.cascadeField>
                 <#--非between类型-->
                 <#if cascadeField.queryType!=QueryType.BETWEEN>
-                    <#assign con_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_con_ex">
+                    <#assign con_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_con_ex">
                     <#assign con_ex_arr = con_ex_arr + [ con_ex ] >
         <bind name="${con_ex}" value="${cascadeExt.alias} != null <#if cascadeField.jfieldType==JFieldType.STRING.getJavaType()> and ${cascadeExt.alias} !=''</#if>" />
                 <#else>
                 <#--between类型-->
-                    <#assign con_start_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_start_con_ex">
-                    <#assign con_end_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_end_con_ex">
+                    <#assign con_start_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_start_con_ex">
+                    <#assign con_end_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_end_con_ex">
                     <#assign con_ex_arr = con_ex_arr + [ con_start_ex,con_end_ex ] >
         <bind name="${con_start_ex}" value="${cascadeExt.alias}Start != null <#if cascadeField.jfieldType==JFieldType.STRING.getJavaType()> and ${cascadeExt.alias}Start !=''</#if>" />
         <bind name="${con_end_ex}" value="${cascadeExt.alias}End != null <#if cascadeField.jfieldType==JFieldType.STRING.getJavaType()> and ${cascadeExt.alias}End !=''</#if>" />
@@ -147,7 +147,7 @@
                 <#assign cascadeField=cascadeExt.cascadeField>
                 <#--非between类型-->
                 <#if cascadeField.queryType!=QueryType.BETWEEN>
-                    <#assign con_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_con_ex">
+                    <#assign con_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_con_ex">
             <if test="${con_ex}">
                     <#if cascadeField.queryType==QueryType.LIKE>
                 <bind name="${cascadeExt.alias}_pattern" value="'%' + ${cascadeExt.alias} + '%'" />
@@ -158,8 +158,8 @@
             </if>
                 <#else>
                 <#--between类型-->
-                    <#assign con_start_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_start_con_ex">
-                    <#assign con_end_ex="${MetadataUtil.camelCaseToUnderline(cascadeExt.alias,false)}_end_con_ex">
+                    <#assign con_start_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_start_con_ex">
+                    <#assign con_end_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_end_con_ex">
             <if test="${con_start_ex}">
                 and e${cascadeIndex}.${MetadataUtil.wrapMysqlKeyword(cascadeField.fieldName)} >= ${r'#'}{${cascadeExt.alias}Start}
             </if>

@@ -265,7 +265,7 @@ export default {
             this.$common.showNotifyError(progressVO.msg)
           }
         })
-        .finally(() => this.expandRowKeys.splice(this.expandRowKeys.findIndex(v => v === projectId), 1))
+        .finally(() => this.collapseRow(row))
     },
     /*
     handleGenCode (row) {
@@ -337,7 +337,14 @@ export default {
             this.$common.showNotifyError(progressVO.msg)
           }
         })
-        .finally(() => this.expandRowKeys.splice(this.expandRowKeys.findIndex(v => v === projectId), 1))
+        .finally(() => this.collapseRow(row))
+    },
+    /**
+     * 下载完成后，折叠当前行
+     */
+    collapseRow (row) {
+      this.expandRowKeys.splice(this.expandRowKeys.findIndex(v => v === row.projectId), 1)
+      row.genCodePercent = 0
     },
     /*
     handleCommit (row) {

@@ -134,7 +134,7 @@ public class MetadataUtil {
      * @param upCase
      * @return
      */
-    public static String camelCaseToUnderline(String name,boolean upCase){
+    public static String camelCaseToSnakeCase(String name, boolean upCase){
         String[] split = StringUtils.splitByCharacterTypeCamelCase(name);
         Stream<String> stream = Arrays.stream(split);
         if(upCase){
@@ -255,13 +255,18 @@ public class MetadataUtil {
      * @return
      */
     public static boolean ifDefaultValueNeedWrap(MetaFieldPO field){
+        String defaultValue = field.getDefaultValue();
         // 字符型需要引号包裹
         if(MySqlType.isStringType(field.getFieldType())){
+            if(defaultValue!=null
+                && defaultValue.startsWith(DefaultValue.SINGLE_QUOTE)
+                && defaultValue.endsWith(DefaultValue.SINGLE_QUOTE)){
+                return false;
+            }
             return true;
         }
         // 日期字段特殊默认值不需要引号包裹
         if(MySqlType.isDateType(field.getFieldType()) || MySqlType.isDateTimeType(field.getFieldType())){
-            String defaultValue = field.getDefaultValue();
             if(StringUtils.isNotBlank(defaultValue)){
                 for (String specialValue : SPECIAL_DEFAULT_VALUE) {
                     if(defaultValue.toUpperCase().indexOf(specialValue) > -1){

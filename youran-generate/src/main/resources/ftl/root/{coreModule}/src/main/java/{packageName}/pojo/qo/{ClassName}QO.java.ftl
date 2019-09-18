@@ -22,14 +22,16 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     <#else>
         <#assign jfieldName=field.jfieldName>
     </#if>
+    <#--字段名转下划线大写-->
+    <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
     <#--查询方式：IN-->
     <#if field.queryType==QueryType.IN>
         <@call this.addImport("java.util.List")/>
-    @ApiParam(value = ${examplePackage}N_${field.jfieldName?upperCase})
+    @ApiParam(value = ${examplePackage}N_${jfieldNameSnakeCase})
     private List<${field.jfieldType}> ${jfieldName};
     <#else>
     <#--其他查询方式-->
-    @ApiParam(value = ${examplePackage}N_${field.jfieldName?upperCase},example = ${examplePackage}E_${field.jfieldName?upperCase})
+    @ApiParam(value = ${examplePackage}N_${jfieldNameSnakeCase},example = ${examplePackage}E_${jfieldNameSnakeCase})
         <#if field.jfieldType==JFieldType.STRING.getJavaType()>
             <@call this.addImport("org.hibernate.validator.constraints.Length")/>
     @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")

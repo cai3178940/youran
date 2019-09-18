@@ -10,7 +10,9 @@ public class ${this.classNameUpper}AddDTO extends AbstractDTO {
 
 <#list this.insertFields as field>
     <@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
-    @ApiModelProperty(notes = N_${field.jfieldName?upperCase}, example = E_${field.jfieldName?upperCase}<#if isTrue(field.notNull)>, required = true</#if><#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
+    <#--字段名转下划线大写-->
+    <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
+    @ApiModelProperty(notes = N_${jfieldNameSnakeCase}, example = E_${jfieldNameSnakeCase}<#if isTrue(field.notNull)>, required = true</#if><#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
     <#if isTrue(field.notNull)>
         <@call this.addImport("javax.validation.constraints.NotNull")/>
     @NotNull

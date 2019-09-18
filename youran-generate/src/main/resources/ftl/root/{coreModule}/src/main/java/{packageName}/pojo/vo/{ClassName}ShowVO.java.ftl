@@ -10,10 +10,12 @@
 public class ${this.classNameUpper}ShowVO extends AbstractVO {
 
 <#list this.showFields as field>
+    <#--字段名转下划线大写-->
+    <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
     <#if field.dicType??>
         <@call this.addConstImport(field.dicType)/>
     </#if>
-    @ApiModelProperty(notes = N_${field.jfieldName?upperCase},example = E_${field.jfieldName?upperCase}<#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
+    @ApiModelProperty(notes = N_${jfieldNameSnakeCase},example = E_${jfieldNameSnakeCase}<#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
         <@call this.addImport("java.util.Date")/>
         <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
@@ -35,7 +37,9 @@ public class ${this.classNameUpper}ShowVO extends AbstractVO {
         <#if field.foreignEntity!=this.metaEntity>
             <#assign examplePackage="${this.packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example.">
         </#if>
-    @ApiModelProperty(notes = ${examplePackage}N_${cascadeField.jfieldName?upperCase},example = ${examplePackage}E_${cascadeField.jfieldName?upperCase}<#if cascadeField.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(cascadeField.dicType)}.VALUES_STR</#if>)
+        <#--字段名转下划线大写-->
+        <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(cascadeField.jfieldName,true)>
+    @ApiModelProperty(notes = ${examplePackage}N_${jfieldNameSnakeCase},example = ${examplePackage}E_${jfieldNameSnakeCase}<#if cascadeField.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(cascadeField.dicType)}.VALUES_STR</#if>)
         <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
             <@call this.addImport("java.util.Date")/>
             <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
