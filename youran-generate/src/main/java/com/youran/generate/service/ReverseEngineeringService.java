@@ -176,8 +176,8 @@ public class ReverseEngineeringService {
         metaEntityDTO.setSchemaName("");
         metaEntityDTO.setClassName(MetadataUtil.underlineToCamelCase(tableName,true));
         metaEntityDTO.setTableName(tableName);
-        metaEntityDTO.setTitle(comment);
-        metaEntityDTO.setDesc(comment);
+        metaEntityDTO.setTitle(StringUtils.abbreviate(comment,25));
+        metaEntityDTO.setDesc(StringUtils.abbreviate(comment,250));
         metaEntityDTO.setCommonCall(BoolConst.FALSE);
         metaEntityDTO.setPageSign(BoolConst.TRUE);
         return metaEntityService.save(metaEntityDTO);
@@ -214,8 +214,8 @@ public class ReverseEngineeringService {
         metaFieldDTO.setDefaultValue(defaultValue);
         metaFieldDTO.setDicType(null);
         metaFieldDTO.setEditType(null);
-        metaFieldDTO.setFieldComment(desc);
-        metaFieldDTO.setFieldDesc(desc);
+        metaFieldDTO.setFieldComment(StringUtils.abbreviate(desc,40));
+        metaFieldDTO.setFieldDesc(StringUtils.abbreviate(desc,200));
         metaFieldDTO.setFieldExample(GuessUtil.guessFieldExample(fieldName,jFieldType,fieldLength));
         metaFieldDTO.setFieldLength(fieldLength);
         metaFieldDTO.setFieldName(fieldName);
