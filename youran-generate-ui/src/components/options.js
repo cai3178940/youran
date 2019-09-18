@@ -120,9 +120,9 @@ const specialFieldOptions = [
 ]
 
 // 将上面的数组转成map
-const specialFieldOptionsMap = {};
+const specialFieldOptionsMap = {}
 for (const option of specialFieldOptions) {
-  specialFieldOptionsMap[option.value] = option;
+  specialFieldOptionsMap[option.value] = option
 }
 
 export default {

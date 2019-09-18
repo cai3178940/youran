@@ -646,7 +646,6 @@ export default {
       padding: 0 3px;
     }
 
-
   }
   .template-option {
     width: 15px;
