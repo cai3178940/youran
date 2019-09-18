@@ -51,22 +51,20 @@
               <el-input v-model="form.fieldExample" placeholder="字段示例，例如年龄字段：21"></el-input>
             </help-popover>
           </el-form-item>
-          <el-form-item label="java字段类型" prop="jfieldType">
-            <help-popover name="field.jfieldType">
-              <el-select v-model="form.jfieldType" @change="jfieldTypeChange" style="width:100%;" filterable placeholder="请选择">
-                <el-option
-                  v-for="item in jfieldTypeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="mysql字段类型" prop="fieldType">
+          <el-form-item label="字段类型" prop="fieldType">
             <help-popover name="field.fieldType">
-              <el-col :span="10" class="col-left">
-                <el-select v-model="form.fieldType" @change="fieldTypeChange" style="width:100%;" filterable placeholder="请选择">
+              <el-col :span="6" class="col-left">
+                <el-select v-model="form.jfieldType" @change="jfieldTypeChange" style="width:100%;" filterable placeholder="java类型">
+                  <el-option
+                    v-for="item in jfieldTypeOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="6">
+                <el-select v-model="form.fieldType" @change="fieldTypeChange" style="width:100%;" filterable placeholder="sql类型">
                   <el-option
                     v-for="item in fieldTypeOptions"
                     :key="item.value"
@@ -78,15 +76,15 @@
                 </el-select>
               </el-col>
               <template v-if="fieldLengthVisible && fieldScaleVisible">
-                <el-col :span="7">
+                <el-col :span="6">
                   <el-input-number v-model="form.fieldLength" controls-position="right" style="width:100%;" :min="0" placeholder="长度"></el-input-number>
                 </el-col>
-                <el-col :span="7" class="col-right">
+                <el-col :span="6" class="col-right">
                   <el-input-number v-model="form.fieldScale" controls-position="right" style="width:100%;" :min="0" placeholder="精度"></el-input-number>
                 </el-col>
               </template>
               <template v-if="fieldLengthVisible && !fieldScaleVisible">
-                <el-col :span="14" class="col-right">
+                <el-col :span="12" class="col-right">
                   <el-input-number v-model="form.fieldLength" controls-position="right" style="width:100%;" :min="0" placeholder="长度"></el-input-number>
                 </el-col>
               </template>
@@ -512,11 +510,11 @@ export default {
     }
 
     .col-left {
-      padding-left: 0px;
+      padding-left: 0px!important;
       line-height: normal;
     }
     .col-right {
-      padding-right: 0px;
+      padding-right: 0px!important;;
       line-height: normal;
     }
 
