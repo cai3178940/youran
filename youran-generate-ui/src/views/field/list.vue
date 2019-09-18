@@ -37,6 +37,7 @@
     </el-row>
     <el-table :data="list" style="width: 100%" @selection-change="selectionChange" :row-class-name="rowClassName" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
+      <el-table-column property="orderNo" label="序号" width="50px"></el-table-column>
       <el-table-column label="字段描述">
         <template slot-scope="scope">
           {{ scope.row.fieldDesc }}
@@ -94,7 +95,6 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column property="orderNo" label="排序" width="50px"></el-table-column>
       <el-table-column property="fieldExample" label="字段示例"></el-table-column>
       <el-table-column
         label="操作"

@@ -89,16 +89,13 @@ export function getRules (vm) {
       { required: true, message: '请输入字段精度', trigger: 'blur' }
     ],
     primaryKey: [
-      { required: true, type: 'number', message: '请选择是否主键', trigger: 'change' }
-    ],
-    autoIncrement: [
-      { required: true, type: 'number', message: '请选择是否自增', trigger: 'change' }
+      { required: false, type: 'number', message: '请选择是否主键', trigger: 'change' }
     ],
     notNull: [
-      { required: true, type: 'number', message: '请选择不能为空', trigger: 'change' }
+      { required: false, type: 'number', message: '请选择不能为空', trigger: 'change' }
     ],
     foreignKey: [
-      { required: true, type: 'number', message: '请选择是否外键', trigger: 'change' }
+      { required: false, type: 'number', message: '请选择是否外键', trigger: 'change' }
     ],
     fieldExample: [
       { required: true, message: '请输入字段示例', trigger: 'blur' },
@@ -112,7 +109,7 @@ export function getRules (vm) {
       { max: 40, message: '长度不能超过40个字符', trigger: 'blur' }
     ],
     query: [
-      { required: true, type: 'number', message: '请选择是否查询字段', trigger: 'change' }
+      { required: false, type: 'number', message: '请选择是否查询字段', trigger: 'change' }
     ],
     queryType: [
       {
@@ -125,21 +122,6 @@ export function getRules (vm) {
         },
         trigger: 'change'
       }
-    ],
-    insert: [
-      { required: true, type: 'number', message: '请选择是否新增字段', trigger: 'change' }
-    ],
-    update: [
-      { required: true, type: 'number', message: '请选择是否编辑字段', trigger: 'change' }
-    ],
-    list: [
-      { required: true, type: 'number', message: '请选择是否列表字段', trigger: 'change' }
-    ],
-    listSort: [
-      { required: true, type: 'number', message: '请选择是否支持排序', trigger: 'change' }
-    ],
-    show: [
-      { required: true, type: 'number', message: '请选择是否详情字段', trigger: 'change' }
     ],
     orderNo: [
       { required: true, message: '请输入排序号', trigger: 'blur' }

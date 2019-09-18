@@ -11,6 +11,27 @@
     <el-row type="flex" align="middle" :gutter="10">
       <el-col :span="14">
         <el-form ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px" size="small">
+          <el-form-item label="序号" prop="orderNo">
+            <help-popover name="field.orderNo">
+              <el-row type="flex" align="middle" :gutter="10">
+                <el-col :span="8">
+                  <el-input-number v-model="form.orderNo" :min="1"></el-input-number>
+                </el-col>
+                <el-col :span="16" class="col-right">
+                  <span class="inline-label">特殊类型</span>
+                  <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField"
+                             filterable placeholder="无">
+                    <el-option
+                      v-for="item in specialFieldOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-col>
+              </el-row>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="字段名" prop="jfieldName">
             <help-popover name="field.jfieldName">
               <el-col :span="11" class="col-left">
@@ -36,9 +57,9 @@
               </el-col>
             </help-popover>
           </el-form-item>
-          <el-form-item label="字段描述" prop="fieldDesc">
+          <el-form-item label="字段标题" prop="fieldDesc">
             <help-popover name="field.fieldDesc">
-              <el-input v-model="form.fieldDesc" placeholder="字段描述，例如：年龄"></el-input>
+              <el-input v-model="form.fieldDesc" placeholder="字段标题，例如：年龄"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段备注" prop="fieldComment">
@@ -90,47 +111,34 @@
               </template>
             </help-popover>
           </el-form-item>
-          <el-form-item label="是否主键" prop="primaryKey">
+          <el-form-item label="主键" prop="primaryKey">
             <help-popover name="field.primaryKey">
-              <el-switch v-model="form.primaryKey"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
+              <el-checkbox v-model="form.primaryKey" :true-label="1" :false-label="0">是</el-checkbox>
+              <el-checkbox v-model="form.autoIncrement" :true-label="1" :false-label="0" :disabled="autoIncrementDisabled">自增</el-checkbox>
             </help-popover>
           </el-form-item>
-          <el-form-item label="是否自增" prop="autoIncrement">
-            <help-popover name="field.autoIncrement">
-              <el-switch :disabled="autoIncrementDisabled" v-model="form.autoIncrement"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="不能为空" prop="notNull">
+          <el-form-item label="非空" prop="notNull">
             <help-popover name="field.notNull">
-              <el-switch :disabled="notNullDisabled" v-model="form.notNull"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
+              <el-checkbox v-model="form.notNull" :disabled="notNullDisabled" :true-label="1" :false-label="0">是</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item label="是否外键" prop="foreignKey">
             <help-popover name="field.foreignKey">
-              <el-switch v-model="form.foreignKey"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="外键字段">
-            <help-popover name="field.foreignField">
-              <el-cascader
-                :disabled="foreignFieldDisabled"
-                placeholder="请选择"
-                :options="entityFieldOptions"
-                v-model="foreignField"
-                @active-item-change="handleForeignEntityChange">
-              </el-cascader>
+              <el-row type="flex" align="middle" :gutter="10">
+                <el-col :span="6">
+                  <el-checkbox v-model="form.foreignKey" :true-label="1" :false-label="0">是</el-checkbox>
+                </el-col>
+                <el-col :span="18" class="col-right">
+                  <span class="inline-label">外键字段</span>
+                  <el-cascader
+                    :disabled="foreignFieldDisabled"
+                    placeholder="请选择外键字段"
+                    :options="entityFieldOptions"
+                    v-model="foreignField"
+                    @active-item-change="handleForeignEntityChange">
+                  </el-cascader>
+                </el-col>
+              </el-row>
             </help-popover>
           </el-form-item>
           <el-form-item label="枚举字典" prop="dicType">
@@ -142,86 +150,36 @@
               ></el-autocomplete>
             </help-popover>
           </el-form-item>
-          <el-form-item label="是否查询字段" prop="query">
+          <el-form-item label="可搜索" prop="query">
             <help-popover name="field.query">
-              <el-switch v-model="form.query"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
+              <el-row type="flex" align="middle" :gutter="10">
+                <el-col :span="6">
+                  <el-checkbox v-model="form.query" :true-label="1" :false-label="0">是</el-checkbox>
+                </el-col>
+                <el-col :span="18" class="col-right">
+                  <span class="inline-label">查询方式</span>
+                  <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="" filterable
+                             placeholder="请选择">
+                    <el-option
+                      v-for="item in queryTypeOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-col>
+              </el-row>
             </help-popover>
           </el-form-item>
-          <el-form-item label="查询方式" prop="queryType">
-            <help-popover name="field.queryType">
-              <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="width:100%;" filterable
-                         placeholder="请选择">
-                <el-option
-                  v-for="item in queryTypeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
+          <el-form-item label="字段属性">
+            <help-popover name="field.attributes">
+              <el-checkbox v-model="form.insert" :true-label="1" :false-label="0">可插入</el-checkbox>
+              <el-checkbox v-model="form.update" :true-label="1" :false-label="0">可修改</el-checkbox>
+              <el-checkbox v-model="form.list" :true-label="1" :false-label="0">列表展示</el-checkbox>
+              <el-checkbox v-model="form.show" :true-label="1" :false-label="0">详情展示</el-checkbox>
+              <el-checkbox v-model="form.listSort" :true-label="1" :false-label="0">可排序</el-checkbox>
             </help-popover>
           </el-form-item>
-          <el-form-item label="是否新增字段" prop="insert">
-            <help-popover name="field.insert">
-              <el-switch v-model="form.insert"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="是否编辑字段" prop="update">
-            <help-popover name="field.update">
-              <el-switch v-model="form.update"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="是否列表字段" prop="list">
-            <help-popover name="field.list">
-              <el-switch v-model="form.list"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="是否支持排序" prop="listSort">
-            <help-popover name="field.listSort">
-              <el-switch v-model="form.listSort"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="是否详情字段" prop="show">
-            <help-popover name="field.show">
-              <el-switch v-model="form.show"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="特殊字段类型" prop="specialField">
-            <help-popover name="field.specialField">
-              <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField" style="width:100%;"
-                         filterable placeholder="请选择">
-                <el-option
-                  v-for="item in specialFieldOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="排序号" prop="orderNo">
-            <help-popover name="field.orderNo">
-              <el-input-number v-model="form.orderNo" style="width:100%;" :min="1"></el-input-number>
-            </help-popover>
-          </el-form-item>
-
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
             <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
@@ -518,6 +476,11 @@ export default {
       line-height: normal;
     }
 
+    .inline-label {
+      font-size: 14px;
+      color: #606266;
+      margin-right: 10px;
+    }
   }
 
   //  popper-class="alert-tip"
