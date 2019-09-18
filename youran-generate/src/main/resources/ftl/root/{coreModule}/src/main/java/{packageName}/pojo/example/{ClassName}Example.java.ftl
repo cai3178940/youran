@@ -1,9 +1,8 @@
 <#include "/common.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@call this.addImport("${this.commonPackage}.pojo.example.AbstractExample")/>
 <@call this.printClassCom("【${this.title}】参数示例")/>
-public class ${this.classNameUpper}Example extends AbstractExample {
+public class ${this.classNameUpper}Example {
 
 <#list this.metaEntity.fields as field>
     <#--字段名转下划线大写-->

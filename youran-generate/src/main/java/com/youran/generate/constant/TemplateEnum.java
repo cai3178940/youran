@@ -34,7 +34,6 @@ public enum TemplateEnum {
     AbstractDTO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/dto/AbstractDTO.java.ftl"),
     AbstractQO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/qo/AbstractQO.java.ftl"),
     PageQO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/qo/PageQO.java.ftl"),
-    AbstractExample(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/example/AbstractExample.java.ftl"),
     AbstractPO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/AbstractPO.java.ftl"),
     CreatedBy(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/CreatedBy.java.ftl"),
     Created(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/Created.java.ftl"),
