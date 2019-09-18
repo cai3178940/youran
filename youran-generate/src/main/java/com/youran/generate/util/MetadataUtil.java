@@ -224,7 +224,7 @@ public class MetadataUtil {
         if(BoolConst.TRUE==field.getPrimaryKey()){
             return "";
         }
-        if(DefaultValue.NULL.equals(field.getDefaultValue())) {
+        if(DefaultValue.NULL.equalsIgnoreCase(field.getDefaultValue())) {
             if (field.getNotNull() == BoolConst.FALSE){
                 return " DEFAULT NULL";
             }else {
