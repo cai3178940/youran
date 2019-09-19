@@ -167,7 +167,11 @@ public class MetaCodeGenService implements InitializingBean {
                     FileUtils.forceDeleteOnExit(dir);
                 } catch (IOException e1) {
                 }
-                throw new BusinessException("代码生成异常");
+                if(e instanceof BusinessException){
+                    throw e;
+                }else {
+                    throw new BusinessException("代码生成异常");
+                }
             }
         }else{
             LOGGER.info("代码已经存在，无需生成：{}",projectDir);
