@@ -194,6 +194,7 @@ export default {
         .then(() => {
           this.$refs.codePreview.show(row.projectId, row.projectName)
         })
+        .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
     /**
