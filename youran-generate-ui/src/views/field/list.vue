@@ -80,16 +80,10 @@
       </el-table-column>
       <el-table-column label="特性" width="70px">
         <template slot-scope="scope">
-          <el-tooltip v-if="scope.row.primaryKey==1" class="item" effect="dark" content="主键" placement="right">
-            <icon name="key" class="color-warning"></icon>
-          </el-tooltip>
-          <el-tooltip v-if="scope.row.foreignKey==1" class="item" effect="dark" content="外键" placement="right">
-            <icon name="key" class="color-primary"></icon>
-          </el-tooltip>
-          <template v-if="scope.row.specialField">
-            <el-tooltip class="item" effect="dark" :content="getSpecialField(scope.row.specialField)['label']" placement="right">
-              <icon :name="getSpecialField(scope.row.specialField)['icon']"
-                    :style="getSpecialField(scope.row.specialField)['style']">
+          <template v-for="feature in getFieldFeatures(scope.row)">
+            <el-tooltip :key="feature.value" class="item" effect="dark" :content="feature.label" placement="right">
+              <icon :name="feature.icon"
+                    :style="feature.style">
               </icon>
             </el-tooltip>
           </template>
@@ -100,7 +94,6 @@
         label="操作"
         width="130">
         <template slot-scope="scope">
-          <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
           <el-button :ref="'copyButton'+scope.row.fieldId" :disabled="fieldCached(scope.row.fieldId)" @click="handleCopyOne(scope.row,$event)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
           <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
@@ -131,10 +124,12 @@
                          :value="value.fieldId">
                 <span style="float: left">
                   <span class="template-option">
-                    <icon v-if="value.specialField"
-                          :name="getSpecialField(value.specialField)['icon']"
-                          :style="getSpecialField(value.specialField)['style']">
-                    </icon>
+                    <template v-for="feature in getFieldFeatures(value)">
+                      <icon :key="feature.value"
+                              :name="feature.icon"
+                              :style="feature.style">
+                      </icon>
+                    </template>
                   </span>
                   {{ value.fieldDesc }}
                 </span>
@@ -148,10 +143,12 @@
                          :value="key">
                 <span style="float: left">
                   <span class="template-option">
-                    <icon v-if="value.specialField"
-                          :name="getSpecialField(value.specialField)['icon']"
-                          :style="getSpecialField(value.specialField)['style']">
-                    </icon>
+                    <template v-for="feature in getFieldFeatures(value)">
+                      <icon :key="feature.value"
+                            :name="feature.icon"
+                            :style="feature.style">
+                      </icon>
+                    </template>
                   </span>
                   {{ key }}
                 </span>
@@ -171,10 +168,12 @@
                          :value="value.fieldId">
                 <span style="float: left">
                   <span class="template-option">
-                    <icon v-if="value.specialField"
-                          :name="getSpecialField(value.specialField)['icon']"
-                          :style="getSpecialField(value.specialField)['style']">
-                    </icon>
+                    <template v-for="feature in getFieldFeatures(value)">
+                      <icon :key="feature.value"
+                            :name="feature.icon"
+                            :style="feature.style">
+                      </icon>
+                    </template>
                   </span>
                   {{ value.fieldDesc }}
                 </span>
@@ -190,10 +189,12 @@
                          :value="key">
                 <span style="float: left">
                   <span class="template-option">
-                    <icon v-if="value.specialField"
-                          :name="getSpecialField(value.specialField)['icon']"
-                          :style="getSpecialField(value.specialField)['style']">
-                    </icon>
+                    <template v-for="feature in getFieldFeatures(value)">
+                      <icon :key="feature.value"
+                            :name="feature.icon"
+                            :style="feature.style">
+                      </icon>
+                    </template>
                   </span>
                   {{ key }}
                 </span>
@@ -317,7 +318,8 @@ export default {
       'removeFieldTemplate',
       'addFieldTemplate'
     ]),
-    getSpecialField: options.getSpecialField,
+    getFieldFeatures: options.getFieldFeatures,
+
     rowClassName ({ row }) {
       if (this.addImmFieldIds.includes(row.fieldId)) {
         return 'add-imm-field'

@@ -22,10 +22,17 @@
                   <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField"
                              filterable placeholder="无">
                     <el-option
-                      v-for="item in specialFieldOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
+                      v-for="feature in specialFieldFeatures"
+                      :key="feature.value"
+                      :label="feature.label"
+                      :value="feature.value">
+                      <span class="template-option">
+                        <icon :key="feature.value"
+                              :name="feature.icon"
+                              :style="feature.style">
+                        </icon>
+                      </span>
+                          {{ feature.label }}
                     </el-option>
                   </el-select>
                 </el-col>
@@ -209,7 +216,7 @@ export default {
       fieldTypeOptions: options.getFieldTypeOptions(),
       jfieldTypeOptions: options.jfieldTypeOptions,
       queryTypeOptions: options.queryTypeOptions,
-      specialFieldOptions: options.specialFieldOptions,
+      specialFieldFeatures: options.specialFieldFeatures,
       entityFieldOptions: [],
       constList: null,
       notNullDisabled: false,
