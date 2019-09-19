@@ -21,7 +21,7 @@
     </el-header>
     <el-container>
       <!-- 左侧导航 -->
-      <el-aside class="menu" style="width:250px;">
+      <el-aside class="menu" style="width:150px;">
         <el-menu class="el-menu-vertical-demo" :router="true">
           <el-menu-item index="/" :class="{'is-active': isRoutePath('/')}">首页</el-menu-item>
           <el-menu-item index="/project" :class="{'is-active': isRouteIndexOf('/project')}">项目管理</el-menu-item>
