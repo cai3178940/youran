@@ -228,6 +228,10 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
     },
     handleErDiagram () {
+      if (!this.selectItems.length) {
+        this.$common.showMsg('warning', '请选择需要查看的实体')
+        return
+      }
       const entityIds = this.selectItems.map(entity => entity.entityId)
       this.$refs.erDiagram.show(this.projectId, entityIds)
     },

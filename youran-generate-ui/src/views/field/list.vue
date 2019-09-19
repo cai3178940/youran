@@ -21,11 +21,11 @@
             </el-cascader>
           </el-form-item>
           <el-form-item>
-              <el-button @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success">添加字段</el-button>
               <el-button @click.native="handleIndexAdd" type="primary">创建索引</el-button>
               <el-button @click.native="handleDel" type="danger">删除字段</el-button>
               <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
-                <el-button ref="copyButton" @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>
+                <!--<el-button ref="copyButton" @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>-->
+                <el-button ref="copyButton" @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success" style="margin: 0 0 2px 10px;">添加字段</el-button>
               </el-badge>
           </el-form-item>
           <el-form-item>
@@ -529,6 +529,10 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
     },
     handleIndexAdd () {
+      if (!this.selectItems.length) {
+        this.$common.showMsg('warning', '请先选择需要建立索引的字段')
+        return
+      }
       const fieldIdStr = this.selectItems.map(field => field.fieldId).join('-')
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexAdd/${fieldIdStr}`)
     },

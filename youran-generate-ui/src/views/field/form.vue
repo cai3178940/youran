@@ -11,6 +11,31 @@
     <el-row type="flex" align="middle" :gutter="10">
       <el-col :span="14">
         <el-form ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px" size="small">
+          <el-form-item label="主键" prop="primaryKey">
+            <help-popover name="field.primaryKey">
+              <el-checkbox v-model="form.primaryKey" :true-label="1" :false-label="0">是</el-checkbox>
+              <el-checkbox v-model="form.autoIncrement" :true-label="1" :false-label="0" :disabled="autoIncrementDisabled">自增</el-checkbox>
+            </help-popover>
+          </el-form-item>
+          <el-form-item label="是否外键" prop="foreignKey">
+            <help-popover name="field.foreignKey">
+              <el-row type="flex" align="middle" :gutter="10">
+                <el-col :span="6">
+                  <el-checkbox v-model="form.foreignKey" :true-label="1" :false-label="0">是</el-checkbox>
+                </el-col>
+                <el-col :span="18" class="col-right">
+                  <span class="inline-label">外键字段</span>
+                  <el-cascader
+                    :disabled="foreignFieldDisabled"
+                    placeholder="请选择外键字段"
+                    :options="entityFieldOptions"
+                    v-model="foreignField"
+                    @active-item-change="handleForeignEntityChange">
+                  </el-cascader>
+                </el-col>
+              </el-row>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="序号" prop="orderNo">
             <help-popover name="field.orderNo">
               <el-row type="flex" align="middle" :gutter="10">
@@ -118,36 +143,6 @@
               </template>
             </help-popover>
           </el-form-item>
-          <el-form-item label="主键" prop="primaryKey">
-            <help-popover name="field.primaryKey">
-              <el-checkbox v-model="form.primaryKey" :true-label="1" :false-label="0">是</el-checkbox>
-              <el-checkbox v-model="form.autoIncrement" :true-label="1" :false-label="0" :disabled="autoIncrementDisabled">自增</el-checkbox>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="非空" prop="notNull">
-            <help-popover name="field.notNull">
-              <el-checkbox v-model="form.notNull" :disabled="notNullDisabled" :true-label="1" :false-label="0">是</el-checkbox>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="是否外键" prop="foreignKey">
-            <help-popover name="field.foreignKey">
-              <el-row type="flex" align="middle" :gutter="10">
-                <el-col :span="6">
-                  <el-checkbox v-model="form.foreignKey" :true-label="1" :false-label="0">是</el-checkbox>
-                </el-col>
-                <el-col :span="18" class="col-right">
-                  <span class="inline-label">外键字段</span>
-                  <el-cascader
-                    :disabled="foreignFieldDisabled"
-                    placeholder="请选择外键字段"
-                    :options="entityFieldOptions"
-                    v-model="foreignField"
-                    @active-item-change="handleForeignEntityChange">
-                  </el-cascader>
-                </el-col>
-              </el-row>
-            </help-popover>
-          </el-form-item>
           <el-form-item label="枚举字典" prop="dicType">
             <help-popover name="field.dicType">
               <el-autocomplete :disabled="dicTypeDisabled" style="width:100%;"
@@ -155,6 +150,11 @@
                                :fetch-suggestions="queryDicType"
                                placeholder="请输入枚举字典"
               ></el-autocomplete>
+            </help-popover>
+          </el-form-item>
+          <el-form-item label="非空" prop="notNull">
+            <help-popover name="field.notNull">
+              <el-checkbox v-model="form.notNull" :disabled="notNullDisabled" :true-label="1" :false-label="0">是</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item label="可搜索" prop="query">
