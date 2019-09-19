@@ -214,6 +214,10 @@ export default {
       this.$router.push(`/project/${this.projectId}/entity/add`)
     },
     handleMtmAdd () {
+      if (!this.selectItems.length || this.selectItems.length !== 2) {
+        this.$common.showMsg('warning', '请选择两个实体')
+        return
+      }
       const entityIds = this.selectItems.map(entity => entity.entityId).join('-')
       this.$router.push(`/project/${this.projectId}/entity/mtmAdd/${entityIds}`)
     },
