@@ -80,7 +80,21 @@ function getFieldTypeOptions () {
   ]
 }
 
-const specialFieldOptions = [
+const pkFeature = {
+  value: 'pk',
+  label: '主键',
+  icon: 'key',
+  style: 'color: #eb9e05;'
+}
+
+const fkFeature = {
+  value: 'fk',
+  label: '外键',
+  icon: 'key',
+  style: 'color: #409EFF;'
+}
+
+const specialFieldFeatures = [
   {
     value: 'deleted',
     label: '逻辑删除',
@@ -120,9 +134,9 @@ const specialFieldOptions = [
 ]
 
 // 将上面的数组转成map
-const specialFieldOptionsMap = {}
-for (const option of specialFieldOptions) {
-  specialFieldOptionsMap[option.value] = option
+const specialFieldFeaturesMap = {}
+for (const option of specialFieldFeatures) {
+  specialFieldFeaturesMap[option.value] = option
 }
 
 export default {
@@ -168,7 +182,9 @@ export default {
   showFieldScale (fieldType) {
     return fieldType === 'decimal' || fieldType === 'double' || fieldType === 'float'
   },
-
+  /**
+   * java字段类型列表
+   */
   jfieldTypeOptions: [
     {
       value: 'String',
@@ -225,6 +241,9 @@ export default {
       allowFieldTypes: ['decimal']
     }
   ],
+  /**
+   * 查询方式列表
+   */
   queryTypeOptions: [
     {
       value: 1,
@@ -259,10 +278,33 @@ export default {
       label: 'in'
     }
   ],
-  getSpecialField (key) {
-    return specialFieldOptionsMap[key]
+
+  /**
+   * 获取字段特性
+   */
+  getFieldFeatures (field) {
+    const features = []
+    if (field.specialField) {
+      const spFeature = specialFieldFeaturesMap[field.specialField]
+      if (spFeature) {
+        features.push(spFeature)
+      }
+    }
+    // 主键也作为特性返回
+    if (field.primaryKey === 1) {
+      features.push(pkFeature)
+    }
+    // 外键也作为特性返回
+    if (field.foreignKey === 1) {
+      features.push(fkFeature)
+    }
+    return features
   },
-  specialFieldOptions: specialFieldOptions,
+
+  /**
+   * 字段特性列表
+   */
+  specialFieldFeatures: specialFieldFeatures,
   constTypeOptions: [
     {
       value: 1,

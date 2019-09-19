@@ -214,6 +214,10 @@ export default {
       this.$router.push(`/project/${this.projectId}/entity/add`)
     },
     handleMtmAdd () {
+      if (!this.selectItems.length || this.selectItems.length !== 2) {
+        this.$common.showMsg('warning', '请选择两个实体')
+        return
+      }
       const entityIds = this.selectItems.map(entity => entity.entityId).join('-')
       this.$router.push(`/project/${this.projectId}/entity/mtmAdd/${entityIds}`)
     },
@@ -228,6 +232,10 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
     },
     handleErDiagram () {
+      if (!this.selectItems.length) {
+        this.$common.showMsg('warning', '请选择需要查看的实体')
+        return
+      }
       const entityIds = this.selectItems.map(entity => entity.entityId)
       this.$refs.erDiagram.show(this.projectId, entityIds)
     },

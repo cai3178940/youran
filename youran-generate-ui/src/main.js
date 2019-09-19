@@ -10,6 +10,12 @@ import './assets/element-override.scss'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 import helpPopover from './components/help-popover'
+import browser from 'browser-detect'
+
+const result = browser()
+if (result.name !== 'chrome') {
+  alert('建议使用chrome浏览器，其他浏览器可能存在兼容性问题')
+}
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
