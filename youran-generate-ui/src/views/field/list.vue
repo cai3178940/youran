@@ -369,7 +369,7 @@ export default {
       const meteor = this.$refs['meteor' + fieldId][0]
       const copyButton = this.$refs['copyButton' + fieldId]
       meteor.init(copyButton.$el, this.$refs.copyButton.$el)
-      meteor.adjust(10, 0, 103, -8)
+      meteor.adjust(10, 0, 90, -8)
       meteor.show(500)
     },
     handleCopyOne (row) {
