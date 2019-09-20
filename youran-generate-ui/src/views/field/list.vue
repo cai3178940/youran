@@ -41,13 +41,12 @@
       <el-table-column label="字段标题">
         <template slot-scope="scope">
           <el-popover
-            ref="popover"
+            :content="scope.row.fieldComment"
             placement="top"
             trigger="click"
             popper-class="field-comment-popper">
-            {{ scope.row.fieldComment }}
+            <el-button slot="reference" size="medium" type="text">{{ scope.row.fieldDesc }}</el-button>
           </el-popover>
-          <el-button size="medium" type="text" v-popover:popover>{{ scope.row.fieldDesc }}</el-button>
           <template v-for="index in scope.row.indexes">
             <el-dropdown :key="index.indexId" @command="handleIndexCommand" size="mini" placement="bottom-start" trigger="click" style="margin-left:5px;cursor:pointer;">
               <span :class="['index_span',index.unique==1?'index_u_span':(index.uniqueCheck==1?'index_check_span':'index_com_span')]" :title="[index.unique==1?'唯一索引':(index.uniqueCheck==1?'普通索引(唯一性校验)':'普通索引')]">
