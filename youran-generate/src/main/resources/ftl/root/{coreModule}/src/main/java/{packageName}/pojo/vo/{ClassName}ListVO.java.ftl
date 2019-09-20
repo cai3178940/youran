@@ -52,6 +52,14 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
 
     </#list>
 </#list>
+<#list this.metaEntity.holds! as otherEntity,mtm>
+    <@call this.addImport("java.util.List")/>
+    <#assign otherCName=otherEntity.className/>
+    <#assign othercName=otherEntity.className?uncapFirst>
+    @ApiModelProperty(notes = "【${otherEntity.title}】列表")
+    private List<${otherCName}ListVO> ${othercName}List;
+
+</#list>
 
 <#list this.listFields as field>
     <@call TemplateUtil.printGetterSetter(field)/>
@@ -61,7 +69,11 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
         <@call TemplateUtil.printGetterSetter(cascadeExt.alias,cascadeExt.cascadeField.jfieldType)/>
     </#list>
 </#list>
-
+<#list this.metaEntity.holds! as otherEntity,mtm>
+    <#assign otherCName=otherEntity.className/>
+    <#assign othercName=otherEntity.className?uncapFirst>
+    <@call TemplateUtil.printGetterSetterList(othercName,"${otherCName}ListVO")/>
+</#list>
 
 }
 </#assign>

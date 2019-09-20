@@ -157,6 +157,15 @@ public class ${this.classNameUpper}Service {
      */
     public PageVO<${this.classNameUpper}ListVO> list(${this.classNameUpper}QO ${this.className}QO) {
         PageVO<${this.classNameUpper}ListVO> page = ${this.className}DAO.findByPage(${this.className}QO);
+        <#if this.metaEntity.holds!?hasContent>
+        for(${this.classNameUpper}ListVO listVO : page.getList()){
+            <#list this.metaEntity.holds! as otherEntity,mtm>
+                <#assign otherCName=otherEntity.className?capFirst>
+                <#assign othercName=otherEntity.className?uncapFirst>
+            listVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(listVO.get${this.idUpper}()));
+            </#list>
+        }
+        </#if>
         return page;
     }
 <#else>
@@ -168,11 +177,20 @@ public class ${this.classNameUpper}Service {
      */
     public List<${this.classNameUpper}ListVO> list(${this.classNameUpper}QO ${this.className}QO) {
         List<${this.classNameUpper}ListVO> list = ${this.className}DAO.findListByQuery(${this.className}QO);
+        <#if this.metaEntity.holds!?hasContent>
+        for(${this.classNameUpper}ListVO listVO : list){
+            <#list this.metaEntity.holds! as otherEntity,mtm>
+                <#assign otherCName=otherEntity.className?capFirst>
+                <#assign othercName=otherEntity.className?uncapFirst>
+            listVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(listVO.get${this.idUpper}()));
+            </#list>
+        }
+        </#if>
         return list;
     }
 </#if>
 
-    <#if this.metaEntity.holds?? && this.metaEntity.holds?size &gt; 0>
+    <#if this.metaEntity.holds!?hasContent>
     /**
      * 根据主键获取【${this.title}】
      * 不获取多对多级联对象
