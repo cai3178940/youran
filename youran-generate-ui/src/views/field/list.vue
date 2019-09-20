@@ -38,9 +38,16 @@
     <el-table :data="list" style="width: 100%" @selection-change="selectionChange" :row-class-name="rowClassName" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column property="orderNo" label="序号" width="50px"></el-table-column>
-      <el-table-column label="字段描述">
+      <el-table-column label="字段标题">
         <template slot-scope="scope">
-          {{ scope.row.fieldDesc }}
+          <el-popover
+            ref="popover"
+            placement="top"
+            trigger="click"
+            popper-class="field-comment-popper">
+            {{ scope.row.fieldComment }}
+          </el-popover>
+          <el-button size="medium" type="text" v-popover:popover>{{ scope.row.fieldDesc }}</el-button>
           <template v-for="index in scope.row.indexes">
             <el-dropdown :key="index.indexId" @command="handleIndexCommand" size="mini" placement="bottom-start" trigger="click" style="margin-left:5px;cursor:pointer;">
               <span :class="['index_span',index.unique==1?'index_u_span':(index.uniqueCheck==1?'index_check_span':'index_com_span')]" :title="[index.unique==1?'唯一索引':(index.uniqueCheck==1?'普通索引(唯一性校验)':'普通索引')]">
@@ -659,5 +666,8 @@ export default {
     .fa-icon {
       vertical-align: text-top;
     }
+  }
+  .field-comment-popper {
+    text-align: center;
   }
 </style>

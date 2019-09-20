@@ -11,7 +11,7 @@
     <el-row type="flex" align="middle" :gutter="10">
       <el-col :span="14">
         <el-form ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px" size="small">
-          <el-form-item label="主键" prop="primaryKey">
+          <el-form-item label="是否主键" prop="primaryKey">
             <help-popover name="field.primaryKey">
               <el-checkbox v-model="form.primaryKey" :true-label="1" :false-label="0">是</el-checkbox>
               <el-checkbox v-model="form.autoIncrement" :true-label="1" :false-label="0" :disabled="autoIncrementDisabled">自增</el-checkbox>
