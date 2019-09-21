@@ -132,7 +132,7 @@ export default {
     listSort: 1,
     show: 0,
     editType: null,
-    orderNo: 102
+    orderNo: 110
   },
   '修改人': {
     jfieldName: 'operatedBy',
@@ -159,7 +159,7 @@ export default {
     listSort: 0,
     show: 0,
     editType: null,
-    orderNo: 103
+    orderNo: 111
   },
   '乐观锁版本号': {
     jfieldName: 'version',
@@ -186,7 +186,7 @@ export default {
     listSort: 0,
     show: 0,
     editType: null,
-    orderNo: 104
+    orderNo: 120
   },
   '逻辑删除标识': {
     jfieldName: 'deleted',
@@ -213,7 +213,7 @@ export default {
     listSort: 0,
     show: 0,
     editType: null,
-    orderNo: 105
+    orderNo: 130
   },
   '排序号': {
     jfieldName: 'orderNo',
