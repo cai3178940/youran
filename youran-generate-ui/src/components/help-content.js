@@ -146,7 +146,7 @@ public int delete(Long... userIds) {
     query: `
 **可搜索**：如果字段可搜索，则当前字段会出现在查询参数中，当然也会出现在查询sql的where语句中。
 
-**查询方式**：决定sql的查询方式，如果是between类型，则会生成前后两个查询字段。
+**搜索方式**：决定sql的查询运算符，如果是between类型，则会生成前后两个查询字段。
 \`\`\`
 //注册开始时间
 @ApiModelProperty(notes = N_REGTIME,example = E_REGTIME)

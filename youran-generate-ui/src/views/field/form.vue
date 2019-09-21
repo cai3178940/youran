@@ -164,7 +164,7 @@
                   <el-checkbox v-model="form.query" :true-label="1" :false-label="0">是</el-checkbox>
                 </el-col>
                 <el-col :span="18" class="col-right">
-                  <span class="inline-label">查询方式</span>
+                  <span class="inline-label">搜索方式</span>
                   <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="" filterable
                              placeholder="请选择">
                     <el-option
