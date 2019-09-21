@@ -5,6 +5,7 @@
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
       <el-breadcrumb-item>字段管理</el-breadcrumb-item>
     </el-breadcrumb>
+
     <el-row type="flex" align="middle" :gutter="20" style="padding:10px 0;">
       <el-col :span="4" class="activeNum">
         已选择{{ activeNum }}个字段
@@ -35,79 +36,151 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table :data="list" style="width: 100%" @selection-change="selectionChange" :row-class-name="rowClassName" v-loading="loading">
-      <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column property="orderNo" label="序号" width="50px"></el-table-column>
-      <el-table-column label="字段标题">
-        <template slot-scope="scope">
-          <el-popover
-            :content="scope.row.fieldComment"
-            placement="top"
-            trigger="click"
-            popper-class="field-comment-popper">
-            <el-button slot="reference" size="medium" type="text">{{ scope.row.fieldDesc }}</el-button>
-          </el-popover>
-          <template v-for="index in scope.row.indexes">
-            <el-dropdown :key="index.indexId" @command="handleIndexCommand" size="mini" placement="bottom-start" trigger="click" style="margin-left:5px;cursor:pointer;">
-              <span :class="['index_span',index.unique==1?'index_u_span':(index.uniqueCheck==1?'index_check_span':'index_com_span')]" :title="[index.unique==1?'唯一索引':(index.uniqueCheck==1?'普通索引(唯一性校验)':'普通索引')]">
-                {{index.indexName}}
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :command="{method:'handleDelIndexField',arg:[index,scope.row]}">
-                  <icon name="times" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除索引字段
-                </el-dropdown-item>
-                <el-dropdown-item :command="{method:'handleDelIndex',arg:[index]}">
-                  <icon name="trash-alt" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除整个索引
-                </el-dropdown-item>
-                <el-dropdown-item :command="{method:'handleIndexEdit',arg:[index]}">
-                  <icon name="edit" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 编辑索引
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+
+    <div v-loading="loading">
+      <el-table :data="list" style="width: 100%" :border="true"
+                @selection-change="selectionChange" :row-class-name="rowClassName">
+        <el-table-column type="selection" width="37px"></el-table-column>
+        <el-table-column property="orderNo" label="序号" width="63px">
+          <template slot-scope="scope">
+            <el-button v-if="!scope.row.orderNoEdit"
+                       type="primary" plain
+                       size="mini"
+                       @click="scope.row.orderNoEdit=!scope.row.orderNoEdit"
+                       style="width:45px;padding-right: 3px;padding-left: 3px;">
+              {{scope.row.orderNo}}
+            </el-button>
+            <el-input-number v-if="scope.row.orderNoEdit"
+                             size="mini"
+                             v-model="scope.row.orderNo"
+                             :ref="'orderNoInput_'+scope.row.fieldId"
+                             :controls="false"
+                             :min="1"
+                             :max="999"
+                             class="order-no-input"
+                             @blur="updateOrderNo(scope.row)"
+                             @keyup.enter.native="updateOrderNo(scope.row)"
+                             v-focus="{callback: doOrderNoFocus, arg: scope.row}"></el-input-number>
           </template>
-        </template>
-      </el-table-column>
-      <el-table-column label="字段名">
-        <template slot-scope="scope">
-          {{ scope.row.jfieldName }} / {{ scope.row.fieldName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="字段类型" width="200px">
-        <template slot-scope="scope">
-          {{ scope.row.jfieldType | optionLabel('jfieldTypeOptions')}}
-          / {{ scope.row.fieldType | optionLabel('fieldTypeOptions') }}{{scope.row | lengthAndScale}}
-        </template>
-      </el-table-column>
-      <el-table-column label="非空" width="50px">
-        <template slot-scope="scope">
-          <icon v-if="scope.row.notNull==1" name="check" class="color-success"></icon>
-          <icon v-if="scope.row.notNull!=1" name="times" class="color-danger"></icon>
-        </template>
-      </el-table-column>
-      <el-table-column label="特性" width="70px">
-        <template slot-scope="scope">
-          <template v-for="feature in getFieldFeatures(scope.row)">
-            <el-tooltip :key="feature.value" class="item" effect="dark" :content="feature.label" placement="right">
-              <icon :name="feature.icon"
-                    :style="feature.style">
-              </icon>
-            </el-tooltip>
+        </el-table-column>
+        <el-table-column label="字段标题">
+          <template slot-scope="scope">
+            <el-popover
+              :content="scope.row.fieldComment"
+              placement="top"
+              trigger="click"
+              popper-class="field-comment-popper">
+              <el-button slot="reference" size="medium" type="text">{{ scope.row.fieldDesc }}</el-button>
+            </el-popover>
+            <template v-for="index in scope.row.indexes">
+              <el-dropdown :key="index.indexId" @command="handleIndexCommand" size="mini" placement="bottom-start" trigger="click" style="margin-left:5px;cursor:pointer;">
+                <span :class="['index_span',index.unique==1?'index_u_span':(index.uniqueCheck==1?'index_check_span':'index_com_span')]" :title="[index.unique==1?'唯一索引':(index.uniqueCheck==1?'普通索引(唯一性校验)':'普通索引')]">
+                  {{index.indexName}}
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item :command="{method:'handleDelIndexField',arg:[index,scope.row]}">
+                    <icon name="times" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除索引字段
+                  </el-dropdown-item>
+                  <el-dropdown-item :command="{method:'handleDelIndex',arg:[index]}">
+                    <icon name="trash-alt" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除整个索引
+                  </el-dropdown-item>
+                  <el-dropdown-item :command="{method:'handleIndexEdit',arg:[index]}">
+                    <icon name="edit" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 编辑索引
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
           </template>
-        </template>
-      </el-table-column>
-      <el-table-column property="fieldExample" label="字段示例"></el-table-column>
-      <el-table-column
-        label="操作"
-        width="130">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
-          <el-button :ref="'copyButton'+scope.row.fieldId" :disabled="fieldCached(scope.row.fieldId)" @click="handleCopyOne(scope.row,$event)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
-          <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
-            <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
-          </el-badge>
-        </template>
-      </el-table-column>
-    </el-table>
+        </el-table-column>
+        <el-table-column label="字段名">
+          <template slot-scope="scope">
+            {{ scope.row.jfieldName }} / {{ scope.row.fieldName }}
+          </template>
+        </el-table-column>
+        <el-table-column label="字段类型" width="200px">
+          <template slot-scope="scope">
+            {{ scope.row.jfieldType | optionLabel('jfieldTypeOptions')}}
+            / {{ scope.row.fieldType | optionLabel('fieldTypeOptions') }}{{scope.row | lengthAndScale}}
+          </template>
+        </el-table-column>
+        <el-table-column label="非空" width="50px">
+          <template slot-scope="scope">
+            <icon v-if="scope.row.notNull==1" name="check" class="color-success"></icon>
+            <icon v-if="scope.row.notNull!=1" name="times" class="color-danger"></icon>
+          </template>
+        </el-table-column>
+        <el-table-column label="特性" width="70px">
+          <template slot-scope="scope">
+            <template v-for="feature in getFieldFeatures(scope.row)">
+              <el-tooltip :key="feature.value" class="item" effect="dark" :content="feature.label" placement="right">
+                <icon :name="feature.icon"
+                      :style="feature.style">
+                </icon>
+              </el-tooltip>
+            </template>
+          </template>
+        </el-table-column>
+        <el-table-column property="fieldExample" label="字段示例"></el-table-column>
+        <el-table-column
+          label="操作"
+          width="130">
+          <template slot-scope="scope">
+            <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
+            <el-button :ref="'copyButton'+scope.row.fieldId" :disabled="fieldCached(scope.row.fieldId)" @click="handleCopyOne(scope.row,$event)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
+            <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
+              <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
+            </el-badge>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!--<template v-if="mtmEntities.holds.length || mtmEntities.unholds.length">-->
+      <template v-if="false">
+        <!-- 纯表头 -->
+        <div class="mtmEntitiesHeader" style="margin-top: 20px;">
+          <el-table :data="[]" style="width: 100%" :border="true">
+            <!--<el-table-column width="50px"/>-->
+            <el-table-column width="200px" label="多对多关联实体"/>
+            <el-table-column width="200px" label="类名"/>
+            <el-table-column width="200px" label="表名"/>
+            <el-table-column label="描述"/>
+            <el-table-column label="操作" width="130"/>
+          </el-table>
+        </div>
+        <!-- 持有引用的实体 -->
+        <el-table v-if="mtmEntities.holds.length" :data="mtmEntities.holds" :border="true"
+                  style="width: 100%" :show-header="false" row-class-name="hold-mtm-row">
+          <!--<el-table-column width="50px"/>-->
+          <el-table-column width="200px" property="title"/>
+          <el-table-column width="200px" property="className"/>
+          <el-table-column width="200px" property="tableName"/>
+          <el-table-column property="desc"/>
+          <el-table-column width="130">
+            <template slot-scope="scope">
+              <el-badge :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
+                <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
+              </el-badge>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- 未持有引用的实体 -->
+        <el-table v-if="mtmEntities.unholds.length" :data="mtmEntities.unholds" :border="true"
+                  style="width: 100%" :show-header="false" row-class-name="unhold-mtm-row">
+          <!--<el-table-column width="50px"/>-->
+          <el-table-column width="200px" property="title"/>
+          <el-table-column width="200px" property="className"/>
+          <el-table-column width="200px" property="tableName"/>
+          <el-table-column property="desc"/>
+          <el-table-column width="130">
+            <template slot-scope="scope">
+              <el-badge :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
+                <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
+              </el-badge>
+            </template>
+          </el-table-column>
+        </el-table>
+      </template>
+    </div>
 
     <el-dialog title="请选择字段模板" :visible.sync="addTemplateFormVisible" width="30%">
       <el-form :model="templateForm" size="small">
@@ -268,7 +341,11 @@ export default {
       indexes: [],
       addImmFieldIds: [],
       loading: false,
-      cascadeExtListVisible: false
+      cascadeExtListVisible: false,
+      mtmEntities: {
+        holds: [],
+        unholds: []
+      }
     }
   },
   computed: {
@@ -406,6 +483,7 @@ export default {
       }
       this.doQuery()
         .then(() => this.doQueryIndex())
+        .then(() => this.doQueryMtmEntities())
     },
     // 列表查询
     doQuery () {
@@ -418,6 +496,8 @@ export default {
         .then(data => {
           data.forEach(value => {
             value.indexes = []
+            value.orderNoEdit = false
+            value.oldOrderNo = value.orderNo
           })
           this.list = data
         })
@@ -436,6 +516,18 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
+    // 多对多查询
+    doQueryMtmEntities () {
+      if (!this.query.projectId || !this.query.entityId) {
+        return
+      }
+      this.loading = true
+      return this.$ajax.get(`/${apiPath}/meta_entity/${this.query.entityId}/mtm_entity_list_pair`)
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.mtmEntities = data })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.loading = false })
+    },
     handleAdd () {
       this.addTemplateFormVisible = false
       // 默认类型是系统内置模板
@@ -446,6 +538,11 @@ export default {
       }
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/add?type=${type}&template=${this.templateForm.template}`)
     },
+    /**
+     * 立即添加字段
+     * 读取添加模板表单中的数据，调用添加字段接口
+     * 处理字段添加特效
+     */
     handleAddImm () {
       this.addTemplateFormVisible = false
       const multiple = this.templateForm.multiple
@@ -459,6 +556,7 @@ export default {
           .then(response => this.$common.checkResult(response))
           // 执行页面刷新
           .then(data => {
+            // 将字段放入特效列表
             this.addImmFieldIds.push(data.fieldId)
             if (refresh) {
               this.$common.showMsg('success', '添加成功')
@@ -493,6 +591,7 @@ export default {
           })
       }
       promise.finally(() => {
+        // 定时清空特效列表
         setTimeout(() => {
           this.addImmFieldIds = []
         }, 6000)
@@ -544,8 +643,33 @@ export default {
     },
     handleIndexEdit (index) {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexEdit/${index.indexId}`)
+    },
+    updateOrderNo (field) {
+      if (field.oldOrderNo === field.orderNo) {
+        field.orderNoEdit = false
+        return
+      }
+      this.$ajax.put(`/${apiPath}/meta_field/update_order_no`, { orderNo: field.orderNo, fieldId: field.fieldId })
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          field.orderNoEdit = false
+          field.oldOrderNo = data
+          field.orderNo = data
+          this.fieldListReorder()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    doOrderNoFocus (row) {
+      this.$refs['orderNoInput_' + row.fieldId].focus()
+    },
+    fieldListReorder () {
+      this.list = this.list.sort((f1, f2) => {
+        if (f1.orderNo === f2.orderNo) {
+          return f1.fieldId - f2.fieldId
+        }
+        return f1.orderNo - f2.orderNo
+      })
     }
-
   },
   activated () {
     const projectId = parseInt(this.projectId)
@@ -558,6 +682,7 @@ export default {
       .then(() => this.handleProjectChange([projectId]))
       .then(() => this.doQuery())
       .then(() => this.doQueryIndex())
+      .then(() => this.doQueryMtmEntities())
   }
 }
 </script>
@@ -656,6 +781,27 @@ export default {
       height: 12px;
       line-height: 13px;
       padding: 0 3px;
+    }
+
+    .hold-mtm-row {
+      background: #feecec;
+    }
+
+    .unhold-mtm-row {
+      background: #f0f9eb;
+    }
+
+    .mtmEntitiesHeader {
+      .el-table__empty-block{
+        display: none!important;
+      }
+    }
+    .order-no-input {
+      width: 45px;
+      input {
+        padding-left: 3px!important;
+        padding-right: 3px!important;;
+      }
     }
 
   }

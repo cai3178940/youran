@@ -4,12 +4,13 @@
       <el-col :span="4" class="activeNum">
         已选择{{ activeNum }}个字段
       </el-col>
-      <el-col :span="20" style="text-align: right;">
+      <el-col :span="20" style="text-align: right; margin-bottom: 10px;">
         <el-button @click.native="handleAdd" type="success">添加</el-button>
         <el-button @click.native="handleDel" type="danger">删除</el-button>
       </el-col>
     </el-row>
-    <el-table :data="list" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
+    <el-table :data="list" style="width: 100%" :border="true"
+              @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="展示字段">
         <template slot-scope="scope">

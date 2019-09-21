@@ -100,4 +100,32 @@
             </if>
         </where>
     </select>
+
+    <select id="findMtmEntityList" resultType="MetaEntityListVO">
+        select t2.*
+        from meta_entity t
+        join meta_mtm m
+            on t.entity_id = m.entity_id1
+        join meta_entity t2
+            on t2.entity_id = m.entity_id2
+        where t.deleted=0
+            and m.deleted = 0
+            and t2.deleted = 0
+            and t.entity_id = #{entityId,jdbcType=INTEGER}
+            and m.hold_refer1 = #{hold,jdbcType=INTEGER}
+
+        union all
+
+        select t2.*
+        from meta_entity t
+        join meta_mtm m
+            on t.entity_id = m.entity_id2
+        join meta_entity t2
+            on t2.entity_id = m.entity_id1
+        where t.deleted=0
+            and m.deleted = 0
+            and t2.deleted = 0
+            and t.entity_id = #{entityId,jdbcType=INTEGER}
+            and m.hold_refer2 = #{hold,jdbcType=INTEGER}
+    </select>
 </mapper>

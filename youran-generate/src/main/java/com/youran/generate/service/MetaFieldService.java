@@ -6,6 +6,7 @@ import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
+import com.youran.generate.pojo.dto.MetaFieldUpdateOrderNoDTO;
 import com.youran.generate.pojo.mapper.MetaFieldMapper;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.qo.MetaFieldQO;
@@ -138,6 +139,20 @@ public class MetaFieldService {
     public List<MetaFieldPO> findByEntityId(Integer entityId) {
         return metaFieldDAO.findByEntityId(entityId);
 
+    }
+
+    /**
+     * 修改字段序号
+     * @param dto
+     * @return
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    @OptimisticLock
+    public Integer updateOrderNo(MetaFieldUpdateOrderNoDTO dto) {
+        MetaFieldPO field = this.getField(dto.getFieldId(), true);
+        field.setOrderNo(dto.getOrderNo());
+        metaFieldDAO.update(field);
+        return field.getOrderNo();
     }
 
 }

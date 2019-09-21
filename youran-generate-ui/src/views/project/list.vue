@@ -7,12 +7,12 @@
       <el-col :span="6"  class="activeNum">
         已选择{{ activeNum }}个项目
       </el-col>
-      <el-col :span="18" style="text-align: right;">
+      <el-col :span="18" style="text-align: right; margin-bottom: 10px;">
         <el-button @click.native="handleAdd" type="success">创建项目</el-button>
       </el-col>
     </el-row>
 
-    <el-table ref="projectTable" :data="list"
+    <el-table ref="projectTable" :data="list" :border="true"
               row-key="projectId"
               :expand-row-keys="expandRowKeys"
               style="min-width: 1255px;"
@@ -20,19 +20,10 @@
               :element-loading-text="loadingText">
               <!--:row-class-name="activeRow"-->
               <!--@cell-mouse-enter="cellMouseEnter"-->
-      <el-table-column type="expand"  width="0" class-name="project-table-expand-column">
-        <template slot-scope="scope">
-          <el-row>
-            <el-col :span="24">
-              <el-progress :text-inside="true" :stroke-width="18" :percentage="scope.row.genCodePercent" :status="scope.row.genCodeStatus"></el-progress>
-            </el-col>
-          </el-row>
-        </template>
-      </el-table-column>
       <el-table-column type="index" label="序号" width="50"></el-table-column>
       <el-table-column property="groupId" label="groupId" width="160"></el-table-column>
       <el-table-column property="projectName" label="项目标识" width="200"></el-table-column>
-      <el-table-column property="projectDesc" label="项目名称" width="200"></el-table-column>
+      <el-table-column property="projectDesc" label="项目名称"></el-table-column>
       <el-table-column property="author" label="作者" width="120"></el-table-column>
       <el-table-column property="packageName" label="包名" width="180"></el-table-column>
       <el-table-column label="Git仓库" width="90px">
@@ -41,8 +32,14 @@
           <icon v-if="scope.row.remote!=1" name="times" class="color-danger"></icon>
         </template>
       </el-table-column>
+      <!--代码下载进度条-->
+      <el-table-column label="代码生成进度" width="110">
+        <template slot-scope="scope">
+          <el-progress v-if="progressingProjectIds.find(id => id===scope.row.projectId)" :text-inside="true" :stroke-width="20" :percentage="scope.row.genCodePercent" :status="scope.row.genCodeStatus"></el-progress>
+        </template>
+      </el-table-column>
       <el-table-column
-        label=""
+        label="操作"
         width="205">
         <template slot-scope="scope">
           <el-button @click="handleEntity(scope.row)" type="text" size="medium">实体管理</el-button>
@@ -132,7 +129,7 @@ export default {
           { max: 10000, message: '长度不能超过10000个字符', trigger: 'blur' }
         ]
       },
-      expandRowKeys: [],
+      progressingProjectIds: [],
       downloadUrl: ''
     }
   },
@@ -254,7 +251,7 @@ export default {
         .then(() => this.callCodeGenWebSocketService(
           'genCode',
           { 'projectId': projectId },
-          () => this.expandRowKeys.push(projectId),
+          () => this.progressingProjectIds.push(projectId),
           progressVO => this.rowProgressChange(row, progressVO)
         ))
         .then(progressVO => {
@@ -266,7 +263,7 @@ export default {
             this.$common.showNotifyError(progressVO.msg)
           }
         })
-        .finally(() => this.collapseRow(row))
+        .finally(() => this.removeProgress(row))
     },
     /*
     handleGenCode (row) {
@@ -328,7 +325,7 @@ export default {
         .then(() => this.callCodeGenWebSocketService(
           'gitCommit',
           { 'projectId': projectId },
-          () => this.expandRowKeys.push(projectId),
+          () => this.progressingProjectIds.push(projectId),
           progressVO => this.rowProgressChange(row, progressVO)
         ))
         .then(progressVO => {
@@ -338,13 +335,13 @@ export default {
             this.$common.showNotifyError(progressVO.msg)
           }
         })
-        .finally(() => this.collapseRow(row))
+        .finally(() => this.removeProgress(row))
     },
     /**
-     * 下载完成后，折叠当前行
+     * 下载完成后移除进度条
      */
-    collapseRow (row) {
-      this.expandRowKeys.splice(this.expandRowKeys.findIndex(v => v === row.projectId), 1)
+    removeProgress (row) {
+      this.progressingProjectIds.splice(this.progressingProjectIds.findIndex(v => v === row.projectId), 1)
       row.genCodePercent = 0
     },
     /*

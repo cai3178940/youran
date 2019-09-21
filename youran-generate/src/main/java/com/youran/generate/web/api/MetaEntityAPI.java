@@ -3,6 +3,7 @@ package com.youran.generate.web.api;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.qo.MetaEntityQO;
+import com.youran.generate.pojo.vo.MetaEntityListPairVO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
 import io.swagger.annotations.Api;
@@ -75,5 +76,13 @@ public interface MetaEntityAPI {
     })
     ResponseEntity<Integer> deleteBatch(Integer[] entityId);
 
+    /**
+     * 查询某实体下的多对多关联实体
+     */
+    @ApiOperation(value = "查询某实体下的多对多关联实体")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
+    })
+    ResponseEntity<MetaEntityListPairVO> mtmEntityListPair(Integer entityId);
 
 }

@@ -2,6 +2,7 @@ package com.youran.generate.web.api;
 
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
+import com.youran.generate.pojo.dto.MetaFieldUpdateOrderNoDTO;
 import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
@@ -76,4 +77,12 @@ public interface MetaFieldAPI {
     })
     ResponseEntity<Integer> deleteBatch(Integer[] fieldId);
 
+    /**
+     * 修改字段序号
+     */
+    @ApiOperation(value = "修改字段序号")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "dto", dataType = "MetaFieldUpdateOrderNoDTO", value = "修改字段序号参数", paramType = "body"),
+    })
+    ResponseEntity<Integer> updateOrderNo(MetaFieldUpdateOrderNoDTO dto);
 }

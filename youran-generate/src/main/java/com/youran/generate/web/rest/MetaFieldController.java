@@ -5,6 +5,7 @@ import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
+import com.youran.generate.pojo.dto.MetaFieldUpdateOrderNoDTO;
 import com.youran.generate.pojo.mapper.MetaFieldMapper;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.qo.MetaFieldQO;
@@ -89,4 +90,13 @@ public class MetaFieldController extends AbstractController implements MetaField
         int count = metaFieldService.delete(fieldId);
         return ResponseEntity.ok(count);
     }
+
+    @Override
+    @PutMapping(value = "/update_order_no")
+    public ResponseEntity<Integer> updateOrderNo(@Valid @RequestBody MetaFieldUpdateOrderNoDTO dto) {
+        Integer orderNo = metaFieldService.updateOrderNo(dto);
+        return ResponseEntity.ok(orderNo);
+    }
+
+
 }

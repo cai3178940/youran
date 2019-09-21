@@ -27,7 +27,8 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table ref="constTable" :data="page.list" style="width: 100%" @selection-change="selectionChange" @expand-change="expandChange" v-loading="loading">
+    <el-table ref="constTable" :data="page.list" style="width: 100%" :border="true"
+              @selection-change="selectionChange" @expand-change="expandChange" v-loading="loading">
       <el-table-column type="expand" width="50">
         <template slot-scope="scope">
           <el-table class="detailTable" :data="detailList" v-loading="detailLoading" :show-header="false">

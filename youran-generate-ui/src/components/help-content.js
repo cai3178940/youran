@@ -86,8 +86,7 @@ export default {
     primaryKey: `
 **是否主键**：标识当前字段是否业务表中的主键字段
 > 注意：一个实体必须有且只有一个主键
-    `,
-    autoIncrement: `
+
 **是否自增**：主键的生成策略
     `,
     notNull: `

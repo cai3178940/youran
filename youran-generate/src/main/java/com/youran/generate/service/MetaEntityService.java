@@ -171,4 +171,13 @@ public class MetaEntityService {
     }
 
 
+    /**
+     * 查询某实体下的多对多关联实体列表
+     * @param entityId 实体id
+     * @param hold 是否持有引用
+     * @return
+     */
+    public List<MetaEntityListVO> mtmEntityList(Integer entityId, boolean hold) {
+        return metaEntityDAO.findMtmEntityList(entityId,hold);
+    }
 }

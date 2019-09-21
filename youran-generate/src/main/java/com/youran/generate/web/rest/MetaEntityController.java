@@ -9,6 +9,7 @@ import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaEntityMapper;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.qo.MetaEntityQO;
+import com.youran.generate.pojo.vo.MetaEntityListPairVO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
 import com.youran.generate.service.MetaEntityService;
@@ -89,4 +90,14 @@ public class MetaEntityController extends AbstractController implements MetaEnti
         int count = metaEntityService.delete(entityId);
         return ResponseEntity.ok(count);
     }
+
+    @Override
+    @GetMapping(value = "/{entityId}/mtm_entity_list_pair")
+    public ResponseEntity<MetaEntityListPairVO> mtmEntityListPair(@PathVariable Integer entityId) {
+        List<MetaEntityListVO> holds = metaEntityService.mtmEntityList(entityId,true);
+        List<MetaEntityListVO> unholds = metaEntityService.mtmEntityList(entityId,false);
+        return ResponseEntity.ok(new MetaEntityListPairVO(holds,unholds));
+    }
+
+
 }

@@ -153,5 +153,13 @@ export const CommonPlugin = {
       }
 
     }
+    // 注册全局vue指令
+    Vue.directive('focus', {
+      // When the bound element is inserted into the DOM...
+      inserted: function (el, { value }) {
+        const callback = value.callback
+        callback(value.arg)
+      }
+    })
   }
 }

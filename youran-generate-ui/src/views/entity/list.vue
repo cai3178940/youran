@@ -29,7 +29,8 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table :data="list" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
+    <el-table :data="list" style="width: 100%" :border="true"
+              @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="实体名">
         <template slot-scope="scope">
@@ -195,7 +196,7 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    // 索引查询
+    // 多对多查询
     doQueryMtm () {
       if (!this.query.projectId) {
         return
