@@ -188,94 +188,98 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item v-show="templateForm.multiple=='0'" label="模板：" label-width="100px">
-          <el-select v-model="templateForm.template">
-            <el-option-group>
-              <el-option label="不使用模板" value=""></el-option>
-            </el-option-group>
-            <el-option-group v-if="cacheFieldTemplateCount>0" label="临时模板">
-              <el-option v-for="value in cacheFieldTemplate"
-                         :key="value.fieldId"
-                         :label="value.fieldDesc"
-                         :value="value.fieldId">
-                <span style="float: left">
-                  <span class="template-option">
-                    <template v-for="feature in getFieldFeatures(value)">
-                      <icon :key="feature.value"
+          <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
+            <el-select v-model="templateForm.template">
+              <el-option-group>
+                <el-option label="不使用模板" value=""></el-option>
+              </el-option-group>
+              <el-option-group v-if="cacheFieldTemplateCount>0" label="临时模板">
+                <el-option v-for="value in cacheFieldTemplate"
+                           :key="value.fieldId"
+                           :label="value.fieldDesc"
+                           :value="value.fieldId">
+                  <span style="float: left">
+                    <span class="template-option">
+                      <template v-for="feature in getFieldFeatures(value)">
+                        <icon :key="feature.value"
+                                :name="feature.icon"
+                                :style="feature.style">
+                        </icon>
+                      </template>
+                    </span>
+                    {{ value.fieldDesc }}
+                  </span>
+                  <span style="float: right; color: #8492a6; font-size: 13px"><i @click.stop="removeFieldTemplate(value.fieldId)" class="el-icon-delete"></i></span>
+                </el-option>
+              </el-option-group>
+              <el-option-group label="系统内置模板">
+                <el-option v-for="(value,key) in fieldTemplate"
+                           :key="key"
+                           :label="key"
+                           :value="key">
+                  <span style="float: left">
+                    <span class="template-option">
+                      <template v-for="feature in getFieldFeatures(value)">
+                        <icon :key="feature.value"
                               :name="feature.icon"
                               :style="feature.style">
-                      </icon>
-                    </template>
+                        </icon>
+                      </template>
+                    </span>
+                    {{ key }}
                   </span>
-                  {{ value.fieldDesc }}
-                </span>
-                <span style="float: right; color: #8492a6; font-size: 13px"><i @click.stop="removeFieldTemplate(value.fieldId)" class="el-icon-delete"></i></span>
-              </el-option>
-            </el-option-group>
-            <el-option-group label="系统内置模板">
-              <el-option v-for="(value,key) in fieldTemplate"
-                         :key="key"
-                         :label="key"
-                         :value="key">
-                <span style="float: left">
-                  <span class="template-option">
-                    <template v-for="feature in getFieldFeatures(value)">
-                      <icon :key="feature.value"
-                            :name="feature.icon"
-                            :style="feature.style">
-                      </icon>
-                    </template>
-                  </span>
-                  {{ key }}
-                </span>
-              </el-option>
-            </el-option-group>
-          </el-select>
+                </el-option>
+              </el-option-group>
+            </el-select>
+          </el-badge>
         </el-form-item>
         <el-form-item v-show="templateForm.multiple=='1'" label="模板：" label-width="100px">
-          <el-select
-            v-model="templateForm.templates"
-            multiple
-            collapse-tags>
-            <el-option-group v-if="cacheFieldTemplateCount>0" label="临时模板">
-              <el-option v-for="value in cacheFieldTemplate"
-                         :key="value.fieldId"
-                         :label="value.fieldDesc"
-                         :value="value.fieldId">
-                <span style="float: left">
-                  <span class="template-option">
-                    <template v-for="feature in getFieldFeatures(value)">
-                      <icon :key="feature.value"
-                            :name="feature.icon"
-                            :style="feature.style">
-                      </icon>
-                    </template>
+          <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
+            <el-select
+              v-model="templateForm.templates"
+              multiple
+              collapse-tags>
+              <el-option-group v-if="cacheFieldTemplateCount>0" label="临时模板">
+                <el-option v-for="value in cacheFieldTemplate"
+                           :key="value.fieldId"
+                           :label="value.fieldDesc"
+                           :value="value.fieldId">
+                  <span style="float: left">
+                    <span class="template-option">
+                      <template v-for="feature in getFieldFeatures(value)">
+                        <icon :key="feature.value"
+                              :name="feature.icon"
+                              :style="feature.style">
+                        </icon>
+                      </template>
+                    </span>
+                    {{ value.fieldDesc }}
                   </span>
-                  {{ value.fieldDesc }}
-                </span>
-                <span style="float: right; color: #8492a6; font-size: 13px">
-                  <i @click.stop="removeFieldTemplate(value.fieldId)" class="el-icon-delete"></i>
-                </span>
-              </el-option>
-            </el-option-group>
-            <el-option-group label="系统内置模板">
-              <el-option v-for="(value,key) in fieldTemplate"
-                         :key="key"
-                         :label="key"
-                         :value="key">
-                <span style="float: left">
-                  <span class="template-option">
-                    <template v-for="feature in getFieldFeatures(value)">
-                      <icon :key="feature.value"
-                            :name="feature.icon"
-                            :style="feature.style">
-                      </icon>
-                    </template>
+                  <span style="float: right; color: #8492a6; font-size: 13px">
+                    <i @click.stop="removeFieldTemplate(value.fieldId)" class="el-icon-delete"></i>
                   </span>
-                  {{ key }}
-                </span>
-              </el-option>
-            </el-option-group>
-          </el-select>
+                </el-option>
+              </el-option-group>
+              <el-option-group label="系统内置模板">
+                <el-option v-for="(value,key) in fieldTemplate"
+                           :key="key"
+                           :label="key"
+                           :value="key">
+                  <span style="float: left">
+                    <span class="template-option">
+                      <template v-for="feature in getFieldFeatures(value)">
+                        <icon :key="feature.value"
+                              :name="feature.icon"
+                              :style="feature.style">
+                        </icon>
+                      </template>
+                    </span>
+                    {{ key }}
+                  </span>
+                </el-option>
+              </el-option-group>
+            </el-select>
+          </el-badge>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
