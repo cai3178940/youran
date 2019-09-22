@@ -114,7 +114,7 @@ public class MetaProjectService {
     public MetaProjectPO getProject(Integer projectId, boolean force) {
         MetaProjectPO metaProject = metaProjectDAO.findById(projectId);
         if (force && metaProject == null) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"项目不存在");
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"项目不存在");
         }
         return metaProject;
     }

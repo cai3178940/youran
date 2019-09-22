@@ -22,7 +22,7 @@ CREATE TABLE `meta_project` (
   `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
   PRIMARY KEY (`project_id`),
   KEY `i_meta_project_0` (`project_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_project';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='meta_project';
 
 DROP TABLE IF EXISTS `meta_entity`;
 
@@ -45,7 +45,7 @@ CREATE TABLE `meta_entity` (
   PRIMARY KEY (`entity_id`),
   KEY `i_meta_entity_0` (`project_id`) USING BTREE,
   KEY `i_meta_entity_1`(`project_id`,`class_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_entity';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='meta_entity';
 
 DROP TABLE IF EXISTS `meta_field`;
 
@@ -87,7 +87,7 @@ CREATE TABLE `meta_field` (
   `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
   PRIMARY KEY (`field_id`),
   KEY `i_meta_field_0` (`entity_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_field';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='meta_field';
 
 DROP TABLE IF EXISTS `meta_index`;
 
@@ -105,7 +105,7 @@ CREATE TABLE `meta_index` (
   `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
   PRIMARY KEY (`index_id`),
   KEY `i_meta_index_0` (`entity_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_index';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='meta_index';
 
 DROP TABLE IF EXISTS `meta_index_field`;
 
@@ -116,7 +116,7 @@ CREATE TABLE `meta_index_field` (
   PRIMARY KEY (`index_id`,`field_id`),
   KEY `i_meta_index_field_0` (`index_id`) USING BTREE,
   KEY `i_meta_index_field_1` (`field_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_index_field';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='meta_index_field';
 
 DROP TABLE IF EXISTS `meta_const`;
 
@@ -134,7 +134,7 @@ CREATE TABLE `meta_const` (
   `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
   PRIMARY KEY (`const_id`),
   KEY `i_meta_const_0` (`project_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_const';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='meta_const';
 
 DROP TABLE IF EXISTS `meta_const_detail`;
 
@@ -152,7 +152,7 @@ CREATE TABLE `meta_const_detail` (
   `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
   PRIMARY KEY (`const_detail_id`),
   KEY `i_meta_const_detail_0` (`const_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_const_detail';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='meta_const_detail';
 
 DROP TABLE IF EXISTS `meta_mtm`;
 
@@ -180,7 +180,7 @@ CREATE TABLE `meta_mtm` (
   KEY `i_meta_mtm_0` (`project_id`) USING BTREE,
   KEY `i_meta_mtm_1` (`entity_id1`) USING BTREE,
   KEY `i_meta_mtm_2` (`entity_id2`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='meta_mtm';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='meta_mtm';
 
 DROP TABLE IF EXISTS `meta_cascade_ext`;
 
@@ -205,7 +205,32 @@ CREATE TABLE `meta_cascade_ext` (
     KEY `i_meta_cascade_ext_1` (`entity_id`) USING BTREE,
     KEY `i_meta_cascade_ext_2` (`cascade_field_id`) USING BTREE,
     KEY `i_meta_cascade_ext_3` (`cascade_entity_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='级联扩展';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='级联扩展';
+
+
+DROP TABLE IF EXISTS `meta_mtm_cascade_ext`;
+
+CREATE TABLE `meta_mtm_cascade_ext` (
+    `cascade_mtm_ext_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `mtm_id` int(11) NOT NULL COMMENT '多对多id',
+    `entity_id` int(11) NOT NULL COMMENT '实体id',
+    `cascade_entity_id` int(11) NOT NULL COMMENT '级联所属实体id',
+    `cascade_field_id` int(11) NOT NULL COMMENT '级联所属字段id',
+    `alias` varchar(255) NOT NULL COMMENT '级联查询字段别名',
+    `list` tinyint(1) NOT NULL COMMENT '是否在列表中展示',
+    `show` tinyint(1) NOT NULL COMMENT '是否在详情中展示',
+    `query` tinyint(1) NOT NULL COMMENT '是否为查询条件',
+    `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
+    `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
+    `operated_time` datetime NOT NULL COMMENT '修改时间【yyyy-MM-dd HH:mm:ss】',
+    `operated_by` varchar(20) NOT NULL COMMENT '修改人【最大长度20】',
+    `version` int(11) NOT NULL COMMENT '乐观锁版本号【整型】',
+    `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
+    PRIMARY KEY (`cascade_mtm_ext_id`),
+    KEY `IDX_CAS_MTM_EXT_1` (`mtm_id`,`entity_id`,`cascade_entity_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='多对多级联扩展';
+
+
 
 CREATE TABLE `gen_history` (
     `history_id` int(11) AUTO_INCREMENT COMMENT '主键id',
@@ -223,4 +248,4 @@ CREATE TABLE `gen_history` (
     `version` int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁版本号',
     PRIMARY KEY (`history_id`),
     KEY `i_gen_history_0` (`project_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='gen_history';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='gen_history';

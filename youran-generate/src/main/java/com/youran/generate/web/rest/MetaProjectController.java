@@ -2,7 +2,7 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
-import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
@@ -30,7 +30,7 @@ import java.util.List;
  * Create Time:2017/5/24
  */
 @RestController
-@RequestMapping(GenerateConst.API_PATH +"/meta_project")
+@RequestMapping(WebConst.API_PATH +"/meta_project")
 public class MetaProjectController extends AbstractController implements MetaProjectAPI {
 
     @Autowired
@@ -77,7 +77,7 @@ public class MetaProjectController extends AbstractController implements MetaPro
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] projectId) {
         if(ArrayUtils.isEmpty(projectId)){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"参数为空");
+            throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaProjectService.delete(projectId);
         return ResponseEntity.ok(count);

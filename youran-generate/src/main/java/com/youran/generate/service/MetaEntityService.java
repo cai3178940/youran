@@ -97,7 +97,7 @@ public class MetaEntityService {
     public MetaEntityPO getEntity(Integer entityId,boolean force){
         MetaEntityPO metaEntity = metaEntityDAO.findById(entityId);
         if (force && metaEntity == null) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"实体不存在");
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"实体不存在");
         }
         return metaEntity;
     }

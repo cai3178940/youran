@@ -90,7 +90,7 @@ public class MetaManyToManyService {
     public MetaManyToManyPO getMetaManyToMany(Integer mtmId, boolean force){
         MetaManyToManyPO manyToManyPO = metaManyToManyDAO.findById(mtmId);
         if(force && manyToManyPO==null){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"多对多关系未找到");
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"多对多关系未找到");
         }
         return manyToManyPO;
     }

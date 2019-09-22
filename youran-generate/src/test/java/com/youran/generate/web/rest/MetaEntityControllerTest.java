@@ -1,7 +1,7 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.util.JsonUtil;
-import com.youran.generate.data.MetaEntityData;
+import com.youran.generate.help.MetaEntityHelper;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
@@ -38,7 +38,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
 
     @Test
     public void save() throws Exception {
-        MetaEntityAddDTO addDTO = MetaEntityData.getAddDTO(metaProject.getProjectId(),0);
+        MetaEntityAddDTO addDTO = MetaEntityHelper.getAddDTO(metaProject.getProjectId(),0);
         restMockMvc.perform(post(getApiPath()+"/meta_entity/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
@@ -49,7 +49,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
     @Test
     public void update() throws Exception {
         MetaEntityPO metaEntity = generateHelper.saveEntityExample(metaProject.getProjectId(),0);
-        MetaEntityUpdateDTO updateDTO = MetaEntityData.getUpdateDTO(metaEntity);
+        MetaEntityUpdateDTO updateDTO = MetaEntityHelper.getUpdateDTO(metaEntity);
         restMockMvc.perform(put(getApiPath()+"/meta_entity/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))

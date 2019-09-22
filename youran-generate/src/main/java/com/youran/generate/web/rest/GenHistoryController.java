@@ -1,7 +1,7 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.pojo.vo.PageVO;
-import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.qo.GenHistoryQO;
 import com.youran.generate.pojo.vo.GenHistoryListVO;
 import com.youran.generate.service.GenHistoryService;
@@ -24,7 +24,7 @@ import javax.validation.Valid;
  * @date: 2018-03-17
  */
 @RestController
-@RequestMapping(GenerateConst.API_PATH +"/gen_history")
+@RequestMapping(WebConst.API_PATH +"/gen_history")
 public class GenHistoryController extends AbstractController implements GenHistoryAPI {
 
     @Autowired

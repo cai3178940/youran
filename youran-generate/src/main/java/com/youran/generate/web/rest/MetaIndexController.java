@@ -2,7 +2,7 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
-import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaIndexMapper;
@@ -30,7 +30,7 @@ import java.util.List;
  * @date: 2017/5/12
  */
 @RestController
-@RequestMapping(GenerateConst.API_PATH +"/meta_index")
+@RequestMapping(WebConst.API_PATH +"/meta_index")
 public class MetaIndexController extends AbstractController implements MetaIndexAPI {
 
     @Autowired
@@ -77,7 +77,7 @@ public class MetaIndexController extends AbstractController implements MetaIndex
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] indexId) {
         if(ArrayUtils.isEmpty(indexId)){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"参数为空");
+            throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaIndexService.delete(indexId);
         return ResponseEntity.ok(count);

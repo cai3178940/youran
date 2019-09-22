@@ -1,6 +1,6 @@
 package com.youran.generate.web.config;
 
-import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.constant.WebConst;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -18,7 +18,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Value(GenerateConst.WS_API_PATH)
+    @Value(WebConst.WS_API_PATH)
     private String wsApiPath;
 
     @Override

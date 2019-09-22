@@ -1,4 +1,4 @@
-package com.youran.generate.data;
+package com.youran.generate.help;
 
 
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
@@ -13,7 +13,7 @@ import static com.youran.generate.pojo.example.MetaConstDetailExample.*;
  * @author: cbb
  * @date: 2017/5/12
  */
-public class MetaConstDetailData {
+public class MetaConstDetailHelper {
 
     /**
      * 生成add测试数据

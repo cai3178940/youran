@@ -2,7 +2,7 @@ package com.youran.generate.web.rest;
 
 import com.google.common.collect.Lists;
 import com.youran.common.util.JsonUtil;
-import com.youran.generate.data.MetaProjectData;
+import com.youran.generate.help.MetaProjectHelper;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
@@ -30,7 +30,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
 
     @Test
     public void save() throws Exception {
-        MetaProjectAddDTO addDTO = MetaProjectData.getAddDTO();
+        MetaProjectAddDTO addDTO = MetaProjectHelper.getAddDTO();
         restMockMvc.perform(post(getApiPath()+"/meta_project/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
@@ -41,7 +41,7 @@ public class MetaProjectControllerTest extends AbstractWebTest {
     @Test
     public void update() throws Exception {
         MetaProjectPO metaProject = generateHelper.saveProjectExample();
-        MetaProjectUpdateDTO updateDTO = MetaProjectData.getUpdateDTO(metaProject);
+        MetaProjectUpdateDTO updateDTO = MetaProjectHelper.getUpdateDTO(metaProject);
         restMockMvc.perform(put(getApiPath()+"/meta_project/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))

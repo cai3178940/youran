@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.dao.MetaMtmCascadeExtDAO">
+
+
+    <sql id="metaMtmCascadeExtColumns">
+        ${alias}.cascade_mtm_ext_id as cascadeMtmExtId,
+        ${alias}.mtm_id as mtmId,
+        ${alias}.entity_id as entityId,
+        ${alias}.cascade_entity_id as cascadeEntityId,
+        ${alias}.cascade_field_id as cascadeFieldId,
+        ${alias}.alias,
+        ${alias}.`list`,
+        ${alias}.`show`,
+        ${alias}.`query`,
+        ${alias}.created_time as createdTime,
+        ${alias}.created_by as createdBy,
+        ${alias}.operated_time as operatedTime,
+        ${alias}.operated_by as operatedBy,
+        ${alias}.version,
+        ${alias}.deleted
+    </sql>
+
+
+    <select id="findById" resultType="MetaMtmCascadeExtPO">
+        select
+            <include refid="metaMtmCascadeExtColumns"><property name="alias" value="t"/></include>
+        from meta_mtm_cascade_ext t
+        <where>
+            and t.deleted=0
+            and t.cascade_mtm_ext_id = #{arg0}
+        </where>
+        limit 1
+    </select>
+
+    <select id="exist" resultType="boolean">
+        select count(1) from meta_mtm_cascade_ext
+        <where>
+            and deleted=0
+            and cascade_mtm_ext_id = #{arg0}
+        </where>
+    </select>
+
+    <insert id="_save" useGeneratedKeys="true" keyProperty="cascadeMtmExtId" parameterType="MetaMtmCascadeExtPO">
+        insert into meta_mtm_cascade_ext(
+        cascade_mtm_ext_id,
+        mtm_id,
+        entity_id,
+        cascade_entity_id,
+        cascade_field_id,
+        alias,
+        `list`,
+        `show`,
+        `query`,
+        created_time,
+        created_by,
+        operated_time,
+        operated_by,
+        version,
+        deleted
+        ) VALUES (
+        #{cascadeMtmExtId,jdbcType=INTEGER},
+        #{mtmId,jdbcType=INTEGER},
+        #{entityId,jdbcType=INTEGER},
+        #{cascadeEntityId,jdbcType=INTEGER},
+        #{cascadeFieldId,jdbcType=INTEGER},
+        #{alias,jdbcType=VARCHAR},
+        #{list,jdbcType=INTEGER},
+        #{show,jdbcType=INTEGER},
+        #{query,jdbcType=INTEGER},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{createdBy,jdbcType=VARCHAR},
+        #{operatedTime,jdbcType=TIMESTAMP},
+        #{operatedBy,jdbcType=VARCHAR},
+        #{version,jdbcType=INTEGER},
+        #{deleted,jdbcType=BOOLEAN}
+        )
+    </insert>
+
+
+    <update id="_update" parameterType="MetaMtmCascadeExtPO">
+        update meta_mtm_cascade_ext set
+            mtm_id=#{mtmId,jdbcType=INTEGER},
+            entity_id=#{entityId,jdbcType=INTEGER},
+            cascade_entity_id=#{cascadeEntityId,jdbcType=INTEGER},
+            cascade_field_id=#{cascadeFieldId,jdbcType=INTEGER},
+            alias=#{alias,jdbcType=VARCHAR},
+            `list`=#{list,jdbcType=INTEGER},
+            `show`=#{show,jdbcType=INTEGER},
+            `query`=#{query,jdbcType=INTEGER},
+            operated_time=#{operatedTime,jdbcType=TIMESTAMP},
+            operated_by=#{operatedBy,jdbcType=VARCHAR},
+            version = version+1,
+            deleted=#{deleted,jdbcType=BOOLEAN}
+        where cascade_mtm_ext_id=#{cascadeMtmExtId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and deleted=0
+    </update>
+
+    <delete id="delete">
+        update meta_mtm_cascade_ext set deleted=1
+        where cascade_mtm_ext_id=#{arg0,jdbcType=INTEGER}
+        and deleted=0
+    </delete>
+
+
+    <sql id="queryCondition">
+        <if test="mtmId != null  ">
+            and t.mtm_id = #{mtmId}
+        </if>
+        <if test="entityId != null  ">
+            and t.entity_id = #{entityId}
+        </if>
+        <if test="cascadeEntityId != null  ">
+            and t.cascade_entity_id = #{cascadeEntityId}
+        </if>
+        <if test="cascadeFieldId != null  ">
+            and t.cascade_field_id = #{cascadeFieldId}
+        </if>
+    </sql>
+
+    <sql id="orderCondition">
+        order by
+            t.operated_time desc
+    </sql>
+
+    <select id="findCountByQuery" parameterType="MetaMtmCascadeExtQO" resultType="int">
+        select count(1) from meta_mtm_cascade_ext t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+    </select>
+
+    <select id="findListByQuery" parameterType="MetaMtmCascadeExtQO" resultType="MetaMtmCascadeExtListVO">
+        select
+            <include refid="metaMtmCascadeExtColumns"><property name="alias" value="t"/></include>
+        from meta_mtm_cascade_ext t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+        <include refid="orderCondition"/>
+    </select>
+
+
+    <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
+
+
+</mapper>

@@ -80,7 +80,7 @@ public class MetaFieldService {
     public MetaFieldPO getField(Integer fieldId, boolean force){
         MetaFieldPO fieldPO = metaFieldDAO.findById(fieldId);
         if(force && fieldPO == null){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"字段未找到");
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"字段未找到");
         }
         return fieldPO;
     }

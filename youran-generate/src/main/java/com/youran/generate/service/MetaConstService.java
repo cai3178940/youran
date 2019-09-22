@@ -75,7 +75,7 @@ public class MetaConstService {
     public MetaConstPO getConst(Integer constId, boolean force){
         MetaConstPO metaConstPO = metaConstDAO.findById(constId);
         if(force && metaConstPO==null){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"常量不存在");
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"常量不存在");
         }
         return metaConstPO;
     }

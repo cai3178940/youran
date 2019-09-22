@@ -73,7 +73,7 @@ public class MetaConstDetailService {
     public MetaConstDetailPO getMetaConstDetail(Integer constDetailId,boolean force){
         MetaConstDetailPO constDetailPO = metaConstDetailDAO.findById(constDetailId);
         if(force && constDetailPO==null){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"枚举值未找到");
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"枚举值未找到");
         }
         return constDetailPO;
     }

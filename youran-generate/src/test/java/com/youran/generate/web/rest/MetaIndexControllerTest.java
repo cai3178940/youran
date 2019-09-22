@@ -1,7 +1,7 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.util.JsonUtil;
-import com.youran.generate.data.MetaIndexData;
+import com.youran.generate.help.MetaIndexHelper;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
@@ -45,7 +45,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
     @Test
     public void save() throws Exception {
         MetaFieldPO metaField2 = generateHelper.saveFieldExample(metaEntity.getEntityId());
-        MetaIndexAddDTO addDTO = MetaIndexData.getAddDTO(metaField.getFieldId(),metaField2.getFieldId());
+        MetaIndexAddDTO addDTO = MetaIndexHelper.getAddDTO(metaField.getFieldId(),metaField2.getFieldId());
         restMockMvc.perform(post(getApiPath()+"/meta_index/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
@@ -57,7 +57,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
     public void update() throws Exception {
         MetaFieldPO metaField2 = generateHelper.saveFieldExample(metaEntity.getEntityId());
         MetaIndexPO metaIndex = generateHelper.saveIndexExample(metaField.getFieldId(),metaField2.getFieldId());
-        MetaIndexUpdateDTO updateDTO = MetaIndexData.getUpdateDTO(metaIndex,metaField.getFieldId());
+        MetaIndexUpdateDTO updateDTO = MetaIndexHelper.getUpdateDTO(metaIndex,metaField.getFieldId());
         restMockMvc.perform(put(getApiPath()+"/meta_index/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))

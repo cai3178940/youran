@@ -3,7 +3,7 @@ package com.youran.generate.web.rest;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
-import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaEntityMapper;
@@ -32,7 +32,7 @@ import java.util.List;
  * @date: 2017/5/12
  */
 @RestController
-@RequestMapping(GenerateConst.API_PATH +"/meta_entity")
+@RequestMapping(WebConst.API_PATH +"/meta_entity")
 public class MetaEntityController extends AbstractController implements MetaEntityAPI {
 
     @Autowired
@@ -85,7 +85,7 @@ public class MetaEntityController extends AbstractController implements MetaEnti
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] entityId) {
         if(ArrayUtils.isEmpty(entityId)){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"参数为空");
+            throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaEntityService.delete(entityId);
         return ResponseEntity.ok(count);

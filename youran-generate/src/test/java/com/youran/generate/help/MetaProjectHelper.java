@@ -1,4 +1,4 @@
-package com.youran.generate.data;
+package com.youran.generate.help;
 
 
 import com.youran.common.util.SafeUtil;
@@ -17,7 +17,7 @@ import static com.youran.generate.pojo.example.MetaProjectExample.*;
  * @author: cbb
  * @date: 2017/5/12
  */
-public class MetaProjectData {
+public class MetaProjectHelper {
 
     /**
      * 生成add测试数据

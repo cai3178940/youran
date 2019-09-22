@@ -1,8 +1,8 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.constant.BoolConst;
-import com.youran.generate.constant.GenerateConst;
 import com.youran.generate.constant.MetaSpecialField;
+import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @date 2018/7/17
  */
 @RestController
-@RequestMapping(GenerateConst.API_PATH +"/er_diagram")
+@RequestMapping(WebConst.API_PATH +"/er_diagram")
 public class ErDiagramController extends AbstractController implements ErDiagramAPI {
 
     @Autowired

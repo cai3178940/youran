@@ -1,6 +1,6 @@
 package com.youran.generate.web.rest;
 
-import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.ReverseEngineeringDTO;
 import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.service.ReverseEngineeringService;
@@ -22,7 +22,7 @@ import javax.validation.Valid;
  * @date: 2018-03-17
  */
 @RestController
-@RequestMapping(GenerateConst.API_PATH +"/reverse_engineering")
+@RequestMapping(WebConst.API_PATH +"/reverse_engineering")
 public class ReverseEngineeringController implements ReverseEngineeringAPI {
 
     @Autowired

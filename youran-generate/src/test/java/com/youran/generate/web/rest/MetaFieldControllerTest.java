@@ -1,7 +1,7 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.util.JsonUtil;
-import com.youran.generate.data.MetaFieldData;
+import com.youran.generate.help.MetaFieldHelper;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
@@ -41,7 +41,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
 
     @Test
     public void save() throws Exception {
-        MetaFieldAddDTO addDTO = MetaFieldData.getAddDTO(metaEntity.getEntityId());
+        MetaFieldAddDTO addDTO = MetaFieldHelper.getAddDTO(metaEntity.getEntityId());
         restMockMvc.perform(post(getApiPath()+"/meta_field/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
@@ -52,7 +52,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
     @Test
     public void update() throws Exception {
         MetaFieldPO metaField = generateHelper.saveFieldExample(metaEntity.getEntityId());
-        MetaFieldUpdateDTO updateDTO = MetaFieldData.getUpdateDTO(metaField);
+        MetaFieldUpdateDTO updateDTO = MetaFieldHelper.getUpdateDTO(metaField);
         restMockMvc.perform(put(getApiPath()+"/meta_field/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))

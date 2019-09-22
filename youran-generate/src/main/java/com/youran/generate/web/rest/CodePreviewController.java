@@ -2,7 +2,7 @@ package com.youran.generate.web.rest;
 
 import com.google.common.collect.Lists;
 import com.youran.common.exception.BusinessException;
-import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.vo.CodeTreeVO;
 import com.youran.generate.pojo.vo.FileNodeVO;
@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
  * @date 2019/8/29
  */
 @RestController
-@RequestMapping(GenerateConst.API_PATH +"/code_preview")
+@RequestMapping(WebConst.API_PATH +"/code_preview")
 public class CodePreviewController extends AbstractController implements CodePreviewAPI {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CodePreviewController.class);

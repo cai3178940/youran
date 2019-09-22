@@ -1,7 +1,7 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.util.JsonUtil;
-import com.youran.generate.data.MetaConstDetailData;
+import com.youran.generate.help.MetaConstDetailHelper;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
@@ -41,7 +41,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
 
     @Test
     public void save() throws Exception {
-        MetaConstDetailAddDTO addDTO = MetaConstDetailData.getAddDTO(metaConst.getConstId());
+        MetaConstDetailAddDTO addDTO = MetaConstDetailHelper.getAddDTO(metaConst.getConstId());
         restMockMvc.perform(post(getApiPath()+"/meta_const_detail/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(addDTO)))
@@ -52,7 +52,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
     @Test
     public void update() throws Exception {
         MetaConstDetailPO metaConstDetail = generateHelper.saveConstDetailExample(metaConst.getConstId());
-        MetaConstDetailUpdateDTO updateDTO = MetaConstDetailData.getUpdateDTO(metaConstDetail);
+        MetaConstDetailUpdateDTO updateDTO = MetaConstDetailHelper.getUpdateDTO(metaConstDetail);
         restMockMvc.perform(put(getApiPath()+"/meta_const_detail/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))

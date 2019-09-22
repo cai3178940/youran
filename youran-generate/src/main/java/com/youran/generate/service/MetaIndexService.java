@@ -114,7 +114,7 @@ public class MetaIndexService {
     public MetaIndexPO getIndex(Integer indexId,boolean force){
         MetaIndexPO indexPO = metaIndexDAO.findById(indexId);
         if(force && indexPO == null){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"索引未找到");
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"索引未找到");
         }
         return indexPO;
     }

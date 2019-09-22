@@ -1,7 +1,7 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.util.JsonUtil;
-import com.youran.generate.data.MetaCascadeExtData;
+import com.youran.generate.help.MetaCascadeExtHelper;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaCascadeExtUpdateDTO;
@@ -48,7 +48,7 @@ public class MetaCascadeExtControllerTest extends AbstractWebTest {
 
     @Test
     public void save() throws Exception {
-        MetaCascadeExtAddDTO addDTO = MetaCascadeExtData.getAddDTO(metaField1.getFieldId(),metaEntity1.getEntityId(),
+        MetaCascadeExtAddDTO addDTO = MetaCascadeExtHelper.getAddDTO(metaField1.getFieldId(),metaEntity1.getEntityId(),
             metaField2.getFieldId(),metaEntity2.getEntityId());
         restMockMvc.perform(post(getApiPath()+"/meta_cascade_ext/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -61,7 +61,7 @@ public class MetaCascadeExtControllerTest extends AbstractWebTest {
     public void update() throws Exception {
         MetaCascadeExtPO metaCascadeExt = generateHelper.saveCascadeExtExample(metaField1.getFieldId(),metaEntity1.getEntityId(),
             metaField2.getFieldId(),metaEntity2.getEntityId());
-        MetaCascadeExtUpdateDTO updateDTO = MetaCascadeExtData.getUpdateDTO(metaCascadeExt);
+        MetaCascadeExtUpdateDTO updateDTO = MetaCascadeExtHelper.getUpdateDTO(metaCascadeExt);
         restMockMvc.perform(put(getApiPath()+"/meta_cascade_ext/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))

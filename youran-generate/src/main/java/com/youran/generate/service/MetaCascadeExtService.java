@@ -99,7 +99,7 @@ public class MetaCascadeExtService {
     public MetaCascadeExtPO getMetaCascadeExt(Integer cascadeExtId,boolean force){
         MetaCascadeExtPO cascadeExtPO = metaCascadeExtDAO.findById(cascadeExtId);
         if(force && cascadeExtPO == null){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"级联扩展未找到");
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"级联扩展未找到");
         }
         return cascadeExtPO;
     }

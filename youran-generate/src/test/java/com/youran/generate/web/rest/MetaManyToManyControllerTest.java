@@ -1,7 +1,7 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.util.JsonUtil;
-import com.youran.generate.data.MetaManyToManyData;
+import com.youran.generate.help.MetaManyToManyHelper;
 import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
@@ -45,7 +45,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
 
     @Test
     public void save() throws Exception {
-        MetaManyToManyAddDTO addDTO = MetaManyToManyData.getAddDTO(metaProject.getProjectId(),
+        MetaManyToManyAddDTO addDTO = MetaManyToManyHelper.getAddDTO(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
         restMockMvc.perform(post(getApiPath()+"/meta_mtm/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -58,7 +58,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
     public void update() throws Exception {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
                 metaEntity1.getEntityId(),metaEntity2.getEntityId());
-        MetaManyToManyUpdateDTO updateDTO = MetaManyToManyData.getUpdateDTO(metaManyToMany);
+        MetaManyToManyUpdateDTO updateDTO = MetaManyToManyHelper.getUpdateDTO(metaManyToMany);
         restMockMvc.perform(put(getApiPath()+"/meta_mtm/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JsonUtil.toJSONString(updateDTO)))

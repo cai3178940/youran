@@ -1,4 +1,4 @@
-package com.youran.generate.data;
+package com.youran.generate.help;
 
 
 import com.youran.generate.pojo.dto.MetaCascadeExtAddDTO;
@@ -11,7 +11,7 @@ import com.youran.generate.pojo.po.MetaCascadeExtPO;
  * @author: cbb
  * @date: 2017/5/12
  */
-public class MetaCascadeExtData {
+public class MetaCascadeExtHelper {
 
     /**
      * 生成add测试数据

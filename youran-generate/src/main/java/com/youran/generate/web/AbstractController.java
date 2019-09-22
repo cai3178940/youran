@@ -1,7 +1,7 @@
 package com.youran.generate.web;
 
 import com.youran.common.constant.ErrorCode;
-import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.constant.WebConst;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public abstract class AbstractController {
 
-    @Value(GenerateConst.API_PATH)
+    @Value(WebConst.API_PATH)
     protected String apiPath;
 
     /**

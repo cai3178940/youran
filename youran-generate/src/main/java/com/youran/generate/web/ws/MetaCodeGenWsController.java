@@ -1,8 +1,8 @@
 package com.youran.generate.web.ws;
 
 import com.youran.common.util.DateUtil;
-import com.youran.generate.constant.GenerateConst;
 import com.youran.common.exception.BusinessException;
+import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.service.MetaCodeGenService;
@@ -90,7 +90,7 @@ public class MetaCodeGenWsController extends AbstractController {
      * @param sessionId
      * @param response
      */
-    @GetMapping(value = GenerateConst.API_PATH + "/code_gen/downloadCode/{sessionId}")
+    @GetMapping(value = WebConst.API_PATH + "/code_gen/downloadCode/{sessionId}")
     public void downloadCode(@PathVariable String sessionId, HttpServletResponse response) {
         File zipFile = null;
         Integer projectId = null;

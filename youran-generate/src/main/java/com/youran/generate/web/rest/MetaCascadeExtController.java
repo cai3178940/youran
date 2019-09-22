@@ -2,7 +2,7 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
-import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.MetaCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaCascadeExtUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaCascadeExtMapper;
@@ -30,7 +30,7 @@ import java.util.List;
  * @date: 2017/5/12
  */
 @RestController
-@RequestMapping(GenerateConst.API_PATH +"/meta_cascade_ext")
+@RequestMapping(WebConst.API_PATH +"/meta_cascade_ext")
 public class MetaCascadeExtController extends AbstractController implements MetaCascadeExtAPI {
 
     @Autowired
@@ -77,7 +77,7 @@ public class MetaCascadeExtController extends AbstractController implements Meta
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] cascadeExtId) {
         if(ArrayUtils.isEmpty(cascadeExtId)){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"参数为空");
+            throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaCascadeExtService.delete(cascadeExtId);
         return ResponseEntity.ok(count);

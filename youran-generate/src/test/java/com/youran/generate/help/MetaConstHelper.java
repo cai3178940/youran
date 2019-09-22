@@ -1,4 +1,4 @@
-package com.youran.generate.data;
+package com.youran.generate.help;
 
 
 import com.youran.common.util.SafeUtil;
@@ -14,7 +14,7 @@ import static com.youran.generate.pojo.example.MetaConstExample.*;
  * @author: cbb
  * @date: 2017/5/12
  */
-public class MetaConstData {
+public class MetaConstHelper {
 
     /**
      * 生成add测试数据

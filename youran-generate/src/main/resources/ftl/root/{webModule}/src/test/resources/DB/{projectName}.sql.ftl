@@ -13,7 +13,7 @@ CREATE TABLE `${metaEntity.tableName}` (
     <#list metaEntity.indexes! as index>
     <#if isTrue(index.unique)>UNIQUE </#if>KEY `${index.indexName}` (<#list index.fields as field>`${field.fieldName}`<#if field_has_next >,</#if></#list>) USING BTREE<#if index_has_next>,</#if>
     </#list>
-) ENGINE=InnoDB DEFAULT CHARSET=utf8${MetadataUtil.getCommentDisplay(metaEntity.desc,false)};
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4${MetadataUtil.getCommentDisplay(metaEntity.desc,false)};
 
 </#list>
 <#list this.mtms! as mtm>
@@ -35,6 +35,6 @@ CREATE TABLE `${mtm.tableName}` (
     </#if>
     KEY `IDX_${mtm.tableName?upper_case}_1` (`${fkId1}`),
     KEY `IDX_${mtm.tableName?upper_case}_2` (`${fkId2}`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='${mtm.desc?replace('\'','"')?replace('\n','\\n')}';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4${MetadataUtil.getCommentDisplay(mtm.desc,false)};
 
 </#list>

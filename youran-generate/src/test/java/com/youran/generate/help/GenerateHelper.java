@@ -2,7 +2,6 @@ package com.youran.generate.help;
 
 import com.youran.common.constant.BoolConst;
 import com.youran.generate.constant.*;
-import com.youran.generate.data.*;
 import com.youran.generate.pojo.dto.*;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.service.*;
@@ -44,7 +43,7 @@ public class GenerateHelper{
      * @return
      */
     public MetaProjectPO saveProjectExample(){
-        MetaProjectAddDTO addDTO = MetaProjectData.getAddDTO();
+        MetaProjectAddDTO addDTO = MetaProjectHelper.getAddDTO();
         return metaProjectService.save(addDTO);
     }
     /**
@@ -52,7 +51,7 @@ public class GenerateHelper{
      * @return
      */
     public MetaEntityPO saveEntityExample(Integer projectId, int i){
-        MetaEntityAddDTO addDTO = MetaEntityData.getAddDTO(projectId,i);
+        MetaEntityAddDTO addDTO = MetaEntityHelper.getAddDTO(projectId,i);
         return metaEntityService.save(addDTO);
     }
 
@@ -61,7 +60,7 @@ public class GenerateHelper{
      * @return
      */
     public MetaFieldPO saveFieldExample(Integer entityId){
-        MetaFieldAddDTO addDTO = MetaFieldData.getAddDTO(entityId);
+        MetaFieldAddDTO addDTO = MetaFieldHelper.getAddDTO(entityId);
         return metaFieldService.save(addDTO);
     }
 
@@ -70,7 +69,7 @@ public class GenerateHelper{
      * @return
      */
     public MetaCascadeExtPO saveCascadeExtExample(Integer fieldId, Integer entityId,Integer cascadeFieldId, Integer cascadeEntityId){
-        MetaCascadeExtAddDTO addDTO = MetaCascadeExtData.getAddDTO(fieldId,entityId,cascadeFieldId,cascadeEntityId);
+        MetaCascadeExtAddDTO addDTO = MetaCascadeExtHelper.getAddDTO(fieldId,entityId,cascadeFieldId,cascadeEntityId);
         return metaCascadeExtService.save(addDTO);
     }
 
@@ -79,7 +78,7 @@ public class GenerateHelper{
      * @return
      */
     public MetaManyToManyPO saveManyToManyExample(Integer projectId, Integer entityId1, Integer entityId2){
-        MetaManyToManyAddDTO addDTO = MetaManyToManyData.getAddDTO(projectId,entityId1,entityId2);
+        MetaManyToManyAddDTO addDTO = MetaManyToManyHelper.getAddDTO(projectId,entityId1,entityId2);
         return metaManyToManyService.save(addDTO);
     }
 
@@ -88,7 +87,7 @@ public class GenerateHelper{
      * @return
      */
     public MetaIndexPO saveIndexExample(Integer... fieldIds){
-        MetaIndexAddDTO addDTO = MetaIndexData.getAddDTO(fieldIds);
+        MetaIndexAddDTO addDTO = MetaIndexHelper.getAddDTO(fieldIds);
         return metaIndexService.save(addDTO);
     }
 
@@ -97,7 +96,7 @@ public class GenerateHelper{
      * @return
      */
     public MetaConstPO saveConstExample(Integer projectId){
-        MetaConstAddDTO addDTO = MetaConstData.getAddDTO(projectId);
+        MetaConstAddDTO addDTO = MetaConstHelper.getAddDTO(projectId);
         return metaConstService.save(addDTO);
     }
     /**
@@ -105,7 +104,7 @@ public class GenerateHelper{
      * @return
      */
     public MetaConstDetailPO saveConstDetailExample(Integer constId){
-        MetaConstDetailAddDTO addDTO = MetaConstDetailData.getAddDTO(constId);
+        MetaConstDetailAddDTO addDTO = MetaConstDetailHelper.getAddDTO(constId);
         return metaConstDetailService.save(addDTO);
     }
 

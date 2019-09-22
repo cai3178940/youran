@@ -1,7 +1,7 @@
 package com.youran.generate.web;
 
 import com.youran.generate.AbstractTest;
-import com.youran.generate.constant.GenerateConst;
+import com.youran.generate.constant.WebConst;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ public abstract class AbstractWebTest extends AbstractTest {
     @Autowired
     protected MockMvc restMockMvc;
 
-    @Value(GenerateConst.API_PATH)
+    @Value(WebConst.API_PATH)
     protected String apiPath;
 
     protected String getApiPath(){
