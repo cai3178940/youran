@@ -36,6 +36,8 @@ public class GenerateHelper{
     private MetaConstDetailService metaConstDetailService;
     @Autowired
     private MetaCascadeExtService metaCascadeExtService;
+    @Autowired
+    private MetaMtmCascadeExtService metaMtmCascadeExtService;
 
 
     /**
@@ -71,6 +73,15 @@ public class GenerateHelper{
     public MetaCascadeExtPO saveCascadeExtExample(Integer fieldId, Integer entityId,Integer cascadeFieldId, Integer cascadeEntityId){
         MetaCascadeExtAddDTO addDTO = MetaCascadeExtHelper.getAddDTO(fieldId,entityId,cascadeFieldId,cascadeEntityId);
         return metaCascadeExtService.save(addDTO);
+    }
+
+    /**
+     * 保存级联扩展示例
+     * @return
+     */
+    public MetaMtmCascadeExtPO saveMtmCascadeExtExample(Integer mtmId, Integer entityId, Integer cascadeEntityId,Integer cascadeFieldId){
+        MetaMtmCascadeExtAddDTO addDTO = MetaMtmCascadeExtHelper.getAddDTO(mtmId,entityId,cascadeEntityId,cascadeFieldId);
+        return metaMtmCascadeExtService.save(addDTO);
     }
 
     /**

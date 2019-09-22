@@ -15,8 +15,8 @@ import static com.youran.generate.pojo.example.MetaMtmCascadeExtExample.*;
 @ApiModel(description = "【多对多级联扩展】列表展示对象")
 public class MetaMtmCascadeExtListVO extends AbstractVO {
 
-    @ApiModelProperty(notes = N_CASCADE_MTM_EXT_ID,example = E_CASCADE_MTM_EXT_ID)
-    private Integer cascadeMtmExtId;
+    @ApiModelProperty(notes = N_MTM_CASCADE_EXT_ID,example = E_MTM_CASCADE_EXT_ID)
+    private Integer mtmCascadeExtId;
 
     @ApiModelProperty(notes = N_MTM_ID,example = E_MTM_ID)
     private Integer mtmId;
@@ -42,13 +42,40 @@ public class MetaMtmCascadeExtListVO extends AbstractVO {
     @ApiModelProperty(notes = N_QUERY,example = E_QUERY)
     private Integer query;
 
+    /**
+     * 级联展示字段名
+     */
+    @ApiModelProperty(notes = "级联展示字段名", example = "name")
+    private String cascadeJfieldName;
 
-    public Integer getCascadeMtmExtId() {
-        return this.cascadeMtmExtId;
+    /**
+     * 级联展示字段描述
+     */
+    @ApiModelProperty(notes = "级联展示字段描述", example = "名称")
+    private String cascadeFieldDesc;
+
+    public String getCascadeJfieldName() {
+        return cascadeJfieldName;
     }
 
-    public void setCascadeMtmExtId(Integer cascadeMtmExtId) {
-        this.cascadeMtmExtId = cascadeMtmExtId;
+    public void setCascadeJfieldName(String cascadeJfieldName) {
+        this.cascadeJfieldName = cascadeJfieldName;
+    }
+
+    public String getCascadeFieldDesc() {
+        return cascadeFieldDesc;
+    }
+
+    public void setCascadeFieldDesc(String cascadeFieldDesc) {
+        this.cascadeFieldDesc = cascadeFieldDesc;
+    }
+
+    public Integer getMtmCascadeExtId() {
+        return this.mtmCascadeExtId;
+    }
+
+    public void setMtmCascadeExtId(Integer mtmCascadeExtId) {
+        this.mtmCascadeExtId = mtmCascadeExtId;
     }
 
     public Integer getMtmId() {

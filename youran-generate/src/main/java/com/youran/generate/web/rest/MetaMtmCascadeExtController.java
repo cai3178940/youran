@@ -30,51 +30,51 @@ import java.util.List;
  * @date 2019/09/21
  */
 @RestController
-@RequestMapping(WebConst.API_PATH + "/metaMtmCascadeExt")
+@RequestMapping(WebConst.API_PATH + "/meta_mtm_cascade_ext")
 public class MetaMtmCascadeExtController extends AbstractController implements MetaMtmCascadeExtAPI {
 
     @Autowired
     private MetaMtmCascadeExtService metaMtmCascadeExtService;
 
     @Override
-    @PostMapping
+    @PostMapping(value = "/save")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaMtmCascadeExtShowVO> save(@Valid @RequestBody MetaMtmCascadeExtAddDTO metaMtmCascadeExtAddDTO) throws Exception {
         MetaMtmCascadeExtPO metaMtmCascadeExt = metaMtmCascadeExtService.save(metaMtmCascadeExtAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/metaMtmCascadeExt/" + metaMtmCascadeExt.getCascadeMtmExtId()))
+        return ResponseEntity.created(new URI(apiPath +"/metaMtmCascadeExt/" + metaMtmCascadeExt.getMtmCascadeExtId()))
             .body(MetaMtmCascadeExtMapper.INSTANCE.toShowVO(metaMtmCascadeExt));
     }
 
     @Override
-    @PutMapping
+    @PutMapping(value = "/update")
     public ResponseEntity<MetaMtmCascadeExtShowVO> update(@Valid @RequestBody MetaMtmCascadeExtUpdateDTO metaMtmCascadeExtUpdateDTO) {
         MetaMtmCascadeExtPO metaMtmCascadeExt = metaMtmCascadeExtService.update(metaMtmCascadeExtUpdateDTO);
         return ResponseEntity.ok(MetaMtmCascadeExtMapper.INSTANCE.toShowVO(metaMtmCascadeExt));
     }
 
     @Override
-    @GetMapping
+    @GetMapping(value = "/list")
     public ResponseEntity<List<MetaMtmCascadeExtListVO>> list(@Valid MetaMtmCascadeExtQO metaMtmCascadeExtQO) {
         List<MetaMtmCascadeExtListVO> list = metaMtmCascadeExtService.list(metaMtmCascadeExtQO);
         return ResponseEntity.ok(list);
     }
 
     @Override
-    @GetMapping(value = "/{cascadeMtmExtId}")
-    public ResponseEntity<MetaMtmCascadeExtShowVO> show(@PathVariable Integer cascadeMtmExtId) {
-        MetaMtmCascadeExtShowVO metaMtmCascadeExtShowVO = metaMtmCascadeExtService.show(cascadeMtmExtId);
+    @GetMapping(value = "/{mtmCascadeExtId}")
+    public ResponseEntity<MetaMtmCascadeExtShowVO> show(@PathVariable Integer mtmCascadeExtId) {
+        MetaMtmCascadeExtShowVO metaMtmCascadeExtShowVO = metaMtmCascadeExtService.show(mtmCascadeExtId);
         return ResponseEntity.ok(metaMtmCascadeExtShowVO);
     }
 
     @Override
-    @DeleteMapping(value = "/{cascadeMtmExtId}")
-    public ResponseEntity<Integer> delete(@PathVariable Integer cascadeMtmExtId) {
-        int count = metaMtmCascadeExtService.delete(cascadeMtmExtId);
+    @DeleteMapping(value = "/{mtmCascadeExtId}")
+    public ResponseEntity<Integer> delete(@PathVariable Integer mtmCascadeExtId) {
+        int count = metaMtmCascadeExtService.delete(mtmCascadeExtId);
         return ResponseEntity.ok(count);
     }
 
     @Override
-    @DeleteMapping
+    @PutMapping
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] id) {
         if(ArrayUtils.isEmpty(id)){
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);

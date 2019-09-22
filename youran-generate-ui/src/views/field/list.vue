@@ -129,7 +129,7 @@
       </el-table-column>
     </el-table>
 
-    <!--<template v-if="mtmEntities.holds.length || mtmEntities.unholds.length">-->
+<!--    <template v-if="mtmEntities.holds.length || mtmEntities.unholds.length">-->
     <template v-if="false" >
       <!-- 纯表头 -->
       <div class="mtmEntitiesHeader" style="margin-top: 20px;">
@@ -154,7 +154,7 @@
           <el-table-column width="130">
             <template slot-scope="scope">
               <el-badge :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
-                <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
+                <el-button @click="handleShowMtmCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
               </el-badge>
             </template>
           </el-table-column>
@@ -170,7 +170,7 @@
           <el-table-column width="130">
             <template slot-scope="scope">
               <el-badge :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
-                <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
+                <el-button @click="handleShowMtmCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
               </el-badge>
             </template>
           </el-table-column>
@@ -289,8 +289,11 @@
       </div>
     </el-dialog>
 
-    <el-dialog class="cascadeExtDialog" title="级联扩展" :visible.sync="cascadeExtListVisible" width="60%">
+    <el-dialog class="cascadeExtDialog" title="外键级联扩展" :visible.sync="cascadeExtListVisible" width="60%">
       <cascade-ext-list ref="cascadeExtList" @cascadeFieldNumChange="resetCascadeFieldNum" @cascadeFieldNumAdd="addCascadeFieldNum"></cascade-ext-list>
+    </el-dialog>
+    <el-dialog class="cascadeExtDialog" title="多对多级联扩展" :visible.sync="mtmCascadeExtListVisible" width="60%">
+      <mtm-cascade-ext-list ref="mtmCascadeExtList" @cascadeFieldNumChange="resetMtmCascadeFieldNum" @cascadeFieldNumAdd="addMtmCascadeFieldNum"></mtm-cascade-ext-list>
     </el-dialog>
     <!-- 所有复制按钮上的浮动小红点 -->
     <meteor v-for="field in list" :key="field.fieldId" :ref="'meteor'+field.fieldId"></meteor>
@@ -300,6 +303,7 @@
 <script>
 import Vue from 'vue'
 import cascadeExtList from '../cascadeExt/list'
+import mtmCascadeExtList from '../mtmCascadeExt/list'
 import options from '@/components/options'
 import { apiPath } from '@/components/common'
 import fieldTemplate from '@/components/fieldTemplate'
@@ -312,6 +316,7 @@ export default {
   props: ['projectId', 'entityId'],
   components: {
     'cascade-ext-list': cascadeExtList,
+    'mtm-cascade-ext-list': mtmCascadeExtList,
     meteor
   },
   data () {
@@ -342,6 +347,7 @@ export default {
       addImmFieldIds: [],
       loading: false,
       cascadeExtListVisible: false,
+      mtmCascadeExtListVisible: false,
       mtmEntitiesLoading: false,
       mtmEntities: {
         holds: [],
@@ -605,17 +611,59 @@ export default {
     handleShow (row) {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/show/${row.fieldId}`)
     },
-    handleShowCascadeExt (row) {
+    /**
+     * 显示外键级联扩展
+     * @param field 字段记录
+     */
+    handleShowCascadeExt (field) {
       this.cascadeExtListVisible = true
-      Vue.nextTick(() => this.$refs.cascadeExtList.init(row.entityId, row.fieldId, row.foreignEntityId))
+      Vue.nextTick(() => this.$refs.cascadeExtList.init(field.entityId, field.fieldId, field.foreignEntityId))
     },
+    /**
+     * 重置外键级联扩展的字段数量
+     */
     resetCascadeFieldNum (fieldId, cascadeFieldNum) {
       const field = this.list.find(field => field.fieldId === fieldId)
       field.cascadeFieldNum = cascadeFieldNum
     },
+    /**
+     * 增加外键级联扩展的字段数量
+     */
     addCascadeFieldNum (fieldId, num) {
       const field = this.list.find(field => field.fieldId === fieldId)
       field.cascadeFieldNum += num
+    },
+    /**
+     * 显示多对多级联扩展
+     * @param mtmEntity 多对多级联实体
+     */
+    handleShowMtmCascadeExt (mtmEntity) {
+      this.mtmCascadeExtListVisible = true
+      Vue.nextTick(() => this.$refs.mtmCascadeExtList.init(mtmEntity.mtmId, parseInt(this.entityId), mtmEntity.entityId))
+    },
+    /**
+     * 查询多对多关联实体
+     */
+    getMtmEntity (mtmId, cascadeEntityId) {
+      let mtmEntity = this.mtmEntities.holds.find(mtmEntity => mtmEntity.mtmId === mtmId && mtmEntity.entityId === cascadeEntityId)
+      if (!mtmEntity) {
+        mtmEntity = this.mtmEntities.unholds.find(mtmEntity => mtmEntity.mtmId === mtmId && mtmEntity.entityId === cascadeEntityId)
+      }
+      return mtmEntity
+    },
+    /**
+     * 重置外键级联扩展的字段数量
+     */
+    resetMtmCascadeFieldNum (mtmId, cascadeEntityId, cascadeFieldNum) {
+      const mtmEntity = this.getMtmEntity(mtmId, cascadeEntityId)
+      mtmEntity.cascadeFieldNum = cascadeFieldNum
+    },
+    /**
+     * 增加外键级联扩展的字段数量
+     */
+    addMtmCascadeFieldNum (mtmId, cascadeEntityId, num) {
+      const mtmEntity = this.getMtmEntity(mtmId, cascadeEntityId)
+      mtmEntity.cascadeFieldNum += num
     },
     handleIndexCommand (command) {
       this[command.method](...command.arg)

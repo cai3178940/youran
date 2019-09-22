@@ -16,7 +16,7 @@ public class MetaMtmCascadeExtPO extends AbstractPO implements CreatedOperatedDe
     /**
      * 主键ID
      */
-    private Integer cascadeMtmExtId;
+    private Integer mtmCascadeExtId;
 
     /**
      * 多对多id
@@ -89,12 +89,12 @@ public class MetaMtmCascadeExtPO extends AbstractPO implements CreatedOperatedDe
     private Boolean deleted;
 
 
-    public Integer getCascadeMtmExtId() {
-        return this.cascadeMtmExtId;
+    public Integer getMtmCascadeExtId() {
+        return mtmCascadeExtId;
     }
 
-    public void setCascadeMtmExtId(Integer cascadeMtmExtId) {
-        this.cascadeMtmExtId = cascadeMtmExtId;
+    public void setMtmCascadeExtId(Integer mtmCascadeExtId) {
+        this.mtmCascadeExtId = mtmCascadeExtId;
     }
 
     public Integer getMtmId() {

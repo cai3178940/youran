@@ -6,7 +6,7 @@
 
 
     <sql id="metaMtmCascadeExtColumns">
-        ${alias}.cascade_mtm_ext_id as cascadeMtmExtId,
+        ${alias}.mtm_cascade_ext_id as mtmCascadeExtId,
         ${alias}.mtm_id as mtmId,
         ${alias}.entity_id as entityId,
         ${alias}.cascade_entity_id as cascadeEntityId,
@@ -30,7 +30,7 @@
         from meta_mtm_cascade_ext t
         <where>
             and t.deleted=0
-            and t.cascade_mtm_ext_id = #{arg0}
+            and t.mtm_cascade_ext_id = #{arg0}
         </where>
         limit 1
     </select>
@@ -39,13 +39,13 @@
         select count(1) from meta_mtm_cascade_ext
         <where>
             and deleted=0
-            and cascade_mtm_ext_id = #{arg0}
+            and mtm_cascade_ext_id = #{arg0}
         </where>
     </select>
 
-    <insert id="_save" useGeneratedKeys="true" keyProperty="cascadeMtmExtId" parameterType="MetaMtmCascadeExtPO">
+    <insert id="_save" useGeneratedKeys="true" keyProperty="mtmCascadeExtId" parameterType="MetaMtmCascadeExtPO">
         insert into meta_mtm_cascade_ext(
-        cascade_mtm_ext_id,
+        mtm_cascade_ext_id,
         mtm_id,
         entity_id,
         cascade_entity_id,
@@ -61,7 +61,7 @@
         version,
         deleted
         ) VALUES (
-        #{cascadeMtmExtId,jdbcType=INTEGER},
+        #{mtmCascadeExtId,jdbcType=INTEGER},
         #{mtmId,jdbcType=INTEGER},
         #{entityId,jdbcType=INTEGER},
         #{cascadeEntityId,jdbcType=INTEGER},
@@ -94,14 +94,14 @@
             operated_by=#{operatedBy,jdbcType=VARCHAR},
             version = version+1,
             deleted=#{deleted,jdbcType=BOOLEAN}
-        where cascade_mtm_ext_id=#{cascadeMtmExtId,jdbcType=INTEGER}
+        where mtm_cascade_ext_id=#{mtmCascadeExtId,jdbcType=INTEGER}
         and version=#{version,jdbcType=INTEGER}
         and deleted=0
     </update>
 
     <delete id="delete">
         update meta_mtm_cascade_ext set deleted=1
-        where cascade_mtm_ext_id=#{arg0,jdbcType=INTEGER}
+        where mtm_cascade_ext_id=#{arg0,jdbcType=INTEGER}
         and deleted=0
     </delete>
 
@@ -136,8 +136,12 @@
 
     <select id="findListByQuery" parameterType="MetaMtmCascadeExtQO" resultType="MetaMtmCascadeExtListVO">
         select
-            <include refid="metaMtmCascadeExtColumns"><property name="alias" value="t"/></include>
+            <include refid="metaMtmCascadeExtColumns"><property name="alias" value="t"/></include>,
+            f.jfield_name as cascadeJfieldName,
+            f.field_desc as cascadeFieldDesc
         from meta_mtm_cascade_ext t
+        left outer join meta_field f
+            on t.cascade_field_id=f.field_id and f.deleted = 0
         <where>
             and t.deleted=0
         <include refid="queryCondition"/>

@@ -10,30 +10,30 @@ import java.util.List;
  */
 public class MetaEntityListPairVO {
 
-    private List<MetaEntityListVO> holds;
-    private List<MetaEntityListVO> unholds;
+    private List<MetaMtmEntityListVO> holds;
+    private List<MetaMtmEntityListVO> unholds;
 
     public MetaEntityListPairVO() {
     }
 
-    public MetaEntityListPairVO(List<MetaEntityListVO> holds, List<MetaEntityListVO> unholds) {
+    public MetaEntityListPairVO(List<MetaMtmEntityListVO> holds, List<MetaMtmEntityListVO> unholds) {
         this.holds = holds;
         this.unholds = unholds;
     }
 
-    public List<MetaEntityListVO> getHolds() {
+    public List<MetaMtmEntityListVO> getHolds() {
         return holds;
     }
 
-    public void setHolds(List<MetaEntityListVO> holds) {
+    public void setHolds(List<MetaMtmEntityListVO> holds) {
         this.holds = holds;
     }
 
-    public List<MetaEntityListVO> getUnholds() {
+    public List<MetaMtmEntityListVO> getUnholds() {
         return unholds;
     }
 
-    public void setUnholds(List<MetaEntityListVO> unholds) {
+    public void setUnholds(List<MetaMtmEntityListVO> unholds) {
         this.unholds = unholds;
     }
 }

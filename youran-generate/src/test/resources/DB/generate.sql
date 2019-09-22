@@ -211,7 +211,7 @@ CREATE TABLE `meta_cascade_ext` (
 DROP TABLE IF EXISTS `meta_mtm_cascade_ext`;
 
 CREATE TABLE `meta_mtm_cascade_ext` (
-    `cascade_mtm_ext_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `mtm_cascade_ext_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
     `mtm_id` int(11) NOT NULL COMMENT '多对多id',
     `entity_id` int(11) NOT NULL COMMENT '实体id',
     `cascade_entity_id` int(11) NOT NULL COMMENT '级联所属实体id',
@@ -226,7 +226,7 @@ CREATE TABLE `meta_mtm_cascade_ext` (
     `operated_by` varchar(20) NOT NULL COMMENT '修改人【最大长度20】',
     `version` int(11) NOT NULL COMMENT '乐观锁版本号【整型】',
     `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
-    PRIMARY KEY (`cascade_mtm_ext_id`),
+    PRIMARY KEY (`mtm_cascade_ext_id`),
     KEY `IDX_CAS_MTM_EXT_1` (`mtm_id`,`entity_id`,`cascade_entity_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='多对多级联扩展';
 

@@ -34,11 +34,17 @@ public interface MetaFieldDAO extends DAO<MetaFieldPO> {
     int findCount(@Param("entityId")Integer entityId, @Param("fieldIdList")List<Integer> fieldIdList) ;
 
     /**
-     * 查询
+     * 查询实体中的所有字段名
      * @param entityId
      * @return
      */
     List<String> findJFieldNames(Integer entityId);
+    /**
+     * 查询实体中的所有查询字段名
+     * @param entityId
+     * @return
+     */
+    List<String> findJFieldNamesForQuery(Integer entityId);
 
 
 }

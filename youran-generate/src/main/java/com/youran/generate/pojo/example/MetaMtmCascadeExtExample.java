@@ -9,8 +9,8 @@ package com.youran.generate.pojo.example;
  */
 public class MetaMtmCascadeExtExample {
 
-    public static final String N_CASCADE_MTM_EXT_ID = "主键ID";
-    public static final String E_CASCADE_MTM_EXT_ID = "1";
+    public static final String N_MTM_CASCADE_EXT_ID = "主键ID";
+    public static final String E_MTM_CASCADE_EXT_ID = "1";
     public static final String N_MTM_ID = "多对多id";
     public static final String E_MTM_ID = "1";
     public static final String N_ENTITY_ID = "实体id";

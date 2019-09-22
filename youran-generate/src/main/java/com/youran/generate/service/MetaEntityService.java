@@ -12,6 +12,7 @@ import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
+import com.youran.generate.pojo.vo.MetaMtmEntityListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -177,7 +178,7 @@ public class MetaEntityService {
      * @param hold 是否持有引用
      * @return
      */
-    public List<MetaEntityListVO> mtmEntityList(Integer entityId, boolean hold) {
+    public List<MetaMtmEntityListVO> mtmEntityList(Integer entityId, boolean hold) {
         return metaEntityDAO.findMtmEntityList(entityId,hold);
     }
 }

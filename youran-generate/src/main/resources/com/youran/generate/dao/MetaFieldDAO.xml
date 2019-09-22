@@ -108,7 +108,7 @@
             ,
             case when t.foreign_key=1
             then (select count(1) from meta_cascade_ext c where c.field_id=t.field_id and c.deleted=0)
-            else 0 end as cascadeFieldNum
+            else 0 end as cascade_field_num
         </if>
         from meta_field t
         where t.deleted=0
@@ -126,5 +126,11 @@
         select jfield_name from meta_field t
         where t.deleted=0
         and t.entity_id = #{entityId,jdbcType=INTEGER}
+    </select>
+    <select id="findJFieldNamesForQuery" resultType="java.lang.String">
+        select jfield_name from meta_field t
+        where t.deleted=0
+        and t.entity_id = #{entityId,jdbcType=INTEGER}
+        and t.`query` = 1
     </select>
 </mapper>

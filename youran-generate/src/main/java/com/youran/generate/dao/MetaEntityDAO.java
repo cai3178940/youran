@@ -2,7 +2,7 @@ package com.youran.generate.dao;
 
 import com.youran.common.dao.DAO;
 import com.youran.generate.pojo.po.MetaEntityPO;
-import com.youran.generate.pojo.vo.MetaEntityListVO;
+import com.youran.generate.pojo.vo.MetaMtmEntityListVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -45,8 +45,8 @@ public interface MetaEntityDAO extends DAO<MetaEntityPO> {
      * @param hold 是否持有引用
      * @return
      */
-    List<MetaEntityListVO> findMtmEntityList(@Param("entityId")Integer entityId,
-                                             @Param("hold")boolean hold);
+    List<MetaMtmEntityListVO> findMtmEntityList(@Param("entityId")Integer entityId,
+                                                @Param("hold")boolean hold);
 
 
 }

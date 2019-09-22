@@ -18,9 +18,9 @@ import static com.youran.generate.pojo.example.MetaMtmCascadeExtExample.*;
 @ApiModel(description = "修改【多对多级联扩展】的参数")
 public class MetaMtmCascadeExtUpdateDTO extends AbstractDTO {
 
-    @ApiModelProperty(notes = N_CASCADE_MTM_EXT_ID,example = E_CASCADE_MTM_EXT_ID,required = true)
+    @ApiModelProperty(notes = N_MTM_CASCADE_EXT_ID,example = E_MTM_CASCADE_EXT_ID,required = true)
     @NotNull
-    private Integer cascadeMtmExtId;
+    private Integer mtmCascadeExtId;
 
     @ApiModelProperty(notes = N_MTM_ID,example = E_MTM_ID,required = true)
     @NotNull
@@ -56,12 +56,12 @@ public class MetaMtmCascadeExtUpdateDTO extends AbstractDTO {
     private Integer query;
 
 
-    public Integer getCascadeMtmExtId() {
-        return this.cascadeMtmExtId;
+    public Integer getMtmCascadeExtId() {
+        return this.mtmCascadeExtId;
     }
 
-    public void setCascadeMtmExtId(Integer cascadeMtmExtId) {
-        this.cascadeMtmExtId = cascadeMtmExtId;
+    public void setMtmCascadeExtId(Integer mtmCascadeExtId) {
+        this.mtmCascadeExtId = mtmCascadeExtId;
     }
 
     public Integer getMtmId() {

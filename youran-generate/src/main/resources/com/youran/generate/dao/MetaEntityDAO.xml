@@ -101,8 +101,18 @@
         </where>
     </select>
 
-    <select id="findMtmEntityList" resultType="MetaEntityListVO">
-        select t2.*
+    <select id="findMtmEntityList" resultType="MetaMtmEntityListVO">
+        select
+            m.mtm_id,
+            (
+                select count(1)
+                from meta_mtm_cascade_ext c
+                where c.mtm_id=m.mtm_id
+                    and c.entity_id = t.entity_id
+                    and c.cascade_entity_id = t2.entity_id
+                    and c.deleted=0
+            ) as cascade_field_num,
+            t2.*
         from meta_entity t
         join meta_mtm m
             on t.entity_id = m.entity_id1
@@ -116,7 +126,17 @@
 
         union all
 
-        select t2.*
+        select
+            m.mtm_id,
+            (
+                select count(1)
+                from meta_mtm_cascade_ext c
+                where c.mtm_id=m.mtm_id
+                    and c.entity_id = t.entity_id
+                    and c.cascade_entity_id = t2.entity_id
+                    and c.deleted=0
+            ) as cascade_field_num,
+            t2.*
         from meta_entity t
         join meta_mtm m
             on t.entity_id = m.entity_id2

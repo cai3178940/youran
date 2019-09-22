@@ -1,12 +1,15 @@
 package com.youran.generate.service;
 
+import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
+import com.youran.generate.dao.MetaFieldDAO;
 import com.youran.generate.dao.MetaMtmCascadeExtDAO;
 import com.youran.generate.pojo.dto.MetaMtmCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaMtmCascadeExtUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaMtmCascadeExtMapper;
+import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaMtmCascadeExtPO;
 import com.youran.generate.pojo.qo.MetaMtmCascadeExtQO;
 import com.youran.generate.pojo.vo.MetaMtmCascadeExtListVO;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>Title: 【多对多级联扩展】删改查服务</p>
@@ -26,11 +30,14 @@ import java.util.List;
 @Service
 public class MetaMtmCascadeExtService {
 
-
-
     @Autowired
     private MetaMtmCascadeExtDAO metaMtmCascadeExtDAO;
-
+    @Autowired
+    private MetaProjectService metaProjectService;
+    @Autowired
+    private MetaFieldService metaFieldService;
+    @Autowired
+    private MetaFieldDAO metaFieldDAO;
 
     /**
      * 新增【多对多级联扩展】
@@ -39,8 +46,14 @@ public class MetaMtmCascadeExtService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaMtmCascadeExtPO save(MetaMtmCascadeExtAddDTO metaMtmCascadeExtDTO) {
+        Integer entityId = metaMtmCascadeExtDTO.getEntityId();
+        // 校验操作人
+        metaProjectService.checkOperatorByEntityId(entityId);
         MetaMtmCascadeExtPO metaMtmCascadeExt = MetaMtmCascadeExtMapper.INSTANCE.fromAddDTO(metaMtmCascadeExtDTO);
+        // 校验级联扩展
+        this.checkCascadeExtPO(metaMtmCascadeExt);
         metaMtmCascadeExtDAO.save(metaMtmCascadeExt);
+        metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaMtmCascadeExt;
     }
 
@@ -52,12 +65,17 @@ public class MetaMtmCascadeExtService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaMtmCascadeExtPO update(MetaMtmCascadeExtUpdateDTO metaMtmCascadeExtUpdateDTO) {
-        Integer cascadeMtmExtId = metaMtmCascadeExtUpdateDTO.getCascadeMtmExtId();
-        MetaMtmCascadeExtPO metaMtmCascadeExt = this.getMetaMtmCascadeExt(cascadeMtmExtId, true);
+        Integer mtmCascadeExtId = metaMtmCascadeExtUpdateDTO.getMtmCascadeExtId();
+        MetaMtmCascadeExtPO metaMtmCascadeExt = this.getMetaMtmCascadeExt(mtmCascadeExtId, true);
+        Integer entityId = metaMtmCascadeExt.getEntityId();
+        // 校验操作人
+        metaProjectService.checkOperatorByEntityId(entityId);
         MetaMtmCascadeExtMapper.INSTANCE.setUpdateDTO(metaMtmCascadeExt,metaMtmCascadeExtUpdateDTO);
         metaMtmCascadeExtDAO.update(metaMtmCascadeExt);
+        metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaMtmCascadeExt;
     }
+
     /**
      * 查询列表
      * @param metaMtmCascadeExtQO
@@ -70,12 +88,12 @@ public class MetaMtmCascadeExtService {
 
     /**
      * 根据主键获取【多对多级联扩展】
-     * @param cascadeMtmExtId 主键
+     * @param mtmCascadeExtId 主键
      * @param force 是否强制获取
      * @return
      */
-    public MetaMtmCascadeExtPO getMetaMtmCascadeExt(Integer cascadeMtmExtId, boolean force){
-        MetaMtmCascadeExtPO metaMtmCascadeExt = metaMtmCascadeExtDAO.findById(cascadeMtmExtId);
+    public MetaMtmCascadeExtPO getMetaMtmCascadeExt(Integer mtmCascadeExtId, boolean force){
+        MetaMtmCascadeExtPO metaMtmCascadeExt = metaMtmCascadeExtDAO.findById(mtmCascadeExtId);
         if (force && metaMtmCascadeExt == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
         }
@@ -85,29 +103,55 @@ public class MetaMtmCascadeExtService {
 
     /**
      * 查询【多对多级联扩展】详情
-     * @param cascadeMtmExtId
+     * @param mtmCascadeExtId
      * @return
      */
-    public MetaMtmCascadeExtShowVO show(Integer cascadeMtmExtId) {
-        MetaMtmCascadeExtPO metaMtmCascadeExt = this.getMetaMtmCascadeExt(cascadeMtmExtId, true);
+    public MetaMtmCascadeExtShowVO show(Integer mtmCascadeExtId) {
+        MetaMtmCascadeExtPO metaMtmCascadeExt = this.getMetaMtmCascadeExt(mtmCascadeExtId, true);
         MetaMtmCascadeExtShowVO showVO = MetaMtmCascadeExtMapper.INSTANCE.toShowVO(metaMtmCascadeExt);
+        MetaFieldPO cascadeField = metaFieldService.getField(metaMtmCascadeExt.getCascadeFieldId(),true);
+        showVO.setCascadeFieldDesc(cascadeField.getFieldDesc());
+        showVO.setCascadeJfieldName(cascadeField.getJfieldName());
         return showVO;
     }
 
     /**
      * 删除【多对多级联扩展】
-     * @param cascadeMtmExtIds
+     * @param mtmCascadeExtIds
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public int delete(Integer... cascadeMtmExtIds) {
+    public int delete(Integer... mtmCascadeExtIds) {
         int count = 0;
-        for (Integer cascadeMtmExtId : cascadeMtmExtIds) {
-            count += metaMtmCascadeExtDAO.delete(cascadeMtmExtId);
+        Integer entityId = null;
+        for (Integer mtmCascadeExtId : mtmCascadeExtIds) {
+            MetaMtmCascadeExtPO po = this.getMetaMtmCascadeExt(mtmCascadeExtId,false);
+            if(po==null){
+                continue;
+            }
+            entityId = po.getEntityId();
+            //校验操作人
+            metaProjectService.checkOperatorByEntityId(entityId);
+            count += metaMtmCascadeExtDAO.delete(mtmCascadeExtId);
+        }
+        if(count>0) {
+            metaProjectService.updateProjectVersionByEntityId(entityId);
         }
         return count;
     }
 
+
+    /**
+     * 校验级联扩展
+     * @param po
+     */
+    private void checkCascadeExtPO(MetaMtmCascadeExtPO po){
+        List<String> jFieldNames = metaFieldDAO.findJFieldNamesForQuery(po.getEntityId());
+        if(Objects.equals(BoolConst.TRUE, po.getQuery()) && jFieldNames.contains(po.getAlias())){
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"查询字段别名有冲突："+po.getAlias());
+        }
+        // TODO 校验当前实体下其他级联扩展字段
+    }
 
 }
 

@@ -49,18 +49,18 @@ public interface MetaMtmCascadeExtAPI {
      */
     @ApiOperation(value="查看【多对多级联扩展】详情")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "cascadeMtmExtId", dataType = "int", value = "【多对多级联扩展】id", paramType = "path"),
+        @ApiImplicitParam(name = "mtmCascadeExtId", dataType = "int", value = "【多对多级联扩展】id", paramType = "path"),
     })
-    ResponseEntity<MetaMtmCascadeExtShowVO> show(Integer cascadeMtmExtId);
+    ResponseEntity<MetaMtmCascadeExtShowVO> show(Integer mtmCascadeExtId);
 
     /**
      * 删除单个【多对多级联扩展】
      */
     @ApiOperation(value="删除单个【多对多级联扩展】")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "cascadeMtmExtId", dataType = "int", value = "【多对多级联扩展】id", paramType = "path"),
+        @ApiImplicitParam(name = "mtmCascadeExtId", dataType = "int", value = "【多对多级联扩展】id", paramType = "path"),
     })
-    ResponseEntity<Integer> delete(Integer cascadeMtmExtId);
+    ResponseEntity<Integer> delete(Integer mtmCascadeExtId);
 
     /**
      * 批量删除【多对多级联扩展】
