@@ -74,7 +74,7 @@ public class MetaMtmCascadeExtController extends AbstractController implements M
     }
 
     @Override
-    @PutMapping
+    @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] id) {
         if(ArrayUtils.isEmpty(id)){
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
