@@ -10,9 +10,13 @@ export default new Vuex.Store({
      */
     cacheFieldTemplateCount: 0,
     /**
-     * 缓存的字段模板
+     * 已缓存的字段模板
      */
-    cacheFieldTemplate: []
+    cacheFieldTemplate: [],
+    /**
+     * 待缓存的字段模板
+     */
+    toCacheFieldTemplate: []
   },
   getters: {
     /**
@@ -22,6 +26,14 @@ export default new Vuex.Store({
      */
     fieldCached (state) {
       return (fieldId) => !!state.cacheFieldTemplate.find(t => t.fieldId === fieldId)
+    },
+    /**
+     * 判断字段是否即将被缓存
+     * @param state
+     * @returns {function(*): boolean}
+     */
+    fieldToCache (state) {
+      return (fieldId) => !!state.toCacheFieldTemplate.find(t => t.fieldId === fieldId)
     }
   },
   mutations: {
@@ -47,6 +59,28 @@ export default new Vuex.Store({
       if (index < 0) {
         state.cacheFieldTemplate.push(field)
         state.cacheFieldTemplateCount++
+      }
+    },
+    /**
+     * 往待缓存列表中添加字段模板
+     * @param state
+     * @param field
+     */
+    addToCacheFieldTemplate: (state, field) => {
+      const index = state.toCacheFieldTemplate.findIndex(item => item.fieldId === field.fieldId)
+      if (index < 0) {
+        state.toCacheFieldTemplate.push(field)
+      }
+    },
+    /**
+     * 移除待缓存列表中的字段模板
+     * @param state
+     * @param field
+     */
+    removeToCacheFieldTemplate: (state, field) => {
+      const index = state.toCacheFieldTemplate.findIndex(item => item.fieldId === field.fieldId)
+      if (index > -1) {
+        state.toCacheFieldTemplate.splice(index, 1)
       }
     }
   }

@@ -121,7 +121,10 @@
         width="130">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
-          <el-button :ref="'copyButton'+scope.row.fieldId" :disabled="fieldCached(scope.row.fieldId)" @click="handleCopyOne(scope.row,$event)" type="text" size="medium" style="margin-left: 5px;">复制</el-button>
+          <el-button :ref="'copyButton'+scope.row.fieldId"
+                     :disabled="fieldCached(scope.row.fieldId) || fieldToCache(scope.row.fieldId)"
+                     @click="handleCopyOne(scope.row,$event)"
+                     type="text" size="medium" style="margin-left: 5px;">复制</el-button>
           <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
             <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
           </el-badge>
@@ -360,7 +363,10 @@ export default {
       'cacheFieldTemplateCount',
       'cacheFieldTemplate'
     ]),
-    ...mapGetters(['fieldCached'])
+    ...mapGetters([
+      'fieldCached',
+      'fieldToCache'
+    ])
   },
   watch: {
     indexes (value) {
@@ -406,7 +412,9 @@ export default {
   methods: {
     ...mapMutations([
       'removeFieldTemplate',
-      'addFieldTemplate'
+      'addFieldTemplate',
+      'addToCacheFieldTemplate',
+      'removeToCacheFieldTemplate'
     ]),
     getFieldFeatures: options.getFieldFeatures,
 
@@ -431,34 +439,29 @@ export default {
         .then(() => this.doQueryIndex())
         .catch(error => this.$common.showNotifyError(error))
     },
-    handleCopy () {
-      if (this.activeNum <= 0) {
-        this.$common.showMsg('warning', '请选择字段')
-        return
-      }
-      for (const item of this.selectItems) {
-        if (!this.fieldCached(item.fieldId)) {
-          this.addFieldTemplate(item)
-          this.showMeteor(item.fieldId)
-        }
-      }
-    },
     /**
      * 显示复制动画
      * @param fieldId
+     * @param duration 动画持续时长，毫秒
      */
-    showMeteor (fieldId) {
+    showMeteor (fieldId, duration) {
       // 注意：这里返回的是数组，所以取里面第一个
       const meteor = this.$refs['meteor' + fieldId][0]
       const copyButton = this.$refs['copyButton' + fieldId]
       meteor.init(copyButton.$el, this.$refs.copyButton.$el)
       meteor.adjust(10, 0, 90, -8)
-      meteor.show(500)
+      meteor.show(duration)
     },
     handleCopyOne (row) {
-      if (!this.fieldCached(row.fieldId)) {
-        this.addFieldTemplate(row)
-        this.showMeteor(row.fieldId)
+      if (!this.fieldCached(row.fieldId) && !this.fieldToCache(row.fieldId)) {
+        // 动画时长
+        const delay = 500
+        this.showMeteor(row.fieldId, delay)
+        this.addToCacheFieldTemplate(row)
+        setTimeout(() => {
+          this.removeToCacheFieldTemplate(row)
+          this.addFieldTemplate(row)
+        }, delay)
       }
     },
     initProjectOptions () {
