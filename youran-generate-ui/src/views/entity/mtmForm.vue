@@ -35,7 +35,7 @@
           <el-form-item label="实体1" prop="entityId1">
             <help-popover name="mtm.entityId1">
               <el-col :span="12" style="padding-left: 0px;">
-                <el-select v-model="form.entityId1" style="width:100%;" filterable placeholder="请选择实体1">
+                <el-select :disabled="!entityEditable" v-model="form.entityId1" style="width:100%;" filterable placeholder="请选择实体1">
                   <el-option
                     v-for="item in entityList"
                     :key="item.entityId"
@@ -55,7 +55,7 @@
           <el-form-item label="实体2" prop="entityId2">
             <help-popover name="mtm.entityId2">
               <el-col :span="12" style="padding-left: 0px;">
-                <el-select v-model="form.entityId2" style="width:100%;" filterable placeholder="请选择实体2">
+                <el-select :disabled="!entityEditable" v-model="form.entityId2" style="width:100%;" filterable placeholder="请选择实体2">
                   <el-option
                     v-for="item in entityList"
                     :key="item.entityId"
@@ -126,7 +126,9 @@ export default {
       entityList: [],
       old: initMtmFormBean(edit),
       form: initMtmFormBean(edit),
-      rules: getMtmRules()
+      rules: getMtmRules(),
+      // 实体是否可修改
+      entityEditable: true
     }
   },
   methods: {
@@ -184,6 +186,8 @@ export default {
   },
   created () {
     if (this.edit) {
+      // 不允许编辑实体
+      this.entityEditable = false
       Promise.all([this.getMtm(), this.queryProject(), this.queryEntity(this.projectId)])
         .then(() => this.reset())
     } else {
