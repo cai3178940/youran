@@ -107,4 +107,18 @@
         order by t.created_time
     </select>
 
+    <select id="cascadeFieldIdExists" resultType="java.lang.Boolean">
+        select
+            count(1)
+        from meta_cascade_ext t
+        where
+            t.deleted=0
+            and t.field_id = #{fieldId}
+            and t.cascade_entity_id = #{cascadeEntityId}
+            and t.cascade_field_id = #{cascadeFieldId}
+        <if test="cascadeExtId != null">
+            and t.cascade_ext_id != #{cascadeExtId}
+        </if>
+    </select>
+
 </mapper>

@@ -152,5 +152,18 @@
 
     <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
 
+    <select id="cascadeFieldIdExists" resultType="java.lang.Boolean">
+        select
+            count(1)
+        from meta_mtm_cascade_ext t
+        where
+            t.deleted=0
+            and t.mtm_id = #{mtmId}
+            and t.entity_id = #{entityId}
+            and t.cascade_field_id = #{cascadeFieldId}
+        <if test="mtmCascadeExtId != null">
+            and t.mtm_cascade_ext_id != #{mtmCascadeExtId}
+        </if>
+    </select>
 
 </mapper>

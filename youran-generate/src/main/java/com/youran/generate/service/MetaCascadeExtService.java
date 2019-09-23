@@ -78,14 +78,19 @@ public class MetaCascadeExtService {
 
     /**
      * 校验级联扩展
-     * @param metaCascadeExt
+     * @param po
      */
-    private void checkCascadeExtPO(MetaCascadeExtPO metaCascadeExt){
-        List<String> jFieldNames = metaFieldDAO.findJFieldNames(metaCascadeExt.getEntityId());
-        if(jFieldNames.contains(metaCascadeExt.getAlias())){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"当前实体中存在字段名："+metaCascadeExt.getAlias());
+    private void checkCascadeExtPO(MetaCascadeExtPO po){
+        List<String> jFieldNames = metaFieldDAO.findJFieldNames(po.getEntityId());
+        if(jFieldNames.contains(po.getAlias())){
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"当前实体中存在字段名："+po.getAlias());
         }
-
+        // 校验重复添加
+        boolean exists = metaCascadeExtDAO.cascadeFieldIdExists(po.getFieldId(),po.getCascadeEntityId(),
+            po.getCascadeFieldId(), po.getCascadeExtId());
+        if(exists){
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"字段重复");
+        }
         // TODO 校验当前实体下其他级联扩展字段
     }
 

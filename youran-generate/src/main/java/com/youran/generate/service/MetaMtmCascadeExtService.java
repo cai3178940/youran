@@ -71,6 +71,8 @@ public class MetaMtmCascadeExtService {
         // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
         MetaMtmCascadeExtMapper.INSTANCE.setUpdateDTO(metaMtmCascadeExt,metaMtmCascadeExtUpdateDTO);
+        // 校验级联扩展
+        this.checkCascadeExtPO(metaMtmCascadeExt);
         metaMtmCascadeExtDAO.update(metaMtmCascadeExt);
         metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaMtmCascadeExt;
@@ -149,6 +151,12 @@ public class MetaMtmCascadeExtService {
         List<String> jFieldNames = metaFieldDAO.findJFieldNamesForQuery(po.getEntityId());
         if(Objects.equals(BoolConst.TRUE, po.getQuery()) && jFieldNames.contains(po.getAlias())){
             throw new BusinessException(ErrorCode.BAD_PARAMETER,"查询字段别名有冲突："+po.getAlias());
+        }
+        // 校验重复添加
+        boolean exists = metaMtmCascadeExtDAO.cascadeFieldIdExists(po.getMtmId(),po.getEntityId(),
+            po.getCascadeFieldId(), po.getMtmCascadeExtId());
+        if(exists){
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"字段重复");
         }
         // TODO 校验当前实体下其他级联扩展字段
     }

@@ -132,8 +132,8 @@
       </el-table-column>
     </el-table>
 
-<!--    <template v-if="mtmEntities.holds.length || mtmEntities.unholds.length">-->
-    <template v-if="false" >
+    <template v-if="mtmEntities.holds.length || mtmEntities.unholds.length">
+<!--    <template v-if="false" >-->
       <!-- 纯表头 -->
       <div class="mtmEntitiesHeader" style="margin-top: 20px;">
         <el-table :data="[]" style="width: 100%" :border="true">
@@ -157,7 +157,7 @@
           <el-table-column width="130">
             <template slot-scope="scope">
               <el-badge :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
-                <el-button @click="handleShowMtmCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
+                <el-button @click="handleShowMtmCascadeExt(scope.row, true)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
               </el-badge>
             </template>
           </el-table-column>
@@ -173,7 +173,7 @@
           <el-table-column width="130">
             <template slot-scope="scope">
               <el-badge :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
-                <el-button @click="handleShowMtmCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
+                <el-button @click="handleShowMtmCascadeExt(scope.row, false)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
               </el-badge>
             </template>
           </el-table-column>
@@ -640,9 +640,9 @@ export default {
      * 显示多对多级联扩展
      * @param mtmEntity 多对多级联实体
      */
-    handleShowMtmCascadeExt (mtmEntity) {
+    handleShowMtmCascadeExt (mtmEntity, hold) {
       this.mtmCascadeExtListVisible = true
-      Vue.nextTick(() => this.$refs.mtmCascadeExtList.init(mtmEntity.mtmId, parseInt(this.entityId), mtmEntity.entityId))
+      Vue.nextTick(() => this.$refs.mtmCascadeExtList.init(hold, mtmEntity.mtmId, parseInt(this.entityId), mtmEntity.entityId))
     },
     /**
      * 查询多对多关联实体

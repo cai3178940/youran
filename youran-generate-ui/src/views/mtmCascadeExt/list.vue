@@ -44,7 +44,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="列表展示" width="120px">
+      <el-table-column v-if="this.hold" label="列表展示" width="120px">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.list"
                      :active-value="1"
@@ -53,7 +53,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="详情展示" width="120px">
+      <el-table-column v-if="this.hold" label="详情展示" width="120px">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.show"
                      :active-value="1"
@@ -85,9 +85,9 @@ const cascadeExtModel = {
   // 别名
   alias: '',
   // 是否在列表中展示
-  list: 1,
+  list: 0,
   // 是否在详情中展示
-  show: 1,
+  show: 0,
   // 是否为查询条件
   query: 1,
   // 级联实体的id
@@ -110,11 +110,13 @@ export default {
       activeNum: 0,
       selectItems: [],
       list: [],
-      loading: false
+      loading: false,
+      hold: false
     }
   },
   methods: {
-    init (mtmId, entityId, cascadeEntityId) {
+    init (hold, mtmId, entityId, cascadeEntityId) {
+      this.hold = hold
       this.mtmId = mtmId
       this.entityId = entityId
       this.cascadeEntityId = cascadeEntityId

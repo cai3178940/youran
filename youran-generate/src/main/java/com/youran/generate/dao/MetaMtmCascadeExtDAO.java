@@ -5,6 +5,7 @@ import com.youran.generate.pojo.po.MetaMtmCascadeExtPO;
 import com.youran.generate.pojo.qo.MetaMtmCascadeExtQO;
 import com.youran.generate.pojo.vo.MetaMtmCascadeExtListVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,6 +26,19 @@ public interface MetaMtmCascadeExtDAO extends DAO<MetaMtmCascadeExtPO> {
      * @return
      */
     List<MetaMtmCascadeExtListVO> findListByQuery(MetaMtmCascadeExtQO metaMtmCascadeExtQO);
+
+    /**
+     * 判断级联字段id是否存在
+     * @param mtmId 级联所属多对多
+     * @param entityId 级联所属实体
+     * @param cascadeFieldId 待检测的字段id
+     * @param mtmCascadeExtId 需要排除的主键
+     * @return
+     */
+    boolean cascadeFieldIdExists(@Param("mtmId")Integer mtmId,
+                                 @Param("entityId")Integer entityId,
+                                 @Param("cascadeFieldId")Integer cascadeFieldId,
+                                 @Param("mtmCascadeExtId")Integer mtmCascadeExtId);
 
 
 }
