@@ -1,6 +1,6 @@
 package com.youran.generate;
 
-import com.youran.common.util.H2Util;
+import com.youran.generate.util.H2Util;
 import org.h2.engine.Mode;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;

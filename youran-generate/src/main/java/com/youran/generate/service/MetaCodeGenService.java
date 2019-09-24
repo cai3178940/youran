@@ -6,7 +6,7 @@ import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.common.util.DateUtil;
-import com.youran.common.util.H2Util;
+import com.youran.common.util.TempDirUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.constant.DevMode;
 import com.youran.generate.constant.TemplateEnum;
@@ -72,7 +72,7 @@ public class MetaCodeGenService implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         // 获取代码目录
-        String appCodeDir = H2Util.getTmpDir(appName, false, false);
+        String appCodeDir = TempDirUtil.getTmpDir(appName, false, false);
         File tmpDirFile = new File(appCodeDir);
         FileUtils.deleteDirectory(tmpDirFile);
     }
@@ -185,7 +185,7 @@ public class MetaCodeGenService implements InitializingBean {
      * @return /[tmp目录]/[spring.application.name]/[youran.version]/[projectId]/[projectVersion]
      */
     public String getProjectRecentDir(MetaProjectPO project){
-        String projectDir = H2Util.getTmpDir(appName, false, false)
+        String projectDir = TempDirUtil.getTmpDir(appName, false, false)
             +File.separator+generateProperties.getVersion()
             +File.separator+project.getProjectId()
             +File.separator+project.getProjectVersion();

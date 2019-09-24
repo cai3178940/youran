@@ -149,6 +149,13 @@
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
             </dependency>
+            <!-- 单元测试使用mysql脚本转H2 -->
+            <dependency>
+                <groupId>com.parmet</groupId>
+                <artifactId>mysql2h2-parser</artifactId>
+                <version>0.2.1</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
