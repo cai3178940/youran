@@ -21,7 +21,6 @@
             <artifactId>${this.originProjectName}-core</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -33,17 +32,23 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- 正式环境使用mysql数据库 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <!-- 单元测试使用H2内存数据库 -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- 正式环境使用mysql数据库 -->
+        <!-- 单元测试中mysql脚本转H2 -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+            <groupId>com.parmet</groupId>
+            <artifactId>mysql2h2-parser</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- swagger依赖 @ https://github.com/SpringForAll/spring-boot-starter-swagger -->

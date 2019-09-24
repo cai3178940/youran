@@ -51,7 +51,7 @@ public enum TemplateEnum {
     ReplyVO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/ReplyVO.java.ftl"),
     ConvertUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/ConvertUtil.java.ftl"),
     DateUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/DateUtil.java.ftl"),
-    H2Util(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/H2Util.java.ftl"),
+    TempDirUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/TempDirUtil.java.ftl"),
     JsonUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/JsonUtil.java.ftl"),
     MessageSourceUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/MessageSourceUtil.java.ftl"),
     SafeUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/SafeUtil.java.ftl"),
@@ -117,6 +117,7 @@ public enum TemplateEnum {
     Main(COMMON, "{webModule}/src/test/java/{packageName}/Main.java.ftl"),
     TestConfiguration(COMMON, "{webModule}/src/test/java/{packageName}/TestConfiguration.java.ftl"),
     Helper(ENTITY, "{webModule}/src/test/java/{packageName}/help/{ClassName}Helper.java.ftl"),
+    H2Util(COMMON, "{webModule}/src/test/java/{packageName}/util/H2Util.java.ftl"),
     AbstractWebTest(COMMON, "{webModule}/src/test/java/{packageName}/web/AbstractWebTest.java.ftl"),
     ControllerTest(ENTITY, "{webModule}/src/test/java/{packageName}/web/rest/{ClassName}ControllerTest.java.ftl"),
 

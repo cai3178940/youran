@@ -1,28 +1,21 @@
-package com.youran.generate.util;
-
-import com.google.common.base.Joiner;
-import com.granveaud.mysql2h2converter.SQLParserManager;
-import com.granveaud.mysql2h2converter.sql.*;
-import com.youran.common.util.TempDirUtil;
-import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-
-/**
- * <p>Title:H2数据库工具类</p>
- * <p>Description:</p>
- * @author: june
- * @author: cbb
- * @date: 2019/9/24
- */
+<#include "/common.ftl">
+<#--定义主体代码-->
+<#assign code>
+    <@call this.addImport("${this.commonPackage}.util.TempDirUtil")/>
+    <@call this.addImport("com.google.common.base.Joiner")/>
+    <@call this.addImport("com.granveaud.mysql2h2converter.SQLParserManager")/>
+    <@call this.addImport("com.granveaud.mysql2h2converter.sql.*")/>
+    <@call this.addImport("org.apache.commons.io.FileUtils")/>
+    <@call this.addImport("org.slf4j.Logger")/>
+    <@call this.addImport("org.slf4j.LoggerFactory")/>
+    <@call this.addImport("java.io.BufferedReader")/>
+    <@call this.addImport("java.io.File")/>
+    <@call this.addImport("java.io.InputStream")/>
+    <@call this.addImport("java.io.InputStreamReader")/>
+    <@call this.addImport("java.net.URL")/>
+    <@call this.addImport("java.nio.charset.StandardCharsets")/>
+    <@call this.addImport("java.util.*")/>
+    <@call this.printClassCom("H2数据库工具类")/>
 public class H2Util {
 
     /**
@@ -338,3 +331,11 @@ public class H2Util {
         }
     }
 }
+</#assign>
+<#--开始渲染代码-->
+package ${this.packageName}.util;
+
+<@call this.printImport()/>
+
+${code}
+

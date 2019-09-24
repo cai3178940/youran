@@ -1,7 +1,7 @@
 <#include "/common.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@call this.addImport("${this.commonPackage}.util.H2Util")/>
+<@call this.addImport("${this.packageName}.util.H2Util")/>
 <@call this.addImport("org.h2.engine.Mode")/>
 <@call this.addImport("org.springframework.beans.factory.InitializingBean")/>
 <@call this.addImport("org.springframework.jdbc.core.JdbcTemplate")/>

@@ -32,6 +32,7 @@
         <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
         <jsoup.version>1.11.2</jsoup.version>
         <h2.version>1.4.193</h2.version>
+        <mysql2h2.version>0.2.1</mysql2h2.version>
         <spring-boot-swagger.version><#if this.bootVersion==2>1.9.0.RELEASE<#else>1.6.0.RELEASE</#if></spring-boot-swagger.version>
     </properties>
 
@@ -99,6 +100,12 @@
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${r'$'}{h2.version}</version>
+            </dependency>
+            <!-- 单元测试使用mysql脚本转H2 -->
+            <dependency>
+                <groupId>com.parmet</groupId>
+                <artifactId>mysql2h2-parser</artifactId>
+                <version>${r'$'}{mysql2h2.version}</version>
             </dependency>
             <!-- mapstruct提供属性映射功能 http://mapstruct.org/ -->
             <dependency>
