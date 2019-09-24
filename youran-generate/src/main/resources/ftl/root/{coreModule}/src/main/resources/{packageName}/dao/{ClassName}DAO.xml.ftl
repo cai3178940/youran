@@ -260,7 +260,7 @@
 
     </#if>
 </#list>
-    <#list this.metaEntity.holds! as otherEntity,mtm>
+    <#list this.holds! as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherType=otherPk.jfieldType>
@@ -345,7 +345,7 @@
     </delete>
 
     </#list>
-    <#list this.metaEntity.unHolds! as otherEntity,mtm>
+    <#list this.unHolds! as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherType=otherPk.jfieldType>

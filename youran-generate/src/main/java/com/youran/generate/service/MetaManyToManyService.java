@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>Title:多对多关联增删改查服务</p>
@@ -44,13 +45,9 @@ public class MetaManyToManyService {
         Integer projectId = metaManyToManyDTO.getProjectId();
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
-        if (!metaEntityDAO.exist(metaManyToManyDTO.getEntityId1())) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"entityId1参数有误");
-        }
-        if (!metaEntityDAO.exist(metaManyToManyDTO.getEntityId2())) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"entityId2参数有误");
-        }
         MetaManyToManyPO metaManyToMany = MetaManyToManyMapper.INSTANCE.fromAddDTO(metaManyToManyDTO);
+        //校验数据是否合法
+        this.checkManyToMany(metaManyToMany);
         metaManyToManyDAO.save(metaManyToMany);
         metaProjectService.updateProjectVersion(projectId);
         return metaManyToMany;
@@ -64,21 +61,33 @@ public class MetaManyToManyService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaManyToManyPO update(MetaManyToManyUpdateDTO metaManyToManyUpdateDTO) {
-        if (!metaEntityDAO.exist(metaManyToManyUpdateDTO.getEntityId1())) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"entityId1参数有误");
-        }
-        if (!metaEntityDAO.exist(metaManyToManyUpdateDTO.getEntityId2())) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"entityId2参数有误");
-        }
         Integer mtmId = metaManyToManyUpdateDTO.getMtmId();
         MetaManyToManyPO metaManyToMany = this.getMetaManyToMany(mtmId,true);
         Integer projectId = metaManyToMany.getProjectId();
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
         MetaManyToManyMapper.INSTANCE.setPO(metaManyToMany, metaManyToManyUpdateDTO);
+        //校验数据是否合法
+        this.checkManyToMany(metaManyToMany);
         metaManyToManyDAO.update(metaManyToMany);
         metaProjectService.updateProjectVersion(projectId);
         return metaManyToMany;
+    }
+
+    /**
+     * 校验多对多是否合法
+     * @param mtm
+     */
+    private void checkManyToMany(MetaManyToManyPO mtm){
+        if (!metaEntityDAO.exist(mtm.getEntityId1())) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"entityId1参数有误");
+        }
+        if (!metaEntityDAO.exist(mtm.getEntityId2())) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"entityId2参数有误");
+        }
+        if(Objects.equals(mtm.getEntityId1(),mtm.getEntityId2())){
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"不支持同一个实体跟自己建立多对多关系");
+        }
     }
 
     /**

@@ -86,7 +86,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
         return ResponseEntity.ok(count);
     }
 
-<#list this.metaEntity.holds! as otherEntity,mtm>
+<#list this.holds! as otherEntity,mtm>
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>

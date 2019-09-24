@@ -90,7 +90,7 @@
             .andExpect(jsonPath("$").value(is(1)));
     }
 
-    <#list this.metaEntity.holds! as otherEntity,mtm>
+    <#list this.holds! as otherEntity,mtm>
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>

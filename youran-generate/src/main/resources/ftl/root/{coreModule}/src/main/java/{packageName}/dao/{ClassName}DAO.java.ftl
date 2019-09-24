@@ -28,7 +28,7 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
 
     </#if>
 </#list>
-    <#list this.metaEntity.holds! as otherEntity,mtm>
+    <#list this.holds! as otherEntity,mtm>
         <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
         <@call this.addImport("java.util.List")/>
         <@call this.addImport("org.apache.ibatis.annotations.Param")/>
@@ -49,7 +49,7 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
     int removeAll${otherCName}(${this.type} ${theFkId});
 
     </#list>
-    <#list this.metaEntity.unHolds! as otherEntity,mtm>
+    <#list this.unHolds! as otherEntity,mtm>
         <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
         <@call this.addImport("java.util.List")/>
         <#assign otherCName=otherEntity.className/>

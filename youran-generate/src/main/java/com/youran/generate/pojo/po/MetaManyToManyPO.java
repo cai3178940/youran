@@ -1,5 +1,7 @@
 package com.youran.generate.pojo.po;
 
+import java.util.List;
+
 /**
  * <p>Title:多对多关联关系</p>
  * <p>Description:</p>
@@ -76,6 +78,16 @@ public class MetaManyToManyPO extends BasePO {
      * 引用实体B
      */
     private MetaEntityPO refer2;
+
+    /**
+     * 实体A持有的级联扩展列表
+     */
+    private List<MetaMtmCascadeExtPO> cascadeExtList1;
+
+    /**
+     * 实体B持有的级联扩展列表
+     */
+    private List<MetaMtmCascadeExtPO> cascadeExtList2;
 
 
     public String getSchemaName() {
@@ -198,5 +210,19 @@ public class MetaManyToManyPO extends BasePO {
         this.bigId = bigId;
     }
 
+    public List<MetaMtmCascadeExtPO> getCascadeExtList1() {
+        return cascadeExtList1;
+    }
 
+    public void setCascadeExtList1(List<MetaMtmCascadeExtPO> cascadeExtList1) {
+        this.cascadeExtList1 = cascadeExtList1;
+    }
+
+    public List<MetaMtmCascadeExtPO> getCascadeExtList2() {
+        return cascadeExtList2;
+    }
+
+    public void setCascadeExtList2(List<MetaMtmCascadeExtPO> cascadeExtList2) {
+        this.cascadeExtList2 = cascadeExtList2;
+    }
 }

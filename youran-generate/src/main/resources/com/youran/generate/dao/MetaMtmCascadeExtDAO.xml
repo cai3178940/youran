@@ -166,4 +166,15 @@
         </if>
     </select>
 
+    <select id="findByMtmIdAndEntityId" resultType="MetaMtmCascadeExtPO">
+        select
+        <include refid="metaMtmCascadeExtColumns"><property name="alias" value="t"/></include>
+        from meta_mtm_cascade_ext t
+        <where>
+            and t.deleted=0
+            and t.mtm_id = #{mtmId}
+            and t.entity_id = #{entityId}
+        </where>
+    </select>
+
 </mapper>

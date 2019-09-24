@@ -75,7 +75,7 @@ public interface ${this.classNameUpper}API {
     ResponseEntity<Integer> deleteBatch(${this.type}[] id);
 
 
-<#list this.metaEntity.holds! as otherEntity,mtm>
+<#list this.holds! as otherEntity,mtm>
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>

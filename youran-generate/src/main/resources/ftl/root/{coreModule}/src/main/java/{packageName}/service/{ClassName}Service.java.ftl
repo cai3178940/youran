@@ -21,13 +21,13 @@ public class ${this.classNameUpper}Service {
     <@call this.addAutowired("${this.packageName}.dao" "${this.classNameUpper}DAO")/>
 <#-- 引入多对多关联实体的DAO（当前持有） -->
 
-    <#list this.metaEntity.holds! as otherEntity,mtm>
+    <#list this.holds! as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
     </#list>
 
 <#-- 引入多对多关联实体的DAO（非当前持有） -->
-    <#list this.metaEntity.unHolds! as otherEntity,mtm>
+    <#list this.unHolds! as otherEntity,mtm>
         <@call this.addAutowired("${this.packageName}.dao" "${otherEntity.className?capFirst}DAO")/>
     </#list>
 <#-- 引入外键对应的DAO （插入字段对应的外键）-->
@@ -101,7 +101,7 @@ public class ${this.classNameUpper}Service {
         this.checkUnique(${this.className},false);
 </#if>
         ${this.className}DAO.save(${this.className});
-<#list this.metaEntity.holds! as otherEntity,mtm>
+<#list this.holds! as otherEntity,mtm>
     <@call this.addImport("java.util.List")/>
     <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
     <#assign otherPk=otherEntity.pkField>
@@ -135,7 +135,7 @@ public class ${this.classNameUpper}Service {
         this.checkUnique(${this.className},true);
 </#if>
         ${this.className}DAO.update(${this.className});
-<#list this.metaEntity.holds! as otherEntity,mtm>
+<#list this.holds! as otherEntity,mtm>
     <@call this.addImport("java.util.List")/>
     <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
     <#assign otherPk=otherEntity.pkField>
@@ -157,9 +157,9 @@ public class ${this.classNameUpper}Service {
      */
     public PageVO<${this.classNameUpper}ListVO> list(${this.classNameUpper}QO ${this.className}QO) {
         PageVO<${this.classNameUpper}ListVO> page = ${this.className}DAO.findByPage(${this.className}QO);
-        <#if this.metaEntity.holds!?hasContent>
+        <#if this.holds!?hasContent>
         for(${this.classNameUpper}ListVO listVO : page.getList()){
-            <#list this.metaEntity.holds! as otherEntity,mtm>
+            <#list this.holds! as otherEntity,mtm>
                 <#assign otherCName=otherEntity.className?capFirst>
                 <#assign othercName=otherEntity.className?uncapFirst>
             listVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(listVO.get${this.idUpper}()));
@@ -177,9 +177,9 @@ public class ${this.classNameUpper}Service {
      */
     public List<${this.classNameUpper}ListVO> list(${this.classNameUpper}QO ${this.className}QO) {
         List<${this.classNameUpper}ListVO> list = ${this.className}DAO.findListByQuery(${this.className}QO);
-        <#if this.metaEntity.holds!?hasContent>
+        <#if this.holds!?hasContent>
         for(${this.classNameUpper}ListVO listVO : list){
-            <#list this.metaEntity.holds! as otherEntity,mtm>
+            <#list this.holds! as otherEntity,mtm>
                 <#assign otherCName=otherEntity.className?capFirst>
                 <#assign othercName=otherEntity.className?uncapFirst>
             listVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(listVO.get${this.idUpper}()));
@@ -190,7 +190,7 @@ public class ${this.classNameUpper}Service {
     }
 </#if>
 
-    <#if this.metaEntity.holds!?hasContent>
+    <#if this.holds!?hasContent>
     /**
      * 根据主键获取【${this.title}】
      * 不获取多对多级联对象
@@ -200,7 +200,7 @@ public class ${this.classNameUpper}Service {
      */
     public ${this.classNameUpper}PO get${this.classNameUpper}(${this.type} ${this.id}, boolean force){
         <#assign withFalseCode="">
-        <#list this.metaEntity.holds! as otherEntity,mtm>
+        <#list this.holds! as otherEntity,mtm>
             <#assign withFalseCode=withFalseCode+"false, ">
         </#list>
         return this.get${this.classNameUpper}(${this.id}, ${withFalseCode}force);
@@ -211,7 +211,7 @@ public class ${this.classNameUpper}Service {
      * 根据主键获取【${this.title}】
      * @param ${this.id} 主键
     <#assign withHoldParam="">
-    <#list this.metaEntity.holds! as otherEntity,mtm>
+    <#list this.holds! as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign withParamName="with"+otherCName>
         <#assign withHoldParam=withHoldParam+"boolean with"+otherCName+", ">
@@ -225,7 +225,7 @@ public class ${this.classNameUpper}Service {
         if (force && ${this.className} == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
         }
-    <#list this.metaEntity.holds! as otherEntity,mtm>
+    <#list this.holds! as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
         if (with${otherCName}){
@@ -257,7 +257,7 @@ public class ${this.classNameUpper}Service {
         }
     </#if>
 </#list>
-<#list this.metaEntity.holds! as otherEntity,mtm>
+<#list this.holds! as otherEntity,mtm>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
         // 设置【${otherEntity.title}】列表
@@ -279,7 +279,7 @@ public class ${this.classNameUpper}Service {
     <#assign foreignCName=foreignEntity.className?capFirst>
             this.checkDeleteBy${foreignCName}(${this.id});
 </#list>
-<#list this.metaEntity.unHolds! as otherEntity,mtm>
+<#list this.unHolds! as otherEntity,mtm>
     <#assign otherCName=otherEntity.className?capFirst>
             // 校验是否存在【${otherEntity.title}】关联
             this.checkDeleteBy${otherCName}(${this.id});
@@ -310,7 +310,7 @@ public class ${this.classNameUpper}Service {
     }
 
 </#list>
-<#list this.metaEntity.unHolds! as otherEntity,mtm>
+<#list this.unHolds! as otherEntity,mtm>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
     /**
@@ -325,7 +325,7 @@ public class ${this.classNameUpper}Service {
     }
 
 </#list>
-<#list this.metaEntity.holds! as otherEntity,mtm>
+<#list this.holds! as otherEntity,mtm>
     <@call this.addImport("org.apache.commons.lang3.ArrayUtils")/>
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>

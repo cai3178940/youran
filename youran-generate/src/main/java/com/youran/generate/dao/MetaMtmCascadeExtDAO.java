@@ -40,6 +40,15 @@ public interface MetaMtmCascadeExtDAO extends DAO<MetaMtmCascadeExtPO> {
                                  @Param("cascadeFieldId")Integer cascadeFieldId,
                                  @Param("mtmCascadeExtId")Integer mtmCascadeExtId);
 
+    /**
+     * 根据多对多id和当前实体id查询【多对多级联扩展】
+     * @param mtmId
+     * @param entityId
+     * @return
+     */
+    List<MetaMtmCascadeExtPO> findByMtmIdAndEntityId(@Param("mtmId")Integer mtmId,
+                                         @Param("entityId")Integer entityId) ;
+
 
 }
 

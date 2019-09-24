@@ -1,18 +1,18 @@
 package com.youran.generate.pojo.template;
 
 import com.youran.common.constant.BoolConst;
-import com.youran.generate.pojo.po.MetaEntityPO;
-import com.youran.generate.pojo.po.MetaFieldPO;
-import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
+import com.youran.generate.pojo.po.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
 /**
  * <p>Title: 实体模型</p>
- * <p>Description: </p>
- *
+ * <p>Description: 将实体对象中的大部分属性拷贝到当前类中，并且额外提供了一些转换和封装</p>
  * @author cbb
  * @date 2018/8/3
  */
@@ -115,6 +115,26 @@ public class EntityModel extends BaseModel{
      */
     private MetaFieldPO operatedByField;
 
+    /**
+     * 持有引用的多对多关系
+     */
+    private Map<MetaEntityPO, MetaManyToManyPO> holds;
+
+    /**
+     * 未持有引用的多对多关系
+     */
+    private Map<MetaEntityPO, MetaManyToManyPO> unHolds;
+
+    /**
+     * 当前实体持有的级联实体，对应的级联扩展列表
+     */
+    private Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> holdCascadeExts;
+
+    /**
+     * 当前实体未持有的级联实体，对应的级联扩展列表
+     */
+    private Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> unHoldCascadeExts;
+
 
     public EntityModel(MetaProjectPO project,MetaEntityPO metaEntity){
         super(project);
@@ -142,8 +162,35 @@ public class EntityModel extends BaseModel{
         this.createdByField = metaEntity.getCreatedByField();
         this.operatedTimeField = metaEntity.getOperatedTimeField();
         this.operatedByField = metaEntity.getOperatedByField();
+        this.holds = metaEntity.getHolds();
+        this.unHolds = metaEntity.getUnHolds();
+        this.holdCascadeExts = mapCascadeExts(metaEntity.getHolds());
+        this.unHoldCascadeExts = mapCascadeExts(metaEntity.getUnHolds());
     }
 
+    /**
+     * 将<实体,多对多>格式的map映射为<实体,级联字段列表>
+     * @param map
+     * @return
+     */
+    private static Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> mapCascadeExts(Map<MetaEntityPO, MetaManyToManyPO> map){
+        if(MapUtils.isEmpty(map)){
+            return new HashMap<>(0);
+        }
+        Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> result = new HashMap<>(map.size());
+        for (Map.Entry<MetaEntityPO, MetaManyToManyPO> entry : map.entrySet()) {
+            MetaEntityPO entity = entry.getKey();
+            MetaManyToManyPO mtm = entry.getValue();
+            if(Objects.equals(mtm.getEntityId1(),entity.getEntityId())){
+                result.put(entity,mtm.getCascadeExtList1());
+            }else if(Objects.equals(mtm.getEntityId2(),entity.getEntityId())){
+                result.put(entity,mtm.getCascadeExtList2());
+            }else{
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"多对多数据异常，mtm_id="+mtm.getMtmId());
+            }
+        }
+        return result;
+    }
 
     /**
      * 打印单元测试中的saveExample参数
@@ -492,5 +539,37 @@ public class EntityModel extends BaseModel{
 
     public void setOperatedByField(MetaFieldPO operatedByField) {
         this.operatedByField = operatedByField;
+    }
+
+    public Map<MetaEntityPO, MetaManyToManyPO> getHolds() {
+        return holds;
+    }
+
+    public void setHolds(Map<MetaEntityPO, MetaManyToManyPO> holds) {
+        this.holds = holds;
+    }
+
+    public Map<MetaEntityPO, MetaManyToManyPO> getUnHolds() {
+        return unHolds;
+    }
+
+    public void setUnHolds(Map<MetaEntityPO, MetaManyToManyPO> unHolds) {
+        this.unHolds = unHolds;
+    }
+
+    public Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> getHoldCascadeExts() {
+        return holdCascadeExts;
+    }
+
+    public void setHoldCascadeExts(Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> holdCascadeExts) {
+        this.holdCascadeExts = holdCascadeExts;
+    }
+
+    public Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> getUnHoldCascadeExts() {
+        return unHoldCascadeExts;
+    }
+
+    public void setUnHoldCascadeExts(Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> unHoldCascadeExts) {
+        this.unHoldCascadeExts = unHoldCascadeExts;
     }
 }

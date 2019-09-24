@@ -161,6 +161,18 @@ public class MetaMtmCascadeExtService {
         // TODO 校验当前实体下其他级联扩展字段
     }
 
+
+    /**
+     * 根据字段id查询级联扩展列表
+     * @param mtmId
+     * @param entityId
+     * @return
+     */
+    public List<MetaMtmCascadeExtPO> findByMtmIdAndEntityId(Integer mtmId, Integer entityId) {
+        return metaMtmCascadeExtDAO.findByMtmIdAndEntityId(mtmId,entityId);
+    }
+
+
 }
 
 

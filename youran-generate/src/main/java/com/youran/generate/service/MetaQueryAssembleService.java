@@ -38,10 +38,21 @@ public class MetaQueryAssembleService {
     @Autowired
     private MetaCascadeExtService metaCascadeExtService;
     @Autowired
+    private MetaMtmCascadeExtService metaMtmCascadeExtService;
+    @Autowired
     private MetaManyToManyService metaManyToManyService;
 
 
-    public MetaProjectPO getAssembledProject(Integer projectId,boolean withConst,boolean withMtm,boolean withForeign){
+    /**
+     * 装配整个项目的元数据
+     * @param projectId 项目id
+     * @param withConst 是否需要装配常量
+     * @param withMtm 是否需要装配多对多
+     * @param withForeign 是否需要装配外键关联
+     * @return
+     */
+    public MetaProjectPO getAssembledProject(Integer projectId,boolean withConst,
+                                             boolean withMtm,boolean withForeign){
         MetaProjectPO project = metaProjectService.getProject(projectId,true);
         // 查询实体id列表
         List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
@@ -79,7 +90,7 @@ public class MetaQueryAssembleService {
     }
 
     /**
-     * 获取组装完成的常量
+     * 装配常量元数据
      * @param constId 常量id
      * @return
      */
@@ -94,28 +105,30 @@ public class MetaQueryAssembleService {
     }
 
     /**
-     * 获取组装完成的实体
+     * 装配实体元数据
      * @param entityId 实体id
      * @return
      */
     public MetaEntityPO getAssembledEntity(Integer entityId) {
         MetaEntityPO metaEntity = metaEntityService.getEntity(entityId,true);
-        return this.assembleEntity(metaEntity);
-    }
-
-    /**
-     * 组装实体所有关联对象
-     * @param metaEntity 实体
-     * @return
-     */
-    public MetaEntityPO assembleEntity(MetaEntityPO metaEntity) {
-        Integer entityId = metaEntity.getEntityId();
         List<MetaFieldPO> fieldList = metaFieldService.findByEntityId(entityId);
         if (CollectionUtils.isEmpty(fieldList)) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体无对应字段，entityId=" + entityId);
         }
-        //将list转化为map,并组装实体内部字段
-        Map<Integer, MetaFieldPO> fieldMap = new HashMap<>(fieldList.size());
+        // 给实体装配字段
+        this.assembleFieldForEntity(metaEntity, fieldList);
+        // 给实体装配索引
+        this.assembleIndexForEntity(metaEntity, fieldList);
+        return metaEntity;
+    }
+
+    /**
+     * 给实体装配字段
+     * @param metaEntity 实体
+     * @param fieldList 字段列表
+     * @return
+     */
+    private void assembleFieldForEntity(MetaEntityPO metaEntity, List<MetaFieldPO> fieldList) {
         List<MetaFieldPO> queryFields = new ArrayList<>();
         List<MetaFieldPO> insertFields = new ArrayList<>();
         List<MetaFieldPO> updateFields = new ArrayList<>();
@@ -157,8 +170,6 @@ public class MetaQueryAssembleService {
             if (BoolConst.TRUE == metaField.getShow()) {
                 showFields.add(metaField);
             }
-
-            fieldMap.put(metaField.getFieldId(), metaField);
         }
         metaEntity.setFields(fieldList);
         metaEntity.setQueryFields(queryFields);
@@ -167,8 +178,21 @@ public class MetaQueryAssembleService {
         metaEntity.setListFields(listFields);
         metaEntity.setListSortFields(listSortFields);
         metaEntity.setShowFields(showFields);
-        List<MetaIndexPO> metaIndexes = metaIndexService.findByEntityId(entityId);
+    }
+
+    /**
+     * 给实体装配索引
+     * @param metaEntity 实体
+     * @param fieldList 字段列表
+     */
+    private void assembleIndexForEntity(MetaEntityPO metaEntity, List<MetaFieldPO> fieldList) {
+        //将list转化为map
+        Map<Integer, MetaFieldPO> fieldMap = fieldList.stream()
+            .collect(Collectors.toMap(MetaFieldPO::getFieldId,f->f));
+        List<MetaIndexPO> metaIndexes = metaIndexService.findByEntityId(metaEntity.getEntityId());
+        //有效索引列表
         List<MetaIndexPO> validList = new ArrayList<>();
+        //需要校验唯一性的索引列表
         List<MetaIndexPO> checkUniqueIndexes = new ArrayList<>();
         //索引中组装字段对象
         if (CollectionUtils.isNotEmpty(metaIndexes)) {
@@ -193,8 +217,8 @@ public class MetaQueryAssembleService {
         }
         metaEntity.setIndexes(validList);
         metaEntity.setCheckUniqueIndexes(checkUniqueIndexes);
-        return metaEntity;
     }
+
 
     /**
      * 组装多对多对象引用
@@ -206,25 +230,31 @@ public class MetaQueryAssembleService {
         //将实体列表转成map
         Map<Integer, MetaEntityPO> entityMap = metaEntities.stream()
             .collect(Collectors.toMap(MetaEntityPO::getEntityId, e -> e));
-        for (MetaManyToManyPO manyToMany : manyToManies) {
-            MetaEntityPO entity1 = entityMap.get(manyToMany.getEntityId1());
-            MetaEntityPO entity2 = entityMap.get(manyToMany.getEntityId2());
+        for (MetaManyToManyPO mtm : manyToManies) {
+            MetaEntityPO entity1 = entityMap.get(mtm.getEntityId1());
+            MetaEntityPO entity2 = entityMap.get(mtm.getEntityId2());
             // 如果多对多中的实体不在传入的实体列表中，则跳过本次循环
             if(entity1 == null || entity2 == null){
                 continue;
             }
-            if (BoolConst.FALSE == manyToMany.getHoldRefer1()) {
-                entity1.addUnHold(entity2,manyToMany);
+            if (BoolConst.FALSE == mtm.getHoldRefer1()) {
+                entity1.addUnHold(entity2,mtm);
             } else {
-                entity1.addHold(entity2,manyToMany);
+                entity1.addHold(entity2,mtm);
             }
-            if (BoolConst.FALSE == manyToMany.getHoldRefer2()) {
-                entity2.addUnHold(entity1,manyToMany);
+            if (BoolConst.FALSE == mtm.getHoldRefer2()) {
+                entity2.addUnHold(entity1,mtm);
             } else {
-                entity2.addHold(entity1,manyToMany);
+                entity2.addHold(entity1,mtm);
             }
-            manyToMany.setRefer1(entity1);
-            manyToMany.setRefer2(entity2);
+            mtm.setRefer1(entity1);
+            mtm.setRefer2(entity2);
+            List<MetaMtmCascadeExtPO> cascadeExtList1 = metaMtmCascadeExtService.findByMtmIdAndEntityId(mtm.getMtmId(),
+                entity1.getEntityId());
+            List<MetaMtmCascadeExtPO> cascadeExtList2 = metaMtmCascadeExtService.findByMtmIdAndEntityId(mtm.getMtmId(),
+                entity2.getEntityId());
+            mtm.setCascadeExtList1(cascadeExtList1);
+            mtm.setCascadeExtList2(cascadeExtList2);
         }
     }
 
