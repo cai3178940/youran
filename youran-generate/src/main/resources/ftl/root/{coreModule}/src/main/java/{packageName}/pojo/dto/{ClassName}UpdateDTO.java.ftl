@@ -20,7 +20,7 @@ public class ${this.classNameUpper}UpdateDTO extends AbstractDTO {
     </#if>
     private ${this.pk.jfieldType} ${this.pk.jfieldName};
 
-<#list this.updateFields as _id,field>
+<#list this.updateFields as id,field>
     <@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
     <#--字段名转下划线大写-->
     <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
@@ -55,7 +55,7 @@ public class ${this.classNameUpper}UpdateDTO extends AbstractDTO {
     </#list>
 
     <@call TemplateUtil.printGetterSetter(this.pk)/>
-<#list this.updateFields as _id,field>
+<#list this.updateFields as id,field>
     <@call TemplateUtil.printGetterSetter(field)/>
 </#list>
     <#list this.holds! as otherEntity,mtm>

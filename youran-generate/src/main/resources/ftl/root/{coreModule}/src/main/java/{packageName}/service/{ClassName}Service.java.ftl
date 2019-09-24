@@ -31,13 +31,13 @@ public class ${this.classNameUpper}Service {
         <@call this.addAutowired("${this.packageName}.dao" "${otherEntity.className?capFirst}DAO")/>
     </#list>
 <#-- 引入外键对应的DAO （插入字段对应的外键）-->
-<#list this.insertFields as _id,field>
+<#list this.insertFields as id,field>
     <#if isTrue(field.foreignKey)>
         <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
 </#list>
 <#-- 引入外键对应的DAO （更新字段对应的外键）-->
-<#list this.updateFields as _id,field>
+<#list this.updateFields as id,field>
     <#if isTrue(field.foreignKey)>
         <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
@@ -47,7 +47,7 @@ public class ${this.classNameUpper}Service {
         <@call this.addAutowired("${this.packageName}.dao" "${foreignEntity.className?capFirst}DAO")/>
     </#list>
 <#-- 当前实体的外键字段存在级联扩展时，引入对应实体的DAO -->
-<#list this.fkFields as _id,field>
+<#list this.fkFields as id,field>
     <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
         <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
@@ -76,7 +76,7 @@ public class ${this.classNameUpper}Service {
 </#if>
 <#-- 抽象出公共方法【校验外键字段对应实体是否存在】 -->
 <#macro checkForeignKeys fields>
-    <#list fields as _id,field>
+    <#list fields as id,field>
         <#if isTrue(field.foreignKey)>
             <@call this.addImport("org.springframework.util.Assert")/>
             <#assign foreigncName=field.foreignEntity.className?uncapFirst>
@@ -244,7 +244,7 @@ public class ${this.classNameUpper}Service {
     public ${this.classNameUpper}ShowVO show(${this.type} ${this.id}) {
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         ${this.classNameUpper}ShowVO showVO = ${this.classNameUpper}Mapper.INSTANCE.toShowVO(${this.className});
-<#list this.fkFields as _id,field>
+<#list this.fkFields as id,field>
     <#if field.cascadeShowExts?? && field.cascadeShowExts?size &gt; 0>
         <#assign otherCName=field.foreignEntity.className?capFirst>
         <#assign othercName=field.foreignEntity.className?uncapFirst>

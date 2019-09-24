@@ -93,7 +93,7 @@
 
 
     <sql id="queryCondition">
-    <#list this.queryFields as _id,field>
+    <#list this.queryFields as id,field>
         <#if field.queryType==QueryType.BETWEEN>
         <#--between类型查询-->
         <if test="${field.jfieldName}Start != null <#if field.jfieldType==JFieldType.STRING.getJavaType()> and ${field.jfieldName}Start !=''</#if> ">
@@ -124,7 +124,7 @@
         </#if>
     </#list>
     <#assign cascadeIndex=0>
-    <#list this.fkFields as _id,field>
+    <#list this.fkFields as id,field>
         <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
             <#assign cascadeIndex=cascadeIndex+1>
             <#assign con_ex_arr=[]>
@@ -184,7 +184,7 @@
 
     <sql id="orderCondition">
         order by
-        <#list this.listSortFields as _id,field>
+        <#list this.listSortFields as id,field>
         <if test="${field.jfieldName}SortSign != null and ${field.jfieldName}SortSign!=0">
             t.${MetadataUtil.wrapMysqlKeyword(field.fieldName)} <if test="${field.jfieldName}SortSign > 0">asc</if><if test="${field.jfieldName}SortSign &lt; 0">desc</if>,
         </if>
@@ -213,7 +213,7 @@
         select
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         <#assign cascadeIndex=0>
-        <#list this.fkFields as _id,field>
+        <#list this.fkFields as id,field>
             <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
                 <#assign cascadeIndex=cascadeIndex+1>
                 <#list field.cascadeListExts as cascadeExt>
@@ -223,7 +223,7 @@
         </#list>
         from ${wrapTableName} t
         <#assign cascadeIndex=0>
-        <#list this.fkFields as _id,field>
+        <#list this.fkFields as id,field>
             <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
                 <#assign cascadeIndex=cascadeIndex+1>
         left outer join ${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.tableName)} c${cascadeIndex}
@@ -245,7 +245,7 @@
     </#if>
     </select>
 
-    <#list this.fkFields as _id,field>
+    <#list this.fkFields as id,field>
         <#assign wrapFieldName=MetadataUtil.wrapMysqlKeyword(field.fieldName)>
     <select id="getCountBy${field.jfieldName?capFirst}" parameterType="${field.jfieldType}" resultType="int">
         select count(1)

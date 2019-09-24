@@ -14,7 +14,7 @@ public class ${this.classNameUpper}Helper {
     <#--定义外键字段参数串-->
     <#assign foreignArg="">
     <#assign foreignArg2="">
-    <#list this.insertFields as _id,field>
+    <#list this.insertFields as id,field>
         <#if isTrue(field.foreignKey)>
             <#assign foreignArg=foreignArg+"${field.jfieldType} ${field.jfieldName}, ">
             <#assign foreignArg2=foreignArg2+"${field.jfieldName}, ">
@@ -30,7 +30,7 @@ public class ${this.classNameUpper}Helper {
      */
     public ${this.classNameUpper}AddDTO get${this.classNameUpper}AddDTO(${foreignArg}){
         ${this.classNameUpper}AddDTO dto = new ${this.classNameUpper}AddDTO();
-    <#list this.insertFields as _id,field>
+    <#list this.insertFields as id,field>
         <#--字段名转下划线大写-->
         <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
         <#assign arg="">
@@ -61,7 +61,7 @@ public class ${this.classNameUpper}Helper {
     public ${this.classNameUpper}UpdateDTO get${this.classNameUpper}UpdateDTO(${this.classNameUpper}PO ${this.className}){
         ${this.classNameUpper}UpdateDTO dto = new ${this.classNameUpper}UpdateDTO();
         dto.set${this.idUpper}(${this.className}.get${this.idUpper}());
-        <#list this.updateFields as _id,field>
+        <#list this.updateFields as id,field>
         dto.set${field.jfieldName?capFirst}(${this.className}.get${field.jfieldName?capFirst}());
         </#list>
         return dto;
