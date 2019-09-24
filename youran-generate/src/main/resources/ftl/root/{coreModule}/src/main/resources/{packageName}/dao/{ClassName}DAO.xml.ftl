@@ -56,7 +56,15 @@
 
     <update id="_update" parameterType="${this.classNameUpper}PO">
         update ${wrapTableName} set
+        <#assign set_field_arr=[]>
+        <#--过滤出需要设值的字段-->
         <#list this.fields as field>
+            <#--去除主键、创建人、创建时间-->
+            <#if isFalse(field.primaryKey) && !MetaSpecialField.isCreatedBy(field.specialField)  && !MetaSpecialField.isCreatedTime(field.specialField) >
+                <#assign set_field_arr = set_field_arr + [ field ] >
+            </#if>
+        </#list>
+        <#list set_field_arr as field>
             <#if field.specialField?? && field.specialField==MetaSpecialField.VERSION>
             ${MetadataUtil.wrapMysqlKeyword(field.fieldName)} = ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}+1<#if field_has_next>,</#if>
             <#elseIf isFalse(field.primaryKey) && !MetaSpecialField.isCreatedBy(field.specialField)  && !MetaSpecialField.isCreatedTime(field.specialField) >
