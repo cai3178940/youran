@@ -12,8 +12,8 @@
     </#if>
 
     <sql id="${this.className}Columns">
-        <#list this.fields as _id,field>
-        ${r'$'}{alias}.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if field_has_next>,</#if>
+        <#list this.fields as id,field>
+        ${r'$'}{alias}.${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${MetadataUtil.wrapMysqlKeyword(field.jfieldName)}</#if><#if id_has_next>,</#if>
         </#list>
     </sql>
 
@@ -43,12 +43,12 @@
 
     <insert id="_save" <#if isTrue(this.pk.autoIncrement)>useGeneratedKeys="true" </#if>keyProperty="${this.id}" parameterType="${this.classNameUpper}PO">
         insert into ${wrapTableName}(
-    <#list this.fields as _id,field>
-        ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if field_has_next>,</#if>
+    <#list this.fields as id,field>
+        ${MetadataUtil.wrapMysqlKeyword(field.fieldName)}<#if id_has_next>,</#if>
     </#list>
         ) VALUES (
-    <#list this.fields as _id,field>
-        ${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>
+    <#list this.fields as id,field>
+        ${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if id_has_next>,</#if>
     </#list>
         )
     </insert>
@@ -58,7 +58,7 @@
         update ${wrapTableName} set
         <#assign set_field_arr=[]>
         <#--过滤出需要设值的字段-->
-        <#list this.fields as _id,field>
+        <#list this.fields as id,field>
             <#--去除主键、创建人、创建时间-->
             <#if isFalse(field.primaryKey) && !MetaSpecialField.isCreatedBy(field.specialField)  && !MetaSpecialField.isCreatedTime(field.specialField) >
                 <#assign set_field_arr = set_field_arr + [ field ] >
