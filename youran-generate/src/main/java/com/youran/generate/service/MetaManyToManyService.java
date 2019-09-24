@@ -88,6 +88,11 @@ public class MetaManyToManyService {
         if(Objects.equals(mtm.getEntityId1(),mtm.getEntityId2())){
             throw new BusinessException(ErrorCode.BAD_PARAMETER,"不支持同一个实体跟自己建立多对多关系");
         }
+        boolean exists = metaManyToManyDAO.findManyToManyExists(mtm.getEntityId1(),mtm.getEntityId2(),
+            mtm.getMtmId());
+        if(exists){
+            throw new BusinessException(ErrorCode.BAD_PARAMETER,"两实体已经存在多对多关系");
+        }
     }
 
     /**

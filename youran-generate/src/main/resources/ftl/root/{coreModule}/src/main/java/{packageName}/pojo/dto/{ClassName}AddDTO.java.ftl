@@ -8,7 +8,7 @@
 @ApiModel(description = "新增【${this.title}】的参数")
 public class ${this.classNameUpper}AddDTO extends AbstractDTO {
 
-<#list this.insertFields as field>
+<#list this.insertFields as _id,field>
     <@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
     <#--字段名转下划线大写-->
     <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
@@ -43,7 +43,7 @@ public class ${this.classNameUpper}AddDTO extends AbstractDTO {
 
     </#list>
 
-<#list this.insertFields as field>
+<#list this.insertFields as _id,field>
     <@call TemplateUtil.printGetterSetter(field)/>
 </#list>
     <#list this.holds! as otherEntity,mtm>

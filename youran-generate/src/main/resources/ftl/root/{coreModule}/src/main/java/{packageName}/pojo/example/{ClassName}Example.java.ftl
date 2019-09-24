@@ -4,7 +4,7 @@
 <@call this.printClassCom("【${this.title}】参数示例")/>
 public class ${this.classNameUpper}Example {
 
-<#list this.fields as field>
+<#list this.fields as _id,field>
     <#--字段名转下划线大写-->
     <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
     public static final String N_${jfieldNameSnakeCase} = "${field.fieldComment?replace('\"','\\"')?replace('\n','\\n')}";

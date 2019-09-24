@@ -64,7 +64,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     </#if>
 </#macro>
 <#--开始渲染查询字段声明语句-->
-<#list this.queryFields as field>
+<#list this.queryFields as _id,field>
     <#if field.queryType!=QueryType.BETWEEN>
         <@queryField field></@queryField>
     <#else>
@@ -73,7 +73,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     </#if>
 </#list>
 <#--开始渲染外键级联扩展字段声明语句-->
-<#list this.fkFields as field>
+<#list this.fkFields as _id,field>
     <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
         <#assign examplePackage="">
         <#if field.foreignEntity!=this.metaEntity>
@@ -92,7 +92,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 </#list>
 
 <#--开始渲染排序条件声明语句-->
-<#list this.listSortFields as field>
+<#list this.listSortFields as _id,field>
     @ApiParam(value = "${field.fieldDesc}排序标识【1升序,-1降序,0不排序】",example = "1")
     private Integer ${field.jfieldName}SortSign;
 
@@ -100,7 +100,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 
 
 <#--开始渲染查询字段getter-setter方法-->
-<#list this.queryFields as field>
+<#list this.queryFields as _id,field>
     <#if field.queryType!=QueryType.BETWEEN>
         <@queryMethod field></@queryMethod>
     <#else>
@@ -109,7 +109,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     </#if>
 </#list>
 <#--开始渲染级联扩展字段getter-setter方法-->
-<#list this.fkFields as field>
+<#list this.fkFields as _id,field>
     <#list field.cascadeQueryExts! as cascadeExt>
         <#assign cascadeField=cascadeExt.cascadeField>
         <#if cascadeField.queryType!=QueryType.BETWEEN>
@@ -121,7 +121,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     </#list>
 </#list>
 <#--开始渲染排序字段getter-setter方法-->
-<#list this.listSortFields as field>
+<#list this.listSortFields as _id,field>
     <@call TemplateUtil.printGetterSetter("${field.jfieldName}SortSign","Integer")/>
 </#list>
 }

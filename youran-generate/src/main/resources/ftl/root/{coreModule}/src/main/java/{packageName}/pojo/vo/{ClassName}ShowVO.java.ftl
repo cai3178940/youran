@@ -9,7 +9,7 @@
 @ApiModel(description = "【${this.title}】详情展示对象")
 public class ${this.classNameUpper}ShowVO extends AbstractVO {
 
-<#list this.showFields as field>
+<#list this.showFields as _id,field>
     <#--字段名转下划线大写-->
     <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
     <#if field.dicType??>
@@ -27,7 +27,7 @@ public class ${this.classNameUpper}ShowVO extends AbstractVO {
     private ${field.jfieldType} ${field.jfieldName};
 
 </#list>
-<#list this.fkFields as field>
+<#list this.fkFields as _id,field>
     <#list field.cascadeShowExts! as cascadeExt>
         <#assign cascadeField=cascadeExt.cascadeField>
         <#assign examplePackage="">
@@ -61,10 +61,10 @@ public class ${this.classNameUpper}ShowVO extends AbstractVO {
 
 </#list>
 
-<#list this.showFields as field>
+<#list this.showFields as _id,field>
     <@call TemplateUtil.printGetterSetter(field)/>
 </#list>
-<#list this.fkFields as field>
+<#list this.fkFields as _id,field>
     <#list field.cascadeShowExts! as cascadeExt>
         <@call TemplateUtil.printGetterSetter(cascadeExt.alias,cascadeExt.cascadeField.jfieldType)/>
     </#list>

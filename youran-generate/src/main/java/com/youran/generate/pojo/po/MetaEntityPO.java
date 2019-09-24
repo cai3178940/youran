@@ -51,42 +51,41 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      */
     private Integer pageSign;
 
-
     /**
      * 字段列表
      */
-    private List<MetaFieldPO> fields;
+    private Map<Integer, MetaFieldPO> fields;
 
     /**
      * 外键字段列表
      */
-    private List<MetaFieldPO> fkFields;
+    private Map<Integer, MetaFieldPO> fkFields;
 
     /**
      * 查询字段列表
      */
-    private List<MetaFieldPO> queryFields;
+    private Map<Integer, MetaFieldPO> queryFields;
 
     /**
      * 插入字段列表
      */
-    private List<MetaFieldPO> insertFields;
+    private Map<Integer, MetaFieldPO> insertFields;
     /**
      * 修改字段列表
      */
-    private List<MetaFieldPO> updateFields;
+    private Map<Integer, MetaFieldPO> updateFields;
     /**
      * 列表字段列表
      */
-    private List<MetaFieldPO> listFields;
+    private Map<Integer, MetaFieldPO> listFields;
     /**
      * 排序字段列表
      */
-    private List<MetaFieldPO> listSortFields;
+    private Map<Integer, MetaFieldPO> listSortFields;
     /**
      * 详情字段列表
      */
-    private List<MetaFieldPO> showFields;
+    private Map<Integer, MetaFieldPO> showFields;
     /**
      * 索引列表
      */
@@ -152,9 +151,9 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public MetaEntityPO addField(MetaFieldPO metaFieldPO){
         if(fields==null){
-            fields = new ArrayList<>();
+            fields = new HashMap<>(16);
         }
-        fields.add(metaFieldPO);
+        fields.put(metaFieldPO.getFieldId(),metaFieldPO);
         return this;
     }
 
@@ -253,51 +252,67 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
         this.versionField = versionField;
     }
 
-    public List<MetaFieldPO> getQueryFields() {
+    public Map<Integer, MetaFieldPO> getFields() {
+        return fields;
+    }
+
+    public void setFields(Map<Integer, MetaFieldPO> fields) {
+        this.fields = fields;
+    }
+
+    public Map<Integer, MetaFieldPO> getFkFields() {
+        return fkFields;
+    }
+
+    public void setFkFields(Map<Integer, MetaFieldPO> fkFields) {
+        this.fkFields = fkFields;
+    }
+
+    public Map<Integer, MetaFieldPO> getQueryFields() {
         return queryFields;
     }
 
-    public void setQueryFields(List<MetaFieldPO> queryFields) {
+    public void setQueryFields(Map<Integer, MetaFieldPO> queryFields) {
         this.queryFields = queryFields;
     }
 
-    public List<MetaFieldPO> getInsertFields() {
+    public Map<Integer, MetaFieldPO> getInsertFields() {
         return insertFields;
     }
 
-    public void setInsertFields(List<MetaFieldPO> insertFields) {
+    public void setInsertFields(Map<Integer, MetaFieldPO> insertFields) {
         this.insertFields = insertFields;
     }
 
-    public List<MetaFieldPO> getUpdateFields() {
+    public Map<Integer, MetaFieldPO> getUpdateFields() {
         return updateFields;
     }
 
-    public void setUpdateFields(List<MetaFieldPO> updateFields) {
+    public void setUpdateFields(Map<Integer, MetaFieldPO> updateFields) {
         this.updateFields = updateFields;
     }
 
-    public List<MetaFieldPO> getListFields() {
+    public Map<Integer, MetaFieldPO> getListFields() {
         return listFields;
     }
 
-    public void setListFields(List<MetaFieldPO> listFields) {
+    public void setListFields(Map<Integer, MetaFieldPO> listFields) {
         this.listFields = listFields;
     }
 
-    public List<MetaFieldPO> getListSortFields() {
+    public Map<Integer, MetaFieldPO> getListSortFields() {
         return listSortFields;
     }
 
-    public void setListSortFields(List<MetaFieldPO> listSortFields) {
+    public void setListSortFields(Map<Integer, MetaFieldPO> listSortFields) {
         this.listSortFields = listSortFields;
     }
 
-    public List<MetaFieldPO> getShowFields() {
+    public Map<Integer, MetaFieldPO> getShowFields() {
         return showFields;
     }
 
-    public void setShowFields(List<MetaFieldPO> showFields) {
+    public void setShowFields(Map<Integer, MetaFieldPO> showFields) {
         this.showFields = showFields;
     }
 
@@ -387,22 +402,6 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setSchemaName(String schemaName) {
         this.schemaName = schemaName;
-    }
-
-    public List<MetaFieldPO> getFields() {
-        return fields;
-    }
-
-    public void setFields(List<MetaFieldPO> fields) {
-        this.fields = fields;
-    }
-
-    public List<MetaFieldPO> getFkFields() {
-        return fkFields;
-    }
-
-    public void setFkFields(List<MetaFieldPO> fkFields) {
-        this.fkFields = fkFields;
     }
 
     public String getDesc() {

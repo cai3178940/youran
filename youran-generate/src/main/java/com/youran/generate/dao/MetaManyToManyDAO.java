@@ -3,6 +3,7 @@ package com.youran.generate.dao;
 import com.youran.common.dao.DAO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +26,17 @@ public interface MetaManyToManyDAO extends DAO<MetaManyToManyPO> {
     List<MetaManyToManyPO> findByProjectId(Integer projectId) ;
 
     int getCountByEntityId(Integer entityId);
+
+    /**
+     * 判断多对多关系是否已经存在
+     * @param entityId1 实体1
+     * @param entityId2 实体2
+     * @param mtmId 排除的多对多id
+     * @return
+     */
+    boolean findManyToManyExists(@Param("entityId1")Integer entityId1,
+                                 @Param("entityId2")Integer entityId2,
+                                 @Param("mtmId")Integer mtmId);
+
+
 }

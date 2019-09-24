@@ -112,4 +112,14 @@
             or t.entity_id2 = #{arg0}
         )
     </select>
+
+    <select id="findManyToManyExists" resultType="java.lang.Boolean">
+        select count(1) from meta_mtm t
+        where t.deleted=0
+            and t.entity_id1 = #{entityId1}
+            and t.entity_id2 = #{entityId2}
+        <if test="mtmId != null">
+            and t.mtm_id != #{mtmId}
+        </if>
+    </select>
 </mapper>

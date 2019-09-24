@@ -3,7 +3,7 @@
 DROP TABLE IF EXISTS `${metaEntity.tableName}`;
 
 CREATE TABLE `${metaEntity.tableName}` (
-    <#list metaEntity.fields as field>
+    <#list metaEntity.fields as fieldId,field>
         <#assign comma_holder><#if field_has_next || metaEntity.pkField?? || (metaEntity.indexes?? && (metaEntity.indexes?size > 0))>,</#if></#assign>
     `${field.fieldName}` ${field.fieldType}${MetadataUtil.getLengthDisplay(field)}${MetadataUtil.getAutoIncrementDisplay(field)}${MetadataUtil.getNotNullDisplay(field)}${MetadataUtil.getDefaultDisplay(field)}${MetadataUtil.getCommentDisplay(field.fieldComment,true)}${comma_holder}
     </#list>

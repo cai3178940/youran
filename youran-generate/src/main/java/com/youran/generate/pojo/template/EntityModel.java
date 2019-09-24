@@ -61,7 +61,7 @@ public class EntityModel extends BaseModel{
     /**
      * 字段列表
      */
-    private List<MetaFieldPO> fields;
+    private Map<Integer, MetaFieldPO> fields;
     /**
      * 是否分页查询
      */
@@ -77,31 +77,31 @@ public class EntityModel extends BaseModel{
     /**
      * 外键字段
      */
-    private List<MetaFieldPO> fkFields;
+    private Map<Integer, MetaFieldPO> fkFields;
     /**
      * 添加字段
      */
-    private List<MetaFieldPO> insertFields;
+    private Map<Integer, MetaFieldPO> insertFields;
     /**
      * 修改字段
      */
-    private List<MetaFieldPO> updateFields;
+    private Map<Integer, MetaFieldPO> updateFields;
     /**
      * 查询字段
      */
-    private List<MetaFieldPO> queryFields;
+    private Map<Integer, MetaFieldPO> queryFields;
     /**
      * 展示字段
      */
-    private List<MetaFieldPO> showFields;
+    private Map<Integer, MetaFieldPO> showFields;
     /**
      * 列表字段
      */
-    private List<MetaFieldPO> listFields;
+    private Map<Integer, MetaFieldPO> listFields;
     /**
      * 排序字段
      */
-    private List<MetaFieldPO> listSortFields;
+    private Map<Integer, MetaFieldPO> listSortFields;
     /**
      * 创建日期字段
      */
@@ -203,7 +203,7 @@ public class EntityModel extends BaseModel{
      */
     public String printSaveExampleArg(MetaEntityPO entity){
         StringBuilder sb = new StringBuilder();
-        for (MetaFieldPO field : entity.getInsertFields()) {
+        for (MetaFieldPO field : entity.getInsertFields().values()) {
             // 跳过非外键
             if(field.getForeignKey()==BoolConst.FALSE){
                 continue;
@@ -339,9 +339,9 @@ public class EntityModel extends BaseModel{
         }
         ForeignEntityTreeNode node = new ForeignEntityTreeNode(metaEntity,parent);
         map.put(metaEntity.getEntityId(),node);
-        List<MetaFieldPO> insertFields = metaEntity.getInsertFields();
+        Map<Integer, MetaFieldPO> insertFields = metaEntity.getInsertFields();
 
-        for (MetaFieldPO field : insertFields) {
+        for (MetaFieldPO field : insertFields.values()) {
             // 插入字段是外键，并且不能为空
             if(field.getForeignKey()==BoolConst.TRUE && field.getNotNull()==BoolConst.TRUE){
                 node.addForeign(field);
@@ -434,22 +434,6 @@ public class EntityModel extends BaseModel{
         this.type = type;
     }
 
-    public List<MetaFieldPO> getFields() {
-        return fields;
-    }
-
-    public void setFields(List<MetaFieldPO> fields) {
-        this.fields = fields;
-    }
-
-    public List<MetaFieldPO> getFkFields() {
-        return fkFields;
-    }
-
-    public void setFkFields(List<MetaFieldPO> fkFields) {
-        this.fkFields = fkFields;
-    }
-
     public Integer getPageSign() {
         return pageSign;
     }
@@ -474,51 +458,67 @@ public class EntityModel extends BaseModel{
         this.delField = delField;
     }
 
-    public List<MetaFieldPO> getInsertFields() {
+    public Map<Integer, MetaFieldPO> getFields() {
+        return fields;
+    }
+
+    public void setFields(Map<Integer, MetaFieldPO> fields) {
+        this.fields = fields;
+    }
+
+    public Map<Integer, MetaFieldPO> getFkFields() {
+        return fkFields;
+    }
+
+    public void setFkFields(Map<Integer, MetaFieldPO> fkFields) {
+        this.fkFields = fkFields;
+    }
+
+    public Map<Integer, MetaFieldPO> getInsertFields() {
         return insertFields;
     }
 
-    public void setInsertFields(List<MetaFieldPO> insertFields) {
+    public void setInsertFields(Map<Integer, MetaFieldPO> insertFields) {
         this.insertFields = insertFields;
     }
 
-    public List<MetaFieldPO> getUpdateFields() {
+    public Map<Integer, MetaFieldPO> getUpdateFields() {
         return updateFields;
     }
 
-    public void setUpdateFields(List<MetaFieldPO> updateFields) {
+    public void setUpdateFields(Map<Integer, MetaFieldPO> updateFields) {
         this.updateFields = updateFields;
     }
 
-    public List<MetaFieldPO> getQueryFields() {
+    public Map<Integer, MetaFieldPO> getQueryFields() {
         return queryFields;
     }
 
-    public void setQueryFields(List<MetaFieldPO> queryFields) {
+    public void setQueryFields(Map<Integer, MetaFieldPO> queryFields) {
         this.queryFields = queryFields;
     }
 
-    public List<MetaFieldPO> getShowFields() {
+    public Map<Integer, MetaFieldPO> getShowFields() {
         return showFields;
     }
 
-    public void setShowFields(List<MetaFieldPO> showFields) {
+    public void setShowFields(Map<Integer, MetaFieldPO> showFields) {
         this.showFields = showFields;
     }
 
-    public List<MetaFieldPO> getListFields() {
+    public Map<Integer, MetaFieldPO> getListFields() {
         return listFields;
     }
 
-    public void setListFields(List<MetaFieldPO> listFields) {
+    public void setListFields(Map<Integer, MetaFieldPO> listFields) {
         this.listFields = listFields;
     }
 
-    public List<MetaFieldPO> getListSortFields() {
+    public Map<Integer, MetaFieldPO> getListSortFields() {
         return listSortFields;
     }
 
-    public void setListSortFields(List<MetaFieldPO> listSortFields) {
+    public void setListSortFields(Map<Integer, MetaFieldPO> listSortFields) {
         this.listSortFields = listSortFields;
     }
 

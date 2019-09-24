@@ -22,7 +22,7 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
     List<${this.classNameUpper}ListVO> findListByQuery(${this.classNameUpper}QO ${this.className}QO);
 
 </#if>
-<#list this.fkFields as field>
+<#list this.fkFields as _id,field>
     int getCountBy${field.jfieldName?capFirst}(${field.jfieldType} ${field.jfieldName});
 
 </#list>

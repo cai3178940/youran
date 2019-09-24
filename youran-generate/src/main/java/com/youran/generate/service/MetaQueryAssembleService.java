@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * <p>Title:统一查询组装服务类</p>
+ * <p>Title:元数据查询装配业务</p>
  * <p>Description:</p>
  * @author: cbb
  * @date: 2017/5/14
@@ -49,10 +49,13 @@ public class MetaQueryAssembleService {
      * @param withConst 是否需要装配常量
      * @param withMtm 是否需要装配多对多
      * @param withForeign 是否需要装配外键关联
+     * @param withFkCascade 是否装配外键级联扩展
+     * @param withMtmCascade 是否装配多对多级联扩展
      * @return
      */
     public MetaProjectPO getAssembledProject(Integer projectId,boolean withConst,
-                                             boolean withMtm,boolean withForeign){
+                                             boolean withMtm,boolean withForeign,
+                                             boolean withFkCascade,boolean withMtmCascade){
         MetaProjectPO project = metaProjectService.getProject(projectId,true);
         // 查询实体id列表
         List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
@@ -65,8 +68,8 @@ public class MetaQueryAssembleService {
             .map(this::getAssembledEntity).collect(Collectors.toList());
         project.setEntities(metaEntities);
         if(withForeign) {
-            // 组装外键实体和外键字段
-            this.assembleForeign(metaEntities);
+            // 装配外键实体和外键字段
+            this.assembleForeign(metaEntities, withFkCascade);
         }
         if(withConst){
             // 查询常量id列表
@@ -80,8 +83,8 @@ public class MetaQueryAssembleService {
         if(withMtm){
             // 查询多对多列表
             List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId);
-            // 组装多对多持有引用
-            this.assembleManyToManyWithEntities(metaEntities, manyToManies);
+            // 装配多对多持有引用
+            this.assembleManyToManyWithEntities(metaEntities, manyToManies, withMtmCascade);
             project.setMtms(manyToManies);
         }
         // 校验完整性
@@ -129,14 +132,16 @@ public class MetaQueryAssembleService {
      * @return
      */
     private void assembleFieldForEntity(MetaEntityPO metaEntity, List<MetaFieldPO> fieldList) {
-        List<MetaFieldPO> queryFields = new ArrayList<>();
-        List<MetaFieldPO> insertFields = new ArrayList<>();
-        List<MetaFieldPO> updateFields = new ArrayList<>();
-        List<MetaFieldPO> listFields = new ArrayList<>();
-        List<MetaFieldPO> listSortFields = new ArrayList<>();
-        List<MetaFieldPO> showFields = new ArrayList<>();
-        List<MetaFieldPO> fkFields = new ArrayList<>();
+        Map<Integer, MetaFieldPO> queryFields = new LinkedHashMap<>(16);
+        Map<Integer, MetaFieldPO> insertFields = new LinkedHashMap<>(16);
+        Map<Integer, MetaFieldPO> updateFields = new LinkedHashMap<>(16);
+        Map<Integer, MetaFieldPO> listFields = new LinkedHashMap<>(16);
+        Map<Integer, MetaFieldPO> listSortFields = new LinkedHashMap<>(16);
+        Map<Integer, MetaFieldPO> showFields = new LinkedHashMap<>(16);
+        Map<Integer, MetaFieldPO> fkFields = new LinkedHashMap<>(16);
+        Map<Integer, MetaFieldPO> fields = new LinkedHashMap<>(16);
         for (MetaFieldPO metaField : fieldList) {
+            fields.put(metaField.getFieldId(),metaField);
             String specialField = metaField.getSpecialField();
             if (BoolConst.TRUE == metaField.getPrimaryKey()) {
                 metaEntity.setPkField(metaField);
@@ -154,28 +159,28 @@ public class MetaQueryAssembleService {
                 metaEntity.setVersionField(metaField);
             }
             if (BoolConst.TRUE == metaField.getQuery()) {
-                queryFields.add(metaField);
+                queryFields.put(metaField.getFieldId(),metaField);
             }
             if (BoolConst.TRUE == metaField.getInsert()) {
-                insertFields.add(metaField);
+                insertFields.put(metaField.getFieldId(),metaField);
             }
             if (BoolConst.TRUE == metaField.getUpdate()) {
-                updateFields.add(metaField);
+                updateFields.put(metaField.getFieldId(),metaField);
             }
             if (BoolConst.TRUE == metaField.getList()) {
-                listFields.add(metaField);
+                listFields.put(metaField.getFieldId(),metaField);
             }
             if (BoolConst.TRUE == metaField.getListSort()) {
-                listSortFields.add(metaField);
+                listSortFields.put(metaField.getFieldId(),metaField);
             }
             if (BoolConst.TRUE == metaField.getShow()) {
-                showFields.add(metaField);
+                showFields.put(metaField.getFieldId(),metaField);
             }
             if (BoolConst.TRUE == metaField.getForeignKey()) {
-                fkFields.add(metaField);
+                fkFields.put(metaField.getFieldId(),metaField);
             }
         }
-        metaEntity.setFields(fieldList);
+        metaEntity.setFields(fields);
         metaEntity.setQueryFields(queryFields);
         metaEntity.setInsertFields(insertFields);
         metaEntity.setUpdateFields(updateFields);
@@ -226,9 +231,14 @@ public class MetaQueryAssembleService {
 
 
     /**
-     * 组装多对多对象引用
+     * 装配多对多对象引用
+     * @param metaEntities 实体列表
+     * @param manyToManies 多对多列表
+     * @param withMtmCascade 是否装配多对多级联扩展
      */
-    public void assembleManyToManyWithEntities(List<MetaEntityPO> metaEntities, List<MetaManyToManyPO> manyToManies) {
+    public void assembleManyToManyWithEntities(List<MetaEntityPO> metaEntities,
+                                               List<MetaManyToManyPO> manyToManies,
+                                               boolean withMtmCascade) {
         if (CollectionUtils.isEmpty(manyToManies) || CollectionUtils.isEmpty(metaEntities)) {
             return;
         }
@@ -254,21 +264,68 @@ public class MetaQueryAssembleService {
             }
             mtm.setRefer1(entity1);
             mtm.setRefer2(entity2);
-            List<MetaMtmCascadeExtPO> cascadeExtList1 = metaMtmCascadeExtService.findByMtmIdAndEntityId(mtm.getMtmId(),
-                entity1.getEntityId());
-            List<MetaMtmCascadeExtPO> cascadeExtList2 = metaMtmCascadeExtService.findByMtmIdAndEntityId(mtm.getMtmId(),
-                entity2.getEntityId());
-            mtm.setCascadeExtList1(cascadeExtList1);
-            mtm.setCascadeExtList2(cascadeExtList2);
+            //装配多对多级联扩展
+            if(withMtmCascade) {
+                this.assembleMtmCascadeExt(mtm, entityMap);
+            }
         }
     }
 
     /**
-     * 组装外键实体和外键字段
+     * 给多对多装配级联扩展
+     * @param mtm 待装配的多对多
+     * @param entitys 所有实体
      */
-    public void assembleForeign(List<MetaEntityPO> metaEntities){
+    private void assembleMtmCascadeExt(MetaManyToManyPO mtm, Map<Integer, MetaEntityPO> entitys){
+        MetaEntityPO entity1 = mtm.getRefer1();
+        MetaEntityPO entity2 = mtm.getRefer2();
+        List<MetaMtmCascadeExtPO> cascadeExtList1 = metaMtmCascadeExtService.findByMtmIdAndEntityId(mtm.getMtmId(),
+            entity1.getEntityId());
+        List<MetaMtmCascadeExtPO> cascadeExtList2 = metaMtmCascadeExtService.findByMtmIdAndEntityId(mtm.getMtmId(),
+            entity2.getEntityId());
+        // 过滤并装配多对对级联扩展
+        List<MetaMtmCascadeExtPO> filteredCascadeExtList1 = this.filterAndAssembleMtmCascadeExt(cascadeExtList1, entitys);
+        List<MetaMtmCascadeExtPO> filteredCascadeExtList2 = this.filterAndAssembleMtmCascadeExt(cascadeExtList2, entitys);
+        mtm.setCascadeExtList1(filteredCascadeExtList1);
+        mtm.setCascadeExtList2(filteredCascadeExtList2);
+    }
+
+    /**
+     * 过滤并装配多对对级联扩展
+     * @param entitys
+     * @param cascadeExtList
+     * @return
+     */
+    private List<MetaMtmCascadeExtPO> filterAndAssembleMtmCascadeExt(List<MetaMtmCascadeExtPO> cascadeExtList,
+                                                                     Map<Integer, MetaEntityPO> entitys) {
+        List<MetaMtmCascadeExtPO> filteredCascadeExtList = new ArrayList<>();
+        for (MetaMtmCascadeExtPO cascadeExtPO : cascadeExtList) {
+            Integer cascadeEntityId = cascadeExtPO.getCascadeEntityId();
+            Integer cascadeFieldId = cascadeExtPO.getCascadeFieldId();
+            MetaEntityPO cascadeEntity = entitys.get(cascadeEntityId);
+            if(cascadeEntity==null){
+                continue;
+            }
+            MetaFieldPO cascadeField = cascadeEntity.getFields().get(cascadeFieldId);
+            if(cascadeField==null){
+                continue;
+            }
+            cascadeExtPO.setCascadeEntity(cascadeEntity);
+            cascadeExtPO.setCascadeField(cascadeField);
+            filteredCascadeExtList.add(cascadeExtPO);
+        }
+        return filteredCascadeExtList;
+    }
+
+
+    /**
+     * 装配外键实体和外键字段
+     * @param metaEntities 实体列表
+     * @param withFkCascade 是否装配外键级联扩展
+     */
+    public void assembleForeign(List<MetaEntityPO> metaEntities, boolean withFkCascade){
         for (MetaEntityPO metaEntity : metaEntities) {
-            for (MetaFieldPO metaFieldPO : metaEntity.getFields()) {
+            for (MetaFieldPO metaFieldPO : metaEntity.getFields().values()) {
                 //如果不存在外键关系，则跳过
                 if(BoolConst.TRUE != metaFieldPO.getForeignKey()){
                     continue;
@@ -290,8 +347,10 @@ public class MetaQueryAssembleService {
                         +foreignEntity.getClassName()+"."+foreignField.getJfieldName()+"字段类型不一致");
                 }
                 metaFieldPO.setForeignField(foreignField);
-                // 组装级联扩展列表
-                this.assembleCascadeExtList(metaFieldPO,foreignEntity.getFields());
+                // 装配级联扩展列表
+                if(withFkCascade) {
+                    this.assembleCascadeExtList(metaFieldPO, foreignEntity.getFields());
+                }
                 foreignEntity.addForeignField(metaFieldPO);
                 foreignEntity.addForeignEntity(metaEntity);
             }
@@ -300,21 +359,19 @@ public class MetaQueryAssembleService {
 
 
     /**
-     * 组装级联扩展列表
+     * 装配外键级联扩展列表
      */
-    public void assembleCascadeExtList(MetaFieldPO metaFieldPO, List<MetaFieldPO> foreignFields) {
+    public void assembleCascadeExtList(MetaFieldPO metaFieldPO, Map<Integer, MetaFieldPO> foreignFields) {
         List<MetaCascadeExtPO> cascadeExts = metaCascadeExtService.findByFieldId(metaFieldPO.getFieldId());
         List<MetaCascadeExtPO> cascadeQueryExts = new ArrayList<>();
         List<MetaCascadeExtPO> cascadeShowExts = new ArrayList<>();
         List<MetaCascadeExtPO> cascadeListExts = new ArrayList<>();
         for (MetaCascadeExtPO cascadeExt : cascadeExts) {
-            Optional<MetaFieldPO> first = foreignFields.stream()
-                .filter(field -> field.getFieldId().equals(cascadeExt.getCascadeFieldId()))
-                .findFirst();
-            if(!first.isPresent()) {
+            MetaFieldPO field = foreignFields.get(cascadeExt.getCascadeFieldId());
+            if(field==null) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR,metaFieldPO.getFieldDesc()+"的级联扩展字段有误");
             }
-            cascadeExt.setCascadeField(first.get());
+            cascadeExt.setCascadeField(field);
             if(BoolConst.TRUE==cascadeExt.getQuery()){
                 cascadeQueryExts.add(cascadeExt);
             }
@@ -338,7 +395,8 @@ public class MetaQueryAssembleService {
      * @return
      */
     private MetaEntityPO findMetaEntityById(List<MetaEntityPO> metaEntities,Integer entityId){
-        Optional<MetaEntityPO> first = metaEntities.stream().filter(entityPO -> entityPO.getEntityId().equals(entityId)).findFirst();
+        Optional<MetaEntityPO> first = metaEntities.stream()
+            .filter(entityPO -> entityPO.getEntityId().equals(entityId)).findFirst();
         if(first.isPresent()){
             return first.get();
         }
@@ -362,7 +420,7 @@ public class MetaQueryAssembleService {
         Set<String> defaultConst = Sets.newHashSet("BoolConst");
 
         for (MetaEntityPO entity : entities) {
-            List<MetaFieldPO> fields = entity.getFields();
+            Map<Integer, MetaFieldPO> fields = entity.getFields();
             int pkCount = 0;
             int deletedCount = 0;
             int createdByCount = 0;
@@ -370,7 +428,7 @@ public class MetaQueryAssembleService {
             int operatedByCount = 0;
             int operatedTimeCount = 0;
             int versionCount = 0;
-            for (MetaFieldPO field : fields) {
+            for (MetaFieldPO field : fields.values()) {
                 String specialField = field.getSpecialField();
                 if(BoolConst.TRUE == field.getPrimaryKey()){
                     pkCount++;

@@ -89,7 +89,7 @@
 <@call this.printClassCom("${this.title}" "${this.desc}")/>
 public class ${this.classNameUpper}PO extends AbstractPO${implementsStr} {
 
-<#list this.fields as field>
+<#list this.fields as _id,field>
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
         <@call this.addImport("java.util.Date")/>
     <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
@@ -110,7 +110,7 @@ ${MetadataUtil.convertCommentDisplayWithIndentStar(field.fieldComment)}
 
     </#list>
 
-<#list this.fields as field>
+<#list this.fields as _id,field>
     <@call TemplateUtil.printGetterSetterForPO(field)/>
 </#list>
 

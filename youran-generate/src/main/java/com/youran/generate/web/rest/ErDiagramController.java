@@ -58,11 +58,11 @@ public class ErDiagramController extends AbstractController implements ErDiagram
             .stream()
             .map(metaQueryAssembleService::getAssembledEntity).collect(Collectors.toList());
         // 组装外键实体和外键字段
-        metaQueryAssembleService.assembleForeign(metaEntities);
+        metaQueryAssembleService.assembleForeign(metaEntities, false);
         // 查询多对多列表
         List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId);
         // 组装多对多对象引用
-        metaQueryAssembleService.assembleManyToManyWithEntities(metaEntities, manyToManies);
+        metaQueryAssembleService.assembleManyToManyWithEntities(metaEntities, manyToManies, false);
 
 
         List<EntityDiagramVO> nodeData = new ArrayList<>();
@@ -70,8 +70,7 @@ public class ErDiagramController extends AbstractController implements ErDiagram
         for (MetaEntityPO metaEntity : metaEntities) {
             EntityDiagramVO entityDiagramVO = new EntityDiagramVO();
             entityDiagramVO.setKey(metaEntity.getTableName());
-            List<MetaFieldPO> fields = metaEntity.getFields();
-            for (MetaFieldPO field : fields) {
+            for (MetaFieldPO field : metaEntity.getFields().values()) {
                 String type = "";
                 if(field.getPrimaryKey() == BoolConst.TRUE){
                     type = FieldDiagramVO.PRIMARY_KEY;

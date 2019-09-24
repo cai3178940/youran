@@ -88,6 +88,15 @@ public class MetaMtmCascadeExtPO extends AbstractPO implements CreatedOperatedDe
      */
     private Boolean deleted;
 
+    /**
+     * 级联实体
+     */
+    private MetaEntityPO cascadeEntity;
+    /**
+     * 级联字段
+     */
+    private MetaFieldPO cascadeField;
+
 
     public Integer getMtmCascadeExtId() {
         return mtmCascadeExtId;
@@ -159,6 +168,22 @@ public class MetaMtmCascadeExtPO extends AbstractPO implements CreatedOperatedDe
 
     public void setQuery(Integer query) {
         this.query = query;
+    }
+
+    public MetaEntityPO getCascadeEntity() {
+        return cascadeEntity;
+    }
+
+    public void setCascadeEntity(MetaEntityPO cascadeEntity) {
+        this.cascadeEntity = cascadeEntity;
+    }
+
+    public MetaFieldPO getCascadeField() {
+        return cascadeField;
+    }
+
+    public void setCascadeField(MetaFieldPO cascadeField) {
+        this.cascadeField = cascadeField;
     }
 
     @Override
