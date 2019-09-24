@@ -22,11 +22,9 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
     List<${this.classNameUpper}ListVO> findListByQuery(${this.classNameUpper}QO ${this.className}QO);
 
 </#if>
-<#list this.fields as field>
-    <#if isTrue(field.foreignKey)>
+<#list this.fkFields as field>
     int getCountBy${field.jfieldName?capFirst}(${field.jfieldType} ${field.jfieldName});
 
-    </#if>
 </#list>
     <#list this.holds! as otherEntity,mtm>
         <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>

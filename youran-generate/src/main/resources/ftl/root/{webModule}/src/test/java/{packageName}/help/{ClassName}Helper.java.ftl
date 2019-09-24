@@ -30,7 +30,7 @@ public class ${this.classNameUpper}Helper {
      */
     public ${this.classNameUpper}AddDTO get${this.classNameUpper}AddDTO(${foreignArg}){
         ${this.classNameUpper}AddDTO dto = new ${this.classNameUpper}AddDTO();
-    <#list this.metaEntity.insertFields as field>
+    <#list this.insertFields as field>
         <#--字段名转下划线大写-->
         <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
         <#assign arg="">
@@ -61,7 +61,7 @@ public class ${this.classNameUpper}Helper {
     public ${this.classNameUpper}UpdateDTO get${this.classNameUpper}UpdateDTO(${this.classNameUpper}PO ${this.className}){
         ${this.classNameUpper}UpdateDTO dto = new ${this.classNameUpper}UpdateDTO();
         dto.set${this.idUpper}(${this.className}.get${this.idUpper}());
-        <#list this.metaEntity.updateFields as field>
+        <#list this.updateFields as field>
         dto.set${field.jfieldName?capFirst}(${this.className}.get${field.jfieldName?capFirst}());
         </#list>
         return dto;

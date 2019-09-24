@@ -75,6 +75,10 @@ public class EntityModel extends BaseModel{
      */
     private MetaFieldPO delField;
     /**
+     * 外键字段
+     */
+    private List<MetaFieldPO> fkFields;
+    /**
      * 添加字段
      */
     private List<MetaFieldPO> insertFields;
@@ -149,6 +153,7 @@ public class EntityModel extends BaseModel{
         this.idUpper = StringUtils.capitalize(this.id);
         this.type = this.pk.getJfieldType();
         this.fields = metaEntity.getFields();
+        this.fkFields = metaEntity.getFkFields();
         this.pageSign = metaEntity.getPageSign();
         this.versionField = metaEntity.getVersionField();
         this.delField = metaEntity.getDelField();
@@ -435,6 +440,14 @@ public class EntityModel extends BaseModel{
 
     public void setFields(List<MetaFieldPO> fields) {
         this.fields = fields;
+    }
+
+    public List<MetaFieldPO> getFkFields() {
+        return fkFields;
+    }
+
+    public void setFkFields(List<MetaFieldPO> fkFields) {
+        this.fkFields = fkFields;
     }
 
     public Integer getPageSign() {

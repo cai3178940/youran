@@ -135,6 +135,7 @@ public class MetaQueryAssembleService {
         List<MetaFieldPO> listFields = new ArrayList<>();
         List<MetaFieldPO> listSortFields = new ArrayList<>();
         List<MetaFieldPO> showFields = new ArrayList<>();
+        List<MetaFieldPO> fkFields = new ArrayList<>();
         for (MetaFieldPO metaField : fieldList) {
             String specialField = metaField.getSpecialField();
             if (BoolConst.TRUE == metaField.getPrimaryKey()) {
@@ -170,6 +171,9 @@ public class MetaQueryAssembleService {
             if (BoolConst.TRUE == metaField.getShow()) {
                 showFields.add(metaField);
             }
+            if (BoolConst.TRUE == metaField.getForeignKey()) {
+                fkFields.add(metaField);
+            }
         }
         metaEntity.setFields(fieldList);
         metaEntity.setQueryFields(queryFields);
@@ -178,6 +182,7 @@ public class MetaQueryAssembleService {
         metaEntity.setListFields(listFields);
         metaEntity.setListSortFields(listSortFields);
         metaEntity.setShowFields(showFields);
+        metaEntity.setFkFields(fkFields);
     }
 
     /**

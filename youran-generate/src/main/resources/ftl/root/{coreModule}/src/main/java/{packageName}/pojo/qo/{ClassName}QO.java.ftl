@@ -72,8 +72,8 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         <@queryField field field.jfieldName+"End"></@queryField>
     </#if>
 </#list>
-<#--开始渲染级联扩展字段声明语句-->
-<#list this.fields as field>
+<#--开始渲染外键级联扩展字段声明语句-->
+<#list this.fkFields as field>
     <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
         <#assign examplePackage="">
         <#if field.foreignEntity!=this.metaEntity>
@@ -109,7 +109,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     </#if>
 </#list>
 <#--开始渲染级联扩展字段getter-setter方法-->
-<#list this.fields as field>
+<#list this.fkFields as field>
     <#list field.cascadeQueryExts! as cascadeExt>
         <#assign cascadeField=cascadeExt.cascadeField>
         <#if cascadeField.queryType!=QueryType.BETWEEN>

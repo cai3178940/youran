@@ -124,7 +124,7 @@
         </#if>
     </#list>
     <#assign cascadeIndex=0>
-    <#list this.fields as field>
+    <#list this.fkFields as field>
         <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
             <#assign cascadeIndex=cascadeIndex+1>
             <#assign con_ex_arr=[]>
@@ -213,7 +213,7 @@
         select
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         <#assign cascadeIndex=0>
-        <#list this.fields as field>
+        <#list this.fkFields as field>
             <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
                 <#assign cascadeIndex=cascadeIndex+1>
                 <#list field.cascadeListExts as cascadeExt>
@@ -223,7 +223,7 @@
         </#list>
         from ${wrapTableName} t
         <#assign cascadeIndex=0>
-        <#list this.fields as field>
+        <#list this.fkFields as field>
             <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
                 <#assign cascadeIndex=cascadeIndex+1>
         left outer join ${MetadataUtil.wrapMysqlKeyword(field.foreignEntity.tableName)} c${cascadeIndex}
@@ -245,8 +245,7 @@
     </#if>
     </select>
 
-<#list this.fields as field>
-    <#if isTrue(field.foreignKey)>
+    <#list this.fkFields as field>
         <#assign wrapFieldName=MetadataUtil.wrapMysqlKeyword(field.fieldName)>
     <select id="getCountBy${field.jfieldName?capFirst}" parameterType="${field.jfieldType}" resultType="int">
         select count(1)
@@ -258,8 +257,7 @@
         </#if>
     </select>
 
-    </#if>
-</#list>
+    </#list>
     <#list this.holds! as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign otherPk=otherEntity.pkField>

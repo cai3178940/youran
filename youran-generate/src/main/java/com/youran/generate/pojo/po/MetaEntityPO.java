@@ -58,6 +58,11 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     private List<MetaFieldPO> fields;
 
     /**
+     * 外键字段列表
+     */
+    private List<MetaFieldPO> fkFields;
+
+    /**
      * 查询字段列表
      */
     private List<MetaFieldPO> queryFields;
@@ -392,6 +397,13 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
         this.fields = fields;
     }
 
+    public List<MetaFieldPO> getFkFields() {
+        return fkFields;
+    }
+
+    public void setFkFields(List<MetaFieldPO> fkFields) {
+        this.fkFields = fkFields;
+    }
 
     public String getDesc() {
         return desc;

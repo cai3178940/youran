@@ -47,7 +47,7 @@ public class ${this.classNameUpper}Service {
         <@call this.addAutowired("${this.packageName}.dao" "${foreignEntity.className?capFirst}DAO")/>
     </#list>
 <#-- 当前实体的外键字段存在级联扩展时，引入对应实体的DAO -->
-<#list this.fields as field>
+<#list this.fkFields as field>
     <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
         <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
@@ -244,7 +244,7 @@ public class ${this.classNameUpper}Service {
     public ${this.classNameUpper}ShowVO show(${this.type} ${this.id}) {
         ${this.classNameUpper}PO ${this.className} = this.get${this.classNameUpper}(${this.id}, true);
         ${this.classNameUpper}ShowVO showVO = ${this.classNameUpper}Mapper.INSTANCE.toShowVO(${this.className});
-<#list this.fields as field>
+<#list this.fkFields as field>
     <#if field.cascadeShowExts?? && field.cascadeShowExts?size &gt; 0>
         <#assign otherCName=field.foreignEntity.className?capFirst>
         <#assign othercName=field.foreignEntity.className?uncapFirst>

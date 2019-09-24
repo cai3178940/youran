@@ -27,7 +27,7 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
     private ${field.jfieldType} ${field.jfieldName};
 
 </#list>
-<#list this.fields as field>
+<#list this.fkFields as field>
     <#list field.cascadeListExts! as cascadeExt>
         <#assign cascadeField=cascadeExt.cascadeField>
         <#assign examplePackage="">
@@ -64,7 +64,7 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
 <#list this.listFields as field>
     <@call TemplateUtil.printGetterSetter(field)/>
 </#list>
-<#list this.fields as field>
+<#list this.fkFields as field>
     <#list field.cascadeListExts! as cascadeExt>
         <@call TemplateUtil.printGetterSetter(cascadeExt.alias,cascadeExt.cascadeField.jfieldType)/>
     </#list>
