@@ -1,4 +1,4 @@
-package com.youran.generate.pojo.template;
+package com.youran.generate.pojo.dto;
 
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;

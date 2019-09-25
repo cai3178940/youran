@@ -1,4 +1,4 @@
-package com.youran.generate.pojo.template;
+package com.youran.generate.template.context;
 
 import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.FeatureConst;

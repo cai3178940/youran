@@ -1,9 +1,10 @@
-package com.youran.generate.pojo.template;
+package com.youran.generate.template.context;
 
 import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.po.*;
+import com.youran.generate.pojo.dto.ForeignEntityTreeNode;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;

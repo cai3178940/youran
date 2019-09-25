@@ -1,4 +1,4 @@
-package com.youran.generate.pojo.template;
+package com.youran.generate.template.context;
 
 import com.youran.generate.constant.MetaConstType;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
