@@ -72,7 +72,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         <@queryField field field.jfieldName+"End"></@queryField>
     </#if>
 </#list>
-<#--开始渲染外键级联扩展字段声明语句-->
+<#--开始渲染【外键级联扩展】字段声明语句-->
 <#list this.fkFields as id,field>
     <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
         <#assign examplePackage="">
@@ -89,6 +89,38 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
             </#if>
         </#list>
     </#if>
+</#list>
+<#--开始渲染【持有引用的】【多对多级联扩展】字段声明语句-->
+<#list this.holdCascadeExts as cascadeEntity,mtmCascadeExts>
+    <#list mtmCascadeExts as mtmCascadeExt>
+        <#if isTrue(mtmCascadeExt.query)>
+            <#assign cascadeField=mtmCascadeExt.cascadeField>
+            <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
+            <#assign examplePackage="${this.packageName}.pojo.example.${cascadeEntity.className?capFirst}Example.">
+            <#if cascadeField.queryType!=QueryType.BETWEEN>
+                <@queryField cascadeField mtmCascadeExt.alias examplePackage></@queryField>
+            <#else>
+                <@queryField cascadeField mtmCascadeExt.alias+"Start" examplePackage></@queryField>
+                <@queryField cascadeField mtmCascadeExt.alias+"End" examplePackage></@queryField>
+            </#if>
+        </#if>
+    </#list>
+</#list>
+<#--开始渲染【未持有引用的】【多对多级联扩展】字段声明语句-->
+<#list this.unHoldCascadeExts as cascadeEntity,mtmCascadeExts>
+    <#list mtmCascadeExts as mtmCascadeExt>
+        <#if isTrue(mtmCascadeExt.query)>
+            <#assign cascadeField=mtmCascadeExt.cascadeField>
+            <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
+            <#assign examplePackage="${this.packageName}.pojo.example.${cascadeEntity.className?capFirst}Example.">
+            <#if cascadeField.queryType!=QueryType.BETWEEN>
+                <@queryField cascadeField mtmCascadeExt.alias examplePackage></@queryField>
+            <#else>
+                <@queryField cascadeField mtmCascadeExt.alias+"Start" examplePackage></@queryField>
+                <@queryField cascadeField mtmCascadeExt.alias+"End" examplePackage></@queryField>
+            </#if>
+        </#if>
+    </#list>
 </#list>
 
 <#--开始渲染排序条件声明语句-->
@@ -108,7 +140,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         <@queryMethod field field.jfieldName+"End"></@queryMethod>
     </#if>
 </#list>
-<#--开始渲染级联扩展字段getter-setter方法-->
+<#--开始渲染【外键级联扩展】字段getter-setter方法-->
 <#list this.fkFields as id,field>
     <#list field.cascadeQueryExts! as cascadeExt>
         <#assign cascadeField=cascadeExt.cascadeField>
@@ -120,6 +152,35 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         </#if>
     </#list>
 </#list>
+<#--开始渲染【持有引用的】【多对多级联扩展】字段getter-setter方法-->
+<#list this.holdCascadeExts as cascadeEntity,mtmCascadeExts>
+    <#list mtmCascadeExts as mtmCascadeExt>
+        <#if isTrue(mtmCascadeExt.query)>
+            <#assign cascadeField=mtmCascadeExt.cascadeField>
+            <#if cascadeField.queryType!=QueryType.BETWEEN>
+                <@queryMethod cascadeField mtmCascadeExt.alias></@queryMethod>
+            <#else>
+                <@queryMethod cascadeField mtmCascadeExt.alias+"Start"></@queryMethod>
+                <@queryMethod cascadeField mtmCascadeExt.alias+"End"></@queryMethod>
+            </#if>
+        </#if>
+    </#list>
+</#list>
+<#--开始渲染【未持有引用的】【多对多级联扩展】字段getter-setter方法-->
+<#list this.unHoldCascadeExts as cascadeEntity,mtmCascadeExts>
+    <#list mtmCascadeExts as mtmCascadeExt>
+        <#if isTrue(mtmCascadeExt.query)>
+            <#assign cascadeField=mtmCascadeExt.cascadeField>
+            <#if cascadeField.queryType!=QueryType.BETWEEN>
+                <@queryMethod cascadeField mtmCascadeExt.alias></@queryMethod>
+            <#else>
+                <@queryMethod cascadeField mtmCascadeExt.alias+"Start"></@queryMethod>
+                <@queryMethod cascadeField mtmCascadeExt.alias+"End"></@queryMethod>
+            </#if>
+        </#if>
+    </#list>
+</#list>
+
 <#--开始渲染排序字段getter-setter方法-->
 <#list this.listSortFields as id,field>
     <@call TemplateUtil.printGetterSetter("${field.jfieldName}SortSign","Integer")/>

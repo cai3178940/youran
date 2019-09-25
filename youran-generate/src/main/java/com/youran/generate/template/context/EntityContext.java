@@ -202,7 +202,7 @@ public class EntityContext extends BaseContext {
         if(MapUtils.isEmpty(map)){
             return new HashMap<>(0);
         }
-        Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> result = new HashMap<>(map.size());
+        Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> result = new LinkedHashMap<>(map.size());
         for (Map.Entry<MetaEntityPO, MetaManyToManyPO> entry : map.entrySet()) {
             MetaEntityPO entity = entry.getKey();
             MetaManyToManyPO mtm = entry.getValue();

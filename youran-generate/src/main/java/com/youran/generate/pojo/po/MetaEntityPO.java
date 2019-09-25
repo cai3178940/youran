@@ -153,7 +153,7 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public MetaEntityPO addField(MetaFieldPO metaFieldPO){
         if(fields==null){
-            fields = new HashMap<>(16);
+            fields = new LinkedHashMap<>(16);
         }
         fields.put(metaFieldPO.getFieldId(),metaFieldPO);
         return this;
