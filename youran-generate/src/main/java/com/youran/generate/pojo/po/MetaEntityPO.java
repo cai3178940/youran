@@ -44,7 +44,9 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     private String desc;
     /**
      * 是否支持通用服务调用
+     * 【已废弃】
      */
+    @Deprecated
     private Integer commonCall;
     /**
      * 是否支持分页查询

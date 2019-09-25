@@ -16,9 +16,9 @@ import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
-import com.youran.generate.pojo.template.BaseModel;
-import com.youran.generate.pojo.template.ConstModel;
-import com.youran.generate.pojo.template.EntityModel;
+import com.youran.generate.pojo.template.BaseContext;
+import com.youran.generate.pojo.template.ConstContext;
+import com.youran.generate.pojo.template.EntityContext;
 import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.util.FreeMakerUtil;
 import com.youran.generate.util.Zip4jUtil;
@@ -61,6 +61,9 @@ public class MetaCodeGenService implements InitializingBean {
     private GenerateProperties generateProperties;
     @Autowired
     private GenHistoryService genHistoryService;
+    /**
+     * 本系统名称，这里用于指定代码生成目录的父文件夹名称
+     */
     @Value("${spring.application.name}")
     private String appName;
 
@@ -94,7 +97,7 @@ public class MetaCodeGenService implements InitializingBean {
      * @return
      */
     private String getSqlText(MetaProjectPO project) {
-        String text = FreeMakerUtil.writeToStr("root/"+ TemplateEnum.SQL.getTemplate(), new BaseModel(project));
+        String text = FreeMakerUtil.writeToStr("root/"+ TemplateEnum.SQL.getTemplate(), new BaseContext(project));
         LOGGER.debug("------打印生成sql脚本-----");
         LOGGER.debug(text);
         return text;
@@ -134,11 +137,6 @@ public class MetaCodeGenService implements InitializingBean {
                 this.progressing(progressConsumer,1,"部分替换开发工程" + devProjectDir);
                 this.compareAndCoverFile(new File(tmpDir), new File(devProjectDir));
             }
-            /*if (generateProperties.isDelTemp()) {
-                LOGGER.debug("------删除临时文件夹：" + tmpDir);
-                this.progressing(progressConsumer,1 ,"删除临时文件夹");
-                FileUtils.deleteDirectory(new File(tmpDir));
-            }*/
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -311,8 +309,8 @@ public class MetaCodeGenService implements InitializingBean {
      */
     private void renderCommonFTL(MetaProjectPO project, String tmpDir, TemplateEnum templateEnum) {
         String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(), null, null);
-        BaseModel model = new BaseModel(project);
-        doRenderFTL(templateEnum, outFilePath, model);
+        BaseContext context = new BaseContext(project);
+        doRenderFTL(templateEnum, outFilePath, context);
     }
 
     /**
@@ -320,10 +318,12 @@ public class MetaCodeGenService implements InitializingBean {
      * @param project      项目
      * @param tmpDir       输出临时目录
      */
-    private void renderEntityFTL(MetaProjectPO project, String tmpDir, TemplateEnum templateEnum, MetaEntityPO metaEntityPO) {
-        String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(), metaEntityPO.getClassName(),null);
-        EntityModel model = new EntityModel(project,metaEntityPO);
-        doRenderFTL(templateEnum, outFilePath, model);
+    private void renderEntityFTL(MetaProjectPO project, String tmpDir,
+                                 TemplateEnum templateEnum, MetaEntityPO metaEntityPO) {
+        String outFilePath = this.getOutFilePath(project, tmpDir,
+            templateEnum.getTemplate(), metaEntityPO.getClassName(),null);
+        EntityContext context = new EntityContext(project,metaEntityPO);
+        doRenderFTL(templateEnum, outFilePath, context);
     }
 
 
@@ -334,21 +334,23 @@ public class MetaCodeGenService implements InitializingBean {
      * @param templateEnum 模版文件枚举
      * @param metaConstPO 当前常量
      */
-    private void renderConstFTL(MetaProjectPO project, String tmpDir, TemplateEnum templateEnum, MetaConstPO metaConstPO) {
-        String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(), null, metaConstPO.getConstName());
-        ConstModel model = new ConstModel(project,metaConstPO);
-        doRenderFTL(templateEnum, outFilePath, model);
+    private void renderConstFTL(MetaProjectPO project, String tmpDir,
+                                TemplateEnum templateEnum, MetaConstPO metaConstPO) {
+        String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(),
+            null, metaConstPO.getConstName());
+        ConstContext context = new ConstContext(project,metaConstPO);
+        doRenderFTL(templateEnum, outFilePath, context);
     }
 
     /**
      * 执行模板渲染
-     * @param templateEnum
-     * @param outFilePath
-     * @param model
+     * @param templateEnum 模板枚举
+     * @param outFilePath 输出路径
+     * @param context 上下文信息
      */
-    private void doRenderFTL(TemplateEnum templateEnum, String outFilePath, BaseModel model) {
+    private void doRenderFTL(TemplateEnum templateEnum, String outFilePath, BaseContext context) {
         LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
-        String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), model);
+        String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), context);
         LOGGER.debug(text);
         this.writeToFile(text, outFilePath);
     }
@@ -362,7 +364,8 @@ public class MetaCodeGenService implements InitializingBean {
      * @param constName
      * @return
      */
-    private String getOutFilePath(MetaProjectPO project,String tmpDir,String templatePath,String entityClassName,String constName){
+    private String getOutFilePath(MetaProjectPO project,String tmpDir,
+                                  String templatePath,String entityClassName,String constName){
         String packageName = project.getPackageName();
         if (StringUtils.isBlank(packageName)) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"包名未设置");

@@ -9,13 +9,12 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 /**
- * <p>Title: 常量模型</p>
- * <p>Description: </p>
- *
+ * <p>Title: 常量信息上下文对象</p>
+ * <p>Description: 包含某个常量的所有信息</p>
  * @author cbb
  * @date 2018/8/3
  */
-public class ConstModel extends BaseModel{
+public class ConstContext extends BaseContext {
 
     /**
      * 常量对象
@@ -46,7 +45,7 @@ public class ConstModel extends BaseModel{
      */
     private List<MetaConstDetailPO> detailList;
 
-    public ConstModel(MetaProjectPO project,MetaConstPO metaConst) {
+    public ConstContext(MetaProjectPO project, MetaConstPO metaConst) {
         super(project);
         this.metaConst = metaConst;
         this.constName = StringUtils.uncapitalize(metaConst.getConstName());

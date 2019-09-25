@@ -11,12 +11,12 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 
 /**
- * <p>Title: 实体模型</p>
+ * <p>Title: 实体信息上下文对象</p>
  * <p>Description: 将实体对象中的大部分属性拷贝到当前类中，并且额外提供了一些转换和封装</p>
  * @author cbb
  * @date 2018/8/3
  */
-public class EntityModel extends BaseModel{
+public class EntityContext extends BaseContext {
 
     /**
      * 当前实体
@@ -130,6 +130,23 @@ public class EntityModel extends BaseModel{
     private Map<MetaEntityPO, MetaManyToManyPO> unHolds;
 
     /**
+     * 对应的外键列表(当前主键对应的其他实体外键字段)
+     * 比如：
+     *  1、当前实体是部门，主键是部门id
+     *  2、对应实体是用户，用户中的外键字段是部门id
+     *  3、则此处存放的是用户表中的部门id
+     */
+    private List<MetaFieldPO> foreignFields;
+    /**
+     * 对应的外键实体集合(当前主键对应的其他实体)
+     * 比如：
+     *  1、当前实体是部门，主键是部门id
+     *  2、对应实体是用户，用户中的外键字段是部门id
+     *  3、则此处存放的是用户实体
+     */
+    private Set<MetaEntityPO> foreignEntities;
+
+    /**
      * 当前实体持有的级联实体，对应的级联扩展列表
      */
     private Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> holdCascadeExts;
@@ -140,7 +157,7 @@ public class EntityModel extends BaseModel{
     private Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> unHoldCascadeExts;
 
 
-    public EntityModel(MetaProjectPO project,MetaEntityPO metaEntity){
+    public EntityContext(MetaProjectPO project, MetaEntityPO metaEntity){
         super(project);
         this.metaEntity = metaEntity;
         this.className = StringUtils.uncapitalize(metaEntity.getClassName());
@@ -169,6 +186,8 @@ public class EntityModel extends BaseModel{
         this.operatedByField = metaEntity.getOperatedByField();
         this.holds = metaEntity.getHolds();
         this.unHolds = metaEntity.getUnHolds();
+        this.foreignFields = metaEntity.getForeignFields();
+        this.foreignEntities = metaEntity.getForeignEntities();
         this.holdCascadeExts = mapCascadeExts(metaEntity.getHolds());
         this.unHoldCascadeExts = mapCascadeExts(metaEntity.getUnHolds());
     }
@@ -584,5 +603,21 @@ public class EntityModel extends BaseModel{
 
     public void setUnHoldCascadeExts(Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> unHoldCascadeExts) {
         this.unHoldCascadeExts = unHoldCascadeExts;
+    }
+
+    public List<MetaFieldPO> getForeignFields() {
+        return foreignFields;
+    }
+
+    public void setForeignFields(List<MetaFieldPO> foreignFields) {
+        this.foreignFields = foreignFields;
+    }
+
+    public Set<MetaEntityPO> getForeignEntities() {
+        return foreignEntities;
+    }
+
+    public void setForeignEntities(Set<MetaEntityPO> foreignEntities) {
+        this.foreignEntities = foreignEntities;
     }
 }

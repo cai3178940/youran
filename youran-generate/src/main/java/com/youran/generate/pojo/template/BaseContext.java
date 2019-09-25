@@ -17,13 +17,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * <p>Title: 基本模型</p>
- * <p>Description: 包含整个工程的基本信息</p>
+ * <p>Title: 基本信息上下文对象</p>
+ * <p>Description: 包含项目的基本信息</p>
  * @author cbb
  * @date 2018/8/3
  */
-public class BaseModel {
-
+public class BaseContext {
 
     /**
      * 实体列表
@@ -95,7 +94,7 @@ public class BaseModel {
     protected Integer bootVersion;
 
 
-    public BaseModel(MetaProjectPO project){
+    public BaseContext(MetaProjectPO project){
         //所有实体
         this.metaEntities = project.getEntities();
         //所有常量

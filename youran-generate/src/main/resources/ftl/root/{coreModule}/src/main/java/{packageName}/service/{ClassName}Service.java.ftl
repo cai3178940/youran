@@ -43,7 +43,7 @@ public class ${this.classNameUpper}Service {
     </#if>
 </#list>
 <#-- 被其他实体外键关联时，引入其他实体DAO -->
-    <#list this.metaEntity.foreignEntities! as foreignEntity>
+    <#list this.foreignEntities! as foreignEntity>
         <@call this.addAutowired("${this.packageName}.dao" "${foreignEntity.className?capFirst}DAO")/>
     </#list>
 <#-- 当前实体的外键字段存在级联扩展时，引入对应实体的DAO -->
@@ -275,7 +275,7 @@ public class ${this.classNameUpper}Service {
     public int delete(${this.type}... ${this.id}s) {
         int count = 0;
         for (${this.type} ${this.id} : ${this.id}s) {
-<#list this.metaEntity.foreignEntities! as foreignEntity>
+<#list this.foreignEntities! as foreignEntity>
     <#assign foreignCName=foreignEntity.className?capFirst>
             this.checkDeleteBy${foreignCName}(${this.id});
 </#list>
@@ -289,7 +289,7 @@ public class ${this.classNameUpper}Service {
         return count;
     }
 
-<#list this.metaEntity.foreignEntities! as foreignEntity>
+<#list this.foreignEntities! as foreignEntity>
     <#assign foreignCName=foreignEntity.className?capFirst>
     <#assign foreigncName=foreignEntity.className?uncapFirst>
     <#assign alreadyFind=false>
@@ -298,7 +298,7 @@ public class ${this.classNameUpper}Service {
      * @param ${this.id}
      */
     private void checkDeleteBy${foreignCName}(${this.type} ${this.id}) {
-    <#list this.metaEntity.foreignFields as foreignField>
+    <#list this.foreignFields as foreignField>
         <#if foreignField.entityId==foreignEntity.entityId>
         <#if !alreadyFind>int </#if>count = ${foreigncName}DAO.getCountBy${foreignField.jfieldName?capFirst}(${this.id});
         if(count>0){

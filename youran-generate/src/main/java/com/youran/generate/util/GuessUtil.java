@@ -51,8 +51,8 @@ public class GuessUtil {
 
     /**
      * 根据java字段类型和长度猜测queryType
-     * @param jFieldType
-     * @param length
+     * @param jFieldType java字段类型
+     * @param length 长度
      * @return
      */
     public static int guessQueryType(JFieldType jFieldType, int length){
@@ -102,6 +102,13 @@ public class GuessUtil {
         return false;
     }
 
+    /**
+     * 猜测java字段类型
+     * @param fieldName mysql字段名
+     * @param mySqlType mysql字段类型
+     * @param fieldLength 字段长度
+     * @return
+     */
     public static final JFieldType guessJFieldType(String fieldName, String mySqlType, int fieldLength){
         JFieldType jFieldType;
         if(MySqlType.VARCHAR.equals(mySqlType)){
@@ -150,7 +157,7 @@ public class GuessUtil {
 
 
     /**
-     * 猜测
+     * 猜测特殊字段类型
      * @param fieldName
      * @param jFieldType
      * @return
