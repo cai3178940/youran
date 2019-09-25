@@ -163,8 +163,9 @@ public class MetaCodeGenService implements InitializingBean {
             } catch (Exception e) {
                 LOGGER.error("代码生成异常", e);
                 try {
-                    FileUtils.forceDeleteOnExit(dir);
+                    FileUtils.deleteDirectory(dir);
                 } catch (IOException e1) {
+                    LOGGER.error("代码生成异常回删目录失败",e1);
                 }
                 if(e instanceof BusinessException){
                     throw e;

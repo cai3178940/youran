@@ -189,8 +189,8 @@ public class EntityContext extends BaseContext {
         this.unHolds = metaEntity.getUnHolds();
         this.foreignFields = metaEntity.getForeignFields();
         this.foreignEntities = metaEntity.getForeignEntities();
-        this.holdCascadeExts = mapCascadeExts(metaEntity.getHolds());
-        this.unHoldCascadeExts = mapCascadeExts(metaEntity.getUnHolds());
+        this.holdCascadeExts = mapCascadeExts(metaEntity,metaEntity.getHolds());
+        this.unHoldCascadeExts = mapCascadeExts(metaEntity,metaEntity.getUnHolds());
     }
 
     /**
@@ -198,18 +198,19 @@ public class EntityContext extends BaseContext {
      * @param map
      * @return
      */
-    private static Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> mapCascadeExts(Map<MetaEntityPO, MetaManyToManyPO> map){
+    private static Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> mapCascadeExts(MetaEntityPO entity,
+                                                                               Map<MetaEntityPO, MetaManyToManyPO> map){
         if(MapUtils.isEmpty(map)){
             return new HashMap<>(0);
         }
         Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> result = new LinkedHashMap<>(map.size());
         for (Map.Entry<MetaEntityPO, MetaManyToManyPO> entry : map.entrySet()) {
-            MetaEntityPO entity = entry.getKey();
+            MetaEntityPO cascadeEntity = entry.getKey();
             MetaManyToManyPO mtm = entry.getValue();
             if(Objects.equals(mtm.getEntityId1(),entity.getEntityId())){
-                result.put(entity,mtm.getCascadeExtList1());
+                result.put(cascadeEntity,mtm.getCascadeExtList1());
             }else if(Objects.equals(mtm.getEntityId2(),entity.getEntityId())){
-                result.put(entity,mtm.getCascadeExtList2());
+                result.put(cascadeEntity,mtm.getCascadeExtList2());
             }else{
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"多对多数据异常，mtm_id="+mtm.getMtmId());
             }

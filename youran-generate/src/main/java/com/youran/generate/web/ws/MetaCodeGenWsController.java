@@ -57,12 +57,38 @@ public class MetaCodeGenWsController extends AbstractController {
     };
 
     /**
-     * websocket服务:生成代码压缩包
+     * websocket服务:只生成代码
      * @param sessionId websocket连接id
      * @param projectId 项目id
      */
     @MessageMapping(value = "/genCode/{sessionId}")
     public void genCode(@DestinationVariable String sessionId, @Header Integer projectId) {
+        // 进度响应主题
+        String topic = "/code_gen/genCode_progress/"+sessionId;
+        try {
+            // 初始化进度条
+            ProgressVO.initProgress(sessionId);
+            // 生成代码压缩包
+            metaCodeGenService.genProjectCodeIfNotExists(projectId,
+                progressVO -> this.replyProgress(topic,progressVO));
+            this.replyProgress(topic,ProgressVO.success("代码生成完毕"));
+        } catch (BusinessException e){
+            // 如果捕获到异常，则将异常也通知给前端浏览器
+            this.replyProgress(topic,ProgressVO.error(e.getMessage()));
+        } catch (Throwable e) {
+            // 如果捕获到异常，则将异常也通知给前端浏览器
+            this.replyProgress(topic,ProgressVO.error("系统内部错误"));
+            LOGGER.error("代码生成异常",e);
+        }
+    }
+
+    /**
+     * websocket服务:生成代码并打压缩包
+     * @param sessionId websocket连接id
+     * @param projectId 项目id
+     */
+    @MessageMapping(value = "/genCodeAndZip/{sessionId}")
+    public void genCodeAndZip(@DestinationVariable String sessionId, @Header Integer projectId) {
         // 进度响应主题
         String topic = "/code_gen/genCode_progress/"+sessionId;
         try {

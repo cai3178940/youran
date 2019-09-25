@@ -34,7 +34,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     @ApiParam(value = ${examplePackage}N_${jfieldNameSnakeCase},example = ${examplePackage}E_${jfieldNameSnakeCase})
         <#if field.jfieldType==JFieldType.STRING.getJavaType()>
             <@call this.addImport("org.hibernate.validator.constraints.Length")/>
-    @Length(max = ${field.fieldLength},message = "${field.jfieldName}最大长度不能超过{max}")
+    @Length(max = ${field.fieldLength},message = "${jfieldName}最大长度不能超过{max}")
         <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
             <@call this.addImport("java.util.Date")/>
             <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
@@ -93,9 +93,9 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 <#--开始渲染【持有引用的】【多对多级联扩展】字段声明语句-->
 <#list this.holdCascadeExts as cascadeEntity,mtmCascadeExts>
     <#list mtmCascadeExts as mtmCascadeExt>
-        <#if isTrue(mtmCascadeExt.query)>
-            <#assign cascadeField=mtmCascadeExt.cascadeField>
-            <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
+        <#assign cascadeField=mtmCascadeExt.cascadeField>
+        <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
+        <#if isTrue(mtmCascadeExt.query) && isTrue(cascadeField.query)>
             <#assign examplePackage="${this.packageName}.pojo.example.${cascadeEntity.className?capFirst}Example.">
             <#if cascadeField.queryType!=QueryType.BETWEEN>
                 <@queryField cascadeField mtmCascadeExt.alias examplePackage></@queryField>
@@ -109,9 +109,9 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 <#--开始渲染【未持有引用的】【多对多级联扩展】字段声明语句-->
 <#list this.unHoldCascadeExts as cascadeEntity,mtmCascadeExts>
     <#list mtmCascadeExts as mtmCascadeExt>
-        <#if isTrue(mtmCascadeExt.query)>
-            <#assign cascadeField=mtmCascadeExt.cascadeField>
-            <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
+        <#assign cascadeField=mtmCascadeExt.cascadeField>
+        <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
+        <#if isTrue(mtmCascadeExt.query) && isTrue(cascadeField.query)>
             <#assign examplePackage="${this.packageName}.pojo.example.${cascadeEntity.className?capFirst}Example.">
             <#if cascadeField.queryType!=QueryType.BETWEEN>
                 <@queryField cascadeField mtmCascadeExt.alias examplePackage></@queryField>
@@ -155,8 +155,8 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 <#--开始渲染【持有引用的】【多对多级联扩展】字段getter-setter方法-->
 <#list this.holdCascadeExts as cascadeEntity,mtmCascadeExts>
     <#list mtmCascadeExts as mtmCascadeExt>
-        <#if isTrue(mtmCascadeExt.query)>
-            <#assign cascadeField=mtmCascadeExt.cascadeField>
+        <#assign cascadeField=mtmCascadeExt.cascadeField>
+        <#if isTrue(mtmCascadeExt.query) && isTrue(cascadeField.query)>
             <#if cascadeField.queryType!=QueryType.BETWEEN>
                 <@queryMethod cascadeField mtmCascadeExt.alias></@queryMethod>
             <#else>
@@ -169,8 +169,8 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 <#--开始渲染【未持有引用的】【多对多级联扩展】字段getter-setter方法-->
 <#list this.unHoldCascadeExts as cascadeEntity,mtmCascadeExts>
     <#list mtmCascadeExts as mtmCascadeExt>
-        <#if isTrue(mtmCascadeExt.query)>
-            <#assign cascadeField=mtmCascadeExt.cascadeField>
+        <#assign cascadeField=mtmCascadeExt.cascadeField>
+        <#if isTrue(mtmCascadeExt.query) && isTrue(cascadeField.query)>
             <#if cascadeField.queryType!=QueryType.BETWEEN>
                 <@queryMethod cascadeField mtmCascadeExt.alias></@queryMethod>
             <#else>

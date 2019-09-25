@@ -6,7 +6,7 @@ module.exports = {
   // 指定静态资源目录
   assetsDir: 'static',
   // 前端项目基本路径
-  baseUrl: '/ui',
+  publicPath: '/ui',
   devServer: {
     port: 80,
     proxy: {

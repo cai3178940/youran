@@ -184,15 +184,21 @@ export default {
     },
     */
     handlePreView (row) {
-      this.loading = true
-      this.loadingText = '代码生成中'
-      this.$ajax.get(`/${apiPath}/code_gen/genCode?projectId=${row.projectId}`)
-        .then(response => this.$common.checkResult(response))
-        .then(() => {
-          this.$refs.codePreview.show(row.projectId, row.projectName)
+      const projectId = row.projectId
+      this.callCodeGenWebSocketService(
+        'genCode',
+        { 'projectId': projectId },
+        () => this.progressingProjectIds.push(projectId),
+        progressVO => this.rowProgressChange(row, progressVO)
+      )
+        .then(progressVO => {
+          if (progressVO.status === 2) {
+            this.$refs.codePreview.show(row.projectId, row.projectName)
+          } else {
+            this.$common.showNotifyError(progressVO.msg)
+          }
         })
-        .catch(error => this.$common.showNotifyError(error))
-        .finally(() => { this.loading = false })
+        .finally(() => this.removeProgress(row))
     },
     /**
      * 行进度条改变
@@ -249,7 +255,7 @@ export default {
       const projectId = row.projectId
       this.$common.confirm('是否确认下载')
         .then(() => this.callCodeGenWebSocketService(
-          'genCode',
+          'genCodeAndZip',
           { 'projectId': projectId },
           () => this.progressingProjectIds.push(projectId),
           progressVO => this.rowProgressChange(row, progressVO)
