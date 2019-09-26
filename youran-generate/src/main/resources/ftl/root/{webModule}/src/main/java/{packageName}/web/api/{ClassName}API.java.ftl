@@ -78,7 +78,7 @@ public interface ${this.classNameUpper}API {
 <#list this.holds! as otherEntity,mtm>
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
-    <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+    <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
     /**
      * 添加单个【${otherEntity.title}】关联
      */

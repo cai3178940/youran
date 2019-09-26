@@ -94,7 +94,7 @@
         <#assign otherPk=otherEntity.pkField>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+        <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
         <#--获取保存Example的代码-->
         <#assign saveExampleCode=this.getPrintingSaveExampleForMtm(otherEntity)/>
     @Test

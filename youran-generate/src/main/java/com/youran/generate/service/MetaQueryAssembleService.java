@@ -6,6 +6,7 @@ import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.pojo.po.*;
+import com.youran.generate.util.MetadataUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -272,6 +273,10 @@ public class MetaQueryAssembleService {
         List<MetaMtmCascadeExtPO> filteredCascadeExtList2 = this.filterAndAssembleMtmCascadeExt(cascadeExtList2, entitys);
         mtm.setCascadeExtList1(filteredCascadeExtList1);
         mtm.setCascadeExtList2(filteredCascadeExtList2);
+        mtm.setFkAliasForSql1(MetadataUtil.getMtmFkAlias(mtm,entity1,true));
+        mtm.setFkAliasForSql2(MetadataUtil.getMtmFkAlias(mtm,entity2,true));
+        mtm.setFkAliasForJava1(MetadataUtil.getMtmFkAlias(mtm,entity1,false));
+        mtm.setFkAliasForJava2(MetadataUtil.getMtmFkAlias(mtm,entity2,false));
     }
 
     /**

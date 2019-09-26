@@ -90,7 +90,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
-    <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+    <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
     @Override
     @PostMapping(value = "/{${this.id}}/${othercName}/{${otherFkId}}")
     public ResponseEntity<Integer> add${otherCName}(@PathVariable ${this.type} ${this.id},

@@ -32,8 +32,8 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
         <@call this.addImport("org.apache.ibatis.annotations.Param")/>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign otherType=otherEntity.pkField.jfieldType>
-        <#assign theFkId=MetadataUtil.getMtmFkAlias(mtm,this.metaEntity,false)>
-        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+        <#assign theFkId=mtm.getFkAlias(this.entityId,false)>
+        <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
     int getCountBy${otherCName}(${otherType} ${otherFkId});
 
     List<${this.classNameUpper}PO> findBy${otherCName}(${otherType} ${otherFkId});
@@ -52,7 +52,7 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
         <@call this.addImport("java.util.List")/>
         <#assign otherCName=otherEntity.className/>
         <#assign otherType=otherEntity.pkField.jfieldType>
-        <#assign otherFkId=MetadataUtil.getMtmFkAlias(mtm,otherEntity,false)>
+        <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
     List<${this.classNameUpper}PO> findBy${otherCName}(${otherType} ${otherFkId});
 
     List<${this.classNameUpper}ListVO> findVOBy${otherCName}(${otherType} ${otherFkId});

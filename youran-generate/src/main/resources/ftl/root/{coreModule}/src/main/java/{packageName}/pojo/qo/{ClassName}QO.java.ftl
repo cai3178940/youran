@@ -1,4 +1,5 @@
 <#include "/common.ftl">
+<#include "/mtmCascadeExtsForQuery.ftl">
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("io.swagger.annotations.ApiParam")/>
@@ -90,24 +91,6 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         </#list>
     </#if>
 </#list>
-<#--将所有级联扩展查询字段放入数组中-->
-<#assign mtmCascadeExtsForQuery = []>
-<#list this.holds as cascadeEntity,mtm>
-    <#list mtm.getCascadeExtList(this.entityId) as mtmCascadeExt>
-        <#assign cascadeField=mtmCascadeExt.cascadeField>
-        <#if isTrue(mtmCascadeExt.query) && isTrue(cascadeField.query)>
-            <#assign mtmCascadeExtsForQuery = [mtmCascadeExt]>
-        </#if>
-    </#list>
-</#list>
-<#list this.unHolds as cascadeEntity,mtm>
-    <#list mtm.getCascadeExtList(this.entityId) as mtmCascadeExt>
-        <#assign cascadeField=mtmCascadeExt.cascadeField>
-        <#if isTrue(mtmCascadeExt.query) && isTrue(cascadeField.query)>
-            <#assign mtmCascadeExtsForQuery = [mtmCascadeExt]>
-        </#if>
-    </#list>
-</#list>
 <#--开始渲染【多对多级联扩展】字段声明语句-->
 <#list mtmCascadeExtsForQuery as mtmCascadeExt>
     <#assign cascadeField=mtmCascadeExt.cascadeField>
@@ -120,14 +103,12 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         <@queryField cascadeField mtmCascadeExt.alias+"End" examplePackage></@queryField>
     </#if>
 </#list>
-
 <#--开始渲染排序条件声明语句-->
 <#list this.listSortFields as id,field>
     @ApiParam(value = "${field.fieldDesc}排序标识【1升序,-1降序,0不排序】",example = "1")
     private Integer ${field.jfieldName}SortSign;
 
 </#list>
-
 
 <#--开始渲染查询字段getter-setter方法-->
 <#list this.queryFields as id,field>

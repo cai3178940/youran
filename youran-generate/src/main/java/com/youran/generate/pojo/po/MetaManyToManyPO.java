@@ -93,6 +93,23 @@ public class MetaManyToManyPO extends BasePO {
      */
     private List<MetaMtmCascadeExtPO> cascadeExtList2;
 
+    /**
+     * 外键字段别名A-sql字段
+     */
+    private String fkAliasForSql1;
+    /**
+     * 外键字段别名B-sql字段
+     */
+    private String fkAliasForSql2;
+
+    /**
+     * 外键字段别名A-java字段
+     */
+    private String fkAliasForJava1;
+    /**
+     * 外键字段别名B-java字段
+     */
+    private String fkAliasForJava2;
 
     /**
      * 根据传入的实体id获取另一方实体【还没用到】
@@ -109,6 +126,31 @@ public class MetaManyToManyPO extends BasePO {
         throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
             "获取多对多另一方实体异常，mtm_id="+mtmId +",entityId="+entityId);
     }
+
+    /**
+     * 根据传入的实体id获取其对应的外键字段别名
+     * @param entityId 实体id
+     * @param forSql 是否sql字段
+     * @return
+     */
+    public String getFkAlias(Integer entityId,boolean forSql){
+        if(Objects.equals(entityId,entityId1)){
+            if(forSql){
+                return fkAliasForSql1;
+            }else{
+                return fkAliasForJava1;
+            }
+        }else if(Objects.equals(entityId,entityId2)){
+            if(forSql){
+                return fkAliasForSql2;
+            }else{
+                return fkAliasForJava2;
+            }
+        }
+        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+            "获取多对多外键字段别名异常，mtm_id="+mtmId +",entityId="+entityId);
+    }
+
 
     /**
      * 传入宿主实体id，获取宿主实体持有的级联扩展列表
@@ -261,5 +303,37 @@ public class MetaManyToManyPO extends BasePO {
 
     public void setCascadeExtList2(List<MetaMtmCascadeExtPO> cascadeExtList2) {
         this.cascadeExtList2 = cascadeExtList2;
+    }
+
+    public String getFkAliasForSql1() {
+        return fkAliasForSql1;
+    }
+
+    public void setFkAliasForSql1(String fkAliasForSql1) {
+        this.fkAliasForSql1 = fkAliasForSql1;
+    }
+
+    public String getFkAliasForSql2() {
+        return fkAliasForSql2;
+    }
+
+    public void setFkAliasForSql2(String fkAliasForSql2) {
+        this.fkAliasForSql2 = fkAliasForSql2;
+    }
+
+    public String getFkAliasForJava1() {
+        return fkAliasForJava1;
+    }
+
+    public void setFkAliasForJava1(String fkAliasForJava1) {
+        this.fkAliasForJava1 = fkAliasForJava1;
+    }
+
+    public String getFkAliasForJava2() {
+        return fkAliasForJava2;
+    }
+
+    public void setFkAliasForJava2(String fkAliasForJava2) {
+        this.fkAliasForJava2 = fkAliasForJava2;
     }
 }
