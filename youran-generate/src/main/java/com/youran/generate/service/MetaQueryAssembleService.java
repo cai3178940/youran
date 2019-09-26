@@ -127,67 +127,51 @@ public class MetaQueryAssembleService {
 
     /**
      * 给实体装配字段
-     * @param metaEntity 实体
+     * @param entity 实体
      * @param fieldList 字段列表
      * @return
      */
-    private void assembleFieldForEntity(MetaEntityPO metaEntity, List<MetaFieldPO> fieldList) {
-        Map<Integer, MetaFieldPO> queryFields = new LinkedHashMap<>(16);
-        Map<Integer, MetaFieldPO> insertFields = new LinkedHashMap<>(16);
-        Map<Integer, MetaFieldPO> updateFields = new LinkedHashMap<>(16);
-        Map<Integer, MetaFieldPO> listFields = new LinkedHashMap<>(16);
-        Map<Integer, MetaFieldPO> listSortFields = new LinkedHashMap<>(16);
-        Map<Integer, MetaFieldPO> showFields = new LinkedHashMap<>(16);
-        Map<Integer, MetaFieldPO> fkFields = new LinkedHashMap<>(16);
-        Map<Integer, MetaFieldPO> fields = new LinkedHashMap<>(16);
-        for (MetaFieldPO metaField : fieldList) {
-            fields.put(metaField.getFieldId(),metaField);
-            String specialField = metaField.getSpecialField();
-            if (BoolConst.TRUE == metaField.getPrimaryKey()) {
-                metaEntity.setPkField(metaField);
+    private void assembleFieldForEntity(MetaEntityPO entity, List<MetaFieldPO> fieldList) {
+        for (MetaFieldPO field : fieldList) {
+            entity.addField(field);
+            String specialField = field.getSpecialField();
+            if (BoolConst.TRUE == field.getPrimaryKey()) {
+                entity.setPkField(field);
             } else if (MetaSpecialField.isDeleted(specialField)) {
-                metaEntity.setDelField(metaField);
+                entity.setDelField(field);
             } else if (MetaSpecialField.isCreatedBy(specialField)) {
-                metaEntity.setCreatedByField(metaField);
+                entity.setCreatedByField(field);
             } else if (MetaSpecialField.isCreatedTime(specialField)) {
-                metaEntity.setCreatedTimeField(metaField);
+                entity.setCreatedTimeField(field);
             } else if (MetaSpecialField.isOperatedBy(specialField)) {
-                metaEntity.setOperatedByField(metaField);
+                entity.setOperatedByField(field);
             } else if (MetaSpecialField.isOperatedTime(specialField)) {
-                metaEntity.setOperatedTimeField(metaField);
+                entity.setOperatedTimeField(field);
             } else if (MetaSpecialField.isVersion(specialField)) {
-                metaEntity.setVersionField(metaField);
+                entity.setVersionField(field);
             }
-            if (BoolConst.TRUE == metaField.getQuery()) {
-                queryFields.put(metaField.getFieldId(),metaField);
+            if (BoolConst.TRUE == field.getQuery()) {
+                entity.addQueryField(field);
             }
-            if (BoolConst.TRUE == metaField.getInsert()) {
-                insertFields.put(metaField.getFieldId(),metaField);
+            if (BoolConst.TRUE == field.getInsert()) {
+                entity.addInsertField(field);
             }
-            if (BoolConst.TRUE == metaField.getUpdate()) {
-                updateFields.put(metaField.getFieldId(),metaField);
+            if (BoolConst.TRUE == field.getUpdate()) {
+                entity.addUpdateField(field);
             }
-            if (BoolConst.TRUE == metaField.getList()) {
-                listFields.put(metaField.getFieldId(),metaField);
+            if (BoolConst.TRUE == field.getList()) {
+                entity.addListField(field);
             }
-            if (BoolConst.TRUE == metaField.getListSort()) {
-                listSortFields.put(metaField.getFieldId(),metaField);
+            if (BoolConst.TRUE == field.getListSort()) {
+                entity.addListSortField(field);
             }
-            if (BoolConst.TRUE == metaField.getShow()) {
-                showFields.put(metaField.getFieldId(),metaField);
+            if (BoolConst.TRUE == field.getShow()) {
+                entity.addShowField(field);
             }
-            if (BoolConst.TRUE == metaField.getForeignKey()) {
-                fkFields.put(metaField.getFieldId(),metaField);
+            if (BoolConst.TRUE == field.getForeignKey()) {
+                entity.addFkField(field);
             }
         }
-        metaEntity.setFields(fields);
-        metaEntity.setQueryFields(queryFields);
-        metaEntity.setInsertFields(insertFields);
-        metaEntity.setUpdateFields(updateFields);
-        metaEntity.setListFields(listFields);
-        metaEntity.setListSortFields(listSortFields);
-        metaEntity.setShowFields(showFields);
-        metaEntity.setFkFields(fkFields);
     }
 
     /**
@@ -312,6 +296,7 @@ public class MetaQueryAssembleService {
             }
             cascadeExtPO.setCascadeEntity(cascadeEntity);
             cascadeExtPO.setCascadeField(cascadeField);
+            cascadeExtPO.setHostEntity(entitys.get(cascadeExtPO.getEntityId()));
             filteredCascadeExtList.add(cascadeExtPO);
         }
         return filteredCascadeExtList;

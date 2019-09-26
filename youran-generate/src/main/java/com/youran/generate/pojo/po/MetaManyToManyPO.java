@@ -1,6 +1,10 @@
 package com.youran.generate.pojo.po;
 
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
+
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>Title:多对多关联关系</p>
@@ -88,6 +92,39 @@ public class MetaManyToManyPO extends BasePO {
      * 实体B持有的级联扩展列表
      */
     private List<MetaMtmCascadeExtPO> cascadeExtList2;
+
+
+    /**
+     * 根据传入的实体id获取另一方实体【还没用到】
+     * @param entityId
+     * @return
+     */
+    @Deprecated
+    public MetaEntityPO getOtherRefer(Integer entityId){
+        if(Objects.equals(entityId,entityId1)){
+            return refer2;
+        }else if(Objects.equals(entityId,entityId2)){
+            return refer1;
+        }
+        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+            "获取多对多另一方实体异常，mtm_id="+mtmId +",entityId="+entityId);
+    }
+
+    /**
+     * 传入宿主实体id，获取宿主实体持有的级联扩展列表
+     * @param entityId 宿主实体id
+     * @return
+     */
+    public List<MetaMtmCascadeExtPO> getCascadeExtList(Integer entityId){
+        if(Objects.equals(entityId1, entityId)){
+            return cascadeExtList1;
+        }else if(Objects.equals(entityId2, entityId)){
+            return cascadeExtList2;
+        }else{
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                "获取多对多级联扩展数据异常，mtm_id="+mtmId +",entityId="+entityId);
+        }
+    }
 
 
     public String getSchemaName() {

@@ -24,7 +24,7 @@ public class MetaMtmCascadeExtPO extends AbstractPO implements CreatedOperatedDe
     private Integer mtmId;
 
     /**
-     * 实体id
+     * 宿主实体id
      */
     private Integer entityId;
 
@@ -88,6 +88,10 @@ public class MetaMtmCascadeExtPO extends AbstractPO implements CreatedOperatedDe
      */
     private Boolean deleted;
 
+    /**
+     * 宿主实体
+     */
+    private MetaEntityPO hostEntity;
     /**
      * 级联实体
      */
@@ -184,6 +188,14 @@ public class MetaMtmCascadeExtPO extends AbstractPO implements CreatedOperatedDe
 
     public void setCascadeField(MetaFieldPO cascadeField) {
         this.cascadeField = cascadeField;
+    }
+
+    public MetaEntityPO getHostEntity() {
+        return hostEntity;
+    }
+
+    public void setHostEntity(MetaEntityPO hostEntity) {
+        this.hostEntity = hostEntity;
     }
 
     @Override

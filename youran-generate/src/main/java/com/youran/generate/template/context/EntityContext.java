@@ -1,12 +1,12 @@
 package com.youran.generate.template.context;
 
 import com.youran.common.constant.BoolConst;
-import com.youran.common.constant.ErrorCode;
-import com.youran.common.exception.BusinessException;
-import com.youran.generate.pojo.po.*;
 import com.youran.generate.pojo.dto.ForeignEntityTreeNode;
+import com.youran.generate.pojo.po.MetaEntityPO;
+import com.youran.generate.pojo.po.MetaFieldPO;
+import com.youran.generate.pojo.po.MetaManyToManyPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -23,6 +23,10 @@ public class EntityContext extends BaseContext {
      * 当前实体
      */
     private MetaEntityPO metaEntity;
+    /**
+     * 当前实体id
+     */
+    private Integer entityId;
     /**
      * 类名-首字母小写
      */
@@ -147,20 +151,21 @@ public class EntityContext extends BaseContext {
      */
     private Set<MetaEntityPO> foreignEntities;
 
-    /**
-     * 当前实体持有的级联实体，对应的级联扩展列表
-     */
-    private Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> holdCascadeExts;
-
-    /**
-     * 当前实体未持有的级联实体，对应的级联扩展列表
-     */
-    private Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> unHoldCascadeExts;
+//    /**
+//     * 当前实体持有的级联实体，对应的级联扩展列表
+//     */
+//    private Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> holdCascadeExts;
+//
+//    /**
+//     * 当前实体未持有的级联实体，对应的级联扩展列表
+//     */
+//    private Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> unHoldCascadeExts;
 
 
     public EntityContext(MetaProjectPO project, MetaEntityPO metaEntity){
         super(project);
         this.metaEntity = metaEntity;
+        this.entityId = metaEntity.getEntityId();
         this.className = StringUtils.uncapitalize(metaEntity.getClassName());
         this.classNameUpper = StringUtils.capitalize(metaEntity.getClassName());
         this.tableName = metaEntity.getTableName();
@@ -189,34 +194,28 @@ public class EntityContext extends BaseContext {
         this.unHolds = metaEntity.getUnHolds();
         this.foreignFields = metaEntity.getForeignFields();
         this.foreignEntities = metaEntity.getForeignEntities();
-        this.holdCascadeExts = mapCascadeExts(metaEntity,metaEntity.getHolds());
-        this.unHoldCascadeExts = mapCascadeExts(metaEntity,metaEntity.getUnHolds());
+//        this.holdCascadeExts = mapCascadeExts(metaEntity,metaEntity.getHolds());
+//        this.unHoldCascadeExts = mapCascadeExts(metaEntity,metaEntity.getUnHolds());
     }
 
     /**
-     * 将<实体,多对多>格式的map映射为<实体,级联字段列表>
+     * 将<级联实体,多对多>格式的map映射为<级联实体,级联字段列表>
      * @param map
      * @return
      */
-    private static Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> mapCascadeExts(MetaEntityPO entity,
-                                                                               Map<MetaEntityPO, MetaManyToManyPO> map){
-        if(MapUtils.isEmpty(map)){
-            return new HashMap<>(0);
-        }
-        Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> result = new LinkedHashMap<>(map.size());
-        for (Map.Entry<MetaEntityPO, MetaManyToManyPO> entry : map.entrySet()) {
-            MetaEntityPO cascadeEntity = entry.getKey();
-            MetaManyToManyPO mtm = entry.getValue();
-            if(Objects.equals(mtm.getEntityId1(),entity.getEntityId())){
-                result.put(cascadeEntity,mtm.getCascadeExtList1());
-            }else if(Objects.equals(mtm.getEntityId2(),entity.getEntityId())){
-                result.put(cascadeEntity,mtm.getCascadeExtList2());
-            }else{
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"多对多数据异常，mtm_id="+mtm.getMtmId());
-            }
-        }
-        return result;
-    }
+//    private static Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> mapCascadeExts(MetaEntityPO hostEntity,
+//                                                                               Map<MetaEntityPO, MetaManyToManyPO> map){
+//        if(MapUtils.isEmpty(map)){
+//            return new HashMap<>(0);
+//        }
+//        Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> result = new LinkedHashMap<>(map.size());
+//        for (Map.Entry<MetaEntityPO, MetaManyToManyPO> entry : map.entrySet()) {
+//            MetaEntityPO cascadeEntity = entry.getKey();
+//            MetaManyToManyPO mtm = entry.getValue();
+//            result.put(cascadeEntity,mtm.getCascadeExtList(hostEntity));
+//        }
+//        return result;
+//    }
 
     /**
      * 打印单元测试中的saveExample参数
@@ -381,6 +380,14 @@ public class EntityContext extends BaseContext {
 
     public void setMetaEntity(MetaEntityPO metaEntity) {
         this.metaEntity = metaEntity;
+    }
+
+    public Integer getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Integer entityId) {
+        this.entityId = entityId;
     }
 
     public String getClassName() {
@@ -589,22 +596,6 @@ public class EntityContext extends BaseContext {
 
     public void setUnHolds(Map<MetaEntityPO, MetaManyToManyPO> unHolds) {
         this.unHolds = unHolds;
-    }
-
-    public Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> getHoldCascadeExts() {
-        return holdCascadeExts;
-    }
-
-    public void setHoldCascadeExts(Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> holdCascadeExts) {
-        this.holdCascadeExts = holdCascadeExts;
-    }
-
-    public Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> getUnHoldCascadeExts() {
-        return unHoldCascadeExts;
-    }
-
-    public void setUnHoldCascadeExts(Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> unHoldCascadeExts) {
-        this.unHoldCascadeExts = unHoldCascadeExts;
     }
 
     public List<MetaFieldPO> getForeignFields() {

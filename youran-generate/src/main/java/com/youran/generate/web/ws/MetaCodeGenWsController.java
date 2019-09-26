@@ -90,7 +90,7 @@ public class MetaCodeGenWsController extends AbstractController {
     @MessageMapping(value = "/genCodeAndZip/{sessionId}")
     public void genCodeAndZip(@DestinationVariable String sessionId, @Header Integer projectId) {
         // 进度响应主题
-        String topic = "/code_gen/genCode_progress/"+sessionId;
+        String topic = "/code_gen/genCodeAndZip_progress/"+sessionId;
         try {
             // 初始化进度条
             ProgressVO.initProgress(sessionId);

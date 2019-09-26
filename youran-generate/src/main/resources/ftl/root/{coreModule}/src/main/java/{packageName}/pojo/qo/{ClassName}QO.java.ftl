@@ -90,37 +90,35 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         </#list>
     </#if>
 </#list>
-<#--开始渲染【持有引用的】【多对多级联扩展】字段声明语句-->
-<#list this.holdCascadeExts as cascadeEntity,mtmCascadeExts>
-    <#list mtmCascadeExts as mtmCascadeExt>
+<#--将所有级联扩展查询字段放入数组中-->
+<#assign mtmCascadeExtsForQuery = []>
+<#list this.holds as cascadeEntity,mtm>
+    <#list mtm.getCascadeExtList(this.entityId) as mtmCascadeExt>
         <#assign cascadeField=mtmCascadeExt.cascadeField>
-        <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
         <#if isTrue(mtmCascadeExt.query) && isTrue(cascadeField.query)>
-            <#assign examplePackage="${this.packageName}.pojo.example.${cascadeEntity.className?capFirst}Example.">
-            <#if cascadeField.queryType!=QueryType.BETWEEN>
-                <@queryField cascadeField mtmCascadeExt.alias examplePackage></@queryField>
-            <#else>
-                <@queryField cascadeField mtmCascadeExt.alias+"Start" examplePackage></@queryField>
-                <@queryField cascadeField mtmCascadeExt.alias+"End" examplePackage></@queryField>
-            </#if>
+            <#assign mtmCascadeExtsForQuery = [mtmCascadeExt]>
         </#if>
     </#list>
 </#list>
-<#--开始渲染【未持有引用的】【多对多级联扩展】字段声明语句-->
-<#list this.unHoldCascadeExts as cascadeEntity,mtmCascadeExts>
-    <#list mtmCascadeExts as mtmCascadeExt>
+<#list this.unHolds as cascadeEntity,mtm>
+    <#list mtm.getCascadeExtList(this.entityId) as mtmCascadeExt>
         <#assign cascadeField=mtmCascadeExt.cascadeField>
-        <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
         <#if isTrue(mtmCascadeExt.query) && isTrue(cascadeField.query)>
-            <#assign examplePackage="${this.packageName}.pojo.example.${cascadeEntity.className?capFirst}Example.">
-            <#if cascadeField.queryType!=QueryType.BETWEEN>
-                <@queryField cascadeField mtmCascadeExt.alias examplePackage></@queryField>
-            <#else>
-                <@queryField cascadeField mtmCascadeExt.alias+"Start" examplePackage></@queryField>
-                <@queryField cascadeField mtmCascadeExt.alias+"End" examplePackage></@queryField>
-            </#if>
+            <#assign mtmCascadeExtsForQuery = [mtmCascadeExt]>
         </#if>
     </#list>
+</#list>
+<#--开始渲染【多对多级联扩展】字段声明语句-->
+<#list mtmCascadeExtsForQuery as mtmCascadeExt>
+    <#assign cascadeField=mtmCascadeExt.cascadeField>
+    <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
+    <#assign examplePackage="${this.packageName}.pojo.example.${cascadeEntity.className?capFirst}Example.">
+    <#if cascadeField.queryType!=QueryType.BETWEEN>
+        <@queryField cascadeField mtmCascadeExt.alias examplePackage></@queryField>
+    <#else>
+        <@queryField cascadeField mtmCascadeExt.alias+"Start" examplePackage></@queryField>
+        <@queryField cascadeField mtmCascadeExt.alias+"End" examplePackage></@queryField>
+    </#if>
 </#list>
 
 <#--开始渲染排序条件声明语句-->
@@ -152,33 +150,15 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         </#if>
     </#list>
 </#list>
-<#--开始渲染【持有引用的】【多对多级联扩展】字段getter-setter方法-->
-<#list this.holdCascadeExts as cascadeEntity,mtmCascadeExts>
-    <#list mtmCascadeExts as mtmCascadeExt>
-        <#assign cascadeField=mtmCascadeExt.cascadeField>
-        <#if isTrue(mtmCascadeExt.query) && isTrue(cascadeField.query)>
-            <#if cascadeField.queryType!=QueryType.BETWEEN>
-                <@queryMethod cascadeField mtmCascadeExt.alias></@queryMethod>
-            <#else>
-                <@queryMethod cascadeField mtmCascadeExt.alias+"Start"></@queryMethod>
-                <@queryMethod cascadeField mtmCascadeExt.alias+"End"></@queryMethod>
-            </#if>
-        </#if>
-    </#list>
-</#list>
-<#--开始渲染【未持有引用的】【多对多级联扩展】字段getter-setter方法-->
-<#list this.unHoldCascadeExts as cascadeEntity,mtmCascadeExts>
-    <#list mtmCascadeExts as mtmCascadeExt>
-        <#assign cascadeField=mtmCascadeExt.cascadeField>
-        <#if isTrue(mtmCascadeExt.query) && isTrue(cascadeField.query)>
-            <#if cascadeField.queryType!=QueryType.BETWEEN>
-                <@queryMethod cascadeField mtmCascadeExt.alias></@queryMethod>
-            <#else>
-                <@queryMethod cascadeField mtmCascadeExt.alias+"Start"></@queryMethod>
-                <@queryMethod cascadeField mtmCascadeExt.alias+"End"></@queryMethod>
-            </#if>
-        </#if>
-    </#list>
+<#--开始渲染【多对多级联扩展】字段getter-setter方法-->
+<#list mtmCascadeExtsForQuery as mtmCascadeExt>
+    <#assign cascadeField=mtmCascadeExt.cascadeField>
+    <#if cascadeField.queryType!=QueryType.BETWEEN>
+        <@queryMethod cascadeField mtmCascadeExt.alias></@queryMethod>
+    <#else>
+        <@queryMethod cascadeField mtmCascadeExt.alias+"Start"></@queryMethod>
+        <@queryMethod cascadeField mtmCascadeExt.alias+"End"></@queryMethod>
+    </#if>
 </#list>
 
 <#--开始渲染排序字段getter-setter方法-->

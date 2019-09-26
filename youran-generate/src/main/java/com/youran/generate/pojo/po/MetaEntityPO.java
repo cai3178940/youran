@@ -56,42 +56,42 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     /**
      * 字段列表
      */
-    private Map<Integer, MetaFieldPO> fields;
+    private Map<Integer, MetaFieldPO> fields = new LinkedHashMap<>(16);
 
     /**
      * 外键字段列表
      */
-    private Map<Integer, MetaFieldPO> fkFields;
+    private Map<Integer, MetaFieldPO> fkFields = new LinkedHashMap<>(16);
 
     /**
      * 查询字段列表
      */
-    private Map<Integer, MetaFieldPO> queryFields;
+    private Map<Integer, MetaFieldPO> queryFields = new LinkedHashMap<>(16);
 
     /**
      * 插入字段列表
      */
-    private Map<Integer, MetaFieldPO> insertFields;
+    private Map<Integer, MetaFieldPO> insertFields = new LinkedHashMap<>(16);
     /**
      * 修改字段列表
      */
-    private Map<Integer, MetaFieldPO> updateFields;
+    private Map<Integer, MetaFieldPO> updateFields = new LinkedHashMap<>(16);
     /**
      * 列表字段列表
      */
-    private Map<Integer, MetaFieldPO> listFields;
+    private Map<Integer, MetaFieldPO> listFields = new LinkedHashMap<>(16);
     /**
      * 排序字段列表
      */
-    private Map<Integer, MetaFieldPO> listSortFields;
+    private Map<Integer, MetaFieldPO> listSortFields = new LinkedHashMap<>(16);
     /**
      * 详情字段列表
      */
-    private Map<Integer, MetaFieldPO> showFields;
+    private Map<Integer, MetaFieldPO> showFields = new LinkedHashMap<>(16);
     /**
      * 索引列表
      */
-    private List<MetaIndexPO> indexes;
+    private List<MetaIndexPO> indexes = new ArrayList<>();
     /**
      * 需要校验唯一性的索引列表
      */
@@ -127,11 +127,11 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     /**
      * 持有引用的多对多关系
      */
-    private Map<MetaEntityPO,MetaManyToManyPO> holds;
+    private Map<MetaEntityPO,MetaManyToManyPO> holds = new TreeMap<>();
     /**
      * 未持有引用的多对多关系
      */
-    private Map<MetaEntityPO,MetaManyToManyPO> unHolds;
+    private Map<MetaEntityPO,MetaManyToManyPO> unHolds = new TreeMap<>();
 
     /**
      * 对应的外键列表(当前主键对应的其他实体外键字段)
@@ -140,7 +140,7 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      *  2、对应实体是用户，用户中的外键字段是部门id
      *  3、则此处存放的是用户表中的部门id
      */
-    private List<MetaFieldPO> foreignFields;
+    private List<MetaFieldPO> foreignFields = new ArrayList<>();
     /**
      * 对应的外键实体集合(当前主键对应的其他实体)
      * 比如：
@@ -148,58 +148,71 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      *  2、对应实体是用户，用户中的外键字段是部门id
      *  3、则此处存放的是用户实体
      */
-    private Set<MetaEntityPO> foreignEntities;
+    private Set<MetaEntityPO> foreignEntities = new TreeSet<>();;
 
 
-    public MetaEntityPO addField(MetaFieldPO metaFieldPO){
-        if(fields==null){
-            fields = new LinkedHashMap<>(16);
-        }
-        fields.put(metaFieldPO.getFieldId(),metaFieldPO);
+    public MetaEntityPO addField(MetaFieldPO field){
+        fields.put(field.getFieldId(),field);
+        return this;
+    }
+
+    public MetaEntityPO addFkField(MetaFieldPO field){
+        fkFields.put(field.getFieldId(),field);
+        return this;
+    }
+
+    public MetaEntityPO addQueryField(MetaFieldPO field){
+        queryFields.put(field.getFieldId(),field);
+        return this;
+    }
+
+    public MetaEntityPO addInsertField(MetaFieldPO field){
+        insertFields.put(field.getFieldId(),field);
+        return this;
+    }
+
+    public MetaEntityPO addUpdateField(MetaFieldPO field){
+        updateFields.put(field.getFieldId(),field);
+        return this;
+    }
+
+    public MetaEntityPO addListField(MetaFieldPO field){
+        listFields.put(field.getFieldId(),field);
+        return this;
+    }
+
+    public MetaEntityPO addListSortField(MetaFieldPO field){
+        listSortFields.put(field.getFieldId(),field);
+        return this;
+    }
+
+    public MetaEntityPO addShowField(MetaFieldPO field){
+        showFields.put(field.getFieldId(),field);
         return this;
     }
 
     public MetaEntityPO addForeignField(MetaFieldPO metaFieldPO){
-        if(foreignFields==null){
-            foreignFields = new ArrayList<>();
-        }
         foreignFields.add(metaFieldPO);
         return this;
     }
 
 
     public MetaEntityPO addForeignEntity(MetaEntityPO foreignEntity){
-        if(foreignEntities==null){
-            foreignEntities = new TreeSet<>();
-        }
         foreignEntities.add(foreignEntity);
         return this;
     }
 
-
-
-
-
     public MetaEntityPO addIndex(MetaIndexPO metaIndexPO){
-        if(indexes==null){
-            indexes = new ArrayList<>();
-        }
         indexes.add(metaIndexPO);
         return this;
     }
 
     public MetaEntityPO addHold(MetaEntityPO entity,MetaManyToManyPO mtm){
-        if(holds==null){
-            holds = new TreeMap<>();
-        }
         holds.put(entity,mtm);
         return this;
     }
 
     public MetaEntityPO addUnHold(MetaEntityPO entity,MetaManyToManyPO mtm){
-        if(unHolds==null){
-            unHolds = new TreeMap<>();
-        }
         unHolds.put(entity,mtm);
         return this;
     }
