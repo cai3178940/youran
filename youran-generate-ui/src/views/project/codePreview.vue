@@ -93,6 +93,7 @@ export default {
       this.projectName = projectName
       this.codeTree.tree = []
       this.paths = []
+      this.codeTabs = []
     },
     show (projectId, projectName) {
       this.visible = true

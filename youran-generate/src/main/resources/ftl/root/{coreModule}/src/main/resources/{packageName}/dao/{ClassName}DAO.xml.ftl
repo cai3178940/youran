@@ -211,7 +211,7 @@
                 select 1 from ${wrapMysqlKeyword(otherEntity.tableName)} ${table_m}
                 inner join ${wrapMysqlKeyword(mtm.tableName)} ${table_r}
                     on ${table_m}.${wrapMysqlKeyword(otherEntity.pkField.fieldName)}=${table_r}.${other_fk_id}
-                where ${table_m}.${wrapMysqlKeyword(this.pk.fieldName)}=t.${wrapPkFieldName}
+                where ${table_r}.${the_fk_id}=t.${wrapPkFieldName}
             <#if otherEntity.delField??>
                 and ${table_m}.${wrapMysqlKeyword(otherEntity.delField.fieldName)}=0
             </#if>
@@ -223,9 +223,9 @@
             <if test="${con_ex}">
                     <#if QueryType.isLike(cascadeField.queryType)>
                 <bind name="${mtmCascadeExt.alias}_pattern" value="'%' + ${mtmCascadeExt.alias} + '%'" />
-                and e${cascadeIndex}.${wrapMysqlKeyword(cascadeField.fieldName)} ${QueryType.mapperSymbol(cascadeField.queryType)} ${r'#'}{${mtmCascadeExt.alias}_pattern}
+                and ${table_m}.${wrapMysqlKeyword(cascadeField.fieldName)} ${QueryType.mapperSymbol(cascadeField.queryType)} ${r'#'}{${mtmCascadeExt.alias}_pattern}
                     <#else>
-                and e${cascadeIndex}.${wrapMysqlKeyword(cascadeField.fieldName)} ${QueryType.mapperSymbol(cascadeField.queryType)} ${r'#'}{${mtmCascadeExt.alias}}
+                and ${table_m}.${wrapMysqlKeyword(cascadeField.fieldName)} ${QueryType.mapperSymbol(cascadeField.queryType)} ${r'#'}{${mtmCascadeExt.alias}}
                     </#if>
             </if>
                 <#else>
@@ -233,10 +233,10 @@
                     <#assign con_start_ex="${MetadataUtil.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_start_con_ex">
                     <#assign con_end_ex="${MetadataUtil.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_end_con_ex">
             <if test="${con_start_ex}">
-                and e${cascadeIndex}.${wrapMysqlKeyword(cascadeField.fieldName)} >= ${r'#'}{${mtmCascadeExt.alias}Start}
+                and ${table_m}.${wrapMysqlKeyword(cascadeField.fieldName)} >= ${r'#'}{${mtmCascadeExt.alias}Start}
             </if>
             <if test="${con_end_ex}">
-                and e${cascadeIndex}.${wrapMysqlKeyword(cascadeField.fieldName)} &lt;= ${r'#'}{${mtmCascadeExt.alias}End}
+                and ${table_m}.${wrapMysqlKeyword(cascadeField.fieldName)} &lt;= ${r'#'}{${mtmCascadeExt.alias}End}
             </if>
                 </#if>
             </#list>
@@ -334,7 +334,7 @@
         select count(1)
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${pk.fieldName}=r.${the_fk_id}
+            on t.${wrapPkFieldName}=r.${the_fk_id}
         where
             r.${other_fk_id}=${r'#'}{arg0}
         <#if delField??>
@@ -347,7 +347,7 @@
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${pk.fieldName}=r.${the_fk_id}
+            on t.${wrapPkFieldName}=r.${the_fk_id}
         where
             r.${other_fk_id}=${r'#'}{arg0}
         <#if delField??>
@@ -366,7 +366,7 @@
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${pk.fieldName}=r.${the_fk_id}
+            on t.${wrapPkFieldName}=r.${the_fk_id}
         where
             r.${other_fk_id}=${r'#'}{arg0}
         <#if delField??>
@@ -419,7 +419,7 @@
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${this.pk.fieldName}=r.${the_fk_id}
+            on t.${wrapPkFieldName}=r.${the_fk_id}
         where
             r.${other_fk_id}=${r'#'}{arg0}
         <#if delField??>
@@ -438,7 +438,7 @@
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
-            on t.${this.pk.fieldName}=r.${the_fk_id}
+            on t.${wrapPkFieldName}=r.${the_fk_id}
         where
             r.${other_fk_id}=${r'#'}{arg0}
         <#if delField??>
@@ -465,7 +465,7 @@
                 and t.${wrapMysqlKeyword(field.fieldName)} = ${r'#'}{${field.jfieldName}}
             </#list>
             <if test="${this.id} != null  ">
-                and t.${this.pk.fieldName} != ${r'#'}{${this.id}}
+                and t.${wrapPkFieldName} != ${r'#'}{${this.id}}
             </if>
         </where>
     </select>
