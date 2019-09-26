@@ -96,7 +96,7 @@
 
     <sql id="queryCondition">
     <#list this.queryFields as id,field>
-        <#if field.queryType==QueryType.BETWEEN>
+        <#if QueryType.isBetween(field.queryType)>
         <#--between类型查询-->
         <if test="${ifNotEmptyConditionWithAlias(field.jfieldName+'Start',field)}">
             and t.${wrapMysqlKeyword(field.fieldName)} >= ${r'#'}{${field.jfieldName}Start}
@@ -104,7 +104,7 @@
         <if test="${ifNotEmptyConditionWithAlias(field.jfieldName+'End',field)}">
             and t.${wrapMysqlKeyword(field.fieldName)} &lt;= ${r'#'}{${field.jfieldName}End}
         </if>
-        <#elseIf field.queryType==QueryType.IN>
+        <#elseIf QueryType.isIn(field.queryType)>
         <#--in类型查询-->
         <if test="${ifNotEmptyCondition(field)}">
             and t.${wrapMysqlKeyword(field.fieldName)} in
@@ -112,7 +112,7 @@
             ${r'#'}{_value}
             </foreach>
         </if>
-        <#elseIf field.queryType==QueryType.LIKE>
+        <#elseIf QueryType.isLike(field.queryType)>
         <#--like类型查询-->
         <if test="${ifNotEmptyCondition(field)}">
             <bind name="${field.jfieldName}_pattern" value="'%' + ${field.jfieldName} + '%'" />
@@ -133,7 +133,7 @@
             <#list field.cascadeQueryExts as cascadeExt>
                 <#assign cascadeField=cascadeExt.cascadeField>
                 <#--非between类型-->
-                <#if cascadeField.queryType!=QueryType.BETWEEN>
+                <#if !QueryType.isBetween(cascadeField.queryType)>
                     <#assign con_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_con_ex">
                     <#assign con_ex_arr = con_ex_arr + [ con_ex ] >
         <bind name="${con_ex}" value="${ifNotEmptyConditionWithAlias(cascadeExt.alias,cascadeField)}" />
@@ -156,10 +156,10 @@
             <#list field.cascadeQueryExts as cascadeExt>
                 <#assign cascadeField=cascadeExt.cascadeField>
                 <#--非between类型-->
-                <#if cascadeField.queryType!=QueryType.BETWEEN>
+                <#if !QueryType.isBetween(cascadeField.queryType)>
                     <#assign con_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_con_ex">
             <if test="${con_ex}">
-                    <#if cascadeField.queryType==QueryType.LIKE>
+                    <#if QueryType.isLike(cascadeField.queryType)>
                 <bind name="${cascadeExt.alias}_pattern" value="'%' + ${cascadeExt.alias} + '%'" />
                 and e${cascadeIndex}.${wrapMysqlKeyword(cascadeField.fieldName)} ${QueryType.mapperSymbol(cascadeField.queryType)} ${r'#'}{${cascadeExt.alias}_pattern}
                     <#else>
@@ -193,7 +193,7 @@
             <#assign con_ex_arr=[]>
             <#assign cascadeField=mtmCascadeExt.cascadeField>
             <#--非between类型-->
-            <#if cascadeField.queryType!=QueryType.BETWEEN>
+            <#if !QueryType.isBetween(cascadeField.queryType)>
                 <#assign con_ex="${MetadataUtil.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_con_ex">
                 <#assign con_ex_arr = con_ex_arr + [ con_ex ] >
         <bind name="${con_ex}" value="${ifNotEmptyConditionWithAlias(mtmCascadeExt.alias,cascadeField)}" />
@@ -218,10 +218,10 @@
             <#list mtmCascadeExts as mtmCascadeExt>
                 <#assign cascadeField=mtmCascadeExt.cascadeField>
                 <#--非between类型-->
-                <#if cascadeField.queryType!=QueryType.BETWEEN>
+                <#if !QueryType.isBetween(cascadeField.queryType)>
                     <#assign con_ex="${MetadataUtil.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_con_ex">
             <if test="${con_ex}">
-                    <#if cascadeField.queryType==QueryType.LIKE>
+                    <#if QueryType.isLike(cascadeField.queryType)>
                 <bind name="${mtmCascadeExt.alias}_pattern" value="'%' + ${mtmCascadeExt.alias} + '%'" />
                 and e${cascadeIndex}.${wrapMysqlKeyword(cascadeField.fieldName)} ${QueryType.mapperSymbol(cascadeField.queryType)} ${r'#'}{${mtmCascadeExt.alias}_pattern}
                     <#else>

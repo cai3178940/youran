@@ -1,6 +1,10 @@
 package com.youran.generate.constant;
 
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import com.youran.common.validator.Check;
+
+import java.util.Objects;
 
 /**
  * <p>Title: 查询方式</p>
@@ -50,6 +54,34 @@ public class QueryType {
      */
     public static final int LIKE_LENGTH_THRESHOLD = 32;
 
+    /**
+     * 制成方法，方便模板中调用
+     */
+    public static final boolean isEq(Integer type){
+        return Objects.equals(EQ,type);
+    }
+    public static final boolean isLike(Integer type){
+        return Objects.equals(LIKE,type);
+    }
+    public static final boolean isGt(Integer type){
+        return Objects.equals(GT,type);
+    }
+    public static final boolean isGe(Integer type){
+        return Objects.equals(GE,type);
+    }
+    public static final boolean isLt(Integer type){
+        return Objects.equals(LT,type);
+    }
+    public static final boolean isLe(Integer type){
+        return Objects.equals(LE,type);
+    }
+    public static final boolean isBetween(Integer type){
+        return Objects.equals(BETWEEN,type);
+    }
+    public static final boolean isIn(Integer type){
+        return Objects.equals(IN,type);
+    }
+
     @Check
     public static final boolean check(int value) {
         return EQ == value || LIKE == value
@@ -59,11 +91,14 @@ public class QueryType {
     }
 
     /**
-     * 映射符号
+     * 映射符号,默认都是等号
      * @param type
      * @return
      */
-    public static String mapperSymbol(int type) {
+    public static String mapperSymbol(Integer type) {
+        if(type==null){
+            return "=";
+        }
         switch (type) {
             case EQ:
                 return "=";
@@ -82,7 +117,7 @@ public class QueryType {
             case IN:
                 return "in";
             default:
-                return null;
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"queryType【"+type+"】不合法");
         }
     }
 

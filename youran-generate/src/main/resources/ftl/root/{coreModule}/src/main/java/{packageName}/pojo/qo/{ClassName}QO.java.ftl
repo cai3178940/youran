@@ -26,7 +26,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     <#--字段名转下划线大写-->
     <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
     <#--查询方式：IN-->
-    <#if field.queryType==QueryType.IN>
+    <#if QueryType.isIn(field.queryType)>
         <@call this.addImport("java.util.List")/>
     @ApiParam(value = ${examplePackage}N_${jfieldNameSnakeCase})
     private List<${field.jfieldType}> ${jfieldName};
@@ -57,7 +57,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         <#assign jfieldName=field.jfieldName>
     </#if>
     <#--查询方式：IN-->
-    <#if field.queryType==QueryType.IN>
+    <#if QueryType.isIn(field.queryType)>
         <@call TemplateUtil.printGetterSetterList("${jfieldName}","${field.jfieldType}",false)/>
     <#else>
     <#--其他查询方式-->
@@ -66,7 +66,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 </#macro>
 <#--开始渲染查询字段声明语句-->
 <#list this.queryFields as id,field>
-    <#if field.queryType!=QueryType.BETWEEN>
+    <#if !QueryType.isBetween(field.queryType)>
         <@queryField field></@queryField>
     <#else>
         <@queryField field field.jfieldName+"Start"></@queryField>
@@ -82,7 +82,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
         </#if>
         <#list field.cascadeQueryExts as cascadeExt>
             <#assign cascadeField=cascadeExt.cascadeField>
-            <#if cascadeField.queryType!=QueryType.BETWEEN>
+            <#if !QueryType.isBetween(cascadeField.queryType)>
                 <@queryField cascadeField cascadeExt.alias examplePackage></@queryField>
             <#else>
                 <@queryField cascadeField cascadeExt.alias+"Start" examplePackage></@queryField>
@@ -96,7 +96,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     <#assign cascadeField=mtmCascadeExt.cascadeField>
     <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
     <#assign examplePackage="${this.packageName}.pojo.example.${cascadeEntity.className?capFirst}Example.">
-    <#if cascadeField.queryType!=QueryType.BETWEEN>
+    <#if !QueryType.isBetween(cascadeField.queryType)>
         <@queryField cascadeField mtmCascadeExt.alias examplePackage></@queryField>
     <#else>
         <@queryField cascadeField mtmCascadeExt.alias+"Start" examplePackage></@queryField>
@@ -112,7 +112,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 
 <#--开始渲染查询字段getter-setter方法-->
 <#list this.queryFields as id,field>
-    <#if field.queryType!=QueryType.BETWEEN>
+    <#if !QueryType.isBetween(field.queryType)>
         <@queryMethod field></@queryMethod>
     <#else>
         <@queryMethod field field.jfieldName+"Start"></@queryMethod>
@@ -123,7 +123,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 <#list this.fkFields as id,field>
     <#list field.cascadeQueryExts! as cascadeExt>
         <#assign cascadeField=cascadeExt.cascadeField>
-        <#if cascadeField.queryType!=QueryType.BETWEEN>
+        <#if !QueryType.isBetween(cascadeField.queryType)>
             <@queryMethod cascadeField cascadeExt.alias></@queryMethod>
         <#else>
             <@queryMethod cascadeField cascadeExt.alias+"Start"></@queryMethod>
@@ -134,7 +134,7 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 <#--开始渲染【多对多级联扩展】字段getter-setter方法-->
 <#list mtmCascadeExtsForQuery as mtmCascadeExt>
     <#assign cascadeField=mtmCascadeExt.cascadeField>
-    <#if cascadeField.queryType!=QueryType.BETWEEN>
+    <#if !QueryType.isBetween(cascadeField.queryType)>
         <@queryMethod cascadeField mtmCascadeExt.alias></@queryMethod>
     <#else>
         <@queryMethod cascadeField mtmCascadeExt.alias+"Start"></@queryMethod>

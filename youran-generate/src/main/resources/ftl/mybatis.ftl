@@ -2,7 +2,7 @@
 <#include "/common.ftl">
 <#-- 生成if不为空条件内容，支持字段别名-->
 <#function ifNotEmptyConditionWithAlias alias field>
-    <#if field.queryType==QueryType.IN>
+    <#if QueryType.isIn(field.queryType)>
         <#return "${alias} != null and ${alias}.size() >0 " >
     <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
         <#return "${alias} != null and ${alias} !='' " >
