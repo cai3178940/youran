@@ -177,4 +177,14 @@
         </where>
     </select>
 
+    <select id="findPkByCascadeFieldId" resultType="int">
+        select
+            t.mtm_cascade_ext_id
+        from meta_mtm_cascade_ext t
+        <where>
+            and t.deleted=0
+            and t.cascade_field_id = #{arg0}
+        </where>
+    </select>
+
 </mapper>

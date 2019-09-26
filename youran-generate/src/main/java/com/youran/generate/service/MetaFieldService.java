@@ -13,6 +13,7 @@ import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
 import com.youran.generate.util.MetaFieldCheckUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,10 @@ public class MetaFieldService {
     private MetaFieldDAO metaFieldDAO;
     @Autowired
     private MetaProjectService metaProjectService;
+    @Autowired
+    private MetaCascadeExtService metaCascadeExtService;
+    @Autowired
+    private MetaMtmCascadeExtService metaMtmCascadeExtService;
     /**
      * 新增字段
      * @param metaFieldDTO
@@ -124,6 +129,17 @@ public class MetaFieldService {
             // 校验操作人
             metaProjectService.checkOperatorByEntityId(entityId);
             count += metaFieldDAO.delete(id);
+
+            // 删除外键级联扩展
+            List<Integer> cascadeFieldIds = metaCascadeExtService.findPkByCascadeFieldId(id);
+            if(CollectionUtils.isNotEmpty(cascadeFieldIds)) {
+                metaCascadeExtService.delete(cascadeFieldIds.toArray(new Integer[0]));
+            }
+            // 删除多对多级联扩展
+            List<Integer> mtmCascadeFieldIds = metaMtmCascadeExtService.findPkByCascadeFieldId(id);
+            if(CollectionUtils.isNotEmpty(mtmCascadeFieldIds)) {
+                metaMtmCascadeExtService.delete(mtmCascadeFieldIds.toArray(new Integer[0]));
+            }
         }
         if(count>0) {
             metaProjectService.updateProjectVersionByEntityId(entityId);

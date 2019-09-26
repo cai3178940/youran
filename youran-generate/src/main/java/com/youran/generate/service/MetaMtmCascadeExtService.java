@@ -172,6 +172,15 @@ public class MetaMtmCascadeExtService {
         return metaMtmCascadeExtDAO.findByMtmIdAndEntityId(mtmId,entityId);
     }
 
+    /**
+     * 根据级联字段id查询主键列表
+     * @param cascadeFieldId
+     * @return
+     */
+    public List<Integer> findPkByCascadeFieldId(Integer cascadeFieldId) {
+        return metaMtmCascadeExtDAO.findPkByCascadeFieldId(cascadeFieldId);
+    }
+
 
 }
 

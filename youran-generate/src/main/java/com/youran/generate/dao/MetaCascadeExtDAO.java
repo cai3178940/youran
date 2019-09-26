@@ -26,6 +26,13 @@ public interface MetaCascadeExtDAO extends DAO<MetaCascadeExtPO> {
     List<MetaCascadeExtPO> findByFieldId(Integer fieldId) ;
 
     /**
+     * 根据级联字段id查询【主键】
+     * @param fieldId
+     * @return
+     */
+    List<Integer> findPkByCascadeFieldId(Integer fieldId) ;
+
+    /**
      * 判断级联字段id是否存在
      * @param fieldId 级联所属字段
      * @param cascadeEntityId 待检测的实体id

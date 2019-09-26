@@ -166,4 +166,13 @@ public class MetaCascadeExtService {
     public List<MetaCascadeExtPO> findByFieldId(Integer fieldId) {
         return metaCascadeExtDAO.findByFieldId(fieldId);
     }
+
+    /**
+     * 根据级联字段id查询级联扩展列表
+     * @param cascadeFieldId
+     * @return
+     */
+    public List<Integer> findPkByCascadeFieldId(Integer cascadeFieldId) {
+        return metaCascadeExtDAO.findPkByCascadeFieldId(cascadeFieldId);
+    }
 }

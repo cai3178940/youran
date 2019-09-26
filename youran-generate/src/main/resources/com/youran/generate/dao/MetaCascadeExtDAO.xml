@@ -107,6 +107,15 @@
         order by t.created_time
     </select>
 
+    <select id="findPkByCascadeFieldId" parameterType="int" resultType="int">
+        select
+            t.`cascade_ext_id`
+        from meta_cascade_ext t
+        where
+            t.deleted=0
+            and t.cascade_field_id = #{arg0}
+    </select>
+
     <select id="cascadeFieldIdExists" resultType="java.lang.Boolean">
         select
             count(1)
