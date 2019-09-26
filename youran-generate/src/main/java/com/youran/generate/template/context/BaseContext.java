@@ -106,7 +106,7 @@ public class BaseContext {
         //项目标识：驼峰格式-首字母小写
         this.projectName = project.fetchNormalProjectName();
         //项目标识：驼峰格式-首字母大写
-        this.projectNameUpper = StringUtils.capitalize(project.fetchNormalProjectName());
+        this.projectNameUpper = StringUtils.capitalize(this.projectName);
         //项目标识：短横杠分割
         this.projectNameSplit = project.getProjectName();
         //原始模块名

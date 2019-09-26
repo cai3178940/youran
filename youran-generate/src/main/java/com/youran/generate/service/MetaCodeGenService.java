@@ -215,16 +215,19 @@ public class MetaCodeGenService implements InitializingBean {
             this.progressing(progressConsumer,1,null);
             //生成全局文件
             if (templateEnum.getType() == TemplateType.COMMON) {
-                this.renderCommonFTL(project, projectDir, templateEnum);
+                BaseContext context = new BaseContext(project);
+                this.renderFTL(context,templateEnum,projectDir);
             } else if (templateEnum.getType() == TemplateType.ENTITY) {
                 //生成实体模版文件
                 for (MetaEntityPO metaEntityPO : project.getEntities()) {
-                    this.renderEntityFTL(project, projectDir, templateEnum, metaEntityPO);
+                    EntityContext context = new EntityContext(project,metaEntityPO);
+                    this.renderFTL(context,templateEnum,projectDir);
                 }
             } else if (templateEnum.getType() == TemplateType.CONST) {
-                //生成实体模版文件
+                //生成枚举模版文件
                 for (MetaConstPO metaConstPO : project.getConsts()) {
-                    this.renderConstFTL(project, projectDir, templateEnum, metaConstPO);
+                    ConstContext context = new ConstContext(project,metaConstPO);
+                    this.renderFTL(context,templateEnum,projectDir);
                 }
             }
         }
@@ -300,95 +303,52 @@ public class MetaCodeGenService implements InitializingBean {
         FileUtils.copyFile(file, targetFile);
     }
 
-
-
-
     /**
-     * 渲染实体freemarker模版
-     * @param project      项目
-     * @param tmpDir       输出临时目录
-     */
-    private void renderCommonFTL(MetaProjectPO project, String tmpDir, TemplateEnum templateEnum) {
-        String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(), null, null);
-        BaseContext context = new BaseContext(project);
-        doRenderFTL(templateEnum, outFilePath, context);
-    }
-
-    /**
-     * 渲染实体freemarker模版
-     * @param project      项目
-     * @param tmpDir       输出临时目录
-     */
-    private void renderEntityFTL(MetaProjectPO project, String tmpDir,
-                                 TemplateEnum templateEnum, MetaEntityPO metaEntityPO) {
-        String outFilePath = this.getOutFilePath(project, tmpDir,
-            templateEnum.getTemplate(), metaEntityPO.getClassName(),null);
-        EntityContext context = new EntityContext(project,metaEntityPO);
-        doRenderFTL(templateEnum, outFilePath, context);
-    }
-
-
-    /**
-     * 渲染常量freemarker模版
-     * @param project      项目
-     * @param tmpDir       输出临时目录
-     * @param templateEnum 模版文件枚举
-     * @param metaConstPO 当前常量
-     */
-    private void renderConstFTL(MetaProjectPO project, String tmpDir,
-                                TemplateEnum templateEnum, MetaConstPO metaConstPO) {
-        String outFilePath = this.getOutFilePath(project, tmpDir, templateEnum.getTemplate(),
-            null, metaConstPO.getConstName());
-        ConstContext context = new ConstContext(project,metaConstPO);
-        doRenderFTL(templateEnum, outFilePath, context);
-    }
-
-    /**
-     * 执行模板渲染
-     * @param templateEnum 模板枚举
-     * @param outFilePath 输出路径
+     * 渲染模板
      * @param context 上下文信息
+     * @param templateEnum 模板枚举
+     * @param projectDir 代码输出目录
      */
-    private void doRenderFTL(TemplateEnum templateEnum, String outFilePath, BaseContext context) {
+    private void renderFTL(BaseContext context, TemplateEnum templateEnum, String projectDir) {
         LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
         String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), context);
         LOGGER.debug(text);
+        String outFilePath = this.renderCodeFilePath(context, templateEnum, projectDir);
+        LOGGER.debug("输出代码文件：{}",outFilePath);
         this.writeToFile(text, outFilePath);
     }
 
     /**
-     * 获取文件输出路径
-     * @param project
-     * @param tmpDir
-     * @param templatePath
-     * @param entityClassName
-     * @param constName
-     * @return
+     * 渲染代码文件输出路径
+     * @param context 上下文信息
+     * @param templateEnum 模板枚举
+     * @param projectDir 代码输出目录
+     * @return 代码文件地址
      */
-    private String getOutFilePath(MetaProjectPO project,String tmpDir,
-                                  String templatePath,String entityClassName,String constName){
-        String packageName = project.getPackageName();
+    private String renderCodeFilePath(BaseContext context, TemplateEnum templateEnum, String projectDir){
+        String packageName = context.getPackageName();
         if (StringUtils.isBlank(packageName)) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"包名未设置");
         }
-        templatePath = templatePath
-                .replace("{commonModule}",project.getProjectName()+"-common")
-                .replace("{coreModule}",project.getProjectName()+"-core")
-                .replace("{webModule}",project.getProjectName()+"-web")
+        String templatePath = templateEnum.getTemplate()
+                .replace("{commonModule}",context.getProjectNameSplit()+"-common")
+                .replace("{coreModule}",context.getProjectNameSplit()+"-core")
+                .replace("{webModule}",context.getProjectNameSplit()+"-web")
                 .replace("{packageName}", packageName.replaceAll("\\.", "/"))
-                .replace("{commonPackage}",project.fetchCommonPackageName().replaceAll("\\.", "/"))
-                .replace("{ProjectName}", StringUtils.capitalize(project.fetchNormalProjectName()))
-                .replace("{projectName}", StringUtils.uncapitalize(project.fetchNormalProjectName()))
-                .replace("{project-name}", project.getProjectName());
-        if (entityClassName != null) {
-            templatePath = templatePath.replace("{ClassName}", StringUtils.capitalize(entityClassName));
+                .replace("{commonPackage}",context.getCommonPackage().replaceAll("\\.", "/"))
+                .replace("{ProjectName}", context.getProjectNameUpper())
+                .replace("{projectName}", context.getProjectName())
+                .replace("{project-name}", context.getProjectNameSplit());
+        if (context instanceof EntityContext) {
+            EntityContext entityContext = (EntityContext) context;
+            templatePath = templatePath.replace("{ClassName}", entityContext.getClassNameUpper());
         }
-        if (constName != null) {
-            templatePath = templatePath.replace("{ConstName}", constName)
-                    .replace("{EnumName}", constName);
+        if (context instanceof ConstContext) {
+            ConstContext constContext = (ConstContext) context;
+            templatePath = templatePath.replace("{EnumName}", constContext.getConstNameUpper());
         }
         templatePath = templatePath.substring(0, templatePath.lastIndexOf("."));
-        return tmpDir + "/" + templatePath;
+        return projectDir + "/" + templatePath;
     }
 
     /**
