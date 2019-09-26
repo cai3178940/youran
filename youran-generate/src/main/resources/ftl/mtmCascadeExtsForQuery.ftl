@@ -1,6 +1,5 @@
 <#-- 多对多级联扩展字段查询专用 -->
 <#include "/common.ftl">
-
 <#--将所有级联扩展查询字段放入数组中-->
 <#assign mtmCascadeExtsForQuery = []>
 <#--将所有需要查询的级联实体放入数组中-->
@@ -41,4 +40,3 @@
         <#assign mtmForQuery += [mtm]>
     </#if>
 </#list>
-

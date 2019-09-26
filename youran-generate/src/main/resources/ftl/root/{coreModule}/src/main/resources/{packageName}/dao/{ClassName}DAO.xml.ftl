@@ -209,7 +209,7 @@
         <if test="${con_ex_arr?join(' or ')} ">
             and exists(
                 select 1 from ${wrapMysqlKeyword(otherEntity.tableName)} ${table_m}
-                inner join wrapMysqlKeyword(mtm.tableName) ${table_r}
+                inner join ${wrapMysqlKeyword(mtm.tableName)} ${table_r}
                     on ${table_m}.${wrapMysqlKeyword(otherEntity.pkField.fieldName)}=${table_r}.${other_fk_id}
                 where ${table_m}.${wrapMysqlKeyword(this.pk.fieldName)}=t.${wrapPkFieldName}
             <#if otherEntity.delField??>

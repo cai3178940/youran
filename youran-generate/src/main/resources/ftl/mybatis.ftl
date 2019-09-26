@@ -1,6 +1,5 @@
 <#-- mybatis sql模板专用 -->
 <#include "/common.ftl">
-
 <#-- 生成if不为空条件内容，支持字段别名-->
 <#function ifNotEmptyConditionWithAlias alias field>
     <#if field.queryType==QueryType.IN>
