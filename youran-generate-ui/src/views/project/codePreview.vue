@@ -14,6 +14,8 @@
           <el-tree :props="treeProps"
                    :data="codeTree.tree"
                    :render-content="renderTreeNode"
+                   :expand-on-click-node="false"
+                   @node-expand="expandSingleNode"
                    @node-click="nodeClick">
           </el-tree>
         </el-aside>
@@ -156,6 +158,19 @@ export default {
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { tab.loading = false })
+    },
+    /**
+     * 展开所有单节点下级
+     */
+    expandSingleNode (data, node) {
+      function recursiveExpand (n) {
+        if (n.childNodes.length === 1) {
+          const childNode = n.childNodes[0]
+          childNode.expanded = true
+          recursiveExpand(childNode)
+        }
+      }
+      recursiveExpand(node)
     },
     addTab (nodeData) {
       const tab = {

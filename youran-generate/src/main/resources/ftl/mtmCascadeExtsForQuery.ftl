@@ -1,4 +1,4 @@
-<#-- 多对多级联扩展字段查询专用 -->
+<#-- 功能简介：多对多级联扩展字段查询专用 -->
 <#include "/common.ftl">
 <#--将所有级联扩展查询字段放入数组中-->
 <#assign mtmCascadeExtsForQuery = []>
@@ -10,7 +10,7 @@
 <#assign groupMtmCascadeExtsForQuery = []>
 <#--定义宏：组装多对多级联扩展相关的数据结构-->
 <#macro buildMtmCascade holds hostEntityId>
-    <#list holds as cascadeEntity,mtm>
+    <#list holds as otherEntity,mtm>
         <#--初始化当前级联实体对应的级联扩展查询字段-->
         <#assign mtmCascadeExts=[]>
         <#list mtm.getCascadeExtList(hostEntityId) as mtmCascadeExt>
@@ -23,7 +23,7 @@
         </#list>
         <#if mtmCascadeExts?hasContent>
             <#assign groupMtmCascadeExtsForQuery += [mtmCascadeExts]>
-            <#assign mtmCascadeEntitiesForQuery += [cascadeEntity]>
+            <#assign mtmCascadeEntitiesForQuery += [otherEntity]>
             <#assign mtmForQuery += [mtm]>
         </#if>
     </#list>

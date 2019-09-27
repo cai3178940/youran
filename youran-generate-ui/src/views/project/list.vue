@@ -14,7 +14,6 @@
 
     <el-table ref="projectTable" :data="list" :border="true"
               row-key="projectId"
-              :expand-row-keys="expandRowKeys"
               style="min-width: 1255px;"
               v-loading="loading"
               :element-loading-text="loadingText">
@@ -101,6 +100,10 @@
 
 <script>
 import { apiPath, wsApiPath } from '@/components/common'
+/**
+ * websocket前端组件
+ * https://www.npmjs.com/package/webstomp-client
+ */
 import webstomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import shortid from 'shortid'
@@ -235,7 +238,6 @@ export default {
         stompClient.connect({}, () => {
           // 生成随机sessionId
           const sessionId = shortid.generate()
-          afterConnect()
           // 订阅进度变化的topic
           stompClient.subscribe(`/code_gen/${serviceName}_progress/${sessionId}`, (frame) => {
             const progressVO = JSON.parse(frame.body)
@@ -246,6 +248,7 @@ export default {
               resolve(progressVO)
             }
           })
+          afterConnect()
           // 请求生成代码
           stompClient.send(`/code_gen/${serviceName}/${sessionId}`, '', params)
         })

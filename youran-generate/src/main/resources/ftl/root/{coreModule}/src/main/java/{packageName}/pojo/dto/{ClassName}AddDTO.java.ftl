@@ -9,6 +9,8 @@
 public class ${this.classNameUpper}AddDTO extends AbstractDTO {
 
 <#list this.insertFields as id,field>
+    <#--import字段类型-->
+    <@call this.addFieldTypeImport(field)/>
     <@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
     <#--字段名转下划线大写-->
     <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
@@ -25,12 +27,9 @@ public class ${this.classNameUpper}AddDTO extends AbstractDTO {
         <@call this.addImport("org.hibernate.validator.constraints.Length")/>
     @Length(max = ${field.fieldLength})
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
-        <@call this.addImport("java.util.Date")/>
         <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
         <@call this.addImport("${this.commonPackage}.constant.JsonFieldConst")/>
     @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATE_FORMAT,timezone="GMT+8")
-    <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-        <@call this.addImport("java.math.BigDecimal")/>
     </#if>
     private ${field.jfieldType} ${field.jfieldName};
 

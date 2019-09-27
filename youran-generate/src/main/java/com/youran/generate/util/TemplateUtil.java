@@ -14,8 +14,8 @@ public class TemplateUtil {
 
     /**
      * 类名截取函数
-     * @param classPath
-     * @return
+     * @param classPath 类全路径
+     * @return 类名
      */
     public static String fetchClassName(String classPath){
         int i = classPath.lastIndexOf(".");
@@ -28,7 +28,7 @@ public class TemplateUtil {
 
     /**
      * 判断是否通用的常量
-     * @param constName
+     * @param constName 常量名称
      * @return
      */
     public static boolean isCommonConst(String constName){
@@ -37,7 +37,7 @@ public class TemplateUtil {
 
     /**
      * 打印gettersetter方法
-     * @param metaFieldPO
+     * @param metaFieldPO 字段元数据对象
      * @return
      */
     public static String printGetterSetterForPO(MetaFieldPO metaFieldPO){
@@ -47,11 +47,12 @@ public class TemplateUtil {
             && MetaSpecialField.check(metaFieldPO.getJfieldName())){
             override = true;
         }
-        return printGetterSetter(metaFieldPO.getJfieldName(),metaFieldPO.getJfieldType(),override);
+        return printGetterSetter(metaFieldPO.getJfieldName(),metaFieldPO.getJfieldType(),override,1);
     }
+
     /**
      * 打印gettersetter方法
-     * @param metaFieldPO
+     * @param metaFieldPO 字段元数据对象
      * @return
      */
     public static String printGetterSetter(MetaFieldPO metaFieldPO){
@@ -60,43 +61,60 @@ public class TemplateUtil {
 
     /**
      * 打印gettersetter方法
-     * @param jfieldName
-     * @param jfieldType
+     * @param metaFieldPO 字段元数据对象
+     * @param indent 缩进层次
+     * @return
+     */
+    public static String printGetterSetter(MetaFieldPO metaFieldPO,int indent){
+        return printGetterSetter(metaFieldPO.getJfieldName(),metaFieldPO.getJfieldType(),false, indent);
+    }
+
+    /**
+     * 打印gettersetter方法
+     * @param jfieldName java字段名
+     * @param jfieldType java字段类型
      * @return
      */
     public static String printGetterSetter(String jfieldName,String jfieldType){
-        return printGetterSetter(jfieldName,jfieldType,false);
+        return printGetterSetter(jfieldName,jfieldType,false,1);
     }
+
     /**
      * 打印gettersetter方法
-     * @param jfieldName
-     * @param jfieldType
-     * @param override
+     * @param jfieldName java字段名
+     * @param jfieldType java字段类型
+     * @param override 是否加上@Override注解
+     * @param indent 缩进层次
      * @return
      */
-    public static String printGetterSetter(String jfieldName,String jfieldType, boolean override){
+    public static String printGetterSetter(String jfieldName,String jfieldType, boolean override,int indent){
+        StringBuilder indentPrefix = new StringBuilder();
+        for (int i = 0; i < indent; i++) {
+            indentPrefix.append("    ");
+        }
         String cap = StringUtils.capitalize(jfieldName);
         String uncap = StringUtils.uncapitalize(jfieldName);
         StringBuilder sb = new StringBuilder();
         if(override){
-            sb.append("    @Override\n");
+            sb.append(indentPrefix).append("@Override\n");
         }
-        sb.append("    public ").append(jfieldType).append(" get").append(cap).append("() {\n")
-            .append("        return this.").append(uncap).append(";\n")
-            .append("    }\n")
+        sb.append(indentPrefix).append("public ").append(jfieldType).append(" get").append(cap).append("() {\n")
+            .append(indentPrefix).append("    return this.").append(uncap).append(";\n")
+            .append(indentPrefix).append("}\n")
             .append("\n");
         if(override){
-            sb.append("    @Override\n");
+            sb.append(indentPrefix).append("@Override\n");
         }
-        sb.append("    public void set").append(cap).append("(").append(jfieldType).append(" ").append(uncap).append(") {\n")
-            .append("        this.").append(uncap).append(" = ").append(uncap).append(";\n")
-            .append("    }\n\n");
+        sb.append(indentPrefix).append("public void set").append(cap).append("(").append(jfieldType).append(" ").append(uncap).append(") {\n")
+            .append(indentPrefix).append("    this.").append(uncap).append(" = ").append(uncap).append(";\n")
+            .append(indentPrefix).append("}\n\n");
         return sb.toString();
     }
+
     /**
      * 打印gettersetter list方法
-     * @param jfieldName
-     * @param jfieldType
+     * @param jfieldName java字段名
+     * @param jfieldType java字段类型
      * @return
      */
     public static String printGetterSetterList(String jfieldName,String jfieldType){
@@ -105,8 +123,8 @@ public class TemplateUtil {
 
     /**
      * 打印gettersetter list方法
-     * @param jfieldName
-     * @param jfieldType
+     * @param jfieldName java字段名
+     * @param jfieldType java字段类型
      * @param listSuffix 字段名加List后置
      * @return
      */

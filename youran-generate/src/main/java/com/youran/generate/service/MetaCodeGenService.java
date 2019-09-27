@@ -112,7 +112,7 @@ public class MetaCodeGenService implements InitializingBean {
     public File genCodeZip(Integer projectId, Consumer<ProgressVO> progressConsumer) {
         String tmpDir = this.genProjectCodeIfNotExists(projectId,progressConsumer);
         //压缩src目录到zip文件
-        this.progressing(progressConsumer,1,"将项目打包成zip格式");
+        this.progressing(progressConsumer,90, 99 ,1, "将项目打包成zip格式");
         String outFilePath = tmpDir + ".zip";
         Zip4jUtil.compressFolder(tmpDir, outFilePath);
         //删除临时目录
@@ -125,7 +125,7 @@ public class MetaCodeGenService implements InitializingBean {
                         "请配置本地开发工程路径youran.generate.devProjectDir");
                 }
                 LOGGER.debug("------全部替换开发工程：" + devProjectDir);
-                this.progressing(progressConsumer,1,"全部替换开发工程" + devProjectDir);
+                this.progressing(progressConsumer,95,99, 1,"全部替换开发工程" + devProjectDir);
                 FileUtils.deleteDirectory(new File(devProjectDir));
                 FileUtils.copyDirectory(new File(tmpDir), new File(devProjectDir));
             } else if (generateProperties.getDevMode() == DevMode.INCREMENT_REPLACE) {
@@ -134,7 +134,7 @@ public class MetaCodeGenService implements InitializingBean {
                         "请配置本地开发工程路径youran.generate.devProjectDir");
                 }
                 LOGGER.debug("------部分替换开发工程：" + devProjectDir);
-                this.progressing(progressConsumer,1,"部分替换开发工程" + devProjectDir);
+                this.progressing(progressConsumer,95, 99, 1,"部分替换开发工程" + devProjectDir);
                 this.compareAndCoverFile(new File(tmpDir), new File(devProjectDir));
             }
         } catch (IOException e) {
@@ -147,6 +147,7 @@ public class MetaCodeGenService implements InitializingBean {
 
     /**
      * 如果当天尚未生成过最新版本的代码，则生成代码
+     * 总体进度20%-80%之间
      * @param projectId 项目id
      * @param progressConsumer 进度条
      * @return 代码目录
@@ -200,11 +201,11 @@ public class MetaCodeGenService implements InitializingBean {
      */
     private void doGenCode(String projectDir, Integer projectId,Consumer<ProgressVO> progressConsumer){
         // 获取组装后的项目
-        this.progressing(progressConsumer,1,"获取并组装项目元数据");
+        this.progressing(progressConsumer,20,80,1,"获取并组装项目元数据");
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
             true,true,true, true, true);
         LOGGER.debug("------代码生成临时路径：" + projectDir);
-        this.progressing(progressConsumer,0,"渲染代码模板");
+        this.progressing(progressConsumer,20,80,1,"开始渲染代码");
         for (TemplateEnum templateEnum : TemplateEnum.values()) {
             try {
                 // 睡20毫秒，故意慢一点，好让前端进度条反应缓慢增长
@@ -212,8 +213,8 @@ public class MetaCodeGenService implements InitializingBean {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            this.progressing(progressConsumer,1,null);
             //生成全局文件
+            this.progressing(progressConsumer,25,80, 2,"代码渲染中");
             if (templateEnum.getType() == TemplateType.COMMON) {
                 BaseContext context = new BaseContext(project);
                 this.renderFTL(context,templateEnum,projectDir);
@@ -408,25 +409,25 @@ public class MetaCodeGenService implements InitializingBean {
         }
         String newBranchName = "auto"+ DateUtil.getDateStr(now,"yyyyMMddHHmmss");
         GitCredentialDTO credential = this.getCredentialDTO(project);
-        this.progressing(progressConsumer,10,"克隆远程仓库");
+        this.progressing(progressConsumer,5,10,1,"克隆远程仓库");
         String repository = gitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
             credential, oldBranchName, newBranchName);
         File repoDir = new File(repository);
         File[] oldFiles = repoDir.listFiles((dir, name) -> !".git".equals(name));
         try {
-            this.progressing(progressConsumer,1,"清空旧代码");
+            this.progressing(progressConsumer,6, 10, 1,"清空旧代码");
             for (File oldFile : oldFiles) {
                 FileUtils.forceDelete(oldFile);
             }
-            //生成代码
+            //生成代码20%-80%
             String genDir = this.genProjectCodeIfNotExists(projectId,progressConsumer);
-            this.progressing(progressConsumer,1,"拷贝新生成的代码");
+            this.progressing(progressConsumer,81,85,1,"拷贝新生成的代码");
             FileUtils.copyDirectory(new File(genDir), repoDir);
         } catch (IOException e) {
             LOGGER.error("IO异常",e);
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"操作失败");
         }
-        this.progressing(progressConsumer,1,"提交到远程仓库");
+        this.progressing(progressConsumer,90,99,1,"提交到远程仓库");
         String commit = gitService.commitAll(repository,
             DateUtil.getDateStr(now,"yyyy-MM-dd HH:mm:ss")+"自动生成代码",
             credential);
@@ -466,9 +467,11 @@ public class MetaCodeGenService implements InitializingBean {
      * @param addPercent
      * @param msg
      */
-    private void progressing(Consumer<ProgressVO> progressConsumer,int addPercent,String msg){
+    private void progressing(Consumer<ProgressVO> progressConsumer,
+                             int minPercent, int maxPercent,
+                             int addPercent, String msg){
         if(progressConsumer!=null){
-            progressConsumer.accept(ProgressVO.progressing(addPercent,msg));
+            progressConsumer.accept(ProgressVO.progressing(minPercent,maxPercent,addPercent,msg));
         }
     }
 

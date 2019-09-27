@@ -90,11 +90,8 @@
 public class ${this.classNameUpper}PO extends AbstractPO${implementsStr} {
 
 <#list this.fields as id,field>
-    <#if field.jfieldType==JFieldType.DATE.getJavaType()>
-        <@call this.addImport("java.util.Date")/>
-    <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-        <@call this.addImport("java.math.BigDecimal")/>
-    </#if>
+    <#--import字段类型-->
+    <@call this.addFieldTypeImport(field)/>
     /**
 ${MetadataUtil.convertCommentDisplayWithIndentStar(field.fieldComment)}
     <#if field.dicType??>

@@ -1,4 +1,5 @@
 <#include "/common.ftl">
+<#include "/mtmCascadeExtsForList.ftl">
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("io.swagger.annotations.ApiModel")/>
@@ -9,7 +10,10 @@
 @ApiModel(description = "【${this.title}】列表展示对象")
 public class ${this.classNameUpper}ListVO extends AbstractVO {
 
+<#--当前实体列表展示字段-->
 <#list this.listFields as id,field>
+    <#--import字段类型-->
+    <@call this.addFieldTypeImport(field)/>
     <#--字段名转下划线大写-->
     <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
     <#if field.dicType??>
@@ -17,19 +21,19 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
     </#if>
     @ApiModelProperty(notes = N_${jfieldNameSnakeCase},example = E_${jfieldNameSnakeCase}<#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
     <#if field.jfieldType==JFieldType.DATE.getJavaType()>
-        <@call this.addImport("java.util.Date")/>
         <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
         <@call this.addImport("${this.commonPackage}.constant.JsonFieldConst")/>
     @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
-    <#elseIf field.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-        <@call this.addImport("java.math.BigDecimal")/>
     </#if>
     private ${field.jfieldType} ${field.jfieldName};
 
 </#list>
+<#--外键级联扩展，列表展示字段-->
 <#list this.fkFields as id,field>
     <#list field.cascadeListExts! as cascadeExt>
         <#assign cascadeField=cascadeExt.cascadeField>
+        <#--import字段类型-->
+        <@call this.addFieldTypeImport(cascadeField)/>
         <#assign exampleClass="">
         <#if cascadeField.dicType??>
             <@call this.addConstImport(cascadeField.dicType)/>
@@ -42,38 +46,76 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
         <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(cascadeField.jfieldName,true)>
     @ApiModelProperty(notes = ${exampleClass}N_${jfieldNameSnakeCase},example = ${exampleClass}E_${jfieldNameSnakeCase}<#if cascadeField.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(cascadeField.dicType)}.VALUES_STR</#if>)
         <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
-            <@call this.addImport("java.util.Date")/>
             <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
             <@call this.addImport("${this.commonPackage}.constant.JsonFieldConst")/>
     @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
-        <#elseIf cascadeField.jfieldType==JFieldType.BIGDECIMAL.getJavaType()>
-            <@call this.addImport("java.math.BigDecimal")/>
         </#if>
     private ${cascadeField.jfieldType} ${cascadeExt.alias};
 
     </#list>
 </#list>
-<#list this.holds! as otherEntity,mtm>
+<#--多对多列表展示-->
+<#list mtmCascadeEntitiesForList as otherEntity>
     <@call this.addImport("java.util.List")/>
     <#assign otherCName=otherEntity.className/>
     <#assign othercName=otherEntity.className?uncapFirst>
     @ApiModelProperty(notes = "【${otherEntity.title}】列表")
-    private List<${otherCName}ListVO> ${othercName}List;
+    private List<${otherCName}VO> ${othercName}List;
 
 </#list>
 
+<#--当前实体列表展示字段：getter-setter方法-->
 <#list this.listFields as id,field>
     <@call TemplateUtil.printGetterSetter(field)/>
 </#list>
+<#--外键级联扩展，列表展示字段：getter-setter方法-->
 <#list this.fkFields as id,field>
     <#list field.cascadeListExts! as cascadeExt>
         <@call TemplateUtil.printGetterSetter(cascadeExt.alias,cascadeExt.cascadeField.jfieldType)/>
     </#list>
 </#list>
-<#list this.holds! as otherEntity,mtm>
+<#--多对多列表展示：getter-setter方法-->
+<#list mtmCascadeEntitiesForList as otherEntity>
     <#assign otherCName=otherEntity.className/>
     <#assign othercName=otherEntity.className?uncapFirst>
-    <@call TemplateUtil.printGetterSetterList(othercName,"${otherCName}ListVO")/>
+    <@call TemplateUtil.printGetterSetterList(othercName,"${otherCName}VO")/>
+</#list>
+
+<#--多对多列表展示-->
+<#list mtmCascadeEntitiesForList as otherEntity>
+    <#assign mtmCascadeExts = groupMtmCascadeExtsForList[otherEntity_index]>
+    <#assign otherCName=otherEntity.className?capFirst>
+    public static class ${otherCName}VO extends AbstractVO {
+
+    <#--多对多级联扩展，列表展示字段-->
+    <#list mtmCascadeExts as mtmCascadeExt>
+        <#assign field=mtmCascadeExt.cascadeField>
+        <#--import字段类型-->
+        <@call this.addFieldTypeImport(field)/>
+        <#--字段名转下划线大写-->
+        <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
+        <#if field.dicType??>
+            <@call this.addConstImport(field.dicType)/>
+        </#if>
+        <@call this.addImport("${this.packageName}.pojo.example.${otherEntity.className?capFirst}Example")/>
+        <#assign exampleClass="${otherEntity.className?capFirst}Example.">
+        @ApiModelProperty(notes = ${exampleClass}N_${jfieldNameSnakeCase},example = ${exampleClass}E_${jfieldNameSnakeCase}<#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
+        <#if field.jfieldType==JFieldType.DATE.getJavaType()>
+            <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
+            <@call this.addImport("${this.commonPackage}.constant.JsonFieldConst")/>
+            @JsonFormat(pattern=JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
+        </#if>
+        private ${field.jfieldType} ${field.jfieldName};
+
+    </#list>
+
+    <#--多对多级联扩展，列表展示字段：getter-setter方法-->
+    <#list mtmCascadeExts as mtmCascadeExt>
+        <#assign field=mtmCascadeExt.cascadeField>
+        <@call TemplateUtil.printGetterSetter(field,2)/>
+    </#list>
+
+    }
 </#list>
 
 }

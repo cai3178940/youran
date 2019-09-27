@@ -3,6 +3,7 @@ package com.youran.generate.pojo.vo;
 import com.youran.common.pojo.vo.AbstractVO;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.util.Assert;
 
 import java.util.Objects;
 
@@ -67,11 +68,12 @@ public class ProgressVO extends AbstractVO {
 
     /**
      * 进度增加
-     * @param addPercent
-     * @param msg
+     * @param addPercent 增加进度
+     * @param msg 消息
      * @return
      */
-    public static ProgressVO progressing(int addPercent,String msg){
+    public static ProgressVO progressing(int minPercent,int maxPercent,int addPercent,String msg){
+        Assert.isTrue(maxPercent>=minPercent,"最大百分比必须大于最小百分比");
         ProgressVO vo = threadLocal.get();
         if(vo==null){
             throw new RuntimeException("进度条VO未初始化");
@@ -80,8 +82,21 @@ public class ProgressVO extends AbstractVO {
         if(!Objects.equals(vo.getStatus(),PROGRESSING)){
             return vo;
         }
+        Integer oldPercent = vo.getPercentage();
+        int currentPercent = oldPercent +addPercent;
+        // 如果当前进度小于最小值，则赋值成下限
+        if(currentPercent < minPercent){
+            currentPercent = minPercent;
+        }
+        // 如果之前进度就大于最大值，则保持不变
+        if(oldPercent > maxPercent){
+            currentPercent = oldPercent;
+        }
+        // 如果当前进度大于最大值，则赋值成上限
+        else if(currentPercent > maxPercent){
+            currentPercent = maxPercent;
+        }
         // 进度增长过程中，进度值不能超过99%
-        int currentPercent = vo.getPercentage()+addPercent;
         if(currentPercent >= LAST_PERCENT){
             currentPercent = LAST_PERCENT;
         }
@@ -91,6 +106,7 @@ public class ProgressVO extends AbstractVO {
         }
         return vo;
     }
+
 
 
     /**

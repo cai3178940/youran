@@ -1,4 +1,6 @@
 <#include "/common.ftl">
+<#include "/mtmCascadeExtsForList.ftl">
+<#include "/mtmCascadeExtsForShow.ftl">
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
@@ -17,19 +19,17 @@
 @Service
 public class ${this.classNameUpper}Service {
 
-    <#-- 引入当前实体的DAO -->
-    <@call this.addAutowired("${this.packageName}.dao" "${this.classNameUpper}DAO")/>
+<#-- 引入当前实体的DAO -->
+<@call this.addAutowired("${this.packageName}.dao" "${this.classNameUpper}DAO")/>
 <#-- 引入多对多关联实体的DAO（当前持有） -->
-
-    <#list this.holds! as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
-    </#list>
-
+<#list this.holds! as otherEntity,mtm>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
+</#list>
 <#-- 引入多对多关联实体的DAO（非当前持有） -->
-    <#list this.unHolds! as otherEntity,mtm>
-        <@call this.addAutowired("${this.packageName}.dao" "${otherEntity.className?capFirst}DAO")/>
-    </#list>
+<#list this.unHolds! as otherEntity,mtm>
+    <@call this.addAutowired("${this.packageName}.dao" "${otherEntity.className?capFirst}DAO")/>
+</#list>
 <#-- 引入外键对应的DAO （插入字段对应的外键）-->
 <#list this.insertFields as id,field>
     <#if isTrue(field.foreignKey)>
@@ -43,16 +43,16 @@ public class ${this.classNameUpper}Service {
     </#if>
 </#list>
 <#-- 被其他实体外键关联时，引入其他实体DAO -->
-    <#list this.foreignEntities! as foreignEntity>
-        <@call this.addAutowired("${this.packageName}.dao" "${foreignEntity.className?capFirst}DAO")/>
-    </#list>
+<#list this.foreignEntities! as foreignEntity>
+    <@call this.addAutowired("${this.packageName}.dao" "${foreignEntity.className?capFirst}DAO")/>
+</#list>
 <#-- 当前实体的外键字段存在级联扩展时，引入对应实体的DAO -->
 <#list this.fkFields as id,field>
     <#if field.cascadeListExts?? && field.cascadeListExts?size &gt; 0>
         <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
 </#list>
-    <@call this.printAutowired()/>
+<@call this.printAutowired()/>
 
 <#if this.metaEntity.checkUniqueIndexes?? && this.metaEntity.checkUniqueIndexes?size &gt; 0>
     /**
@@ -157,9 +157,9 @@ public class ${this.classNameUpper}Service {
      */
     public PageVO<${this.classNameUpper}ListVO> list(${this.classNameUpper}QO ${this.className}QO) {
         PageVO<${this.classNameUpper}ListVO> page = ${this.className}DAO.findByPage(${this.className}QO);
-        <#if this.holds!?hasContent>
+        <#if mtmCascadeEntitiesForList?hasContent>
         for(${this.classNameUpper}ListVO listVO : page.getList()){
-            <#list this.holds! as otherEntity,mtm>
+            <#list mtmCascadeEntitiesForList as otherEntity>
                 <#assign otherCName=otherEntity.className?capFirst>
                 <#assign othercName=otherEntity.className?uncapFirst>
             listVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(listVO.get${this.idUpper}()));
@@ -169,7 +169,7 @@ public class ${this.classNameUpper}Service {
         return page;
     }
 <#else>
-    <@call this.addImport("java.util.List")/>
+<@call this.addImport("java.util.List")/>
     /**
      * 查询列表
      * @param ${this.className}QO
@@ -177,20 +177,20 @@ public class ${this.classNameUpper}Service {
      */
     public List<${this.classNameUpper}ListVO> list(${this.classNameUpper}QO ${this.className}QO) {
         List<${this.classNameUpper}ListVO> list = ${this.className}DAO.findListByQuery(${this.className}QO);
-        <#if this.holds!?hasContent>
+    <#if mtmCascadeEntitiesForList?hasContent>
         for(${this.classNameUpper}ListVO listVO : list){
-            <#list this.holds! as otherEntity,mtm>
-                <#assign otherCName=otherEntity.className?capFirst>
-                <#assign othercName=otherEntity.className?uncapFirst>
-            listVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(listVO.get${this.idUpper}()));
-            </#list>
+        <#list mtmCascadeEntitiesForList as otherEntity>
+            <#assign otherCName=otherEntity.className?capFirst>
+            <#assign othercName=otherEntity.className?uncapFirst>
+            listVO.set${otherCName}List(${othercName}DAO.findVOFor${this.classNameUpper}List(listVO.get${this.idUpper}()));
+        </#list>
         }
-        </#if>
+    </#if>
         return list;
     }
 </#if>
 
-    <#if this.holds!?hasContent>
+<#if this.holds!?hasContent>
     /**
      * 根据主键获取【${this.title}】
      * 不获取多对多级联对象
@@ -199,24 +199,24 @@ public class ${this.classNameUpper}Service {
      * @return
      */
     public ${this.classNameUpper}PO get${this.classNameUpper}(${this.type} ${this.id}, boolean force){
-        <#assign withFalseCode="">
-        <#list this.holds! as otherEntity,mtm>
-            <#assign withFalseCode=withFalseCode+"false, ">
-        </#list>
+    <#assign withFalseCode="">
+    <#list this.holds! as otherEntity,mtm>
+        <#assign withFalseCode=withFalseCode+"false, ">
+    </#list>
         return this.get${this.classNameUpper}(${this.id}, ${withFalseCode}force);
     }
 
-    </#if>
+</#if>
     /**
      * 根据主键获取【${this.title}】
      * @param ${this.id} 主键
-    <#assign withHoldParam="">
-    <#list this.holds! as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign withParamName="with"+otherCName>
-        <#assign withHoldParam=withHoldParam+"boolean with"+otherCName+", ">
+<#assign withHoldParam="">
+<#list this.holds! as otherEntity,mtm>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign withParamName="with"+otherCName>
+    <#assign withHoldParam=withHoldParam+"boolean with"+otherCName+", ">
      * @param ${withParamName} 是否级联获取【${otherEntity.title}】
-    </#list>
+</#list>
      * @param force 是否强制获取
      * @return
      */
@@ -225,13 +225,13 @@ public class ${this.classNameUpper}Service {
         if (force && ${this.className} == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
         }
-    <#list this.holds! as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
+<#list this.holds! as otherEntity,mtm>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign othercName=otherEntity.className?uncapFirst>
         if (with${otherCName}){
             ${this.className}.set${otherCName}POList(${othercName}DAO.findBy${this.classNameUpper}(${this.id}));
         }
-    </#list>
+</#list>
         return ${this.className};
     }
 
@@ -257,11 +257,11 @@ public class ${this.classNameUpper}Service {
         }
     </#if>
 </#list>
-<#list this.holds! as otherEntity,mtm>
+<#list mtmCascadeEntitiesForShow as otherEntity>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
         // 设置【${otherEntity.title}】列表
-        showVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(${this.id}));
+        showVO.set${otherCName}List(${othercName}DAO.findVOFor${this.classNameUpper}Show(${this.id}));
 </#list>
         return showVO;
     }

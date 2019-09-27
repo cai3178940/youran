@@ -2,19 +2,14 @@ package com.youran.generate.template.context;
 
 import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.FeatureConst;
+import com.youran.generate.constant.JFieldType;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
-import com.youran.generate.pojo.po.MetaConstPO;
-import com.youran.generate.pojo.po.MetaEntityPO;
-import com.youran.generate.pojo.po.MetaManyToManyPO;
-import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.pojo.po.*;
 import com.youran.generate.util.TemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * <p>Title: 基本信息上下文对象</p>
@@ -144,6 +139,18 @@ public class BaseContext {
      */
     public void addImport(String classPath){
         this.imports.add(classPath);
+    }
+
+    /**
+     * 根据字段类型添加依赖
+     * @param field
+     */
+    public void addFieldTypeImport(MetaFieldPO field){
+        if(Objects.equals(field.getJfieldType(), JFieldType.DATE.getJavaType())){
+            this.addImport("java.util.Date");
+        }else if(Objects.equals(field.getJfieldType(), JFieldType.BIGDECIMAL.getJavaType())){
+            this.addImport("java.math.BigDecimal");
+        }
     }
 
     /**

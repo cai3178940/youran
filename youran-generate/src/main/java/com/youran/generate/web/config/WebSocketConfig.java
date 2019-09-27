@@ -23,11 +23,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        // 启用内置简单broker，可订阅路径前缀为/topic
-        // 浏览器连接websocket以后，就能订阅 /topic/* 主题了
+        // 启用内置简单broker，可订阅路径前缀为/code_gen
+        // 浏览器连接websocket以后，就能订阅 /code_gen/* 主题了
         config.enableSimpleBroker("/code_gen");
         // 配置stomp协议的消息接收路径前缀
-        // 浏览器连接websocket以后，就能给 /app/* 发送消息
+        // 浏览器连接websocket以后，就能给 /code_gen/* 发送消息
         config.setApplicationDestinationPrefixes("/code_gen");
     }
 
