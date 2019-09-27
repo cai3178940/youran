@@ -1,4 +1,6 @@
 <#include "/common.ftl">
+<#include "/mtmCascadeExtsForOppList.ftl">
+<#include "/mtmCascadeExtsForOppShow.ftl">
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.packageName}.pojo.po.${this.classNameUpper}PO")/>

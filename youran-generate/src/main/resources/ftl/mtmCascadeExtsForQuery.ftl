@@ -9,7 +9,7 @@
 <#--将所有级联扩展查询字段按级联实体分组放入数组中-->
 <#assign groupMtmCascadeExtsForQuery = []>
 <#--定义宏：组装多对多级联扩展相关的数据结构-->
-<#macro buildMtmCascade holds hostEntityId>
+<#macro buildMtmCascadeForQuery holds hostEntityId>
     <#list holds as otherEntity,mtm>
         <#--初始化当前级联实体对应的级联扩展查询字段-->
         <#assign mtmCascadeExts=[]>
@@ -28,5 +28,5 @@
         </#if>
     </#list>
 </#macro>
-<@buildMtmCascade this.holds, this.entityId/>
-<@buildMtmCascade this.unHolds, this.entityId/>
+<@buildMtmCascadeForQuery this.holds, this.entityId/>
+<@buildMtmCascadeForQuery this.unHolds, this.entityId/>

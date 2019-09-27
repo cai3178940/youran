@@ -162,7 +162,7 @@ public class ${this.classNameUpper}Service {
             <#list mtmCascadeEntitiesForList as otherEntity>
                 <#assign otherCName=otherEntity.className?capFirst>
                 <#assign othercName=otherEntity.className?uncapFirst>
-            listVO.set${otherCName}List(${othercName}DAO.findVOBy${this.classNameUpper}(listVO.get${this.idUpper}()));
+            listVO.set${otherCName}List(${othercName}DAO.findVOFor${this.classNameUpper}List(listVO.get${this.idUpper}()));
             </#list>
         }
         </#if>
