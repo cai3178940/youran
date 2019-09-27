@@ -30,16 +30,17 @@ public class ${this.classNameUpper}ListVO extends AbstractVO {
 <#list this.fkFields as id,field>
     <#list field.cascadeListExts! as cascadeExt>
         <#assign cascadeField=cascadeExt.cascadeField>
-        <#assign examplePackage="">
+        <#assign exampleClass="">
         <#if cascadeField.dicType??>
             <@call this.addConstImport(cascadeField.dicType)/>
         </#if>
         <#if field.foreignEntity!=this.metaEntity>
-            <#assign examplePackage="${this.packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example.">
+            <@call this.addImport("${this.packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example")/>
+            <#assign exampleClass="${field.foreignEntity.className?capFirst}Example.">
         </#if>
         <#--字段名转下划线大写-->
         <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(cascadeField.jfieldName,true)>
-    @ApiModelProperty(notes = ${examplePackage}N_${jfieldNameSnakeCase},example = ${examplePackage}E_${jfieldNameSnakeCase}<#if cascadeField.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(cascadeField.dicType)}.VALUES_STR</#if>)
+    @ApiModelProperty(notes = ${exampleClass}N_${jfieldNameSnakeCase},example = ${exampleClass}E_${jfieldNameSnakeCase}<#if cascadeField.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(cascadeField.dicType)}.VALUES_STR</#if>)
         <#if cascadeField.jfieldType==JFieldType.DATE.getJavaType()>
             <@call this.addImport("java.util.Date")/>
             <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>

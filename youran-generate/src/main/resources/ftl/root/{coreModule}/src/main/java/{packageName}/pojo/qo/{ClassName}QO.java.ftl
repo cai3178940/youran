@@ -15,9 +15,9 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 <#--定义宏-查询字段申明模块
     field-字段对象
     alias-字段别名
-    examplePackage-示例包路径
+    exampleClass-示例类名
 -->
-<#macro queryField field alias="" examplePackage="">
+<#macro queryField field alias="" exampleClass="">
     <#if alias?hasContent>
         <#assign jfieldName=alias>
     <#else>
@@ -28,11 +28,11 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
     <#--查询方式：IN-->
     <#if QueryType.isIn(field.queryType)>
         <@call this.addImport("java.util.List")/>
-    @ApiParam(value = ${examplePackage}N_${jfieldNameSnakeCase})
+    @ApiParam(value = ${exampleClass}N_${jfieldNameSnakeCase})
     private List<${field.jfieldType}> ${jfieldName};
     <#else>
     <#--其他查询方式-->
-    @ApiParam(value = ${examplePackage}N_${jfieldNameSnakeCase},example = ${examplePackage}E_${jfieldNameSnakeCase})
+    @ApiParam(value = ${exampleClass}N_${jfieldNameSnakeCase},example = ${exampleClass}E_${jfieldNameSnakeCase})
         <#if field.jfieldType==JFieldType.STRING.getJavaType()>
             <@call this.addImport("org.hibernate.validator.constraints.Length")/>
     @Length(max = ${field.fieldLength},message = "${jfieldName}最大长度不能超过{max}")
@@ -76,17 +76,18 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 <#--开始渲染【外键级联扩展】字段声明语句-->
 <#list this.fkFields as id,field>
     <#if field.cascadeQueryExts?? && field.cascadeQueryExts?size &gt; 0>
-        <#assign examplePackage="">
+        <#assign exampleClass="">
         <#if field.foreignEntity!=this.metaEntity>
-            <#assign examplePackage="${this.packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example.">
+            <@call this.addImport("${this.packageName}.pojo.example.${field.foreignEntity.className?capFirst}Example")/>
+            <#assign exampleClass="${field.foreignEntity.className?capFirst}Example.">
         </#if>
         <#list field.cascadeQueryExts as cascadeExt>
             <#assign cascadeField=cascadeExt.cascadeField>
             <#if !QueryType.isBetween(cascadeField.queryType)>
-                <@queryField cascadeField cascadeExt.alias examplePackage></@queryField>
+                <@queryField cascadeField cascadeExt.alias exampleClass></@queryField>
             <#else>
-                <@queryField cascadeField cascadeExt.alias+"Start" examplePackage></@queryField>
-                <@queryField cascadeField cascadeExt.alias+"End" examplePackage></@queryField>
+                <@queryField cascadeField cascadeExt.alias+"Start" exampleClass></@queryField>
+                <@queryField cascadeField cascadeExt.alias+"End" exampleClass></@queryField>
             </#if>
         </#list>
     </#if>
@@ -95,12 +96,13 @@ public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<
 <#list mtmCascadeExtsForQuery as mtmCascadeExt>
     <#assign cascadeField=mtmCascadeExt.cascadeField>
     <#assign cascadeEntity=mtmCascadeExt.cascadeEntity>
-    <#assign examplePackage="${this.packageName}.pojo.example.${cascadeEntity.className?capFirst}Example.">
+    <@call this.addImport("${this.packageName}.pojo.example.${cascadeEntity.className?capFirst}Example")/>
+    <#assign exampleClass="${cascadeEntity.className?capFirst}Example.">
     <#if !QueryType.isBetween(cascadeField.queryType)>
-        <@queryField cascadeField mtmCascadeExt.alias examplePackage></@queryField>
+        <@queryField cascadeField mtmCascadeExt.alias exampleClass></@queryField>
     <#else>
-        <@queryField cascadeField mtmCascadeExt.alias+"Start" examplePackage></@queryField>
-        <@queryField cascadeField mtmCascadeExt.alias+"End" examplePackage></@queryField>
+        <@queryField cascadeField mtmCascadeExt.alias+"Start" exampleClass></@queryField>
+        <@queryField cascadeField mtmCascadeExt.alias+"End" exampleClass></@queryField>
     </#if>
 </#list>
 <#--开始渲染排序条件声明语句-->

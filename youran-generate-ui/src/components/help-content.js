@@ -3,6 +3,7 @@ export default {
   project: {
     groupId: `
 **groupId**：maven项目的groupId，主要影响pom文件
+> 注意：请遵循开发规范，尽量只输入英文小写字母 “a-z”及分隔符 “.”
     `,
     projectName: `
 **项目名称**：整个项目的唯一标识

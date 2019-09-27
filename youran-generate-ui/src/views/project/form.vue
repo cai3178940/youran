@@ -11,7 +11,7 @@
         <el-form ref="projectForm" class="projectForm" :rules="rules" :model="form" label-width="120px" size="small">
           <el-form-item label="groupId" prop="groupId">
             <help-popover name="project.groupId">
-              <el-input v-model="form.groupId" placeholder="例如：com.myGroup"></el-input>
+              <el-input v-model="form.groupId" placeholder="例如：com.mygroup"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="项目标识" prop="projectName">
@@ -31,7 +31,7 @@
           </el-form-item>
           <el-form-item label="作者" prop="author">
             <help-popover name="project.author">
-              <el-input v-model="form.author" placeholder="例如：菜小哥"></el-input>
+              <el-input v-model="form.author" placeholder="例如：Jack"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="spring-boot版本" prop="feature.bootVersion">
