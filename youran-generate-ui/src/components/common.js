@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import { snakeCase, camelCase } from 'change-case'
+import { snakeCase, camelCase, upperCaseFirst, lowerCaseFirst } from 'change-case'
 const BASE_API_URL = process.env.VUE_APP_BASE_API_URL
 const ajax = axios.create({
   baseURL: BASE_API_URL,
@@ -27,13 +27,13 @@ export const CommonPlugin = {
 
       BASE_API_URL,
       // 字符串转下划线格式
-      snakeCase (value) {
-        return snakeCase(value)
-      },
+      snakeCase: snakeCase,
       // 字符串转驼峰格式
-      camelCase (value) {
-        return camelCase(value)
-      },
+      camelCase: camelCase,
+      // 首字母转大写
+      upperCaseFirst: upperCaseFirst,
+      // 首字母转小写
+      lowerCaseFirst: lowerCaseFirst,
       // 查询项目下拉列表
       getProjectOptions () {
         return ajax.get(`/${apiPath}/meta_project/list`)

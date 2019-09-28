@@ -29,7 +29,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="查询条件" width="120px">
+      <el-table-column label="搜索条件" width="120px">
         <template slot-scope="scope">
           <template v-if="scope.row.editFlag">
             <el-checkbox v-model="scope.row.query"
@@ -44,7 +44,7 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column label="查询字段别名">
+      <el-table-column label="搜索字段别名">
         <template slot-scope="scope">
           <span v-if="scope.row.query===1 && !scope.row.editFlag">{{ scope.row.alias }}</span>
           <span v-if="scope.row.query===1 && scope.row.editFlag">
@@ -106,9 +106,9 @@ const cascadeExtModel = {
   list: 0,
   // 是否在详情中展示
   show: 0,
-  // 是否为查询条件
-  query: 1,
-  // 字段本身是否支持查询
+  // 是否为搜索条件
+  query: 0,
+  // 字段本身是否支持搜索
   fieldQuery: 0,
   // 级联实体的id
   cascadeEntityId: null,
@@ -186,6 +186,9 @@ export default {
       const cascadeField = this.cascadeFieldList.find(field => field.fieldId === row.cascadeFieldId)
       row.alias = cascadeField.jfieldName
       row.fieldQuery = cascadeField.query
+      if (row.fieldQuery !== 1) {
+        row.query = 0
+      }
     },
     handleSave (row) {
       let saveURL = `/${apiPath}/meta_mtm_cascade_ext/save`

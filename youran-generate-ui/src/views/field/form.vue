@@ -152,7 +152,7 @@
               ></el-autocomplete>
             </help-popover>
           </el-form-item>
-          <el-form-item label="非空" prop="notNull">
+          <el-form-item label="不能为空" prop="notNull">
             <help-popover name="field.notNull">
               <el-checkbox v-model="form.notNull" :disabled="notNullDisabled" :true-label="1" :false-label="0">是</el-checkbox>
             </help-popover>
@@ -345,7 +345,7 @@ export default {
             .map(field => ({ value: field.fieldId, label: field.fieldDesc }))
         })
     },
-    // 查询可用枚举字典
+    // 搜索可用枚举字典
     queryDicType (queryString, cb) {
       // 定义回调操作
       const action = () => {

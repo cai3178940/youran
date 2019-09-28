@@ -9,7 +9,7 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="entityForm" class="entityForm" :rules="rules" :model="form" label-width="80px" size="small">
+        <el-form ref="entityForm" class="entityForm" :rules="rules" :model="form" label-width="90px" size="small">
           <el-form-item label="项目" prop="projectId">
             <help-popover name="entity.projectId">
               <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
@@ -27,22 +27,30 @@
               <el-input v-model="form.title" placeholder="例如：用户"></el-input>
             </help-popover>
           </el-form-item>
-          <el-form-item label="类名" prop="className">
+          <el-form-item label="类名/表名" prop="className">
             <help-popover name="entity.className">
-              <el-input v-model="form.className" placeholder="例如：User"></el-input>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="表名" prop="tableName">
-            <help-popover name="entity.tableName">
-              <el-input v-model="form.tableName" placeholder="例如：t_user"></el-input>
+              <el-col :span="11" class="col-left">
+                <el-input v-model="form.className" placeholder="java类名，例如：User"></el-input>
+                <el-button size="mini" type="text" @click="form.className = $common.upperCaseFirst($common.camelCase(form.className))">转驼峰</el-button>
+              </el-col>
+              <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
+                <el-tooltip class="item" effect="dark" content="粘贴到右边并转下划线" placement="top">
+                  <el-button type="text" @click="copyClassNameToTableName()">
+                    <icon name="angle-double-right" style="vertical-align: middle;"></icon>
+                  </el-button>
+                </el-tooltip>
+              </el-col>
+              <el-col :span="11" class="col-right">
+                <el-input v-model="form.tableName" placeholder="mysql表名，例如：t_user"></el-input>
+                <el-button size="mini" type="text" @click="form.tableName = $common.snakeCase(form.tableName)">转下划线</el-button>
+              </el-col>
             </help-popover>
           </el-form-item>
           <el-form-item label="分页" prop="pageSign">
             <help-popover name="entity.pageSign">
-              <el-switch v-model="form.pageSign"
-                         :active-value="1"
-                         :inactive-value="0">
-              </el-switch>
+              <el-checkbox v-model="form.pageSign" :true-label="1" :false-label="0">
+                支持分页查询
+              </el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item label="描述" prop="desc">
@@ -125,6 +133,9 @@ export default {
     },
     goBack () {
       this.$router.push(`/project/${this.projectId}/entity`)
+    },
+    copyClassNameToTableName () {
+      this.form.tableName = this.$common.snakeCase(this.form.className)
     }
   },
   created () {
@@ -143,6 +154,16 @@ export default {
   @import '../../assets/common.scss';
   .entityFormDiv .entityForm {
     @include youran-form;
+
+    .col-left {
+      padding-left: 0px!important;
+      line-height: normal;
+    }
+    .col-right {
+      padding-right: 0px!important;;
+      line-height: normal;
+    }
+
   }
 
 </style>

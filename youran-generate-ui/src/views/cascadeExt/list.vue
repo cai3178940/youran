@@ -36,7 +36,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="查询条件" width="120px">
+      <el-table-column label="搜索条件" width="120px">
         <template slot-scope="scope">
           <template v-if="scope.row.editFlag">
             <el-checkbox v-model="scope.row.query"
@@ -104,7 +104,7 @@ const cascadeExtModel = {
   list: 1,
   // 是否在详情中展示
   show: 1,
-  // 是否为查询条件
+  // 是否为搜索条件
   query: 1,
   // 级联实体的id
   cascadeEntityId: null,
