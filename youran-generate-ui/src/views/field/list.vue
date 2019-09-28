@@ -131,7 +131,7 @@
           <el-button :ref="'copyButton'+scope.row.fieldId"
                      :disabled="fieldCached(scope.row.fieldId) || fieldToCache(scope.row.fieldId)"
                      @click="handleCopyOne(scope.row,$event)"
-                     type="text" size="medium" style="margin-left: 5px;">复制</el-button>
+                     type="text" size="medium" class="copyButtion">复制</el-button>
           <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
             <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
           </el-badge>
@@ -773,6 +773,20 @@ export default {
   }
 
   .fieldList {
+    .copyButtion {
+      margin-left: 5px;
+      color: #f56c6c;
+      :hover {
+        color: #f59a95;
+      }
+    }
+
+    .copyButtion.is-disabled{
+      color: #C0C4CC;
+      :hover {
+        color: #C0C4CC;
+      }
+    }
 
     /**
      * 调整表格行高
