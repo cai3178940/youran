@@ -34,7 +34,10 @@
       <!--代码下载进度条-->
       <el-table-column label="代码生成进度" width="110">
         <template slot-scope="scope">
-          <el-progress v-if="progressingProjectIds.find(id => id===scope.row.projectId)" :text-inside="true" :stroke-width="20" :percentage="scope.row.genCodePercent" :status="scope.row.genCodeStatus"></el-progress>
+          <el-progress v-if="progressingProjectIds.find(id => id===scope.row.projectId)"
+                       :text-inside="true" :stroke-width="20"
+                       :percentage="scope.row.genCodePercent"
+                       :status="scope.row.genCodeStatus"></el-progress>
         </template>
       </el-table-column>
       <el-table-column
@@ -157,7 +160,7 @@ export default {
         .then(data => {
           // 下载进度条数据初始化
           data.forEach(r => {
-            r.genCodeStatus = 'success'
+            r.genCodeStatus = null
             r.genCodePercent = 0
             r.genCodeMsg = ''
           })
@@ -211,7 +214,7 @@ export default {
       let done = false
       row.genCodePercent = progressVO.percentage
       row.genCodeMsg = progressVO.msg
-      row.genCodeStatus = 'text'
+      row.genCodeStatus = null
       // 进度完成
       if (progressVO.status === 2) {
         row.genCodeStatus = 'success'
@@ -224,6 +227,13 @@ export default {
       }
       return done
     },
+    /*
+    getPercentFormator (row) {
+      return function (percent) {
+        return `${row.genCodeMsg}`
+      }
+    },
+    */
     /**
      * 调用【代码生成】相关websocket服务
      * @param serviceName 服务名
