@@ -100,6 +100,10 @@ java -jar youran-generate/target/youran-generate.war
 
 ## 升级日志
 
+#### 2019-09-28
+- 支持多对多级联扩展
+- 调整UI，优化用户体验
+
 #### 2019-09-09
 - 支持代码预览功能
 

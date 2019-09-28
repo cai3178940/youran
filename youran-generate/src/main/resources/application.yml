@@ -25,7 +25,7 @@ mybatis:
 
 youran:
     aesKey: orpNB6YGbiiDcrrubk2rFQ==
-    version: 2.1.0
+    version: 2.2.0
     apiPath: /api
     wsApiPath: /ws_api
     security-enabled: true
