@@ -275,6 +275,10 @@ export default {
           Object.assign(detail, data, {
             editFlag: false
           })
+          // 根据枚举值排序
+          this.detailList = this.detailList.sort((f1, f2) => {
+            return f1.detailValue.localeCompare(f2.detailValue)
+          })
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => {
