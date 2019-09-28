@@ -141,9 +141,9 @@ public int delete(Long... userIds) {
     `,
     dicType: `
 **枚举字典**：当前字段的值是否来源于枚举
+1、调用save/update服务时枚举字段会自动校验
+2、字段的枚举值也会在swagger文档中显示
 
-系统默认枚举有：
-- BoolConst：1是，0否
     `,
     query: `
 **可搜索**：如果字段可搜索，则当前字段会出现在查询参数中，当然也会出现在查询sql的where语句中。
