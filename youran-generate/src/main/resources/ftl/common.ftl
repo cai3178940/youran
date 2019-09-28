@@ -23,5 +23,3 @@
 
 <#-- 将当前model赋值给this变量 -->
 <#assign this = .data_model>
-
-

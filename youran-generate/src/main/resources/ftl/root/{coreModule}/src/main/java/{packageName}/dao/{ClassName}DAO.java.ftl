@@ -28,19 +28,16 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
     int getCountBy${field.jfieldName?capFirst}(${field.jfieldType} ${field.jfieldName});
 
 </#list>
-    <#list this.holds! as otherEntity,mtm>
-        <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
-        <@call this.addImport("java.util.List")/>
-        <@call this.addImport("org.apache.ibatis.annotations.Param")/>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign otherType=otherEntity.pkField.jfieldType>
-        <#assign theFkId=mtm.getFkAlias(this.entityId,false)>
-        <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
+<#list this.holds! as otherEntity,mtm>
+    <@call this.addImport("java.util.List")/>
+    <@call this.addImport("org.apache.ibatis.annotations.Param")/>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign otherType=otherEntity.pkField.jfieldType>
+    <#assign theFkId=mtm.getFkAlias(this.entityId,false)>
+    <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
     int getCountBy${otherCName}(${otherType} ${otherFkId});
 
     List<${this.classNameUpper}PO> findBy${otherCName}(${otherType} ${otherFkId});
-
-    List<${this.classNameUpper}ListVO> findVOBy${otherCName}(${otherType} ${otherFkId});
 
     int add${otherCName}(@Param("${theFkId}")${this.type} ${theFkId},@Param("${otherFkId}")${otherType} ${otherFkId});
 
@@ -48,18 +45,15 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
 
     int removeAll${otherCName}(${this.type} ${theFkId});
 
-    </#list>
-    <#list this.unHolds! as otherEntity,mtm>
-        <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
-        <@call this.addImport("java.util.List")/>
-        <#assign otherCName=otherEntity.className/>
-        <#assign otherType=otherEntity.pkField.jfieldType>
-        <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
+</#list>
+<#list this.unHolds! as otherEntity,mtm>
+    <@call this.addImport("java.util.List")/>
+    <#assign otherCName=otherEntity.className/>
+    <#assign otherType=otherEntity.pkField.jfieldType>
+    <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
     List<${this.classNameUpper}PO> findBy${otherCName}(${otherType} ${otherFkId});
 
-    List<${this.classNameUpper}ListVO> findVOBy${otherCName}(${otherType} ${otherFkId});
-
-    </#list>
+</#list>
 <#list this.metaEntity.checkUniqueIndexes as index>
     <@call this.addImport("org.apache.ibatis.annotations.Param")/>
     <#assign suffix=(index_index==0)?string('',''+index_index)>
@@ -70,7 +64,26 @@ public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO>
     boolean notUnique${suffix}(${params}@Param("${this.id}")${this.type} ${this.id});
 
 </#list>
+<#--为被持有的实体提供级联【列表】查询方法-->
+<#list mtmCascadeEntitiesForOppList as otherEntity>
+    <#assign mtm=mtmForOppList[otherEntity_index]>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign otherType=otherEntity.pkField.jfieldType>
+    <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
+    <@call this.addImport("${this.packageName}.pojo.vo.${otherCName}ListVO")/>
+    List<${otherCName}ListVO.${this.classNameUpper}VO> findVOFor${otherCName}List(${otherType} ${otherFkId});
 
+</#list>
+<#--为被持有的实体提供级联【详情】查询方法-->
+<#list mtmCascadeEntitiesForOppShow as otherEntity>
+    <#assign mtm=mtmForOppShow[otherEntity_index]>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign otherType=otherEntity.pkField.jfieldType>
+    <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
+    <@call this.addImport("${this.packageName}.pojo.vo.${otherCName}ShowVO")/>
+    List<${otherCName}ShowVO.${this.classNameUpper}VO> findVOFor${otherCName}Show(${otherType} ${otherFkId});
+
+</#list>
 }
 </#assign>
 <#--开始渲染代码-->

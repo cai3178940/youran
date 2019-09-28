@@ -1,6 +1,8 @@
 <#include "/common.ftl">
 <#include "/mybatis.ftl">
 <#include "/mtmCascadeExtsForQuery.ftl">
+<#include "/mtmCascadeExtsForOppList.ftl">
+<#include "/mtmCascadeExtsForOppShow.ftl">
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -308,28 +310,27 @@
     </#if>
     </select>
 
-    <#list this.fkFields as id,field>
-        <#assign wrapFieldName=wrapMysqlKeyword(field.fieldName)>
+<#list this.fkFields as id,field>
+    <#assign wrapFieldName=wrapMysqlKeyword(field.fieldName)>
     <select id="getCountBy${field.jfieldName?capFirst}" parameterType="${field.jfieldType}" resultType="int">
         select count(1)
         from ${wrapTableName} t
         where
             t.${wrapFieldName}=${r'#'}{arg0}
-        <#if delField??>
+    <#if delField??>
             and t.${wrapDelFieldName}=0
-        </#if>
+    </#if>
     </select>
 
-    </#list>
-    <#list this.holds! as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign otherPk=otherEntity.pkField>
-        <#assign otherType=otherPk.jfieldType>
-        <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
-        <#assign theFkId=mtm.getFkAlias(this.entityId,false)>
-        <#assign other_fk_id=mtm.getFkAlias(otherEntity.entityId,true)>
-        <#assign the_fk_id=mtm.getFkAlias(this.entityId,true)>
-        <#assign wrapMtmTableName=wrapMysqlKeyword(mtm.tableName)>
+</#list>
+<#list this.holds! as otherEntity,mtm>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign otherType=otherEntity.pkField.jfieldType>
+    <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
+    <#assign theFkId=mtm.getFkAlias(this.entityId,false)>
+    <#assign other_fk_id=mtm.getFkAlias(otherEntity.entityId,true)>
+    <#assign the_fk_id=mtm.getFkAlias(this.entityId,true)>
+    <#assign wrapMtmTableName=wrapMysqlKeyword(mtm.tableName)>
     <select id="getCountBy${otherCName}" parameterType="${otherType}" resultType="int">
         select count(1)
         from ${wrapTableName} t
@@ -337,9 +338,9 @@
             on t.${wrapPkFieldName}=r.${the_fk_id}
         where
             r.${other_fk_id}=${r'#'}{arg0}
-        <#if delField??>
+    <#if delField??>
             and t.${wrapDelFieldName}=0
-        </#if>
+    </#if>
     </select>
 
     <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}PO">
@@ -350,34 +351,15 @@
             on t.${wrapPkFieldName}=r.${the_fk_id}
         where
             r.${other_fk_id}=${r'#'}{arg0}
-        <#if delField??>
+    <#if delField??>
             and t.${wrapDelFieldName}=0
-        </#if>
+    </#if>
         order by
-        <#if mtm.needId>
+    <#if mtm.needId>
             r.id
-        <#else>
+    <#else>
             r.created_time
-        </#if>
-    </select>
-
-    <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}ListVO">
-        select
-            <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
-        from ${wrapTableName} t
-        inner join ${wrapMtmTableName} r
-            on t.${wrapPkFieldName}=r.${the_fk_id}
-        where
-            r.${other_fk_id}=${r'#'}{arg0}
-        <#if delField??>
-            and t.${wrapDelFieldName}=0
-        </#if>
-        order by
-        <#if mtm.needId>
-            r.id
-        <#else>
-            r.created_time
-        </#if>
+    </#if>
     </select>
 
     <insert id="add${otherCName}" parameterType="map">
@@ -405,15 +387,13 @@
         where ${the_fk_id}=${r'#'}{arg0}
     </delete>
 
-    </#list>
-    <#list this.unHolds! as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign otherPk=otherEntity.pkField>
-        <#assign otherType=otherPk.jfieldType>
-        <#assign other_fk_id=mtm.getFkAlias(otherEntity.entityId,true)>
-        <#assign the_fk_id=mtm.getFkAlias(this.entityId,true)>
-        <#assign wrapMtmTableName=wrapMysqlKeyword(mtm.tableName)>
-
+</#list>
+<#list this.unHolds! as otherEntity,mtm>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign otherType=otherEntity.pkField.jfieldType>
+    <#assign other_fk_id=mtm.getFkAlias(otherEntity.entityId,true)>
+    <#assign the_fk_id=mtm.getFkAlias(this.entityId,true)>
+    <#assign wrapMtmTableName=wrapMysqlKeyword(mtm.tableName)>
     <select id="findBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}PO">
         select
             <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
@@ -422,20 +402,53 @@
             on t.${wrapPkFieldName}=r.${the_fk_id}
         where
             r.${other_fk_id}=${r'#'}{arg0}
-        <#if delField??>
+    <#if delField??>
             and t.${wrapDelFieldName}=0
-        </#if>
+    </#if>
         order by
-        <#if mtm.needId>
+    <#if mtm.needId>
             r.id
-        <#else>
+    <#else>
             r.created_time
-        </#if>
+    </#if>
     </select>
 
-    <select id="findVOBy${otherCName}" parameterType="${otherType}" resultType="${this.classNameUpper}ListVO">
+</#list>
+<#list this.metaEntity.checkUniqueIndexes as index>
+    <#assign suffix=(index_index==0)?string('',''+index_index)>
+    <select id="notUnique${suffix}" resultType="boolean">
+        select count(1) from ${wrapTableName} t
+        <where>
+    <#if delField??>
+            and t.${wrapDelFieldName}=0
+    </#if>
+    <#list index.fields as field>
+            and t.${wrapMysqlKeyword(field.fieldName)} = ${r'#'}{${field.jfieldName}}
+    </#list>
+        <if test="${this.id} != null  ">
+            and t.${wrapPkFieldName} != ${r'#'}{${this.id}}
+        </if>
+        </where>
+    </select>
+
+</#list>
+
+<#--为被持有的实体提供级联【列表】查询方法-->
+<#list mtmCascadeEntitiesForOppList as otherEntity>
+    <#assign mtm=mtmForOppList[otherEntity_index]>
+    <#assign mtmCascadeExts=groupMtmCascadeExtsForOppList[otherEntity_index]>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign otherType=otherEntity.pkField.jfieldType>
+    <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
+    <#assign other_fk_id=mtm.getFkAlias(otherEntity.entityId,true)>
+    <#assign the_fk_id=mtm.getFkAlias(this.entityId,true)>
+    <#assign wrapMtmTableName=wrapMysqlKeyword(mtm.tableName)>
+    <select id="findVOFor${otherCName}List" parameterType="${otherType}" resultType="${this.packageName}.pojo.vo.${otherCName}ListVO$${this.classNameUpper}VO">
         select
-            <include refid="${this.className}Columns"><property name="alias" value="t"/></include>
+        <#list mtmCascadeExts as mtmCascadeExt>
+            <#assign field=mtmCascadeExt.cascadeField>
+            t.${wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${wrapMysqlKeyword(field.jfieldName)}</#if><#if mtmCascadeExt_has_next>,</#if>
+        </#list>
         from ${wrapTableName} t
         inner join ${wrapMtmTableName} r
             on t.${wrapPkFieldName}=r.${the_fk_id}
@@ -452,25 +465,41 @@
         </#if>
     </select>
 
-    </#list>
-<#list this.metaEntity.checkUniqueIndexes as index>
-    <#assign suffix=(index_index==0)?string('',''+index_index)>
-    <select id="notUnique${suffix}" resultType="boolean">
-        select count(1) from ${wrapTableName} t
-        <where>
-            <#if delField??>
-                and t.${wrapDelFieldName}=0
-            </#if>
-            <#list index.fields as field>
-                and t.${wrapMysqlKeyword(field.fieldName)} = ${r'#'}{${field.jfieldName}}
-            </#list>
-            <if test="${this.id} != null  ">
-                and t.${wrapPkFieldName} != ${r'#'}{${this.id}}
-            </if>
-        </where>
+</#list>
+<#--为被持有的实体提供级联【详情】查询方法-->
+<#list mtmCascadeEntitiesForOppShow as otherEntity>
+    <#assign mtm=mtmForOppShow[otherEntity_index]>
+    <#assign mtmCascadeExts=groupMtmCascadeExtsForOppShow[otherEntity_index]>
+    <#assign otherCName=otherEntity.className?capFirst>
+    <#assign otherType=otherEntity.pkField.jfieldType>
+    <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
+    <#assign other_fk_id=mtm.getFkAlias(otherEntity.entityId,true)>
+    <#assign the_fk_id=mtm.getFkAlias(this.entityId,true)>
+    <#assign wrapMtmTableName=wrapMysqlKeyword(mtm.tableName)>
+    <select id="findVOFor${otherCName}Show" parameterType="${otherType}" resultType="${this.packageName}.pojo.vo.${otherCName}ShowVO$${this.classNameUpper}VO">
+        select
+        <#list mtmCascadeExts as mtmCascadeExt>
+            <#assign field=mtmCascadeExt.cascadeField>
+            t.${wrapMysqlKeyword(field.fieldName)}<#if field.fieldName?capitalize!=field.jfieldName?capitalize> as ${wrapMysqlKeyword(field.jfieldName)}</#if><#if mtmCascadeExt_has_next>,</#if>
+        </#list>
+        from ${wrapTableName} t
+        inner join ${wrapMtmTableName} r
+            on t.${wrapPkFieldName}=r.${the_fk_id}
+        where
+            r.${other_fk_id}=${r'#'}{arg0}
+        <#if delField??>
+            and t.${wrapDelFieldName}=0
+        </#if>
+        order by
+        <#if mtm.needId>
+            r.id
+        <#else>
+            r.created_time
+        </#if>
     </select>
 
 </#list>
+
 
     <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
 
