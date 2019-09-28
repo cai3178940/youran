@@ -9,17 +9,20 @@
           </span>
         </template>
       </el-header>
-      <el-container class="codeContainer">
-        <el-aside width="250px" v-loading="codeTreeLoading" class="codeAside">
-          <el-tree :props="treeProps"
-                   :data="codeTree.tree"
-                   :render-content="renderTreeNode"
-                   :expand-on-click-node="false"
-                   @node-expand="expandSingleNode"
-                   @node-click="nodeClick">
-          </el-tree>
+      <el-container ref="parent" class="codeContainer">
+        <el-aside ref="aside" width="250px" v-loading="codeTreeLoading" class="codeAside">
+          <el-scrollbar style="height:100%">
+            <el-tree :props="treeProps"
+                     :data="codeTree.tree"
+                     :render-content="renderTreeNode"
+                     :expand-on-click-node="false"
+                     @node-expand="expandSingleNode"
+                     @node-click="nodeClick">
+            </el-tree>
+          </el-scrollbar>
         </el-aside>
-        <el-container>
+        <div ref="splitLine" @mousedown="splitLineMousedown" class="splitLine"></div>
+        <el-container ref="main">
           <el-main class="codeMain">
             <el-tabs v-model="currentTabName" type="border-card" closable @tab-remove="removeTab">
               <el-tab-pane
@@ -30,7 +33,7 @@
                 v-loading="tab.loading"
                 element-loading-text="加载中..."
                 element-loading-background="#313335">
-                <codemirror v-model="tab.content" :options="cmOptions"></codemirror>
+                <vue-codemirror v-model="tab.content" :options="cmOptions"></vue-codemirror>
               </el-tab-pane>
             </el-tabs>
           </el-main>
@@ -57,7 +60,7 @@ import 'codemirror/mode/markdown/markdown.js'
 export default {
   name: 'code-preview',
   components: {
-    codemirror
+    'vue-codemirror': codemirror
   },
   data () {
     return {
@@ -101,6 +104,34 @@ export default {
       this.visible = true
       this.initData(projectId, projectName)
       this.queryCodeTree(projectId)
+    },
+    /**
+     * 菜单自由伸缩
+     */
+    splitLineMousedown (e) {
+      const parent = this.$refs.parent.$el
+      const aside = this.$refs.aside.$el
+      const main = this.$refs.main.$el
+      const splitLine = this.$refs.splitLine
+      const disX = e.clientX
+      splitLine.left = splitLine.offsetLeft
+      document.onmousemove = function (e) {
+        let iT = splitLine.left + (e.clientX - disX)
+        const maxT = parent.clientWight - splitLine.offsetWidth
+        splitLine.style.margin = 0
+        iT < 0 && (iT = 0)
+        iT > maxT && (iT = maxT)
+        splitLine.style.left = aside.style.width = iT + 'px'
+        main.style.width = parent.clientWidth - iT + 'px'
+        return false
+      }
+      document.onmouseup = function () {
+        document.onmousemove = null
+        document.onmouseup = null
+        splitLine.releaseCapture && splitLine.releaseCapture()
+      }
+      splitLine.setCapture && splitLine.setCapture()
+      return false
     },
     queryCodeTree (projectId) {
       this.codeTreeLoading = true
@@ -211,6 +242,17 @@ export default {
     .codeDiv {
       width: 100%;
       height: 100%;
+    }
+
+    .splitLine {
+      position:absolute;
+      left:248px;
+      z-index:100;
+      height:calc(100% - 70px);
+      width:2px;
+      overflow:hidden;
+      background:$back-color-2;
+      cursor:w-resize;
     }
 
     .el-dialog__header {

@@ -113,6 +113,9 @@ header {
         background: aliceblue;
     }
 }
+.el-scrollbar__wrap{
+    overflow-x: hidden;
+}
 /**
  * 表格中的图标
  */
