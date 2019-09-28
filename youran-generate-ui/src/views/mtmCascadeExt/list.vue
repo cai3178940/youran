@@ -16,7 +16,8 @@
         <template slot-scope="scope">
           <span v-if="!scope.row.editFlag">{{ scope.row.cascadeFieldDesc+'('+scope.row.cascadeJfieldName+')' }}</span>
           <span v-if="scope.row.editFlag">
-            <el-select v-model="scope.row.cascadeFieldId" @change="handleCascadeFieldChange(scope.row)" placeholder="请选择级联字段">
+            <el-select v-model="scope.row.cascadeFieldId" @change="handleCascadeFieldChange(scope.row)"
+                       placeholder="请选择级联字段" size="small">
               <el-option
                 v-for="item in cascadeFieldList"
                 :key="item.fieldId"
@@ -29,37 +30,52 @@
       </el-table-column>
       <el-table-column label="查询条件" width="120px">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.query"
-                     :active-value="1"
-                     :inactive-value="0"
-                     :disabled="!scope.row.editFlag">
-          </el-switch>
+          <template v-if="scope.row.editFlag">
+            <el-checkbox v-model="scope.row.query"
+                         :true-label="1"
+                         :false-label="0">
+            </el-checkbox>
+          </template>
+          <template v-else>
+            <icon v-if="scope.row.query==1" name="check" class="color-success"></icon>
+            <icon v-else name="times" class="color-danger"></icon>
+          </template>
         </template>
       </el-table-column>
       <el-table-column label="查询字段别名">
         <template slot-scope="scope">
           <span v-if="scope.row.query===1 && !scope.row.editFlag">{{ scope.row.alias }}</span>
           <span v-if="scope.row.query===1 && scope.row.editFlag">
-            <el-input v-model="scope.row.alias" placeholder="字段别名"></el-input>
+            <el-input v-model="scope.row.alias" placeholder="字段别名" size="small"></el-input>
           </span>
         </template>
       </el-table-column>
       <el-table-column v-if="this.hold" label="列表展示" width="120px">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.list"
-                     :active-value="1"
-                     :inactive-value="0"
-                     :disabled="!scope.row.editFlag">
-          </el-switch>
+          <template v-if="scope.row.editFlag">
+            <el-checkbox v-model="scope.row.list"
+                         :true-label="1"
+                         :false-label="0">
+            </el-checkbox>
+          </template>
+          <template v-else>
+            <icon v-if="scope.row.list==1" name="check" class="color-success"></icon>
+            <icon v-else name="times" class="color-danger"></icon>
+          </template>
         </template>
       </el-table-column>
       <el-table-column v-if="this.hold" label="详情展示" width="120px">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.show"
-                     :active-value="1"
-                     :inactive-value="0"
-                      :disabled="!scope.row.editFlag">
-          </el-switch>
+          <template v-if="scope.row.editFlag">
+            <el-checkbox v-model="scope.row.show"
+                         :true-label="1"
+                         :false-label="0">
+            </el-checkbox>
+          </template>
+          <template v-else>
+            <icon v-if="scope.row.show==1" name="check" class="color-success"></icon>
+            <icon v-else name="times" class="color-danger"></icon>
+          </template>
         </template>
       </el-table-column>
       <el-table-column

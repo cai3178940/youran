@@ -19,6 +19,9 @@
 <#--定义方法区代码-->
 <#assign methodCode>
 
+    /**
+     * 新增【${this.title}】
+     */
     @Test
     public void save() throws Exception {
     <#list saveExampleCode as saveExample>
@@ -33,6 +36,9 @@
             .andExpect(status().isCreated());
     }
 
+    /**
+     * 修改【${this.title}】
+     */
     @Test
     public void update() throws Exception {
     <#list saveExampleCode as saveExample>
@@ -45,6 +51,13 @@
             .andExpect(status().isOk());
     }
 
+    /**
+    <#if isTrue(this.pageSign)>
+     * 分页查询【${this.title}】
+    <#else>
+     * 列表查询【${this.title}】
+    </#if>
+     */
     @Test
     public void list() throws Exception {
     <#list saveExampleCode as saveExample>
@@ -59,6 +72,9 @@
     </#if>
     }
 
+    /**
+     * 查看【${this.title}】详情
+     */
     @Test
     public void show() throws Exception {
     <#list saveExampleCode as saveExample>
@@ -68,6 +84,9 @@
             .andExpect(status().isOk());
     }
 
+    /**
+     * 删除单个【${this.title}】
+     */
     @Test
     public void del() throws Exception {
     <#list saveExampleCode as saveExample>
@@ -78,6 +97,9 @@
             .andExpect(jsonPath("$").value(is(1)));
     }
 
+    /**
+     * 批量删除【${this.title}】
+     */
     @Test
     public void deleteBatch() throws Exception {
     <#list saveExampleCode as saveExample>
@@ -97,32 +119,42 @@
         <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
         <#--获取保存Example的代码-->
         <#assign saveExampleCode=this.getPrintingSaveExampleForMtm(otherEntity)/>
+    /**
+     * 添加/移除单个【${otherEntity.title}】关联
+     */
     @Test
     public void addRemove${otherCName}() throws Exception {
         <#list saveExampleCode as saveExample>
         ${saveExample}
         </#list>
+        // 先测试添加【${otherEntity.title}】关联
         restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}/{${otherFkId}}",
             ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));
+        // 再测试移除【${otherEntity.title}】关联
         restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}/{${otherFkId}}",
             ${this.className}.get${this.idUpper}(),${othercName}.get${otherPk.jfieldName?capFirst}()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));
     }
 
+    /**
+     * 添加/移除多个【${otherEntity.title}】关联
+     */
     @Test
     public void addRemove${otherCName}2() throws Exception {
         <#list saveExampleCode as saveExample>
         ${saveExample}
         </#list>
+        // 先测试添加【${otherEntity.title}】关联
         restMockMvc.perform(post(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}",
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(${othercName}.get${otherPk.jfieldName?capFirst}()))))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));
+        // 再测试移除【${otherEntity.title}】关联
         restMockMvc.perform(delete(WebConst.API_PATH + "/${this.className}/{${this.id}}/${othercName}",
             ${this.className}.get${this.idUpper}())
             .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -131,6 +163,9 @@
             .andExpect(jsonPath("$").value(is(1)));
     }
 
+    /**
+     * 设置【${otherEntity.title}】关联
+     */
     @Test
     public void set${otherCName}() throws Exception {
         <#list saveExampleCode as saveExample>
