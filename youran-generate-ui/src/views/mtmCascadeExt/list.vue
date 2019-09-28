@@ -12,7 +12,7 @@
     <el-table :data="list" style="width: 100%" :border="true"
               @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column label="展示字段">
+      <el-table-column label="级联字段">
         <template slot-scope="scope">
           <span v-if="!scope.row.editFlag">{{ scope.row.cascadeFieldDesc+'('+scope.row.cascadeJfieldName+')' }}</span>
           <span v-if="scope.row.editFlag">
@@ -22,7 +22,8 @@
                 v-for="item in cascadeFieldList"
                 :key="item.fieldId"
                 :label="item.fieldDesc+'('+item.jfieldName+')'"
-                :value="item.fieldId">
+                :value="item.fieldId"
+                :disabled="!hold && item.query!==1">
               </el-option>
             </el-select>
           </span>
@@ -33,12 +34,13 @@
           <template v-if="scope.row.editFlag">
             <el-checkbox v-model="scope.row.query"
                          :true-label="1"
-                         :false-label="0">
+                         :false-label="0"
+                         :disabled="scope.row.fieldQuery===0">
             </el-checkbox>
           </template>
           <template v-else>
-            <icon v-if="scope.row.query==1" name="check" class="color-success"></icon>
-            <icon v-else name="times" class="color-danger"></icon>
+            <icon v-if="scope.row.query==1" name="check" class="table-cell-icon color-success"></icon>
+            <icon v-else name="times" class="table-cell-icon color-danger"></icon>
           </template>
         </template>
       </el-table-column>
@@ -59,8 +61,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <icon v-if="scope.row.list==1" name="check" class="color-success"></icon>
-            <icon v-else name="times" class="color-danger"></icon>
+            <icon v-if="scope.row.list==1" name="check" class="table-cell-icon color-success"></icon>
+            <icon v-else name="times" class="table-cell-icon color-danger"></icon>
           </template>
         </template>
       </el-table-column>
@@ -73,8 +75,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <icon v-if="scope.row.show==1" name="check" class="color-success"></icon>
-            <icon v-else name="times" class="color-danger"></icon>
+            <icon v-if="scope.row.show==1" name="check" class="table-cell-icon color-success"></icon>
+            <icon v-else name="times" class="table-cell-icon color-danger"></icon>
           </template>
         </template>
       </el-table-column>
@@ -106,6 +108,8 @@ const cascadeExtModel = {
   show: 0,
   // 是否为查询条件
   query: 1,
+  // 字段本身是否支持查询
+  fieldQuery: 0,
   // 级联实体的id
   cascadeEntityId: null,
   // 级联展示字段的id
@@ -181,6 +185,7 @@ export default {
     handleCascadeFieldChange (row) {
       const cascadeField = this.cascadeFieldList.find(field => field.fieldId === row.cascadeFieldId)
       row.alias = cascadeField.jfieldName
+      row.fieldQuery = cascadeField.query
     },
     handleSave (row) {
       let saveURL = `/${apiPath}/meta_mtm_cascade_ext/save`

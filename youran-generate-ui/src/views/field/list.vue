@@ -69,7 +69,13 @@
           </el-popover>
           <template v-for="index in scope.row.indexes">
             <el-dropdown :key="index.indexId" @command="handleIndexCommand" size="mini" placement="bottom-start" trigger="click" style="margin-left:5px;cursor:pointer;">
-              <span :class="['index_span',index.unique==1?'index_u_span':(index.uniqueCheck==1?'index_check_span':'index_com_span')]" :title="[index.unique==1?'唯一索引':(index.uniqueCheck==1?'普通索引(唯一性校验)':'普通索引')]">
+              <span @mouseover="setActiveIndex(index)" @mouseout="clearActiveIndex()"
+                    :class="[
+                      'index_span',
+                      (activeIndexId==index.indexId)?'indexActive':'',
+                      index.unique==1?'index_u_span':(index.uniqueCheck==1?'index_check_span':'index_com_span')
+                      ]"
+                    :title="[index.unique==1?'唯一索引':(index.uniqueCheck==1?'普通索引(唯一性校验)':'普通索引')]">
                 {{index.indexName}}
               </span>
               <el-dropdown-menu slot="dropdown">
@@ -100,8 +106,8 @@
       </el-table-column>
       <el-table-column label="非空" width="50px">
         <template slot-scope="scope">
-          <icon v-if="scope.row.notNull==1" name="check" class="color-success"></icon>
-          <icon v-if="scope.row.notNull!=1" name="times" class="color-danger"></icon>
+          <icon v-if="scope.row.notNull==1" name="check" class="table-cell-icon color-success"></icon>
+          <icon v-else name="times" class="table-cell-icon color-danger"></icon>
         </template>
       </el-table-column>
       <el-table-column label="特性" width="70px">
@@ -109,7 +115,8 @@
           <template v-for="feature in getFieldFeatures(scope.row)">
             <el-tooltip :key="feature.value" class="item" effect="dark" :content="feature.label" placement="right">
               <icon :name="feature.icon"
-                    :style="feature.style">
+                    :style="feature.style"
+                    class="table-cell-icon">
               </icon>
             </el-tooltip>
           </template>
@@ -138,7 +145,7 @@
       <div class="mtmEntitiesHeader" style="margin-top: 20px;">
         <el-table :data="[]" style="width: 100%" :border="true">
           <!--<el-table-column width="50px"/>-->
-          <el-table-column width="200px" label="多对多关联实体"/>
+          <el-table-column width="200px" label="多对多级联"/>
           <el-table-column width="200px" label="类名"/>
           <el-table-column width="200px" label="表名"/>
           <el-table-column label="描述"/>
@@ -344,6 +351,7 @@ export default {
         projectEntity: [0, 0]
       },
       activeNum: 0,
+      activeIndexId: null,
       selectItems: [],
       list: [],
       indexes: [],
@@ -668,6 +676,12 @@ export default {
       const mtmEntity = this.getMtmEntity(mtmId, cascadeEntityId)
       mtmEntity.cascadeFieldNum += num
     },
+    setActiveIndex (index) {
+      this.activeIndexId = index.indexId
+    },
+    clearActiveIndex () {
+      this.activeIndexId = null
+    },
     handleIndexCommand (command) {
       this[command.method](...command.arg)
     },
@@ -747,6 +761,7 @@ export default {
   $u-color: #ff233b;
   $u-back-color: #f7def7;
   $add-imm-color: #ff3300;
+  $active-color: #7a8cf5;
 
   @keyframes fade {
     from{
@@ -778,11 +793,13 @@ export default {
 
     .index_span {
       font-size: 10px;
-      border-radius: 4px;
       padding: 3px;
+      border: 2px solid transparent;
       margin: 1px;
     }
-
+    .indexActive {
+      border-color: $active-color;
+    }
     .index_com_span {
       color: $com-color;
       background-color: $com-back-color;

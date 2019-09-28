@@ -62,8 +62,8 @@
       <el-table-column property="tableName" label="表名"></el-table-column>
       <el-table-column label="分页" width="60px">
         <template slot-scope="scope">
-          <icon v-if="scope.row.pageSign==1" name="check" class="color-success"></icon>
-          <icon v-if="scope.row.pageSign!=1" name="times" class="color-danger"></icon>
+          <icon v-if="scope.row.pageSign==1" name="check" class="table-cell-icon color-success"></icon>
+          <icon v-else name="times" class="table-cell-icon color-danger"></icon>
         </template>
       </el-table-column>
       <el-table-column property="desc" label="描述"></el-table-column>

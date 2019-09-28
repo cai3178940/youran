@@ -27,8 +27,8 @@
       <el-table-column property="packageName" label="包名" width="180"></el-table-column>
       <el-table-column label="Git仓库" width="90px">
         <template slot-scope="scope">
-          <icon v-if="scope.row.remote==1" name="check" class="color-success"></icon>
-          <icon v-if="scope.row.remote!=1" name="times" class="color-danger"></icon>
+          <icon v-if="scope.row.remote==1" name="check" class="table-cell-icon color-success"></icon>
+          <icon v-else name="times" class="table-cell-icon color-danger"></icon>
         </template>
       </el-table-column>
       <!--代码下载进度条-->

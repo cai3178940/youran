@@ -12,7 +12,7 @@
     <el-table :data="list" style="width: 100%" :border="true"
               @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column label="展示字段">
+      <el-table-column label="级联字段">
         <template slot-scope="scope">
           <span v-if="!scope.row.editFlag">{{ scope.row.cascadeFieldDesc+'('+scope.row.cascadeJfieldName+')' }}</span>
           <span v-if="scope.row.editFlag">
@@ -45,8 +45,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <icon v-if="scope.row.query==1" name="check" class="color-success"></icon>
-            <icon v-else name="times" class="color-danger"></icon>
+            <icon v-if="scope.row.query==1" name="check" class="table-cell-icon color-success"></icon>
+            <icon v-else name="times" class="table-cell-icon color-danger"></icon>
           </template>
         </template>
       </el-table-column>
@@ -59,8 +59,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <icon v-if="scope.row.list==1" name="check" class="color-success"></icon>
-            <icon v-else name="times" class="color-danger"></icon>
+            <icon v-if="scope.row.list==1" name="check" class="table-cell-icon color-success"></icon>
+            <icon v-else name="times" class="table-cell-icon color-danger"></icon>
           </template>
         </template>
       </el-table-column>
@@ -73,8 +73,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <icon v-if="scope.row.show==1" name="check" class="color-success"></icon>
-            <icon v-else name="times" class="color-danger"></icon>
+            <icon v-if="scope.row.show==1" name="check" class="table-cell-icon color-success"></icon>
+            <icon v-else name="times" class="table-cell-icon color-danger"></icon>
           </template>
         </template>
       </el-table-column>
