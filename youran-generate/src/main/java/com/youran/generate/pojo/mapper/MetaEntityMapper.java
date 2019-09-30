@@ -14,7 +14,7 @@ import org.mapstruct.factory.Mappers;
  * @author: cbb
  * @date: 2017/5/12
  */
-@Mapper
+@Mapper(uses = FeatureMapper.class)
 public interface MetaEntityMapper {
 
     MetaEntityMapper INSTANCE = Mappers.getMapper( MetaEntityMapper.class );

@@ -72,9 +72,9 @@ public class ErDiagramController extends AbstractController implements ErDiagram
             entityDiagramVO.setKey(metaEntity.getTableName());
             for (MetaFieldPO field : metaEntity.getFields().values()) {
                 String type = "";
-                if(field.getPrimaryKey() == BoolConst.TRUE){
+                if(BoolConst.isTrue(field.getPrimaryKey())){
                     type = FieldDiagramVO.PRIMARY_KEY;
-                }else if(field.getForeignKey() == BoolConst.TRUE){
+                }else if(BoolConst.isTrue(field.getForeignKey())){
                     type = FieldDiagramVO.FOREIGN_KEY;
                 }else if(MetaSpecialField.isVersion(field.getSpecialField())){
                     type = FieldDiagramVO.VERSION;

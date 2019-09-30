@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po;
 
+import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 
@@ -125,6 +126,21 @@ public class MetaManyToManyPO extends BasePO {
         }
         throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
             "获取多对多另一方实体异常，mtm_id="+mtmId +",entityId="+entityId);
+    }
+
+    /**
+     * 判断传入的实体id是否持有对方引用
+     * @param entityId
+     * @return
+     */
+    public boolean isHold(Integer entityId){
+        if(Objects.equals(entityId,entityId1)){
+            return BoolConst.isTrue(holdRefer1);
+        }else if(Objects.equals(entityId,entityId2)){
+            return BoolConst.isTrue(holdRefer2);
+        }
+        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+            "获取多对多实体是否持有引用异常，mtm_id="+mtmId +",entityId="+entityId);
     }
 
     /**

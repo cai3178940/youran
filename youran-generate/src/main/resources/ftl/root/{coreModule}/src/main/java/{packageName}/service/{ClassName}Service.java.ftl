@@ -1,4 +1,5 @@
 <#include "/common.ftl">
+<#include "/mtmForOpp.ftl">
 <#include "/mtmCascadeExtsForList.ftl">
 <#include "/mtmCascadeExtsForShow.ftl">
 <#--定义主体代码-->
@@ -26,8 +27,8 @@ public class ${this.classNameUpper}Service {
     <#assign otherCName=otherEntity.className?capFirst>
     <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
 </#list>
-<#-- 引入多对多关联实体的DAO（非当前持有） -->
-<#list this.unHolds! as otherEntity,mtm>
+<#-- 引入多对多关联实体的DAO（被对方持有） -->
+<#list mtmEntitiesForOpp as otherEntity>
     <@call this.addAutowired("${this.packageName}.dao" "${otherEntity.className?capFirst}DAO")/>
 </#list>
 <#-- 引入外键对应的DAO （插入字段对应的外键）-->
@@ -279,7 +280,7 @@ public class ${this.classNameUpper}Service {
     <#assign foreignCName=foreignEntity.className?capFirst>
             this.checkDeleteBy${foreignCName}(${this.id});
 </#list>
-<#list this.unHolds! as otherEntity,mtm>
+<#list mtmEntitiesForOpp as otherEntity>
     <#assign otherCName=otherEntity.className?capFirst>
             // 校验是否存在【${otherEntity.title}】关联
             this.checkDeleteBy${otherCName}(${this.id});
@@ -310,7 +311,7 @@ public class ${this.classNameUpper}Service {
     }
 
 </#list>
-<#list this.unHolds! as otherEntity,mtm>
+<#list mtmEntitiesForOpp as otherEntity>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
     /**

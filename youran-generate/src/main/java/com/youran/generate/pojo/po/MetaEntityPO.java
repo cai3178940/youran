@@ -52,6 +52,11 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      * 是否支持分页查询
      */
     private Integer pageSign;
+    /**
+     * 特性json
+     * 后续有新的特性直接往里加，省的再扩展新字段
+     */
+    private String feature;
 
     /**
      * 字段列表
@@ -459,6 +464,13 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
         this.commonCall = commonCall;
     }
 
+    public String getFeature() {
+        return feature;
+    }
+
+    public void setFeature(String feature) {
+        this.feature = feature;
+    }
 
     @Override
     public boolean equals(Object o) {

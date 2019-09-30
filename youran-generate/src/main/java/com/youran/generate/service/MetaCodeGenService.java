@@ -392,7 +392,7 @@ public class MetaCodeGenService implements InitializingBean {
     public GenHistoryPO gitCommit(Integer projectId,Consumer<ProgressVO> progressConsumer) {
         MetaProjectPO project = metaProjectService.getProject(projectId,true);
         Integer remote = project.getRemote();
-        if(BoolConst.TRUE!=remote){
+        if(BoolConst.isFalse(remote)){
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"当前项目未开启Git仓库");
         }
         String remoteUrl = project.getRemoteUrl();

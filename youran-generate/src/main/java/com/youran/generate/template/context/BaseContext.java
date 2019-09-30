@@ -123,7 +123,7 @@ public class BaseContext {
         //默认spring-boot版本为1
         this.bootVersion = FeatureConst.Boot.BOOT_1;
         String feature = project.getFeature();
-        MetaProjectFeatureDTO featureDTO = FeatureMapper.asDTO(feature);
+        MetaProjectFeatureDTO featureDTO = FeatureMapper.asProjectFeatureDTO(feature);
         if(featureDTO!=null){
             if(featureDTO.getBootVersion()!=null){
                 // 设置spring-boot版本

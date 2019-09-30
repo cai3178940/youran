@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>Title: 【多对多级联扩展】删改查服务</p>
@@ -149,7 +148,7 @@ public class MetaMtmCascadeExtService {
      */
     private void checkCascadeExtPO(MetaMtmCascadeExtPO po){
         List<String> jFieldNames = metaFieldDAO.findJFieldNamesForQuery(po.getEntityId());
-        if(Objects.equals(BoolConst.TRUE, po.getQuery()) && jFieldNames.contains(po.getAlias())){
+        if(BoolConst.isTrue(po.getQuery()) && jFieldNames.contains(po.getAlias())){
             throw new BusinessException(ErrorCode.BAD_PARAMETER,"查询字段别名有冲突："+po.getAlias());
         }
         // 校验重复添加

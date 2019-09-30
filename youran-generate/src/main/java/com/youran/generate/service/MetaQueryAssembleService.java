@@ -136,7 +136,7 @@ public class MetaQueryAssembleService {
         for (MetaFieldPO field : fieldList) {
             entity.addField(field);
             String specialField = field.getSpecialField();
-            if (BoolConst.TRUE == field.getPrimaryKey()) {
+            if (BoolConst.isTrue(field.getPrimaryKey())) {
                 entity.setPkField(field);
             } else if (MetaSpecialField.isDeleted(specialField)) {
                 entity.setDelField(field);
@@ -151,25 +151,25 @@ public class MetaQueryAssembleService {
             } else if (MetaSpecialField.isVersion(specialField)) {
                 entity.setVersionField(field);
             }
-            if (BoolConst.TRUE == field.getQuery()) {
+            if (BoolConst.isTrue(field.getQuery())) {
                 entity.addQueryField(field);
             }
-            if (BoolConst.TRUE == field.getInsert()) {
+            if (BoolConst.isTrue(field.getInsert())) {
                 entity.addInsertField(field);
             }
-            if (BoolConst.TRUE == field.getUpdate()) {
+            if (BoolConst.isTrue(field.getUpdate())) {
                 entity.addUpdateField(field);
             }
-            if (BoolConst.TRUE == field.getList()) {
+            if (BoolConst.isTrue(field.getList())) {
                 entity.addListField(field);
             }
-            if (BoolConst.TRUE == field.getListSort()) {
+            if (BoolConst.isTrue(field.getListSort())) {
                 entity.addListSortField(field);
             }
-            if (BoolConst.TRUE == field.getShow()) {
+            if (BoolConst.isTrue(field.getShow())) {
                 entity.addShowField(field);
             }
-            if (BoolConst.TRUE == field.getForeignKey()) {
+            if (BoolConst.isTrue(field.getForeignKey())) {
                 entity.addFkField(field);
             }
         }
@@ -205,7 +205,7 @@ public class MetaQueryAssembleService {
                     metaIndex.addMetaField(field);
                 });
                 validList.add(metaIndex);
-                if(BoolConst.TRUE==metaIndex.getUniqueCheck()){
+                if(BoolConst.isTrue(metaIndex.getUniqueCheck())){
                     checkUniqueIndexes.add(metaIndex);
                 }
             }
@@ -237,12 +237,12 @@ public class MetaQueryAssembleService {
             if(entity1 == null || entity2 == null){
                 continue;
             }
-            if (BoolConst.FALSE == mtm.getHoldRefer1()) {
+            if (BoolConst.isFalse(mtm.getHoldRefer1())) {
                 entity1.addUnHold(entity2,mtm);
             } else {
                 entity1.addHold(entity2,mtm);
             }
-            if (BoolConst.FALSE == mtm.getHoldRefer2()) {
+            if (BoolConst.isFalse(mtm.getHoldRefer2())) {
                 entity2.addUnHold(entity1,mtm);
             } else {
                 entity2.addHold(entity1,mtm);
@@ -317,7 +317,7 @@ public class MetaQueryAssembleService {
         for (MetaEntityPO metaEntity : metaEntities) {
             for (MetaFieldPO metaFieldPO : metaEntity.getFields().values()) {
                 //如果不存在外键关系，则跳过
-                if(BoolConst.TRUE != metaFieldPO.getForeignKey()){
+                if(BoolConst.isFalse(metaFieldPO.getForeignKey())){
                     continue;
                 }
                 //查找当前外键字段对应的外键实体
@@ -362,13 +362,13 @@ public class MetaQueryAssembleService {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR,metaFieldPO.getFieldDesc()+"的级联扩展字段有误");
             }
             cascadeExt.setCascadeField(field);
-            if(BoolConst.TRUE==cascadeExt.getQuery()){
+            if(BoolConst.isTrue(cascadeExt.getQuery())){
                 cascadeQueryExts.add(cascadeExt);
             }
-            if(BoolConst.TRUE==cascadeExt.getShow()){
+            if(BoolConst.isTrue(cascadeExt.getShow())){
                 cascadeShowExts.add(cascadeExt);
             }
-            if(BoolConst.TRUE==cascadeExt.getList()){
+            if(BoolConst.isTrue(cascadeExt.getList())){
                 cascadeListExts.add(cascadeExt);
             }
         }
@@ -420,7 +420,7 @@ public class MetaQueryAssembleService {
             int versionCount = 0;
             for (MetaFieldPO field : fields.values()) {
                 String specialField = field.getSpecialField();
-                if(BoolConst.TRUE == field.getPrimaryKey()){
+                if(BoolConst.isTrue(field.getPrimaryKey())){
                     pkCount++;
                     if(StringUtils.isNotBlank(specialField)){
                         throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】的主键【"+field.getFieldDesc()+"】不可以是特殊字段");

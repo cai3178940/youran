@@ -55,7 +55,7 @@ public class MetaProjectHelper {
         metaProjectUpdateDTO.setProjectDesc(metaProject.getProjectDesc()+1);
         metaProjectUpdateDTO.setGroupId(metaProject.getGroupId()+1);
         metaProjectUpdateDTO.setRemote(metaProject.getRemote());
-        MetaProjectFeatureDTO featureDTO = FeatureMapper.asDTO(metaProject.getFeature());
+        MetaProjectFeatureDTO featureDTO = FeatureMapper.asProjectFeatureDTO(metaProject.getFeature());
         metaProjectUpdateDTO.setFeature(featureDTO);
         return metaProjectUpdateDTO;
     }

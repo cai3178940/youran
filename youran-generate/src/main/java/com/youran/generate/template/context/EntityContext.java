@@ -225,10 +225,10 @@ public class EntityContext extends BaseContext {
         StringBuilder sb = new StringBuilder();
         for (MetaFieldPO field : entity.getInsertFields().values()) {
             // 跳过非外键
-            if(field.getForeignKey()==BoolConst.FALSE){
+            if(BoolConst.isFalse(field.getForeignKey())){
                 continue;
             }
-            if(field.getNotNull()==BoolConst.TRUE){
+            if(BoolConst.isTrue(field.getNotNull())){
                 sb.append(StringUtils.uncapitalize(field.getForeignEntity().getClassName()))
                     .append(".get")
                     .append(StringUtils.capitalize(field.getForeignEntity().getPkField().getJfieldName()))
@@ -363,7 +363,7 @@ public class EntityContext extends BaseContext {
 
         for (MetaFieldPO field : insertFields.values()) {
             // 插入字段是外键，并且不能为空
-            if(field.getForeignKey()==BoolConst.TRUE && field.getNotNull()==BoolConst.TRUE){
+            if(BoolConst.isTrue(field.getForeignKey()) && BoolConst.isTrue(field.getNotNull())){
                 node.addForeign(field);
                 ForeignEntityTreeNode child = buildForeignTreeForSave(field.getForeignEntity(), node, map);
                 node.addChild(child);
