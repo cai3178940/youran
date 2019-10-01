@@ -60,7 +60,7 @@ public class ErDiagramController extends AbstractController implements ErDiagram
         // 组装外键实体和外键字段
         metaQueryAssembleService.assembleForeign(metaEntities, false);
         // 查询多对多列表
-        List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId);
+        List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId,false);
         // 组装多对多对象引用
         metaQueryAssembleService.assembleManyToManyWithEntities(metaEntities, manyToManies, false);
 

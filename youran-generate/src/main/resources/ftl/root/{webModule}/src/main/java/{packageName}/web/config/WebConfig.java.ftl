@@ -65,7 +65,7 @@ public class WebConfig {
      */
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
-    <#if this.bootVersion==2>
+    <#if this.projectFeature.bootVersion==2>
         return new WebMvcConfigurer() {
     <#else>
         <@call this.addImport("org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter")/>

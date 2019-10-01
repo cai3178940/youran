@@ -6,7 +6,15 @@ export function initFormBean (forEdit) {
     tableName: '',
     desc: '',
     commonCall: 1,
-    pageSign: 1
+    pageSign: 1,
+    feature: {
+      save: 1,
+      update: 1,
+      delete: 1,
+      deleteBatch: 1,
+      list: 1,
+      show: 1,
+    }
   }
   if (forEdit) {
     formBean['entityId'] = null
@@ -39,7 +47,6 @@ export function getRules () {
     ]
   }
 }
-
 export function initMtmFormBean (forEdit) {
   const formBean = {
     projectId: null,
@@ -51,8 +58,20 @@ export function initMtmFormBean (forEdit) {
     entityId2: null,
     entityIdField1: '',
     entityIdField2: '',
-    holdRefer1: 1,
-    holdRefer2: 1
+    holdRefer1: 0,
+    holdRefer2: 0,
+    feature: {
+      f1: {
+        addRemove: 0,
+        set: 1,
+        withinEntity: 1,
+      },
+      f2: {
+        addRemove: 0,
+        set: 1,
+        withinEntity: 1,
+      }
+    },
   }
   if (forEdit) {
     formBean['mtmId'] = null

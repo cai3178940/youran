@@ -83,7 +83,7 @@ public class MetaQueryAssembleService {
         }
         if(withMtm){
             // 查询多对多列表
-            List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId);
+            List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId,true);
             // 装配多对多持有引用
             this.assembleManyToManyWithEntities(metaEntities, manyToManies, withMtmCascade);
             project.setMtms(manyToManies);

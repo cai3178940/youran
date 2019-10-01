@@ -46,16 +46,26 @@
               </el-col>
             </help-popover>
           </el-form-item>
-          <el-form-item label="分页" prop="pageSign">
-            <help-popover name="entity.pageSign">
-              <el-checkbox v-model="form.pageSign" :true-label="1" :false-label="0">
-                支持分页查询
-              </el-checkbox>
-            </help-popover>
-          </el-form-item>
           <el-form-item label="描述" prop="desc">
             <help-popover name="entity.desc">
               <el-input v-model="form.desc" type="textarea" :autosize="{ minRows: 2, maxRows: 100}"></el-input>
+            </help-popover>
+          </el-form-item>
+          <el-form-item label="分页" prop="pageSign">
+            <help-popover name="entity.pageSign">
+              <el-checkbox v-model="form.pageSign" :true-label="1" :false-label="0">
+                支持分页
+              </el-checkbox>
+            </help-popover>
+          </el-form-item>
+          <el-form-item label="rest服务">
+            <help-popover name="entity.feature">
+              <el-checkbox v-model="form.feature.save" :true-label="1" :false-label="0">添加</el-checkbox>
+              <el-checkbox v-model="form.feature.update" :true-label="1" :false-label="0">修改</el-checkbox>
+              <el-checkbox v-model="form.feature.delete" :true-label="1" :false-label="0">单个删除</el-checkbox>
+              <el-checkbox v-model="form.feature.deleteBatch" :true-label="1" :false-label="0">批量删除</el-checkbox>
+              <el-checkbox v-model="form.feature.show" :true-label="1" :false-label="0">详情</el-checkbox>
+              <el-checkbox v-model="form.feature.list" :true-label="1" :false-label="0">列表查询</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item>

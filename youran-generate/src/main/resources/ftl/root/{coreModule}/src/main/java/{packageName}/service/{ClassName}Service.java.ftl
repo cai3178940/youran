@@ -108,10 +108,13 @@ public class ${this.classNameUpper}Service {
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+    <#if isTrue(entityFeature.withinEntity)>
         List<${otherPk.jfieldType}> ${othercName}List = ${this.className}DTO.get${otherCName}List();
         if(CollectionUtils.isNotEmpty(${othercName}List)) {
             this.doAdd${otherCName}(${this.className}.get${this.idUpper}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
         }
+    </#if>
 </#list>
         return ${this.className};
     }
@@ -142,10 +145,13 @@ public class ${this.classNameUpper}Service {
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+    <#if isTrue(entityFeature.withinEntity)>
         List<${otherPk.jfieldType}> ${othercName}List = ${this.className}UpdateDTO.get${otherCName}List();
         if(${othercName}List != null) {
             this.set${otherCName}(${this.className}.get${this.idUpper}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
         }
+    </#if>
 </#list>
         return ${this.className};
     }
@@ -332,6 +338,7 @@ public class ${this.classNameUpper}Service {
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
     <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
+    <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
     /**
      * 执行【${otherEntity.title}】添加
      * @param ${this.id}
@@ -348,6 +355,7 @@ public class ${this.classNameUpper}Service {
         return count;
     }
 
+    <#if isTrue(entityFeature.addRemove)>
     /**
      * 添加【${otherEntity.title}】
      * @param ${this.id}
@@ -378,6 +386,8 @@ public class ${this.classNameUpper}Service {
         return ${this.className}DAO.remove${otherCName}(${this.id}, ${otherFkId});
     }
 
+    </#if>
+    <#if isTrue(entityFeature.set)||isTrue(entityFeature.withinEntity)>
     /**
      * 设置【${otherEntity.title}】
      * @param ${this.id}
@@ -394,6 +404,7 @@ public class ${this.classNameUpper}Service {
         return doAdd${otherCName}(${this.id}, ${otherFkId});
     }
 
+    </#if>
 </#list>
 
 }

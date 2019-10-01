@@ -1,4 +1,5 @@
 <#include "/common.ftl">
+<#include "/checkFeatureForRest.ftl">
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.packageName}.web.rest.*")/>
@@ -8,11 +9,12 @@
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 <#list this.metaEntities as metaEntity>
+    <#if getGenRest(metaEntity)>
     ${metaEntity.className}ControllerTest.class,
+    </#if>
 </#list>
 })
 public class Main {
-
 
 
 }

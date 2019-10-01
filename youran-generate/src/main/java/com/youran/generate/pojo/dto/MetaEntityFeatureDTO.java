@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.dto;
 
+import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.dto.AbstractDTO;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -14,79 +15,79 @@ public class MetaEntityFeatureDTO extends AbstractDTO {
     /**
      * 是否生成save方法
      */
-    @ApiModelProperty(notes = "是否生成save方法", example = "true")
-    private Boolean genSave = true;
+    @ApiModelProperty(notes = "是否生成save方法", example = "1")
+    private Integer save = BoolConst.TRUE;
     /**
      * 是否生成update方法
      */
-    @ApiModelProperty(notes = "是否生成update方法", example = "true")
-    private Boolean genUpdate = true;
+    @ApiModelProperty(notes = "是否生成update方法", example = "1")
+    private Integer update = BoolConst.TRUE;
     /**
      * 是否生成delete方法
      */
-    @ApiModelProperty(notes = "是否生成delete方法", example = "true")
-    private Boolean genDelete = true;
+    @ApiModelProperty(notes = "是否生成delete方法", example = "1")
+    private Integer delete = BoolConst.TRUE;
     /**
      * 是否生成deleteBatch方法
      */
-    @ApiModelProperty(notes = "是否生成deleteBatch方法", example = "true")
-    private Boolean genDeleteBatch = true;
+    @ApiModelProperty(notes = "是否生成deleteBatch方法", example = "1")
+    private Integer deleteBatch = BoolConst.TRUE;
     /**
      * 是否生成list方法
      */
-    @ApiModelProperty(notes = "是否生成list方法", example = "true")
-    private Boolean genList = true;
+    @ApiModelProperty(notes = "是否生成list方法", example = "1")
+    private Integer list = BoolConst.TRUE;
     /**
      * 是否生成show方法
      */
-    @ApiModelProperty(notes = "是否生成show方法", example = "true")
-    private Boolean genShow = true;
+    @ApiModelProperty(notes = "是否生成show方法", example = "1")
+    private Integer show = BoolConst.TRUE;
 
-    public Boolean getGenSave() {
-        return genSave;
+    public Integer getSave() {
+        return save;
     }
 
-    public void setGenSave(Boolean genSave) {
-        this.genSave = genSave;
+    public void setSave(Integer save) {
+        this.save = save;
     }
 
-    public Boolean getGenUpdate() {
-        return genUpdate;
+    public Integer getUpdate() {
+        return update;
     }
 
-    public void setGenUpdate(Boolean genUpdate) {
-        this.genUpdate = genUpdate;
+    public void setUpdate(Integer update) {
+        this.update = update;
     }
 
-    public Boolean getGenDelete() {
-        return genDelete;
+    public Integer getDelete() {
+        return delete;
     }
 
-    public void setGenDelete(Boolean genDelete) {
-        this.genDelete = genDelete;
+    public void setDelete(Integer delete) {
+        this.delete = delete;
     }
 
-    public Boolean getGenDeleteBatch() {
-        return genDeleteBatch;
+    public Integer getDeleteBatch() {
+        return deleteBatch;
     }
 
-    public void setGenDeleteBatch(Boolean genDeleteBatch) {
-        this.genDeleteBatch = genDeleteBatch;
+    public void setDeleteBatch(Integer deleteBatch) {
+        this.deleteBatch = deleteBatch;
     }
 
-    public Boolean getGenList() {
-        return genList;
+    public Integer getList() {
+        return list;
     }
 
-    public void setGenList(Boolean genList) {
-        this.genList = genList;
+    public void setList(Integer list) {
+        this.list = list;
     }
 
-    public Boolean getGenShow() {
-        return genShow;
+    public Integer getShow() {
+        return show;
     }
 
-    public void setGenShow(Boolean genShow) {
-        this.genShow = genShow;
+    public void setShow(Integer show) {
+        this.show = show;
     }
 }

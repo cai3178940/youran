@@ -4,6 +4,8 @@ import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MetaConstType;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.constant.QueryType;
+import com.youran.generate.exception.SkipCurrentException;
+import freemarker.core._TemplateModelException;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
@@ -42,7 +44,6 @@ public class FreeMakerUtil {
         cfg.setSharedVariable("QueryType",getStaticModel(QueryType.class));
         cfg.setSharedVariable("MetaSpecialField",getStaticModel(MetaSpecialField.class));
         builder.setExposeFields(true);
-
     }
 
     /**
@@ -68,11 +69,16 @@ public class FreeMakerUtil {
      * @param dataModel
      */
     public static void print(String templateName, Object dataModel) {
-
         try {
             Template template = getTemplate(templateName);
             template.process(dataModel, new PrintWriter(System.out));
         } catch (Exception e) {
+            if(e instanceof _TemplateModelException){
+                Throwable cause = e.getCause();
+                if(cause!=null && cause instanceof SkipCurrentException){
+                    throw (SkipCurrentException)cause;
+                }
+            }
             logger.error(e.getMessage(), e);
             throw new RuntimeException("freemarker解析异常");
         }
@@ -81,16 +87,20 @@ public class FreeMakerUtil {
 
     /**
      * PrintWriter写入
-     *
      * @param templateName
      * @param dataModel
      */
     public static void write(String templateName, Object dataModel, PrintWriter printWriter) {
-
         try {
             Template template = getTemplate(templateName);
             template.process(dataModel, printWriter);
         } catch (Exception e) {
+            if(e instanceof _TemplateModelException){
+                Throwable cause = e.getCause();
+                if(cause!=null && cause instanceof SkipCurrentException){
+                    throw (SkipCurrentException)cause;
+                }
+            }
             logger.error(e.getMessage(), e);
             throw new RuntimeException("freemarker解析异常");
         }
@@ -111,6 +121,12 @@ public class FreeMakerUtil {
             template.process(dataModel, writer);
             return stringWriter.getBuffer().toString();
         } catch (Exception e) {
+            if(e instanceof _TemplateModelException){
+                Throwable cause = e.getCause();
+                if(cause!=null && cause instanceof SkipCurrentException){
+                    throw (SkipCurrentException)cause;
+                }
+            }
             logger.error(e.getMessage(), e);
             e.printStackTrace();
             throw new RuntimeException("freemarker解析异常,templateName="+templateName,e);
@@ -120,7 +136,6 @@ public class FreeMakerUtil {
 
     /**
      * 生成文件
-     *
      * @param templateName:模板名
      * @param dataModel：数据原型
      * @param outFilePath：输出路径(全路径名)
@@ -131,6 +146,12 @@ public class FreeMakerUtil {
             Template temp = getTemplate(templateName);
             temp.process(dataModel, out);
         } catch (Exception e) {
+            if(e instanceof _TemplateModelException){
+                Throwable cause = e.getCause();
+                if(cause!=null && cause instanceof SkipCurrentException){
+                    throw (SkipCurrentException)cause;
+                }
+            }
             logger.error(e.getMessage(), e);
             throw new RuntimeException("freemarker解析异常");
         }
@@ -139,7 +160,6 @@ public class FreeMakerUtil {
 
     /**
      * 获取freemarker可使用的bean
-     *
      * @param clz
      * @return
      */

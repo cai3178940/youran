@@ -72,6 +72,20 @@
               </el-col>
             </help-popover>
           </el-form-item>
+          <el-form-item v-if="form.holdRefer1===1" label="实体1功能">
+            <help-popover name="mtm.feature">
+              <el-checkbox v-model="form.feature.f1.withinEntity" :true-label="1" :false-label="0">随实体一起维护</el-checkbox>
+              <el-checkbox v-model="form.feature.f1.set" :true-label="1" :false-label="0">设置关联</el-checkbox>
+              <el-checkbox v-model="form.feature.f1.addRemove" :true-label="1" :false-label="0">添加+移除</el-checkbox>
+            </help-popover>
+          </el-form-item>
+          <el-form-item v-if="form.holdRefer2===1" label="实体2功能">
+            <help-popover name="mtm.feature">
+              <el-checkbox v-model="form.feature.f2.withinEntity" :true-label="1" :false-label="0">随实体一起维护</el-checkbox>
+              <el-checkbox v-model="form.feature.f2.set" :true-label="1" :false-label="0">设置关联</el-checkbox>
+              <el-checkbox v-model="form.feature.f2.addRemove" :true-label="1" :false-label="0">添加+移除</el-checkbox>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="实体1外键字段" prop="entityIdField1">
             <help-popover name="mtm.entityIdField1">
               <el-input v-model="form.entityIdField1" placeholder="默认自动生成"></el-input>

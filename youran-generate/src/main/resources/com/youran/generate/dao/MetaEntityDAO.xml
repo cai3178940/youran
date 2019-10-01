@@ -20,13 +20,15 @@
         insert into meta_entity (
           entity_id, project_id, `schema_name`,
           class_name, `table_name`, title, `desc`,
-          common_call,page_sign, created_time, created_by,
+          common_call,page_sign, feature,
+          created_time, created_by,
           operated_time, operated_by, deleted,
           version)
         values (#{entityId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{schemaName,jdbcType=VARCHAR},
           #{className,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
           #{desc,jdbcType=VARCHAR},
-          #{commonCall,jdbcType=SMALLINT},#{pageSign,jdbcType=SMALLINT}, #{createdTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR},
+          #{commonCall,jdbcType=SMALLINT},#{pageSign,jdbcType=SMALLINT}, #{feature,jdbcType=VARCHAR},
+          #{createdTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR},
           #{operatedTime,jdbcType=TIMESTAMP}, #{operatedBy,jdbcType=VARCHAR}, #{deleted,jdbcType=SMALLINT},
           #{version,jdbcType=INTEGER})
     </insert>
@@ -41,6 +43,7 @@
           `desc` = #{desc,jdbcType=VARCHAR},
           common_call = #{commonCall,jdbcType=SMALLINT},
           page_sign = #{pageSign,jdbcType=SMALLINT},
+          feature = #{feature,jdbcType=VARCHAR},
           operated_time = #{operatedTime,jdbcType=TIMESTAMP},
           operated_by = #{operatedBy,jdbcType=VARCHAR},
           version = #{version,jdbcType=INTEGER}

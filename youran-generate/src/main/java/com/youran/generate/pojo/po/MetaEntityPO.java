@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po;
 
+import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -155,6 +156,10 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      */
     private Set<MetaEntityPO> foreignEntities = new TreeSet<>();;
 
+    /**
+     * 实体特性
+     */
+    private MetaEntityFeatureDTO entityFeature;
 
     public MetaEntityPO addField(MetaFieldPO field){
         fields.put(field.getFieldId(),field);
@@ -470,6 +475,14 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setFeature(String feature) {
         this.feature = feature;
+    }
+
+    public MetaEntityFeatureDTO getEntityFeature() {
+        return entityFeature;
+    }
+
+    public void setEntityFeature(MetaEntityFeatureDTO entityFeature) {
+        this.entityFeature = entityFeature;
     }
 
     @Override

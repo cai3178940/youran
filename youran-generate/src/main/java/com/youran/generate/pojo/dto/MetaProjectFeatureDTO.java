@@ -21,7 +21,7 @@ public class MetaProjectFeatureDTO extends AbstractDTO {
     @ApiModelProperty(notes = "spring-boot版本【1或2】", example = "1")
     @NotNull
     @Const(constClass = FeatureConst.Boot.class)
-    private Integer bootVersion;
+    private Integer bootVersion = FeatureConst.Boot.BOOT_2;
 
     public Integer getBootVersion() {
         return bootVersion;
