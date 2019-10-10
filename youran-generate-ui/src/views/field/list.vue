@@ -355,6 +355,11 @@ export default {
       selectItems: [],
       list: [],
       indexes: [],
+      // 实体校验信息
+      entityValidate: {
+        // 字段校验信息
+        fields: []
+      },
       addImmFieldIds: [],
       loading: false,
       cascadeExtListVisible: false,
@@ -445,6 +450,7 @@ export default {
         .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .then(() => this.doQueryIndex())
+        .then(() => this.doValidateEntityInner())
         .catch(error => this.$common.showNotifyError(error))
     },
     /**
@@ -502,6 +508,7 @@ export default {
       this.doQuery()
         .then(() => this.doQueryIndex())
         .then(() => this.doQueryMtmEntities())
+        .then(() => this.doValidateEntityInner())
     },
     // 列表查询
     doQuery () {
@@ -580,6 +587,7 @@ export default {
               this.$common.showMsg('success', '添加成功')
               this.doQuery()
                 .then(() => this.doQueryIndex())
+                .then(() => this.doValidateEntityInner())
             }
           })
           .catch(error => this.$common.showNotifyError(error))
@@ -606,6 +614,7 @@ export default {
             this.$common.showMsg('success', '添加成功')
             return this.doQuery()
               .then(() => this.doQueryIndex())
+              .then(() => this.doValidateEntityInner())
           })
       }
       promise.finally(() => {
@@ -735,7 +744,19 @@ export default {
         }
         return f1.orderNo - f2.orderNo
       })
-    }
+    },
+    /**
+     * 实体内部校验
+     */
+    doValidateEntityInner () {
+      if (!this.query.projectId || !this.query.entityId) {
+        return
+      }
+      return this.$ajax.get(`/${apiPath}/meta_validate/entity_inner/${this.query.entityId}`)
+        .then(response => this.$common.checkResult(response))
+        .then(data => { this.entityValidate = data })
+        .catch(error => this.$common.showNotifyError(error))
+    },
   },
   activated () {
     const projectId = parseInt(this.projectId)
@@ -749,6 +770,7 @@ export default {
       .then(() => this.doQuery())
       .then(() => this.doQueryIndex())
       .then(() => this.doQueryMtmEntities())
+      .then(() => this.doValidateEntityInner())
   }
 }
 </script>

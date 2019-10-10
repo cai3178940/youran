@@ -73,12 +73,8 @@ public class MetaQueryAssembleService {
             this.assembleForeign(metaEntities, withFkCascade);
         }
         if(withConst){
-            // 查询常量id列表
-            List<Integer> constIds = metaConstService.findIdsByProject(projectId);
             // 获取组装后的常量列表
-            List<MetaConstPO> metaConstPOS = constIds
-                .stream()
-                .map(this::getAssembledConst).collect(Collectors.toList());
+            List<MetaConstPO> metaConstPOS = this.getAllAssembledConsts(projectId);
             project.setConsts(metaConstPOS);
         }
         if(withMtm){
@@ -91,6 +87,20 @@ public class MetaQueryAssembleService {
         // 校验完整性
         this.checkAssembledProject(project,withConst);
         return project;
+    }
+
+    /**
+     * 装配所有常量元数据
+     * @param projectId 项目id
+     * @return
+     */
+    public List<MetaConstPO>  getAllAssembledConsts(Integer projectId) {
+        // 查询常量id列表
+        List<Integer> constIds = metaConstService.findIdsByProject(projectId);
+        // 返回组装后的常量列表
+        return constIds
+            .stream()
+            .map(this::getAssembledConst).collect(Collectors.toList());
     }
 
     /**
@@ -117,7 +127,7 @@ public class MetaQueryAssembleService {
         MetaEntityPO metaEntity = metaEntityService.getEntity(entityId,true);
         List<MetaFieldPO> fieldList = metaFieldService.findByEntityId(entityId);
         if (CollectionUtils.isEmpty(fieldList)) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体无对应字段，entityId=" + entityId);
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体中无字段，entityId=" + entityId);
         }
         // 给实体装配字段
         this.assembleFieldForEntity(metaEntity, fieldList);
