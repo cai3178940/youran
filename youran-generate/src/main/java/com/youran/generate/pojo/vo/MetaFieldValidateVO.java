@@ -2,6 +2,9 @@ package com.youran.generate.pojo.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import static com.youran.generate.pojo.example.MetaFieldExample.E_FIELDID;
+import static com.youran.generate.pojo.example.MetaFieldExample.N_FIELDID;
+
 /**
  * <p>Title:字段校验结果展示对象</p>
  * <p>Description:</p>
@@ -10,6 +13,8 @@ import io.swagger.annotations.ApiModelProperty;
  */
 public class MetaFieldValidateVO extends MetaAbstractValidateVO {
 
+    @ApiModelProperty(notes = N_FIELDID, example = E_FIELDID)
+    private Integer fieldId;
     /**
      * 枚举校验存在
      */
@@ -31,6 +36,13 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
         this.dicNotExist = dic;
     }
 
+    public Integer getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(Integer fieldId) {
+        this.fieldId = fieldId;
+    }
 
     public Boolean getDicExistSuccess() {
         return dicExistSuccess;

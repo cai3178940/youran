@@ -60,6 +60,9 @@
       </el-table-column>
       <el-table-column label="字段标题">
         <template slot-scope="scope">
+          <template v-if="!scope.row.validate.success">
+            <icon name="exclamation-circle" class="table-cell-icon color-warning"></icon>
+          </template>
           <el-popover
             :content="scope.row.fieldComment"
             placement="top"
@@ -355,11 +358,6 @@ export default {
       selectItems: [],
       list: [],
       indexes: [],
-      // 实体校验信息
-      entityValidate: {
-        // 字段校验信息
-        fields: []
-      },
       addImmFieldIds: [],
       loading: false,
       cascadeExtListVisible: false,
@@ -523,6 +521,9 @@ export default {
             value.indexes = []
             value.orderNoEdit = false
             value.oldOrderNo = value.orderNo
+            value.validate = {
+              success: true
+            }
           })
           this.list = data
         })
@@ -749,14 +750,20 @@ export default {
      * 实体内部校验
      */
     doValidateEntityInner () {
-      if (!this.query.projectId || !this.query.entityId) {
+      if (!this.query.projectId || !this.query.entityId || !this.list.length) {
         return
       }
       return this.$ajax.get(`/${apiPath}/meta_validate/entity_inner/${this.query.entityId}`)
         .then(response => this.$common.checkResult(response))
-        .then(data => { this.entityValidate = data })
+        .then(data => {
+          const fieldValidates = data.fields
+          this.list.forEach(field => {
+            const fieldValidate = fieldValidates.find(fv => fv.fieldId === field.fieldId)
+            field.validate = fieldValidate
+          })
+        })
         .catch(error => this.$common.showNotifyError(error))
-    },
+    }
   },
   activated () {
     const projectId = parseInt(this.projectId)

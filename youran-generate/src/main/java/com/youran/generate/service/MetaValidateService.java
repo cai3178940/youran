@@ -45,7 +45,7 @@ public class MetaValidateService {
     private MetaFieldValidateVO doValidateField(MetaFieldPO field,
                                                 List<MetaConstPO> consts){
         MetaFieldValidateVO vo = new MetaFieldValidateVO();
-
+        vo.setFieldId(field.getFieldId());
         // 校验枚举是否存在
         String dic = field.getDicType();
         if(StringUtils.isNotBlank(dic) && !BOOL_CONST.equals(dic)){
@@ -55,7 +55,6 @@ public class MetaValidateService {
                 vo.dicNotExist(dic);
             }
         }
-
         return vo;
     }
 
