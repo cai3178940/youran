@@ -256,8 +256,9 @@ public class MetadataUtil {
      */
     public static boolean ifDefaultValueNeedWrap(MetaFieldPO field){
         String defaultValue = field.getDefaultValue();
-        // 字符型需要引号包裹
-        if(MySqlType.isStringType(field.getFieldType())){
+        // 字符型或数字需要引号包裹
+        if(MySqlType.isStringType(field.getFieldType())
+            || MySqlType.isNumberType(field.getFieldType())){
             if(defaultValue!=null
                 && defaultValue.startsWith(DefaultValue.SINGLE_QUOTE)
                 && defaultValue.endsWith(DefaultValue.SINGLE_QUOTE)){
