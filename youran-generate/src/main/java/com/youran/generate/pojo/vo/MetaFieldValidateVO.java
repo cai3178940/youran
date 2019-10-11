@@ -25,6 +25,20 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
      */
     @ApiModelProperty(notes = "不存在的枚举", example = "sex")
     private String dicNotExist;
+    /**
+     * 推荐的常量类型
+     */
+    @ApiModelProperty(notes = "推荐的常量类型【1-整数，2-字符串】", example = "1")
+    private Integer suggestConstType;
+    /**
+     * 推荐的常量描述
+     */
+    @ApiModelProperty(notes = "推荐的常量描述", example = "性别")
+    private String suggestConstRemark;
+
+    public MetaFieldValidateVO() {
+        this.dicExistSuccess = true;
+    }
 
     /**
      * 设置枚举不存在
@@ -58,5 +72,21 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
 
     public void setDicNotExist(String dicNotExist) {
         this.dicNotExist = dicNotExist;
+    }
+
+    public Integer getSuggestConstType() {
+        return suggestConstType;
+    }
+
+    public void setSuggestConstType(Integer suggestConstType) {
+        this.suggestConstType = suggestConstType;
+    }
+
+    public String getSuggestConstRemark() {
+        return suggestConstRemark;
+    }
+
+    public void setSuggestConstRemark(String suggestConstRemark) {
+        this.suggestConstRemark = suggestConstRemark;
     }
 }

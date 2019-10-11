@@ -74,7 +74,7 @@ public class MetaQueryAssembleService {
         }
         if(withConst){
             // 获取组装后的常量列表
-            List<MetaConstPO> metaConstPOS = this.getAllAssembledConsts(projectId);
+            List<MetaConstPO> metaConstPOS = this.getAllAssembledConsts(projectId, true);
             project.setConsts(metaConstPOS);
         }
         if(withMtm){
@@ -94,13 +94,14 @@ public class MetaQueryAssembleService {
      * @param projectId 项目id
      * @return
      */
-    public List<MetaConstPO>  getAllAssembledConsts(Integer projectId) {
+    public List<MetaConstPO>  getAllAssembledConsts(Integer projectId, boolean withConstDetail) {
         // 查询常量id列表
         List<Integer> constIds = metaConstService.findIdsByProject(projectId);
         // 返回组装后的常量列表
         return constIds
             .stream()
-            .map(this::getAssembledConst).collect(Collectors.toList());
+            .map(constId -> this.getAssembledConst(constId,withConstDetail))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -108,13 +109,15 @@ public class MetaQueryAssembleService {
      * @param constId 常量id
      * @return
      */
-    public MetaConstPO getAssembledConst(Integer constId) {
+    public MetaConstPO getAssembledConst(Integer constId, boolean withConstDetail) {
         MetaConstPO metaConst = metaConstService.getConst(constId,true);
-        List<MetaConstDetailPO> detailList = metaConstDetailService.findByConstId(constId);
-        if (CollectionUtils.isEmpty(detailList)) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"枚举【"+metaConst.getConstName()+"】缺少枚举值");
+        if(withConstDetail){
+            List<MetaConstDetailPO> detailList = metaConstDetailService.findByConstId(constId);
+            if (CollectionUtils.isEmpty(detailList)) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"枚举【"+metaConst.getConstName()+"】缺少枚举值");
+            }
+            metaConst.setDetailList(detailList);
         }
-        metaConst.setDetailList(detailList);
         return metaConst;
     }
 

@@ -1,10 +1,12 @@
 package com.youran.generate.service;
 
+import com.youran.generate.constant.JFieldType;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.vo.MetaEntityInnerValidateVO;
 import com.youran.generate.pojo.vo.MetaFieldValidateVO;
+import com.youran.generate.util.GuessUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class MetaValidateService {
         // 获取装配完成的实体
         MetaEntityPO entity = metaQueryAssembleService.getAssembledEntity(entityId);
         // 获取装配完成的枚举
-        List<MetaConstPO> consts = metaQueryAssembleService.getAllAssembledConsts(entity.getProjectId());
+        List<MetaConstPO> consts = metaQueryAssembleService.getAllAssembledConsts(entity.getProjectId(),false);
         // 校验实体中的所有字段
         List<MetaFieldValidateVO> fieldValidateVOS = entity.getFields().values().stream()
             .map(field -> this.doValidateField(field, consts))
@@ -53,6 +55,9 @@ public class MetaValidateService {
                 .findAny();
             if(!optional.isPresent()){
                 vo.dicNotExist(dic);
+                Integer constType = GuessUtil.guessConstType(JFieldType.find(field.getJfieldType()));
+                vo.setSuggestConstType(constType);
+                vo.setSuggestConstRemark(field.getFieldDesc());
             }
         }
         return vo;

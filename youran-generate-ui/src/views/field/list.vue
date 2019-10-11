@@ -64,10 +64,18 @@
             <icon name="exclamation-circle" class="table-cell-icon color-warning"></icon>
           </template>
           <el-popover
-            :content="scope.row.fieldComment"
             placement="top"
-            trigger="click"
-            popper-class="field-comment-popper">
+            trigger="click">
+            <p>
+              <span class="popper-remark-label">备注：</span>
+              {{ scope.row.fieldComment }}
+            </p>
+            <p v-if="!scope.row.validate.dicExistSuccess" style="margin-top: 5px;">
+              <span class="popper-warn-label">异常：</span>
+              枚举"{{ scope.row.validate.dicNotExist }}"不存在
+              <el-button @click="handleAddConst(scope.row)"
+                         style="padding: 0px;" type="text">前往创建</el-button>
+            </p>
             <el-button slot="reference" size="medium" type="text">{{ scope.row.fieldDesc }}</el-button>
           </el-popover>
           <template v-for="index in scope.row.indexes">
@@ -763,6 +771,14 @@ export default {
           })
         })
         .catch(error => this.$common.showNotifyError(error))
+    },
+    handleAddConst (field) {
+      const validate = field.validate
+      const constName = validate.dicNotExist
+      const constType = validate.suggestConstType
+      const constRemark = validate.suggestConstRemark
+      this.$router.push(`/project/${this.projectId}/const/add?\
+          constName=${constName}&constType=${constType}&constRemark=${constRemark}`)
     }
   },
   activated () {
@@ -917,14 +933,21 @@ export default {
     }
 
   }
+
+  .popper-remark-label{
+    color: #606266;
+    font-weight: bold;
+  }
+  .popper-warn-label{
+    color: orange;
+    font-weight: bold;
+  }
+
   .template-option {
     width: 15px;
     display: inline-block;
     .fa-icon {
       vertical-align: text-top;
     }
-  }
-  .field-comment-popper {
-    text-align: center;
   }
 </style>

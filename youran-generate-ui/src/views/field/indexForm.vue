@@ -47,7 +47,7 @@
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
             <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
-            <el-button @click="goBack()">返回</el-button>
+            <el-button @click="goBack(true)">返回</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -137,7 +137,7 @@ export default {
       // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '操作成功')
-          this.goBack()
+          this.goBack(false)
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => {
@@ -146,8 +146,12 @@ export default {
           }
         })
     },
-    goBack () {
-      this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
+    goBack (preferHistory) {
+      if (preferHistory && window.history.length > 1) {
+        this.$router.go(-1)
+      } else {
+        this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field`)
+      }
     }
   },
   created () {

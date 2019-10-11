@@ -119,7 +119,12 @@ export default new Router({
         {
           path: 'add',
           component: constForm,
-          props: true
+          props: (route) => ({
+            projectId: route.params.projectId,
+            constName: route.query.constName,
+            constType: route.query.constType,
+            constRemark: route.query.constRemark
+          })
         },
         {
           path: ':constId?',
