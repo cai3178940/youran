@@ -1,8 +1,8 @@
 package com.youran.generate.template.context;
 
 import com.youran.common.util.DateUtil;
-import com.youran.generate.constant.FeatureConst;
 import com.youran.generate.constant.JFieldType;
+import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.*;
@@ -86,7 +86,7 @@ public class BaseContext {
     /**
      * spring-boot版本
      */
-    protected Integer bootVersion;
+    protected MetaProjectFeatureDTO projectFeature;
 
 
     public BaseContext(MetaProjectPO project){
@@ -116,22 +116,21 @@ public class BaseContext {
         this.createdTime = project.getCreatedTime();
         //多对多关联
         this.mtms = project.getMtms();
-
+        //项目特性
+        this.projectFeature = FeatureMapper.asProjectFeatureDTO(project.getFeature());
+        //初始化java依赖
         this.imports = new TreeSet<>();
         this.staticImports = new TreeSet<>();
         this.autowired = new TreeSet<>();
-        //默认spring-boot版本为1
-        this.bootVersion = FeatureConst.Boot.BOOT_1;
-        String feature = project.getFeature();
-        MetaProjectFeatureDTO featureDTO = FeatureMapper.asDTO(feature);
-        if(featureDTO!=null){
-            if(featureDTO.getBootVersion()!=null){
-                // 设置spring-boot版本
-                this.bootVersion = featureDTO.getBootVersion();
-            }
-        }
+
     }
 
+    /**
+     * 跳过当前文件
+     */
+    public void skipCurrent(){
+        throw new SkipCurrentException();
+    }
 
     /**
      * 添加依赖
@@ -409,11 +408,11 @@ public class BaseContext {
         this.autowired = autowired;
     }
 
-    public Integer getBootVersion() {
-        return bootVersion;
+    public MetaProjectFeatureDTO getProjectFeature() {
+        return projectFeature;
     }
 
-    public void setBootVersion(Integer bootVersion) {
-        this.bootVersion = bootVersion;
+    public void setProjectFeature(MetaProjectFeatureDTO projectFeature) {
+        this.projectFeature = projectFeature;
     }
 }

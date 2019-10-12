@@ -195,8 +195,8 @@ public class MetadataUtil {
      * @return
      */
     public static String getAutoIncrementDisplay(MetaFieldPO field){
-        if(field.getPrimaryKey() == BoolConst.TRUE
-            && field.getAutoIncrement() == BoolConst.TRUE){
+        if(BoolConst.isTrue(field.getPrimaryKey())
+            && BoolConst.isTrue(field.getAutoIncrement())){
             return " AUTO_INCREMENT";
         }
         return "";
@@ -207,8 +207,8 @@ public class MetadataUtil {
      * @return
      */
     public static String getNotNullDisplay(MetaFieldPO field){
-        if(field.getPrimaryKey() == BoolConst.FALSE
-            && field.getNotNull() == BoolConst.TRUE){
+        if(BoolConst.isFalse(field.getPrimaryKey())
+            && BoolConst.isTrue(field.getNotNull())){
             return " NOT NULL";
         }
         return "";
@@ -221,11 +221,11 @@ public class MetadataUtil {
      */
     public static String getDefaultDisplay(MetaFieldPO field){
         // 主键无默认值
-        if(BoolConst.TRUE==field.getPrimaryKey()){
+        if(BoolConst.isTrue(field.getPrimaryKey())){
             return "";
         }
         if(DefaultValue.NULL.equalsIgnoreCase(field.getDefaultValue())) {
-            if (field.getNotNull() == BoolConst.FALSE){
+            if (BoolConst.isFalse(field.getNotNull())){
                 return " DEFAULT NULL";
             }else {
                 return "";

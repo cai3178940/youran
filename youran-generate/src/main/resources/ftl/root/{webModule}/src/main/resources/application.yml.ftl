@@ -1,6 +1,6 @@
 <#include "/common.ftl">
 server:
-<#if this.bootVersion==2>
+<#if this.projectFeature.bootVersion==2>
     servlet:
         context-path: /
 <#else>

@@ -11,15 +11,16 @@ import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.constant.DevMode;
 import com.youran.generate.constant.TemplateEnum;
 import com.youran.generate.constant.TemplateType;
+import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.template.context.BaseContext;
 import com.youran.generate.template.context.ConstContext;
 import com.youran.generate.template.context.EntityContext;
-import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.util.FreeMakerUtil;
 import com.youran.generate.util.Zip4jUtil;
 import org.apache.commons.io.FileUtils;
@@ -312,11 +313,15 @@ public class MetaCodeGenService implements InitializingBean {
      */
     private void renderFTL(BaseContext context, TemplateEnum templateEnum, String projectDir) {
         LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
-        String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), context);
-        LOGGER.debug(text);
-        String outFilePath = this.renderCodeFilePath(context, templateEnum, projectDir);
-        LOGGER.debug("输出代码文件：{}",outFilePath);
-        this.writeToFile(text, outFilePath);
+        try {
+            String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), context);
+            LOGGER.debug(text);
+            String outFilePath = this.renderCodeFilePath(context, templateEnum, projectDir);
+            LOGGER.debug("输出代码文件：{}",outFilePath);
+            this.writeToFile(text, outFilePath);
+        } catch (SkipCurrentException e) {
+            return;
+        }
     }
 
     /**
@@ -392,7 +397,7 @@ public class MetaCodeGenService implements InitializingBean {
     public GenHistoryPO gitCommit(Integer projectId,Consumer<ProgressVO> progressConsumer) {
         MetaProjectPO project = metaProjectService.getProject(projectId,true);
         Integer remote = project.getRemote();
-        if(BoolConst.TRUE!=remote){
+        if(BoolConst.isFalse(remote)){
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"当前项目未开启Git仓库");
         }
         String remoteUrl = project.getRemoteUrl();

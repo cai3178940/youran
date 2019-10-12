@@ -5,7 +5,7 @@
 <@call this.addImport("org.springframework.boot.SpringApplication")/>
 <@call this.addImport("org.springframework.boot.autoconfigure.SpringBootApplication")/>
 <@call this.addImport("org.springframework.boot.builder.SpringApplicationBuilder")/>
-<#if this.bootVersion==2>
+<#if this.projectFeature.bootVersion==2>
     <@call this.addImport("org.springframework.boot.web.servlet.support.SpringBootServletInitializer")/>
 <#else>
     <@call this.addImport("org.springframework.boot.web.support.SpringBootServletInitializer")/>

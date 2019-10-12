@@ -15,6 +15,13 @@ public class BoolConst {
 
     public static final int FALSE = 0;
 
+    public static final boolean isFalse(Integer value){
+        return value==null || FALSE==value;
+    }
+    public static final boolean isTrue(Integer value){
+        return !isFalse(value);
+    }
+
     @Check(message = "只允许输入0或1")
     public static final boolean check(int value) {
         return TRUE == value || FALSE == value;

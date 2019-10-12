@@ -31,6 +31,7 @@
             entity_id_field2,
             need_id,
             big_id,
+            feature,
             created_time,
             created_by,
             operated_time,
@@ -52,6 +53,7 @@
             #{entityIdField2,jdbcType=VARCHAR},
             #{needId,jdbcType=BOOLEAN},
             #{bigId,jdbcType=BOOLEAN},
+            #{feature,jdbcType=VARCHAR},
             #{createdTime,jdbcType=TIMESTAMP},
             #{createdBy,jdbcType=VARCHAR},
             #{operatedTime,jdbcType=TIMESTAMP},
@@ -75,6 +77,7 @@
         entity_id_field2=#{entityIdField2,jdbcType=VARCHAR},
         need_id=#{needId,jdbcType=BOOLEAN},
         big_id=#{bigId,jdbcType=BOOLEAN},
+        feature = #{feature,jdbcType=VARCHAR},
         operated_time = #{operatedTime,jdbcType=TIMESTAMP},
         operated_by = #{operatedBy,jdbcType=VARCHAR},
         version = #{version,jdbcType=INTEGER}

@@ -2,6 +2,7 @@ package com.youran.generate.template.context;
 
 import com.youran.common.constant.BoolConst;
 import com.youran.generate.pojo.dto.ForeignEntityTreeNode;
+import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
@@ -150,72 +151,45 @@ public class EntityContext extends BaseContext {
      *  3、则此处存放的是用户实体
      */
     private Set<MetaEntityPO> foreignEntities;
+    /**
+     * 实体特性
+     */
+    private MetaEntityFeatureDTO entityFeature;
 
-//    /**
-//     * 当前实体持有的级联实体，对应的级联扩展列表
-//     */
-//    private Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> holdCascadeExts;
-//
-//    /**
-//     * 当前实体未持有的级联实体，对应的级联扩展列表
-//     */
-//    private Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> unHoldCascadeExts;
-
-
-    public EntityContext(MetaProjectPO project, MetaEntityPO metaEntity){
+    public EntityContext(MetaProjectPO project, MetaEntityPO entity){
         super(project);
-        this.metaEntity = metaEntity;
-        this.entityId = metaEntity.getEntityId();
-        this.className = StringUtils.uncapitalize(metaEntity.getClassName());
-        this.classNameUpper = StringUtils.capitalize(metaEntity.getClassName());
-        this.tableName = metaEntity.getTableName();
-        this.title = metaEntity.getTitle();
-        this.desc = metaEntity.getDesc();
-        this.pk = metaEntity.getPkField();
+        this.metaEntity = entity;
+        this.entityId = entity.getEntityId();
+        this.className = StringUtils.uncapitalize(entity.getClassName());
+        this.classNameUpper = StringUtils.capitalize(entity.getClassName());
+        this.tableName = entity.getTableName();
+        this.title = entity.getTitle();
+        this.desc = entity.getDesc();
+        this.pk = entity.getPkField();
         this.id = this.pk.getJfieldName();
         this.idUpper = StringUtils.capitalize(this.id);
         this.type = this.pk.getJfieldType();
-        this.fields = metaEntity.getFields();
-        this.fkFields = metaEntity.getFkFields();
-        this.pageSign = metaEntity.getPageSign();
-        this.versionField = metaEntity.getVersionField();
-        this.delField = metaEntity.getDelField();
-        this.insertFields = metaEntity.getInsertFields();
-        this.updateFields = metaEntity.getUpdateFields();
-        this.queryFields = metaEntity.getQueryFields();
-        this.showFields = metaEntity.getShowFields();
-        this.listFields = metaEntity.getListFields();
-        this.listSortFields = metaEntity.getListSortFields();
-        this.createdTimeField = metaEntity.getCreatedTimeField();
-        this.createdByField = metaEntity.getCreatedByField();
-        this.operatedTimeField = metaEntity.getOperatedTimeField();
-        this.operatedByField = metaEntity.getOperatedByField();
-        this.holds = metaEntity.getHolds();
-        this.unHolds = metaEntity.getUnHolds();
-        this.foreignFields = metaEntity.getForeignFields();
-        this.foreignEntities = metaEntity.getForeignEntities();
-//        this.holdCascadeExts = mapCascadeExts(metaEntity,metaEntity.getHolds());
-//        this.unHoldCascadeExts = mapCascadeExts(metaEntity,metaEntity.getUnHolds());
+        this.fields = entity.getFields();
+        this.fkFields = entity.getFkFields();
+        this.pageSign = entity.getPageSign();
+        this.versionField = entity.getVersionField();
+        this.delField = entity.getDelField();
+        this.insertFields = entity.getInsertFields();
+        this.updateFields = entity.getUpdateFields();
+        this.queryFields = entity.getQueryFields();
+        this.showFields = entity.getShowFields();
+        this.listFields = entity.getListFields();
+        this.listSortFields = entity.getListSortFields();
+        this.createdTimeField = entity.getCreatedTimeField();
+        this.createdByField = entity.getCreatedByField();
+        this.operatedTimeField = entity.getOperatedTimeField();
+        this.operatedByField = entity.getOperatedByField();
+        this.holds = entity.getHolds();
+        this.unHolds = entity.getUnHolds();
+        this.foreignFields = entity.getForeignFields();
+        this.foreignEntities = entity.getForeignEntities();
+        this.entityFeature = entity.getEntityFeature();
     }
-
-    /**
-     * 将<级联实体,多对多>格式的map映射为<级联实体,级联字段列表>
-     * @param map
-     * @return
-     */
-//    private static Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> mapCascadeExts(MetaEntityPO hostEntity,
-//                                                                               Map<MetaEntityPO, MetaManyToManyPO> map){
-//        if(MapUtils.isEmpty(map)){
-//            return new HashMap<>(0);
-//        }
-//        Map<MetaEntityPO, List<MetaMtmCascadeExtPO>> result = new LinkedHashMap<>(map.size());
-//        for (Map.Entry<MetaEntityPO, MetaManyToManyPO> entry : map.entrySet()) {
-//            MetaEntityPO cascadeEntity = entry.getKey();
-//            MetaManyToManyPO mtm = entry.getValue();
-//            result.put(cascadeEntity,mtm.getCascadeExtList(hostEntity));
-//        }
-//        return result;
-//    }
 
     /**
      * 打印单元测试中的saveExample参数
@@ -225,10 +199,10 @@ public class EntityContext extends BaseContext {
         StringBuilder sb = new StringBuilder();
         for (MetaFieldPO field : entity.getInsertFields().values()) {
             // 跳过非外键
-            if(field.getForeignKey()==BoolConst.FALSE){
+            if(BoolConst.isFalse(field.getForeignKey())){
                 continue;
             }
-            if(field.getNotNull()==BoolConst.TRUE){
+            if(BoolConst.isTrue(field.getNotNull())){
                 sb.append(StringUtils.uncapitalize(field.getForeignEntity().getClassName()))
                     .append(".get")
                     .append(StringUtils.capitalize(field.getForeignEntity().getPkField().getJfieldName()))
@@ -363,7 +337,7 @@ public class EntityContext extends BaseContext {
 
         for (MetaFieldPO field : insertFields.values()) {
             // 插入字段是外键，并且不能为空
-            if(field.getForeignKey()==BoolConst.TRUE && field.getNotNull()==BoolConst.TRUE){
+            if(BoolConst.isTrue(field.getForeignKey()) && BoolConst.isTrue(field.getNotNull())){
                 node.addForeign(field);
                 ForeignEntityTreeNode child = buildForeignTreeForSave(field.getForeignEntity(), node, map);
                 node.addChild(child);
@@ -612,5 +586,13 @@ public class EntityContext extends BaseContext {
 
     public void setForeignEntities(Set<MetaEntityPO> foreignEntities) {
         this.foreignEntities = foreignEntities;
+    }
+
+    public MetaEntityFeatureDTO getEntityFeature() {
+        return entityFeature;
+    }
+
+    public void setEntityFeature(MetaEntityFeatureDTO entityFeature) {
+        this.entityFeature = entityFeature;
     }
 }

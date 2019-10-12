@@ -5,9 +5,11 @@ import com.youran.common.context.LoginContext;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.AESSecurityUtil;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.dao.MetaProjectDAO;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
+import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
 import com.youran.generate.pojo.po.MetaConstPO;
@@ -112,11 +114,15 @@ public class MetaProjectService {
      * @return
      */
     public MetaProjectPO getProject(Integer projectId, boolean force) {
-        MetaProjectPO metaProject = metaProjectDAO.findById(projectId);
-        if (force && metaProject == null) {
+        MetaProjectPO project = metaProjectDAO.findById(projectId);
+        if (force && project == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"项目不存在");
         }
-        return metaProject;
+        // 兼容旧数据，如果feature字段为空，则设置默认值
+        if (StringUtils.isBlank(project.getFeature())) {
+            project.setFeature(JsonUtil.toJSONString(new MetaProjectFeatureDTO()));
+        }
+        return project;
     }
 
 

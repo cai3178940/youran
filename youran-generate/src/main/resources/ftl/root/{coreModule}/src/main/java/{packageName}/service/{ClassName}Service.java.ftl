@@ -1,4 +1,5 @@
 <#include "/common.ftl">
+<#include "/mtmForOpp.ftl">
 <#include "/mtmCascadeExtsForList.ftl">
 <#include "/mtmCascadeExtsForShow.ftl">
 <#--定义主体代码-->
@@ -26,8 +27,8 @@ public class ${this.classNameUpper}Service {
     <#assign otherCName=otherEntity.className?capFirst>
     <@call this.addAutowired("${this.packageName}.dao" "${otherCName}DAO")/>
 </#list>
-<#-- 引入多对多关联实体的DAO（非当前持有） -->
-<#list this.unHolds! as otherEntity,mtm>
+<#-- 引入多对多关联实体的DAO（被对方持有） -->
+<#list mtmEntitiesForOpp as otherEntity>
     <@call this.addAutowired("${this.packageName}.dao" "${otherEntity.className?capFirst}DAO")/>
 </#list>
 <#-- 引入外键对应的DAO （插入字段对应的外键）-->
@@ -107,10 +108,13 @@ public class ${this.classNameUpper}Service {
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+    <#if isTrue(entityFeature.withinEntity)>
         List<${otherPk.jfieldType}> ${othercName}List = ${this.className}DTO.get${otherCName}List();
         if(CollectionUtils.isNotEmpty(${othercName}List)) {
             this.doAdd${otherCName}(${this.className}.get${this.idUpper}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
         }
+    </#if>
 </#list>
         return ${this.className};
     }
@@ -141,10 +145,13 @@ public class ${this.classNameUpper}Service {
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+    <#if isTrue(entityFeature.withinEntity)>
         List<${otherPk.jfieldType}> ${othercName}List = ${this.className}UpdateDTO.get${otherCName}List();
         if(${othercName}List != null) {
             this.set${otherCName}(${this.className}.get${this.idUpper}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
         }
+    </#if>
 </#list>
         return ${this.className};
     }
@@ -279,7 +286,7 @@ public class ${this.classNameUpper}Service {
     <#assign foreignCName=foreignEntity.className?capFirst>
             this.checkDeleteBy${foreignCName}(${this.id});
 </#list>
-<#list this.unHolds! as otherEntity,mtm>
+<#list mtmEntitiesForOpp as otherEntity>
     <#assign otherCName=otherEntity.className?capFirst>
             // 校验是否存在【${otherEntity.title}】关联
             this.checkDeleteBy${otherCName}(${this.id});
@@ -310,7 +317,7 @@ public class ${this.classNameUpper}Service {
     }
 
 </#list>
-<#list this.unHolds! as otherEntity,mtm>
+<#list mtmEntitiesForOpp as otherEntity>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
     /**
@@ -331,6 +338,7 @@ public class ${this.classNameUpper}Service {
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
     <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
+    <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
     /**
      * 执行【${otherEntity.title}】添加
      * @param ${this.id}
@@ -347,6 +355,7 @@ public class ${this.classNameUpper}Service {
         return count;
     }
 
+    <#if isTrue(entityFeature.addRemove)>
     /**
      * 添加【${otherEntity.title}】
      * @param ${this.id}
@@ -377,6 +386,8 @@ public class ${this.classNameUpper}Service {
         return ${this.className}DAO.remove${otherCName}(${this.id}, ${otherFkId});
     }
 
+    </#if>
+    <#if isTrue(entityFeature.set)||isTrue(entityFeature.withinEntity)>
     /**
      * 设置【${otherEntity.title}】
      * @param ${this.id}
@@ -393,6 +404,7 @@ public class ${this.classNameUpper}Service {
         return doAdd${otherCName}(${this.id}, ${otherFkId});
     }
 
+    </#if>
 </#list>
 
 }

@@ -86,6 +86,19 @@ public class MetaManyToManyAddDTO extends AbstractDTO {
     @NotNull
     private Boolean bigId;
 
+    /**
+     * 多对多特性
+     */
+    private MetaMtmFeatureDTO feature;
+
+    public MetaMtmFeatureDTO getFeature() {
+        return feature;
+    }
+
+    public void setFeature(MetaMtmFeatureDTO feature) {
+        this.feature = feature;
+    }
+
     public String getEntityIdField1() {
         return entityIdField1;
     }

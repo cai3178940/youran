@@ -1,4 +1,9 @@
 <#include "/common.ftl">
+<#include "/checkFeatureForRest.ftl">
+<#--判断如果不需要生成当前文件，则直接跳过-->
+<#if !getGenRest(this.metaEntity)>
+    <@call this.skipCurrent()/>
+</#if>
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ShowVO")/>
@@ -15,6 +20,7 @@
 @Api(tags = "${this.classNameUpper}")
 public interface ${this.classNameUpper}API {
 
+<#if isTrue(this.entityFeature.save)>
     /**
      * 新增【${this.title}】
      */
@@ -24,6 +30,8 @@ public interface ${this.classNameUpper}API {
     })
     ResponseEntity<${this.classNameUpper}ShowVO> save(${this.classNameUpper}AddDTO ${this.className}AddDTO) throws Exception;
 
+</#if>
+<#if isTrue(this.entityFeature.update)>
     /**
      * 修改【${this.title}】
      */
@@ -32,21 +40,27 @@ public interface ${this.classNameUpper}API {
         @ApiImplicitParam(name = "${this.className}UpdateDTO", dataType = "${this.classNameUpper}UpdateDTO", value = "修改【${this.title}】参数", paramType = "body"),
     })
     ResponseEntity<${this.classNameUpper}ShowVO> update(${this.classNameUpper}UpdateDTO ${this.className}UpdateDTO);
-<#if isTrue(this.pageSign)>
-    <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
+
+</#if>
+<#if isTrue(this.entityFeature.list)>
+    <#if isTrue(this.pageSign)>
+        <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     /**
      * 分页查询【${this.title}】
      */
     @ApiOperation(value="分页查询【${this.title}】")
     ResponseEntity<PageVO<${this.classNameUpper}ListVO>> list(${this.classNameUpper}QO ${this.className}QO);
-<#else>
-    <@call this.addImport("java.util.List")/>
+    <#else>
+        <@call this.addImport("java.util.List")/>
     /**
      * 列表查询【${this.title}】
      */
     @ApiOperation(value="列表查询【${this.title}】")
     ResponseEntity<List<${this.classNameUpper}ListVO>> list(${this.classNameUpper}QO ${this.className}QO);
+    </#if>
+
 </#if>
+<#if isTrue(this.entityFeature.show)>
     /**
      * 查看【${this.title}】详情
      */
@@ -56,6 +70,8 @@ public interface ${this.classNameUpper}API {
     })
     ResponseEntity<${this.classNameUpper}ShowVO> show(${this.type} ${this.id});
 
+</#if>
+<#if isTrue(this.entityFeature.delete)>
     /**
      * 删除单个【${this.title}】
      */
@@ -65,6 +81,8 @@ public interface ${this.classNameUpper}API {
     })
     ResponseEntity<Integer> delete(${this.type} ${this.id});
 
+</#if>
+<#if isTrue(this.entityFeature.deleteBatch)>
     /**
      * 批量删除【${this.title}】
      */
@@ -74,25 +92,17 @@ public interface ${this.classNameUpper}API {
     })
     ResponseEntity<Integer> deleteBatch(${this.type}[] id);
 
-
+</#if>
 <#list this.holds! as otherEntity,mtm>
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
+    <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+    <#if isTrue(entityFeature.addRemove)>
     /**
-     * 添加单个【${otherEntity.title}】关联
+     * 添加【${otherEntity.title}】关联
      */
-    @ApiOperation(value="添加单个【${otherEntity.title}】关联")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${otherFkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
-    })
-    ResponseEntity<Integer> add${otherCName}(${this.type} ${this.id},${otherPk.jfieldType} ${otherFkId});
-
-    /**
-     * 添加多个【${otherEntity.title}】关联
-     */
-    @ApiOperation(value="添加多个【${otherEntity.title}】关联")
+    @ApiOperation(value="添加【${otherEntity.title}】关联")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
         @ApiImplicitParam(name = "${otherFkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
@@ -100,25 +110,17 @@ public interface ${this.classNameUpper}API {
     ResponseEntity<Integer> add${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherFkId});
 
     /**
-     * 移除单个【${otherEntity.title}】关联
+     * 移除【${otherEntity.title}】关联
      */
-    @ApiOperation(value="移除单个【${otherEntity.title}】关联")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
-        @ApiImplicitParam(name = "${otherFkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id", paramType = "path"),
-    })
-    ResponseEntity<Integer> remove${otherCName}(${this.type} ${this.id},${otherPk.jfieldType} ${otherFkId});
-
-    /**
-     * 移除多个【${otherEntity.title}】关联
-     */
-    @ApiOperation(value="移除多个【${otherEntity.title}】关联")
+    @ApiOperation(value="移除【${otherEntity.title}】关联")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "${this.id}", dataType = "${MetadataUtil.getSwaggerType(type)}", value = "【${this.title}】id", paramType = "path"),
         @ApiImplicitParam(name = "${otherFkId}", dataType = "${MetadataUtil.getSwaggerType(otherPk.jfieldType)}", value = "【${otherEntity.title}】id数组", paramType = "body"),
     })
     ResponseEntity<Integer> remove${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherFkId});
 
+    </#if>
+    <#if isTrue(entityFeature.set)>
     /**
      * 设置【${otherEntity.title}】关联
      */
@@ -129,6 +131,7 @@ public interface ${this.classNameUpper}API {
     })
     ResponseEntity<Integer> set${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherFkId});
 
+    </#if>
 </#list>
 
 }

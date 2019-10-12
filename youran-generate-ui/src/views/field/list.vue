@@ -60,11 +60,22 @@
       </el-table-column>
       <el-table-column label="字段标题">
         <template slot-scope="scope">
+          <template v-if="!scope.row.validate.success">
+            <icon name="exclamation-circle" class="table-cell-icon color-warning"></icon>
+          </template>
           <el-popover
-            :content="scope.row.fieldComment"
             placement="top"
-            trigger="click"
-            popper-class="field-comment-popper">
+            trigger="click">
+            <p>
+              <span class="popper-remark-label">备注：</span>
+              {{ scope.row.fieldComment }}
+            </p>
+            <p v-if="!scope.row.validate.dicExistSuccess" style="margin-top: 5px;">
+              <span class="popper-warn-label">异常：</span>
+              枚举"{{ scope.row.validate.dicNotExist }}"不存在
+              <el-button @click="handleAddConst(scope.row)"
+                         style="padding: 0px;" type="text">前往创建</el-button>
+            </p>
             <el-button slot="reference" size="medium" type="text">{{ scope.row.fieldDesc }}</el-button>
           </el-popover>
           <template v-for="index in scope.row.indexes">
@@ -445,6 +456,7 @@ export default {
         .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .then(() => this.doQueryIndex())
+        .then(() => this.doValidateEntityInner())
         .catch(error => this.$common.showNotifyError(error))
     },
     /**
@@ -502,6 +514,7 @@ export default {
       this.doQuery()
         .then(() => this.doQueryIndex())
         .then(() => this.doQueryMtmEntities())
+        .then(() => this.doValidateEntityInner())
     },
     // 列表查询
     doQuery () {
@@ -516,6 +529,9 @@ export default {
             value.indexes = []
             value.orderNoEdit = false
             value.oldOrderNo = value.orderNo
+            value.validate = {
+              success: true
+            }
           })
           this.list = data
         })
@@ -580,6 +596,7 @@ export default {
               this.$common.showMsg('success', '添加成功')
               this.doQuery()
                 .then(() => this.doQueryIndex())
+                .then(() => this.doValidateEntityInner())
             }
           })
           .catch(error => this.$common.showNotifyError(error))
@@ -606,6 +623,7 @@ export default {
             this.$common.showMsg('success', '添加成功')
             return this.doQuery()
               .then(() => this.doQueryIndex())
+              .then(() => this.doValidateEntityInner())
           })
       }
       promise.finally(() => {
@@ -735,6 +753,32 @@ export default {
         }
         return f1.orderNo - f2.orderNo
       })
+    },
+    /**
+     * 实体内部校验
+     */
+    doValidateEntityInner () {
+      if (!this.query.projectId || !this.query.entityId || !this.list.length) {
+        return
+      }
+      return this.$ajax.get(`/${apiPath}/meta_validate/entity_inner/${this.query.entityId}`)
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          const fieldValidates = data.fields
+          this.list.forEach(field => {
+            const fieldValidate = fieldValidates.find(fv => fv.fieldId === field.fieldId)
+            field.validate = fieldValidate
+          })
+        })
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    handleAddConst (field) {
+      const validate = field.validate
+      const constName = validate.dicNotExist
+      const constType = validate.suggestConstType
+      const constRemark = validate.suggestConstRemark
+      this.$router.push(`/project/${this.projectId}/const/add?\
+          constName=${constName}&constType=${constType}&constRemark=${constRemark}`)
     }
   },
   activated () {
@@ -749,6 +793,7 @@ export default {
       .then(() => this.doQuery())
       .then(() => this.doQueryIndex())
       .then(() => this.doQueryMtmEntities())
+      .then(() => this.doValidateEntityInner())
   }
 }
 </script>
@@ -888,14 +933,21 @@ export default {
     }
 
   }
+
+  .popper-remark-label{
+    color: #606266;
+    font-weight: bold;
+  }
+  .popper-warn-label{
+    color: orange;
+    font-weight: bold;
+  }
+
   .template-option {
     width: 15px;
     display: inline-block;
     .fa-icon {
       vertical-align: text-top;
     }
-  }
-  .field-comment-popper {
-    text-align: center;
   }
 </style>

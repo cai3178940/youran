@@ -42,7 +42,7 @@
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
             <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
-            <el-button @click="goBack()">返回</el-button>
+            <el-button @click="goBack(true)">返回</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -57,7 +57,13 @@ import { initFormBean, getRules } from './model'
 
 export default {
   name: 'constForm',
-  props: ['projectId', 'constId'],
+  props: [
+    'projectId',
+    'constId',
+    'constName',
+    'constType',
+    'constRemark'
+  ],
   data () {
     const edit = !!this.constId
     return {
@@ -104,7 +110,7 @@ export default {
       // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '操作成功')
-          this.goBack()
+          this.goBack(false)
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => {
@@ -113,8 +119,12 @@ export default {
           }
         })
     },
-    goBack () {
-      this.$router.push(`/project/${this.projectId}/const`)
+    goBack (preferHistory) {
+      if (preferHistory && window.history.length > 1) {
+        this.$router.go(-1)
+      } else {
+        this.$router.push(`/project/${this.projectId}/const`)
+      }
     }
   },
   created () {
@@ -123,7 +133,18 @@ export default {
         .then(() => this.reset())
     } else {
       this.queryProject()
-        .then(() => { this.form.projectId = parseInt(this.projectId) })
+        .then(() => {
+          this.form.projectId = parseInt(this.projectId)
+          if (this.constName) {
+            this.form.constName = this.constName
+          }
+          if (this.constType) {
+            this.form.constType = parseInt(this.constType)
+          }
+          if (this.constRemark) {
+            this.form.constRemark = this.constRemark
+          }
+        })
     }
   }
 }

@@ -60,6 +60,19 @@ public class MetaEntityAddDTO extends AbstractDTO {
     @Const(constClass = BoolConst.class)
     private Integer pageSign;
 
+    /**
+     * 实体特性
+     */
+    private MetaEntityFeatureDTO feature;
+
+    public MetaEntityFeatureDTO getFeature() {
+        return feature;
+    }
+
+    public void setFeature(MetaEntityFeatureDTO feature) {
+        this.feature = feature;
+    }
+
     public Integer getPageSign() {
         return pageSign;
     }

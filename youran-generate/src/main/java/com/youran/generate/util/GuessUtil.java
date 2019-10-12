@@ -1,10 +1,7 @@
 package com.youran.generate.util;
 
 import com.youran.common.util.DateUtil;
-import com.youran.generate.constant.JFieldType;
-import com.youran.generate.constant.MetaSpecialField;
-import com.youran.generate.constant.MySqlType;
-import com.youran.generate.constant.QueryType;
+import com.youran.generate.constant.*;
 
 import java.util.Date;
 
@@ -226,7 +223,17 @@ public class GuessUtil {
         return "";
     }
 
-
+    /**
+     * 根据字段类型猜测常量类型
+     * @param jFieldType
+     * @return
+     */
+    public static Integer guessConstType(JFieldType jFieldType){
+        if(jFieldType == JFieldType.INTEGER || jFieldType == JFieldType.SHORT){
+            return MetaConstType.INTEGER;
+        }
+        return MetaConstType.STRING;
+    }
 
 
 }

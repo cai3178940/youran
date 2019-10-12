@@ -3,16 +3,20 @@ package com.youran.generate.service;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaManyToManyDAO;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
+import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
+import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.MetaEntityMapper;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
 import com.youran.generate.pojo.vo.MetaMtmEntityListVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,6 +104,11 @@ public class MetaEntityService {
         if (force && metaEntity == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"实体不存在");
         }
+        // 兼容旧数据，如果feature字段为空，则设置默认值
+        if (StringUtils.isBlank(metaEntity.getFeature())) {
+            metaEntity.setFeature(JsonUtil.toJSONString(new MetaEntityFeatureDTO()));
+        }
+        metaEntity.setEntityFeature(FeatureMapper.asEntityFeatureDTO(metaEntity.getFeature()));
         return metaEntity;
     }
 

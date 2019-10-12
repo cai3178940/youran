@@ -20,7 +20,7 @@ public class SwaggerConfig {
      */
     @Configuration
     @ConditionalOnProperty(value = "swagger.enabled", havingValue = "false", matchIfMissing = true)
-<#if this.bootVersion==2>
+<#if this.projectFeature.bootVersion==2>
     <@call this.addImport("org.springframework.web.servlet.config.annotation.WebMvcConfigurer")/>
     public static class SwaggerDisabledConfig implements WebMvcConfigurer {
 <#else>

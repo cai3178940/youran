@@ -30,7 +30,7 @@ public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
     @Override
     public void run(String... args) throws Exception {
         String port = env.getProperty("server.port","8080");
-    <#if this.bootVersion==2>
+    <#if this.projectFeature.bootVersion==2>
         String contextPath = env.getProperty("server.servlet.context-path","/");
     <#else>
         String contextPath = env.getProperty("server.context-path","/");
