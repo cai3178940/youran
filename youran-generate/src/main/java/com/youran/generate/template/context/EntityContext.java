@@ -7,7 +7,7 @@ import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;

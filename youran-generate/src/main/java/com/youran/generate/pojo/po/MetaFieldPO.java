@@ -1,5 +1,7 @@
 package com.youran.generate.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 /**
@@ -43,18 +45,24 @@ public class MetaFieldPO extends BasePO {
     /**
      * 外键对应实体
      */
+    @JsonIgnore
     private MetaEntityPO foreignEntity;
     /**
      * 外键对应字段
      */
+    @JsonIgnore
     private MetaFieldPO foreignField;
 
     /**
      * 外键对应级联扩展
      */
+    @JsonIgnore
     private List<MetaCascadeExtPO> cascadeExts;
+    @JsonIgnore
     private List<MetaCascadeExtPO> cascadeQueryExts;
+    @JsonIgnore
     private List<MetaCascadeExtPO> cascadeShowExts;
+    @JsonIgnore
     private List<MetaCascadeExtPO> cascadeListExts;
 
 

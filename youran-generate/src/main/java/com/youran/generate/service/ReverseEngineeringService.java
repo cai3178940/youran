@@ -23,7 +23,7 @@ import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.util.GuessUtil;
 import com.youran.generate.util.MetadataUtil;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

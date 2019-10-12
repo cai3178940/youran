@@ -13,7 +13,7 @@ import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
 import com.youran.generate.util.MetaFieldCheckUtil;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

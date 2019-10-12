@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -41,10 +42,13 @@ public class MetaProjectPO extends BasePO {
 
     private String feature;
 
+    @JsonIgnore
     private List<MetaEntityPO> entities;
 
+    @JsonIgnore
     private List<MetaConstPO> consts;
 
+    @JsonIgnore
     private List<MetaManyToManyPO> mtms;
 
 

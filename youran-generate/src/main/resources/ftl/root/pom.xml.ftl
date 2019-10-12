@@ -28,7 +28,7 @@
         <springfox.version><#if this.projectFeature.bootVersion==2>2.9.2<#else>2.7.0</#if></springfox.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <commons-io.version>2.6</commons-io.version>
-        <commons-collections.version>3.2.2</commons-collections.version>
+        <commons-collections.version>4.4</commons-collections.version>
         <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
         <jsoup.version>1.11.2</jsoup.version>
         <h2.version>1.4.193</h2.version>
@@ -68,8 +68,8 @@
             </dependency>
             <!-- apache集合工具包 -->
             <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
                 <version>${r'$'}{commons-collections.version}</version>
             </dependency>
             <!-- spring集成swagger第三方包 http://springfox.github.io/springfox/ -->

@@ -24,6 +24,7 @@ public interface MetaIndexMapper {
      * @param addDTO
      * @return
      */
+    @Mapping(target = "fieldIds",ignore = true)
     MetaIndexPO fromAddDTO(MetaIndexAddDTO addDTO);
 
     /**
@@ -31,6 +32,7 @@ public interface MetaIndexMapper {
      * @param metaIndexPO
      * @param metaIndexUpdateDTO
      */
+    @Mapping(target = "fieldIds",ignore = true)
     void setPO(@MappingTarget MetaIndexPO metaIndexPO, MetaIndexUpdateDTO metaIndexUpdateDTO);
 
 

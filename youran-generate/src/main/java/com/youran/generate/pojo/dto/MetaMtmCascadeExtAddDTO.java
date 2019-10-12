@@ -1,11 +1,13 @@
 package com.youran.generate.pojo.dto;
 
 import com.youran.common.pojo.dto.AbstractDTO;
+import com.youran.generate.constant.PatternConst;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import static com.youran.generate.pojo.example.MetaMtmCascadeExtExample.*;
 
@@ -37,6 +39,7 @@ public class MetaMtmCascadeExtAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_ALIAS, example = E_ALIAS, required = true)
     @NotNull
     @Length(max = 255)
+    @Pattern(regexp = PatternConst.J_FIELD_NAME, message = PatternConst.J_FIELD_NAME_MSG)
     private String alias;
 
     @ApiModelProperty(notes = N_LIST, example = E_LIST, required = true)

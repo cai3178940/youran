@@ -15,7 +15,7 @@ import com.youran.generate.service.MetaManyToManyService;
 import com.youran.generate.service.MetaQueryAssembleService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.ErDiagramAPI;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +62,7 @@ public class ErDiagramController extends AbstractController implements ErDiagram
         // 查询多对多列表
         List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId,false);
         // 组装多对多对象引用
-        metaQueryAssembleService.assembleManyToManyWithEntities(metaEntities, manyToManies, false);
+        manyToManies = metaQueryAssembleService.assembleManyToManyWithEntities(metaEntities, manyToManies, false);
 
 
         List<EntityDiagramVO> nodeData = new ArrayList<>();

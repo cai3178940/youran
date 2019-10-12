@@ -104,7 +104,7 @@ public class ${this.classNameUpper}Service {
         ${this.className}DAO.save(${this.className});
 <#list this.holds! as otherEntity,mtm>
     <@call this.addImport("java.util.List")/>
-    <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
+    <@call this.addImport("org.apache.commons.collections4.CollectionUtils")/>
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
@@ -141,7 +141,7 @@ public class ${this.classNameUpper}Service {
         ${this.className}DAO.update(${this.className});
 <#list this.holds! as otherEntity,mtm>
     <@call this.addImport("java.util.List")/>
-    <@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
+    <@call this.addImport("org.apache.commons.collections4.CollectionUtils")/>
     <#assign otherPk=otherEntity.pkField>
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>

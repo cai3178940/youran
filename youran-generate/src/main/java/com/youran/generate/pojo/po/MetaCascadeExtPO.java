@@ -1,5 +1,7 @@
 package com.youran.generate.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * <p>Title:级联扩展</p>
  * <p>Description:从外键字段对应的表中级联查出要展示的字段</p>
@@ -56,6 +58,7 @@ public class MetaCascadeExtPO extends BasePO {
     /**
      * 级联字段
      */
+    @JsonIgnore
     private MetaFieldPO cascadeField;
 
     public MetaFieldPO getCascadeField() {

@@ -1,7 +1,7 @@
 <#include "/common.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@call this.addImport("org.apache.commons.collections.CollectionUtils")/>
+<@call this.addImport("org.apache.commons.collections4.CollectionUtils")/>
 <@call this.addImport("org.apache.commons.lang3.StringUtils")/>
 <@call this.addImport("org.apache.commons.lang3.reflect.MethodUtils")/>
 <@call this.addImport("org.slf4j.Logger")/>

@@ -7,7 +7,7 @@ import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.util.MetadataUtil;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,7 +81,7 @@ public class MetaQueryAssembleService {
             // 查询多对多列表
             List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId,true);
             // 装配多对多持有引用
-            this.assembleManyToManyWithEntities(metaEntities, manyToManies, withMtmCascade);
+            manyToManies = this.assembleManyToManyWithEntities(metaEntities, manyToManies, withMtmCascade);
             project.setMtms(manyToManies);
         }
         // 校验完整性
@@ -233,12 +233,14 @@ public class MetaQueryAssembleService {
      * @param metaEntities 实体列表
      * @param manyToManies 多对多列表
      * @param withMtmCascade 是否装配多对多级联扩展
+     * @return 装配及过滤后的多对多列表
      */
-    public void assembleManyToManyWithEntities(List<MetaEntityPO> metaEntities,
+    public List<MetaManyToManyPO> assembleManyToManyWithEntities(List<MetaEntityPO> metaEntities,
                                                List<MetaManyToManyPO> manyToManies,
                                                boolean withMtmCascade) {
+        List<MetaManyToManyPO> result = new ArrayList<>(manyToManies.size());
         if (CollectionUtils.isEmpty(manyToManies) || CollectionUtils.isEmpty(metaEntities)) {
-            return;
+            return result;
         }
         //将实体列表转成map
         Map<Integer, MetaEntityPO> entityMap = metaEntities.stream()
@@ -266,7 +268,9 @@ public class MetaQueryAssembleService {
             if(withMtmCascade) {
                 this.assembleMtmCascadeExt(mtm, entityMap);
             }
+            result.add(mtm);
         }
+        return result;
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
@@ -70,49 +71,59 @@ public class MetaManyToManyPO extends BasePO {
      */
     private Boolean bigId;
     /**
-     * 引用实体A
-     */
-    private MetaEntityPO refer1;
-    /**
-     * 引用实体B
-     */
-    private MetaEntityPO refer2;
-    /**
-     * 实体A持有的级联扩展列表
-     */
-    private List<MetaMtmCascadeExtPO> cascadeExtList1;
-    /**
-     * 实体B持有的级联扩展列表
-     */
-    private List<MetaMtmCascadeExtPO> cascadeExtList2;
-    /**
-     * 外键字段别名A-sql字段
-     */
-    private String fkAliasForSql1;
-    /**
-     * 外键字段别名B-sql字段
-     */
-    private String fkAliasForSql2;
-    /**
-     * 外键字段别名A-java字段
-     */
-    private String fkAliasForJava1;
-    /**
-     * 外键字段别名B-java字段
-     */
-    private String fkAliasForJava2;
-    /**
      * 特性json
      * 后续有新的特性直接往里加，省的再扩展新字段
      */
     private String feature;
     /**
+     * 引用实体A
+     */
+    @JsonIgnore
+    private MetaEntityPO refer1;
+    /**
+     * 引用实体B
+     */
+    @JsonIgnore
+    private MetaEntityPO refer2;
+    /**
+     * 实体A持有的级联扩展列表
+     */
+    @JsonIgnore
+    private List<MetaMtmCascadeExtPO> cascadeExtList1;
+    /**
+     * 实体B持有的级联扩展列表
+     */
+    @JsonIgnore
+    private List<MetaMtmCascadeExtPO> cascadeExtList2;
+    /**
+     * 外键字段别名A-sql字段
+     */
+    @JsonIgnore
+    private String fkAliasForSql1;
+    /**
+     * 外键字段别名B-sql字段
+     */
+    @JsonIgnore
+    private String fkAliasForSql2;
+    /**
+     * 外键字段别名A-java字段
+     */
+    @JsonIgnore
+    private String fkAliasForJava1;
+    /**
+     * 外键字段别名B-java字段
+     */
+    @JsonIgnore
+    private String fkAliasForJava2;
+    /**
      * 实体1特性
      */
+    @JsonIgnore
     private MetaMtmEntityFeatureDTO f1;
     /**
      * 实体2特性
      */
+    @JsonIgnore
     private MetaMtmEntityFeatureDTO f2;
 
 

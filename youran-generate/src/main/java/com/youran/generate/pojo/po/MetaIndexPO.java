@@ -1,7 +1,12 @@
 package com.youran.generate.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.util.CollectionUtils;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>Title:索引</p>
@@ -24,7 +29,18 @@ public class MetaIndexPO extends BasePO {
     /**
      * 索引字段
      */
+    @JsonIgnore
     private List<MetaFieldPO> fields;
+
+
+    public List<Integer> getFieldIds(){
+        if(CollectionUtils.isEmpty(fields)){
+            return Collections.emptyList();
+        }
+        return fields.stream()
+            .map(MetaFieldPO::getFieldId)
+            .collect(Collectors.toList());
+    }
 
     /**
      * 添加字段

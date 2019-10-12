@@ -185,7 +185,11 @@ export default {
     handleCascadeFieldChange (row) {
       const cascadeField = this.cascadeFieldList.find(field => field.fieldId === row.cascadeFieldId)
       row.alias = cascadeField.jfieldName
-      row.fieldQuery = cascadeField.query
+      if (cascadeField.query === 1 || cascadeField.primaryKey === 1) {
+        row.fieldQuery = 1
+      } else {
+        row.fieldQuery = 0
+      }
       if (row.fieldQuery !== 1) {
         row.query = 0
       }

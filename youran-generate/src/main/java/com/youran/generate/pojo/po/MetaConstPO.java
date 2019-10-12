@@ -1,5 +1,7 @@
 package com.youran.generate.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class MetaConstPO extends BasePO {
     /**
      * 常量值列表
      */
+    @JsonIgnore
     private List<MetaConstDetailPO> detailList;
 
     public void addDetail(MetaConstDetailPO metaConstDetailPO){

@@ -1,9 +1,6 @@
 package com.youran.generate.pojo.po;
 
-import com.youran.common.pojo.po.AbstractPO;
-import com.youran.common.pojo.po.CreatedOperatedDeletedVersion;
-
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * <p>Title: 多对多级联扩展</p>
@@ -11,7 +8,7 @@ import java.util.Date;
  * @author cbb
  * @date 2019/09/21
  */
-public class MetaMtmCascadeExtPO extends AbstractPO implements CreatedOperatedDeletedVersion {
+public class MetaMtmCascadeExtPO extends BasePO {
 
     /**
      * 主键ID
@@ -59,46 +56,19 @@ public class MetaMtmCascadeExtPO extends AbstractPO implements CreatedOperatedDe
     private Integer query;
 
     /**
-     * 创建时间【yyyy-MM-dd HH:mm:ss】
-     */
-    private Date createdTime;
-
-    /**
-     * 创建人【最大长度20】
-     */
-    private String createdBy;
-
-    /**
-     * 修改时间【yyyy-MM-dd HH:mm:ss】
-     */
-    private Date operatedTime;
-
-    /**
-     * 修改人【最大长度20】
-     */
-    private String operatedBy;
-
-    /**
-     * 乐观锁版本号【整型】
-     */
-    private Integer version;
-
-    /**
-     * 逻辑删除标识【0-未删除，1-已删除】
-     */
-    private Boolean deleted;
-
-    /**
      * 宿主实体
      */
+    @JsonIgnore
     private MetaEntityPO hostEntity;
     /**
      * 级联实体
      */
+    @JsonIgnore
     private MetaEntityPO cascadeEntity;
     /**
      * 级联字段
      */
+    @JsonIgnore
     private MetaFieldPO cascadeField;
 
 
@@ -196,66 +166,6 @@ public class MetaMtmCascadeExtPO extends AbstractPO implements CreatedOperatedDe
 
     public void setHostEntity(MetaEntityPO hostEntity) {
         this.hostEntity = hostEntity;
-    }
-
-    @Override
-    public Date getCreatedTime() {
-        return this.createdTime;
-    }
-
-    @Override
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    @Override
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
-
-    @Override
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    @Override
-    public Date getOperatedTime() {
-        return this.operatedTime;
-    }
-
-    @Override
-    public void setOperatedTime(Date operatedTime) {
-        this.operatedTime = operatedTime;
-    }
-
-    @Override
-    public String getOperatedBy() {
-        return this.operatedBy;
-    }
-
-    @Override
-    public void setOperatedBy(String operatedBy) {
-        this.operatedBy = operatedBy;
-    }
-
-    @Override
-    public Integer getVersion() {
-        return this.version;
-    }
-
-    @Override
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    @Override
-    public Boolean getDeleted() {
-        return this.deleted;
-    }
-
-    @Override
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
     }
 
 

@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -48,6 +49,7 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      * 【已废弃】
      */
     @Deprecated
+    @JsonIgnore
     private Integer commonCall;
     /**
      * 是否支持分页查询
@@ -62,81 +64,100 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     /**
      * 字段列表
      */
+    @JsonIgnore
     private Map<Integer, MetaFieldPO> fields = new LinkedHashMap<>(16);
 
     /**
      * 外键字段列表
      */
+    @JsonIgnore
     private Map<Integer, MetaFieldPO> fkFields = new LinkedHashMap<>(16);
 
     /**
      * 查询字段列表
      */
+    @JsonIgnore
     private Map<Integer, MetaFieldPO> queryFields = new LinkedHashMap<>(16);
 
     /**
      * 插入字段列表
      */
+    @JsonIgnore
     private Map<Integer, MetaFieldPO> insertFields = new LinkedHashMap<>(16);
     /**
      * 修改字段列表
      */
+    @JsonIgnore
     private Map<Integer, MetaFieldPO> updateFields = new LinkedHashMap<>(16);
     /**
      * 列表字段列表
      */
+    @JsonIgnore
     private Map<Integer, MetaFieldPO> listFields = new LinkedHashMap<>(16);
     /**
      * 排序字段列表
      */
+    @JsonIgnore
     private Map<Integer, MetaFieldPO> listSortFields = new LinkedHashMap<>(16);
     /**
      * 详情字段列表
      */
+    @JsonIgnore
     private Map<Integer, MetaFieldPO> showFields = new LinkedHashMap<>(16);
     /**
      * 索引列表
      */
+    @JsonIgnore
     private List<MetaIndexPO> indexes = new ArrayList<>();
     /**
      * 需要校验唯一性的索引列表
      */
+    @JsonIgnore
     private List<MetaIndexPO> checkUniqueIndexes;
     /**
      * 主键字段
      */
+    @JsonIgnore
     private MetaFieldPO pkField;
     /**
      * 逻辑删除标识字段
      */
+    @JsonIgnore
     private MetaFieldPO delField;
     /**
      * 创建人字段
      */
+    @JsonIgnore
     private MetaFieldPO createdByField;
     /**
      * 创建时间字段
      */
+    @JsonIgnore
     private MetaFieldPO createdTimeField;
     /**
      * 操作人字段
      */
+    @JsonIgnore
     private MetaFieldPO operatedByField;
     /**
      * 操作时间字段
      */
+    @JsonIgnore
     private MetaFieldPO operatedTimeField;
     /**
      * 乐观锁版本字段
      */
+    @JsonIgnore
     private MetaFieldPO versionField;
     /**
      * 持有引用的多对多关系
      */
+    @JsonIgnore
     private Map<MetaEntityPO,MetaManyToManyPO> holds = new TreeMap<>();
     /**
      * 未持有引用的多对多关系
      */
+    @JsonIgnore
     private Map<MetaEntityPO,MetaManyToManyPO> unHolds = new TreeMap<>();
 
     /**
@@ -146,6 +167,7 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      *  2、对应实体是用户，用户中的外键字段是部门id
      *  3、则此处存放的是用户表中的部门id
      */
+    @JsonIgnore
     private List<MetaFieldPO> foreignFields = new ArrayList<>();
     /**
      * 对应的外键实体集合(当前主键对应的其他实体)
@@ -154,11 +176,13 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      *  2、对应实体是用户，用户中的外键字段是部门id
      *  3、则此处存放的是用户实体
      */
+    @JsonIgnore
     private Set<MetaEntityPO> foreignEntities = new TreeSet<>();;
 
     /**
      * 实体特性
      */
+    @JsonIgnore
     private MetaEntityFeatureDTO entityFeature;
 
     public MetaEntityPO addField(MetaFieldPO field){

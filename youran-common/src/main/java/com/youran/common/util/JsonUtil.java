@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -100,5 +101,18 @@ public class JsonUtil {
 
     public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
         return mapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
+    }
+
+    public static void writeJsonToFile(Object object, boolean prettyFormat, File file) {
+        try {
+            if(prettyFormat) {
+                mapper.writerWithDefaultPrettyPrinter().writeValue(file,object);
+            }else{
+                mapper.writeValue(file,object);
+            }
+        } catch (IOException e) {
+            LOGGER.error("json序列化异常", e);
+            throw new RuntimeException("json序列化异常",e);
+        }
     }
 }

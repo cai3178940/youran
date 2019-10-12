@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.pojo.po.AbstractPO;
 import com.youran.common.pojo.po.CreatedOperatedDeletedVersion;
 
@@ -13,16 +14,22 @@ import java.util.Date;
  */
 public abstract class BasePO extends AbstractPO implements CreatedOperatedDeletedVersion {
 
+    @JsonIgnore
     private Date createdTime;
 
+    @JsonIgnore
     private String createdBy;
 
+    @JsonIgnore
     private Date operatedTime;
 
+    @JsonIgnore
     private String operatedBy;
 
+    @JsonIgnore
     private Integer version;
 
+    @JsonIgnore
     private Boolean deleted;
 
     @Override

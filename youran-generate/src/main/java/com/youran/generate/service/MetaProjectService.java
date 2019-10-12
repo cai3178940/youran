@@ -1,7 +1,6 @@
 package com.youran.generate.service;
 
 import com.youran.common.constant.ErrorCode;
-import com.youran.common.context.LoginContext;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.AESSecurityUtil;
@@ -48,9 +47,11 @@ public class MetaProjectService {
     @Autowired
     private GenerateProperties generateProperties;
 
-    @Autowired
-    private LoginContext loginContext;
-
+    /**
+     * 获取项目正规名称
+     * @param projectId
+     * @return
+     */
     public String getNormalProjectName(Integer projectId){
         MetaProjectPO projectPO = this.getProject(projectId,true);
         return projectPO.fetchNormalProjectName();

@@ -15,7 +15,7 @@ import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaIndexListVO;
 import com.youran.generate.pojo.vo.MetaIndexShowVO;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
