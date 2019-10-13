@@ -35,7 +35,7 @@
         <jsoup.version>1.11.2</jsoup.version>
         <spring-boot-swagger.version>1.9.0.RELEASE</spring-boot-swagger.version>
         <freemarker.version>2.3.26-incubating</freemarker.version>
-        <zip4j.version>1.3.2</zip4j.version>
+        <zip4j.version>2.2.2</zip4j.version>
         <mysql2h2.version>0.2.1</mysql2h2.version>
     </properties>
 
@@ -125,19 +125,19 @@
                 <artifactId>jsoup</artifactId>
                 <version>${jsoup.version}</version>
             </dependency>
-
             <!-- swagger依赖 -->
             <dependency>
                 <groupId>com.spring4all</groupId>
                 <artifactId>swagger-spring-boot-starter</artifactId>
                 <version>${spring-boot-swagger.version}</version>
             </dependency>
+            <!-- freemarker模板引擎：https://freemarker.apache.org/docs/index.html -->
             <dependency>
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker</artifactId>
                 <version>${freemarker.version}</version>
             </dependency>
-
+            <!-- zip压缩工具包：http://www.lingala.net/zip4j.html -->
             <dependency>
                 <groupId>net.lingala.zip4j</groupId>
                 <artifactId>zip4j</artifactId>

@@ -114,8 +114,8 @@ public class MetaCodeGenService implements InitializingBean {
         String tmpDir = this.genProjectCodeIfNotExists(projectId,progressConsumer);
         //压缩src目录到zip文件
         this.progressing(progressConsumer,90, 99 ,1, "将项目打包成zip格式");
-        String outFilePath = tmpDir + ".zip";
-        Zip4jUtil.compressFolder(tmpDir, outFilePath);
+        File zipFile = new File(tmpDir + ".zip");
+        Zip4jUtil.compressFolder(new File(tmpDir), zipFile);
         //删除临时目录
         try {
             //方便本地调试，直接将代码生成在项目中
@@ -142,7 +142,7 @@ public class MetaCodeGenService implements InitializingBean {
             LOGGER.error(e.getMessage(), e);
         }
         //返回zip文件
-        return new File(outFilePath);
+        return zipFile;
     }
 
 

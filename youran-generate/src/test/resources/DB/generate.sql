@@ -233,7 +233,7 @@ CREATE TABLE `meta_mtm_cascade_ext` (
     KEY `IDX_CAS_MTM_EXT_2` (`cascade_field_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='多对多级联扩展';
 
-
+DROP TABLE IF EXISTS `gen_history`;
 
 CREATE TABLE `gen_history` (
     `history_id` int(11) AUTO_INCREMENT COMMENT '主键id',

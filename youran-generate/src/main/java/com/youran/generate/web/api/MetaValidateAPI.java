@@ -1,6 +1,7 @@
 package com.youran.generate.web.api;
 
 import com.youran.generate.pojo.vo.MetaEntityInnerValidateVO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
  * @author: cbb
  * @date: 2019/10/10
  */
+@Api(tags = "MetaValidate")
 public interface MetaValidateAPI {
 
     /**

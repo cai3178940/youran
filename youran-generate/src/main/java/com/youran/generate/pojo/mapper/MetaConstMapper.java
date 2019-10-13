@@ -5,7 +5,9 @@ import com.youran.generate.pojo.dto.MetaConstUpdateDTO;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.vo.MetaConstShowVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -18,6 +20,12 @@ import org.mapstruct.factory.Mappers;
 public interface MetaConstMapper {
 
     MetaConstMapper INSTANCE = Mappers.getMapper( MetaConstMapper.class );
+
+    @Mappings({
+        @Mapping(target = "constId",ignore = true),
+        @Mapping(target = "detailList",ignore = true)
+    })
+    MetaConstPO copy(MetaConstPO constPO);
 
     /**
      * addDTO映射po
@@ -39,4 +47,5 @@ public interface MetaConstMapper {
      * @return
      */
     MetaConstShowVO toShowVO(MetaConstPO metaConstPO);
+
 }

@@ -63,8 +63,8 @@ public class MetaProjectService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaProjectPO save(MetaProjectAddDTO metaProjectDTO) {
-        MetaProjectPO metaProject = MetaProjectMapper.INSTANCE.fromAddDTO(metaProjectDTO);
-        String password = metaProject.getPassword();
+        MetaProjectPO project = MetaProjectMapper.INSTANCE.fromAddDTO(metaProjectDTO);
+        String password = project.getPassword();
         if(StringUtils.isNotBlank(password)){
             String encrypt;
             try {
@@ -73,11 +73,15 @@ public class MetaProjectService {
                 LOGGER.error("密码加密异常",e);
                 throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"密码加密异常");
             }
-            metaProject.setPassword(encrypt);
+            project.setPassword(encrypt);
         }
-        metaProject.setProjectVersion(1);
-        metaProjectDAO.save(metaProject);
-        return metaProject;
+        this.doSave(project);
+        return project;
+    }
+
+    public void doSave(MetaProjectPO project) {
+        project.setProjectVersion(1);
+        metaProjectDAO.save(project);
     }
 
     /**
@@ -246,7 +250,6 @@ public class MetaProjectService {
         MetaConstPO constPO = metaConstService.getConst(constId, true);
         this.checkOperatorByProjectId(constPO.getProjectId());
     }
-
 
 
 

@@ -1,13 +1,14 @@
 package com.youran.generate.web.ws;
 
-import com.youran.common.util.DateUtil;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.service.MetaCodeGenService;
 import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.web.AbstractController;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import java.util.Map;
  * @date: 2017/5/13
  */
 @Controller
+@Api(tags = "MetaCodeGenWs")
 public class MetaCodeGenWsController extends AbstractController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetaCodeGenWsController.class);

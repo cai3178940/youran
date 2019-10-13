@@ -1,9 +1,12 @@
 package com.youran.generate.util;
 
-import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
-import net.lingala.zip4j.util.Zip4jConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
 
 /**
  * <p>Title:文件压缩工具</p>
@@ -13,18 +16,34 @@ import net.lingala.zip4j.util.Zip4jConstants;
  */
 public class Zip4jUtil {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Zip4jUtil.class);
+
     /**
      * 压缩文件夹
+     * @param folderToAdd 待压缩的文件夹
+     * @param outFile 输出zip文件
      */
-    public static void compressFolder(String folderToAdd,String outFile){
+    public static void compressFolder(File folderToAdd, File outFile){
         try {
             ZipFile zipFile = new ZipFile(outFile);
             ZipParameters parameters = new ZipParameters();
-            parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
-            parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
             zipFile.addFolder(folderToAdd, parameters);
         } catch (ZipException e) {
-            e.printStackTrace();
+            LOGGER.error("压缩zip包异常",e);
+        }
+    }
+
+    /**
+     * 解压zip文件
+     * @param zipFile 待解压的zip文件
+     * @param destDir 解压目录
+     */
+    public static void extractAll(File zipFile,String destDir){
+        try {
+            ZipFile zip = new ZipFile(zipFile);
+            zip.extractAll(destDir);
+        } catch (ZipException e) {
+            LOGGER.error("解压zip包异常",e);
         }
     }
 

@@ -7,6 +7,7 @@ import com.youran.generate.pojo.vo.MetaProjectShowVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -19,6 +20,14 @@ import org.mapstruct.factory.Mappers;
 public interface MetaProjectMapper {
 
     MetaProjectMapper INSTANCE = Mappers.getMapper( MetaProjectMapper.class );
+
+    @Mappings({
+        @Mapping(target = "projectId",ignore = true),
+        @Mapping(target = "entities",ignore = true),
+        @Mapping(target = "consts",ignore = true),
+        @Mapping(target = "mtms",ignore = true)
+    })
+    MetaProjectPO copy(MetaProjectPO project);
 
     /**
      * addDTO映射po

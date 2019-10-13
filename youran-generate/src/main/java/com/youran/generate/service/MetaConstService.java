@@ -42,9 +42,13 @@ public class MetaConstService {
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
         MetaConstPO metaConst = MetaConstMapper.INSTANCE.fromAddDTO(metaConstDTO);
-        metaConstDAO.save(metaConst);
+        this.doSave(metaConst);
         metaProjectService.updateProjectVersion(projectId);
         return metaConst;
+    }
+
+    public void doSave(MetaConstPO constPO) {
+        metaConstDAO.save(constPO);
     }
 
     /**
@@ -134,4 +138,6 @@ public class MetaConstService {
     public List<Integer> findIdsByProject(Integer projectId) {
         return metaConstDAO.findIdsByProject(projectId);
     }
+
+
 }

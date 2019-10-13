@@ -34,10 +34,10 @@ public class JsonUtil {
 
 
     public static <T> T parseObject(String json, Class<T> clazz){
-        T t;
         if(StringUtils.isBlank(json)){
             return null;
         }
+        T t;
         try {
             t = mapper.readValue(json, clazz);
         } catch (JsonParseException e) {
@@ -79,10 +79,10 @@ public class JsonUtil {
     }
 
     public static <T> List<T> parseArray(String json, Class<T> clazz){
-        List<T> list;
         if(StringUtils.isBlank(json)){
             return null;
         }
+        List<T> list;
         try {
             JavaType javaType = getCollectionType(ArrayList.class, clazz);
             list = mapper.readValue(json, javaType);
@@ -115,4 +115,49 @@ public class JsonUtil {
             throw new RuntimeException("json序列化异常",e);
         }
     }
+
+    public static <T> T parseObjectFromFile(File file, Class<T> clazz){
+        if(!file.exists()){
+            LOGGER.warn("json文件不存在：{}", file.getPath());
+            return null;
+        }
+        T t;
+        try {
+            t = mapper.readValue(file, clazz);
+        } catch (JsonParseException e) {
+            LOGGER.error("json反序列化异常", e);
+            throw new RuntimeException("json反序列化异常",e);
+        } catch (JsonMappingException e) {
+            LOGGER.error("json反序列化异常", e);
+            throw new RuntimeException("json反序列化异常",e);
+        } catch (IOException e) {
+            LOGGER.error("json反序列化异常", e);
+            throw new RuntimeException("json反序列化异常",e);
+        }
+        return t;
+    }
+
+
+    public static <T> List<T> parseArrayFromFile(File file, Class<T> clazz){
+        if(!file.exists()){
+            LOGGER.warn("json文件不存在：{}", file.getPath());
+            return null;
+        }
+        List<T> list;
+        try {
+            JavaType javaType = getCollectionType(ArrayList.class, clazz);
+            list = mapper.readValue(file, javaType);
+        } catch (JsonParseException e) {
+            LOGGER.error("json反序列化异常", e);
+            throw new RuntimeException("json反序列化异常",e);
+        } catch (JsonMappingException e) {
+            LOGGER.error("json反序列化异常", e);
+            throw new RuntimeException("json反序列化异常",e);
+        } catch (IOException e) {
+            LOGGER.error("json反序列化异常", e);
+            throw new RuntimeException("json反序列化异常",e);
+        }
+        return list;
+    }
+
 }
