@@ -4,9 +4,7 @@ import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.vo.MetaIndexShowVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -15,16 +13,17 @@ import org.mapstruct.factory.Mappers;
  * @author: cbb
  * @date: 2017/5/16
  */
-@Mapper
+@Mapper( uses = CommonMapper.class )
 public interface MetaIndexMapper {
 
     MetaIndexMapper INSTANCE = Mappers.getMapper( MetaIndexMapper.class );
+
     /**
      * addDTO映射po
      * @param addDTO
      * @return
      */
-    @Mapping(target = "fieldIds",ignore = true)
+    @Mapping(target = "fieldIds",qualifiedByName = {"CommonMapper","StringToIntegerList"})
     MetaIndexPO fromAddDTO(MetaIndexAddDTO addDTO);
 
     /**
@@ -43,5 +42,13 @@ public interface MetaIndexMapper {
      */
     @Mapping(target = "fields",ignore = true)
     MetaIndexShowVO toShowVO(MetaIndexPO metaIndexPO);
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "indexName"),
+        @Mapping(target = "unique"),
+        @Mapping(target = "uniqueCheck"),
+    })
+    MetaIndexPO copy(MetaIndexPO index);
 
 }

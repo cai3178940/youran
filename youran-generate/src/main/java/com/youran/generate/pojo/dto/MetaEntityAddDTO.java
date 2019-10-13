@@ -52,10 +52,6 @@ public class MetaEntityAddDTO extends AbstractDTO {
     @Length(max = 250, message = "desc最大长度不能超过{max}")
     private String desc;
 
-    @ApiModelProperty(notes = N_COMMONCALL, example = E_COMMONCALL)
-    @Const(constClass = BoolConst.class)
-    private Integer commonCall;
-
     @ApiModelProperty(notes = N_PAGESIGN, example = E_PAGESIGN)
     @Const(constClass = BoolConst.class)
     private Integer pageSign;
@@ -79,14 +75,6 @@ public class MetaEntityAddDTO extends AbstractDTO {
 
     public void setPageSign(Integer pageSign) {
         this.pageSign = pageSign;
-    }
-
-    public Integer getCommonCall() {
-        return commonCall;
-    }
-
-    public void setCommonCall(Integer commonCall) {
-        this.commonCall = commonCall;
     }
 
     public Integer getProjectId() {

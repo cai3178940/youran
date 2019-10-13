@@ -47,12 +47,16 @@ public class MetaFieldService {
         Integer entityId = metaFieldDTO.getEntityId();
         // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
-        MetaFieldPO metaField = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
-        // 校验字段属性
-        MetaFieldCheckUtil.checkFieldPO(metaField);
-        metaFieldDAO.save(metaField);
+        MetaFieldPO field = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
+        this.doSave(field);
         metaProjectService.updateProjectVersionByEntityId(entityId);
-        return metaField;
+        return field;
+    }
+
+    public void doSave(MetaFieldPO field) {
+        // 校验字段属性
+        MetaFieldCheckUtil.checkFieldPO(field);
+        metaFieldDAO.save(field);
     }
 
     /**
@@ -170,5 +174,6 @@ public class MetaFieldService {
         metaFieldDAO.update(field);
         return field.getOrderNo();
     }
+
 
 }

@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.WebConst;
@@ -43,9 +42,6 @@ public class MetaEntityController extends AbstractController implements MetaEnti
     @PostMapping(value = "/save")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaEntityShowVO> save(@Valid @RequestBody MetaEntityAddDTO metaEntityAddDTO) throws Exception {
-        if(metaEntityAddDTO.getCommonCall()==null){
-            metaEntityAddDTO.setCommonCall(BoolConst.FALSE);
-        }
         MetaEntityPO metaEntityPO = metaEntityService.save(metaEntityAddDTO);
         return ResponseEntity.created(new URI(apiPath +"/meta_entity/" + metaEntityPO.getEntityId()))
             .body(MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO));
@@ -54,9 +50,6 @@ public class MetaEntityController extends AbstractController implements MetaEnti
     @Override
     @PutMapping(value = "/update")
     public ResponseEntity<MetaEntityShowVO> update(@Valid @RequestBody MetaEntityUpdateDTO metaEntityUpdateDTO) {
-        if(metaEntityUpdateDTO.getCommonCall()==null){
-            metaEntityUpdateDTO.setCommonCall(BoolConst.FALSE);
-        }
         MetaEntityPO metaEntityPO = metaEntityService.update(metaEntityUpdateDTO);
         return ResponseEntity.ok(MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO));
     }

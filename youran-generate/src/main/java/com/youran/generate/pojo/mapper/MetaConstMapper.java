@@ -21,12 +21,6 @@ public interface MetaConstMapper {
 
     MetaConstMapper INSTANCE = Mappers.getMapper( MetaConstMapper.class );
 
-    @Mappings({
-        @Mapping(target = "constId",ignore = true),
-        @Mapping(target = "detailList",ignore = true)
-    })
-    MetaConstPO copy(MetaConstPO constPO);
-
     /**
      * addDTO映射po
      * @param addDTO
@@ -48,4 +42,9 @@ public interface MetaConstMapper {
      */
     MetaConstShowVO toShowVO(MetaConstPO metaConstPO);
 
+    @Mappings({
+        @Mapping(target = "constId",ignore = true),
+        @Mapping(target = "detailList",ignore = true)
+    })
+    MetaConstPO copy(MetaConstPO constPO);
 }

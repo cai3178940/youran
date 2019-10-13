@@ -49,24 +49,27 @@ public class MetaIndexService {
         Integer entityId = metaIndexAddDTO.getEntityId();
         //校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
+        //映射属性
+        MetaIndexPO metaIndex = MetaIndexMapper.INSTANCE.fromAddDTO(metaIndexAddDTO);
+        this.doSave(metaIndex);
+        metaProjectService.updateProjectVersionByEntityId(entityId);
+        return metaIndex;
+    }
+
+    public void doSave(MetaIndexPO indexPO) {
+        List<Integer> fieldIdList = indexPO.getFieldIds();
         //校验字段id是否是本实体下存在的字段
-        String fieldIds = metaIndexAddDTO.getFieldIds();
-        List<Integer> fieldIdList =  ConvertUtil.convertIntegerList(fieldIds);
-        int fieldCount = metaFieldDAO.findCount(entityId, fieldIdList);
+        int fieldCount = metaFieldDAO.findCount(indexPO.getEntityId(), fieldIdList);
         if (fieldCount != fieldIdList.size()) {
             throw new BusinessException(ErrorCode.BAD_PARAMETER,"索引字段异常");
         }
-        //映射属性
-        MetaIndexPO metaIndex = MetaIndexMapper.INSTANCE.fromAddDTO(metaIndexAddDTO);
         //保存索引对象
-        metaIndexDAO.save(metaIndex);
+        metaIndexDAO.save(indexPO);
         //保存关联关系
-        int count = metaIndexFieldDAO.saveBatch(metaIndex.getIndexId(), fieldIdList);
+        int count = metaIndexFieldDAO.saveBatch(indexPO.getIndexId(), fieldIdList);
         if (count == 0 || fieldIdList.size() != count) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"索引保存异常");
         }
-        metaProjectService.updateProjectVersionByEntityId(entityId);
-        return metaIndex;
     }
 
     /**
@@ -215,4 +218,5 @@ public class MetaIndexService {
     public List<Integer> findFieldIdsByIndexId(Integer indexId) {
         return metaIndexFieldDAO.findIdsByIndexId(indexId);
     }
+
 }

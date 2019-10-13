@@ -38,7 +38,6 @@ public class ReverseEngineeringControllerTest extends AbstractWebTest {
             "  `tableName` varchar(50) NOT NULL COMMENT '表名',\n" +
             "  `title` varchar(25) NOT NULL COMMENT '标题',\n" +
             "  `desc` varchar(250) DEFAULT NULL COMMENT '实体描述',\n" +
-            "  `commonCall` smallint(1) NOT NULL COMMENT '是否支持通用服务调用',\n" +
             "  `pageSign` smallint(1) DEFAULT NULL COMMENT '是否支持分页查询',\n" +
             "  `createdTime` datetime DEFAULT NULL COMMENT '创建时间',\n" +
             "  `createdBy` varchar(32) DEFAULT NULL COMMENT '创建人',\n" +

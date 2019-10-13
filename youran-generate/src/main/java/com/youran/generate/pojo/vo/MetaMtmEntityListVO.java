@@ -49,7 +49,6 @@ public class MetaMtmEntityListVO extends MetaEntityListVO {
             .append("tableName", this.getTableName())
             .append("title", this.getTitle())
             .append("desc", this.getDesc())
-            .append("commonCall", this.getCommonCall())
             .append("pageSign", this.getPageSign())
             .toString();
     }

@@ -36,9 +36,6 @@ public class MetaEntityListVO extends AbstractVO {
     @ApiModelProperty(notes = N_DESC, example = E_DESC)
     private String desc;
 
-    @ApiModelProperty(notes = N_COMMONCALL, example = E_COMMONCALL)
-    private Integer commonCall;
-
     @ApiModelProperty(notes = N_PAGESIGN, example = E_PAGESIGN)
     private Integer pageSign;
 
@@ -48,15 +45,6 @@ public class MetaEntityListVO extends AbstractVO {
 
     public void setPageSign(Integer pageSign) {
         this.pageSign = pageSign;
-    }
-
-
-    public Integer getCommonCall() {
-        return commonCall;
-    }
-
-    public void setCommonCall(Integer commonCall) {
-        this.commonCall = commonCall;
     }
 
     public Integer getProjectId() {
@@ -125,7 +113,6 @@ public class MetaEntityListVO extends AbstractVO {
             .append("tableName", tableName)
             .append("title", title)
             .append("desc", desc)
-            .append("commonCall", commonCall)
             .append("pageSign", pageSign)
             .toString();
     }

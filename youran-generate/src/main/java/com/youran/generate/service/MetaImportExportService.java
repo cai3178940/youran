@@ -4,9 +4,7 @@ import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
 import com.youran.common.util.TempDirUtil;
 import com.youran.generate.config.GenerateProperties;
-import com.youran.generate.pojo.mapper.MetaConstDetailMapper;
-import com.youran.generate.pojo.mapper.MetaConstMapper;
-import com.youran.generate.pojo.mapper.MetaProjectMapper;
+import com.youran.generate.pojo.mapper.*;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.util.Zip4jUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -21,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,6 +153,7 @@ public class MetaImportExportService {
         JsonUtil.writeJsonToFile(fields,true,new File(dir,FIELD_JSON_FILE));
         List<MetaIndexPO> indexes = entities.stream()
             .flatMap(entityPO -> entityPO.getIndexes().stream())
+            .peek(MetaIndexPO::resetFieldIds)
             .collect(Collectors.toList());
         // 导出索引json文件
         JsonUtil.writeJsonToFile(indexes,true,new File(dir,INDEX_JSON_FILE));
@@ -220,14 +220,38 @@ public class MetaImportExportService {
         constDetailListFromJson.stream()
             .forEach(constDetailFromJson -> this.saveConstDetail(constDetailFromJson,constIdMap));
 
+        // 读取实体json文件，并解析成po列表
+        List<MetaEntityPO> entityListFromJson = JsonUtil.parseArrayFromFile(
+            new File(jsonDir + ENTITY_JSON_FILE), MetaEntityPO.class);
+        List<MetaEntityPO> entityList = entityListFromJson.stream()
+            .map(entityFromJson -> this.saveEntity(entityFromJson,project.getProjectId()))
+            .collect(Collectors.toList());
+        Map<Integer, Integer> entityIdMap = this.getIdMap(entityListFromJson, entityList, MetaEntityPO::getEntityId);
+
+        // 读取字段json文件，并解析成po列表
+        List<MetaFieldPO> fieldListFromJson = JsonUtil.parseArrayFromFile(
+            new File(jsonDir + FIELD_JSON_FILE), MetaFieldPO.class);
+        List<MetaFieldPO> fieldList = fieldListFromJson.stream()
+            .map(fieldFromJson -> this.saveField(fieldFromJson,entityIdMap))
+            .collect(Collectors.toList());
+        Map<Integer, Integer> fieldIdMap = this.getIdMap(fieldListFromJson, fieldList, MetaFieldPO::getFieldId);
+
+        // 读取索引json文件，并解析成po列表
+        List<MetaIndexPO> indexListFromJson = JsonUtil.parseArrayFromFile(
+            new File(jsonDir + INDEX_JSON_FILE), MetaIndexPO.class);
+        List<MetaIndexPO> indexList = indexListFromJson.stream()
+            .map(indexFromJson -> this.saveIndex(indexFromJson,entityIdMap,fieldIdMap))
+            .collect(Collectors.toList());
+        Map<Integer, Integer> indexIdMap = this.getIdMap(indexListFromJson, indexList, MetaIndexPO::getIndexId);
+
+
+
+
         return project;
     }
 
-
-
-
     /**
-     * 把json中解析出来的项目保持到数据库
+     * 把json中解析出来的项目保存到数据库
      * @param projectFromJson
      * @return
      */
@@ -239,7 +263,7 @@ public class MetaImportExportService {
     }
 
     /**
-     * 把json中解析出来的枚举保持到数据库
+     * 把json中解析出来的枚举保存到数据库
      * @param constFromJson
      * @return
      */
@@ -252,23 +276,89 @@ public class MetaImportExportService {
     }
 
     /**
-     * 把json中解析出来的枚举值保持到数据库
+     * 把json中解析出来的枚举值保存到数据库
      * @param constDetailFromJson
      * @param constIdMap
      * @return
      */
     private MetaConstDetailPO saveConstDetail(MetaConstDetailPO constDetailFromJson,
                                               Map<Integer, Integer> constIdMap) {
-        MetaConstDetailPO constDetailPO = MetaConstDetailMapper.INSTANCE.copy(constDetailFromJson);
         Integer constId = constIdMap.get(constDetailFromJson.getConstId());
         if(constId==null){
             LOGGER.error("枚举值json有误：{}",JsonUtil.toJSONString(constDetailFromJson));
             return null;
         }
+        MetaConstDetailPO constDetailPO = MetaConstDetailMapper.INSTANCE.copy(constDetailFromJson);
         constDetailPO.setConstId(constId);
         metaConstDetailService.doSave(constDetailPO);
         LOGGER.debug("导入枚举值：{}",JsonUtil.toJSONString(constDetailPO));
         return constDetailPO;
+    }
+
+    /**
+     * 把json中解析出来的实体保存到数据库
+     * @param entityFromJson
+     * @param projectId
+     * @return
+     */
+    private MetaEntityPO saveEntity(MetaEntityPO entityFromJson, Integer projectId) {
+        MetaEntityPO entityPO = MetaEntityMapper.INSTANCE.copy(entityFromJson);
+        entityPO.setProjectId(projectId);
+        metaEntityService.doSave(entityPO);
+        LOGGER.debug("导入实体：{}",JsonUtil.toJSONString(entityPO));
+        return entityPO;
+    }
+
+    /**
+     * 把json中解析出来的字段保存到数据库
+     * @param fieldFromJson
+     * @param entityIdMap
+     * @return
+     */
+    private MetaFieldPO saveField(MetaFieldPO fieldFromJson,
+                                  Map<Integer, Integer> entityIdMap) {
+        Integer entityId = entityIdMap.get(fieldFromJson.getEntityId());
+        if(entityId==null){
+            LOGGER.error("字段json有误：{}",JsonUtil.toJSONString(fieldFromJson));
+            return null;
+        }
+        MetaFieldPO fieldPO = MetaFieldMapper.INSTANCE.copy(fieldFromJson);
+        fieldPO.setEntityId(entityId);
+        metaFieldService.doSave(fieldPO);
+        LOGGER.debug("导入字段：{}",JsonUtil.toJSONString(fieldPO));
+        return fieldPO;
+    }
+
+    /**
+     * 把json中解析出来的索引保存到数据库
+     * @param indexFromJson
+     * @param entityIdMap
+     * @param fieldIdMap
+     * @return
+     */
+    private MetaIndexPO saveIndex(MetaIndexPO indexFromJson,
+                                  Map<Integer, Integer> entityIdMap,
+                                  Map<Integer, Integer> fieldIdMap) {
+        Integer entityId = entityIdMap.get(indexFromJson.getEntityId());
+        if(entityId==null){
+            LOGGER.error("索引json有误：{}",JsonUtil.toJSONString(indexFromJson));
+            return null;
+        }
+        List<Integer> fieldIds = indexFromJson.getFieldIds();
+        List<Integer> convertedFieldIds;
+        if(CollectionUtils.isNotEmpty(fieldIds)){
+            convertedFieldIds = fieldIds.stream()
+                .map(id -> fieldIdMap.get(id))
+                .collect(Collectors.toList());
+        }else{
+            convertedFieldIds = Collections.emptyList();
+        }
+        MetaIndexPO indexPO = MetaIndexMapper.INSTANCE.copy(indexFromJson);
+        indexPO.setEntityId(entityId);
+        indexPO.setFieldIds(convertedFieldIds);
+        metaIndexService.doSave(indexPO);
+        LOGGER.debug("导入索引：{}",JsonUtil.toJSONString(indexPO));
+        return indexPO;
     }
 
     /**
@@ -286,7 +376,9 @@ public class MetaImportExportService {
         for (int i = 0; i < poListFromJson.size(); i++) {
             T poFromJson = poListFromJson.get(i);
             T po = poList.get(i);
-            idMap.put(idGetter.apply(poFromJson),idGetter.apply(po));
+            if(poFromJson!=null && po!=null) {
+                idMap.put(idGetter.apply(poFromJson), idGetter.apply(po));
+            }
         }
         return idMap;
     }

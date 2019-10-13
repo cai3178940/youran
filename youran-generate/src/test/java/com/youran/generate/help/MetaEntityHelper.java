@@ -29,7 +29,6 @@ public class MetaEntityHelper {
         dto.setPageSign(SafeUtil.getInteger(E_PAGESIGN));
         dto.setDesc(E_DESC+i);
         dto.setTitle(E_TITLE+i);
-        dto.setCommonCall(SafeUtil.getInteger(E_COMMONCALL));
         return dto;
     }
 
@@ -47,7 +46,6 @@ public class MetaEntityHelper {
         dto.setTableName(metaEntity.getTableName()+"1");
         dto.setTitle(metaEntity.getTitle()+"1");
         dto.setDesc(metaEntity.getDesc()+"1");
-        dto.setCommonCall(metaEntity.getCommonCall());
         dto.setPageSign(metaEntity.getPageSign());
         return dto;
     }

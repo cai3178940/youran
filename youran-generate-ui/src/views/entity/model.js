@@ -5,7 +5,6 @@ export function initFormBean (forEdit) {
     className: '',
     tableName: '',
     desc: '',
-    commonCall: 1,
     pageSign: 1,
     feature: {
       save: 1,

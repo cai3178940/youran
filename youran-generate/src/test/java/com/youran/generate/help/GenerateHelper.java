@@ -347,7 +347,6 @@ public class GenerateHelper{
         MetaEntityAddDTO dto = new MetaEntityAddDTO();
         dto.setProjectId(project.getProjectId());
         dto.setSchemaName("");
-        dto.setCommonCall(0);
         return dto;
     }
 

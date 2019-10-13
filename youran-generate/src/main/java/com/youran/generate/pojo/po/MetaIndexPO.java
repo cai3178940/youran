@@ -1,7 +1,7 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +26,7 @@ public class MetaIndexPO extends BasePO {
 
     private Integer uniqueCheck;
 
+    private List<Integer> fieldIds;
     /**
      * 索引字段
      */
@@ -33,13 +34,14 @@ public class MetaIndexPO extends BasePO {
     private List<MetaFieldPO> fields;
 
 
-    public List<Integer> getFieldIds(){
+    public void resetFieldIds(){
         if(CollectionUtils.isEmpty(fields)){
-            return Collections.emptyList();
+            this.fieldIds = Collections.emptyList();
+        }else {
+            this.fieldIds = fields.stream()
+                .map(MetaFieldPO::getFieldId)
+                .collect(Collectors.toList());
         }
-        return fields.stream()
-            .map(MetaFieldPO::getFieldId)
-            .collect(Collectors.toList());
     }
 
     /**
@@ -102,4 +104,11 @@ public class MetaIndexPO extends BasePO {
         this.unique = unique;
     }
 
+    public void setFieldIds(List<Integer> fieldIds) {
+        this.fieldIds = fieldIds;
+    }
+
+    public List<Integer> getFieldIds() {
+        return fieldIds;
+    }
 }

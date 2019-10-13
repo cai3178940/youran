@@ -4,8 +4,7 @@ import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -39,4 +38,18 @@ public interface MetaEntityMapper {
      * @return
      */
     MetaEntityShowVO toShowVO(MetaEntityPO metaEntityPO);
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "schemaName"),
+        @Mapping(target = "className"),
+        @Mapping(target = "tableName"),
+        @Mapping(target = "title"),
+        @Mapping(target = "desc"),
+        @Mapping(target = "pageSign"),
+        @Mapping(target = "feature"),
+    })
+    MetaEntityPO copy(MetaEntityPO entity);
+
+
 }

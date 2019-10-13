@@ -178,7 +178,6 @@ public class ReverseEngineeringService {
         metaEntityDTO.setTableName(tableName);
         metaEntityDTO.setTitle(StringUtils.abbreviate(comment,25));
         metaEntityDTO.setDesc(StringUtils.abbreviate(comment,250));
-        metaEntityDTO.setCommonCall(BoolConst.FALSE);
         metaEntityDTO.setPageSign(BoolConst.TRUE);
         return metaEntityService.save(metaEntityDTO);
     }

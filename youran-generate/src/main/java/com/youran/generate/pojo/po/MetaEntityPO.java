@@ -45,13 +45,6 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      */
     private String desc;
     /**
-     * 是否支持通用服务调用
-     * 【已废弃】
-     */
-    @Deprecated
-    @JsonIgnore
-    private Integer commonCall;
-    /**
      * 是否支持分页查询
      */
     private Integer pageSign;
@@ -483,14 +476,6 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
-    }
-
-    public Integer getCommonCall() {
-        return commonCall;
-    }
-
-    public void setCommonCall(Integer commonCall) {
-        this.commonCall = commonCall;
     }
 
     public String getFeature() {

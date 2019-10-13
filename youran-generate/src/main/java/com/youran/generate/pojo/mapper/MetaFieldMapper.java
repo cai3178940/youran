@@ -4,8 +4,7 @@ import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -18,6 +17,7 @@ import org.mapstruct.factory.Mappers;
 public interface MetaFieldMapper {
 
     MetaFieldMapper INSTANCE = Mappers.getMapper( MetaFieldMapper.class );
+
     /**
      * addDTO映射po
      * @param addDTO
@@ -39,4 +39,40 @@ public interface MetaFieldMapper {
      * @return
      */
     MetaFieldShowVO toShowVO(MetaFieldPO metaFieldPO);
+
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "jfieldName"),
+        @Mapping(target = "fieldName"),
+        @Mapping(target = "jfieldType"),
+        @Mapping(target = "fieldType"),
+        @Mapping(target = "fieldDesc"),
+        @Mapping(target = "fieldExample"),
+        @Mapping(target = "fieldComment"),
+        @Mapping(target = "fieldLength"),
+        @Mapping(target = "fieldScale"),
+        @Mapping(target = "primaryKey"),
+        @Mapping(target = "autoIncrement"),
+        @Mapping(target = "notNull"),
+        @Mapping(target = "defaultValue"),
+        @Mapping(target = "foreignKey"),
+        @Mapping(target = "foreignEntityId"),
+        @Mapping(target = "foreignFieldId"),
+        @Mapping(target = "editType"),
+        @Mapping(target = "dicType"),
+        @Mapping(target = "insert"),
+        @Mapping(target = "update"),
+        @Mapping(target = "list"),
+        @Mapping(target = "listSort"),
+        @Mapping(target = "show"),
+        @Mapping(target = "query"),
+        @Mapping(target = "queryType"),
+        @Mapping(target = "orderNo"),
+        @Mapping(target = "specialField"),
+    })
+    MetaFieldPO copy(MetaFieldPO field);
+
+
+
 }

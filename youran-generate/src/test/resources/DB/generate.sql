@@ -34,7 +34,6 @@ CREATE TABLE `meta_entity` (
   `table_name` varchar(50) NOT NULL COMMENT '表名',
   `title` varchar(25) NOT NULL COMMENT '标题',
   `desc` varchar(250) DEFAULT NULL COMMENT '实体描述',
-  `common_call` tinyint(1) NOT NULL COMMENT '是否支持通用服务调用【已废弃】',
   `page_sign` tinyint(1) DEFAULT NULL COMMENT '是否支持分页查询',
   `feature` varchar(400) DEFAULT NULL COMMENT '特性json',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',

@@ -21,14 +21,6 @@ public interface MetaProjectMapper {
 
     MetaProjectMapper INSTANCE = Mappers.getMapper( MetaProjectMapper.class );
 
-    @Mappings({
-        @Mapping(target = "projectId",ignore = true),
-        @Mapping(target = "entities",ignore = true),
-        @Mapping(target = "consts",ignore = true),
-        @Mapping(target = "mtms",ignore = true)
-    })
-    MetaProjectPO copy(MetaProjectPO project);
-
     /**
      * addDTO映射po
      * @param addDTO
@@ -51,7 +43,13 @@ public interface MetaProjectMapper {
      */
     MetaProjectShowVO toShowVO(MetaProjectPO metaProjectPO);
 
-
+    @Mappings({
+        @Mapping(target = "projectId",ignore = true),
+        @Mapping(target = "entities",ignore = true),
+        @Mapping(target = "consts",ignore = true),
+        @Mapping(target = "mtms",ignore = true)
+    })
+    MetaProjectPO copy(MetaProjectPO project);
 
 
 }

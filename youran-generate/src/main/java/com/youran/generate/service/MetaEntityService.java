@@ -65,11 +65,15 @@ public class MetaEntityService {
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
         MetaEntityPO metaEntity = MetaEntityMapper.INSTANCE.fromAddDTO(metaEntityDTO);
-        //唯一性校验
-        this.checkUnique(metaEntity,false);
-        metaEntityDAO.save(metaEntity);
+        this.doSave(metaEntity);
         metaProjectService.updateProjectVersion(projectId);
         return metaEntity;
+    }
+
+    public void doSave(MetaEntityPO entityPO) {
+        //唯一性校验
+        this.checkUnique(entityPO,false);
+        metaEntityDAO.save(entityPO);
     }
 
     /**
@@ -190,4 +194,6 @@ public class MetaEntityService {
     public List<MetaMtmEntityListVO> mtmEntityList(Integer entityId, boolean hold) {
         return metaEntityDAO.findMtmEntityList(entityId,hold);
     }
+
+
 }

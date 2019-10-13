@@ -86,7 +86,6 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setTitle("用户");
         dto.setDesc("用户");
         dto.setPageSign(1);
-        dto.setCommonCall(1);
         return metaEntityService.save(dto);
     }
 
