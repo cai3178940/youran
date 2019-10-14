@@ -415,4 +415,9 @@ public class BaseContext {
     public void setProjectFeature(MetaProjectFeatureDTO projectFeature) {
         this.projectFeature = projectFeature;
     }
+
+    @Override
+    public String toString() {
+        return "Project:"+projectDesc;
+    }
 }

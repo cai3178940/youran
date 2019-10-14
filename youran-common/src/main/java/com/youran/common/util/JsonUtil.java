@@ -1,5 +1,6 @@
 package com.youran.common.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -30,6 +31,13 @@ public class JsonUtil {
     static{
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
+    private static ObjectMapper mapperExcludeNull = new ObjectMapper();
+    static{
+        mapperExcludeNull.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapperExcludeNull.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        mapperExcludeNull.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
 
@@ -106,9 +114,9 @@ public class JsonUtil {
     public static void writeJsonToFile(Object object, boolean prettyFormat, File file) {
         try {
             if(prettyFormat) {
-                mapper.writerWithDefaultPrettyPrinter().writeValue(file,object);
+                mapperExcludeNull.writerWithDefaultPrettyPrinter().writeValue(file,object);
             }else{
-                mapper.writeValue(file,object);
+                mapperExcludeNull.writeValue(file,object);
             }
         } catch (IOException e) {
             LOGGER.error("json序列化异常", e);

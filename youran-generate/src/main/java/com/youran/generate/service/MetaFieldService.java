@@ -176,4 +176,12 @@ public class MetaFieldService {
     }
 
 
+    /**
+     * 修改字段内容
+     * @param field
+     */
+    public void doUpdate(MetaFieldPO field) {
+        metaFieldDAO.update(field);
+    }
+
 }

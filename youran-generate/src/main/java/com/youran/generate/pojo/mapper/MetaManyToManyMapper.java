@@ -4,10 +4,7 @@ import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.vo.MetaManyToManyShowVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -50,4 +47,22 @@ public interface MetaManyToManyMapper {
      * @return
      */
     MetaManyToManyShowVO toShowVO(MetaManyToManyPO metaManyToManyPO);
+
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "tableName"),
+        @Mapping(target = "schemaName"),
+        @Mapping(target = "desc"),
+        @Mapping(target = "holdRefer1"),
+        @Mapping(target = "holdRefer2"),
+        @Mapping(target = "entityIdField1"),
+        @Mapping(target = "entityIdField2"),
+        @Mapping(target = "needId"),
+        @Mapping(target = "bigId"),
+        @Mapping(target = "feature"),
+    })
+    MetaManyToManyPO copy(MetaManyToManyPO mtmFromJson);
+
+
 }

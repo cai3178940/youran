@@ -112,4 +112,9 @@ public class ConstContext extends BaseContext {
     public void setDetailList(List<MetaConstDetailPO> detailList) {
         this.detailList = detailList;
     }
+
+    @Override
+    public String toString() {
+        return "Const:"+constName;
+    }
 }

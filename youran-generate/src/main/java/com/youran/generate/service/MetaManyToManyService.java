@@ -52,11 +52,15 @@ public class MetaManyToManyService {
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
         MetaManyToManyPO metaManyToMany = MetaManyToManyMapper.INSTANCE.fromAddDTO(addDTO);
-        //校验数据是否合法
-        this.checkManyToMany(metaManyToMany);
-        metaManyToManyDAO.save(metaManyToMany);
+        this.doSave(metaManyToMany);
         metaProjectService.updateProjectVersion(projectId);
         return metaManyToMany;
+    }
+
+    public void doSave(MetaManyToManyPO mtmPO) {
+        //校验数据是否合法
+        this.checkManyToMany(mtmPO);
+        metaManyToManyDAO.save(mtmPO);
     }
 
     /**
@@ -140,7 +144,7 @@ public class MetaManyToManyService {
      * 解析特性对象
      * @param mtm
      */
-    private void parseMtmFeature(MetaManyToManyPO mtm) {
+    public void parseMtmFeature(MetaManyToManyPO mtm) {
         // 兼容旧数据，如果feature字段为空，则设置默认值
         if (StringUtils.isBlank(mtm.getFeature())) {
             mtm.setFeature(JsonUtil.toJSONString(new MetaMtmFeatureDTO()));
@@ -210,5 +214,6 @@ public class MetaManyToManyService {
         }
         return list;
     }
+
 
 }

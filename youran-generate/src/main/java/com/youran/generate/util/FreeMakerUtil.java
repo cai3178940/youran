@@ -129,7 +129,8 @@ public class FreeMakerUtil {
             }
             logger.error(e.getMessage(), e);
             e.printStackTrace();
-            throw new RuntimeException("freemarker解析异常,templateName="+templateName,e);
+            throw new RuntimeException("freemarker解析异常,dataModel="
+                +dataModel+",templateName="+templateName,e);
         }
     }
 

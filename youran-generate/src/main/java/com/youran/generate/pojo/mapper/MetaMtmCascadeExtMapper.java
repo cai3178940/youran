@@ -4,8 +4,7 @@ import com.youran.generate.pojo.dto.MetaMtmCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaMtmCascadeExtUpdateDTO;
 import com.youran.generate.pojo.po.MetaMtmCascadeExtPO;
 import com.youran.generate.pojo.vo.MetaMtmCascadeExtShowVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -39,6 +38,16 @@ public interface MetaMtmCascadeExtMapper {
     * @return
     */
     MetaMtmCascadeExtShowVO toShowVO(MetaMtmCascadeExtPO metaMtmCascadeExtPO);
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "alias"),
+        @Mapping(target = "list"),
+        @Mapping(target = "show"),
+        @Mapping(target = "query"),
+    })
+    MetaMtmCascadeExtPO copy(MetaMtmCascadeExtPO mtmCascadeExtFromJson);
+
 
 }
 

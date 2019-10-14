@@ -1,13 +1,11 @@
 package com.youran.generate.pojo.mapper;
 
+import com.youran.common.constant.BoolConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -43,11 +41,15 @@ public interface MetaProjectMapper {
      */
     MetaProjectShowVO toShowVO(MetaProjectPO metaProjectPO);
 
+    @BeanMapping(ignoreByDefault = true)
     @Mappings({
-        @Mapping(target = "projectId",ignore = true),
-        @Mapping(target = "entities",ignore = true),
-        @Mapping(target = "consts",ignore = true),
-        @Mapping(target = "mtms",ignore = true)
+        @Mapping(target = "packageName"),
+        @Mapping(target = "projectName"),
+        @Mapping(target = "projectDesc"),
+        @Mapping(target = "groupId"),
+        @Mapping(target = "author"),
+        @Mapping(target = "remote",constant = BoolConst.FALSE+""),
+        @Mapping(target = "feature"),
     })
     MetaProjectPO copy(MetaProjectPO project);
 

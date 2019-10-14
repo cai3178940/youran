@@ -48,12 +48,16 @@ public class MetaCascadeExtService {
         Integer entityId = addDTO.getEntityId();
         // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
-        MetaCascadeExtPO metaCascadeExt = MetaCascadeExtMapper.INSTANCE.fromAddDTO(addDTO);
-        // 校验级联扩展
-        this.checkCascadeExtPO(metaCascadeExt);
-        metaCascadeExtDAO.save(metaCascadeExt);
+        MetaCascadeExtPO cascadeExt = MetaCascadeExtMapper.INSTANCE.fromAddDTO(addDTO);
+        this.doSave(cascadeExt);
         metaProjectService.updateProjectVersionByEntityId(entityId);
-        return metaCascadeExt;
+        return cascadeExt;
+    }
+
+    public void doSave(MetaCascadeExtPO cascadeExtPO) {
+        // 校验级联扩展
+        this.checkCascadeExtPO(cascadeExtPO);
+        metaCascadeExtDAO.save(cascadeExtPO);
     }
 
     /**
@@ -175,4 +179,6 @@ public class MetaCascadeExtService {
     public List<Integer> findPkByCascadeFieldId(Integer cascadeFieldId) {
         return metaCascadeExtDAO.findPkByCascadeFieldId(cascadeFieldId);
     }
+
+
 }

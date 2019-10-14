@@ -49,11 +49,15 @@ public class MetaMtmCascadeExtService {
         // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
         MetaMtmCascadeExtPO metaMtmCascadeExt = MetaMtmCascadeExtMapper.INSTANCE.fromAddDTO(metaMtmCascadeExtDTO);
-        // 校验级联扩展
-        this.checkCascadeExtPO(metaMtmCascadeExt);
-        metaMtmCascadeExtDAO.save(metaMtmCascadeExt);
+        this.doSave(metaMtmCascadeExt);
         metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaMtmCascadeExt;
+    }
+
+    public void doSave(MetaMtmCascadeExtPO mtmCascadeExtPO) {
+        // 校验级联扩展
+        this.checkCascadeExtPO(mtmCascadeExtPO);
+        metaMtmCascadeExtDAO.save(mtmCascadeExtPO);
     }
 
     /**
@@ -179,6 +183,7 @@ public class MetaMtmCascadeExtService {
     public List<Integer> findPkByCascadeFieldId(Integer cascadeFieldId) {
         return metaMtmCascadeExtDAO.findPkByCascadeFieldId(cascadeFieldId);
     }
+
 
 
 }

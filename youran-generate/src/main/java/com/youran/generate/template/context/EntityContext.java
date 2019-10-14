@@ -595,4 +595,10 @@ public class EntityContext extends BaseContext {
     public void setEntityFeature(MetaEntityFeatureDTO entityFeature) {
         this.entityFeature = entityFeature;
     }
+
+
+    @Override
+    public String toString() {
+        return "Entity:"+className;
+    }
 }

@@ -57,7 +57,6 @@ public interface MetaFieldMapper {
         @Mapping(target = "notNull"),
         @Mapping(target = "defaultValue"),
         @Mapping(target = "foreignKey"),
-        @Mapping(target = "foreignEntityId"),
         @Mapping(target = "foreignFieldId"),
         @Mapping(target = "editType"),
         @Mapping(target = "dicType"),
