@@ -8,7 +8,6 @@ import com.youran.generate.service.MetaImportExportService;
 import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaImportExportAPI;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URI;
 
 /**
@@ -58,7 +56,7 @@ public class MetaImportExportController extends AbstractController implements Me
         if (!parentFile.exists()) {
             parentFile.mkdirs();
         }
-        IOUtils.copy(file.getInputStream(),new FileOutputStream(zipFile));
+        file.transferTo(zipFile);
         MetaProjectPO metaProjectPO = metaImportExportService.metaImport(zipFile);
         return ResponseEntity.created(new URI(apiPath + "/meta_project/" + metaProjectPO.getProjectId()))
             .body(MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO));
