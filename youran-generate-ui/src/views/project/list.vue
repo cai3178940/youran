@@ -82,10 +82,11 @@
 
     <el-dialog title="元数据导入" :visible.sync="importFormVisible" width="400px">
       <el-upload class="upload-demo" drag
-        :action="importUrl"
-        :on-success="onImportSuccess"
-        :on-error="onImportError"
-        accept="application/zip">
+                 :action="importUrl"
+                 :on-success="onImportSuccess"
+                 :on-error="onImportError"
+                 :show-file-list="false"
+                 accept="application/zip">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip">只能上传zip格式的压缩包</div>
