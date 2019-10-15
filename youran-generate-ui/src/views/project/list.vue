@@ -9,7 +9,7 @@
       </el-col>
       <el-col :span="18" style="text-align: right; margin-bottom: 10px;">
         <el-button @click.native="handleAdd" type="success">创建项目</el-button>
-        <el-button @click.native="handleImport" type="warn">元数据导入</el-button>
+        <el-button @click.native="handleImport" type="warning">元数据导入</el-button>
       </el-col>
     </el-row>
 
@@ -82,7 +82,10 @@
 
     <el-dialog title="元数据导入" :visible.sync="importFormVisible" width="400px">
       <el-upload class="upload-demo" drag
-        :action="importUrl">
+        :action="importUrl"
+        :on-success="onImportSuccess"
+        :on-error="onImportError"
+        accept="application/zip">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip">只能上传zip格式的压缩包</div>
@@ -188,6 +191,14 @@ export default {
     },
     handleImport () {
       this.importFormVisible = true
+    },
+    onImportSuccess (response, file, fileList) {
+      this.importFormVisible = false
+      this.$common.showMsg('success', '导入成功')
+      this.doQuery()
+    },
+    onImportError (error, file, fileList) {
+      this.$common.showNotifyError(JSON.parse(error.message))
     },
     handleEntity (row) {
       this.$router.push(`/project/${row.projectId}/entity`)
