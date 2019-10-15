@@ -35,6 +35,7 @@ public class MetaImportExportController extends AbstractController implements Me
     @Autowired
     private MetaProjectService metaProjectService;
 
+    @Override
     @GetMapping(value = "/meta_export/{projectId}")
     public void metaExport(@PathVariable Integer projectId, HttpServletResponse response){
         File zipFile = metaImportExportService.metaExport(projectId);
@@ -47,6 +48,7 @@ public class MetaImportExportController extends AbstractController implements Me
         }
     }
 
+    @Override
     @PostMapping(value = "/meta_import")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaProjectShowVO> metaImport(@RequestParam(value = "file") MultipartFile file) throws Exception {

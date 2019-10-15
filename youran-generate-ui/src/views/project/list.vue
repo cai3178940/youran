@@ -9,6 +9,7 @@
       </el-col>
       <el-col :span="18" style="text-align: right; margin-bottom: 10px;">
         <el-button @click.native="handleAdd" type="success">创建项目</el-button>
+        <el-button @click.native="handleImport" type="warn">元数据导入</el-button>
       </el-col>
     </el-row>
 
@@ -17,8 +18,6 @@
               style="min-width: 1255px;"
               v-loading="loading"
               :element-loading-text="loadingText">
-              <!--:row-class-name="activeRow"-->
-              <!--@cell-mouse-enter="cellMouseEnter"-->
       <el-table-column type="index" label="序号" width="50"></el-table-column>
       <el-table-column property="groupId" label="groupId" width="160"></el-table-column>
       <el-table-column property="projectName" label="项目标识" width="200"></el-table-column>
@@ -72,11 +71,23 @@
               <el-dropdown-item :command="{method:'handleDel',arg:scope.row}" >
                 <icon name="trash-alt" scale="0.8" ></icon> 删除
               </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleExport',arg:scope.row}" >
+                <icon name="arrow-circle-down" scale="0.8" ></icon> 导出元数据
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
+
+    <el-dialog title="元数据导入" :visible.sync="importFormVisible" width="400px">
+      <el-upload class="upload-demo" drag
+        :action="importUrl">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传zip格式的压缩包</div>
+      </el-upload>
+    </el-dialog>
 
     <el-dialog title="反向工程" :visible.sync="reverseEngineeringFormVisible" width="60%">
       <el-form ref="reverseEngineeringForm" :model="reverseEngineeringForm" :rules="reverseEngineeringFormRules" size="small">
@@ -95,6 +106,7 @@
         <el-button type="success" @click="handleReverseEngineeringSubmit">反向生成</el-button>
       </div>
     </el-dialog>
+
     <code-preview ref="codePreview"></code-preview>
     <!-- 文件下载专用iframe -->
     <iframe style="display:none;" :src="downloadUrl"></iframe>
@@ -136,7 +148,9 @@ export default {
         ]
       },
       progressingProjectIds: [],
-      downloadUrl: ''
+      downloadUrl: '',
+      importFormVisible: false,
+      importUrl: `/${apiPath}/meta_import`
     }
   },
   methods: {
@@ -172,6 +186,9 @@ export default {
     handleAdd () {
       this.$router.push('/project/add')
     },
+    handleImport () {
+      this.importFormVisible = true
+    },
     handleEntity (row) {
       this.$router.push(`/project/${row.projectId}/entity`)
     },
@@ -183,6 +200,9 @@ export default {
     },
     handleShow (row) {
       this.$router.push(`/project/show/${row.projectId}`)
+    },
+    handleExport (row) {
+      this.downloadUrl = `/${apiPath}/meta_export/${row.projectId}`
     },
     /*
     handleGenSql (row) {

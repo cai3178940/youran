@@ -12,7 +12,7 @@ export function initFormBean (forEdit) {
       delete: 1,
       deleteBatch: 1,
       list: 1,
-      show: 1,
+      show: 1
     }
   }
   if (forEdit) {
@@ -63,14 +63,14 @@ export function initMtmFormBean (forEdit) {
       f1: {
         addRemove: 0,
         set: 1,
-        withinEntity: 1,
+        withinEntity: 1
       },
       f2: {
         addRemove: 0,
         set: 1,
-        withinEntity: 1,
+        withinEntity: 1
       }
-    },
+    }
   }
   if (forEdit) {
     formBean['mtmId'] = null
