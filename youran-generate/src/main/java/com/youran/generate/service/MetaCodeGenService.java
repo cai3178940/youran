@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 
@@ -67,6 +68,10 @@ public class MetaCodeGenService implements InitializingBean {
      */
     @Value("${spring.application.name}")
     private String appName;
+    /**
+     * 代码生成须加锁
+     */
+    private ReentrantLock lock = new ReentrantLock();
 
     /**
      * 启动以后清空代码目录
@@ -154,31 +159,40 @@ public class MetaCodeGenService implements InitializingBean {
      * @return 代码目录
      */
     public String genProjectCodeIfNotExists(Integer projectId,Consumer<ProgressVO> progressConsumer){
-        MetaProjectPO project = metaProjectService.getProject(projectId,true);
-        // 获取最新代码目录
-        String projectDir = this.getProjectRecentDir(project);
-        File dir = new File(projectDir);
-        // 如果当天尚未生成过同一个版本的代码，则执行代码生成
-        if(!dir.exists()){
+        if(lock.tryLock()) {
             try {
-                this.doGenCode(projectDir,projectId,progressConsumer);
-            } catch (Exception e) {
-                LOGGER.error("代码生成异常", e);
-                try {
-                    FileUtils.deleteDirectory(dir);
-                } catch (IOException e1) {
-                    LOGGER.error("代码生成异常回删目录失败",e1);
+                MetaProjectPO project = metaProjectService.getProject(projectId, true);
+                // 获取最新代码目录
+                String projectDir = this.getProjectRecentDir(project);
+                File dir = new File(projectDir);
+                // 如果当天尚未生成过同一个版本的代码，则执行代码生成
+                if (!dir.exists()) {
+                    try {
+                        this.doGenCode(projectDir, projectId, progressConsumer);
+                    } catch (Exception e) {
+                        LOGGER.error("代码生成异常", e);
+                        try {
+                            FileUtils.deleteDirectory(dir);
+                        } catch (IOException e1) {
+                            LOGGER.error("代码生成异常回删目录失败", e1);
+                        }
+                        if (e instanceof BusinessException) {
+                            throw e;
+                        } else {
+                            throw new BusinessException("代码生成异常");
+                        }
+                    }
+                } else {
+                    LOGGER.info("代码已经存在，无需生成：{}", projectDir);
                 }
-                if(e instanceof BusinessException){
-                    throw e;
-                }else {
-                    throw new BusinessException("代码生成异常");
-                }
+                return projectDir;
+            } finally {
+                lock.unlock();
             }
         }else{
-            LOGGER.info("代码已经存在，无需生成：{}",projectDir);
+            throw new BusinessException(ErrorCode.TOO_MANY_REQUESTS,
+                "正在生成代码，请稍后再试！");
         }
-        return projectDir;
     }
 
     /**
