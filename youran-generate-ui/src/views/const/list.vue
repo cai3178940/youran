@@ -31,7 +31,7 @@
               @selection-change="selectionChange" @expand-change="expandChange" v-loading="loading">
       <el-table-column type="expand" width="50">
         <template slot-scope="scope">
-          <el-table class="detailTable" :data="detailList" v-loading="detailLoading" :show-header="false">
+          <el-table class="detailTable" :data="totalDetailList" v-loading="detailLoading" :show-header="false">
             <el-table-column width="100"></el-table-column>
             <el-table-column label="枚举值描述" width="250">
               <template slot-scope="detail">
@@ -82,7 +82,7 @@
         width="150">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
-          <el-button :disabled="expandedRow!==scope.row" @click="handleDetailAdd(scope.row)" type="text" size="medium">添加枚举值</el-button>
+          <el-button @click="handleDetailAdd(scope.row)" type="text" size="medium">添加枚举值</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -133,7 +133,13 @@ export default {
       expandedRow: null,
       loading: false,
       detailList: [],
+      detailAddList: [],
       detailLoading: false
+    }
+  },
+  computed: {
+    totalDetailList () {
+      return this.detailAddList.concat(this.detailList)
     }
   },
   filters: {
@@ -214,6 +220,7 @@ export default {
       this.$router.push(`/project/${this.projectId}/const/show/${row.constId}`)
     },
     expandChange (row, expandedRows) {
+      this.detailAddList = []
       // 如果当前展开大于1行，则将另一行关闭
       if (expandedRows && expandedRows.length > 1) {
         this.detailList = []
@@ -235,17 +242,23 @@ export default {
     // 枚举值列表查询
     doDetailQuery (constId) {
       this.detailLoading = true
-      this.$ajax.get(`/${apiPath}/meta_const_detail/list`, { params: { 'projectId': this.query.projectId, 'constId': constId } })
+      return this.$ajax.get(`/${apiPath}/meta_const_detail/list`, { params: { 'projectId': this.query.projectId, 'constId': constId } })
         .then(response => this.$common.checkResult(response))
         .then(data => { this.detailList = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.detailLoading = false })
     },
     handleDetailAdd (row) {
+      if (this.expandedRow !== row) {
+        this.$refs.constTable.toggleRowExpansion(row, true)
+      }
+      this.doHandleDetailAdd(row.constId)
+    },
+    doHandleDetailAdd (constId) {
       const newRow = Object.assign({}, constDetailModel, {
-        constId: row.constId
+        constId: constId
       })
-      this.detailList.unshift(newRow)
+      this.detailAddList.push(newRow)
     },
     handleDetailEdit (detail) {
       Vue.set(detail, 'editFlag', true)
@@ -288,11 +301,18 @@ export default {
         })
     },
     handleDetailDel (theConst, detail) {
-      this.$common.confirm('是否确认删除枚举值')
-        .then(() => this.$ajax.put(`/${apiPath}/meta_const_detail/deleteBatch`, [detail.constDetailId]))
-        .then(response => this.$common.checkResult(response))
-        .then(() => this.doDetailQuery(theConst.constId))
-        .catch(error => this.$common.showNotifyError(error))
+      if (detail.constDetailId) {
+        this.$common.confirm('是否确认删除枚举值')
+          .then(() => this.$ajax.put(`/${apiPath}/meta_const_detail/deleteBatch`, [detail.constDetailId]))
+          .then(response => this.$common.checkResult(response))
+          .then(() => this.doDetailQuery(theConst.constId))
+          .catch(error => this.$common.showNotifyError(error))
+      } else {
+        const index = this.detailAddList.findIndex(value => value === detail)
+        if (index >= 0) {
+          this.detailAddList.splice(index, 1)
+        }
+      }
     },
     /**
      * 枚举字段名变更事件
