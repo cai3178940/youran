@@ -266,7 +266,8 @@ export default {
     handleDetailSave (detail) {
       let saveURL = `/${apiPath}/meta_const_detail/save`
       let method = 'post'
-      if (detail.constDetailId) {
+      const isEdit = !!detail.constDetailId
+      if (isEdit) {
         saveURL = `/${apiPath}/meta_const_detail/update`
         method = 'put'
       }
@@ -288,6 +289,10 @@ export default {
           Object.assign(detail, data, {
             editFlag: false
           })
+          if (!isEdit) {
+            this.removeDetailAdd(detail)
+            this.detailList.push(detail)
+          }
           // 根据枚举值排序
           this.detailList = this.detailList.sort((f1, f2) => {
             return f1.detailValue.localeCompare(f2.detailValue)
@@ -300,6 +305,12 @@ export default {
           }
         })
     },
+    removeDetailAdd (detail) {
+      const index = this.detailAddList.findIndex(value => value === detail)
+      if (index >= 0) {
+        this.detailAddList.splice(index, 1)
+      }
+    },
     handleDetailDel (theConst, detail) {
       if (detail.constDetailId) {
         this.$common.confirm('是否确认删除枚举值')
@@ -308,10 +319,7 @@ export default {
           .then(() => this.doDetailQuery(theConst.constId))
           .catch(error => this.$common.showNotifyError(error))
       } else {
-        const index = this.detailAddList.findIndex(value => value === detail)
-        if (index >= 0) {
-          this.detailAddList.splice(index, 1)
-        }
+        this.removeDetailAdd(detail)
       }
     },
     /**
