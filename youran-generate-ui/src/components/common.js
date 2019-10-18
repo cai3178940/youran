@@ -98,7 +98,11 @@ export const CommonPlugin = {
           if (error.constructor === Error) {
             if (error.response) {
               if (error.response.status >= 400) {
-                return this.showErrorVO(error.response.data)
+                if (error.response.data) {
+                  return this.showErrorVO(error.response.data)
+                } else {
+                  return this.showErrorVO(error)
+                }
               }
             }
             if (error.message) {

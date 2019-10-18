@@ -496,9 +496,11 @@ export default {
       if (project.children.length) {
         return
       }
+      this.loading = true
       return this.$common.getEntityOptions(projectId)
         .then(response => this.$common.checkResult(response))
         .then(data => { project.children = data.map(entity => ({ value: entity.entityId, label: entity.title })) })
+        .finally(() => { this.loading = false })
     },
     handleQuery () {
       if (this.queryForm.projectEntity[1] == null) {

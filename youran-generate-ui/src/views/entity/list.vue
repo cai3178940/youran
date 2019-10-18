@@ -164,9 +164,11 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
     },
     queryProject () {
+      this.loading = true
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response))
         .then(data => { this.projectList = data })
+        .finally(() => { this.loading = false })
     },
     handleQuery () {
       // 将查询表单参数赋值给查询参数
