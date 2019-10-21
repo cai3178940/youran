@@ -23,6 +23,7 @@
                 placeholder="请选择外键字段"
                 :options="entityFieldOptions"
                 v-model="foreignField"
+                @change="handleForeignKeyChange"
                 @active-item-change="handleForeignEntityChange">
               </el-cascader>
             </help-popover>
@@ -349,8 +350,34 @@ export default {
         .then(response => this.$common.checkResult(response))
         .then(data => {
           entity.children = data.filter(field => field.primaryKey === 1)
-            .map(field => ({ value: field.fieldId, label: field.fieldDesc }))
+            .map(field => ({
+              value: field.fieldId,
+              label: field.fieldDesc,
+              jfieldName: field.jfieldName,
+              fieldName: field.fieldName,
+              fieldComment: field.fieldComment,
+              fieldExample: field.fieldExample,
+              jfieldType: field.jfieldType,
+              fieldType: field.fieldType,
+              fieldLength: field.fieldLength,
+              fieldScale: field.fieldScale
+            }))
         })
+    },
+    handleForeignKeyChange (optionArray) {
+      const entityId = optionArray[0]
+      const fieldId = optionArray[1]
+      const entity = this.entityFieldOptions.find(option => option.value === entityId)
+      const field = entity.children.find(option => option.value === fieldId)
+      this.form.jfieldName = field.jfieldName
+      this.form.fieldName = field.fieldName
+      this.form.fieldDesc = field.label
+      this.form.fieldComment = field.fieldComment
+      this.form.fieldExample = field.fieldExample
+      this.form.jfieldType = field.jfieldType
+      this.form.fieldType = field.fieldType
+      this.form.fieldLength = field.fieldLength
+      this.form.fieldScale = field.fieldScale
     },
     // 搜索可用枚举字典
     queryDicType (queryString, cb) {
