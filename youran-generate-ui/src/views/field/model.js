@@ -95,7 +95,7 @@ export function getRules (vm) {
       { required: false, type: 'number', message: '请选择不能为空', trigger: 'change' }
     ],
     foreignKey: [
-      { required: false, type: 'number', message: '请选择是否外键', trigger: 'change' }
+      { required: true, type: 'number', message: '请选择是否外键', trigger: 'change' }
     ],
     fieldExample: [
       { required: true, message: '请输入字段示例', trigger: 'blur' },

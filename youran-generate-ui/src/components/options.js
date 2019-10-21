@@ -80,18 +80,31 @@ function getFieldTypeOptions () {
   ]
 }
 
+const commonFeature = {
+  value: 'default',
+  label: '普通字段',
+  icon: 'asterisk',
+  style: 'color: #87CEEB;',
+  hiddenAttrs: ['foreignKey'],
+  disabledAttrs: []
+}
+
 const pkFeature = {
   value: 'pk',
   label: '主键',
   icon: 'key',
-  style: 'color: #eb9e05;'
+  style: 'color: #eb9e05;',
+  hiddenAttrs: ['foreignKey', 'dicType', 'attributes'],
+  disabledAttrs: []
 }
 
 const fkFeature = {
   value: 'fk',
   label: '外键',
   icon: 'key',
-  style: 'color: #409EFF;'
+  style: 'color: #409EFF;',
+  hiddenAttrs: ['dicType', 'query'],
+  disabledAttrs: []
 }
 
 const specialFieldFeatures = [
@@ -99,37 +112,49 @@ const specialFieldFeatures = [
     value: 'deleted',
     label: '逻辑删除',
     icon: 'ban',
-    style: 'color: #ff3366;'
+    style: 'color: #ff3366;',
+    hiddenAttrs: ['foreignKey', 'dicType', 'query', 'attributes'],
+    disabledAttrs: []
   },
   {
     value: 'createdTime',
     label: '创建时间',
     icon: 'calendar-alt',
-    style: 'color: #33cc66;'
+    style: 'color: #33cc66;',
+    hiddenAttrs: ['foreignKey', 'dicType'],
+    disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'createdBy',
     label: '创建人员',
     icon: 'user',
-    style: 'color: #33cc66;'
+    style: 'color: #33cc66;',
+    hiddenAttrs: ['foreignKey', 'dicType'],
+    disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'operatedTime',
     label: '更新时间',
     icon: 'calendar-alt',
-    style: 'color: #1C86EE;'
+    style: 'color: #1C86EE;',
+    hiddenAttrs: ['foreignKey', 'dicType'],
+    disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'operatedBy',
     label: '更新人员',
     icon: 'user',
-    style: 'color: #1C86EE;'
+    style: 'color: #1C86EE;',
+    hiddenAttrs: ['foreignKey', 'dicType'],
+    disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'version',
     label: '乐观锁版本号',
     icon: 'unlock-alt',
-    style: 'color: #AB82FF;'
+    style: 'color: #AB82FF;',
+    hiddenAttrs: ['foreignKey', 'dicType', 'query', 'attributes'],
+    disabledAttrs: []
   }
 ]
 
@@ -278,25 +303,26 @@ export default {
       label: 'in'
     }
   ],
-
+  commonFeature: commonFeature,
   /**
    * 获取字段特性
    */
   getFieldFeatures (field) {
     const features = []
-    if (field.specialField) {
+    // 主键也作为特性返回
+    if (field.primaryKey === 1) {
+      features.push(pkFeature)
+    } else if (field.foreignKey === 1) {
+    // 外键也作为特性返回
+      features.push(fkFeature)
+    } else if (field.specialField) {
       const spFeature = specialFieldFeaturesMap[field.specialField]
       if (spFeature) {
         features.push(spFeature)
       }
     }
-    // 主键也作为特性返回
-    if (field.primaryKey === 1) {
-      features.push(pkFeature)
-    }
-    // 外键也作为特性返回
-    if (field.foreignKey === 1) {
-      features.push(fkFeature)
+    if (!features.length) {
+      features.push(commonFeature)
     }
     return features
   },

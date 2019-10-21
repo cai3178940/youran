@@ -25,14 +25,14 @@
       <el-table-column property="author" label="作者" width="120"></el-table-column>
       <el-table-column property="packageName" label="包名" width="180"></el-table-column>
       <el-table-column label="Git仓库" width="90px">
-        <template slot-scope="scope">
-          <icon v-if="scope.row.remote==1" name="check" class="table-cell-icon color-success"></icon>
+        <template v-slot="scope">
+          <icon v-if="scope.row.remote===1" name="check" class="table-cell-icon color-success"></icon>
           <icon v-else name="times" class="table-cell-icon color-danger"></icon>
         </template>
       </el-table-column>
       <!--代码下载进度条-->
       <el-table-column label="代码生成进度" width="110">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-progress v-if="progressingProjectIds.find(id => id===scope.row.projectId)"
                        :text-inside="true" :stroke-width="20"
                        :percentage="scope.row.genCodePercent"
@@ -42,7 +42,7 @@
       <el-table-column
         label="操作"
         width="205">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button @click="handleEntity(scope.row)" type="text" size="medium">实体管理</el-button>
           <el-button @click="handleConst(scope.row)" type="text" size="medium">枚举管理</el-button>
           <el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">

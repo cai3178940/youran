@@ -13,7 +13,7 @@
               @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="级联字段">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span v-if="!scope.row.editFlag">{{ scope.row.cascadeFieldDesc+'('+scope.row.cascadeJfieldName+')' }}</span>
           <span v-if="scope.row.editFlag">
             <el-select v-model="scope.row.cascadeFieldId" @change="handleCascadeFieldChange(scope.row)"
@@ -30,7 +30,7 @@
         </template>
       </el-table-column>
       <el-table-column label="搜索条件" width="120px">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <template v-if="scope.row.editFlag">
             <el-checkbox v-model="scope.row.query"
                          :true-label="1"
@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
       <el-table-column label="搜索字段别名">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <span v-if="scope.row.query===1 && !scope.row.editFlag">{{ scope.row.alias }}</span>
           <span v-if="scope.row.query===1 && scope.row.editFlag">
             <el-input v-model="scope.row.alias" placeholder="字段别名" size="small"></el-input>
@@ -53,7 +53,7 @@
         </template>
       </el-table-column>
       <el-table-column v-if="this.hold" label="列表展示" width="120px">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <template v-if="scope.row.editFlag">
             <el-checkbox v-model="scope.row.list"
                          :true-label="1"
@@ -67,7 +67,7 @@
         </template>
       </el-table-column>
       <el-table-column v-if="this.hold" label="详情展示" width="120px">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <template v-if="scope.row.editFlag">
             <el-checkbox v-model="scope.row.show"
                          :true-label="1"
@@ -83,7 +83,7 @@
       <el-table-column
         label="操作"
         width="140">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button v-if="!scope.row.editFlag" @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
           <el-button v-if="scope.row.editFlag" @click="handleSave(scope.row)" type="text" size="medium">保存</el-button>
         </template>

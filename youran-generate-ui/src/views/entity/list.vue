@@ -33,7 +33,7 @@
               @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="实体名">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           {{ scope.row.title }}
           <template v-for="mtm in scope.row.mtms">
             <el-dropdown @command="handleMtmCommand" :key="mtm.mtmId" size="mini" placement="bottom-start" trigger="click" style="margin-left:5px;cursor:pointer;">
@@ -61,7 +61,7 @@
       <el-table-column property="className" label="类名"></el-table-column>
       <el-table-column property="tableName" label="表名"></el-table-column>
       <el-table-column label="分页" width="60px">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <icon v-if="scope.row.pageSign==1" name="check" class="table-cell-icon color-success"></icon>
           <icon v-else name="times" class="table-cell-icon color-danger"></icon>
         </template>
@@ -70,7 +70,7 @@
       <el-table-column
         label="操作"
         width="200">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <!--<el-button @click="handleShow(scope.row)" type="text" size="medium">查看</el-button>-->
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
           <el-button @click="handleField(scope.row)" type="text" size="medium">字段管理</el-button>

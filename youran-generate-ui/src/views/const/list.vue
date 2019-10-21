@@ -30,11 +30,11 @@
     <el-table ref="constTable" :data="page.list" style="width: 100%" :border="true"
               @selection-change="selectionChange" @expand-change="expandChange" v-loading="loading">
       <el-table-column type="expand" width="50">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-table class="detailTable" :data="totalDetailList" v-loading="detailLoading" :show-header="false">
             <el-table-column width="100"></el-table-column>
             <el-table-column label="枚举值描述" width="250">
-              <template slot-scope="detail">
+              <template v-slot="detail">
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailRemark }}</span>
                 <span v-if="detail.row.editFlag">
                   <el-input v-model="detail.row.detailRemark" placeholder="值描述，如：女"></el-input>
@@ -42,7 +42,7 @@
               </template>
             </el-table-column>
             <el-table-column label="枚举字段名" width="250">
-              <template slot-scope="detail">
+              <template v-slot="detail">
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailName }}</span>
                 <span v-if="detail.row.editFlag">
                   <el-input v-model="detail.row.detailName" @change="detailNameChange(detail.row)" placeholder="字段名，如：WOMAN"></el-input>
@@ -50,7 +50,7 @@
               </template>
             </el-table-column>
             <el-table-column label="枚举值">
-              <template slot-scope="detail">
+              <template v-slot="detail">
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailValue }}</span>
                 <span v-if="detail.row.editFlag">
                   <el-input v-model="detail.row.detailValue" placeholder="枚举值，如：2"></el-input>
@@ -60,7 +60,7 @@
             <el-table-column
               label="操作"
               width="150">
-              <template slot-scope="detail">
+              <template v-slot="detail">
                 <el-button v-if="!detail.row.editFlag" @click="handleDetailEdit(detail.row)" type="text" size="medium">编辑</el-button>
                 <el-button v-if="detail.row.editFlag" @click="handleDetailSave(detail.row)" type="text" size="medium">保存</el-button>
                 <el-button @click="handleDetailDel(scope.row,detail.row)" type="text" size="medium">删除</el-button>
@@ -73,14 +73,14 @@
       <el-table-column property="constRemark" label="枚举名称 / 值描述" width="250"></el-table-column>
       <el-table-column property="constName" label="枚举类名 / 字段名" width="250"></el-table-column>
       <el-table-column label="类型 / 枚举值">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           {{ scope.row.constType | optionLabel('constTypeOptions')}}
         </template>
       </el-table-column>
       <el-table-column
         label="操作"
         width="150">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
           <el-button @click="handleDetailAdd(scope.row)" type="text" size="medium">添加枚举值</el-button>
         </template>

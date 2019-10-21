@@ -10,58 +10,21 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="10">
       <el-col :span="14">
-        <el-form ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px" size="small">
-          <el-form-item label="是否主键" prop="primaryKey">
-            <help-popover name="field.primaryKey">
-              <el-checkbox v-model="form.primaryKey" :true-label="1" :false-label="0">是</el-checkbox>
-              <el-checkbox v-model="form.autoIncrement" :true-label="1" :false-label="0" :disabled="autoIncrementDisabled">自增</el-checkbox>
+        <el-form v-if="ready" ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px" size="small">
+          <el-form-item label="性质">
+            <help-popover name="field.feature">
+              <el-input class="featureInput" disabled :value="fieldFeature.label" readonly></el-input>
             </help-popover>
           </el-form-item>
-          <el-form-item label="是否外键" prop="foreignKey">
+          <el-form-item v-if="!isAttrHide('foreignKey')" label="外键关联" prop="foreignKey">
             <help-popover name="field.foreignKey">
-              <el-row type="flex" align="middle" :gutter="10">
-                <el-col :span="6">
-                  <el-checkbox v-model="form.foreignKey" :true-label="1" :false-label="0">是</el-checkbox>
-                </el-col>
-                <el-col :span="18" class="col-right">
-                  <span class="inline-label">外键字段</span>
-                  <el-cascader
-                    :disabled="foreignFieldDisabled"
-                    placeholder="请选择外键字段"
-                    :options="entityFieldOptions"
-                    v-model="foreignField"
-                    @active-item-change="handleForeignEntityChange">
-                  </el-cascader>
-                </el-col>
-              </el-row>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="序号" prop="orderNo">
-            <help-popover name="field.orderNo">
-              <el-row type="flex" align="middle" :gutter="10">
-                <el-col :span="8">
-                  <el-input-number v-model="form.orderNo" :min="1"></el-input-number>
-                </el-col>
-                <el-col :span="16" class="col-right">
-                  <span class="inline-label">特殊类型</span>
-                  <el-select :disabled="specialFieldDisabled" clearable v-model="form.specialField"
-                             filterable placeholder="无">
-                    <el-option
-                      v-for="feature in specialFieldFeatures"
-                      :key="feature.value"
-                      :label="feature.label"
-                      :value="feature.value">
-                      <span class="template-option">
-                        <icon :key="feature.value"
-                              :name="feature.icon"
-                              :style="feature.style">
-                        </icon>
-                      </span>
-                          {{ feature.label }}
-                    </el-option>
-                  </el-select>
-                </el-col>
-              </el-row>
+              <el-cascader
+                :disabled="foreignFieldDisabled"
+                placeholder="请选择外键字段"
+                :options="entityFieldOptions"
+                v-model="foreignField"
+                @active-item-change="handleForeignEntityChange">
+              </el-cascader>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段名" prop="jfieldName">
@@ -143,7 +106,7 @@
               </template>
             </help-popover>
           </el-form-item>
-          <el-form-item label="枚举字典" prop="dicType">
+          <el-form-item  v-if="!isAttrHide('dicType')" label="枚举字典" prop="dicType">
             <help-popover name="field.dicType">
               <el-autocomplete :disabled="dicTypeDisabled" style="width:100%;"
                                v-model="form.dicType"
@@ -157,7 +120,7 @@
               <el-checkbox v-model="form.notNull" :disabled="notNullDisabled" :true-label="1" :false-label="0">是</el-checkbox>
             </help-popover>
           </el-form-item>
-          <el-form-item label="可搜索" prop="query">
+          <el-form-item v-if="!isAttrHide('query')" label="可搜索" prop="query">
             <help-popover name="field.query">
               <el-row type="flex" align="middle" :gutter="10">
                 <el-col :span="6">
@@ -178,13 +141,38 @@
               </el-row>
             </help-popover>
           </el-form-item>
-          <el-form-item label="字段属性">
+          <el-form-item v-if="!isAttrHide('attributes')" label="字段属性">
             <help-popover name="field.attributes">
-              <el-checkbox v-model="form.insert" :true-label="1" :false-label="0">可插入</el-checkbox>
-              <el-checkbox v-model="form.update" :true-label="1" :false-label="0">可修改</el-checkbox>
-              <el-checkbox v-model="form.list" :true-label="1" :false-label="0">列表展示</el-checkbox>
-              <el-checkbox v-model="form.show" :true-label="1" :false-label="0">详情展示</el-checkbox>
-              <el-checkbox v-model="form.listSort" :true-label="1" :false-label="0">可排序</el-checkbox>
+              <el-checkbox v-model="form.insert"
+                           :true-label="1"
+                           :false-label="0"
+                           :disabled="isAttrDisable('attr-insert')">
+                可插入
+              </el-checkbox>
+              <el-checkbox v-model="form.update"
+                           :true-label="1"
+                           :false-label="0"
+                           :disabled="isAttrDisable('attr-update')">
+                可修改
+              </el-checkbox>
+              <el-checkbox v-model="form.list"
+                           :true-label="1"
+                           :false-label="0"
+                           :disabled="isAttrDisable('attr-list')">
+                列表展示
+              </el-checkbox>
+              <el-checkbox v-model="form.show"
+                           :true-label="1"
+                           :false-label="0"
+                           :disabled="isAttrDisable('attr-show')">
+                详情展示
+              </el-checkbox>
+              <el-checkbox v-model="form.listSort"
+                           :true-label="1"
+                           :false-label="0"
+                           :disabled="isAttrDisable('attr-listSort')">
+                可排序
+              </el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item>
@@ -211,6 +199,13 @@ export default {
   data () {
     const edit = !!this.fieldId
     return {
+      ready: false,
+      // 字段性质
+      fieldFeature: {},
+      // 需要隐藏的输入域
+      hiddenAttrs: [],
+      // 需要禁用的输入域
+      disabledAttrs: [],
       edit: edit,
       boolOptions: options.boolOptions,
       fieldTypeOptions: options.getFieldTypeOptions(),
@@ -281,6 +276,18 @@ export default {
     }
   },
   methods: {
+    /**
+     * 输入域是否隐藏
+     */
+    isAttrHide (attr) {
+      return this.hiddenAttrs.includes(attr)
+    },
+    /**
+     * 输入域是否禁用
+     */
+    isAttrDisable (attr) {
+      return this.disabledAttrs.includes(attr)
+    },
     /**
      * java字段类型变化后
      */
@@ -420,6 +427,15 @@ export default {
     },
     copyJfieldNameToFieldName () {
       this.form.fieldName = this.$common.snakeCase(this.form.jfieldName)
+    },
+    /**
+     * 数据准备完成
+     */
+    formReady () {
+      this.fieldFeature = options.getFieldFeatures(this.form)[0]
+      this.hiddenAttrs = this.fieldFeature.hiddenAttrs
+      this.disabledAttrs = this.fieldFeature.disabledAttrs
+      this.ready = true
     }
   },
   created () {
@@ -430,7 +446,8 @@ export default {
         .then(() => {
           this.foreignField = [this.form.foreignEntityId, this.form.foreignFieldId]
         })
-        .catch(error => this.this.$common.showNotifyError(error))
+        .then(() => this.formReady())
+        .catch(error => this.$common.showNotifyError(error))
     } else {
       const entityId = parseInt(this.entityId)
       this.form.entityId = entityId
@@ -438,11 +455,13 @@ export default {
       const type = this.$router.currentRoute.query.type
       const template = this.$router.currentRoute.query.template
       if (!template) {
+        this.formReady()
         return
       }
       if (type === 'system') {
         this.form = fieldTemplate[template]
         this.form.entityId = entityId
+        this.formReady()
       }
       if (type === 'temp') {
         const promise2 = this.$ajax.get(`/${apiPath}/meta_field/${template}`)
@@ -461,6 +480,7 @@ export default {
                 })
             }
           })
+          .then(() => this.formReady())
           .catch(error => this.$common.showNotifyError(error))
       }
     }
@@ -491,6 +511,12 @@ export default {
       font-size: 14px;
       color: #606266;
       margin-right: 10px;
+    }
+    .featureInput {
+      .el-input__inner {
+        font-weight: bold;
+        color: #fa5555;
+      }
     }
   }
 

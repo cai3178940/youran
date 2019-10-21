@@ -37,7 +37,7 @@
               @selection-change="selectionChange" :row-class-name="rowClassName">
       <el-table-column type="selection" width="39px"></el-table-column>
       <el-table-column property="orderNo" label="序号" width="65px">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button v-if="!scope.row.orderNoEdit"
                      type="primary" plain
                      size="mini"
@@ -59,7 +59,7 @@
         </template>
       </el-table-column>
       <el-table-column label="字段标题">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <template v-if="!scope.row.validate.success">
             <icon name="exclamation-circle" class="table-cell-icon color-warning"></icon>
           </template>
@@ -105,24 +105,24 @@
         </template>
       </el-table-column>
       <el-table-column label="字段名">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           {{ scope.row.jfieldName }} / {{ scope.row.fieldName }}
         </template>
       </el-table-column>
       <el-table-column label="字段类型" width="200px">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           {{ scope.row.jfieldType | optionLabel('jfieldTypeOptions')}}
           / {{ scope.row.fieldType | optionLabel('fieldTypeOptions') }}{{scope.row | lengthAndScale}}
         </template>
       </el-table-column>
       <el-table-column label="非空" width="50px">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <icon v-if="scope.row.notNull==1" name="check" class="table-cell-icon color-success"></icon>
           <icon v-else name="times" class="table-cell-icon color-danger"></icon>
         </template>
       </el-table-column>
-      <el-table-column label="特性" width="70px">
-        <template slot-scope="scope">
+      <el-table-column label="性质" width="70px">
+        <template v-slot="scope">
           <template v-for="feature in getFieldFeatures(scope.row)">
             <el-tooltip :key="feature.value" class="item" effect="dark" :content="feature.label" placement="right">
               <icon :name="feature.icon"
@@ -137,7 +137,7 @@
       <el-table-column
         label="操作"
         width="130">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button @click="handleEdit(scope.row)" type="text" size="medium" style="margin-left: 5px;">编辑</el-button>
           <el-button :ref="'copyButton'+scope.row.fieldId"
                      :disabled="fieldCached(scope.row.fieldId) || fieldToCache(scope.row.fieldId)"
@@ -173,7 +173,7 @@
           <el-table-column width="200px" property="tableName"/>
           <el-table-column property="desc"/>
           <el-table-column width="130">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <el-badge :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
                 <el-button @click="handleShowMtmCascadeExt(scope.row, true)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
               </el-badge>
@@ -189,7 +189,7 @@
           <el-table-column width="200px" property="tableName"/>
           <el-table-column property="desc"/>
           <el-table-column width="130">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <el-badge :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
                 <el-button @click="handleShowMtmCascadeExt(scope.row, false)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
               </el-badge>
@@ -212,7 +212,16 @@
           <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
             <el-select v-model="templateForm.template">
               <el-option-group>
-                <el-option label="不使用模板" value=""></el-option>
+                <el-option :label="commonFeature.label" value="">
+                  <span style="float: left">
+                    <span class="template-option">
+                      <icon :name="commonFeature.icon"
+                            :style="commonFeature.style">
+                      </icon>
+                    </span>
+                    {{commonFeature.label}}
+                  </span>
+                </el-option>
               </el-option-group>
               <el-option-group v-if="cacheFieldTemplateCount>0" label="临时模板">
                 <el-option v-for="value in cacheFieldTemplate"
@@ -374,7 +383,8 @@ export default {
       mtmEntities: {
         holds: [],
         unholds: []
-      }
+      },
+      commonFeature: options.commonFeature
     }
   },
   computed: {
