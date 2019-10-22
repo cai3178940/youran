@@ -192,7 +192,7 @@
 import options from '@/components/options'
 import { apiPath } from '@/components/common'
 import { initFormBean, getRules } from './model'
-import fieldTemplate from '@/components/fieldTemplate'
+import { findSystemTemplate } from '@/components/fieldTemplate'
 
 export default {
   name: 'fieldForm',
@@ -486,7 +486,7 @@ export default {
         return
       }
       if (type === 'system') {
-        this.form = fieldTemplate[template]
+        this.form = findSystemTemplate(template)
         this.form.entityId = entityId
         this.formReady()
       }

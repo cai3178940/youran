@@ -23,8 +23,8 @@
           </el-form-item>
           <el-form-item>
               <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
-                <!--<el-button ref="copyButton" @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制为模板</el-button>-->
-                <el-button ref="copyButton" @click.native="addTemplateFormVisible = true;templateForm.template=''" type="success" style="margin: 0 0 2px 10px;">添加字段</el-button>
+                <!--<el-button ref="copyButton" @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制字段</el-button>-->
+                <el-button ref="copyButton" @click.native="addTemplateFormVisible = true;templateForm.template='普通字段模板'" type="success" style="margin: 0 0 2px 10px;">添加字段</el-button>
               </el-badge>
               <el-button style="margin-left: 10px;" @click.native="handleIndexAdd" type="primary">创建索引</el-button>
               <el-button @click.native="handleDel" type="danger">删除字段</el-button>
@@ -212,18 +212,24 @@
           <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
             <el-select v-model="templateForm.template">
               <el-option-group>
-                <el-option :label="commonFeature.label" value="">
+                <el-option v-for="(value,key) in flexibleTemplate"
+                           :key="key"
+                           :label="key"
+                           :value="key">
                   <span style="float: left">
                     <span class="template-option">
-                      <icon :name="commonFeature.icon"
-                            :style="commonFeature.style">
-                      </icon>
+                      <template v-for="feature in getFieldFeatures(value)">
+                        <icon :key="feature.value"
+                              :name="feature.icon"
+                              :style="feature.style">
+                        </icon>
+                      </template>
                     </span>
-                    {{commonFeature.label}}
+                    {{ key }}
                   </span>
                 </el-option>
               </el-option-group>
-              <el-option-group v-if="cacheFieldTemplateCount>0" label="临时模板">
+              <el-option-group v-if="cacheFieldTemplateCount>0" label="复制字段">
                 <el-option v-for="value in cacheFieldTemplate"
                            :key="value.fieldId"
                            :label="value.fieldDesc"
@@ -242,8 +248,8 @@
                   <span style="float: right; color: #8492a6; font-size: 13px"><i @click.stop="removeFieldTemplate(value.fieldId)" class="el-icon-delete"></i></span>
                 </el-option>
               </el-option-group>
-              <el-option-group label="系统内置模板">
-                <el-option v-for="(value,key) in fieldTemplate"
+              <el-option-group label="预置字段">
+                <el-option v-for="(value,key) in fixedTemplate"
                            :key="key"
                            :label="key"
                            :value="key">
@@ -269,7 +275,7 @@
               v-model="templateForm.templates"
               multiple
               collapse-tags>
-              <el-option-group v-if="cacheFieldTemplateCount>0" label="临时模板">
+              <el-option-group v-if="cacheFieldTemplateCount>0" label="复制字段">
                 <el-option v-for="value in cacheFieldTemplate"
                            :key="value.fieldId"
                            :label="value.fieldDesc"
@@ -290,8 +296,8 @@
                   </span>
                 </el-option>
               </el-option-group>
-              <el-option-group label="系统内置模板">
-                <el-option v-for="(value,key) in fieldTemplate"
+              <el-option-group label="预置字段">
+                <el-option v-for="(value,key) in fixedTemplate"
                            :key="key"
                            :label="key"
                            :value="key">
@@ -336,7 +342,7 @@ import cascadeExtList from '../cascadeExt/list'
 import mtmCascadeExtList from '../mtmCascadeExt/list'
 import options from '@/components/options'
 import { apiPath } from '@/components/common'
-import fieldTemplate from '@/components/fieldTemplate'
+import { flexibleTemplate, fixedTemplate, findSystemTemplate } from '@/components/fieldTemplate'
 import copyFieldUrl from '@/assets/copyField.gif'
 import meteor from '@/components/meteor'
 import { mapGetters, mapState, mapMutations } from 'vuex'
@@ -354,7 +360,8 @@ export default {
       // 此处不知为何，生产编译时，图片路径有误。本来应该是ui/static变成了uistatic
       copyFieldUrl: copyFieldUrl.replace('uistatic', 'ui/static'),
       addTemplateFormVisible: false,
-      fieldTemplate,
+      flexibleTemplate,
+      fixedTemplate,
       templateForm: {
         multiple: '0',
         template: '',
@@ -383,8 +390,7 @@ export default {
       mtmEntities: {
         holds: [],
         unholds: []
-      },
-      commonFeature: options.commonFeature
+      }
     }
   },
   computed: {
@@ -622,7 +628,7 @@ export default {
             .catch(error => this.$common.showNotifyError(error))
         } else {
           // 系统内置模板，直接保存
-          return callback(fieldTemplate[temp], refresh)
+          return callback(findSystemTemplate(temp), refresh)
         }
       }
       const loading = this.$loading()

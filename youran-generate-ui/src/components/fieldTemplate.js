@@ -1,4 +1,66 @@
-export default {
+/**
+ * 灵活可变的字段模板
+ */
+export const flexibleTemplate = {
+  '普通字段模板': {
+    jfieldName: '',
+    fieldName: '',
+    fieldDesc: '',
+    jfieldType: '',
+    fieldType: '',
+    fieldLength: 0,
+    fieldScale: 0,
+    primaryKey: 0,
+    autoIncrement: 0,
+    defaultValue: '',
+    notNull: 0,
+    foreignKey: 0,
+    specialField: '',
+    fieldExample: '',
+    fieldComment: '',
+    dicType: '',
+    query: 0,
+    queryType: null,
+    insert: 1,
+    update: 1,
+    list: 1,
+    listSort: 0,
+    show: 1,
+    editType: null,
+    orderNo: 10
+  },
+  '外键模板': {
+    jfieldName: '',
+    fieldName: '',
+    fieldDesc: '',
+    jfieldType: '',
+    fieldType: '',
+    fieldLength: 0,
+    fieldScale: 0,
+    primaryKey: 0,
+    autoIncrement: 0,
+    defaultValue: '',
+    notNull: 0,
+    foreignKey: 1,
+    specialField: '',
+    fieldExample: '',
+    fieldComment: '',
+    dicType: '',
+    query: 1,
+    queryType: 1,
+    insert: 1,
+    update: 1,
+    list: 1,
+    listSort: 0,
+    show: 1,
+    editType: null,
+    orderNo: 10
+  }
+}
+/**
+ * 固定字段模板
+ */
+export const fixedTemplate = {
   '主键ID(Long)': {
     jfieldName: 'id',
     fieldName: 'id',
@@ -52,33 +114,6 @@ export default {
     show: 1,
     editType: null,
     orderNo: 1
-  },
-  '外键': {
-    jfieldName: '',
-    fieldName: '',
-    fieldDesc: '',
-    jfieldType: '',
-    fieldType: '',
-    fieldLength: 0,
-    fieldScale: 0,
-    primaryKey: 0,
-    autoIncrement: 0,
-    defaultValue: '',
-    notNull: 0,
-    foreignKey: 1,
-    specialField: '',
-    fieldExample: '',
-    fieldComment: '',
-    dicType: '',
-    query: 1,
-    queryType: 1,
-    insert: 1,
-    update: 1,
-    list: 1,
-    listSort: 0,
-    show: 1,
-    editType: null,
-    orderNo: 10
   },
   '创建时间': {
     jfieldName: 'createdTime',
@@ -268,5 +303,14 @@ export default {
     show: 1,
     editType: null,
     orderNo: 90
+  }
+}
+
+export const findSystemTemplate = function (key) {
+  const t1 = flexibleTemplate[key]
+  if (t1) {
+    return t1
+  } else {
+    return fixedTemplate[key]
   }
 }
