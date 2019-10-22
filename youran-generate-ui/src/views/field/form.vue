@@ -16,6 +16,11 @@
               <el-input class="featureInput" disabled :value="fieldFeature.label" readonly></el-input>
             </help-popover>
           </el-form-item>
+          <el-form-item v-if="!isAttrHide('autoIncrement')" label="主键策略">
+            <help-popover name="field.autoIncrement">
+              <el-checkbox v-model="form.autoIncrement" :true-label="1" :false-label="0" :disabled="autoIncrementDisabled">自增</el-checkbox>
+            </help-popover>
+          </el-form-item>
           <el-form-item v-if="!isAttrHide('foreignKey')" label="外键关联" prop="foreignKey">
             <help-popover name="field.foreignKey">
               <el-cascader
@@ -208,7 +213,6 @@ export default {
       // 需要禁用的输入域
       disabledAttrs: [],
       edit: edit,
-      boolOptions: options.boolOptions,
       fieldTypeOptions: options.getFieldTypeOptions(),
       jfieldTypeOptions: options.jfieldTypeOptions,
       queryTypeOptions: options.queryTypeOptions,

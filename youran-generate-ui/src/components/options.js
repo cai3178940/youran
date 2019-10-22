@@ -85,7 +85,7 @@ const commonFeature = {
   label: '普通字段',
   icon: 'asterisk',
   style: 'color: #87CEEB;',
-  hiddenAttrs: ['foreignKey'],
+  hiddenAttrs: ['autoIncrement', 'foreignKey'],
   disabledAttrs: []
 }
 
@@ -103,7 +103,7 @@ const fkFeature = {
   label: '外键',
   icon: 'key',
   style: 'color: #409EFF;',
-  hiddenAttrs: ['dicType', 'query'],
+  hiddenAttrs: ['autoIncrement', 'dicType', 'query'],
   disabledAttrs: []
 }
 
@@ -113,7 +113,7 @@ const specialFieldFeatures = [
     label: '逻辑删除',
     icon: 'ban',
     style: 'color: #ff3366;',
-    hiddenAttrs: ['foreignKey', 'dicType', 'query', 'attributes'],
+    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType', 'query', 'attributes'],
     disabledAttrs: []
   },
   {
@@ -121,7 +121,7 @@ const specialFieldFeatures = [
     label: '创建时间',
     icon: 'calendar-alt',
     style: 'color: #33cc66;',
-    hiddenAttrs: ['foreignKey', 'dicType'],
+    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
@@ -129,7 +129,7 @@ const specialFieldFeatures = [
     label: '创建人员',
     icon: 'user',
     style: 'color: #33cc66;',
-    hiddenAttrs: ['foreignKey', 'dicType'],
+    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
@@ -137,7 +137,7 @@ const specialFieldFeatures = [
     label: '更新时间',
     icon: 'calendar-alt',
     style: 'color: #1C86EE;',
-    hiddenAttrs: ['foreignKey', 'dicType'],
+    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
@@ -145,7 +145,7 @@ const specialFieldFeatures = [
     label: '更新人员',
     icon: 'user',
     style: 'color: #1C86EE;',
-    hiddenAttrs: ['foreignKey', 'dicType'],
+    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
@@ -153,7 +153,7 @@ const specialFieldFeatures = [
     label: '乐观锁版本号',
     icon: 'unlock-alt',
     style: 'color: #AB82FF;',
-    hiddenAttrs: ['foreignKey', 'dicType', 'query', 'attributes'],
+    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType', 'query', 'attributes'],
     disabledAttrs: []
   }
 ]
