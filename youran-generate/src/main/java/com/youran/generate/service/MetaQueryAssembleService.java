@@ -87,7 +87,9 @@ public class MetaQueryAssembleService {
             project.setMtms(manyToManies);
         }
         // 校验完整性
-        this.checkAssembledProject(project,withConst);
+        if(check) {
+            this.checkAssembledProject(project, withConst);
+        }
         return project;
     }
 

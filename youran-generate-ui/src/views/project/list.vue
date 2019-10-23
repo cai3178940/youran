@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { apiPath, wsApiPath } from '@/components/common'
 /**
  * websocket前端组件
@@ -215,6 +216,10 @@ export default {
     },
     handleExport (row) {
       this.downloadUrl = `/${apiPath}/meta_export/${row.projectId}`
+      // 立即改成null，修复不能重复下载的bug
+      Vue.nextTick(() => {
+        this.downloadUrl = null
+      })
     },
     /*
     handleGenSql (row) {
