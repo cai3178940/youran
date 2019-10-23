@@ -463,7 +463,7 @@ export default {
      * 数据准备完成
      */
     formReady () {
-      this.fieldFeature = options.getFieldFeatures(this.form)[0]
+      this.fieldFeature = options.getFieldFeature(this.form)
       this.hiddenAttrs = this.fieldFeature.hiddenAttrs
       this.disabledAttrs = this.fieldFeature.disabledAttrs
       this.ready = true

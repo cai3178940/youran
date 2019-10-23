@@ -307,24 +307,20 @@ export default {
   /**
    * 获取字段特性
    */
-  getFieldFeatures (field) {
-    const features = []
+  getFieldFeature (field) {
     // 主键也作为特性返回
     if (field.primaryKey === 1) {
-      features.push(pkFeature)
+      return pkFeature
     } else if (field.foreignKey === 1) {
     // 外键也作为特性返回
-      features.push(fkFeature)
+      return fkFeature
     } else if (field.specialField) {
       const spFeature = specialFieldFeaturesMap[field.specialField]
       if (spFeature) {
-        features.push(spFeature)
+        return spFeature
       }
     }
-    if (!features.length) {
-      features.push(commonFeature)
-    }
-    return features
+    return commonFeature
   },
 
   /**

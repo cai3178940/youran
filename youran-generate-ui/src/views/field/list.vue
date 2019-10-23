@@ -11,7 +11,7 @@
         已选择{{ activeNum }}个字段
       </el-col>
       <el-col :span="20" style="text-align: right;">
-        <el-form :inline="true" :model="queryForm" class="demo-form-inline">
+        <el-form :inline="true" :model="queryForm" class="query-form-inline">
           <el-form-item>
             <el-cascader
               placeholder="请选择实体"
@@ -24,7 +24,10 @@
           <el-form-item>
               <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
                 <!--<el-button ref="copyButton" @click.native="handleCopy" type="warning" style="margin: 0 0 0 10px;">复制字段</el-button>-->
-                <el-button ref="copyButton" @click.native="addTemplateFormVisible = true;templateForm.template='普通字段模板'" type="success" style="margin: 0 0 2px 10px;">添加字段</el-button>
+                <el-button ref="copyButton"
+                           @click="showAddTemplateForm"
+                           type="success"
+                           style="margin: 0 0 2px 10px;">添加字段</el-button>
               </el-badge>
               <el-button style="margin-left: 10px;" @click.native="handleIndexAdd" type="primary">创建索引</el-button>
               <el-button @click.native="handleDel" type="danger">删除字段</el-button>
@@ -123,7 +126,7 @@
       </el-table-column>
       <el-table-column label="性质" width="70px">
         <template v-slot="scope">
-          <template v-for="feature in getFieldFeatures(scope.row)">
+          <template v-for="feature in [getFieldFeature(scope.row)]">
             <el-tooltip :key="feature.value" class="item" effect="dark" :content="feature.label" placement="right">
               <icon :name="feature.icon"
                     :style="feature.style"
@@ -151,9 +154,8 @@
     </el-table>
 
     <template v-if="mtmEntities.holds.length || mtmEntities.unholds.length">
-<!--    <template v-if="false" >-->
       <!-- 纯表头 -->
-      <div class="mtmEntitiesHeader" style="margin-top: 20px;">
+      <div class="mtmEntitiesHeader">
         <el-table :data="[]" style="width: 100%" :border="true">
           <!--<el-table-column width="50px"/>-->
           <el-table-column width="200px" label="多对多级联"/>
@@ -183,7 +185,6 @@
         <!-- 未持有引用的实体 -->
         <el-table v-if="mtmEntities.unholds.length" :data="mtmEntities.unholds" :border="true"
                   style="width: 100%" :show-header="false" row-class-name="unhold-mtm-row">
-          <!--<el-table-column width="50px"/>-->
           <el-table-column width="200px" property="title"/>
           <el-table-column width="200px" property="className"/>
           <el-table-column width="200px" property="tableName"/>
@@ -218,7 +219,7 @@
                            :value="key">
                   <span style="float: left">
                     <span class="template-option">
-                      <template v-for="feature in getFieldFeatures(value)">
+                      <template v-for="feature in [getFieldFeature(value)]">
                         <icon :key="feature.value"
                               :name="feature.icon"
                               :style="feature.style">
@@ -236,7 +237,7 @@
                            :value="value.fieldId">
                   <span style="float: left">
                     <span class="template-option">
-                      <template v-for="feature in getFieldFeatures(value)">
+                      <template v-for="feature in [getFieldFeature(value)]">
                         <icon :key="feature.value"
                                 :name="feature.icon"
                                 :style="feature.style">
@@ -252,10 +253,11 @@
                 <el-option v-for="(value,key) in fixedTemplate"
                            :key="key"
                            :label="key"
-                           :value="key">
+                           :value="key"
+                           :disabled="isTemplateOptionDisabled(value)">
                   <span style="float: left">
                     <span class="template-option">
-                      <template v-for="feature in getFieldFeatures(value)">
+                      <template v-for="feature in [getFieldFeature(value)]">
                         <icon :key="feature.value"
                               :name="feature.icon"
                               :style="feature.style">
@@ -282,7 +284,7 @@
                            :value="value.fieldId">
                   <span style="float: left">
                     <span class="template-option">
-                      <template v-for="feature in getFieldFeatures(value)">
+                      <template v-for="feature in [getFieldFeature(value)]">
                         <icon :key="feature.value"
                               :name="feature.icon"
                               :style="feature.style">
@@ -300,10 +302,11 @@
                 <el-option v-for="(value,key) in fixedTemplate"
                            :key="key"
                            :label="key"
-                           :value="key">
+                           :value="key"
+                           :disabled="isTemplateOptionDisabled(value)">
                   <span style="float: left">
                     <span class="template-option">
-                      <template v-for="feature in getFieldFeatures(value)">
+                      <template v-for="feature in [getFieldFeature(value)]">
                         <icon :key="feature.value"
                               :name="feature.icon"
                               :style="feature.style">
@@ -343,9 +346,34 @@ import mtmCascadeExtList from '../mtmCascadeExt/list'
 import options from '@/components/options'
 import { apiPath } from '@/components/common'
 import { flexibleTemplate, fixedTemplate, findSystemTemplate } from '@/components/fieldTemplate'
-import copyFieldUrl from '@/assets/copyField.gif'
 import meteor from '@/components/meteor'
 import { mapGetters, mapState, mapMutations } from 'vuex'
+
+/**
+ * 初始化是否包含特殊属性字段
+ */
+const initListContains = function () {
+  return {
+    pk: false,
+    deleted: false,
+    createdTime: false,
+    createdBy: false,
+    operatedTime: false,
+    operatedBy: false,
+    version: false
+  }
+}
+
+/**
+ * 初始化添加字段模板表单
+ */
+const initTemplateForm = function () {
+  return {
+    multiple: '0',
+    template: '普通字段模板',
+    templates: []
+  }
+}
 
 export default {
   name: 'fieldList',
@@ -357,36 +385,45 @@ export default {
   },
   data () {
     return {
-      // 此处不知为何，生产编译时，图片路径有误。本来应该是ui/static变成了uistatic
-      copyFieldUrl: copyFieldUrl.replace('uistatic', 'ui/static'),
+      // 控制添加字段窗口的显示
       addTemplateFormVisible: false,
+      // 可变字段模板
       flexibleTemplate,
+      // 系统预置字段
       fixedTemplate,
-      templateForm: {
-        multiple: '0',
-        template: '',
-        templates: []
-      },
+      // 添加字段模板表单
+      templateForm: initTemplateForm(),
       // 查询参数
       query: {
         projectId: null,
         entityId: null
       },
-      // 查询表单参数
+      // 查询表单
       queryForm: {
         projectEntityOptions: [],
         projectEntity: [0, 0]
       },
+      // 选中字段数量
       activeNum: 0,
+      // 鼠标移动到索引框时激活该索引
       activeIndexId: null,
+      // 已选中的字段列表
       selectItems: [],
+      // 字段列表
       list: [],
+      // 字段列表是否包含如下特殊性质字段
+      listContains: initListContains(),
+      // 索引列表
       indexes: [],
+      // 控制字段添加红色渐隐特效
       addImmFieldIds: [],
       loading: false,
+      // 控制外键级联扩展列表弹出框是否显示
       cascadeExtListVisible: false,
+      // 控制多对多级联扩展列表弹出框是否显示
       mtmCascadeExtListVisible: false,
       mtmEntitiesLoading: false,
+      // 多对多实体列表
       mtmEntities: {
         holds: [],
         unholds: []
@@ -451,7 +488,7 @@ export default {
       'addToCacheFieldTemplate',
       'removeToCacheFieldTemplate'
     ]),
-    getFieldFeatures: options.getFieldFeatures,
+    getFieldFeature: options.getFieldFeature,
 
     rowClassName ({ row }) {
       if (this.addImmFieldIds.includes(row.fieldId)) {
@@ -552,9 +589,29 @@ export default {
             }
           })
           this.list = data
+          this.resetListContains(this.list)
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
+    },
+    /**
+     * 展示添加字段模板表单
+     */
+    showAddTemplateForm () {
+      this.addTemplateFormVisible = true
+      this.templateForm = initTemplateForm()
+    },
+    /**
+     * 重置列表包含的特殊性质
+     */
+    resetListContains (list) {
+      this.listContains = initListContains()
+      list.forEach(field => {
+        const feature = options.getFieldFeature(field)
+        if (this.listContains.hasOwnProperty(feature.value)) {
+          this.listContains[feature.value] = true
+        }
+      })
     },
     // 索引查询
     doQueryIndex () {
@@ -797,6 +854,16 @@ export default {
       const constRemark = validate.suggestConstRemark
       this.$router.push(`/project/${this.projectId}/const/add?\
           constName=${constName}&constType=${constType}&constRemark=${constRemark}`)
+    },
+    /**
+     * 字段模板是否禁用
+     */
+    isTemplateOptionDisabled (field) {
+      const feature = options.getFieldFeature(field)
+      if (this.listContains.hasOwnProperty(feature.value)) {
+        return this.listContains[feature.value]
+      }
+      return false
     }
   },
   activated () {
@@ -826,6 +893,9 @@ export default {
   $add-imm-color: #ff3300;
   $active-color: #7a8cf5;
 
+  /**
+   * 新增字段特效-颜色渐变
+   */
   @keyframes fade {
     from{
       background-color: $add-imm-color;
@@ -836,6 +906,9 @@ export default {
   }
 
   .fieldList {
+    /**
+     * 列表页“复制”按钮样式
+     */
     .copyButtion {
       margin-left: 5px;
       color: #f56c6c;
@@ -843,7 +916,9 @@ export default {
         color: #f59a95;
       }
     }
-
+    /**
+     * 列表页“复制”按钮置灰样式
+     */
     .copyButtion.is-disabled{
       color: #C0C4CC;
       :hover {
@@ -858,16 +933,23 @@ export default {
       padding: $el-table-padding;
     }
 
+    /**
+     * 新增字段红色渐隐特效
+     */
     .add-imm-field {
       animation: fade 3s linear;
     }
-
+    /**
+     * 选中数量展示行样式
+     */
     .activeNum {
       min-width: 160px;
       text-align: left;
       padding: 0 0 0 20px;
     }
-
+    /**
+     * 索引框样式
+     */
     .index_span {
       font-size: 10px;
       padding: 3px;
@@ -907,7 +989,10 @@ export default {
       }
     }
 
-    .demo-form-inline {
+    /**
+     * 查询表单样式
+     */
+    .query-form-inline {
       .el-select .el-input {
         width: 150px;
       }
@@ -917,10 +1002,16 @@ export default {
       }
     }
 
+    /**
+     * 级联扩展对话框样式
+     */
     .cascadeExtDialog .el-dialog__body {
       padding-top: 10px;
     }
 
+    /**
+     * 级联按钮小红点样式
+     */
     .cascadeBadge .el-badge__content {
       transform: translateY(-5%) translateX(120%);
       font-size: 10px;
@@ -929,19 +1020,31 @@ export default {
       padding: 0 3px;
     }
 
+    /**
+     * 持有引用的多对多背景色
+     */
     .hold-mtm-row {
       background: #feecec;
     }
-
+    /**
+     * 未持有引用的多对多背景色
+     */
     .unhold-mtm-row {
       background: #f0f9eb;
     }
 
+    /**
+     * 多对多表头样式
+     */
     .mtmEntitiesHeader {
+      margin-top: 20px;
       .el-table__empty-block{
         display: none!important;
       }
     }
+    /**
+     * 序号输入框样式
+     */
     .order-no-input {
       width: 45px;
       input {
@@ -952,15 +1055,23 @@ export default {
 
   }
 
+  /**
+   * 字段备注弹出框中的备注标签样式
+   */
   .popper-remark-label{
     color: #606266;
     font-weight: bold;
   }
+  /**
+   * 字段备注弹出框中的异常标签样式
+   */
   .popper-warn-label{
     color: orange;
     font-weight: bold;
   }
-
+  /**
+   * 模板选项样式
+   */
   .template-option {
     width: 15px;
     display: inline-block;
