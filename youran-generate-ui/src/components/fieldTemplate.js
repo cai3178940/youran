@@ -27,7 +27,7 @@ export const flexibleTemplate = {
     listSort: 0,
     show: 1,
     editType: null,
-    orderNo: 10
+    orderNo: 1
   },
   '外键模板': {
     jfieldName: '',

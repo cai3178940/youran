@@ -481,25 +481,33 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
     } else {
       const entityId = parseInt(this.entityId)
-      this.form.entityId = entityId
       const promise = this.initForeignEntityOptions()
       const type = this.$router.currentRoute.query.type
       const template = this.$router.currentRoute.query.template
+      let orderNo = this.$router.currentRoute.query.orderNo
+      if (!orderNo) {
+        orderNo = 1
+      }
       if (!template) {
+        this.form.entityId = entityId
         this.formReady()
         return
       }
       if (type === 'system') {
-        this.form = findSystemTemplate(template)
-        this.form.entityId = entityId
+        this.form = Object.assign({}, findSystemTemplate(template), {
+          entityId: entityId,
+          orderNo: orderNo
+        })
         this.formReady()
       }
       if (type === 'temp') {
         const promise2 = this.$ajax.get(`/${apiPath}/meta_field/${template}`)
           .then(response => this.$common.checkResult(response))
           .then(data => new Promise((resolve, reject) => {
-            this.form = data
-            this.form.entityId = entityId
+            this.form = Object.assign({}, data, {
+              entityId: entityId,
+              orderNo: orderNo
+            })
             return resolve()
           }))
         Promise.all([promise, promise2])

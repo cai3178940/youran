@@ -157,7 +157,6 @@
       <!-- 纯表头 -->
       <div class="mtmEntitiesHeader">
         <el-table :data="[]" style="width: 100%" :border="true">
-          <!--<el-table-column width="50px"/>-->
           <el-table-column width="200px" label="多对多级联"/>
           <el-table-column width="200px" label="类名"/>
           <el-table-column width="200px" label="表名"/>
@@ -169,7 +168,6 @@
         <!-- 持有引用的实体 -->
         <el-table v-if="mtmEntities.holds.length" :data="mtmEntities.holds" :border="true"
                   style="width: 100%" :show-header="false" row-class-name="hold-mtm-row">
-          <!--<el-table-column width="50px"/>-->
           <el-table-column width="200px" property="title"/>
           <el-table-column width="200px" property="className"/>
           <el-table-column width="200px" property="tableName"/>
@@ -211,7 +209,7 @@
         </el-form-item>
         <el-form-item v-show="templateForm.multiple=='0'" label="模板：" label-width="100px">
           <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
-            <el-select v-model="templateForm.template">
+            <el-select v-model="templateForm.template" @change="handleTemplateChange">
               <el-option-group>
                 <el-option v-for="(value,key) in flexibleTemplate"
                            :key="key"
@@ -320,6 +318,9 @@
             </el-select>
           </el-badge>
         </el-form-item>
+        <el-form-item v-show="templateForm.multiple=='0'" label="序号：" label-width="100px">
+          <el-input-number v-model="templateForm.orderNo" :min="1"></el-input-number>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addTemplateFormVisible = false">取 消</el-button>
@@ -371,7 +372,8 @@ const initTemplateForm = function () {
   return {
     multiple: '0',
     template: '普通字段模板',
-    templates: []
+    templates: [],
+    orderNo: 1
   }
 }
 
@@ -645,7 +647,8 @@ export default {
       if (typeof this.templateForm.template === 'number') {
         type = 'temp'
       }
-      this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/add?type=${type}&template=${this.templateForm.template}`)
+      this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/add?\
+        type=${type}&template=${this.templateForm.template}&orderNo=${this.templateForm.orderNo}`)
     },
     /**
      * 立即添加字段
@@ -864,6 +867,24 @@ export default {
         return this.listContains[feature.value]
       }
       return false
+    },
+    /**
+     * 模板单选下拉框变更事件触发
+     */
+    handleTemplateChange (value) {
+      if (!value) {
+        return
+      }
+      if (typeof value === 'number') {
+        this.$ajax.get(`/${apiPath}/meta_field/${value}`)
+          .then(response => this.$common.checkResult(response))
+          .then(data => {
+            this.templateForm.orderNo = data.orderNo
+          })
+      } else {
+        const template = findSystemTemplate(value)
+        this.templateForm.orderNo = template.orderNo
+      }
     }
   },
   activated () {
