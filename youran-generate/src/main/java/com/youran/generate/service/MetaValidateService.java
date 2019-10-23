@@ -29,6 +29,7 @@ public class MetaValidateService {
     @Autowired
     private MetaQueryAssembleService metaQueryAssembleService;
 
+
     public MetaEntityInnerValidateVO validateEntityInner(Integer entityId) {
         // 获取装配完成的实体
         MetaEntityPO entity = metaQueryAssembleService.getAssembledEntity(entityId);

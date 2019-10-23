@@ -93,7 +93,7 @@ public class MetaCodeGenService implements InitializingBean {
     public String genSql(Integer projectId) {
         // 获取组装后的项目
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
-            false,true,false, false, false);
+            false,true,false, false, false, true);
         return getSqlText(project);
     }
 
@@ -218,7 +218,7 @@ public class MetaCodeGenService implements InitializingBean {
         // 获取组装后的项目
         this.progressing(progressConsumer,20,80,1,"获取并组装项目元数据");
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
-            true,true,true, true, true);
+            true,true,true, true, true, true);
         LOGGER.debug("------代码生成临时路径：" + projectDir);
         this.progressing(progressConsumer,20,80,1,"开始渲染代码");
         for (TemplateEnum templateEnum : TemplateEnum.values()) {

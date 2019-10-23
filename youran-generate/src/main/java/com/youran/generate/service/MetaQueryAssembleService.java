@@ -52,11 +52,13 @@ public class MetaQueryAssembleService {
      * @param withForeign 是否需要装配外键关联
      * @param withFkCascade 是否装配外键级联扩展
      * @param withMtmCascade 是否装配多对多级联扩展
+     * @param check 是否校验完整性
      * @return
      */
     public MetaProjectPO getAssembledProject(Integer projectId,boolean withConst,
                                              boolean withMtm,boolean withForeign,
-                                             boolean withFkCascade,boolean withMtmCascade){
+                                             boolean withFkCascade,boolean withMtmCascade,
+                                             boolean check){
         MetaProjectPO project = metaProjectService.getProject(projectId,true);
         // 查询实体id列表
         List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
