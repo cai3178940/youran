@@ -5,6 +5,7 @@ import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
 import com.youran.common.util.TempDirUtil;
 import com.youran.generate.config.GenerateProperties;
+import com.youran.generate.pojo.dto.SystemDTO;
 import com.youran.generate.pojo.mapper.*;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.util.Zip4jUtil;
@@ -48,6 +49,7 @@ public class MetaImportExportService {
     public static final String CASCADE_EXT_JSON_FILE = "cascadeExt.json";
     public static final String MTM_JSON_FILE = "manyToMany.json";
     public static final String MTM_CASCADE_EXT_JSON_FILE = "mtmCascadeExt.json";
+    public static final String SYSTEM_JSON_FILE = "_system.json";
 
 
     @Autowired
@@ -186,6 +188,12 @@ public class MetaImportExportService {
             .collect(Collectors.toList());
         // 导出多对多级联扩展json文件
         JsonUtil.writeJsonToFile(mtmCascades,true,new File(dir,MTM_CASCADE_EXT_JSON_FILE));
+
+        // 导出系统信息json文件
+        SystemDTO systemDTO = new SystemDTO(generateProperties.getVersion());
+        JsonUtil.writeJsonToFile(systemDTO,true,new File(dir,SYSTEM_JSON_FILE));
+
+        // 将文件夹打成压缩包
         Zip4jUtil.compressFolder(dir, outFile);
         return outFile;
     }
