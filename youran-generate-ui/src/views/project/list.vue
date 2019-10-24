@@ -216,10 +216,11 @@ export default {
     },
     handleExport (row) {
       this.downloadUrl = `/${apiPath}/meta_export/${row.projectId}`
-      // 立即改成null，修复不能重复下载的bug
-      Vue.nextTick(() => {
+      console.info(this.downloadUrl)
+      // 隔2秒改成null，修复不能重复下载的bug
+      setTimeout(() => {
         this.downloadUrl = null
-      })
+      }, 2000)
     },
     /*
     handleGenSql (row) {
