@@ -1,8 +1,6 @@
 <template>
   <el-container class="wrapper">
-    <el-header
-      height="80px"
-      style="background-color: #409EFF;">
+    <el-header class="header">
       <div class="header-logo-wrapper">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
              viewBox="0 0 32 32" class="header-logo" xml:space="preserve">
@@ -18,16 +16,28 @@
       <div class="header-title">
         <h2 align="left" style="color:#FFFFFF;margin: 10px 0;">Youran代码自动化平台</h2>
       </div>
+      <div class="header-menu">
+        <el-dropdown class="avatar-container" trigger="click">
+          <div class="avatar-wrapper">
+            <img :src="avatar" class="user-avatar">
+            <i class="el-icon-caret-bottom"></i>
+          </div>
+          <el-dropdown-menu slot="dropdown" class="user-dropdown">
+            <el-dropdown-item>
+              <span style="display:block;" @click="showSystemDialog">系统信息</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </el-header>
     <el-container>
       <!-- 左侧导航 -->
-      <el-aside class="menu" style="width:150px;">
-        <el-menu class="el-menu-vertical-demo" :router="true">
+      <el-aside class="menu">
+        <el-menu :router="true">
           <el-menu-item index="/" :class="{'is-active': isRoutePath('/')}">首页</el-menu-item>
           <el-menu-item index="/project" :class="{'is-active': isRouteIndexOf('/project')}">项目管理</el-menu-item>
         </el-menu>
       </el-aside>
-
       <!-- 右侧主内容区 -->
       <el-main class="content">
         <transition name="slide-fade" mode="out-in">
@@ -35,15 +45,33 @@
         </transition>
       </el-main>
     </el-container>
+    <el-dialog title="系统信息" :visible.sync="systemDialogVisible" width="350px">
+      <el-form size="small">
+        <el-form-item label="用户：" label-width="100px">
+          {{systemUserInfo.user}}
+        </el-form-item>
+        <el-form-item label="系统版本：" label-width="100px">
+          {{systemUserInfo.sysVersion}}
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </el-container>
+
 </template>
 
 <script>
+import avatar from '@/assets/avatar.jpg'
+import { apiPath } from '@/components/common'
 export default {
   name: 'app',
   data () {
     return {
-
+      avatar,
+      systemDialogVisible: false,
+      systemUserInfo: {
+        user: 'admin',
+        sysVersion: '1.1.1'
+      }
     }
   },
   methods: {
@@ -52,15 +80,93 @@ export default {
     },
     isRouteIndexOf (path) {
       return this.$route.path.indexOf(path) === 0
+    },
+    showSystemDialog () {
+      this.systemDialogVisible = true
     }
-  },
-  created () {
-
   },
   watch: {
     '$route' (to, from) {
       // console.info(to)
     }
+  },
+  created () {
+    this.$ajax.get(`/${apiPath}/system_user/info`)
+      .then(response => this.$common.checkResult(response))
+      .then(data => {
+        this.systemUserInfo = data
+      })
   }
 }
 </script>
+
+<style lang="scss">
+  @import 'assets/common.scss';
+
+  .wrapper {
+    height: 100%;
+    .header {
+      background-color: #409EFF;
+      .header-logo-wrapper {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 5px 0px;
+        width: 50px;
+        height: 50px;
+        .header-logo {
+          fill: #FFFFFF;
+        }
+
+        .header-logo:hover {
+          -webkit-transform: rotate(720deg);
+          transform: rotate(720deg);
+          -webkit-transition: -webkit-transform 2s linear;
+          transition: transform 2s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+      }
+
+      .header-title {
+        margin: 3px 10px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .header-menu {
+        float: right;
+        height: 100%;
+        .avatar-container {
+          .avatar-wrapper {
+            margin-top: 10px;
+            vertical-align: middle;
+            .user-avatar {
+              cursor: pointer;
+              width: 40px;
+              height: 40px;
+              border-radius: 10px;
+            }
+
+            .el-icon-caret-bottom {
+              color: #ffffff;
+              cursor: pointer;
+              position: absolute;
+              right: -15px;
+              top: 25px;
+              font-size: 12px;
+            }
+          }
+        }
+      }
+
+    }
+
+    .menu {
+      width:150px;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+  }
+
+</style>

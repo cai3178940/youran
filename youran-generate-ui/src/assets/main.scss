@@ -13,9 +13,6 @@ body {
     margin: 0;
 }
 
-.wrapper {
-    height: 100%;
-}
 
 a {
     text-decoration: none;
@@ -26,37 +23,6 @@ header {
     padding: 0 20px;
     z-index: 1;
     box-sizing: border-box;
-}
-
-.header-logo-wrapper {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 10px 0px;
-    width: 50px;
-    height: 50px;
-}
-
-.header-logo {
-    fill: #FFFFFF;
-}
-
-.header-logo:hover {
-    -webkit-transform: rotate(720deg);
-    transform: rotate(720deg);
-    -webkit-transition: -webkit-transform 2s linear;
-    transition: transform 2s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-
-.header-title {
-    margin: 10px 10px 15px 10px;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-
-.content {
-    padding: 20px;
 }
 
 
