@@ -1,5 +1,6 @@
 package com.youran.generate.constant;
 
+import com.youran.common.exception.BusinessException;
 import com.youran.common.validator.Check;
 
 /**
@@ -31,7 +32,7 @@ public class MetaConstType {
         }else if(STRING == value){
             return "String";
         }
-        throw new RuntimeException("不支持的常量类型");
+        throw new BusinessException("不支持的常量类型");
     }
 
 }

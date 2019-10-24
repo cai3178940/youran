@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.exception.BusinessException;
 import com.youran.common.pojo.vo.AbstractVO;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -76,7 +77,7 @@ public class ProgressVO extends AbstractVO {
         Assert.isTrue(maxPercent>=minPercent,"最大百分比必须大于最小百分比");
         ProgressVO vo = threadLocal.get();
         if(vo==null){
-            throw new RuntimeException("进度条VO未初始化");
+            throw new BusinessException("进度条VO未初始化");
         }
         // 如果不是进行中，则直接返回
         if(!Objects.equals(vo.getStatus(),PROGRESSING)){
@@ -138,7 +139,7 @@ public class ProgressVO extends AbstractVO {
         ProgressVO vo = threadLocal.get();
         threadLocal.remove();
         if(vo==null){
-            throw new RuntimeException("进度条VO未初始化");
+            throw new BusinessException("进度条VO未初始化");
         }
         vo.setStatus(status);
         vo.setPercentage(percent);

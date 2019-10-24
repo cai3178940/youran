@@ -1,6 +1,7 @@
 package com.youran.generate.template.context;
 
 import com.youran.common.constant.BoolConst;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.ForeignEntityTreeNode;
 import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
@@ -314,7 +315,7 @@ public class EntityContext extends BaseContext {
             int endSize = totalMap.size();
             // 走一遍遍历没有任何效果，则报错
             if(endSize>0 && endSize==startSize){
-                throw new RuntimeException("实体外键之间存在强循环依赖");
+                throw new BusinessException("实体外键之间存在强循环依赖");
             }
         }
         return dealtSet;

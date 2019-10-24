@@ -1,5 +1,6 @@
 package com.youran.generate.util;
 
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MetaConstType;
 import com.youran.generate.constant.MetaSpecialField;
@@ -58,7 +59,7 @@ public class FreeMakerUtil {
             return template;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new RuntimeException("获取freemarker模版异常");
+            throw new BusinessException("获取freemarker模版异常");
         }
     }
 
@@ -80,7 +81,7 @@ public class FreeMakerUtil {
                 }
             }
             logger.error(e.getMessage(), e);
-            throw new RuntimeException("freemarker解析异常");
+            throw new BusinessException("freemarker解析异常");
         }
 
     }
@@ -102,7 +103,7 @@ public class FreeMakerUtil {
                 }
             }
             logger.error(e.getMessage(), e);
-            throw new RuntimeException("freemarker解析异常");
+            throw new BusinessException("freemarker解析异常");
         }
 
     }
@@ -123,13 +124,17 @@ public class FreeMakerUtil {
         } catch (Exception e) {
             if(e instanceof _TemplateModelException){
                 Throwable cause = e.getCause();
-                if(cause!=null && cause instanceof SkipCurrentException){
-                    throw (SkipCurrentException)cause;
+                if(cause!=null){
+                    if(cause instanceof SkipCurrentException){
+                        throw (SkipCurrentException)cause;
+                    }else if(cause instanceof BusinessException){
+                        throw (BusinessException)cause;
+                    }
                 }
             }
             logger.error(e.getMessage(), e);
             e.printStackTrace();
-            throw new RuntimeException("freemarker解析异常,dataModel="
+            throw new BusinessException("freemarker解析异常,dataModel="
                 +dataModel+",templateName="+templateName,e);
         }
     }
@@ -154,7 +159,7 @@ public class FreeMakerUtil {
                 }
             }
             logger.error(e.getMessage(), e);
-            throw new RuntimeException("freemarker解析异常");
+            throw new BusinessException("freemarker解析异常");
         }
     }
 

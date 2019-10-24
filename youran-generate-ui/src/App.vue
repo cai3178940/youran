@@ -160,7 +160,7 @@ export default {
     }
 
     .menu {
-      width:150px;
+      width:150px!important;
     }
 
     .content {
