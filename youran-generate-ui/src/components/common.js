@@ -74,10 +74,15 @@ export const CommonPlugin = {
       },
 
       showNotify (type, title, msg) {
+        let duration = 4500
+        if (type === 'error') {
+          duration = 0
+        }
         return Vue.prototype.$notify({
           title: title,
           type: type,
-          message: msg
+          message: msg,
+          duration
         })
       },
       // 打印常用异常

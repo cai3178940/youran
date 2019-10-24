@@ -122,20 +122,21 @@ public class FreeMakerUtil {
             template.process(dataModel, writer);
             return stringWriter.getBuffer().toString();
         } catch (Exception e) {
+            String extraErrorMsg = "";
             if(e instanceof _TemplateModelException){
                 Throwable cause = e.getCause();
                 if(cause!=null){
                     if(cause instanceof SkipCurrentException){
                         throw (SkipCurrentException)cause;
                     }else if(cause instanceof BusinessException){
-                        throw (BusinessException)cause;
+                        extraErrorMsg = ",原因："+cause.getMessage();
                     }
                 }
             }
             logger.error(e.getMessage(), e);
             e.printStackTrace();
             throw new BusinessException("freemarker解析异常,dataModel="
-                +dataModel+",templateName="+templateName,e);
+                +dataModel+",templateName="+templateName+extraErrorMsg,e);
         }
     }
 
