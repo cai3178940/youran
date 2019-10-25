@@ -24,8 +24,10 @@ public class ${this.classNameUpper}AddDTO extends AbstractDTO {
         <@call this.addConstImport(field.dicType)/>
     @Const(constClass = ${TemplateUtil.fetchClassName(field.dicType)}.class)
     <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
-        <@call this.addImport("org.hibernate.validator.constraints.Length")/>
+        <#if field.fieldLength gt 0 >
+            <@call this.addImport("org.hibernate.validator.constraints.Length")/>
     @Length(max = ${field.fieldLength})
+        </#if>
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
         <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
         <@call this.addImport("${this.commonPackage}.constant.JsonFieldConst")/>

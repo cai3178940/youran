@@ -22,8 +22,9 @@ public class GuessUtil {
     public static final String VERSION_LABEL = "version";
     public static final String NAME_LABEL = "name";
 
+
     /**
-     * 根据字段类型猜测默认值
+     * 根据mysql字段类型猜测默认值
      * @param fieldType
      * @return
      */

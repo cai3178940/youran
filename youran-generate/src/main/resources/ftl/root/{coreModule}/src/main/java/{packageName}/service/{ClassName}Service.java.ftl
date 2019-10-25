@@ -2,6 +2,7 @@
 <#include "/mtmForOpp.ftl">
 <#include "/mtmCascadeExtsForList.ftl">
 <#include "/mtmCascadeExtsForShow.ftl">
+<#include "/guessDefaultJfieldValue.ftl">
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
@@ -101,6 +102,12 @@ public class ${this.classNameUpper}Service {
         // 唯一性校验
         this.checkUnique(${this.className},false);
 </#if>
+<#-- addDTO中没有并且不能为空的非主键字段，赋初始值 -->
+<#list this.fields as id,field>
+    <#if isFalse(field.insert) && isTrue(field.notNull) && isFalse(field.primaryKey) >
+        ${this.className}.set${field.jfieldName?capFirst}(${guessDefaultJfieldValue(field.jfieldType)});
+    </#if>
+</#list>
         ${this.className}DAO.save(${this.className});
 <#list this.holds! as otherEntity,mtm>
     <@call this.addImport("java.util.List")/>

@@ -15,8 +15,10 @@ public class ${this.classNameUpper}UpdateDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_${pkNameSnakeCase},example = E_${pkNameSnakeCase},required = true)
     @NotNull
     <#if this.pk.jfieldType==JFieldType.STRING.getJavaType()>
-        <@call this.addImport("org.hibernate.validator.constraints.Length")/>
+        <#if this.pk.fieldLength gt 0 >
+            <@call this.addImport("org.hibernate.validator.constraints.Length")/>
     @Length(max = ${this.pk.fieldLength})
+        </#if>
     </#if>
     private ${this.pk.jfieldType} ${this.pk.jfieldName};
 
@@ -35,8 +37,10 @@ public class ${this.classNameUpper}UpdateDTO extends AbstractDTO {
         <@call this.addConstImport(field.dicType)/>
     @Const(constClass = ${TemplateUtil.fetchClassName(field.dicType)}.class)
     <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
-        <@call this.addImport("org.hibernate.validator.constraints.Length")/>
+        <#if field.fieldLength gt 0 >
+            <@call this.addImport("org.hibernate.validator.constraints.Length")/>
     @Length(max = ${field.fieldLength})
+        </#if>
     <#elseIf field.jfieldType==JFieldType.DATE.getJavaType()>
         <@call this.addImport("com.fasterxml.jackson.annotation.JsonFormat")/>
         <@call this.addImport("${this.commonPackage}.constant.JsonFieldConst")/>
