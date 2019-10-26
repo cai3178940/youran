@@ -62,7 +62,7 @@ import { initIndexFormBean, getIndexRules } from './model'
 
 export default {
   name: 'indexForm',
-  props: ['projectId', 'entityId', 'indexId', 'fieldIds'],
+  props: ['projectId', 'entityId', 'indexId'],
   data () {
     const edit = !!this.indexId
     return {
@@ -160,8 +160,13 @@ export default {
         .then(() => this.reset())
     } else {
       this.form.entityId = parseInt(this.entityId)
-      if (this.fieldIds) {
-        this.form.fieldIds = this.fieldIds.split('-').map(value => parseInt(value))
+      const fieldIds = this.$router.currentRoute.query.fieldIds
+      const indexName = this.$router.currentRoute.query.indexName
+      if (fieldIds) {
+        this.form.fieldIds = fieldIds.split('-').map(value => parseInt(value))
+      }
+      if (indexName) {
+        this.form.indexName = indexName
       }
       this.queryField(this.form.entityId)
     }

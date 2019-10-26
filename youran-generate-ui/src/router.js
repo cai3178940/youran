@@ -100,7 +100,7 @@ export default new Router({
           props: true
         },
         {
-          path: 'indexAdd/:fieldIds?',
+          path: 'indexAdd',
           component: fieldIndexForm,
           props: true
         },

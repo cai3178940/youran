@@ -349,6 +349,7 @@ import { apiPath } from '@/components/common'
 import { flexibleTemplate, fixedTemplate, findSystemTemplate } from '@/components/fieldTemplate'
 import meteor from '@/components/meteor'
 import { mapGetters, mapState, mapMutations } from 'vuex'
+import shortid from 'shortid'
 
 /**
  * 初始化是否包含特殊属性字段
@@ -795,13 +796,19 @@ export default {
         .then(() => this.doQueryIndex())
         .catch(error => this.$common.showNotifyError(error))
     },
+    /**
+     * 添加索引
+     */
     handleIndexAdd () {
       if (!this.selectItems.length) {
         this.$common.showMsg('warning', '请先选择需要建立索引的字段')
         return
       }
       const fieldIdStr = this.selectItems.map(field => field.fieldId).join('-')
-      this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexAdd/${fieldIdStr}`)
+      const indexName = 'IDX_' + shortid.generate()
+        .toUpperCase().replace('-', '')
+      this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexAdd?\
+        fieldIds=${fieldIdStr}&indexName=${indexName}`)
     },
     handleIndexEdit (index) {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexEdit/${index.indexId}`)
