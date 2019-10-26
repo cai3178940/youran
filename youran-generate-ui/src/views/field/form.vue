@@ -416,6 +416,7 @@ export default {
       for (const key in initFormBean(true)) {
         this.form[key] = this.old[key]
       }
+      this.formReady()
     },
     submit () {
       // 表单预处理
