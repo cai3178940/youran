@@ -13,8 +13,9 @@
         <el-form v-if="ready" ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px" size="small">
           <el-form-item label="性质">
             <help-popover name="field.feature">
-              <el-input class="featureInput" disabled :value="fieldFeature.label" readonly>
-                <el-dropdown v-if="!form.specialField" slot="append" trigger="click" @command="handleFieldFeatureChange">
+              <el-input class="featureInput" :value="fieldFeature.label" readonly>
+                <!-- 如果不是主键也不是特殊字段，则支持切换模板-->
+                <el-dropdown v-if="!form.specialField && !form.primaryKey" slot="append" trigger="click" @command="handleFieldFeatureChange">
                   <span class="el-dropdown-link">
                     切换<i class="el-icon-arrow-down el-icon--right"></i>
                   </span>
