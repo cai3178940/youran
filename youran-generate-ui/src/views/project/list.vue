@@ -118,7 +118,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { apiPath, wsApiPath } from '@/components/common'
 /**
  * websocket前端组件
@@ -222,11 +221,6 @@ export default {
         this.downloadUrl = null
       }, 2000)
     },
-    /*
-    handleGenSql (row) {
-      window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genSql?projectId=${row.projectId}`)
-    },
-    */
     handlePreView (row) {
       const projectId = row.projectId
       this.callCodeGenWebSocketService(
@@ -265,13 +259,6 @@ export default {
       }
       return done
     },
-    /*
-    getPercentFormator (row) {
-      return function (percent) {
-        return `${row.genCodeMsg}`
-      }
-    },
-    */
     /**
      * 调用【代码生成】相关websocket服务
      * @param serviceName 服务名
@@ -322,12 +309,6 @@ export default {
         })
         .finally(() => this.removeProgress(row))
     },
-    /*
-    handleGenCode (row) {
-      this.$common.confirm('是否确认下载')
-        .then(() => window.open(`${this.$common.BASE_API_URL}/${apiPath}/code_gen/genCodeAndDownload?projectId=${row.projectId}`))
-    },
-    */
     handleReverseEngineering (row) {
       this.reverseEngineeringFormVisible = true
       this.reverseEngineeringForm.projectId = row.projectId
@@ -401,19 +382,6 @@ export default {
       this.progressingProjectIds.splice(this.progressingProjectIds.findIndex(v => v === row.projectId), 1)
       row.genCodePercent = 0
     },
-    /*
-    handleCommit (row) {
-      this.$common.confirm('是否确认提交到远程git仓库')
-        .then(() => {
-          this.loading = true
-          return this.$ajax.get(`/${apiPath}/code_gen/gitCommit?projectId=${row.projectId}`)
-        })
-        .then(response => this.$common.checkResult(response))
-        .then(result => this.$common.showMsg('success', result.message))
-        .catch(error => this.$common.showNotifyError(error))
-        .finally(() => { this.loading = false })
-    },
-    */
     handleCommand: function (command) {
       this[command.method](command.arg)
     }

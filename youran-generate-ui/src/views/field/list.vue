@@ -17,7 +17,7 @@
               placeholder="请选择实体"
               :options="queryForm.projectEntityOptions"
               v-model="queryForm.projectEntity"
-              @active-item-change="handleProjectChange"
+              @expand-change="handleProjectChange"
               @change="handleQuery">
             </el-cascader>
           </el-form-item>

@@ -104,7 +104,7 @@ public class ${this.classNameUpper}Service {
 </#if>
 <#-- addDTO中没有并且不能为空的非主键字段，赋初始值 -->
 <#list this.fields as id,field>
-    <#if isFalse(field.insert) && isTrue(field.notNull) && isFalse(field.primaryKey) >
+    <#if isFalse(field.insert) && isTrue(field.notNull) && isFalse(field.primaryKey) && field.specialField?default("")?length == 0>
         ${this.className}.set${field.jfieldName?capFirst}(${guessDefaultJfieldValue(field.jfieldType)});
     </#if>
 </#list>

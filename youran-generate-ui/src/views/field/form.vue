@@ -13,7 +13,23 @@
         <el-form v-if="ready" ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px" size="small">
           <el-form-item label="性质">
             <help-popover name="field.feature">
-              <el-input class="featureInput" disabled :value="fieldFeature.label" readonly></el-input>
+              <el-input class="featureInput" disabled :value="fieldFeature.label" readonly>
+                <el-dropdown slot="append" trigger="click" @command="handleFieldFeatureChange">
+                <span class="el-dropdown-link">
+                  切换<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item :disabled="fieldFeature.value===commonFeature.value"
+                                      :command="{method:'changeCommonFeature'}">
+                      {{commonFeature.label}}
+                    </el-dropdown-item>
+                    <el-dropdown-item :disabled="fieldFeature.value===fkFeature.value"
+                                      :command="{method:'changeFkFeature'}">
+                      {{fkFeature.label}}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </el-input>
             </help-popover>
           </el-form-item>
           <el-form-item v-if="!isAttrHide('autoIncrement')" label="主键策略">
@@ -29,7 +45,7 @@
                 :options="entityFieldOptions"
                 v-model="foreignField"
                 @change="handleForeignKeyChange"
-                @active-item-change="handleForeignEntityChange">
+                @expand-change="handleForeignEntityChange">
               </el-cascader>
             </help-popover>
           </el-form-item>
@@ -227,7 +243,9 @@ export default {
       foreignFieldDisabled: true,
       old: initFormBean(edit),
       form: initFormBean(edit),
-      rules: getRules(this)
+      rules: getRules(this),
+      commonFeature: options.commonFeature,
+      fkFeature: options.fkFeature
     }
   },
   computed: {
@@ -467,6 +485,26 @@ export default {
       this.hiddenAttrs = this.fieldFeature.hiddenAttrs
       this.disabledAttrs = this.fieldFeature.disabledAttrs
       this.ready = true
+    },
+    /**
+     * 切换字段
+     */
+    handleFieldFeatureChange (command) {
+      this[command.method]()
+    },
+    /**
+     * 切换普通字段
+     */
+    changeCommonFeature () {
+      this.form.foreignKey = 0
+      this.formReady()
+    },
+    /**
+     * 切换外键字段
+     */
+    changeFkFeature () {
+      this.form.foreignKey = 1
+      this.formReady()
     }
   },
   created () {

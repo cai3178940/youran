@@ -304,6 +304,8 @@ export default {
     }
   ],
   commonFeature: commonFeature,
+  pkFeature: pkFeature,
+  fkFeature: fkFeature,
   /**
    * 获取字段特性
    */
