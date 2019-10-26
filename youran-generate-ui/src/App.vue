@@ -47,7 +47,7 @@
     </el-container>
     <el-dialog title="系统信息" :visible.sync="systemDialogVisible" width="350px">
       <el-form size="small">
-        <el-form-item label="用户：" label-width="100px">
+        <el-form-item label="登录用户：" label-width="100px">
           {{systemUserInfo.user}}
         </el-form-item>
         <el-form-item label="系统版本：" label-width="100px">

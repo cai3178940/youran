@@ -95,7 +95,7 @@ const pkFeature = {
   icon: 'key',
   style: 'color: #eb9e05;',
   hiddenAttrs: ['foreignKey', 'dicType', 'attributes'],
-  disabledAttrs: []
+  disabledAttrs: ['notNull']
 }
 
 const fkFeature = {
@@ -103,7 +103,7 @@ const fkFeature = {
   label: '外键',
   icon: 'key',
   style: 'color: #409EFF;',
-  hiddenAttrs: ['autoIncrement', 'dicType', 'query'],
+  hiddenAttrs: ['autoIncrement', 'dicType'],
   disabledAttrs: []
 }
 
@@ -114,7 +114,7 @@ const specialFieldFeatures = [
     icon: 'ban',
     style: 'color: #ff3366;',
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType', 'query', 'attributes'],
-    disabledAttrs: []
+    disabledAttrs: ['notNull']
   },
   {
     value: 'createdTime',
@@ -154,7 +154,7 @@ const specialFieldFeatures = [
     icon: 'unlock-alt',
     style: 'color: #AB82FF;',
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType', 'query', 'attributes'],
-    disabledAttrs: []
+    disabledAttrs: ['notNull']
   }
 ]
 

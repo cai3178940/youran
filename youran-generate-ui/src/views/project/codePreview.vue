@@ -299,6 +299,9 @@ export default {
     }
     .codeAside {
       background-color: $back-color-2;
+      .el-scrollbar__wrap{
+        overflow-x: hidden;
+      }
     }
     .codePath {
       background-color: $back-color-2;

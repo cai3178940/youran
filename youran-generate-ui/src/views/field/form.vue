@@ -14,10 +14,10 @@
           <el-form-item label="性质">
             <help-popover name="field.feature">
               <el-input class="featureInput" disabled :value="fieldFeature.label" readonly>
-                <el-dropdown slot="append" trigger="click" @command="handleFieldFeatureChange">
-                <span class="el-dropdown-link">
-                  切换<i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
+                <el-dropdown v-if="!form.specialField" slot="append" trigger="click" @command="handleFieldFeatureChange">
+                  <span class="el-dropdown-link">
+                    切换<i class="el-icon-arrow-down el-icon--right"></i>
+                  </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item :disabled="fieldFeature.value===commonFeature.value"
                                       :command="{method:'changeCommonFeature'}">
@@ -34,13 +34,12 @@
           </el-form-item>
           <el-form-item v-if="!isAttrHide('autoIncrement')" label="主键策略">
             <help-popover name="field.autoIncrement">
-              <el-checkbox v-model="form.autoIncrement" :true-label="1" :false-label="0" :disabled="autoIncrementDisabled">自增</el-checkbox>
+              <el-checkbox v-model="form.autoIncrement" :true-label="1" :false-label="0">自增</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item v-if="!isAttrHide('foreignKey')" label="外键关联" prop="foreignKey">
             <help-popover name="field.foreignKey">
               <el-cascader
-                :disabled="foreignFieldDisabled"
                 placeholder="请选择外键字段"
                 :options="entityFieldOptions"
                 v-model="foreignField"
@@ -139,7 +138,7 @@
           </el-form-item>
           <el-form-item label="不能为空" prop="notNull">
             <help-popover name="field.notNull">
-              <el-checkbox v-model="form.notNull" :disabled="notNullDisabled" :true-label="1" :false-label="0">是</el-checkbox>
+              <el-checkbox v-model="form.notNull" :disabled="isAttrDisable('notNull')" :true-label="1" :false-label="0">是</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item v-if="!isAttrHide('query')" label="可搜索" prop="query">
@@ -163,7 +162,7 @@
               </el-row>
             </help-popover>
           </el-form-item>
-          <el-form-item v-if="!isAttrHide('attributes')" label="字段属性">
+          <el-form-item v-if="!isAttrHide('attributes')" label="字段功能">
             <help-popover name="field.attributes">
               <el-checkbox v-model="form.insert"
                            :true-label="1"
@@ -235,12 +234,8 @@ export default {
       specialFieldFeatures: options.specialFieldFeatures,
       entityFieldOptions: [],
       constList: null,
-      notNullDisabled: false,
-      autoIncrementDisabled: true,
       queryTypeDisabled: true,
-      specialFieldDisabled: false,
       foreignField: [0, 0],
-      foreignFieldDisabled: true,
       old: initFormBean(edit),
       form: initFormBean(edit),
       rules: getRules(this),
@@ -266,22 +261,9 @@ export default {
     'form.primaryKey' (value) {
       if (value === 1) {
         this.form.notNull = 1
-        this.notNullDisabled = true
         this.form.specialField = ''
-        this.specialFieldDisabled = true
-        this.autoIncrementDisabled = false
       } else {
-        this.notNullDisabled = false
-        this.specialFieldDisabled = false
         this.form.autoIncrement = 0
-        this.autoIncrementDisabled = true
-      }
-    },
-    'form.foreignKey' (value) {
-      if (value === 1) {
-        this.foreignFieldDisabled = false
-      } else {
-        this.foreignFieldDisabled = true
       }
     },
     'form.query' (value) {
