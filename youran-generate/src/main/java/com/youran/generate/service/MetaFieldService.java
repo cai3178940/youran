@@ -12,6 +12,7 @@ import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
+import com.youran.generate.util.JfieldNameCheckUtil;
 import com.youran.generate.util.MetaFieldCheckUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,8 @@ public class MetaFieldService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaFieldPO save(MetaFieldAddDTO metaFieldDTO) {
+        // 校验字段名
+        JfieldNameCheckUtil.check(metaFieldDTO.getJfieldName());
         Integer entityId = metaFieldDTO.getEntityId();
         // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
@@ -61,18 +64,20 @@ public class MetaFieldService {
 
     /**
      * 修改字段
-     * @param metaFieldUpdateDTO
+     * @param updateDTO
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
-    public MetaFieldPO update(MetaFieldUpdateDTO metaFieldUpdateDTO) {
-        Integer fieldId = metaFieldUpdateDTO.getFieldId();
+    public MetaFieldPO update(MetaFieldUpdateDTO updateDTO) {
+        // 校验字段名
+        JfieldNameCheckUtil.check(updateDTO.getJfieldName());
+        Integer fieldId = updateDTO.getFieldId();
         MetaFieldPO metaField = this.getField(fieldId,true);
         Integer entityId = metaField.getEntityId();
         // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
-        MetaFieldMapper.INSTANCE.setPO(metaField, metaFieldUpdateDTO);
+        MetaFieldMapper.INSTANCE.setPO(metaField, updateDTO);
         // 校验字段属性
         MetaFieldCheckUtil.checkFieldPO(metaField);
         metaFieldDAO.update(metaField);

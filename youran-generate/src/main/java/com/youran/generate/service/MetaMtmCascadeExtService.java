@@ -14,6 +14,7 @@ import com.youran.generate.pojo.po.MetaMtmCascadeExtPO;
 import com.youran.generate.pojo.qo.MetaMtmCascadeExtQO;
 import com.youran.generate.pojo.vo.MetaMtmCascadeExtListVO;
 import com.youran.generate.pojo.vo.MetaMtmCascadeExtShowVO;
+import com.youran.generate.util.JfieldNameCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,15 +41,17 @@ public class MetaMtmCascadeExtService {
 
     /**
      * 新增【多对多级联扩展】
-     * @param metaMtmCascadeExtDTO
+     * @param addDTO
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public MetaMtmCascadeExtPO save(MetaMtmCascadeExtAddDTO metaMtmCascadeExtDTO) {
-        Integer entityId = metaMtmCascadeExtDTO.getEntityId();
+    public MetaMtmCascadeExtPO save(MetaMtmCascadeExtAddDTO addDTO) {
+        // 校验别名
+        JfieldNameCheckUtil.check(addDTO.getAlias());
+        Integer entityId = addDTO.getEntityId();
         // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
-        MetaMtmCascadeExtPO metaMtmCascadeExt = MetaMtmCascadeExtMapper.INSTANCE.fromAddDTO(metaMtmCascadeExtDTO);
+        MetaMtmCascadeExtPO metaMtmCascadeExt = MetaMtmCascadeExtMapper.INSTANCE.fromAddDTO(addDTO);
         this.doSave(metaMtmCascadeExt);
         metaProjectService.updateProjectVersionByEntityId(entityId);
         return metaMtmCascadeExt;
@@ -62,18 +65,20 @@ public class MetaMtmCascadeExtService {
 
     /**
      * 修改【多对多级联扩展】
-     * @param metaMtmCascadeExtUpdateDTO
+     * @param updateDTO
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
-    public MetaMtmCascadeExtPO update(MetaMtmCascadeExtUpdateDTO metaMtmCascadeExtUpdateDTO) {
-        Integer mtmCascadeExtId = metaMtmCascadeExtUpdateDTO.getMtmCascadeExtId();
+    public MetaMtmCascadeExtPO update(MetaMtmCascadeExtUpdateDTO updateDTO) {
+        // 校验别名
+        JfieldNameCheckUtil.check(updateDTO.getAlias());
+        Integer mtmCascadeExtId = updateDTO.getMtmCascadeExtId();
         MetaMtmCascadeExtPO metaMtmCascadeExt = this.getMetaMtmCascadeExt(mtmCascadeExtId, true);
         Integer entityId = metaMtmCascadeExt.getEntityId();
         // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
-        MetaMtmCascadeExtMapper.INSTANCE.setUpdateDTO(metaMtmCascadeExt,metaMtmCascadeExtUpdateDTO);
+        MetaMtmCascadeExtMapper.INSTANCE.setUpdateDTO(metaMtmCascadeExt,updateDTO);
         // 校验级联扩展
         this.checkCascadeExtPO(metaMtmCascadeExt);
         metaMtmCascadeExtDAO.update(metaMtmCascadeExt);

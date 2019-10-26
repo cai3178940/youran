@@ -13,6 +13,7 @@ import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.qo.MetaCascadeExtQO;
 import com.youran.generate.pojo.vo.MetaCascadeExtListVO;
 import com.youran.generate.pojo.vo.MetaCascadeExtShowVO;
+import com.youran.generate.util.JfieldNameCheckUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,8 @@ public class MetaCascadeExtService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaCascadeExtPO save(MetaCascadeExtAddDTO addDTO) {
+        // 校验别名
+        JfieldNameCheckUtil.check(addDTO.getAlias());
         Integer entityId = addDTO.getEntityId();
         // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
@@ -68,6 +71,8 @@ public class MetaCascadeExtService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaCascadeExtPO update(MetaCascadeExtUpdateDTO updateDTO) {
+        // 校验别名
+        JfieldNameCheckUtil.check(updateDTO.getAlias());
         MetaCascadeExtPO metaCascadeExt = this.getMetaCascadeExt(updateDTO.getCascadeExtId(),true);
         Integer entityId = metaCascadeExt.getEntityId();
         // 校验操作人
