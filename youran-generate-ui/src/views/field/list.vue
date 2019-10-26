@@ -806,7 +806,7 @@ export default {
       }
       const fieldIdStr = this.selectItems.map(field => field.fieldId).join('-')
       const indexName = 'IDX_' + shortid.generate()
-        .toUpperCase().replace('-', '')
+        .toUpperCase().replace('-', '').replace('_', '')
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexAdd?\
         fieldIds=${fieldIdStr}&indexName=${indexName}`)
     },
