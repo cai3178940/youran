@@ -17,7 +17,7 @@
 <@call this.addImport("io.swagger.annotations.ApiOperation")/>
 <@call this.addImport("org.springframework.http.ResponseEntity")/>
 <@call this.printClassCom("【${this.title}】API" "swagger接口文档")/>
-@Api(tags = "${this.classNameUpper}")
+@Api(tags = "【${this.title}】API")
 public interface ${this.classNameUpper}API {
 
 <#if isTrue(this.entityFeature.save)>

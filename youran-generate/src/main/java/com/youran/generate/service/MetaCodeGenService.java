@@ -10,7 +10,7 @@ import com.youran.common.util.TempDirUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.constant.DevMode;
 import com.youran.generate.constant.TemplateEnum;
-import com.youran.generate.constant.TemplateType;
+import com.youran.generate.constant.ContextType;
 import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import com.youran.generate.pojo.po.GenHistoryPO;
@@ -230,16 +230,16 @@ public class MetaCodeGenService implements InitializingBean {
             }
             //生成全局文件
             this.progressing(progressConsumer,25,80, 2,"代码渲染中");
-            if (templateEnum.getType() == TemplateType.COMMON) {
+            if (templateEnum.getType() == ContextType.GLOBAL) {
                 BaseContext context = new BaseContext(project);
                 this.renderFTL(context,templateEnum,projectDir);
-            } else if (templateEnum.getType() == TemplateType.ENTITY) {
+            } else if (templateEnum.getType() == ContextType.ENTITY) {
                 //生成实体模版文件
                 for (MetaEntityPO metaEntityPO : project.getEntities()) {
                     EntityContext context = new EntityContext(project,metaEntityPO);
                     this.renderFTL(context,templateEnum,projectDir);
                 }
-            } else if (templateEnum.getType() == TemplateType.CONST) {
+            } else if (templateEnum.getType() == ContextType.CONST) {
                 //生成枚举模版文件
                 for (MetaConstPO metaConstPO : project.getConsts()) {
                     ConstContext context = new ConstContext(project,metaConstPO);

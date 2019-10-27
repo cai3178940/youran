@@ -6,21 +6,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>Title: 枚举【模板类型】</p>
+ * <p>Title: 枚举【模板上下文类型】</p>
  * <p>Description: </p>
  * @author cbb
  * @date 2019/10/24
  */
-public enum TemplateType {
+public enum ContextType {
 
     /**
-     * 后端
+     * 全局
      */
-    BACK_END(1,"后端"),
+    GLOBAL(1,"全局"),
     /**
-     * 前端
+     * 实体
      */
-    FRONT_END(2,"前端");
+    ENTITY(2,"实体"),
+    /**
+     * 枚举
+     */
+    CONST(3,"枚举");
 
 
     private final Integer value;
@@ -29,28 +33,28 @@ public enum TemplateType {
     /**
      * 枚举值罗列，给swagger接口文档展示用
      */
-    public static final String VALUES_STR = "1,2";
+    public static final String VALUES_STR = "1,2,3";
 
-    private static final Map<Integer, TemplateType> LOOKUP = new HashMap<>();
+    private static final Map<Integer, ContextType> LOOKUP = new HashMap<>();
 
     static {
-        for (TemplateType e : TemplateType.values()) {
+        for (ContextType e : ContextType.values()) {
             LOOKUP.put(e.value, e);
         }
     }
 
 
-    TemplateType(Integer value, String desc) {
+    ContextType(Integer value, String desc) {
         this.value = value;
         this.desc = desc;
     }
 
-    public static TemplateType find(Integer value) {
+    public static ContextType find(Integer value) {
         return LOOKUP.get(value);
     }
 
-    public static TemplateType findByDesc(String desc){
-        for (TemplateType e : TemplateType.values()) {
+    public static ContextType findByDesc(String desc){
+        for (ContextType e : ContextType.values()) {
             if(e.getDesc().equals(desc)){
                 return e;
             }
@@ -63,7 +67,7 @@ public enum TemplateType {
      */
     @Check
     public static final boolean validate(Integer value){
-        TemplateType theEnum = find(value);
+        ContextType theEnum = find(value);
         return theEnum!=null;
     }
 

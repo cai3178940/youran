@@ -1,7 +1,7 @@
 package com.youran.generate.constant;
 
 
-import static com.youran.generate.constant.TemplateType.*;
+import static com.youran.generate.constant.ContextType.*;
 
 /**
  * <p>Title: 模板枚举</p>
@@ -13,63 +13,60 @@ public enum TemplateEnum {
 
 
     /******** 根Pom *********/
-    RootPom(COMMON, "pom.xml.ftl"),
-    README(COMMON, "README.md.ftl"),
-    GITIGNORE(COMMON, ".gitignore.ftl"),
+    RootPom(GLOBAL, "pom.xml.ftl"),
+    README(GLOBAL, "README.md.ftl"),
+    GITIGNORE(GLOBAL, ".gitignore.ftl"),
     /******** Common模块 Pom *********/
-    CommonPom(COMMON, "{commonModule}/pom.xml.ftl"),
+    CommonPom(GLOBAL, "{commonModule}/pom.xml.ftl"),
     /******** Common模块 源码 *********/
-    BoolConst(COMMON,"{commonModule}/src/main/java/{commonPackage}/constant/BoolConst.java.ftl"),
-    ErrorCode(COMMON,"{commonModule}/src/main/java/{commonPackage}/constant/ErrorCode.java.ftl"),
-    JsonFieldConst(COMMON,"{commonModule}/src/main/java/{commonPackage}/constant/JsonFieldConst.java.ftl"),
-    CommonLoginContext(COMMON,"{commonModule}/src/main/java/{commonPackage}/context/LoginContext.java.ftl"),
-    MyCustomDateEditor(COMMON,"{commonModule}/src/main/java/{commonPackage}/convert/MyCustomDateEditor.java.ftl"),
-    DAO(COMMON,"{commonModule}/src/main/java/{commonPackage}/dao/DAO.java.ftl"),
-    BusinessException(COMMON, "{commonModule}/src/main/java/{commonPackage}/exception/BusinessException.java.ftl"),
-    EnableOptimisticLock(COMMON,"{commonModule}/src/main/java/{commonPackage}/optimistic/EnableOptimisticLock.java.ftl"),
-    OptimisticException(COMMON,"{commonModule}/src/main/java/{commonPackage}/optimistic/OptimisticException.java.ftl"),
-    OptimisticLock(COMMON,"{commonModule}/src/main/java/{commonPackage}/optimistic/OptimisticLock.java.ftl"),
-    OptimisticLockAspect(COMMON,"{commonModule}/src/main/java/{commonPackage}/optimistic/OptimisticLockAspect.java.ftl"),
-    OptimisticLockConfiguration(COMMON,"{commonModule}/src/main/java/{commonPackage}/optimistic/OptimisticLockConfiguration.java.ftl"),
-    AbstractDTO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/dto/AbstractDTO.java.ftl"),
-    AbstractQO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/qo/AbstractQO.java.ftl"),
-    PageQO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/qo/PageQO.java.ftl"),
-    AbstractPO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/AbstractPO.java.ftl"),
-    CreatedBy(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/CreatedBy.java.ftl"),
-    Created(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/Created.java.ftl"),
-    CreatedTime(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/CreatedTime.java.ftl"),
-    CreatedOperatedDeleted(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/CreatedOperatedDeleted.java.ftl"),
-    CreatedOperatedDeletedVersion(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/CreatedOperatedDeletedVersion.java.ftl"),
-    Deleted(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/Deleted.java.ftl"),
-    OperatedBy(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/OperatedBy.java.ftl"),
-    Operated(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/Operated.java.ftl"),
-    OperatedTime(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/OperatedTime.java.ftl"),
-    Version(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/po/Version.java.ftl"),
-    AbstractVO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/AbstractVO.java.ftl"),
-    FieldErrorVO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/FieldErrorVO.java.ftl"),
-    PageVO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/PageVO.java.ftl"),
-    ReplyVO(COMMON,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/ReplyVO.java.ftl"),
-    ConvertUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/ConvertUtil.java.ftl"),
-    DateUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/DateUtil.java.ftl"),
-    TempDirUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/TempDirUtil.java.ftl"),
-    JsonUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/JsonUtil.java.ftl"),
-    MessageSourceUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/MessageSourceUtil.java.ftl"),
-    SafeUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/SafeUtil.java.ftl"),
-    SpringUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/SpringUtil.java.ftl"),
-    UUIDUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/util/UUIDUtil.java.ftl"),
-    Check(COMMON,"{commonModule}/src/main/java/{commonPackage}/validator/Check.java.ftl"),
-    ConstAnno(COMMON,"{commonModule}/src/main/java/{commonPackage}/validator/Const.java.ftl"),
-    JacksonXssDeserializer(COMMON,"{commonModule}/src/main/java/{commonPackage}/xss/JacksonXssDeserializer.java.ftl"),
-    WebXSSFilter(COMMON,"{commonModule}/src/main/java/{commonPackage}/xss/WebXSSFilter.java.ftl"),
-    XSSRequestWrapper(COMMON,"{commonModule}/src/main/java/{commonPackage}/xss/XSSRequestWrapper.java.ftl"),
-    XSSUtil(COMMON,"{commonModule}/src/main/java/{commonPackage}/xss/XSSUtil.java.ftl"),
+    ErrorCode(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/constant/ErrorCode.java.ftl"),
+    JsonFieldConst(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/constant/JsonFieldConst.java.ftl"),
+    CommonLoginContext(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/context/LoginContext.java.ftl"),
+    MyCustomDateEditor(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/convert/MyCustomDateEditor.java.ftl"),
+    DAO(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/dao/DAO.java.ftl"),
+    BusinessException(GLOBAL, "{commonModule}/src/main/java/{commonPackage}/exception/BusinessException.java.ftl"),
+    EnableOptimisticLock(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/optimistic/EnableOptimisticLock.java.ftl"),
+    OptimisticException(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/optimistic/OptimisticException.java.ftl"),
+    OptimisticLock(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/optimistic/OptimisticLock.java.ftl"),
+    OptimisticLockAspect(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/optimistic/OptimisticLockAspect.java.ftl"),
+    OptimisticLockConfiguration(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/optimistic/OptimisticLockConfiguration.java.ftl"),
+    AbstractDTO(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/dto/AbstractDTO.java.ftl"),
+    AbstractQO(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/qo/AbstractQO.java.ftl"),
+    PageQO(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/qo/PageQO.java.ftl"),
+    AbstractPO(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/AbstractPO.java.ftl"),
+    CreatedBy(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/CreatedBy.java.ftl"),
+    Created(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/Created.java.ftl"),
+    CreatedTime(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/CreatedTime.java.ftl"),
+    CreatedOperatedDeleted(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/CreatedOperatedDeleted.java.ftl"),
+    CreatedOperatedDeletedVersion(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/CreatedOperatedDeletedVersion.java.ftl"),
+    Deleted(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/Deleted.java.ftl"),
+    OperatedBy(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/OperatedBy.java.ftl"),
+    Operated(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/Operated.java.ftl"),
+    OperatedTime(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/OperatedTime.java.ftl"),
+    Version(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/po/Version.java.ftl"),
+    AbstractVO(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/AbstractVO.java.ftl"),
+    FieldErrorVO(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/FieldErrorVO.java.ftl"),
+    PageVO(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/PageVO.java.ftl"),
+    ReplyVO(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/pojo/vo/ReplyVO.java.ftl"),
+    ConvertUtil(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/util/ConvertUtil.java.ftl"),
+    DateUtil(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/util/DateUtil.java.ftl"),
+    TempDirUtil(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/util/TempDirUtil.java.ftl"),
+    JsonUtil(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/util/JsonUtil.java.ftl"),
+    MessageSourceUtil(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/util/MessageSourceUtil.java.ftl"),
+    SafeUtil(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/util/SafeUtil.java.ftl"),
+    SpringUtil(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/util/SpringUtil.java.ftl"),
+    UUIDUtil(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/util/UUIDUtil.java.ftl"),
+    Check(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/validator/Check.java.ftl"),
+    ConstAnno(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/validator/Const.java.ftl"),
+    JacksonXssDeserializer(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/xss/JacksonXssDeserializer.java.ftl"),
+    WebXSSFilter(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/xss/WebXSSFilter.java.ftl"),
+    XSSRequestWrapper(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/xss/XSSRequestWrapper.java.ftl"),
+    XSSUtil(GLOBAL,"{commonModule}/src/main/java/{commonPackage}/xss/XSSUtil.java.ftl"),
 
     /******** Core模块 Pom *********/
-    CorePom(COMMON, "{coreModule}/pom.xml.ftl"),
+    CorePom(GLOBAL, "{coreModule}/pom.xml.ftl"),
     /******** Core模块源码 *********/
-    Configuration(COMMON, "{coreModule}/src/main/java/{packageName}/config/{ProjectName}Configuration.java.ftl"),
-    Properties(COMMON, "{coreModule}/src/main/java/{packageName}/config/{ProjectName}Properties.java.ftl"),
-    SystemConst(COMMON, "{coreModule}/src/main/java/{packageName}/constant/SystemConst.java.ftl"),
+    Configuration(GLOBAL, "{coreModule}/src/main/java/{packageName}/config/{ProjectName}Configuration.java.ftl"),
     EnumClass(CONST, "{coreModule}/src/main/java/{packageName}/constant/{EnumName}.java.ftl"),
     CoreDAO(ENTITY, "{coreModule}/src/main/java/{packageName}/dao/{ClassName}DAO.java.ftl"),
     AddDTO(ENTITY, "{coreModule}/src/main/java/{packageName}/pojo/dto/{ClassName}AddDTO.java.ftl"),
@@ -82,59 +79,59 @@ public enum TemplateEnum {
     ShowVO(ENTITY, "{coreModule}/src/main/java/{packageName}/pojo/vo/{ClassName}ShowVO.java.ftl"),
     Service(ENTITY, "{coreModule}/src/main/java/{packageName}/service/{ClassName}Service.java.ftl"),
     /******** Core模块配置 *********/
-    MessagesProperties(COMMON, "{coreModule}/src/main/resources/messages.properties.ftl"),
-    MessagesPropertiesEnUs(COMMON, "{coreModule}/src/main/resources/messages_en_US.properties.ftl"),
-    MybatisConfig(COMMON, "{coreModule}/src/main/resources/mybatis-config.xml.ftl"),
-    DefaultProperties(COMMON, "{coreModule}/src/main/resources/config/{project-name}-default.properties.ftl"),
+    MessagesProperties(GLOBAL, "{coreModule}/src/main/resources/messages.properties.ftl"),
+    MessagesPropertiesEnUs(GLOBAL, "{coreModule}/src/main/resources/messages_en_US.properties.ftl"),
+    MybatisConfig(GLOBAL, "{coreModule}/src/main/resources/mybatis-config.xml.ftl"),
+    DefaultProperties(GLOBAL, "{coreModule}/src/main/resources/config/{project-name}-default.properties.ftl"),
     MybatisMapper(ENTITY, "{coreModule}/src/main/resources/{packageName}/dao/{ClassName}DAO.xml.ftl"),
 
 
 
     /******** Web模块 Pom *********/
-    WebPom(COMMON, "{webModule}/pom.xml.ftl"),
+    WebPom(GLOBAL, "{webModule}/pom.xml.ftl"),
 
     /******** Web模块源码 *********/
-    App(COMMON, "{webModule}/src/main/java/{packageName}/{ProjectName}App.java.ftl"),
-    AbstractController(COMMON, "{webModule}/src/main/java/{packageName}/web/AbstractController.java.ftl"),
-    ExceptionTranslator(COMMON, "{webModule}/src/main/java/{packageName}/web/advice/ExceptionTranslator.java.ftl"),
+    App(GLOBAL, "{webModule}/src/main/java/{packageName}/{ProjectName}App.java.ftl"),
+    AbstractController(GLOBAL, "{webModule}/src/main/java/{packageName}/web/AbstractController.java.ftl"),
+    ExceptionTranslator(GLOBAL, "{webModule}/src/main/java/{packageName}/web/advice/ExceptionTranslator.java.ftl"),
     API(ENTITY, "{webModule}/src/main/java/{packageName}/web/api/{ClassName}API.java.ftl"),
-    StartLogCommandLineRunner(COMMON,"{webModule}/src/main/java/{packageName}/web/config/StartLogCommandLineRunner.java.ftl"),
-    SwaggerConfig(COMMON, "{webModule}/src/main/java/{packageName}/web/config/SwaggerConfig.java.ftl"),
-    WebConfig(COMMON,"{webModule}/src/main/java/{packageName}/web/config/WebConfig.java.ftl"),
-    WebConst(COMMON,"{webModule}/src/main/java/{packageName}/web/constant/WebConst.java.ftl"),
-    WebLoginContext(COMMON, "{webModule}/src/main/java/{packageName}/web/context/WebLoginContext.java.ftl"),
+    StartLogCommandLineRunner(GLOBAL,"{webModule}/src/main/java/{packageName}/web/config/StartLogCommandLineRunner.java.ftl"),
+    SwaggerConfig(GLOBAL, "{webModule}/src/main/java/{packageName}/web/config/SwaggerConfig.java.ftl"),
+    WebConfig(GLOBAL,"{webModule}/src/main/java/{packageName}/web/config/WebConfig.java.ftl"),
+    WebConst(GLOBAL,"{webModule}/src/main/java/{packageName}/web/constant/WebConst.java.ftl"),
+    WebLoginContext(GLOBAL, "{webModule}/src/main/java/{packageName}/web/context/WebLoginContext.java.ftl"),
     Controller(ENTITY, "{webModule}/src/main/java/{packageName}/web/rest/{ClassName}Controller.java.ftl"),
-    IpUtil(COMMON, "{webModule}/src/main/java/{packageName}/web/util/IpUtil.java.ftl"),
+    IpUtil(GLOBAL, "{webModule}/src/main/java/{packageName}/web/util/IpUtil.java.ftl"),
 
     /******** Web模块配置 *********/
-    ApplicationYml(COMMON, "{webModule}/src/main/resources/application.yml.ftl"),
-    ApplicationLocalYml(COMMON, "{webModule}/src/main/resources/application-local.yml.ftl"),
+    ApplicationYml(GLOBAL, "{webModule}/src/main/resources/application.yml.ftl"),
+    ApplicationLocalYml(GLOBAL, "{webModule}/src/main/resources/application-local.yml.ftl"),
 
 
     /******** Web模块单元测试源码 *********/
-    AbstractTest(COMMON, "{webModule}/src/test/java/{packageName}/AbstractTest.java.ftl"),
-    H2Flusher(COMMON, "{webModule}/src/test/java/{packageName}/H2Flusher.java.ftl"),
-    Main(COMMON, "{webModule}/src/test/java/{packageName}/Main.java.ftl"),
-    TestConfiguration(COMMON, "{webModule}/src/test/java/{packageName}/TestConfiguration.java.ftl"),
+    AbstractTest(GLOBAL, "{webModule}/src/test/java/{packageName}/AbstractTest.java.ftl"),
+    H2Flusher(GLOBAL, "{webModule}/src/test/java/{packageName}/H2Flusher.java.ftl"),
+    Main(GLOBAL, "{webModule}/src/test/java/{packageName}/Main.java.ftl"),
+    TestConfiguration(GLOBAL, "{webModule}/src/test/java/{packageName}/TestConfiguration.java.ftl"),
     Helper(ENTITY, "{webModule}/src/test/java/{packageName}/help/{ClassName}Helper.java.ftl"),
-    H2Util(COMMON, "{webModule}/src/test/java/{packageName}/util/H2Util.java.ftl"),
-    AbstractWebTest(COMMON, "{webModule}/src/test/java/{packageName}/web/AbstractWebTest.java.ftl"),
+    H2Util(GLOBAL, "{webModule}/src/test/java/{packageName}/util/H2Util.java.ftl"),
+    AbstractWebTest(GLOBAL, "{webModule}/src/test/java/{packageName}/web/AbstractWebTest.java.ftl"),
     ControllerTest(ENTITY, "{webModule}/src/test/java/{packageName}/web/rest/{ClassName}ControllerTest.java.ftl"),
 
 
     /******** Web模块单元测试配置 *********/
-    ApplicationTestYml(COMMON, "{webModule}/src/test/resources/application-local.yml.ftl"),
-    SQL(COMMON, "{webModule}/src/test/resources/DB/{projectName}.sql.ftl");
+    ApplicationTestYml(GLOBAL, "{webModule}/src/test/resources/application-local.yml.ftl"),
+    SQL(GLOBAL, "{webModule}/src/test/resources/DB/{projectName}.sql.ftl");
 
-    private final int type;
+    private final ContextType type;
     private final String template;
 
-    TemplateEnum(int type, String template) {
+    TemplateEnum(ContextType type, String template) {
         this.type = type;
         this.template = template;
     }
 
-    public int getType() {
+    public ContextType getType() {
         return type;
     }
 

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.dao.TemplateFileDAO">
+
+
+    <sql id="templateFileColumns">
+        ${alias}.file_id as fileId,
+        ${alias}.file_name as fileName,
+        ${alias}.file_dir as fileDir,
+        ${alias}.template_id as templateId,
+        ${alias}.context_type as contextType,
+        ${alias}.abstracted,
+        ${alias}.content,
+        ${alias}.created_time as createdTime,
+        ${alias}.created_by as createdBy,
+        ${alias}.operated_time as operatedTime,
+        ${alias}.operated_by as operatedBy,
+        ${alias}.version,
+        ${alias}.deleted
+    </sql>
+
+
+    <select id="findById" resultType="TemplateFilePO">
+        select
+            <include refid="templateFileColumns"><property name="alias" value="t"/></include>
+        from template_file t
+        <where>
+            and t.deleted=0
+            and t.file_id = #{arg0}
+        </where>
+        limit 1
+    </select>
+
+    <select id="exist" resultType="boolean">
+        select count(1) from template_file
+        <where>
+            and deleted=0
+            and file_id = #{arg0}
+        </where>
+    </select>
+
+    <insert id="_save" useGeneratedKeys="true" keyProperty="fileId" parameterType="TemplateFilePO">
+        insert into template_file(
+        file_id,
+        file_name,
+        file_dir,
+        template_id,
+        context_type,
+        abstracted,
+        content,
+        created_time,
+        created_by,
+        operated_time,
+        operated_by,
+        version,
+        deleted
+        ) VALUES (
+        #{fileId,jdbcType=INTEGER},
+        #{fileName,jdbcType=VARCHAR},
+        #{fileDir,jdbcType=VARCHAR},
+        #{templateId,jdbcType=INTEGER},
+        #{contextType,jdbcType=INTEGER},
+        #{abstracted,jdbcType=BOOLEAN},
+        #{content,jdbcType=VARCHAR},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{createdBy,jdbcType=VARCHAR},
+        #{operatedTime,jdbcType=TIMESTAMP},
+        #{operatedBy,jdbcType=VARCHAR},
+        #{version,jdbcType=INTEGER},
+        #{deleted,jdbcType=BOOLEAN}
+        )
+    </insert>
+
+
+    <update id="_update" parameterType="TemplateFilePO">
+        update template_file set
+            file_name=#{fileName,jdbcType=VARCHAR},
+            file_dir=#{fileDir,jdbcType=VARCHAR},
+            template_id=#{templateId,jdbcType=INTEGER},
+            context_type=#{contextType,jdbcType=INTEGER},
+            abstracted=#{abstracted,jdbcType=BOOLEAN},
+            content=#{content,jdbcType=VARCHAR},
+            operated_time=#{operatedTime,jdbcType=TIMESTAMP},
+            operated_by=#{operatedBy,jdbcType=VARCHAR},
+            version = version+1,
+            deleted=#{deleted,jdbcType=BOOLEAN}
+        where file_id=#{fileId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and deleted=0
+    </update>
+
+    <delete id="delete">
+        update template_file set deleted=1
+        where file_id=#{arg0,jdbcType=INTEGER}
+        and deleted=0
+    </delete>
+
+
+    <sql id="queryCondition">
+        <if test="fileName != null and fileName !='' ">
+            <bind name="fileName_pattern" value="'%' + fileName + '%'" />
+            and t.file_name like #{fileName_pattern}
+        </if>
+        <if test="templateId != null ">
+            and t.template_id = #{templateId}
+        </if>
+        <if test="contextType != null ">
+            and t.context_type = #{contextType}
+        </if>
+        <if test="abstracted != null ">
+            and t.abstracted = #{abstracted}
+        </if>
+    </sql>
+
+    <sql id="orderCondition">
+        order by
+        <if test="fileNameSortSign != null and fileNameSortSign!=0">
+            t.file_name <if test="fileNameSortSign > 0">asc</if><if test="fileNameSortSign &lt; 0">desc</if>,
+        </if>
+        <if test="fileDirSortSign != null and fileDirSortSign!=0">
+            t.file_dir <if test="fileDirSortSign > 0">asc</if><if test="fileDirSortSign &lt; 0">desc</if>,
+        </if>
+        <if test="createdTimeSortSign != null and createdTimeSortSign!=0">
+            t.created_time <if test="createdTimeSortSign > 0">asc</if><if test="createdTimeSortSign &lt; 0">desc</if>,
+        </if>
+        <if test="operatedTimeSortSign != null and operatedTimeSortSign!=0">
+            t.operated_time <if test="operatedTimeSortSign > 0">asc</if><if test="operatedTimeSortSign &lt; 0">desc</if>,
+        </if>
+            t.operated_time desc
+    </sql>
+
+    <select id="findCountByQuery" parameterType="TemplateFileQO" resultType="int">
+        select count(1) from template_file t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+    </select>
+
+    <select id="findListByQuery" parameterType="TemplateFileQO" resultType="TemplateFileListVO">
+        select
+            <include refid="templateFileColumns"><property name="alias" value="t"/></include>
+        from template_file t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+        <include refid="orderCondition"/>
+    </select>
+
+    <select id="getCountByTemplateId" parameterType="Integer" resultType="int">
+        select count(1)
+        from template_file t
+        where
+            t.template_id=#{arg0}
+            and t.deleted=0
+    </select>
+
+
+
+
+    <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
+
+
+</mapper>
