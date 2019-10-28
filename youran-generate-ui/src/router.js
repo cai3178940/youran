@@ -20,6 +20,9 @@ import constIndex from './views/const/index.vue'
 import constList from './views/const/list.vue'
 import constForm from './views/const/form.vue'
 
+import template from './views/template/index.vue'
+import templateList from './views/template/list.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -136,6 +139,25 @@ export default new Router({
           component: constForm,
           props: true
         }
+      ]
+    },
+    {
+      path: '/template',
+      component: template,
+      children: [
+        {
+          path: '',
+          component: templateList
+        }
+        // {
+        //   path: 'add',
+        //   component: templateForm
+        // },
+        // {
+        //   path: 'edit/:templateId',
+        //   component: templateForm,
+        //   props: true
+        // }
       ]
     }
   ],
