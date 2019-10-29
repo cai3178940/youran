@@ -13,4 +13,7 @@ $el-table-padding: 3px 0;
 
 @mixin youran-form {
     padding: 30px 50px;
+    .el-form-item__error {
+        margin-left: 10px;
+    }
 }

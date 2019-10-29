@@ -22,6 +22,7 @@ import constForm from './views/const/form.vue'
 
 import template from './views/template/index.vue'
 import templateList from './views/template/list.vue'
+import templateForm from './views/template/form.vue'
 
 Vue.use(Router)
 
@@ -148,16 +149,16 @@ export default new Router({
         {
           path: '',
           component: templateList
+        },
+        {
+          path: 'add',
+          component: templateForm
+        },
+        {
+          path: 'edit/:templateId',
+          component: templateForm,
+          props: true
         }
-        // {
-        //   path: 'add',
-        //   component: templateForm
-        // },
-        // {
-        //   path: 'edit/:templateId',
-        //   component: templateForm,
-        //   props: true
-        // }
       ]
     }
   ],

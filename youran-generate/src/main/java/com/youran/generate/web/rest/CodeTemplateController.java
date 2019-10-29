@@ -30,7 +30,7 @@ import java.net.URI;
  * @date 2019/10/24
  */
 @RestController
-@RequestMapping(WebConst.API_PATH + "/codeTemplate")
+@RequestMapping(WebConst.API_PATH + "/code_template")
 public class CodeTemplateController extends AbstractController implements CodeTemplateAPI {
 
     @Autowired
@@ -41,7 +41,7 @@ public class CodeTemplateController extends AbstractController implements CodeTe
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CodeTemplateShowVO> save(@Valid @RequestBody CodeTemplateAddDTO codeTemplateAddDTO) throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateService.save(codeTemplateAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/codeTemplate/" + codeTemplate.getTemplateId()))
+        return ResponseEntity.created(new URI(apiPath +"/code_template/" + codeTemplate.getTemplateId()))
             .body(CodeTemplateMapper.INSTANCE.toShowVO(codeTemplate));
     }
 

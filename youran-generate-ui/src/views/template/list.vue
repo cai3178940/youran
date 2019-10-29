@@ -14,13 +14,14 @@
     </el-row>
     <el-table :data="list" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column property="className" label="类名"></el-table-column>
-      <el-table-column property="tableName" label="表名"></el-table-column>
-      <el-table-column property="desc" label="描述"></el-table-column>
+      <el-table-column property="name" label="模板名称"></el-table-column>
+      <el-table-column property="templateType" label="模板类型"></el-table-column>
+      <el-table-column property="templateVersion" label="版本号"></el-table-column>
+      <el-table-column property="sysLowVersion" label="最低系统兼容"></el-table-column>
       <el-table-column
         label="操作"
         width="200">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
           <el-button @click="handleTemplateFile(scope.row)" type="text" size="medium">文件管理</el-button>
         </template>
@@ -34,7 +35,6 @@ import { apiPath } from '@/components/common'
 
 export default {
   name: 'templateList',
-  components: {  },
   data () {
     return {
       query: {},
@@ -55,7 +55,7 @@ export default {
         return
       }
       this.$common.confirm('是否确认删除')
-        .then(() => this.$ajax.put(`/${apiPath}/meta_template/deleteBatch`, this.selectItems.map(template => template.templateId)))
+        .then(() => this.$ajax.put(`/${apiPath}/code_template/deleteBatch`, this.selectItems.map(template => template.templateId)))
         .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
@@ -64,7 +64,7 @@ export default {
     doQuery () {
       this.loading = true
       this.loadingText = '列表加载中'
-      return this.$ajax.get(`/${apiPath}/meta_template/list`, { params: this.query })
+      return this.$ajax.get(`/${apiPath}/code_template`, { params: this.query })
         .then(response => this.$common.checkResult(response))
         .then(data => {
           this.list = data

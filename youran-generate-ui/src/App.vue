@@ -63,19 +63,25 @@
 <script>
 import avatar from '@/assets/avatar.jpg'
 import { apiPath } from '@/components/common'
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'app',
   data () {
     return {
       avatar,
-      systemDialogVisible: false,
-      systemUserInfo: {
-        user: 'admin',
-        sysVersion: '1.1.1'
-      }
+      systemDialogVisible: false
     }
   },
+  computed: {
+    ...mapState([
+      'systemUserInfo'
+    ])
+  },
   methods: {
+    ...mapMutations([
+      'setSystemUserInfo'
+    ]),
     isRoutePath (path) {
       return this.$route.path === path
     },
@@ -95,7 +101,7 @@ export default {
     this.$ajax.get(`/${apiPath}/system_user/info`)
       .then(response => this.$common.checkResult(response))
       .then(data => {
-        this.systemUserInfo = data
+        this.setSystemUserInfo(data)
       })
   }
 }

@@ -5,12 +5,12 @@
       placement="right"
       width="400"
       trigger="click">
-      <div v-html="markdown" class="markdown-body"></div>
+      <div v-html="html" class="markdown-body"></div>
     </el-popover>
     <el-col :span="22">
       <slot></slot>
     </el-col>
-    <el-col :span="2">
+    <el-col v-if="!!html" :span="2">
       <icon name="regular/question-circle" class="question-circle" v-popover:popover></icon>
     </el-col>
   </div>
@@ -25,14 +25,18 @@ export default {
   props: ['name', 'pic'],
   data () {
     let markdown = content
-    this.name.split('.').forEach(field => { markdown = markdown[field] })
-    if (this.pic) {
-      for (let [k, v] of Object.entries(this.pic)) {
-        markdown = markdown.replace('{' + k + '}', v)
+    let html = ''
+    if (this.name) {
+      this.name.split('.').forEach(field => { markdown = markdown[field] })
+      if (this.pic) {
+        for (let [k, v] of Object.entries(this.pic)) {
+          markdown = markdown.replace('{' + k + '}', v)
+        }
       }
+      html = converter.makeHtml(markdown)
     }
     return {
-      markdown: converter.makeHtml(markdown)
+      html: html
     }
   }
 }

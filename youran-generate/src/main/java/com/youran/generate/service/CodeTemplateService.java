@@ -36,7 +36,10 @@ public class CodeTemplateService {
     @Transactional(rollbackFor = RuntimeException.class)
     public CodeTemplatePO save(CodeTemplateAddDTO codeTemplateDTO) {
         CodeTemplatePO codeTemplate = CodeTemplateMapper.INSTANCE.fromAddDTO(codeTemplateDTO);
+        // 默认内部版本号为0
         codeTemplate.setInnerVersion(0);
+        // 默认非系统内置模板
+        codeTemplate.setSysDefault(false);
         codeTemplateDAO.save(codeTemplate);
         return codeTemplate;
     }

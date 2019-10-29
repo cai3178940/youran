@@ -26,9 +26,7 @@ public class CodeTemplateHelper {
         dto.setTemplateType(SafeUtil.getInteger(E_TEMPLATE_TYPE));
         dto.setTemplateVersion(E_TEMPLATE_VERSION);
         dto.setSysLowVersion(E_SYS_LOW_VERSION);
-        dto.setSysDefault(SafeUtil.getBoolean(E_SYS_DEFAULT));
         dto.setRemark(E_REMARK);
-        dto.setFromTemplateId(SafeUtil.getInteger(E_FROM_TEMPLATE_ID));
         return dto;
     }
 
@@ -44,9 +42,7 @@ public class CodeTemplateHelper {
         dto.setTemplateType(codeTemplate.getTemplateType());
         dto.setTemplateVersion(codeTemplate.getTemplateVersion());
         dto.setSysLowVersion(codeTemplate.getSysLowVersion());
-        dto.setSysDefault(codeTemplate.getSysDefault());
         dto.setRemark(codeTemplate.getRemark());
-        dto.setFromTemplateId(codeTemplate.getFromTemplateId());
         return dto;
     }
 

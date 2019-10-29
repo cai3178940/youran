@@ -49,7 +49,7 @@
               </el-cascader>
             </help-popover>
           </el-form-item>
-          <el-form-item label="字段名" prop="jfieldName">
+          <el-form-item label="字段名" prop="jieldNameCouple">
             <help-popover name="field.jfieldName">
               <el-col :span="11" class="col-left">
                 <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age"></el-input>

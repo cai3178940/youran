@@ -64,6 +64,24 @@ export function initFormBean (forEdit) {
 
 export function getRules (vm) {
   return {
+    jieldNameCouple: [
+      {
+        validator: (rule, value, callback) => {
+          if (!vm.form.jfieldName) {
+            callback(new Error('请输入java字段名'))
+          } else if (vm.form.jfieldName.length > 50) {
+            callback(new Error('java字段长度不能超过50个字符'))
+          } else if (!vm.form.fieldName) {
+            callback(new Error('请输入mysql字段名'))
+          } else if (vm.form.fieldName.length > 64) {
+            callback(new Error('mysql字段长度不能超过64个字符'))
+          } else {
+            callback()
+          }
+        },
+        trigger: 'blur'
+      }
+    ],
     jfieldName: [
       { required: true, message: '请输入字段名', trigger: 'blur' },
       { max: 50, message: '长度不能超过50个字符', trigger: 'blur' }

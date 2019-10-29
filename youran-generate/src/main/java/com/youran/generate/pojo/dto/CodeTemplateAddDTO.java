@@ -40,16 +40,9 @@ public class CodeTemplateAddDTO extends AbstractDTO {
     @Length(max = 10)
     private String sysLowVersion;
 
-    @ApiModelProperty(notes = N_SYS_DEFAULT, example = E_SYS_DEFAULT, required = true)
-    @NotNull
-    private Boolean sysDefault;
-
     @ApiModelProperty(notes = N_REMARK, example = E_REMARK)
     @Length(max = 256)
     private String remark;
-
-    @ApiModelProperty(notes = N_FROM_TEMPLATE_ID, example = E_FROM_TEMPLATE_ID)
-    private Integer fromTemplateId;
 
 
     public String getName() {
@@ -84,28 +77,12 @@ public class CodeTemplateAddDTO extends AbstractDTO {
         this.sysLowVersion = sysLowVersion;
     }
 
-    public Boolean getSysDefault() {
-        return this.sysDefault;
-    }
-
-    public void setSysDefault(Boolean sysDefault) {
-        this.sysDefault = sysDefault;
-    }
-
     public String getRemark() {
         return this.remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public Integer getFromTemplateId() {
-        return this.fromTemplateId;
-    }
-
-    public void setFromTemplateId(Integer fromTemplateId) {
-        this.fromTemplateId = fromTemplateId;
     }
 
 }

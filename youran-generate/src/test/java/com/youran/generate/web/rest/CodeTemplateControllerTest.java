@@ -34,7 +34,7 @@ public class CodeTemplateControllerTest extends AbstractWebTest {
     @Test
     public void save() throws Exception {
         CodeTemplateAddDTO addDTO = codeTemplateHelper.getCodeTemplateAddDTO();
-        restMockMvc.perform(post(getApiPath() + "/codeTemplate")
+        restMockMvc.perform(post(getApiPath() + "/code_template")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isCreated());
@@ -47,7 +47,7 @@ public class CodeTemplateControllerTest extends AbstractWebTest {
     public void update() throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateHelper.saveCodeTemplateExample();
         CodeTemplateUpdateDTO updateDTO = codeTemplateHelper.getCodeTemplateUpdateDTO(codeTemplate);
-        restMockMvc.perform(put(getApiPath() + "/codeTemplate")
+        restMockMvc.perform(put(getApiPath() + "/code_template")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -59,7 +59,7 @@ public class CodeTemplateControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateHelper.saveCodeTemplateExample();
-        restMockMvc.perform(get(getApiPath() + "/codeTemplate"))
+        restMockMvc.perform(get(getApiPath() + "/code_template"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.list.length()").value(is(1)));
     }
@@ -70,7 +70,7 @@ public class CodeTemplateControllerTest extends AbstractWebTest {
     @Test
     public void show() throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateHelper.saveCodeTemplateExample();
-        restMockMvc.perform(get(getApiPath() + "/codeTemplate/{templateId}",codeTemplate.getTemplateId()))
+        restMockMvc.perform(get(getApiPath() + "/code_template/{templateId}",codeTemplate.getTemplateId()))
             .andExpect(status().isOk());
     }
 
@@ -80,7 +80,7 @@ public class CodeTemplateControllerTest extends AbstractWebTest {
     @Test
     public void del() throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateHelper.saveCodeTemplateExample();
-        restMockMvc.perform(delete(getApiPath() + "/codeTemplate/{templateId}",codeTemplate.getTemplateId()))
+        restMockMvc.perform(delete(getApiPath() + "/code_template/{templateId}",codeTemplate.getTemplateId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));
     }
@@ -91,7 +91,7 @@ public class CodeTemplateControllerTest extends AbstractWebTest {
     @Test
     public void deleteBatch() throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateHelper.saveCodeTemplateExample();
-        restMockMvc.perform(delete(getApiPath() + "/codeTemplate")
+        restMockMvc.perform(delete(getApiPath() + "/code_template")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(Lists.newArrayList(codeTemplate.getTemplateId()))))
             .andExpect(status().isOk())

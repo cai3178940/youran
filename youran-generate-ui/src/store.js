@@ -6,6 +6,19 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     /**
+     * 系统用户信息
+     */
+    systemUserInfo: {
+      /**
+       * 当前登录用户
+       */
+      user: '',
+      /**
+       * 系统版本
+       */
+      sysVersion: ''
+    },
+    /**
      * 缓存的字段模板数量
      */
     cacheFieldTemplateCount: 0,
@@ -37,6 +50,14 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    /**
+     * 设置系统用户信息
+     * @param state
+     * @param info
+     */
+    setSystemUserInfo: (state, info) => {
+      state.systemUserInfo = info
+    },
     /**
      * 从缓存中移除字段模板
      * @param state

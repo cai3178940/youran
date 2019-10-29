@@ -30,7 +30,7 @@ import java.util.List;
  * @date 2019/10/24
  */
 @RestController
-@RequestMapping(WebConst.API_PATH + "/templateFile")
+@RequestMapping(WebConst.API_PATH + "/template_file")
 public class TemplateFileController extends AbstractController implements TemplateFileAPI {
 
     @Autowired
@@ -41,7 +41,7 @@ public class TemplateFileController extends AbstractController implements Templa
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TemplateFileShowVO> save(@Valid @RequestBody TemplateFileAddDTO templateFileAddDTO) throws Exception {
         TemplateFilePO templateFile = templateFileService.save(templateFileAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/templateFile/" + templateFile.getFileId()))
+        return ResponseEntity.created(new URI(apiPath +"/template_file/" + templateFile.getFileId()))
             .body(TemplateFileMapper.INSTANCE.toShowVO(templateFile));
     }
 
