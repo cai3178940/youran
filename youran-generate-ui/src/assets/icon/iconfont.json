@@ -13,6 +13,55 @@
       "unicode_decimal": 58898
     },
     {
+      "icon_id": "407649",
+      "name": "question",
+      "font_class": "icon-question",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "722019",
+      "name": "trash",
+      "font_class": "trash",
+      "unicode": "e741",
+      "unicode_decimal": 59201
+    },
+    {
+      "icon_id": "924058",
+      "name": "exclamation mark-circle",
+      "font_class": "exclamationmarkcircle",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "1873912",
+      "name": "check",
+      "font_class": "check2",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "3261958",
+      "name": "double-right",
+      "font_class": "double-right",
+      "unicode": "e691",
+      "unicode_decimal": 59025
+    },
+    {
+      "icon_id": "3699340",
+      "name": "download",
+      "font_class": "download",
+      "unicode": "e665",
+      "unicode_decimal": 58981
+    },
+    {
+      "icon_id": "4155847",
+      "name": "Exclamation mark",
+      "font_class": "Exclamationmark",
+      "unicode": "e6b6",
+      "unicode_decimal": 59062
+    },
+    {
       "icon_id": "4572820",
       "name": "TIME",
       "font_class": "TIME",
@@ -27,11 +76,32 @@
       "unicode_decimal": 59018
     },
     {
+      "icon_id": "5384479",
+      "name": "edit-2",
+      "font_class": "edit-outline",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "5555109",
+      "name": "git",
+      "font_class": "git1",
+      "unicode": "e714",
+      "unicode_decimal": 59156
+    },
+    {
       "icon_id": "6064671",
       "name": "普",
       "font_class": "pu2",
       "unicode": "e679",
       "unicode_decimal": 59001
+    },
+    {
+      "icon_id": "6229170",
+      "name": "2拒收逆向单-默认",
+      "font_class": "jushounixiangdan-moren",
+      "unicode": "e644",
+      "unicode_decimal": 58948
     },
     {
       "icon_id": "6493392",
@@ -55,11 +125,53 @@
       "unicode_decimal": 58884
     },
     {
+      "icon_id": "7653063",
+      "name": "times",
+      "font_class": "times1",
+      "unicode": "e9a5",
+      "unicode_decimal": 59813
+    },
+    {
+      "icon_id": "7715546",
+      "name": "code-download",
+      "font_class": "code-download",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    },
+    {
+      "icon_id": "9060299",
+      "name": "edit",
+      "font_class": "edit_small1",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
       "icon_id": "9100119",
       "name": "delete",
       "font_class": "delete",
       "unicode": "e601",
       "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "9579730",
+      "name": "preview",
+      "font_class": "preview2",
+      "unicode": "e621",
+      "unicode_decimal": 58913
+    },
+    {
+      "icon_id": "10650131",
+      "name": "edit",
+      "font_class": "edit",
+      "unicode": "e931",
+      "unicode_decimal": 59697
+    },
+    {
+      "icon_id": "10812583",
+      "name": "逆向工单",
+      "font_class": "nixianggongdan",
+      "unicode": "e7d0",
+      "unicode_decimal": 59344
     }
   ]
 }

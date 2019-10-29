@@ -27,8 +27,8 @@
               <el-input v-model="form.title" placeholder="例如：用户"></el-input>
             </help-popover>
           </el-form-item>
-          <el-form-item label="类名/表名" prop="className">
-            <help-popover name="entity.className">
+          <el-form-item label="类名/表名" prop="classAndTableName">
+            <help-popover name="entity.classAndTableName">
               <el-col :span="11" class="col-left">
                 <el-input v-model="form.className" placeholder="java类名，例如：User"></el-input>
                 <el-button size="mini" type="text" @click="form.className = $common.upperCaseFirst($common.camelCase(form.className))">转驼峰</el-button>
@@ -36,7 +36,7 @@
               <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
                 <el-tooltip class="item" effect="dark" content="粘贴到右边并转下划线" placement="top">
                   <el-button type="text" @click="copyClassNameToTableName()">
-                    <icon name="angle-double-right" style="vertical-align: middle;"></icon>
+                    <i class="iconfont icon-double-right table-cell-icon color-primary" style="vertical-align: middle;"></i>
                   </el-button>
                 </el-tooltip>
               </el-col>
@@ -94,7 +94,7 @@ export default {
       projectList: [],
       old: initFormBean(edit),
       form: initFormBean(edit),
-      rules: getRules()
+      rules: getRules(this)
     }
   },
   methods: {
@@ -150,6 +150,7 @@ export default {
     },
     copyClassNameToTableName () {
       this.form.tableName = this.$common.snakeCase(this.form.className)
+      this.$refs.entityForm.validateField('classAndTableName')
     }
   },
   created () {

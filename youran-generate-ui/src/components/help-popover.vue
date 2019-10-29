@@ -11,7 +11,7 @@
       <slot></slot>
     </el-col>
     <el-col v-if="!!html" :span="2">
-      <icon name="regular/question-circle" class="question-circle" v-popover:popover></icon>
+      <i class="iconfont icon-icon-question color-primary" style="cursor: pointer;" v-popover:popover></i>
     </el-col>
   </div>
 </template>

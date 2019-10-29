@@ -21,7 +21,7 @@ export function initFormBean (forEdit) {
   return formBean
 }
 
-export function getRules () {
+export function getRules (vm) {
   return {
     projectId: [
       { required: true, type: 'number', message: '请选择项目', trigger: 'change' }
@@ -29,6 +29,24 @@ export function getRules () {
     title: [
       { required: true, message: '请输入实体名', trigger: 'blur' },
       { max: 25, message: '长度不能超过25个字符', trigger: 'blur' }
+    ],
+    classAndTableName: [
+      {
+        validator: (rule, value, callback) => {
+          if (!vm.form.className) {
+            callback(new Error('请输入类名'))
+          } else if (vm.form.className.length > 50) {
+            callback(new Error('类名长度不能超过50个字符'))
+          } else if (!vm.form.tableName) {
+            callback(new Error('请输入表名'))
+          } else if (vm.form.tableName.length > 50) {
+            callback(new Error('表名长度不能超过50个字符'))
+          } else {
+            callback()
+          }
+        },
+        trigger: 'blur'
+      }
     ],
     className: [
       { required: true, message: '请输入类名', trigger: 'blur' },

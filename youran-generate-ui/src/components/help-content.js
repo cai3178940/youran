@@ -43,11 +43,10 @@ export default {
 **实体名**：本实体的中文名称，会出现在多处代码及表结构的注释中
 > 注意：请尽量使用言简意赅的名称
     `,
-    className: `
+    classAndTableName: `
 **类名**：生成的java bean名称，比如输入类名User,会生成的bean有:UserPO、UserAddDTO、UserDAO等
 > 注意：第一个字母请大写
-    `,
-    tableName: `
+    
 **表名**：生成的业务表名称
 > 注意：请按mysql表名规范来命名，尽量使用下划线来分隔单词
     `,

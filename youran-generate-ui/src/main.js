@@ -9,7 +9,6 @@ import './assets/icon/iconfont.css'
 import './assets/main.scss'
 import './assets/element-override.scss'
 import 'vue-awesome/icons'
-import Icon from 'vue-awesome/components/Icon'
 import helpPopover from './components/help-popover'
 import browser from 'browser-detect'
 
@@ -22,7 +21,6 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(CommonPlugin)
 
-Vue.component('icon', Icon)
 Vue.component('help-popover', helpPopover)
 new Vue({
   store,

@@ -39,8 +39,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <icon v-if="scope.row.query==1" name="check" class="table-cell-icon color-success"></icon>
-            <icon v-else name="times" class="table-cell-icon color-danger"></icon>
+            <i v-if="scope.row.query==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+            <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
           </template>
         </template>
       </el-table-column>
@@ -61,8 +61,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <icon v-if="scope.row.list==1" name="check" class="table-cell-icon color-success"></icon>
-            <icon v-else name="times" class="table-cell-icon color-danger"></icon>
+            <i v-if="scope.row.list==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+            <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
           </template>
         </template>
       </el-table-column>
@@ -75,8 +75,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <icon v-if="scope.row.show==1" name="check" class="table-cell-icon color-success"></icon>
-            <icon v-else name="times" class="table-cell-icon color-danger"></icon>
+            <i v-if="scope.row.show==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+            <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
           </template>
         </template>
       </el-table-column>

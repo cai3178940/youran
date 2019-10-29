@@ -64,7 +64,7 @@
       <el-table-column label="字段标题">
         <template v-slot="scope">
           <template v-if="!scope.row.validate.success">
-            <icon name="exclamation-circle" class="table-cell-icon color-warning"></icon>
+            <i class="iconfont icon-exclamationmarkcircle color-warning"></i>
           </template>
           <el-popover
             placement="top"
@@ -94,13 +94,22 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{method:'handleDelIndexField',arg:[index,scope.row]}">
-                  <icon name="times" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除索引字段
+                  <i class="iconfont icon-times1 table-cell-icon"
+                     style="margin-right: 0px; vertical-align: middle;"
+                     :class="[index.unique==1?'color-danger':'color-primary']"></i>
+                  删除索引字段
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleDelIndex',arg:[index]}">
-                  <icon name="trash-alt" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 删除整个索引
+                  <i class="iconfont icon-trash table-cell-icon"
+                     style="margin-right: 0px; vertical-align: middle;"
+                     :class="[index.unique==1?'color-danger':'color-primary']"></i>
+                  删除整个索引
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleIndexEdit',arg:[index]}">
-                  <icon name="edit" scale="0.7" :color="[index.unique==1?'red':'blue']"></icon> 编辑索引
+                  <i class="iconfont icon-edit_small1 table-cell-icon"
+                     style="margin-right: 0px; vertical-align: middle;"
+                     :class="[index.unique==1?'color-danger':'color-primary']"></i>
+                  编辑索引
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -120,8 +129,8 @@
       </el-table-column>
       <el-table-column label="非空" width="50px">
         <template v-slot="scope">
-          <icon v-if="scope.row.notNull==1" name="check" class="table-cell-icon color-success"></icon>
-          <icon v-else name="times" class="table-cell-icon color-danger"></icon>
+          <i v-if="scope.row.notNull==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+          <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
         </template>
       </el-table-column>
       <el-table-column label="性质" width="70px">

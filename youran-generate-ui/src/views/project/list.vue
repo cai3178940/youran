@@ -26,8 +26,8 @@
       <el-table-column property="packageName" label="包名" width="180"></el-table-column>
       <el-table-column label="Git仓库" width="90px">
         <template v-slot="scope">
-          <icon v-if="scope.row.remote===1" name="check" class="table-cell-icon color-success"></icon>
-          <icon v-else name="times" class="table-cell-icon color-danger"></icon>
+          <i v-if="scope.row.remote==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+          <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
         </template>
       </el-table-column>
       <!--代码下载进度条-->
@@ -51,28 +51,39 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" >
-                <icon name="edit" scale="0.8" ></icon> 编辑
+                <i class="iconfont icon-edit_small1"
+                   style="margin-right: 0px;"></i>
+                编辑
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" >
-                <icon name="object-group" scale="0.8" ></icon> 反向工程
+                <i class="iconfont icon-jushounixiangdan-moren"
+                   style="margin-right: 0px;"></i>
+                反向工程
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handlePreView',arg:scope.row}" >
-                <icon name="eye" scale="0.8" ></icon> 代码预览
+                <i class="iconfont icon-preview2"
+                   style="margin-right: 0px;"></i>
+                代码预览
               </el-dropdown-item>
-              <!--<el-dropdown-item :command="{method:'handlePreViewSql',arg:scope.row}" >
-                <icon name="file-code" scale="0.8" ></icon> sql预览
-              </el-dropdown-item>-->
               <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
-                <icon name="download" scale="0.8" ></icon> 下载代码
+                <i class="iconfont icon-code-download"
+                   style="margin-right: 0px;"></i>
+                下载代码
               </el-dropdown-item>
               <el-dropdown-item v-if="scope.row.remote==1" :command="{method:'handleCommit',arg:scope.row}" >
-                <icon name="brands/git" scale="0.8" ></icon> 提交Git
+                <i class="iconfont icon-git1"
+                   style="margin-right: 0px;"></i>
+                提交Git
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleDel',arg:scope.row}" >
-                <icon name="trash-alt" scale="0.8" ></icon> 删除
+                <i class="iconfont icon-trash"
+                   style="margin-right: 0px;"></i>
+                删除
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleExport',arg:scope.row}" >
-                <icon name="arrow-circle-down" scale="0.8" ></icon> 导出元数据
+                <i class="iconfont icon-download"
+                   style="margin-right: 0px;"></i>
+                导出元数据
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
