@@ -38,5 +38,8 @@ public class PatternConst {
     public static final String FIELD_IDS = "^(([0-9]+,)*[0-9]+)$";
     public static final String FIELD_IDS_MSG = "不符合多id格式";
 
+    public static final String VERSION = "^([1-9]\\d|[0-9])(\\.([1-9]\\d|\\d)){2}$";
+    public static final String VERSION_MSG = "不符合版本号格式";
+
 
 }

@@ -4,6 +4,7 @@ package com.youran.generate.help;
 import com.youran.common.util.SafeUtil;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
+import com.youran.generate.pojo.dto.MetaMtmFeatureDTO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 
 import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
@@ -34,6 +35,7 @@ public class MetaManyToManyHelper {
         dto.setEntityIdField2(E_ENTITYIDFIELD2);
         dto.setNeedId(SafeUtil.getBoolean(E_NEEDID));
         dto.setBigId(SafeUtil.getBoolean(E_BIGID));
+        dto.setFeature(new MetaMtmFeatureDTO());
         return dto;
     }
 
@@ -57,6 +59,7 @@ public class MetaManyToManyHelper {
         dto.setEntityIdField2(metaManyToMany.getEntityIdField2());
         dto.setNeedId(metaManyToMany.getNeedId());
         dto.setBigId(metaManyToMany.getBigId());
+        dto.setFeature(new MetaMtmFeatureDTO());
         return dto;
     }
 

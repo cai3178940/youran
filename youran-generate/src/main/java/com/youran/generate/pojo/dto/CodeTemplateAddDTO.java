@@ -2,12 +2,14 @@ package com.youran.generate.pojo.dto;
 
 import com.youran.common.pojo.dto.AbstractDTO;
 import com.youran.common.validator.Const;
+import com.youran.generate.constant.PatternConst;
 import com.youran.generate.constant.TemplateType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import static com.youran.generate.pojo.example.CodeTemplateExample.*;
 
@@ -33,11 +35,13 @@ public class CodeTemplateAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_TEMPLATE_VERSION, example = E_TEMPLATE_VERSION, required = true)
     @NotNull
     @Length(max = 10)
+    @Pattern(regexp = PatternConst.VERSION, message = PatternConst.VERSION_MSG)
     private String templateVersion;
 
     @ApiModelProperty(notes = N_SYS_LOW_VERSION, example = E_SYS_LOW_VERSION, required = true)
     @NotNull
     @Length(max = 10)
+    @Pattern(regexp = PatternConst.VERSION, message = PatternConst.VERSION_MSG)
     private String sysLowVersion;
 
     @ApiModelProperty(notes = N_REMARK, example = E_REMARK)

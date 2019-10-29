@@ -15,7 +15,12 @@
     <el-table :data="list" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column property="name" label="模板名称"></el-table-column>
-      <el-table-column property="templateType" label="模板类型"></el-table-column>
+      <el-table-column property="templateType" label="模板类型">
+        <template v-slot="scope">
+          <span v-if="scope.row.templateType===1">后端</span>
+          <span v-else>前端</span>
+        </template>
+      </el-table-column>
       <el-table-column property="templateVersion" label="版本号"></el-table-column>
       <el-table-column property="sysLowVersion" label="最低系统兼容"></el-table-column>
       <el-table-column
@@ -55,7 +60,10 @@ export default {
         return
       }
       this.$common.confirm('是否确认删除')
-        .then(() => this.$ajax.put(`/${apiPath}/code_template/deleteBatch`, this.selectItems.map(template => template.templateId)))
+        .then(() => this.$ajax.delete(`/${apiPath}/code_template`,
+          {
+            data: this.selectItems.map(template => template.templateId)
+          }))
         .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
