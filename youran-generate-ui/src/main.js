@@ -8,7 +8,6 @@ import { CommonPlugin } from './components/common'
 import './assets/icon/iconfont.css'
 import './assets/main.scss'
 import './assets/element-override.scss'
-import 'vue-awesome/icons'
 import helpPopover from './components/help-popover'
 import browser from 'browser-detect'
 

@@ -2,7 +2,6 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.CodeTemplateAddDTO;
 import com.youran.generate.pojo.dto.CodeTemplateUpdateDTO;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 /**
  * <p>Title: 【代码模板】控制器</p>
@@ -54,8 +54,8 @@ public class CodeTemplateController extends AbstractController implements CodeTe
 
     @Override
     @GetMapping
-    public ResponseEntity<PageVO<CodeTemplateListVO>> list(@Valid CodeTemplateQO codeTemplateQO) {
-        PageVO<CodeTemplateListVO> page = codeTemplateService.list(codeTemplateQO);
+    public ResponseEntity<List<CodeTemplateListVO>> list(@Valid CodeTemplateQO codeTemplateQO) {
+        List<CodeTemplateListVO> page = codeTemplateService.list(codeTemplateQO);
         return ResponseEntity.ok(page);
     }
 

@@ -150,7 +150,6 @@
         <include refid="queryCondition"/>
         </where>
         <include refid="orderCondition"/>
-        limit #{startIndex},#{pageSize}
     </select>
 
 

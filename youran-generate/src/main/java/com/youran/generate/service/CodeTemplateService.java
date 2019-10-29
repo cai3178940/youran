@@ -3,7 +3,6 @@ package com.youran.generate.service;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.CodeTemplateDAO;
 import com.youran.generate.pojo.dto.CodeTemplateAddDTO;
 import com.youran.generate.pojo.dto.CodeTemplateUpdateDTO;
@@ -15,6 +14,8 @@ import com.youran.generate.pojo.vo.CodeTemplateShowVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * <p>Title: 【代码模板】删改查服务</p>
@@ -63,8 +64,8 @@ public class CodeTemplateService {
      * @param codeTemplateQO
      * @return
      */
-    public PageVO<CodeTemplateListVO> list(CodeTemplateQO codeTemplateQO) {
-        PageVO<CodeTemplateListVO> page = codeTemplateDAO.findByPage(codeTemplateQO);
+    public List<CodeTemplateListVO> list(CodeTemplateQO codeTemplateQO) {
+        List<CodeTemplateListVO> page = codeTemplateDAO.findListByQuery(codeTemplateQO);
         return page;
     }
 

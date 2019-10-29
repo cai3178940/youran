@@ -1,6 +1,5 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.pojo.dto.CodeTemplateAddDTO;
 import com.youran.generate.pojo.dto.CodeTemplateUpdateDTO;
 import com.youran.generate.pojo.qo.CodeTemplateQO;
@@ -11,6 +10,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 /**
  * <p>Title: 【代码模板】API</p>
@@ -43,7 +44,7 @@ public interface CodeTemplateAPI {
      * 分页查询【代码模板】
      */
     @ApiOperation(value="分页查询【代码模板】")
-    ResponseEntity<PageVO<CodeTemplateListVO>> list(CodeTemplateQO codeTemplateQO);
+    ResponseEntity<List<CodeTemplateListVO>> list(CodeTemplateQO codeTemplateQO);
 
     /**
      * 查看【代码模板】详情

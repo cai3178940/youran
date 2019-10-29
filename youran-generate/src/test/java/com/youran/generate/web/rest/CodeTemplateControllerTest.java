@@ -61,7 +61,7 @@ public class CodeTemplateControllerTest extends AbstractWebTest {
         CodeTemplatePO codeTemplate = codeTemplateHelper.saveCodeTemplateExample();
         restMockMvc.perform(get(getApiPath() + "/code_template"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.list.length()").value(is(1)));
+            .andExpect(jsonPath("$.length()").value(is(1)));
     }
 
     /**
