@@ -22,11 +22,11 @@
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item :disabled="fieldFeature.value===commonFeature.value"
                                       :command="{method:'changeCommonFeature'}">
-                      {{commonFeature.label}}
+                      <span :class="commonFeature.icon"></span> {{commonFeature.label}}
                     </el-dropdown-item>
                     <el-dropdown-item :disabled="fieldFeature.value===fkFeature.value"
                                       :command="{method:'changeFkFeature'}">
-                      {{fkFeature.label}}
+                      <span :class="fkFeature.icon"></span> {{fkFeature.label}}
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>

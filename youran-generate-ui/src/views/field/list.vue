@@ -128,10 +128,7 @@
         <template v-slot="scope">
           <template v-for="feature in [getFieldFeature(scope.row)]">
             <el-tooltip :key="feature.value" class="item" effect="dark" :content="feature.label" placement="right">
-              <icon :name="feature.icon"
-                    :style="feature.style"
-                    class="table-cell-icon">
-              </icon>
+              <span :class="feature.icon" class="table-cell-icon"></span>
             </el-tooltip>
           </template>
         </template>
@@ -218,10 +215,7 @@
                   <span style="float: left">
                     <span class="template-option">
                       <template v-for="feature in [getFieldFeature(value)]">
-                        <icon :key="feature.value"
-                              :name="feature.icon"
-                              :style="feature.style">
-                        </icon>
+                        <span :key="feature.value" :class="feature.icon"></span>
                       </template>
                     </span>
                     {{ key }}
@@ -236,10 +230,7 @@
                   <span style="float: left">
                     <span class="template-option">
                       <template v-for="feature in [getFieldFeature(value)]">
-                        <icon :key="feature.value"
-                                :name="feature.icon"
-                                :style="feature.style">
-                        </icon>
+                        <span :key="feature.value" :class="feature.icon"></span>
                       </template>
                     </span>
                     {{ value.fieldDesc }}
@@ -256,10 +247,7 @@
                   <span style="float: left">
                     <span class="template-option">
                       <template v-for="feature in [getFieldFeature(value)]">
-                        <icon :key="feature.value"
-                              :name="feature.icon"
-                              :style="feature.style">
-                        </icon>
+                        <span :key="feature.value" :class="feature.icon"></span>
                       </template>
                     </span>
                     {{ key }}
@@ -283,10 +271,7 @@
                   <span style="float: left">
                     <span class="template-option">
                       <template v-for="feature in [getFieldFeature(value)]">
-                        <icon :key="feature.value"
-                              :name="feature.icon"
-                              :style="feature.style">
-                        </icon>
+                        <span :key="feature.value" :class="feature.icon"></span>
                       </template>
                     </span>
                     {{ value.fieldDesc }}
@@ -305,10 +290,7 @@
                   <span style="float: left">
                     <span class="template-option">
                       <template v-for="feature in [getFieldFeature(value)]">
-                        <icon :key="feature.value"
-                              :name="feature.icon"
-                              :style="feature.style">
-                        </icon>
+                        <span :key="feature.value" :class="feature.icon"></span>
                       </template>
                     </span>
                     {{ key }}

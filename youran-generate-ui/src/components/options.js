@@ -83,8 +83,7 @@ function getFieldTypeOptions () {
 const commonFeature = {
   value: 'default',
   label: '普通字段',
-  icon: 'asterisk',
-  style: 'color: #87CEEB;',
+  icon: ['iconfont', 'icon-pu2'],
   hiddenAttrs: ['autoIncrement', 'foreignKey'],
   disabledAttrs: []
 }
@@ -92,8 +91,7 @@ const commonFeature = {
 const pkFeature = {
   value: 'pk',
   label: '主键',
-  icon: 'key',
-  style: 'color: #eb9e05;',
+  icon: ['iconfont', 'icon-key', 'color-warning'],
   hiddenAttrs: ['foreignKey', 'dicType', 'attributes'],
   disabledAttrs: ['notNull']
 }
@@ -101,8 +99,7 @@ const pkFeature = {
 const fkFeature = {
   value: 'fk',
   label: '外键',
-  icon: 'key',
-  style: 'color: #409EFF;',
+  icon: ['iconfont', 'icon-key', 'color-primary'],
   hiddenAttrs: ['autoIncrement', 'dicType'],
   disabledAttrs: []
 }
@@ -111,48 +108,42 @@ const specialFieldFeatures = [
   {
     value: 'deleted',
     label: '逻辑删除',
-    icon: 'ban',
-    style: 'color: #ff3366;',
+    icon: ['iconfont', 'icon-delete', 'color-danger'],
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType', 'query', 'attributes'],
     disabledAttrs: ['notNull']
   },
   {
     value: 'createdTime',
     label: '创建时间',
-    icon: 'calendar-alt',
-    style: 'color: #33cc66;',
+    icon: ['iconfont', 'icon-TIME', 'color-success'],
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'createdBy',
     label: '创建人员',
-    icon: 'user',
-    style: 'color: #33cc66;',
+    icon: ['iconfont', 'icon-create-user', 'color-success'],
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'operatedTime',
     label: '更新时间',
-    icon: 'calendar-alt',
-    style: 'color: #1C86EE;',
+    icon: ['iconfont', 'icon-TIME', 'color-primary'],
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'operatedBy',
     label: '更新人员',
-    icon: 'user',
-    style: 'color: #1C86EE;',
+    icon: ['iconfont', 'icon-icons-edit-user', 'color-primary'],
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'version',
     label: '乐观锁版本号',
-    icon: 'unlock-alt',
-    style: 'color: #AB82FF;',
+    icon: ['iconfont', 'icon-version1', 'color-primary'],
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType', 'query', 'attributes'],
     disabledAttrs: ['notNull']
   }
