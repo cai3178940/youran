@@ -1,14 +1,18 @@
 export default {
   map: {
-    'xml': 'hawcons-icon-102-document-file-xml',
-    'java': 'hawcons-icon-78-document-file-java',
-    'yml': 'hawcons-icon-103-document-file-yml',
-    'properties': 'hawcons-icon-48-notebook',
-    'md': 'hawcons-icon-31-book-bookmark',
-    'sql': 'hawcons-icon-89-document-file-sql'
+    'xml': ['iconfont', 'icon-XML1'],
+    'ftl': ['iconfont', 'icon-icon-code-file-fill'],
+    'java': ['iconfont', 'icon-JAVA'],
+    'yml': ['iconfont', 'icon-YAML'],
+    'properties': ['iconfont', 'icon-properties-'],
+    'md': ['iconfont', 'icon-MD'],
+    'sql': ['iconfont', 'icon-sql'],
+    'folder': ['iconfont', 'icon-folder1'],
+    'txt': ['iconfont', 'icon-uicon_txt']
   },
   cmMode: {
     'xml': 'application/xml',
+    'ftl': 'application/xml',
     'java': 'text/x-java',
     'yml': 'text/x-yaml',
     'properties': 'text/x-properties',
@@ -20,7 +24,7 @@ export default {
     if (icon) {
       return icon
     }
-    return 'hawcons-icon-44-note-text'
+    return this.map['txt']
   },
   getCmMode (type) {
     const mode = this.cmMode[type]

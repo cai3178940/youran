@@ -1,5 +1,7 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
  * @author cbb
  * @date 2019/9/21
  */
-public class MetaEntityListPairVO {
+public class MetaEntityListPairVO extends AbstractVO {
 
     private List<MetaMtmEntityListVO> holds;
     private List<MetaMtmEntityListVO> unholds;

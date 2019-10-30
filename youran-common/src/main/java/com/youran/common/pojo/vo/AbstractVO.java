@@ -11,4 +11,6 @@ import java.io.Serializable;
  */
 public abstract class AbstractVO implements Serializable {
 
+    private static final long serialVersionUID = 640619331196056814L;
+
 }

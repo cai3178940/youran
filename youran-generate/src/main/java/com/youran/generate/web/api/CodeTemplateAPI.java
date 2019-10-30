@@ -5,6 +5,7 @@ import com.youran.generate.pojo.dto.CodeTemplateUpdateDTO;
 import com.youran.generate.pojo.qo.CodeTemplateQO;
 import com.youran.generate.pojo.vo.CodeTemplateListVO;
 import com.youran.generate.pojo.vo.CodeTemplateShowVO;
+import com.youran.generate.pojo.vo.TemplateDirTreeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -74,5 +75,15 @@ public interface CodeTemplateAPI {
     ResponseEntity<Integer> deleteBatch(Integer[] id);
 
 
+    /**
+     * 查看模板文件目录结构
+     * @param templateId 模板id
+     * @return
+     */
+    @ApiOperation(value = "查看模板文件目录结构")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "path")
+    })
+    ResponseEntity<TemplateDirTreeVO> dirTree(Integer templateId);
 }
 

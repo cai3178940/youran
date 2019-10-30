@@ -32,14 +32,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <template-files ref="templateFiles"></template-files>
   </div>
 </template>
 
 <script>
 import { apiPath } from '@/components/common'
+import templateFiles from './templateFiles'
 
 export default {
   name: 'templateList',
+  components: { templateFiles },
   data () {
     return {
       query: {},
@@ -87,7 +90,7 @@ export default {
       this.$router.push(`/template/edit/${row.templateId}`)
     },
     handleTemplateFile (row) {
-      this.$router.push(`/template/${row.templateId}/template_file`)
+      this.$refs.templateFiles.show(row.templateId, row.name)
     }
   },
   activated () {

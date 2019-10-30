@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -10,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author cbb
  * @date 2018/7/17
  */
-public class RelationDiagramVO {
+public class RelationDiagramVO extends AbstractVO {
 
     public static final String ONE = "1";
     public static final String MANY = "N";

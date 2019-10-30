@@ -8,9 +8,11 @@ import com.youran.generate.pojo.dto.CodeTemplateUpdateDTO;
 import com.youran.generate.pojo.mapper.CodeTemplateMapper;
 import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.pojo.qo.CodeTemplateQO;
-import com.youran.generate.pojo.vo.CodeTemplateListVO;
-import com.youran.generate.pojo.vo.CodeTemplateShowVO;
+import com.youran.generate.pojo.qo.TemplateFileQO;
+import com.youran.generate.pojo.vo.*;
 import com.youran.generate.service.CodeTemplateService;
+import com.youran.generate.service.TemplateFileService;
+import com.youran.generate.util.FileNodeUtil;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.CodeTemplateAPI;
 import org.apache.commons.lang3.ArrayUtils;
@@ -35,6 +37,9 @@ public class CodeTemplateController extends AbstractController implements CodeTe
 
     @Autowired
     private CodeTemplateService codeTemplateService;
+
+    @Autowired
+    private TemplateFileService templateFileService;
 
     @Override
     @PostMapping
@@ -81,6 +86,19 @@ public class CodeTemplateController extends AbstractController implements CodeTe
         }
         int count = codeTemplateService.delete(id);
         return ResponseEntity.ok(count);
+    }
+
+    @Override
+    @GetMapping(value = "/{templateId}/dir_tree")
+    public ResponseEntity<TemplateDirTreeVO> dirTree(@PathVariable Integer templateId) {
+        TemplateFileQO templateFileQO = new TemplateFileQO();
+        templateFileQO.setTemplateId(templateId);
+        List<TemplateFileListVO> list = templateFileService.list(templateFileQO);
+        List<FileNodeVO> fileNodeList = FileNodeUtil.templateFileListToNodeTree(list);
+        TemplateDirTreeVO treeVO = new TemplateDirTreeVO();
+        treeVO.setTemplateId(templateId);
+        treeVO.setTree(fileNodeList);
+        return ResponseEntity.ok(treeVO);
     }
 
 

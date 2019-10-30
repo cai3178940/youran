@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author cbb
  * @date 2019/8/29
  */
-public class CodeTreeVO {
+public class CodeTreeVO extends AbstractVO {
 
     @ApiModelProperty(notes = "项目id", example = "2")
     private Integer projectId;

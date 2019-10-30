@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.vo;
 
+import com.youran.common.pojo.vo.AbstractVO;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @author cbb
  * @date 2018/7/17
  */
-public class EntityDiagramVO {
+public class EntityDiagramVO extends AbstractVO {
 
     /**
      * 实体名称

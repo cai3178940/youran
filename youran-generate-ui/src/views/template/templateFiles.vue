@@ -1,5 +1,5 @@
 <template>
-  <div class="codePreview">
+  <div class="fileManage">
     <el-dialog :title="title" :visible.sync="visible" :fullscreen="true">
       <el-header class="codePath">
         <template v-for="(node,index) in paths">
@@ -61,13 +61,13 @@ import 'codemirror/mode/sql/sql.js'
 import 'codemirror/mode/markdown/markdown.js'
 
 export default {
-  name: 'code-preview',
+  name: 'template-files',
   components: {
     'vue-codemirror': codemirror
   },
   data () {
     return {
-      projectId: null,
+      templateId: null,
       title: '',
       treeProps: {
         children: 'children',
@@ -75,8 +75,8 @@ export default {
       },
       // 后端返回的代码目录数据
       codeTree: {
-        projectId: null,
-        projectVersion: null,
+        templateId: null,
+        templateVersion: null,
         tree: []
       },
       cmOptions: {
@@ -96,17 +96,17 @@ export default {
     }
   },
   methods: {
-    initData (projectId, projectName) {
-      this.projectId = projectId
-      this.title = '代码预览: ' + projectName
+    initData (templateId, templateName) {
+      this.templateId = templateId
+      this.title = '模板文件管理: ' + templateName
       this.codeTree.tree = []
       this.paths = []
       this.codeTabs = []
     },
-    show (projectId, projectName) {
+    show (templateId, templateName) {
       this.visible = true
-      this.initData(projectId, projectName)
-      this.queryCodeTree(projectId)
+      this.initData(templateId, templateName)
+      this.queryCodeTree(templateId)
     },
     /**
      * 菜单自由伸缩
@@ -136,9 +136,9 @@ export default {
       splitLine.setCapture && splitLine.setCapture()
       return false
     },
-    queryCodeTree (projectId) {
+    queryCodeTree (templateId) {
       this.codeTreeLoading = true
-      return this.$ajax.get(`/${apiPath}/code_preview/${projectId}/code_tree`)
+      return this.$ajax.get(`/${apiPath}/code_template/${templateId}/dir_tree`)
         .then(response => this.$common.checkResult(response))
         .then(data => { this.codeTree = data })
         .catch(error => this.$common.showNotifyError(error))
@@ -154,8 +154,8 @@ export default {
     },
     parsePath (data) {
       this.paths = [{
-        name: this.projectName,
-        key: this.projectName,
+        name: this.templateName,
+        key: this.templateName,
         icon: FileTypeUtil.getIcon('folder')
       }]
       const paths = data.path.split('/').filter(p => p)
@@ -183,9 +183,9 @@ export default {
         this.currentTabName = oldTab.name
         return
       }
-      this.parsePath(data)
+      this.parsePath(data.path)
       const tab = this.addTab(data)
-      this.$ajax.get(`/${apiPath}/code_preview/${this.codeTree.projectId}/file_content?projectVersion=${this.codeTree.projectId}&filePath=${encodeURIComponent(data.path)}`, { responseType: 'text' })
+      this.$ajax.get(`/${apiPath}/code_template/${this.codeTree.templateId}/file_content?fileId=${data.info.fileId}`, { responseType: 'text' })
         .then(response => this.$common.checkResult(response))
         .then(fileData => {
           this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
@@ -238,7 +238,7 @@ export default {
 <style lang="scss">
   @import '../../assets/common.scss';
 
-  .codePreview {
+  .fileManage {
     @include coding-panel;
   }
 </style>

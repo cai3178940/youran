@@ -2,7 +2,9 @@ package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.io.FilenameUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +13,7 @@ import java.util.List;
  * @author cbb
  * @date 2019/8/29
  */
-public class FileNodeVO extends AbstractVO {
+public class FileNodeVO<T> extends AbstractVO {
 
     /**
      * 文件名
@@ -37,8 +39,37 @@ public class FileNodeVO extends AbstractVO {
     @ApiModelProperty(notes = "文件类型(后缀)", example = "txt")
     private String type;
 
+    /**
+     * 其他信息
+     */
+    @ApiModelProperty(notes = "其他信息", example = "")
+    private T info;
+
     @ApiModelProperty(notes = "子节点")
     private List<FileNodeVO> children;
+
+
+    public FileNodeVO() {
+    }
+
+    public FileNodeVO(Boolean dir, String path, T info) {
+        this.dir = dir;
+        this.path = path;
+        this.name = path.substring(path.lastIndexOf("/")+1);
+        this.type = FilenameUtils.getExtension(this.name);
+        if(dir){
+            this.children = new ArrayList<>();
+        }
+        this.info = info;
+    }
+
+    public T getInfo() {
+        return info;
+    }
+
+    public void setInfo(T info) {
+        this.info = info;
+    }
 
     public List<FileNodeVO> getChildren() {
         return children;

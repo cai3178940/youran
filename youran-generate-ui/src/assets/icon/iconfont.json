@@ -41,6 +41,13 @@
       "unicode_decimal": 58880
     },
     {
+      "icon_id": "2046700",
+      "name": "txt",
+      "font_class": "uicon_txt",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
       "icon_id": "3261958",
       "name": "double-right",
       "font_class": "double-right",
@@ -69,11 +76,25 @@
       "unicode_decimal": 58962
     },
     {
+      "icon_id": "4682894",
+      "name": "XML",
+      "font_class": "XML1",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
       "icon_id": "4729750",
       "name": "date",
       "font_class": "date",
       "unicode": "e68a",
       "unicode_decimal": 59018
+    },
+    {
+      "icon_id": "4963295",
+      "name": "properties-16",
+      "font_class": "properties-",
+      "unicode": "e78a",
+      "unicode_decimal": 59274
     },
     {
       "icon_id": "5384479",
@@ -90,11 +111,46 @@
       "unicode_decimal": 59156
     },
     {
+      "icon_id": "5806453",
+      "name": "sql",
+      "font_class": "sql",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "5916413",
+      "name": "JAVA",
+      "font_class": "JAVA",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "5916417",
+      "name": "MD",
+      "font_class": "MD",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "5916439",
+      "name": "YAML",
+      "font_class": "YAML",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
       "icon_id": "6064671",
       "name": "普",
       "font_class": "pu2",
       "unicode": "e679",
       "unicode_decimal": 59001
+    },
+    {
+      "icon_id": "6129692",
+      "name": "folder",
+      "font_class": "folder1",
+      "unicode": "e935",
+      "unicode_decimal": 59701
     },
     {
       "icon_id": "6229170",
@@ -116,6 +172,13 @@
       "font_class": "version1",
       "unicode": "e602",
       "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "7544661",
+      "name": "icon-code-file-fill",
+      "font_class": "icon-code-file-fill",
+      "unicode": "e826",
+      "unicode_decimal": 59430
     },
     {
       "icon_id": "7576980",
