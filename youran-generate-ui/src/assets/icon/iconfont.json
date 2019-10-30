@@ -34,6 +34,20 @@
       "unicode_decimal": 58936
     },
     {
+      "icon_id": "1396795",
+      "name": "Home",
+      "font_class": "Home",
+      "unicode": "e78f",
+      "unicode_decimal": 59279
+    },
+    {
+      "icon_id": "1510323",
+      "name": "项目",
+      "font_class": "project1",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
       "icon_id": "1873912",
       "name": "check",
       "font_class": "check2",
@@ -202,6 +216,13 @@
       "unicode_decimal": 59065
     },
     {
+      "icon_id": "8138416",
+      "name": "模板",
+      "font_class": "TEMPLATE",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
       "icon_id": "9060299",
       "name": "edit",
       "font_class": "edit_small1",
@@ -235,6 +256,13 @@
       "font_class": "nixianggongdan",
       "unicode": "e7d0",
       "unicode_decimal": 59344
+    },
+    {
+      "icon_id": "11544124",
+      "name": "youran",
+      "font_class": "youran",
+      "unicode": "e609",
+      "unicode_decimal": 58889
     }
   ]
 }

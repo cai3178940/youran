@@ -2,15 +2,8 @@
   <el-container class="wrapper">
     <el-header class="header">
       <div class="header-logo-wrapper">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-             viewBox="0 0 32 32" class="header-logo" xml:space="preserve">
-        <g>
-          <path d="M29.3,7.5L16.7,0.2c-0.4-0.3-1-0.3-1.4,0L2.7,7.5C2.2,7.7,2,8.2,2,8.7v14.6c0,0.5,0.3,1,0.7,1.2l12.6,7.3
-            c0.2,0.1,0.5,0.2,0.7,0.2c0.2,0,0.5-0.1,0.7-0.2l12.6-7.3c0.4-0.3,0.7-0.7,0.7-1.2V8.7C30,8.2,29.8,7.7,29.3,7.5z M27.2,22.5L16,29
-            L4.8,22.5v-13L16,3l11.2,6.5V22.5z"/>
-          <path d="M7.1,10.8c-0.4,0.7-0.2,1.5,0.5,1.9l6.9,4v8.7c0,0.8,0.6,1.4,1.4,1.4s1.4-0.6,1.4-1.4v-8.6l6.8-3.8
-            c0.7-0.4,0.9-1.2,0.5-1.9c-0.4-0.7-1.2-0.9-1.9-0.5L16,14.2l-6.9-4C8.4,9.9,7.5,10.1,7.1,10.8z"/>
-        </g>
+        <svg class="icon header-logo" aria-hidden="true">
+          <use xlink:href="#icon-youran"></use>
         </svg>
       </div>
       <div class="header-title">
@@ -34,9 +27,24 @@
       <!-- 左侧导航 -->
       <el-aside class="menu">
         <el-menu :router="true">
-          <el-menu-item index="/" :class="{'is-active': isRoutePath('/')}">首页</el-menu-item>
-          <el-menu-item index="/project" :class="{'is-active': isRouteIndexOf('/project')}">项目管理</el-menu-item>
-          <el-menu-item index="/template" :class="{'is-active': isRouteIndexOf('/template')}">模板管理</el-menu-item>
+          <el-menu-item index="/" :class="{'is-active': isRoutePath('/')}">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-Home"></use>
+            </svg>
+            <span slot="title">首页</span>
+          </el-menu-item>
+          <el-menu-item index="/project" :class="{'is-active': isRouteIndexOf('/project')}">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-project1"></use>
+            </svg>
+            <span slot="title">项目管理</span>
+          </el-menu-item>
+          <el-menu-item index="/template" :class="{'is-active': isRouteIndexOf('/template')}">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-TEMPLATE"></use>
+            </svg>
+            <span slot="title">模板管理</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <!-- 右侧主内容区 -->
@@ -62,6 +70,7 @@
 
 <script>
 import avatar from '@/assets/avatar.jpg'
+import '@/assets/icon/iconfont.js'
 import { apiPath } from '@/components/common'
 import { mapState, mapMutations } from 'vuex'
 
@@ -113,6 +122,7 @@ export default {
   .wrapper {
     height: 100%;
     .header {
+      padding-left: 10px;
       background-color: #409EFF;
       .header-logo-wrapper {
         display: inline-block;
@@ -122,6 +132,8 @@ export default {
         height: 50px;
         .header-logo {
           fill: #FFFFFF;
+          height: 50px;
+          width: 50px;
         }
 
         .header-logo:hover {
@@ -168,6 +180,19 @@ export default {
 
     .menu {
       width:150px!important;
+
+      .el-menu-item {
+        font-size: 16px;
+        font-weight: bold;
+
+        .icon {
+          margin-right: 5px;
+          font-size: 25px;
+          vertical-align: middle;
+        }
+
+      }
+
     }
 
     .content {

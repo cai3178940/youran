@@ -1,5 +1,5 @@
 <template>
-  <div class="fileManage">
+  <div class="fileManage" @contextmenu.prevent="">
     <el-dialog :title="title" :visible.sync="visible" :fullscreen="true">
       <el-header class="codePath">
         <template v-for="(node,index) in paths">
@@ -10,8 +10,8 @@
         </template>
       </el-header>
       <el-container ref="parent" class="codeContainer">
-        <el-aside ref="aside" width="250px" v-loading="codeTreeLoading" class="codeAside">
-          <el-scrollbar style="height:100%">
+        <el-aside @contextmenu.native.prevent="showContextMenu" ref="aside" width="250px" v-loading="codeTreeLoading" class="codeAside">
+          <el-scrollbar  style="height:100%">
             <el-tree :props="treeProps"
                      :data="codeTree.tree"
                      :render-content="renderTreeNode"
@@ -40,6 +40,12 @@
         </el-container>
       </el-container>
     </el-dialog>
+    <vue-simple-context-menu
+      :elementId="'context-menu'"
+      :options="contextMenuOptions"
+      ref="contextMenu"
+      @option-clicked="contextMenuOptionClicked"
+    />
   </div>
 </template>
 
@@ -59,11 +65,18 @@ import 'codemirror/mode/yaml/yaml.js'
 import 'codemirror/mode/properties/properties.js'
 import 'codemirror/mode/sql/sql.js'
 import 'codemirror/mode/markdown/markdown.js'
+/**
+ * 右键菜单组件
+ * https://github.com/johndatserakis/vue-simple-context-menu
+ */
+import VueSimpleContextMenu from 'vue-simple-context-menu'
+import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
 
 export default {
   name: 'template-files',
   components: {
-    'vue-codemirror': codemirror
+    'vue-codemirror': codemirror,
+    'vue-simple-context-menu': VueSimpleContextMenu
   },
   data () {
     return {
@@ -92,10 +105,23 @@ export default {
       fileLoading: false,
       codeTabs: [],
       currentTabName: '',
-      visible: false
+      visible: false,
+      contextMenuOptions: [
+        {
+          name: '新建模板文件'
+        }
+      ]
     }
   },
   methods: {
+    contextMenuOptionClicked ({ item, option }) {
+      console.info(item)
+      console.info(option)
+    },
+    showContextMenu (event, item) {
+      console.info(arguments)
+      this.$refs.contextMenu.showMenu(event, item)
+    },
     initData (templateId, templateName) {
       this.templateId = templateId
       this.title = '模板文件管理: ' + templateName
