@@ -1,6 +1,6 @@
 <template>
   <div class="codePreview">
-    <el-dialog :title="title" :visible.sync="visible" :fullscreen="true">
+    <el-dialog :title="'代码预览: '+projectName" :visible.sync="visible" :fullscreen="true">
       <el-header class="codePath">
         <template v-for="(node,index) in paths">
           <span :key="node.key" style="line-height: 23px;">
@@ -68,7 +68,7 @@ export default {
   data () {
     return {
       projectId: null,
-      title: '',
+      projectName: '',
       treeProps: {
         children: 'children',
         label: 'name'
@@ -98,7 +98,7 @@ export default {
   methods: {
     initData (projectId, projectName) {
       this.projectId = projectId
-      this.title = '代码预览: ' + projectName
+      this.projectName = projectName
       this.codeTree.tree = []
       this.paths = []
       this.codeTabs = []

@@ -1,6 +1,6 @@
 <template>
   <div class="fileManage" @contextmenu.prevent="">
-    <el-dialog :title="title" :visible.sync="visible" :fullscreen="true">
+    <el-dialog :title="'模板文件管理: ' + templateName" :visible.sync="visible" :fullscreen="true">
       <el-header class="codePath">
         <template v-for="(node,index) in paths">
           <span :key="node.key" style="line-height: 23px;">
@@ -17,6 +17,7 @@
                      :render-content="renderTreeNode"
                      :expand-on-click-node="false"
                      @node-expand="expandSingleNode"
+                     @node-contextmenu="showContextMenu"
                      @node-click="nodeClick">
             </el-tree>
           </el-scrollbar>
@@ -92,6 +93,22 @@ import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
 import { initTemplateFileFormBean, getTemplateFileRulesRules } from './model'
 import options from '@/components/options'
 
+const menuOptions1 = [
+  {
+    name: '新建模板文件',
+    value: 'addTemplateFile'
+  }
+]
+const menuOptions2 = [
+  {
+    name: '新建模板文件',
+    value: 'addTemplateFile'
+  },
+  {
+    name: '修改文件属性',
+    value: 'editTemplateFile'
+  }
+]
 export default {
   name: 'template-files',
   components: {
@@ -101,7 +118,7 @@ export default {
   data () {
     return {
       templateId: null,
-      title: '',
+      templateName: '',
       treeProps: {
         children: 'children',
         label: 'name'
@@ -125,12 +142,7 @@ export default {
       paths: [],
       fileLoading: false,
       visible: false,
-      contextMenuOptions: [
-        {
-          name: '新建模板文件',
-          value: 'addTemplateFile'
-        }
-      ],
+      contextMenuOptions: menuOptions1,
       // 是否显示添加模板文件表单
       addTemplateFileFormVisible: false,
       // 添加模板文件表单
@@ -145,14 +157,17 @@ export default {
     contextMenuOptionClicked ({ item, option }) {
       if (option.value === 'addTemplateFile') {
         this.addTemplateFileFormVisible = true
+      } else if (option.value === 'editTemplateFile') {
+        this.addTemplateFileFormVisible = true
       }
     },
     showContextMenu (event, item) {
+      this.contextMenuOptions = item ? menuOptions2 : menuOptions1
       this.$refs.contextMenu.showMenu(event, item)
     },
     initData (templateId, templateName) {
       this.templateId = templateId
-      this.title = '模板文件管理: ' + templateName
+      this.templateName = templateName
       this.codeTree.tree = []
       this.paths = []
     },
