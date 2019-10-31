@@ -23,19 +23,8 @@
         </el-aside>
         <div ref="splitLine" @mousedown="splitLineMousedown" class="splitLine"></div>
         <el-container ref="main">
-          <el-main class="codeMain">
-            <el-tabs v-model="currentTabName" type="border-card" closable @tab-remove="removeTab">
-              <el-tab-pane
-                v-for="tab in codeTabs"
-                :key="tab.name"
-                :label="tab.title"
-                :name="tab.name"
-                v-loading="tab.loading"
-                element-loading-text="加载中..."
-                element-loading-background="#313335">
-                <vue-codemirror v-model="tab.content" :options="cmOptions"></vue-codemirror>
-              </el-tab-pane>
-            </el-tabs>
+          <el-main class="codeMain" v-loading="fileLoading">
+            <vue-codemirror v-model="currentFileContent" :options="cmOptions"></vue-codemirror>
           </el-main>
         </el-container>
       </el-container>
@@ -46,6 +35,33 @@
       ref="contextMenu"
       @option-clicked="contextMenuOptionClicked"
     />
+    <el-dialog title="新建模板文件" :visible.sync="addTemplateFileFormVisible" width="400px">
+      <el-form :model="templateFileForm" size="small">
+        <el-form-item label="文件名：" label-width="100px">
+          <el-input v-model="templateFileForm.fileName" placeholder="例如：xxxx.ftl"></el-input>
+        </el-form-item>
+        <el-form-item label="目录：" label-width="100px">
+          <el-input v-model="templateFileForm.fileDir" placeholder="例如：/aaa/bbb"></el-input>
+        </el-form-item>
+        <el-form-item label="上下文类型：" label-width="100px">
+          <el-radio-group v-model="templateFileForm.contextType">
+            <el-radio v-for="obj in contextType"
+                      :key="obj.value"
+                      :label="obj.value" border>{{obj.label}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="是否抽象文件：" label-width="100px">
+          <el-radio-group v-model="templateFileForm.abstracted">
+            <el-radio border :label="true">是</el-radio>
+            <el-radio border :label="false">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addTemplateFileFormVisible = false">取 消</el-button>
+        <el-button type="success" @click="handleAddTemplateFile">创 建</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -71,6 +87,8 @@ import 'codemirror/mode/markdown/markdown.js'
  */
 import VueSimpleContextMenu from 'vue-simple-context-menu'
 import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
+import { initTemplateFileFormBean } from './model'
+import options from '@/components/options'
 
 export default {
   name: 'template-files',
@@ -101,16 +119,21 @@ export default {
       },
       codeTreeLoading: false,
       currentNode: null,
+      currentFileContent: '',
       paths: [],
       fileLoading: false,
-      codeTabs: [],
-      currentTabName: '',
       visible: false,
       contextMenuOptions: [
         {
           name: '新建模板文件'
         }
-      ]
+      ],
+      // 是否显示添加模板文件表单
+      addTemplateFileFormVisible: false,
+      // 添加模板文件表单
+      templateFileForm: initTemplateFileFormBean(),
+      // 上下文类型
+      contextType: options.contextType
     }
   },
   methods: {
@@ -127,7 +150,6 @@ export default {
       this.title = '模板文件管理: ' + templateName
       this.codeTree.tree = []
       this.paths = []
-      this.codeTabs = []
     },
     show (templateId, templateName) {
       this.visible = true
@@ -204,21 +226,23 @@ export default {
       if (data.dir) {
         return
       }
-      const oldTab = this.codeTabs.find(tab => tab.name === data.path)
-      if (oldTab) {
-        this.currentTabName = oldTab.name
-        return
-      }
       this.parsePath(data.path)
-      const tab = this.addTab(data)
-      this.$ajax.get(`/${apiPath}/code_template/${this.codeTree.templateId}/file_content?fileId=${data.info.fileId}`, { responseType: 'text' })
+      this.fileLoading = true
+      this.$ajax.get(`/${apiPath}/template_file/${data.info.fileId}`)
         .then(response => this.$common.checkResult(response))
-        .then(fileData => {
+        .then(file => {
+          data.fileId = file.fileId
+          data.fileName = file.fileName
+          data.fileDir = file.fileDir
+          data.templateId = file.templateId
+          data.contextType = file.contextType
+          data.abstracted = file.abstracted
+          data.version = file.version
           this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
-          tab.content = fileData
+          this.currentFileContent = data.content
         })
         .catch(error => this.$common.showNotifyError(error))
-        .finally(() => { tab.loading = false })
+        .finally(() => { this.fileLoading = false })
     },
     /**
      * 展开所有单节点下级
@@ -233,29 +257,21 @@ export default {
       }
       recursiveExpand(node)
     },
-    addTab (nodeData) {
-      const tab = {
-        name: nodeData.path,
-        title: nodeData.name,
-        loading: true,
-        content: '\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
-      }
-      this.codeTabs.push(tab)
-      this.currentTabName = nodeData.path
-      return tab
-    },
-    removeTab (tabName) {
-      if (this.currentTabName === tabName) {
-        this.codeTabs.forEach((tab, index) => {
-          if (tab.name === tabName) {
-            let nextTab = this.codeTabs[index + 1] || this.codeTabs[index - 1]
-            if (nextTab) {
-              this.currentTabName = nextTab.name
-            }
-          }
+    handleAddTemplateFile () {
+      // 校验表单
+      this.$refs.templateForm.validate()
+        // 提交表单
+        .then(() => {
+          return this.$ajax.post(`/${apiPath}/code_template`, this.templateFileForm)
         })
-      }
-      this.codeTabs = this.codeTabs.filter(tab => tab.name !== tabName)
+        // 校验返回结果
+        .then(response => this.$common.checkResult(response))
+        // 执行页面跳转
+        .then(() => {
+          this.$common.showMsg('success', '操作成功')
+          this.goBack(false)
+        })
+        .catch(error => this.$common.showNotifyError(error))
     }
   }
 }

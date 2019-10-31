@@ -25,6 +25,12 @@ header {
     box-sizing: border-box;
 }
 
+/**
+ * 覆盖默认字体
+ */
+input, textarea, select, button {
+    font-family: Arial;
+}
 
 .container {
     padding-top: 80px;
@@ -74,24 +80,13 @@ header {
     color: $color-warning;
 }
 
-
-.el-table {
-    th {
-        background: aliceblue;
-    }
-}
 /**
  * 表格中的图标
  */
 .table-cell-icon {
     vertical-align: middle;
 }
-/**
- * 覆盖默认字体
- */
-input, textarea, select, button {
-    font-family: Arial;
-}
+
 
 /**
  * 多彩图标

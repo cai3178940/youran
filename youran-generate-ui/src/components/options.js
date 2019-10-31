@@ -336,6 +336,23 @@ export default {
     // {
     //   constName: 'BoolConst'
     // }
+  ],
+  /**
+   * 模板文件上下文类型
+   */
+  contextType: [
+    {
+      value: 1,
+      label: '全局'
+    },
+    {
+      value: 2,
+      label: '实体'
+    },
+    {
+      value: 3,
+      label: '枚举'
+    }
   ]
 
 }

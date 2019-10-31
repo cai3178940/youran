@@ -70,7 +70,6 @@
 
 <script>
 import avatar from '@/assets/avatar.jpg'
-import '@/assets/icon/iconfont.js'
 import { apiPath } from '@/components/common'
 import { mapState, mapMutations } from 'vuex'
 

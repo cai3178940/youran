@@ -16,5 +16,7 @@ public abstract class AbstractExample {
     public static final String E_OPERATEDTIME = "2017-05-22 00:00:00";
     public static final String N_OPERATEDBY = "操作人";
     public static final String E_OPERATEDBY = "admin";
+    public static final String N_VERSION = "乐观锁版本号";
+    public static final String E_VERSION = "1";
 
 }

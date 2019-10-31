@@ -5,6 +5,7 @@ import com.youran.generate.constant.ContextType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import static com.youran.common.pojo.example.AbstractExample.E_VERSION;
 import static com.youran.generate.pojo.example.TemplateFileExample.*;
 
 /**
@@ -33,6 +34,9 @@ public class TemplateFileListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_ABSTRACTED,example = E_ABSTRACTED)
     private Boolean abstracted;
+
+    @ApiModelProperty(notes = N_VERSION,example = E_VERSION)
+    private Integer version;
 
 
     public Integer getFileId() {
@@ -83,7 +87,12 @@ public class TemplateFileListVO extends AbstractVO {
         this.abstracted = abstracted;
     }
 
+    public Integer getVersion() {
+        return version;
+    }
 
-
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 }
 

@@ -1,3 +1,5 @@
+import options from '@/components/options'
+
 export function initFormBean (forEdit) {
   const formBean = {
     name: '',
@@ -45,4 +47,23 @@ export function getRules () {
       { max: 256, message: '长度不能超过256个字符', trigger: 'blur' }
     ]
   }
+}
+
+export function initTemplateFileFormBean (forEdit) {
+  const formBean = {
+    // 文件名
+    fileName: '',
+    // 文件目录
+    fileDir: '',
+    // 上下文类型
+    contextType: options.contextType[0].value,
+    // 是否抽象文件
+    abstracted: false,
+    // 文件内容
+    content: ''
+  }
+  if (forEdit) {
+    formBean['fileId'] = null
+  }
+  return formBean
 }
