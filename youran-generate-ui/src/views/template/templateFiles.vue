@@ -35,22 +35,24 @@
       ref="contextMenu"
       @option-clicked="contextMenuOptionClicked"
     />
-    <el-dialog title="新建模板文件" :visible.sync="addTemplateFileFormVisible" width="400px">
-      <el-form :model="templateFileForm" size="small">
-        <el-form-item label="文件名：" label-width="100px">
-          <el-input v-model="templateFileForm.fileName" placeholder="例如：xxxx.ftl"></el-input>
+    <el-dialog title="新建模板文件" :visible.sync="addTemplateFileFormVisible" width="550px">
+      <el-form ref="addTemplateFileForm" :rules="templateFileRules" class="addTemplateForm" :model="templateFileForm" size="small">
+        <el-form-item prop="fileName" label="文件名：" label-width="120px">
+          <el-input style="width:300px;" v-model="templateFileForm.fileName"
+                    placeholder="例如：xxxx.ftl"></el-input>
         </el-form-item>
-        <el-form-item label="目录：" label-width="100px">
-          <el-input v-model="templateFileForm.fileDir" placeholder="例如：/aaa/bbb"></el-input>
+        <el-form-item prop="fileDir" label="目录：" label-width="120px">
+          <el-input style="width:300px;" v-model="templateFileForm.fileDir"
+                    placeholder="例如：/aaa/bbb"></el-input>
         </el-form-item>
-        <el-form-item label="上下文类型：" label-width="100px">
+        <el-form-item label="上下文类型：" label-width="120px">
           <el-radio-group v-model="templateFileForm.contextType">
             <el-radio v-for="obj in contextType"
                       :key="obj.value"
                       :label="obj.value" border>{{obj.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="是否抽象文件：" label-width="100px">
+        <el-form-item label="是否抽象文件：" label-width="120px">
           <el-radio-group v-model="templateFileForm.abstracted">
             <el-radio border :label="true">是</el-radio>
             <el-radio border :label="false">否</el-radio>
@@ -87,7 +89,7 @@ import 'codemirror/mode/markdown/markdown.js'
  */
 import VueSimpleContextMenu from 'vue-simple-context-menu'
 import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
-import { initTemplateFileFormBean } from './model'
+import { initTemplateFileFormBean, getTemplateFileRulesRules } from './model'
 import options from '@/components/options'
 
 export default {
@@ -125,7 +127,8 @@ export default {
       visible: false,
       contextMenuOptions: [
         {
-          name: '新建模板文件'
+          name: '新建模板文件',
+          value: 'addTemplateFile'
         }
       ],
       // 是否显示添加模板文件表单
@@ -133,16 +136,18 @@ export default {
       // 添加模板文件表单
       templateFileForm: initTemplateFileFormBean(),
       // 上下文类型
-      contextType: options.contextType
+      contextType: options.contextType,
+      // 模板文件校验规则
+      templateFileRules: getTemplateFileRulesRules()
     }
   },
   methods: {
     contextMenuOptionClicked ({ item, option }) {
-      console.info(item)
-      console.info(option)
+      if (option.value === 'addTemplateFile') {
+        this.addTemplateFileFormVisible = true
+      }
     },
     showContextMenu (event, item) {
-      console.info(arguments)
       this.$refs.contextMenu.showMenu(event, item)
     },
     initData (templateId, templateName) {
@@ -226,7 +231,7 @@ export default {
       if (data.dir) {
         return
       }
-      this.parsePath(data.path)
+      this.parsePath(data)
       this.fileLoading = true
       this.$ajax.get(`/${apiPath}/template_file/${data.info.fileId}`)
         .then(response => this.$common.checkResult(response))
@@ -239,7 +244,7 @@ export default {
           data.abstracted = file.abstracted
           data.version = file.version
           this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
-          this.currentFileContent = data.content
+          this.currentFileContent = file.content
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.fileLoading = false })
@@ -258,19 +263,16 @@ export default {
       recursiveExpand(node)
     },
     handleAddTemplateFile () {
-      // 校验表单
-      this.$refs.templateForm.validate()
-        // 提交表单
+      this.$refs.addTemplateFileForm.validate()
         .then(() => {
-          return this.$ajax.post(`/${apiPath}/code_template`, this.templateFileForm)
+          return this.$ajax.post(`/${apiPath}/template_file`,
+            Object.assign({}, this.templateFileForm, { templateId: this.templateId }))
         })
-        // 校验返回结果
         .then(response => this.$common.checkResult(response))
-        // 执行页面跳转
         .then(() => {
-          this.$common.showMsg('success', '操作成功')
-          this.goBack(false)
+          this.addTemplateFileFormVisible = false
         })
+        .then(() => this.queryCodeTree(this.templateId))
         .catch(error => this.$common.showNotifyError(error))
     }
   }
@@ -282,5 +284,12 @@ export default {
 
   .fileManage {
     @include coding-panel;
+
+    .addTemplateForm {
+      padding: 20px 20px;
+    }
+
+    .el-dialog {
+    }
   }
 </style>

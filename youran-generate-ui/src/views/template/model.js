@@ -67,3 +67,16 @@ export function initTemplateFileFormBean (forEdit) {
   }
   return formBean
 }
+
+export function getTemplateFileRulesRules () {
+  return {
+    fileName: [
+      { required: true, message: '请输入文件名', trigger: 'blur' },
+      { max: 100, message: '长度不能超过100个字符', trigger: 'blur' }
+    ],
+    fileDir: [
+      { required: true, message: '请输入文件目录', trigger: 'blur' },
+      { max: 300, message: '长度不能超过300个字符', trigger: 'blur' }
+    ]
+  }
+}
