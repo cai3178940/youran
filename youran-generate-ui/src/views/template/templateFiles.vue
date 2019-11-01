@@ -25,7 +25,9 @@
         <div ref="splitLine" @mousedown="splitLineMousedown" class="splitLine"></div>
         <el-container ref="main">
           <el-main class="codeMain" v-loading="fileLoading">
-            <vue-codemirror v-model="currentFile.content" :options="cmOptions"></vue-codemirror>
+            <vue-codemirror v-model="currentFile.content"
+                            :options="cmOptions"
+                            @input="fileContentChange"></vue-codemirror>
           </el-main>
         </el-container>
       </el-container>
@@ -46,17 +48,18 @@
           <el-input style="width:300px;" v-model="templateFileForm.fileDir"
                     placeholder="例如：/aaa/bbb"></el-input>
         </el-form-item>
-        <el-form-item label="上下文类型：" label-width="120px">
-          <el-radio-group v-model="templateFileForm.contextType">
-            <el-radio v-for="obj in contextType"
-                      :key="obj.value"
-                      :label="obj.value" border>{{obj.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
         <el-form-item label="是否抽象文件：" label-width="120px">
           <el-radio-group v-model="templateFileForm.abstracted">
             <el-radio border :label="true">是</el-radio>
             <el-radio border :label="false">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item v-if="!templateFileForm.abstracted"
+                      label="上下文类型：" label-width="120px">
+          <el-radio-group v-model="templateFileForm.contextType">
+            <el-radio v-for="obj in contextType"
+                      :key="obj.value"
+                      :label="obj.value" border>{{obj.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -93,6 +96,10 @@ import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
 import { initTemplateFileFormBean, getTemplateFileRulesRules } from './model'
 import options from '@/components/options'
 
+// 如果文件保存中，则等待多久以后再提交
+const savingWaitTime = 2000
+// 文件变更以后，等待多久以后再提交
+const changWaitTime = 8000
 const menuOptions1 = [
   {
     name: '新建模板文件',
@@ -109,6 +116,14 @@ const menuOptions2 = [
     value: 'editTemplateFile'
   }
 ]
+
+/**
+ * 打印日志函数
+ */
+function log (value) {
+  // console.info(v)
+}
+
 export default {
   name: 'template-files',
   components: {
@@ -130,17 +145,28 @@ export default {
         tree: []
       },
       cmOptions: {
-        readOnly: true,
-        mode: 'text/x-java',
+        mode: FileTypeUtil.getCmMode('ftl'),
         theme: 'base16-dark',
         lineNumbers: true,
         line: true
       },
       codeTreeLoading: false,
       currentNode: null,
+      // 文件加载后跳过chang事件
+      loadedSkipChange: false,
+      // 当前正在进行文本编辑的文件
       currentFile: initTemplateFileFormBean(),
+      // 文件是否有改动
+      currentFileChange: false,
+      // 文件是否保存中
+      currentFileSaving: false,
+      // 定时保存文件的延迟任务id
+      currentFileSavingTaskId: null,
+      // 文件保存的promise
+      currentFileSavingPromise: null,
       paths: [],
       fileLoading: false,
+      // 当前模板文件编辑窗口是否可见
       visible: false,
       contextMenuOptions: menuOptions1,
       // 是否显示添加模板文件表单
@@ -156,20 +182,42 @@ export default {
     }
   },
   methods: {
+    /**
+     * item: 文件节点信息
+     * option: 菜单项
+     */
     contextMenuOptionClicked ({ item, option }) {
       if (option.value === 'addTemplateFile') {
         this.templateFileFormVisible = true
         this.editTemplateFile = false
         this.templateFileForm = initTemplateFileFormBean()
+        if (item) {
+          // 如果在目录上右击新建，则自动填充该目录
+          if (item.dir) {
+            this.templateFileForm.fileDir = item.path
+          } else {
+            // 如果在文件上右击新建，则自动填充文件所在目录
+            this.templateFileForm.fileDir = item.info.fileDir
+          }
+        }
       } else if (option.value === 'editTemplateFile') {
         this.templateFileFormVisible = true
         this.editTemplateFile = true
         this.templateFileForm = initTemplateFileFormBean(true)
-        // TODO 加载远程数据
+        // 加载远程数据
+        this.queryFileInfo(item.info.fileId, file => {
+          for (const key in initTemplateFileFormBean(true)) {
+            this.templateFileForm[key] = file[key]
+          }
+        })
       }
     },
+    /**
+     * event: 右击事件
+     * item: 文件节点信息
+     */
     showContextMenu (event, item) {
-      this.contextMenuOptions = item ? menuOptions2 : menuOptions1
+      this.contextMenuOptions = item && !item.dir ? menuOptions2 : menuOptions1
       this.$refs.contextMenu.showMenu(event, item)
     },
     initData (templateId, templateName) {
@@ -245,24 +293,34 @@ export default {
         this.paths.push(item)
       }
     },
+    queryFileInfo (fileId, callback) {
+      this.fileLoading = true
+      return this.$ajax.get(`/${apiPath}/template_file/${fileId}`)
+        .then(response => this.$common.checkResult(response))
+        .then(file => callback(file))
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.fileLoading = false })
+    },
     nodeClick (data, node) {
       if (this.currentNode === data) {
         return
       }
-      this.currentNode = data
       if (data.dir) {
+        log.info(this)
         return
       }
+      this.forceSaveCurrentTemplateFileContent(() => {
+        this.showNodeFile(data)
+      })
+    },
+    showNodeFile (data) {
+      this.currentNode = data
       this.parsePath(data)
-      this.fileLoading = true
-      this.$ajax.get(`/${apiPath}/template_file/${data.info.fileId}`)
-        .then(response => this.$common.checkResult(response))
-        .then(file => {
-          this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
-          this.currentFile = file
-        })
-        .catch(error => this.$common.showNotifyError(error))
-        .finally(() => { this.fileLoading = false })
+      this.queryFileInfo(data.info.fileId, file => {
+        this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
+        this.loadedSkipChange = true
+        this.currentFile = file
+      })
     },
     /**
      * 展开所有单节点下级
@@ -294,6 +352,102 @@ export default {
         })
         .then(() => this.queryCodeTree(this.templateId))
         .catch(error => this.$common.showNotifyError(error))
+    },
+    /**
+     * 文件内容变更
+     */
+    fileContentChange () {
+      if (this.loadedSkipChange) {
+        log.info('跳过首次加载变更事件')
+        this.loadedSkipChange = false
+        return
+      }
+      log.info('内容变更')
+      if (!this.currentFileChange) {
+        this.currentFileChange = true
+        this.currentFileSavingTaskId = setTimeout(() => {
+          this.currentFileSavingTaskId = null
+          this.saveCurrentTemplateFileContent()
+        }, changWaitTime)
+        log.info(changWaitTime / 1000 + '秒之后再尝试保存,taskId=' + this.currentFileSavingTaskId)
+      }
+    },
+    /**
+     * 保存当前模板文件内容
+     */
+    saveCurrentTemplateFileContent () {
+      // 如果文件无改动，则不处理
+      if (!this.currentFileChange) {
+        log.info('尝试保存，文件无变化')
+        return
+      }
+      // 如果文件正在异步保存中，则等待几秒再试
+      if (this.currentFileSavingPromise) {
+        this.currentFileSavingTaskId = setTimeout(() => {
+          this.currentFileSavingTaskId = null
+          this.saveCurrentTemplateFileContent()
+        }, savingWaitTime)
+        log.info(savingWaitTime / 1000 + '秒之后再尝试保存,taskId=' + this.currentFileSavingTaskId)
+        return
+      }
+      this.currentFileChange = false
+      this.currentFileSavingPromise = this.doSaveTemplateFileContent(this.currentFile.fileId,
+        this.currentFile.version, this.currentFile.content)
+    },
+    /**
+     * 执行保存动作
+     * @param fileId 文件id
+     * @param version 乐观锁版本号
+     * @param content 文件内容
+     */
+    doSaveTemplateFileContent (fileId, version, content) {
+      log.info('执行保存')
+      return this.$ajax.put(`/${apiPath}/template_file/${fileId}/content`,
+        Object.assign({}, { version: version, content: content }))
+        .then(response => this.$common.checkResult(response))
+        .then(version => {
+          // 保存成功以后把最新乐观锁版本号写回当前文件
+          this.currentFile.version = version
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          // 保存完成以后，清除promise
+          this.currentFileSavingPromise = null
+          log.info('保存成功')
+        })
+    },
+    /**
+     * 强制保存当前文件内容
+     * @param callback 回调操作
+     */
+    forceSaveCurrentTemplateFileContent (callback) {
+      log.info('force保存')
+      // 如果文件无改动，则不处理
+      if (!this.currentFileChange) {
+        callback()
+        return
+      }
+      // 定义一个立即保存文件内容的函数
+      const saveFunction = () => {
+        // 先结束延迟任务
+        if (this.currentFileSavingTaskId) {
+          log.info('清理task:' + this.currentFileSavingTaskId)
+          clearTimeout(this.currentFileSavingTaskId)
+        }
+        this.currentFileChange = false
+        return this.doSaveTemplateFileContent(this.currentFile.fileId,
+          this.currentFile.version, this.currentFile.content)
+          .then(() => {
+            callback()
+          })
+      }
+      // 如果当前正在保存中，则在保存完成后执行立即保存
+      if (this.currentFileSavingPromise) {
+        this.currentFileSavingPromise.then(() => saveFunction())
+      } else {
+        // 如果当前并没有正在执行保存，则立即保存
+        saveFunction()
+      }
     }
   }
 }

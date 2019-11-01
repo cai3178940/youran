@@ -6,6 +6,7 @@ import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.CodeTemplateDAO;
 import com.youran.generate.dao.TemplateFileDAO;
 import com.youran.generate.pojo.dto.TemplateFileAddDTO;
+import com.youran.generate.pojo.dto.TemplateFileContentUpdateDTO;
 import com.youran.generate.pojo.dto.TemplateFileUpdateDTO;
 import com.youran.generate.pojo.mapper.TemplateFileMapper;
 import com.youran.generate.pojo.po.TemplateFilePO;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>Title: 【模板文件】删改查服务</p>
@@ -45,6 +47,8 @@ public class TemplateFileService {
         if(templateFile.getTemplateId() != null){
             Assert.isTrue(codeTemplateDAO.exist(templateFile.getTemplateId()),"模板id有误");
         }
+        // 初始化文件内容为空
+        templateFile.setContent("");
         templateFileDAO.save(templateFile);
         return templateFile;
     }
@@ -66,6 +70,20 @@ public class TemplateFileService {
         templateFileDAO.update(templateFile);
         return templateFile;
     }
+
+    @Transactional(rollbackFor = RuntimeException.class)
+    @OptimisticLock
+    public TemplateFilePO updateContent(TemplateFileContentUpdateDTO dto){
+        Integer fileId = dto.getFileId();
+        TemplateFilePO templateFile = this.getTemplateFile(fileId, true);
+        if(!Objects.equals(templateFile.getVersion(), dto.getVersion())){
+            throw new BusinessException(ErrorCode.CONFLICT,"文件内容更新冲突");
+        }
+        templateFile.setContent(dto.getContent());
+        templateFileDAO.update(templateFile);
+        return templateFile;
+    }
+
     /**
      * 查询列表
      * @param templateFileQO

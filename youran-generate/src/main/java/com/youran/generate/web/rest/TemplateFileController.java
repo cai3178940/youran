@@ -4,6 +4,7 @@ import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.TemplateFileAddDTO;
+import com.youran.generate.pojo.dto.TemplateFileContentUpdateDTO;
 import com.youran.generate.pojo.dto.TemplateFileUpdateDTO;
 import com.youran.generate.pojo.mapper.TemplateFileMapper;
 import com.youran.generate.pojo.po.TemplateFilePO;
@@ -50,6 +51,15 @@ public class TemplateFileController extends AbstractController implements Templa
     public ResponseEntity<TemplateFileShowVO> update(@Valid @RequestBody TemplateFileUpdateDTO templateFileUpdateDTO) {
         TemplateFilePO templateFile = templateFileService.update(templateFileUpdateDTO);
         return ResponseEntity.ok(TemplateFileMapper.INSTANCE.toShowVO(templateFile));
+    }
+
+    @Override
+    @PutMapping(value = "/{fileId}/content")
+    public ResponseEntity<Integer> updateContent(@PathVariable Integer fileId,
+                                                 @Valid @RequestBody TemplateFileContentUpdateDTO dto) {
+        dto.setFileId(fileId);
+        TemplateFilePO templateFile = templateFileService.updateContent(dto);
+        return ResponseEntity.ok(templateFile.getVersion());
     }
 
     @Override

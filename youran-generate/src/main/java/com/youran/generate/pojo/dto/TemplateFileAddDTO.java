@@ -43,10 +43,6 @@ public class TemplateFileAddDTO extends AbstractDTO {
     @NotNull
     private Boolean abstracted;
 
-    @ApiModelProperty(notes = N_CONTENT, example = E_CONTENT)
-    private String content;
-
-
     public String getFileName() {
         return this.fileName;
     }
@@ -85,14 +81,6 @@ public class TemplateFileAddDTO extends AbstractDTO {
 
     public void setAbstracted(Boolean abstracted) {
         this.abstracted = abstracted;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
 }

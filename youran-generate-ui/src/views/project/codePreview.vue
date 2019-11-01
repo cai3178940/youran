@@ -81,7 +81,7 @@ export default {
       },
       cmOptions: {
         readOnly: true,
-        mode: 'text/x-java',
+        mode: FileTypeUtil.getCmMode('java'),
         theme: 'base16-dark',
         lineNumbers: true,
         line: true

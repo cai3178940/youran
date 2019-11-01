@@ -1,6 +1,7 @@
 package com.youran.generate.web.api;
 
 import com.youran.generate.pojo.dto.TemplateFileAddDTO;
+import com.youran.generate.pojo.dto.TemplateFileContentUpdateDTO;
 import com.youran.generate.pojo.dto.TemplateFileUpdateDTO;
 import com.youran.generate.pojo.qo.TemplateFileQO;
 import com.youran.generate.pojo.vo.TemplateFileListVO;
@@ -39,6 +40,17 @@ public interface TemplateFileAPI {
         @ApiImplicitParam(name = "templateFileUpdateDTO", dataType = "TemplateFileUpdateDTO", value = "修改【模板文件】参数", paramType = "body"),
     })
     ResponseEntity<TemplateFileShowVO> update(TemplateFileUpdateDTO templateFileUpdateDTO);
+
+    /**
+     * 修改【模板文件内容】
+     */
+    @ApiOperation(value="修改【模板文件内容】")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "fileId", dataType = "int", value = "【模板文件】id", paramType = "path"),
+        @ApiImplicitParam(name = "dto", dataType = "TemplateFileContentUpdateDTO", value = "修改【模板文件内容】参数", paramType = "body"),
+    })
+    ResponseEntity<Integer> updateContent(Integer fileId,
+                                          TemplateFileContentUpdateDTO dto);
 
     /**
      * 列表查询【模板文件】
