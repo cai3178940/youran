@@ -25,7 +25,7 @@
         <div ref="splitLine" @mousedown="splitLineMousedown" class="splitLine"></div>
         <el-container ref="main">
           <el-main class="codeMain" v-loading="fileLoading">
-            <vue-codemirror v-model="currentFileContent" :options="cmOptions"></vue-codemirror>
+            <vue-codemirror v-model="currentFile.content" :options="cmOptions"></vue-codemirror>
           </el-main>
         </el-container>
       </el-container>
@@ -36,8 +36,8 @@
       ref="contextMenu"
       @option-clicked="contextMenuOptionClicked"
     />
-    <el-dialog title="新建模板文件" :visible.sync="addTemplateFileFormVisible" width="550px">
-      <el-form ref="addTemplateFileForm" :rules="templateFileRules" class="addTemplateForm" :model="templateFileForm" size="small">
+    <el-dialog :title="editTemplateFile?'修改文件属性':'新建模板文件'" :visible.sync="templateFileFormVisible" width="550px">
+      <el-form ref="templateFileForm" :rules="templateFileRules" class="addTemplateForm" :model="templateFileForm" size="small">
         <el-form-item prop="fileName" label="文件名：" label-width="120px">
           <el-input style="width:300px;" v-model="templateFileForm.fileName"
                     placeholder="例如：xxxx.ftl"></el-input>
@@ -61,8 +61,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="addTemplateFileFormVisible = false">取 消</el-button>
-        <el-button type="success" @click="handleAddTemplateFile">创 建</el-button>
+        <el-button @click="templateFileFormVisible = false">取 消</el-button>
+        <el-button type="success" @click="handleSaveTemplateFile">{{editTemplateFile?'确 认':'新 建'}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -138,13 +138,15 @@ export default {
       },
       codeTreeLoading: false,
       currentNode: null,
-      currentFileContent: '',
+      currentFile: initTemplateFileFormBean(),
       paths: [],
       fileLoading: false,
       visible: false,
       contextMenuOptions: menuOptions1,
       // 是否显示添加模板文件表单
-      addTemplateFileFormVisible: false,
+      templateFileFormVisible: false,
+      // 是否修改文件属性
+      editTemplateFile: false,
       // 添加模板文件表单
       templateFileForm: initTemplateFileFormBean(),
       // 上下文类型
@@ -156,9 +158,14 @@ export default {
   methods: {
     contextMenuOptionClicked ({ item, option }) {
       if (option.value === 'addTemplateFile') {
-        this.addTemplateFileFormVisible = true
+        this.templateFileFormVisible = true
+        this.editTemplateFile = false
+        this.templateFileForm = initTemplateFileFormBean()
       } else if (option.value === 'editTemplateFile') {
-        this.addTemplateFileFormVisible = true
+        this.templateFileFormVisible = true
+        this.editTemplateFile = true
+        this.templateFileForm = initTemplateFileFormBean(true)
+        // TODO 加载远程数据
       }
     },
     showContextMenu (event, item) {
@@ -251,15 +258,8 @@ export default {
       this.$ajax.get(`/${apiPath}/template_file/${data.info.fileId}`)
         .then(response => this.$common.checkResult(response))
         .then(file => {
-          data.fileId = file.fileId
-          data.fileName = file.fileName
-          data.fileDir = file.fileDir
-          data.templateId = file.templateId
-          data.contextType = file.contextType
-          data.abstracted = file.abstracted
-          data.version = file.version
           this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
-          this.currentFileContent = file.content
+          this.currentFile = file
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.fileLoading = false })
@@ -277,15 +277,20 @@ export default {
       }
       recursiveExpand(node)
     },
-    handleAddTemplateFile () {
-      this.$refs.addTemplateFileForm.validate()
+    handleSaveTemplateFile () {
+      this.$refs.templateFileForm.validate()
         .then(() => {
-          return this.$ajax.post(`/${apiPath}/template_file`,
-            Object.assign({}, this.templateFileForm, { templateId: this.templateId }))
+          if (this.editTemplateFile) {
+            return this.$ajax.put(`/${apiPath}/template_file`,
+              Object.assign({}, this.templateFileForm, { templateId: this.templateId }))
+          } else {
+            return this.$ajax.post(`/${apiPath}/template_file`,
+              Object.assign({}, this.templateFileForm, { templateId: this.templateId }))
+          }
         })
         .then(response => this.$common.checkResult(response))
         .then(() => {
-          this.addTemplateFileFormVisible = false
+          this.templateFileFormVisible = false
         })
         .then(() => this.queryCodeTree(this.templateId))
         .catch(error => this.$common.showNotifyError(error))
