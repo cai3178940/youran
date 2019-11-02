@@ -237,6 +237,7 @@ export default {
 
 <style lang="scss">
   @import '../../assets/common.scss';
+  @import '../../assets/coding-panel.scss';
 
   .codePreview {
     @include coding-panel;

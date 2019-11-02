@@ -8,11 +8,16 @@
             <span><i :class="node.icon"></i> {{node.name}}</span>
           </span>
         </template>
-        <span v-if="currentFileStatus.visible"
-              :class="currentFileStatus.class"
-              class="file-status-cell">
-          {{currentFileStatus.text}}
-        </span>
+        <template v-if="currentFileStatus.visible">
+          <span :class="currentFileStatus.class"
+                class="file-status-cell">
+            {{currentFileStatus.text}}
+          </span>
+          <el-button v-if="currentFileStatus.saveButton"
+                     @click="forceSaveCurrentTemplateFileContent"
+                     type="text" style="padding: 0 5px;"
+                     size="mini">点击保存</el-button>
+        </template>
       </el-header>
       <el-container ref="parent" class="codeContainer">
         <el-aside @contextmenu.native.prevent="showContextMenu" ref="aside" width="250px" class="codeAside">
@@ -209,7 +214,8 @@ export default {
         return {
           visible: true,
           class: 'color-primary',
-          text: '保存中'
+          text: '保存中',
+          saveButton: false
         }
       }
       // 未保存
@@ -217,7 +223,8 @@ export default {
         return {
           visible: true,
           class: 'color-warning',
-          text: '未保存'
+          text: '未保存',
+          saveButton: true
         }
       }
       // 已保存
@@ -225,13 +232,16 @@ export default {
         return {
           visible: true,
           class: 'color-success',
-          text: '已保存'
+          text: '已保存',
+          saveButton: false
         }
       }
+      // 默认值
       return {
         visible: false,
         class: '',
-        text: ''
+        text: '',
+        saveButton: false
       }
     }
   },
@@ -541,6 +551,7 @@ export default {
 
 <style lang="scss">
   @import '../../assets/common.scss';
+  @import '../../assets/coding-panel.scss';
 
   .fileManage {
     @include coding-panel;
