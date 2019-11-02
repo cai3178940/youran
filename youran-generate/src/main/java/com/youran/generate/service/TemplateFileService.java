@@ -84,7 +84,7 @@ public class TemplateFileService {
         }
         templateFile.setFileDir(this.normalizeTemplateFileDir(templateFile.getFileDir()));
         // 唯一性校验
-        this.checkUnique(templateFile,false);
+        this.checkUnique(templateFile,true);
         templateFileDAO.update(templateFile);
         return templateFile;
     }

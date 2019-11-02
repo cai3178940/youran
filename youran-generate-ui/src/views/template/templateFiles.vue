@@ -344,7 +344,24 @@ export default {
      * 渲染树节点
      */
     renderTreeNode (h, { node, data, store }) {
-      const icon = data.dir ? FileTypeUtil.getIcon('folder') : FileTypeUtil.getIcon(data.type)
+      let icon
+      if (data.dir) {
+        icon = [...FileTypeUtil.getIcon('folder')]
+      } else {
+        icon = [...FileTypeUtil.getIcon(data.type)]
+        if (data.info.abstracted) {
+          // 抽象文件-红色图标
+          icon.push('color-danger')
+        } else {
+          if (data.info.contextType === 2) {
+            // 实体上下文-蓝色图标
+            icon.push('color-primary')
+          } else if (data.info.contextType === 3) {
+            // 枚举上下文-黄色图标
+            icon.push('color-warning')
+          }
+        }
+      }
       return h('span', [
         h('i', { class: icon }),
         h('span', '     '),
