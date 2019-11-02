@@ -1,6 +1,8 @@
 <template>
   <div class="fileManage" @contextmenu.prevent="">
-    <el-dialog :title="'模板文件管理: ' + templateName" :visible.sync="visible" :fullscreen="true">
+    <el-dialog :title="'模板文件管理: ' + templateName"
+               @close="forceSaveCurrentTemplateFileContent"
+               :visible.sync="visible" :fullscreen="true">
       <el-header class="codePath">
         <template v-for="(node,index) in paths">
           <span :key="node.key" class="codePathCell">
@@ -143,7 +145,63 @@ const menuOptions2 = [
  * 打印日志函数
  */
 function log (value) {
-  // console.info(v)
+  //console.info(value)
+}
+
+/**
+ * 初始化数据
+ */
+function initData () {
+  return JSON.parse(JSON.stringify({
+    templateId: null,
+    templateName: '',
+    treeProps: {
+      children: 'children',
+      label: 'name'
+    },
+    // 后端返回的代码目录数据
+    codeTree: {
+      templateId: null,
+      templateVersion: null,
+      tree: []
+    },
+    // 默认展开的节点
+    fileExpandedDirs: [],
+    cmOptions: {
+      mode: FileTypeUtil.getCmMode('ftl'),
+      theme: 'base16-dark',
+      lineNumbers: true,
+      line: true
+    },
+    currentNode: null,
+    // 文件加载后跳过chang事件
+    loadedSkipChange: true,
+    // 当前正在进行文本编辑的文件
+    currentFile: initTemplateFileFormBean(),
+    // 当前文件内容是否变更过
+    currentFileChange: false,
+    // 文件是否需要保存
+    currentFileNeedSave: false,
+    // 定时保存文件的延迟任务id
+    currentFileSavingTaskId: null,
+    // 文件保存的promise
+    currentFileSavingPromise: null,
+    paths: [],
+    fileLoading: false,
+    // 当前模板文件编辑窗口是否可见
+    visible: false,
+    contextMenuOptions: menuOptions1,
+    // 是否显示添加模板文件表单
+    templateFileFormVisible: false,
+    // 是否修改文件属性
+    editTemplateFile: false,
+    // 添加模板文件表单
+    templateFileForm: initTemplateFileFormBean(),
+    // 上下文类型
+    contextType: options.contextType,
+    // 模板文件校验规则
+    templateFileRules: getTemplateFileRulesRules()
+  }))
 }
 
 export default {
@@ -153,56 +211,7 @@ export default {
     'vue-simple-context-menu': VueSimpleContextMenu
   },
   data () {
-    return {
-      templateId: null,
-      templateName: '',
-      treeProps: {
-        children: 'children',
-        label: 'name'
-      },
-      // 后端返回的代码目录数据
-      codeTree: {
-        templateId: null,
-        templateVersion: null,
-        tree: []
-      },
-      // 默认展开的节点
-      fileExpandedDirs: [],
-      cmOptions: {
-        mode: FileTypeUtil.getCmMode('ftl'),
-        theme: 'base16-dark',
-        lineNumbers: true,
-        line: true
-      },
-      currentNode: null,
-      // 文件加载后跳过chang事件
-      loadedSkipChange: false,
-      // 当前正在进行文本编辑的文件
-      currentFile: initTemplateFileFormBean(),
-      // 当前文件内容是否变更过
-      currentFileChange: false,
-      // 文件是否需要保存
-      currentFileNeedSave: false,
-      // 定时保存文件的延迟任务id
-      currentFileSavingTaskId: null,
-      // 文件保存的promise
-      currentFileSavingPromise: null,
-      paths: [],
-      fileLoading: false,
-      // 当前模板文件编辑窗口是否可见
-      visible: false,
-      contextMenuOptions: menuOptions1,
-      // 是否显示添加模板文件表单
-      templateFileFormVisible: false,
-      // 是否修改文件属性
-      editTemplateFile: false,
-      // 添加模板文件表单
-      templateFileForm: initTemplateFileFormBean(),
-      // 上下文类型
-      contextType: options.contextType,
-      // 模板文件校验规则
-      templateFileRules: getTemplateFileRulesRules()
-    }
+    return initData()
   },
   computed: {
     /**
@@ -287,15 +296,13 @@ export default {
       this.contextMenuOptions = item && !item.dir ? menuOptions2 : menuOptions1
       this.$refs.contextMenu.showMenu(event, item)
     },
-    initData (templateId, templateName) {
+    show (templateId, templateName) {
+      Object.assign(this, initData())
+      console.info(arguments)
+      console.info(this)
+      this.visible = true
       this.templateId = templateId
       this.templateName = templateName
-      this.codeTree.tree = []
-      this.paths = []
-    },
-    show (templateId, templateName) {
-      this.visible = true
-      this.initData(templateId, templateName)
       this.queryCodeTree(templateId)
     },
     /**
