@@ -80,6 +80,22 @@ input, textarea, select, button {
     color: $color-warning;
 }
 
+.color-danger-before::before {
+    color: $color-danger;
+}
+
+.color-success-before::before {
+    color: $color-success;
+}
+
+.color-primary-before::before {
+    color: $color-primary;
+}
+
+.color-warning-before::before {
+    color: $color-warning;
+}
+
 /**
  * 表格中的图标
  */

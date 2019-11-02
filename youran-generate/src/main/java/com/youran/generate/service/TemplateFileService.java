@@ -13,6 +13,8 @@ import com.youran.generate.pojo.po.TemplateFilePO;
 import com.youran.generate.pojo.qo.TemplateFileQO;
 import com.youran.generate.pojo.vo.TemplateFileListVO;
 import com.youran.generate.pojo.vo.TemplateFileShowVO;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,16 @@ public class TemplateFileService {
     @Autowired
     private TemplateFileDAO templateFileDAO;
 
+    /**
+     * 校验数据唯一性
+     * @param templateFile
+     * @param isUpdate 是否更新校验
+     */
+    private void checkUnique(TemplateFilePO templateFile, boolean isUpdate){
+        if(templateFileDAO.notUnique(templateFile.getFileDir(), templateFile.getFileName(), isUpdate?templateFile.getFileId():null)){
+            throw new BusinessException(ErrorCode.DUPLICATE_KEY);
+        }
+    }
 
     /**
      * 新增【模板文件】
@@ -49,6 +61,9 @@ public class TemplateFileService {
         }
         // 初始化文件内容为空
         templateFile.setContent("");
+        templateFile.setFileDir(this.normalizeTemplateFileDir(templateFile.getFileDir()));
+        // 唯一性校验
+        this.checkUnique(templateFile,false);
         templateFileDAO.save(templateFile);
         return templateFile;
     }
@@ -67,9 +82,37 @@ public class TemplateFileService {
         if(templateFile.getTemplateId() != null){
             Assert.isTrue(codeTemplateDAO.exist(templateFile.getTemplateId()),"模板id有误");
         }
+        templateFile.setFileDir(this.normalizeTemplateFileDir(templateFile.getFileDir()));
+        // 唯一性校验
+        this.checkUnique(templateFile,false);
         templateFileDAO.update(templateFile);
         return templateFile;
     }
+
+    /**
+     * 标准化文件目录
+     * @param fileDir
+     * @return
+     */
+    private String normalizeTemplateFileDir(String fileDir){
+        fileDir = StringUtils.trim(fileDir);
+        if(StringUtils.isBlank(fileDir)){
+            return "/";
+        }
+        fileDir = FilenameUtils.normalizeNoEndSeparator(fileDir,true);
+        if(fileDir==null){
+            throw new BusinessException(ErrorCode.BAD_REQUEST,"目录不合法");
+        }
+        fileDir = fileDir.replaceAll("\\/+","/");
+        if(fileDir.endsWith("/")){
+            fileDir = fileDir.substring(0,fileDir.length()-1);
+        }
+        if(!fileDir.startsWith("/")){
+            fileDir = "/" + fileDir;
+        }
+        return fileDir;
+    }
+
 
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock

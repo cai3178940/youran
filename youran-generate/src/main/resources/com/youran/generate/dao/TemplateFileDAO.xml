@@ -158,7 +158,17 @@
             and t.deleted=0
     </select>
 
-
+    <select id="notUnique" resultType="boolean">
+        select count(1) from template_file t
+        <where>
+            and t.deleted=0
+            and t.file_dir = #{fileDir}
+            and t.file_name = #{fileName}
+            <if test="fileId != null  ">
+                and t.file_id != #{fileId}
+            </if>
+        </where>
+    </select>
 
 
     <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->

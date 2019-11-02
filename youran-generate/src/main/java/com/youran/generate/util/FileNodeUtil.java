@@ -1,6 +1,7 @@
 package com.youran.generate.util;
 
 import com.google.common.collect.Lists;
+import com.youran.common.util.TreeUtil;
 import com.youran.generate.pojo.vo.FileNodeVO;
 import com.youran.generate.pojo.vo.TemplateFileListVO;
 import org.apache.commons.collections4.CollectionUtils;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
  */
 public class FileNodeUtil {
 
-
+    public static FileNodeComparator fileNodeComparator = new FileNodeComparator();
     /**
      * 获取文件过滤器
      * @param suffixes
@@ -63,6 +64,8 @@ public class FileNodeUtil {
             .collect(Collectors.toList());
     }
 
+
+
     /**
      * 文件转节点VO
      * @param file
@@ -77,7 +80,7 @@ public class FileNodeUtil {
 
 
     /**
-     *
+     * 将模板文件结果集转换成树
      * @param list
      * @return
      */
@@ -87,6 +90,22 @@ public class FileNodeUtil {
             list.forEach(vo -> setFileNodeTreeByTemplateFile(tree, vo));
         }
         return tree;
+    }
+
+    /**
+     * 对整棵树进行排序
+     * @param tree
+     */
+    public static void treeSort(List<FileNodeVO> tree){
+        tree.sort(fileNodeComparator);
+        TreeUtil.bfsSearch(tree,t -> {
+            if(!t.getDir()){
+                return false;
+            }
+            List<FileNodeVO> children = t.getChildren();
+            children.sort(fileNodeComparator);
+            return false;
+        });
     }
 
 
@@ -125,5 +144,31 @@ public class FileNodeUtil {
             .orElse(null);
     }
 
+
+    /**
+     * 文件节点比较器
+     */
+    public static class FileNodeComparator implements Comparator<FileNodeVO> {
+
+        private int getDirType(FileNodeVO vo){
+            if(vo.getDir()){
+                return 1;
+            }else{
+                return 2;
+            }
+        }
+
+        @Override
+        public int compare(FileNodeVO o1, FileNodeVO o2) {
+            int dirType1 = this.getDirType(o1);
+            int dirType2 = this.getDirType(o2);
+            if(dirType1 == dirType2){
+                return StringUtils.compare(o1.getPath(),o2.getPath());
+            } else {
+                return dirType1 - dirType2;
+            }
+        }
+
+    }
 
 }

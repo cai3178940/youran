@@ -93,11 +93,13 @@ public class CodeTemplateController extends AbstractController implements CodeTe
     public ResponseEntity<TemplateDirTreeVO> dirTree(@PathVariable Integer templateId) {
         TemplateFileQO templateFileQO = new TemplateFileQO();
         templateFileQO.setTemplateId(templateId);
+        templateFileQO.setFileDirSortSign(1);
         List<TemplateFileListVO> list = templateFileService.list(templateFileQO);
-        List<FileNodeVO> fileNodeList = FileNodeUtil.templateFileListToNodeTree(list);
+        List<FileNodeVO> tree = FileNodeUtil.templateFileListToNodeTree(list);
+        FileNodeUtil.treeSort(tree);
         TemplateDirTreeVO treeVO = new TemplateDirTreeVO();
         treeVO.setTemplateId(templateId);
-        treeVO.setTree(fileNodeList);
+        treeVO.setTree(tree);
         return ResponseEntity.ok(treeVO);
     }
 

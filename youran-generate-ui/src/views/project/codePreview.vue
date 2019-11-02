@@ -3,7 +3,7 @@
     <el-dialog :title="'代码预览: '+projectName" :visible.sync="visible" :fullscreen="true">
       <el-header class="codePath">
         <template v-for="(node,index) in paths">
-          <span :key="node.key" style="line-height: 23px;">
+          <span :key="node.key" class="codePathCell">
             <i v-if="index>0"  class="el-icon-arrow-right"></i>
             <span><i :class="node.icon"></i> {{node.name}}</span>
           </span>

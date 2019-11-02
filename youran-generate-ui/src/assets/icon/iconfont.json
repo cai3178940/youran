@@ -111,6 +111,27 @@
       "unicode_decimal": 59274
     },
     {
+      "icon_id": "5354378",
+      "name": "137-Edit-File",
+      "font_class": "-Edit-File",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "5354393",
+      "name": "155-Delete-File",
+      "font_class": "-Delete-File",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "5354439",
+      "name": "199-Add-File",
+      "font_class": "-Add-File",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
       "icon_id": "5384479",
       "name": "edit-2",
       "font_class": "edit-outline",

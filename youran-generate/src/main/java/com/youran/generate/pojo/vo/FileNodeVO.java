@@ -1,6 +1,7 @@
 package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
+import com.youran.common.tree.TreeNode;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.io.FilenameUtils;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @author cbb
  * @date 2019/8/29
  */
-public class FileNodeVO<T> extends AbstractVO {
+public class FileNodeVO<T> extends AbstractVO implements TreeNode<FileNodeVO> {
 
     /**
      * 文件名
@@ -110,4 +111,25 @@ public class FileNodeVO<T> extends AbstractVO {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public Object fetchId() {
+        return path;
+    }
+
+    @Override
+    public Object fetchParentId() {
+        return null;
+    }
+
+    @Override
+    public List<FileNodeVO> fetchChildren() {
+        return children;
+    }
+
+    @Override
+    public void putChildren(List<FileNodeVO> children) {
+        this.children = children;
+    }
+
 }

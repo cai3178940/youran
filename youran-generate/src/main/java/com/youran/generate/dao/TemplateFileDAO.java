@@ -5,6 +5,7 @@ import com.youran.generate.pojo.po.TemplateFilePO;
 import com.youran.generate.pojo.qo.TemplateFileQO;
 import com.youran.generate.pojo.vo.TemplateFileListVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,6 +28,10 @@ public interface TemplateFileDAO extends DAO<TemplateFilePO> {
     List<TemplateFileListVO> findListByQuery(TemplateFileQO templateFileQO);
 
     int getCountByTemplateId(Integer templateId);
+
+    boolean notUnique(@Param("fileDir")String fileDir,
+                      @Param("fileName")String fileName,
+                      @Param("fileId")Integer fileId);
 
 }
 

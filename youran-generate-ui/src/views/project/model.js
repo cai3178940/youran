@@ -28,13 +28,15 @@ export function getRules () {
     projectName: [
       { required: true, message: '请输入项目名称', trigger: 'blur' },
       { max: 50, message: '长度不能超过50个字符', trigger: 'blur' },
-      { validator: (rule, value, callback) => {
-        if (!/^[a-z|-]+$/.test(value)) {
-          callback(new Error('项目名称不合法,只允许小写字母和横杠'))
-        }
-        callback()
-      },
-      trigger: 'blur' }
+      {
+        validator: (rule, value, callback) => {
+          if (!/^[a-z|-]+$/.test(value)) {
+            callback(new Error('项目名称不合法,只允许小写字母和横杠'))
+          }
+          callback()
+        },
+        trigger: 'blur'
+      }
     ],
     projectDesc: [
       { required: true, message: '请输入项目名称', trigger: 'blur' },

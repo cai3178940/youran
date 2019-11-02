@@ -226,7 +226,6 @@ export default {
     },
     handleExport (row) {
       this.downloadUrl = `/${apiPath}/meta_export/${row.projectId}`
-      console.info(this.downloadUrl)
       // 隔2秒改成null，修复不能重复下载的bug
       setTimeout(() => {
         this.downloadUrl = null

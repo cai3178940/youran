@@ -76,7 +76,7 @@ export const CommonPlugin = {
       showNotify (type, title, msg) {
         let duration = 4500
         if (type === 'error') {
-          duration = 0
+          duration = 10000
         }
         return Vue.prototype.$notify({
           title: title,
