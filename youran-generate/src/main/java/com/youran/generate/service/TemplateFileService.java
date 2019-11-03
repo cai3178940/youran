@@ -36,6 +36,8 @@ public class TemplateFileService {
     private CodeTemplateDAO codeTemplateDAO;
     @Autowired
     private TemplateFileDAO templateFileDAO;
+    @Autowired
+    private CodeTemplateService codeTemplateService;
 
     /**
      * 校验数据唯一性
@@ -43,7 +45,7 @@ public class TemplateFileService {
      * @param isUpdate 是否更新校验
      */
     private void checkUnique(TemplateFilePO templateFile, boolean isUpdate){
-        if(templateFileDAO.notUnique(templateFile.getFileDir(), templateFile.getFileName(), isUpdate?templateFile.getFileId():null)){
+        if(templateFileDAO.notUnique(templateFile.getTemplateId(), templateFile.getFileDir(), templateFile.getFileName(), isUpdate?templateFile.getFileId():null)){
             throw new BusinessException(ErrorCode.DUPLICATE_KEY);
         }
     }
@@ -64,8 +66,18 @@ public class TemplateFileService {
         templateFile.setFileDir(this.normalizeTemplateFileDir(templateFile.getFileDir()));
         // 唯一性校验
         this.checkUnique(templateFile,false);
-        templateFileDAO.save(templateFile);
+        this.doSave(templateFile);
+        // 更新模板内部版本号
+        codeTemplateService.updateInnerVersion(templateFile.getTemplateId());
         return templateFile;
+    }
+
+    /**
+     * 执行保存
+     * @param po
+     */
+    public void doSave(TemplateFilePO po) {
+        templateFileDAO.save(po);
     }
 
     /**
@@ -86,6 +98,8 @@ public class TemplateFileService {
         // 唯一性校验
         this.checkUnique(templateFile,true);
         templateFileDAO.update(templateFile);
+        // 更新模板内部版本号
+        codeTemplateService.updateInnerVersion(templateFile.getTemplateId());
         return templateFile;
     }
 
@@ -124,6 +138,8 @@ public class TemplateFileService {
         }
         templateFile.setContent(dto.getContent());
         templateFileDAO.update(templateFile);
+        // 更新模板内部版本号
+        codeTemplateService.updateInnerVersion(templateFile.getTemplateId());
         return templateFile;
     }
 
@@ -151,6 +167,15 @@ public class TemplateFileService {
         return templateFile;
     }
 
+    /**
+     * 查询所有模板文件
+     * @param templateId 模板id
+     * @return
+     */
+    public List<TemplateFilePO> getAllTemplateFiles(Integer templateId){
+        return templateFileDAO.findAll(templateId);
+    }
+
 
     /**
      * 查询【模板文件】详情
@@ -171,11 +196,21 @@ public class TemplateFileService {
     @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... fileIds) {
         int count = 0;
+        Integer templateId = null;
         for (Integer fileId : fileIds) {
+            if (templateId == null) {
+                TemplateFilePO templateFile = getTemplateFile(fileId, true);
+                templateId = templateFile.getTemplateId();
+            }
             count += templateFileDAO.delete(fileId);
+        }
+        if (templateId != null) {
+            // 更新模板内部版本号
+            codeTemplateService.updateInnerVersion(templateId);
         }
         return count;
     }
+
 
 
 }

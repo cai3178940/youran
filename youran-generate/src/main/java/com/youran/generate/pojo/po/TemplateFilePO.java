@@ -1,5 +1,7 @@
 package com.youran.generate.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * <p>Title: 模板文件</p>
  * <p>Description: 模板文件</p>
@@ -42,6 +44,7 @@ public class TemplateFilePO extends BasePO {
     /**
      * 内容
      */
+    @JsonIgnore
     private String content;
 
     public Integer getFileId() {

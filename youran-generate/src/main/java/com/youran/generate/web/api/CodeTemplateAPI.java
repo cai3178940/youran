@@ -11,7 +11,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -85,5 +87,25 @@ public interface CodeTemplateAPI {
         @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "path")
     })
     ResponseEntity<TemplateDirTreeVO> dirTree(Integer templateId);
+
+    /**
+     * 模板导出
+     * @param templateId
+     * @param response
+     */
+    @ApiOperation(value = "模板导出")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "path")
+    })
+    void export(Integer templateId, HttpServletResponse response);
+
+    /**
+     * 模板导入
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "模板导入")
+    ResponseEntity<CodeTemplateShowVO> importTemplate(MultipartFile file) throws Exception;
 }
 

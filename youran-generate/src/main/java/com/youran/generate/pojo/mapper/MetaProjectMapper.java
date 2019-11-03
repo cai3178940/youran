@@ -41,6 +41,11 @@ public interface MetaProjectMapper {
      */
     MetaProjectShowVO toShowVO(MetaProjectPO metaProjectPO);
 
+    /**
+     * 映射项目属性-忽略远程git信息
+     * @param project
+     * @return
+     */
     @BeanMapping(ignoreByDefault = true)
     @Mappings({
         @Mapping(target = "packageName"),
@@ -51,7 +56,7 @@ public interface MetaProjectMapper {
         @Mapping(target = "remote",constant = BoolConst.FALSE+""),
         @Mapping(target = "feature"),
     })
-    MetaProjectPO copy(MetaProjectPO project);
+    MetaProjectPO copyWithoutRemote(MetaProjectPO project);
 
 
 }

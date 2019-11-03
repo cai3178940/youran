@@ -10,8 +10,10 @@ import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.pojo.qo.CodeTemplateQO;
 import com.youran.generate.pojo.qo.TemplateFileQO;
 import com.youran.generate.pojo.vo.*;
+import com.youran.generate.service.TemplateImportExportService;
 import com.youran.generate.service.CodeTemplateService;
 import com.youran.generate.service.TemplateFileService;
+import com.youran.generate.service.TmpDirService;
 import com.youran.generate.util.FileNodeUtil;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.CodeTemplateAPI;
@@ -20,8 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
 import java.net.URI;
 import java.util.List;
 
@@ -37,9 +42,12 @@ public class CodeTemplateController extends AbstractController implements CodeTe
 
     @Autowired
     private CodeTemplateService codeTemplateService;
-
     @Autowired
     private TemplateFileService templateFileService;
+    @Autowired
+    private TmpDirService tmpDirService;
+    @Autowired
+    private TemplateImportExportService templateImportExportService;
 
     @Override
     @PostMapping
@@ -103,6 +111,33 @@ public class CodeTemplateController extends AbstractController implements CodeTe
         return ResponseEntity.ok(treeVO);
     }
 
+    @Override
+    @GetMapping(value = "/{templateId}/export")
+    public void export(@PathVariable Integer templateId, HttpServletResponse response){
+        File zipFile = templateImportExportService.exportTemplate(templateId);
+        if (zipFile == null || !zipFile.exists()) {
+            this.replyNotFound(response);
+        }else {
+            String downloadFileName = zipFile.getName();
+            this.replyDownloadFile(response, zipFile, downloadFileName);
+        }
+    }
+
+    @Override
+    @PostMapping(value = "/import")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<CodeTemplateShowVO> importTemplate(@RequestParam(value = "file") MultipartFile file) throws Exception {
+        String importFilePath = tmpDirService.getTemplateImportFilePath();
+        File zipFile = new File(importFilePath);
+        File parentFile = zipFile.getParentFile();
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        file.transferTo(zipFile);
+        CodeTemplatePO codeTemplate = templateImportExportService.importTemplate(zipFile);
+        return ResponseEntity.created(new URI(apiPath +"/code_template/" + codeTemplate.getTemplateId()))
+            .body(CodeTemplateMapper.INSTANCE.toShowVO(codeTemplate));
+    }
 
 }
 

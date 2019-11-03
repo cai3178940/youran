@@ -64,17 +64,20 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <!-- 模板导入对话框 -->
+    <import-template></import-template>
   </el-container>
-
 </template>
 
 <script>
 import avatar from '@/assets/avatar.jpg'
 import { apiPath } from '@/components/common'
 import { mapState, mapMutations } from 'vuex'
+import importTemplate from './views/template/import.vue'
 
 export default {
   name: 'app',
+  components: { importTemplate },
   data () {
     return {
       avatar,

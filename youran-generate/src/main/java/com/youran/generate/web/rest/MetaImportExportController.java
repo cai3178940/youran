@@ -6,6 +6,7 @@ import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
 import com.youran.generate.service.MetaImportExportService;
 import com.youran.generate.service.MetaProjectService;
+import com.youran.generate.service.TmpDirService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaImportExportAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class MetaImportExportController extends AbstractController implements Me
     private MetaImportExportService metaImportExportService;
     @Autowired
     private MetaProjectService metaProjectService;
+    @Autowired
+    private TmpDirService tmpDirService;
 
     @Override
     @GetMapping(value = "/meta_export/{projectId}")
@@ -50,7 +53,7 @@ public class MetaImportExportController extends AbstractController implements Me
     @PostMapping(value = "/meta_import")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaProjectShowVO> metaImport(@RequestParam(value = "file") MultipartFile file) throws Exception {
-        String importFilePath = metaImportExportService.getImportFilePath();
+        String importFilePath = tmpDirService.getProjectImportFilePath();
         File zipFile = new File(importFilePath);
         File parentFile = zipFile.getParentFile();
         if (!parentFile.exists()) {

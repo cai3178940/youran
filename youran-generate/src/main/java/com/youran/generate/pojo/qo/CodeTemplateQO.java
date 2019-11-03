@@ -24,9 +24,6 @@ public class CodeTemplateQO extends PageQO {
     @ApiParam(value = N_SYS_DEFAULT,example = E_SYS_DEFAULT)
     private Boolean sysDefault;
 
-    @ApiParam(value = N_FROM_TEMPLATE_ID,example = E_FROM_TEMPLATE_ID)
-    private Integer fromTemplateId;
-
     @ApiParam(value = "创建时间排序标识【1升序,-1降序,0不排序】",example = "1")
     private Integer createdTimeSortSign;
 
@@ -57,15 +54,6 @@ public class CodeTemplateQO extends PageQO {
     public void setSysDefault(Boolean sysDefault) {
         this.sysDefault = sysDefault;
     }
-
-    public Integer getFromTemplateId() {
-        return this.fromTemplateId;
-    }
-
-    public void setFromTemplateId(Integer fromTemplateId) {
-        this.fromTemplateId = fromTemplateId;
-    }
-
 
     public Integer getCreatedTimeSortSign() {
         return this.createdTimeSortSign;

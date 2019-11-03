@@ -150,8 +150,6 @@
     </select>
 
 
-    <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
-
     <select id="cascadeFieldIdExists" resultType="java.lang.Boolean">
         select
             count(1)

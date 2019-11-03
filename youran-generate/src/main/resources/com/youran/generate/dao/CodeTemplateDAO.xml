@@ -13,7 +13,6 @@
         ${alias}.sys_low_version as sysLowVersion,
         ${alias}.sys_default as sysDefault,
         ${alias}.remark,
-        ${alias}.from_template_id as fromTemplateId,
         ${alias}.inner_version as innerVersion,
         ${alias}.created_time as createdTime,
         ${alias}.created_by as createdBy,
@@ -52,7 +51,6 @@
         sys_low_version,
         sys_default,
         remark,
-        from_template_id,
         inner_version,
         created_time,
         created_by,
@@ -68,7 +66,6 @@
         #{sysLowVersion,jdbcType=VARCHAR},
         #{sysDefault,jdbcType=BOOLEAN},
         #{remark,jdbcType=VARCHAR},
-        #{fromTemplateId,jdbcType=INTEGER},
         #{innerVersion,jdbcType=INTEGER},
         #{createdTime,jdbcType=TIMESTAMP},
         #{createdBy,jdbcType=VARCHAR},
@@ -88,7 +85,6 @@
             sys_low_version=#{sysLowVersion,jdbcType=VARCHAR},
             sys_default=#{sysDefault,jdbcType=BOOLEAN},
             remark=#{remark,jdbcType=VARCHAR},
-            from_template_id=#{fromTemplateId,jdbcType=INTEGER},
             inner_version=#{innerVersion,jdbcType=INTEGER},
             operated_time=#{operatedTime,jdbcType=TIMESTAMP},
             operated_by=#{operatedBy,jdbcType=VARCHAR},
@@ -116,9 +112,6 @@
         </if>
         <if test="sysDefault != null ">
             and t.sys_default = #{sysDefault}
-        </if>
-        <if test="fromTemplateId != null ">
-            and t.from_template_id = #{fromTemplateId}
         </if>
     </sql>
 
@@ -151,11 +144,6 @@
         </where>
         <include refid="orderCondition"/>
     </select>
-
-
-
-
-    <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
 
 
 </mapper>

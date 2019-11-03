@@ -28,16 +28,22 @@ public class MetaProjectPO extends BasePO {
 
     private String author;
 
+    @JsonIgnore
     private Integer remote;
 
+    @JsonIgnore
     private String remoteUrl;
 
+    @JsonIgnore
     private String username;
 
+    @JsonIgnore
     private String password;
 
+    @JsonIgnore
     private Integer lastHistoryId;
 
+    @JsonIgnore
     private Integer projectVersion;
 
     private String feature;

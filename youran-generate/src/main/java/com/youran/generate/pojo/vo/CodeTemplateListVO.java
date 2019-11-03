@@ -37,10 +37,6 @@ public class CodeTemplateListVO extends AbstractVO {
     @ApiModelProperty(notes = N_REMARK,example = E_REMARK)
     private String remark;
 
-    @ApiModelProperty(notes = N_FROM_TEMPLATE_ID,example = E_FROM_TEMPLATE_ID)
-    private Integer fromTemplateId;
-
-
     public Integer getTemplateId() {
         return this.templateId;
     }
@@ -96,15 +92,6 @@ public class CodeTemplateListVO extends AbstractVO {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
-    public Integer getFromTemplateId() {
-        return this.fromTemplateId;
-    }
-
-    public void setFromTemplateId(Integer fromTemplateId) {
-        this.fromTemplateId = fromTemplateId;
-    }
-
 
 
 }

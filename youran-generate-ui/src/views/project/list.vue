@@ -92,7 +92,7 @@
     </el-table>
 
     <el-dialog title="元数据导入" :visible.sync="importFormVisible" width="400px">
-      <el-upload class="upload-demo" drag
+      <el-upload drag
                  :action="importUrl"
                  :on-success="onImportSuccess"
                  :on-error="onImportError"

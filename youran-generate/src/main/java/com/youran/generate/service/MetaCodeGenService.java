@@ -6,11 +6,10 @@ import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.AESSecurityUtil;
 import com.youran.common.util.DateUtil;
-import com.youran.common.util.TempDirUtil;
 import com.youran.generate.config.GenerateProperties;
+import com.youran.generate.constant.ContextType;
 import com.youran.generate.constant.DevMode;
 import com.youran.generate.constant.TemplateEnum;
-import com.youran.generate.constant.ContextType;
 import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import com.youran.generate.pojo.po.GenHistoryPO;
@@ -27,9 +26,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -49,7 +46,7 @@ import java.util.function.Consumer;
  * @date: 2017/5/14
  */
 @Service
-public class MetaCodeGenService implements InitializingBean {
+public class MetaCodeGenService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetaCodeGenService.class);
 
@@ -63,28 +60,12 @@ public class MetaCodeGenService implements InitializingBean {
     private GenerateProperties generateProperties;
     @Autowired
     private GenHistoryService genHistoryService;
-    /**
-     * 本系统名称，这里用于指定代码生成目录的父文件夹名称
-     */
-    @Value("${spring.application.name}")
-    private String appName;
+    @Autowired
+    private TmpDirService tmpDirService;
     /**
      * 代码生成须加锁
      */
     private ReentrantLock lock = new ReentrantLock();
-
-    /**
-     * 启动以后清空代码目录
-     * /[tmp目录]/[spring.application.name]
-     * @throws Exception
-     */
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        // 获取代码目录
-        String appCodeDir = TempDirUtil.getTmpDir(appName, false, false);
-        File tmpDirFile = new File(appCodeDir);
-        FileUtils.deleteDirectory(tmpDirFile);
-    }
 
     /**
      * 输出建表语句
@@ -163,7 +144,7 @@ public class MetaCodeGenService implements InitializingBean {
             try {
                 MetaProjectPO project = metaProjectService.getProject(projectId, true);
                 // 获取最新代码目录
-                String projectDir = this.getProjectRecentDir(project);
+                String projectDir = tmpDirService.getProjectRecentDir(project);
                 File dir = new File(projectDir);
                 // 如果当天尚未生成过同一个版本的代码，则执行代码生成
                 if (!dir.exists()) {
@@ -193,19 +174,6 @@ public class MetaCodeGenService implements InitializingBean {
             throw new BusinessException(ErrorCode.TOO_MANY_REQUESTS,
                 "正在生成代码，请稍后再试！");
         }
-    }
-
-    /**
-     * 获取最新代码目录
-     * @param project
-     * @return /[tmp目录]/[spring.application.name]/[youran.version]/[projectId]/[projectVersion]
-     */
-    public String getProjectRecentDir(MetaProjectPO project){
-        String projectDir = TempDirUtil.getTmpDir(appName, false, false)
-            +File.separator+generateProperties.getVersion()
-            +File.separator+project.getProjectId()
-            +File.separator+project.getProjectVersion();
-        return projectDir;
     }
 
     /**

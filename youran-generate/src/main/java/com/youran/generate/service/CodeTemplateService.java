@@ -29,6 +29,7 @@ public class CodeTemplateService {
     @Autowired
     private CodeTemplateDAO codeTemplateDAO;
 
+
     /**
      * 新增【代码模板】
      * @param codeTemplateDTO
@@ -37,12 +38,20 @@ public class CodeTemplateService {
     @Transactional(rollbackFor = RuntimeException.class)
     public CodeTemplatePO save(CodeTemplateAddDTO codeTemplateDTO) {
         CodeTemplatePO codeTemplate = CodeTemplateMapper.INSTANCE.fromAddDTO(codeTemplateDTO);
-        // 默认内部版本号为0
-        codeTemplate.setInnerVersion(0);
         // 默认非系统内置模板
         codeTemplate.setSysDefault(false);
-        codeTemplateDAO.save(codeTemplate);
+        this.doSave(codeTemplate);
         return codeTemplate;
+    }
+
+    /**
+     * 执行保存
+     * @param templatePO
+     */
+    public void doSave(CodeTemplatePO templatePO) {
+        // 默认内部版本号为0
+        templatePO.setInnerVersion(0);
+        codeTemplateDAO.save(templatePO);
     }
 
     /**
@@ -56,11 +65,23 @@ public class CodeTemplateService {
         Integer templateId = codeTemplateUpdateDTO.getTemplateId();
         CodeTemplatePO codeTemplate = this.getCodeTemplate(templateId, true);
         CodeTemplateMapper.INSTANCE.setUpdateDTO(codeTemplate,codeTemplateUpdateDTO);
+        codeTemplate.setInnerVersion(codeTemplate.getInnerVersion()+1);
         codeTemplateDAO.update(codeTemplate);
         return codeTemplate;
     }
+
     /**
-     * 查询分页列表
+     * 更新内部版本号
+     * @param templateId
+     */
+    public void updateInnerVersion(Integer templateId){
+        CodeTemplatePO templatePO = this.getCodeTemplate(templateId,true);
+        templatePO.setInnerVersion(templatePO.getInnerVersion()+1);
+        codeTemplateDAO.update(templatePO);
+    }
+
+    /**
+     * 查询列表
      * @param codeTemplateQO
      * @return
      */
@@ -108,6 +129,7 @@ public class CodeTemplateService {
         }
         return count;
     }
+
 
 
 }

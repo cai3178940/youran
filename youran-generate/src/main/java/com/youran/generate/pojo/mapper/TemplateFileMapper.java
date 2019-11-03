@@ -4,8 +4,7 @@ import com.youran.generate.pojo.dto.TemplateFileAddDTO;
 import com.youran.generate.pojo.dto.TemplateFileUpdateDTO;
 import com.youran.generate.pojo.po.TemplateFilePO;
 import com.youran.generate.pojo.vo.TemplateFileShowVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -39,6 +38,15 @@ public interface TemplateFileMapper {
     * @return
     */
     TemplateFileShowVO toShowVO(TemplateFilePO templateFilePO);
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "fileName"),
+        @Mapping(target = "fileDir"),
+        @Mapping(target = "contextType"),
+        @Mapping(target = "abstracted"),
+    })
+    TemplateFilePO copy(TemplateFilePO po);
 
 }
 

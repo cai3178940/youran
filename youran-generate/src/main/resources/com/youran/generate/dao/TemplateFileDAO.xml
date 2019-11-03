@@ -162,16 +162,25 @@
         select count(1) from template_file t
         <where>
             and t.deleted=0
+            and t.template_id = #{templateId}
             and t.file_dir = #{fileDir}
             and t.file_name = #{fileName}
-            <if test="fileId != null  ">
-                and t.file_id != #{fileId}
-            </if>
+        <if test="fileId != null  ">
+            and t.file_id != #{fileId}
+        </if>
         </where>
     </select>
 
 
-    <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
+    <select id="findAll" resultType="TemplateFilePO">
+        select
+            <include refid="templateFileColumns"><property name="alias" value="t"/></include>
+        from template_file t
+        <where>
+            and t.deleted=0
+            and t.template_id = #{arg0}
+        </where>
+    </select>
 
 
 </mapper>

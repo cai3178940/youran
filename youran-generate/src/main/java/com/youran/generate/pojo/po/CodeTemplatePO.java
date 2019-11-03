@@ -1,5 +1,9 @@
 package com.youran.generate.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.List;
+
 /**
  * <p>Title: 代码模板</p>
  * <p>Description: 代码模板</p>
@@ -45,15 +49,23 @@ public class CodeTemplatePO extends BasePO {
     private String remark;
 
     /**
-     * 来源模板id
-     */
-    private Integer fromTemplateId;
-
-    /**
      * 内部版本号，每次模板有变动都自动加一
      */
+    @JsonIgnore
     private Integer innerVersion;
 
+    /**
+     * 模板文件列表
+     */
+    private List<TemplateFilePO> templateFiles;
+
+    public List<TemplateFilePO> getTemplateFiles() {
+        return templateFiles;
+    }
+
+    public void setTemplateFiles(List<TemplateFilePO> templateFiles) {
+        this.templateFiles = templateFiles;
+    }
 
     public Integer getTemplateId() {
         return this.templateId;
@@ -109,14 +121,6 @@ public class CodeTemplatePO extends BasePO {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public Integer getFromTemplateId() {
-        return this.fromTemplateId;
-    }
-
-    public void setFromTemplateId(Integer fromTemplateId) {
-        this.fromTemplateId = fromTemplateId;
     }
 
     public Integer getInnerVersion() {

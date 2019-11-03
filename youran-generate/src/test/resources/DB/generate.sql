@@ -262,7 +262,6 @@ CREATE TABLE `code_template` (
     `sys_low_version` varchar(10) NOT NULL COMMENT '兼容最低系统版本号',
     `sys_default` tinyint(4) NOT NULL COMMENT '是否系统默认模板',
     `remark` varchar(256) DEFAULT NULL COMMENT '备注【最大长度256】',
-    `from_template_id` int(11) DEFAULT NULL COMMENT '来源模板id',
     `inner_version` int(11) NOT NULL COMMENT '内部版本号，每次模板有变动都自动加一',
     `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
     `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
@@ -289,6 +288,7 @@ CREATE TABLE `template_file` (
     `operated_by` varchar(20) NOT NULL COMMENT '修改人【最大长度20】',
     `version` int(11) NOT NULL COMMENT '乐观锁版本号【整型】',
     `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
-    PRIMARY KEY (`file_id`)
+    PRIMARY KEY (`file_id`),
+    KEY `IDX_TEMPLATE_FILE_1` (`template_id`,`file_dir`,`file_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='模板文件';
 

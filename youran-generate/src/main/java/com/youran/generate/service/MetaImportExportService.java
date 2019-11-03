@@ -3,7 +3,6 @@ package com.youran.generate.service;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
-import com.youran.common.util.TempDirUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.pojo.dto.SystemDTO;
 import com.youran.generate.pojo.mapper.*;
@@ -15,7 +14,6 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,11 +52,6 @@ public class MetaImportExportService {
 
     @Autowired
     private MetaQueryAssembleService metaQueryAssembleService;
-    /**
-     * 本系统名称，这里用于指定导入导出文件目录所在的父文件夹名称
-     */
-    @Value("${spring.application.name}")
-    private String appName;
     @Autowired
     private GenerateProperties generateProperties;
     @Autowired
@@ -79,38 +72,9 @@ public class MetaImportExportService {
     private MetaManyToManyService metaManyToManyService;
     @Autowired
     private MetaMtmCascadeExtService metaMtmCascadeExtService;
+    @Autowired
+    private TmpDirService tmpDirService;
 
-
-    /**
-     * 获取元数据导出目录
-     * @param project
-     * @return
-     */
-    private String getExportDir(MetaProjectPO project){
-        return TempDirUtil.getTmpDir(appName, false, false)
-            +File.separator+generateProperties.getVersion()
-            +File.separator+project.getProjectId()
-            +File.separator+"export";
-    }
-    /**
-     * 获取元数据导入文件路径
-     * @return
-     */
-    public String getImportFilePath(){
-        return TempDirUtil.getTmpDir(appName, false, false)
-            +File.separator+generateProperties.getVersion()
-            +File.separator+"import"
-            +File.separator+System.currentTimeMillis()+".zip";
-    }
-    /**
-     * 获取元数据导入目录
-     * @return
-     */
-    private String getImportDir(File zipFile){
-        String path = zipFile.getPath();
-        // 去除末尾.zip
-        return path.substring(0,path.length()-4);
-    }
 
     /**
      * 将项目元数据导出成zip
@@ -120,7 +84,7 @@ public class MetaImportExportService {
     public File metaExport(Integer projectId) {
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
             true, true, true, true, true, false);
-        String exportDir = this.getExportDir(project);
+        String exportDir = tmpDirService.getProjectExportDir(project);
         String zipFilePath = exportDir + ".zip";
         File dir = new File(exportDir);
         File outFile = new File(zipFilePath);
@@ -131,10 +95,6 @@ public class MetaImportExportService {
         } catch (IOException e) {
             LOGGER.error("创建导出目录失败",e);
         }
-        project.setRemote(BoolConst.FALSE);
-        project.setRemoteUrl(null);
-        project.setUsername(null);
-        project.setPassword(null);
         // 导出项目json文件
         JsonUtil.writeJsonToFile(project,true,new File(dir,PROJECT_JSON_FILE));
         List<MetaConstPO> consts = project.getConsts();
@@ -205,12 +165,12 @@ public class MetaImportExportService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaProjectPO metaImport(File zipFile) {
-        String importDir = this.getImportDir(zipFile);
+        String importDir = tmpDirService.getPathWithoutZipFileSuffix(zipFile);
         // 解压zip包
         Zip4jUtil.extractAll(zipFile, importDir);
         LOGGER.info("将zip包解压到：{}",importDir);
         // json文件所在目录
-        String jsonDir = importDir + File.separator + "export" + File.separator;
+        String jsonDir = tmpDirService.getFirstChildDir(importDir) + File.separator;
         // 读取项目json文件，并解析成po
         MetaProjectPO projectFromJson = JsonUtil.parseObjectFromFile(
             new File(jsonDir + PROJECT_JSON_FILE), MetaProjectPO.class);
@@ -290,7 +250,7 @@ public class MetaImportExportService {
      * @return
      */
     private MetaProjectPO saveProject(MetaProjectPO projectFromJson){
-        MetaProjectPO project = MetaProjectMapper.INSTANCE.copy(projectFromJson);
+        MetaProjectPO project = MetaProjectMapper.INSTANCE.copyWithoutRemote(projectFromJson);
         metaProjectService.doSave(project);
         LOGGER.debug("导入项目：{}",JsonUtil.toJSONString(project));
         return project;

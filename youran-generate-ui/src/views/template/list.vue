@@ -9,6 +9,7 @@
       </el-col>
       <el-col :span="18" style="text-align: right;">
         <el-button @click.native="handleAdd" type="success">添加模板</el-button>
+        <el-button @click.native="handleImport" type="warning">模板导入</el-button>
         <el-button @click.native="handleDel" type="danger">删除模板</el-button>
       </el-col>
     </el-row>
@@ -28,28 +29,38 @@
         width="200">
         <template v-slot="scope">
           <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
+          <el-button @click="exportTemplate(scope.row)" type="text" size="medium">导出</el-button>
           <el-button @click="handleTemplateFile(scope.row)" type="text" size="medium">文件管理</el-button>
         </template>
       </el-table-column>
     </el-table>
     <template-files ref="templateFiles"></template-files>
+    <!-- 文件下载专用iframe -->
+    <iframe style="display:none;" :src="downloadUrl"></iframe>
+    <!-- 模板导入对话框 -->
+    <import-template ref="importTemplate" @success="doQuery"></import-template>
   </div>
 </template>
 
 <script>
 import { apiPath } from '@/components/common'
 import templateFiles from './templateFiles'
+import importTemplate from './import.vue'
 
 export default {
   name: 'templateList',
-  components: { templateFiles },
+  components: {
+    templateFiles,
+    importTemplate
+  },
   data () {
     return {
       query: {},
       activeNum: 0,
       selectItems: [],
       list: [],
-      loading: false
+      loading: false,
+      downloadUrl: null
     }
   },
   methods: {
@@ -91,6 +102,15 @@ export default {
     },
     handleTemplateFile (row) {
       this.$refs.templateFiles.show(row.templateId, row.name)
+    },
+    exportTemplate (row) {
+      this.downloadUrl = `/${apiPath}/code_template/${row.templateId}/export`
+      setTimeout(() => {
+        this.downloadUrl = null
+      }, 2000)
+    },
+    handleImport () {
+      this.$refs.importTemplate.show()
     }
   },
   activated () {

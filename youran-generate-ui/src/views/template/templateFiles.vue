@@ -298,8 +298,6 @@ export default {
     },
     show (templateId, templateName) {
       Object.assign(this, initData())
-      console.info(arguments)
-      console.info(this)
       this.visible = true
       this.templateId = templateId
       this.templateName = templateName

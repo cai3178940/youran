@@ -7,6 +7,7 @@ import com.youran.generate.pojo.vo.CodeTreeVO;
 import com.youran.generate.pojo.vo.FileNodeVO;
 import com.youran.generate.service.MetaCodeGenService;
 import com.youran.generate.service.MetaProjectService;
+import com.youran.generate.service.TmpDirService;
 import com.youran.generate.util.FileNodeUtil;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.CodePreviewAPI;
@@ -43,6 +44,8 @@ public class CodePreviewController extends AbstractController implements CodePre
     private MetaCodeGenService metaCodeGenService;
     @Autowired
     private MetaProjectService metaProjectService;
+    @Autowired
+    private TmpDirService tmpDirService;
 
 
     @Override
@@ -56,7 +59,7 @@ public class CodePreviewController extends AbstractController implements CodePre
         if(recentVersion < projectVersion){
             throw new BusinessException("projectVersion有误");
         }
-        String projectDir = metaCodeGenService.getProjectRecentDir(project);
+        String projectDir = tmpDirService.getProjectRecentDir(project);
         File dirFile = new File(projectDir);
         if(!dirFile.exists()){
             throw new BusinessException("代码目录不存在");
@@ -95,7 +98,7 @@ public class CodePreviewController extends AbstractController implements CodePre
     @ResponseBody
     public ResponseEntity<CodeTreeVO> codeTree(@PathVariable Integer projectId) {
         MetaProjectPO project = metaProjectService.getProject(projectId,true);
-        String projectDir = metaCodeGenService.getProjectRecentDir(project);
+        String projectDir = tmpDirService.getProjectRecentDir(project);
         File dirFile = new File(projectDir);
         if(!dirFile.exists()){
             throw new BusinessException("代码目录不存在");

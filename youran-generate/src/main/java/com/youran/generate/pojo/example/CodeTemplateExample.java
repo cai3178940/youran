@@ -25,8 +25,6 @@ public class CodeTemplateExample extends AbstractExample {
     public static final String E_SYS_DEFAULT = "true";
     public static final String N_REMARK = "备注【最大长度256】";
     public static final String E_REMARK = "这是备注";
-    public static final String N_FROM_TEMPLATE_ID = "来源模板id";
-    public static final String E_FROM_TEMPLATE_ID = "1";
     public static final String N_INNER_VERSION = "内部版本号，每次模板有变动都自动加一";
     public static final String E_INNER_VERSION = "1";
 }
