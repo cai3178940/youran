@@ -118,7 +118,9 @@ public class CodeTemplateController extends AbstractController implements CodeTe
         if (zipFile == null || !zipFile.exists()) {
             this.replyNotFound(response);
         }else {
-            String downloadFileName = zipFile.getName();
+            CodeTemplatePO codeTemplate = codeTemplateService.getCodeTemplate(templateId, true);
+            String downloadFileName = codeTemplate.getName()+"-"
+                +codeTemplate.getTemplateVersion()+".zip";
             this.replyDownloadFile(response, zipFile, downloadFileName);
         }
     }
