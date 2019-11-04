@@ -53,8 +53,8 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
 
     @Override
     @GetMapping(value = "/genCode")
-    public ResponseEntity<Void> genCode(Integer projectId) {
-        metaCodeGenService.genProjectCodeIfNotExists(projectId,null);
+    public ResponseEntity<Void> genCode(Integer projectId, Integer templateId) {
+        metaCodeGenService.genProjectCodeIfNotExists(projectId,templateId,null);
         return ResponseEntity.ok(null);
     }
 

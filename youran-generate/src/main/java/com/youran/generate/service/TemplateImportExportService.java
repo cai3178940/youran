@@ -43,6 +43,8 @@ public class TemplateImportExportService {
     private CodeTemplateService codeTemplateService;
     @Autowired
     private TemplateFileOutputService templateFileOutputService;
+    @Autowired
+    private CodeTemplateAssembleService codeTemplateAssembleService;
 
     /**
      * 模板导出
@@ -50,7 +52,7 @@ public class TemplateImportExportService {
      * @return
      */
     public File exportTemplate(Integer templateId) {
-        CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
+        CodeTemplatePO templatePO = codeTemplateAssembleService.getAssembledCodeTemplate(templateId,null);
         String exportDir = tmpDirService.getTemplateExportDir(templatePO);
         String zipFilePath = exportDir + ".zip";
         File dir = new File(exportDir);
@@ -62,14 +64,12 @@ public class TemplateImportExportService {
         } catch (IOException e) {
             LOGGER.error("创建导出目录失败", e);
         }
-        List<TemplateFilePO> templateFiles = templateFileService.getAllTemplateFiles(templateId);
-        templatePO.setTemplateFiles(templateFiles);
         // 导出模板json文件
         JsonUtil.writeJsonToFile(templatePO, true, new File(dir, TEMPLATE_JSON_FILE));
         // 模板文件输出目录
         String outputDir = exportDir + File.separator + TEMPLATE_FILE_DIR;
         // 把文件输出到目录
-        templateFileOutputService.outputTemplateFiles(templateFiles, outputDir);
+        templateFileOutputService.outputTemplateFiles(templatePO.getTemplateFiles(), outputDir);
         // 将文件夹打成压缩包
         Zip4jUtil.compressFolder(dir, outFile);
         return outFile;

@@ -12,14 +12,13 @@ import com.youran.generate.constant.DevMode;
 import com.youran.generate.constant.TemplateEnum;
 import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
-import com.youran.generate.pojo.po.GenHistoryPO;
-import com.youran.generate.pojo.po.MetaConstPO;
-import com.youran.generate.pojo.po.MetaEntityPO;
-import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.pojo.po.*;
 import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.template.context.BaseContext;
 import com.youran.generate.template.context.ConstContext;
 import com.youran.generate.template.context.EntityContext;
+import com.youran.generate.template.renderer.TemplateRenderer;
+import com.youran.generate.template.renderer.TemplateRendererBuilder;
 import com.youran.generate.util.FreeMakerUtil;
 import com.youran.generate.util.Zip4jUtil;
 import org.apache.commons.io.FileUtils;
@@ -62,6 +61,10 @@ public class MetaCodeGenService {
     private GenHistoryService genHistoryService;
     @Autowired
     private TmpDirService tmpDirService;
+    @Autowired
+    private CodeTemplateAssembleService codeTemplateAssembleService;
+    @Autowired
+    private TemplateRendererBuilder templateRendererBuilder;
     /**
      * 代码生成须加锁
      */
@@ -136,10 +139,12 @@ public class MetaCodeGenService {
      * 如果当天尚未生成过最新版本的代码，则生成代码
      * 总体进度20%-80%之间
      * @param projectId 项目id
+     * @param templateId 模板id
      * @param progressConsumer 进度条
      * @return 代码目录
      */
-    public String genProjectCodeIfNotExists(Integer projectId,Consumer<ProgressVO> progressConsumer){
+    public String genProjectCodeIfNotExists(Integer projectId, Integer templateId,
+                                            Consumer<ProgressVO> progressConsumer){
         if(lock.tryLock()) {
             try {
                 MetaProjectPO project = metaProjectService.getProject(projectId, true);
@@ -149,7 +154,7 @@ public class MetaCodeGenService {
                 // 如果当天尚未生成过同一个版本的代码，则执行代码生成
                 if (!dir.exists()) {
                     try {
-                        this.doGenCode(projectDir, projectId, progressConsumer);
+                        this.doGenCode(projectDir, projectId, templateId, progressConsumer);
                     } catch (Exception e) {
                         LOGGER.error("代码生成异常", e);
                         try {
@@ -180,38 +185,43 @@ public class MetaCodeGenService {
      * 在指定目录中生成代码
      * @param projectDir
      * @param projectId
+     * @param templateId
      * @param progressConsumer
      */
-    private void doGenCode(String projectDir, Integer projectId,Consumer<ProgressVO> progressConsumer){
+    private void doGenCode(String projectDir, Integer projectId,
+                           Integer templateId, Consumer<ProgressVO> progressConsumer){
+        CodeTemplatePO templatePO = codeTemplateAssembleService.getAssembledCodeTemplate(templateId, progressConsumer);
         // 获取组装后的项目
         this.progressing(progressConsumer,20,80,1,"获取并组装项目元数据");
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
             true,true,true, true, true, true);
+        // 构建模板渲染器
+        TemplateRenderer templateRenderer = templateRendererBuilder.buildRenderer(templatePO);
         LOGGER.debug("------代码生成临时路径：" + projectDir);
         this.progressing(progressConsumer,20,80,1,"开始渲染代码");
-        for (TemplateEnum templateEnum : TemplateEnum.values()) {
+        for (TemplateFilePO templateFile : templatePO.getTemplateFiles()) {
             try {
-                // 睡20毫秒，故意慢一点，好让前端进度条反应缓慢增长
-                Thread.sleep(20);
+                // 睡10毫秒，故意慢一点，好让前端进度条反应缓慢增长
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             //生成全局文件
             this.progressing(progressConsumer,25,80, 2,"代码渲染中");
-            if (templateEnum.getType() == ContextType.GLOBAL) {
+            if (Objects.equals(templateFile.getContextType(), ContextType.GLOBAL.getValue())) {
                 BaseContext context = new BaseContext(project);
-                this.renderFTL(context,templateEnum,projectDir);
-            } else if (templateEnum.getType() == ContextType.ENTITY) {
+                this.renderTemplate(templateRenderer,context,templateFile,projectDir);
+            } else if (Objects.equals(templateFile.getContextType(), ContextType.ENTITY.getValue())) {
                 //生成实体模版文件
                 for (MetaEntityPO metaEntityPO : project.getEntities()) {
                     EntityContext context = new EntityContext(project,metaEntityPO);
-                    this.renderFTL(context,templateEnum,projectDir);
+                    this.renderTemplate(templateRenderer,context,templateFile,projectDir);
                 }
-            } else if (templateEnum.getType() == ContextType.CONST) {
+            } else if (Objects.equals(templateFile.getContextType(), ContextType.CONST.getValue())) {
                 //生成枚举模版文件
                 for (MetaConstPO metaConstPO : project.getConsts()) {
                     ConstContext context = new ConstContext(project,metaConstPO);
-                    this.renderFTL(context,templateEnum,projectDir);
+                    this.renderTemplate(templateRenderer,context,templateFile,projectDir);
                 }
             }
         }
@@ -289,55 +299,27 @@ public class MetaCodeGenService {
 
     /**
      * 渲染模板
+     * @param templateRenderer 模板渲染器
      * @param context 上下文信息
-     * @param templateEnum 模板枚举
+     * @param templateFile 模板文件
      * @param projectDir 代码输出目录
      */
-    private void renderFTL(BaseContext context, TemplateEnum templateEnum, String projectDir) {
-        LOGGER.debug("------开始渲染" + templateEnum.name() + "------");
+    private void renderTemplate(TemplateRenderer templateRenderer,BaseContext context,
+                                TemplateFilePO templateFile, String projectDir) {
+        String filePath = templateFile.buildFilePath();
+        LOGGER.debug("------开始渲染模板文件: {}",filePath);
         try {
-            String text = FreeMakerUtil.writeToStr("root/"+templateEnum.getTemplate(), context);
-            LOGGER.debug(text);
-            String outFilePath = this.renderCodeFilePath(context, templateEnum, projectDir);
+            String relativePath = templateRenderer.renderPath(templateFile,context);
+            String outFilePath = projectDir + relativePath;
             LOGGER.debug("输出代码文件：{}",outFilePath);
-            this.writeToFile(text, outFilePath);
+            String content = templateRenderer.renderContent(templateFile,context);
+            LOGGER.trace(content);
+            this.writeToFile(content, outFilePath);
         } catch (SkipCurrentException e) {
             return;
         }
     }
 
-    /**
-     * 渲染代码文件输出路径
-     * @param context 上下文信息
-     * @param templateEnum 模板枚举
-     * @param projectDir 代码输出目录
-     * @return 代码文件地址
-     */
-    private String renderCodeFilePath(BaseContext context, TemplateEnum templateEnum, String projectDir){
-        String packageName = context.getPackageName();
-        if (StringUtils.isBlank(packageName)) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"包名未设置");
-        }
-        String templatePath = templateEnum.getTemplate()
-                .replace("{commonModule}",context.getProjectNameSplit()+"-common")
-                .replace("{coreModule}",context.getProjectNameSplit()+"-core")
-                .replace("{webModule}",context.getProjectNameSplit()+"-web")
-                .replace("{packageName}", packageName.replaceAll("\\.", "/"))
-                .replace("{commonPackage}",context.getCommonPackage().replaceAll("\\.", "/"))
-                .replace("{ProjectName}", context.getProjectNameUpper())
-                .replace("{projectName}", context.getProjectName())
-                .replace("{project-name}", context.getProjectNameSplit());
-        if (context instanceof EntityContext) {
-            EntityContext entityContext = (EntityContext) context;
-            templatePath = templatePath.replace("{ClassName}", entityContext.getClassNameUpper());
-        }
-        if (context instanceof ConstContext) {
-            ConstContext constContext = (ConstContext) context;
-            templatePath = templatePath.replace("{EnumName}", constContext.getConstNameUpper());
-        }
-        templatePath = templatePath.substring(0, templatePath.lastIndexOf("."));
-        return projectDir + "/" + templatePath;
-    }
 
     /**
      * 将文本写入文件

@@ -47,6 +47,14 @@ public class TemplateFilePO extends BasePO {
     @JsonIgnore
     private String content;
 
+    /**
+     * 构建模板文件路径
+     * @return
+     */
+    public String buildFilePath(){
+        return this.fileDir+fileName;
+    }
+
     public Integer getFileId() {
         return this.fileId;
     }

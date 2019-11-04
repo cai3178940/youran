@@ -33,8 +33,9 @@ public interface MetaCodeGenAPI {
     @ApiOperation(value = "仅生成代码，不下载")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
+            @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "query"),
     })
-    ResponseEntity<Void> genCode(Integer projectId);
+    ResponseEntity<Void> genCode(Integer projectId, Integer templateId);
 
     /**
      * 生成代码并下载压缩包
