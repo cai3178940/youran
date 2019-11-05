@@ -31,9 +31,14 @@ public class TemplateFileOutputService {
      */
     public void outputTemplateFiles(List<TemplateFilePO> templateFiles, String outputDir) {
         File outputDirFile = new File(outputDir);
-        if (!outputDirFile.exists()) {
-            outputDirFile.mkdirs();
+        // 如果目录存在，则删除
+        if (outputDirFile.exists()) {
+            try {
+                FileUtils.deleteDirectory(outputDirFile);
+            } catch (IOException e) {
+            }
         }
+        outputDirFile.mkdirs();
         try {
             for (TemplateFilePO templateFile : templateFiles) {
                 String contentFilePath = outputDir + templateFile.getFileDir() + File.separator + templateFile.getFileName();

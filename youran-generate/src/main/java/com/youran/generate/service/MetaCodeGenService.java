@@ -132,7 +132,7 @@ public class MetaCodeGenService {
                 // 获取最新代码目录
                 String projectDir = tmpDirService.getProjectRecentDir(project, templatePO);
                 File dir = new File(projectDir);
-                // 如果当天尚未生成过同一个版本的代码，则执行代码生成
+                // 如果尚未生成过同一个版本的代码，则执行代码生成
                 if (!dir.exists()) {
                     try {
                         this.doGenCode(projectDir, projectId, templateId, progressConsumer);
@@ -292,7 +292,7 @@ public class MetaCodeGenService {
      */
     private void renderTemplate(TemplateRenderer templateRenderer, BaseContext context,
                                 TemplateFilePO templateFile, String projectDir) {
-        String filePath = templateFile.buildFilePath();
+        String filePath = templateFile.fetchFilePath();
         LOGGER.debug("------开始渲染模板文件: {}", filePath);
         try {
             String relativePath = templateRenderer.renderPath(templateFile, context);

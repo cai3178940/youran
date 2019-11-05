@@ -49,11 +49,11 @@ public class TemplateFilePO extends BasePO {
     private String content;
 
     /**
-     * 构建模板文件路径
+     * 获取模板文件路径
      *
      * @return
      */
-    public String buildFilePath() {
+    public String fetchFilePath() {
         return this.fileDir + fileName;
     }
 
