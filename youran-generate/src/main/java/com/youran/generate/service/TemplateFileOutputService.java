@@ -41,7 +41,7 @@ public class TemplateFileOutputService {
         outputDirFile.mkdirs();
         try {
             for (TemplateFilePO templateFile : templateFiles) {
-                String contentFilePath = outputDir + templateFile.getFileDir() + File.separator + templateFile.getFileName();
+                String contentFilePath = outputDir + templateFile.fetchFilePath();
                 File contentFile = new File(contentFilePath);
                 FileUtils.writeStringToFile(contentFile, templateFile.getContent(), StandardCharsets.UTF_8);
             }

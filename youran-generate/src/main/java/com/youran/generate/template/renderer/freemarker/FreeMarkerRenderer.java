@@ -40,7 +40,7 @@ public class FreeMarkerRenderer implements TemplateRenderer {
         if (StringUtils.isBlank(packageName)) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "包名未设置");
         }
-        String relativePath = templateFilePO.getFileDir() + templateFilePO.getFileName();
+        String relativePath = templateFilePO.fetchFilePath();
         relativePath = relativePath
             .replace("{commonModule}", context.getProjectNameSplit() + "-common")
             .replace("{coreModule}", context.getProjectNameSplit() + "-core")
@@ -64,7 +64,7 @@ public class FreeMarkerRenderer implements TemplateRenderer {
 
     @Override
     public String renderContent(TemplateFilePO templateFilePO, BaseContext context) {
-        String relativePath = templateFilePO.getFileDir() + templateFilePO.getFileName();
+        String relativePath = templateFilePO.fetchFilePath();
         try {
             StringWriter stringWriter = new StringWriter();
             BufferedWriter writer = new BufferedWriter(stringWriter);
@@ -84,7 +84,6 @@ public class FreeMarkerRenderer implements TemplateRenderer {
                 }
             }
             LOGGER.error(e.getMessage(), e);
-            e.printStackTrace();
             throw new BusinessException("freemarker解析异常,dataModel="
                 + context + ",templateName=" + relativePath + extraErrorMsg, e);
         }

@@ -10,6 +10,8 @@ import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +26,8 @@ import java.util.stream.Stream;
  */
 public class MetadataUtil {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetadataUtil.class);
+
     private static final String[] SPECIAL_DEFAULT_VALUE = {"NOW", "CURRENT_TIMESTAMP"};
     public static List<String> MYSQL_KEYWORD;
 
@@ -32,7 +36,7 @@ public class MetadataUtil {
             InputStream stream = MetadataUtil.class.getClassLoader().getResourceAsStream("mysql_keyword.txt");
             MYSQL_KEYWORD = IOUtils.readLines(stream, "utf-8");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("MetadataUtil初始化异常", e);
         }
     }
 

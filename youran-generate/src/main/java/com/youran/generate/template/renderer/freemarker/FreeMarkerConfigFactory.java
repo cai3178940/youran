@@ -1,5 +1,6 @@
 package com.youran.generate.template.renderer.freemarker;
 
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MetaConstType;
 import com.youran.generate.constant.MetaSpecialField;
@@ -7,7 +8,6 @@ import com.youran.generate.constant.QueryType;
 import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.service.TemplateFileOutputService;
 import com.youran.generate.service.TmpDirService;
-import com.youran.generate.util.FreeMakerUtil;
 import com.youran.generate.util.MetadataUtil;
 import com.youran.generate.util.TemplateUtil;
 import freemarker.ext.beans.BeansWrapper;
@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -107,7 +109,12 @@ public class FreeMarkerConfigFactory {
         templateFileOutputService.outputTemplateFiles(templatePO.getTemplateFiles(), templateDir);
 
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_25);
-        cfg.setClassForTemplateLoading(FreeMakerUtil.class, "/ftl");
+        try {
+            cfg.setDirectoryForTemplateLoading(new File(templateDir));
+        } catch (IOException e) {
+            LOGGER.error("模板目录设置异常", e);
+            throw new BusinessException("模板目录设置异常");
+        }
         cfg.setNumberFormat("#");
         // 设置可访问的静态工具类
         cfg.setSharedVariable("MetaConstType", metaConstTypeModel);

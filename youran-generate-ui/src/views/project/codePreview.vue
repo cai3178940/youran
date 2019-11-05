@@ -203,7 +203,7 @@ export default {
             'projectVersion': this.codeTree.projectVersion,
             'templateId': this.codeTree.templateId,
             'templateInnerVersion': this.codeTree.templateInnerVersion,
-            'filePath': encodeURIComponent(data.path)
+            'filePath': data.path
           }
         })
         .then(response => this.$common.checkResult(response))

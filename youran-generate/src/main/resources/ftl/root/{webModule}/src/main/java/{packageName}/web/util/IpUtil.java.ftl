@@ -1,6 +1,8 @@
 <#include "/common.ftl">
 <#--定义主体代码-->
 <#assign code>
+<@call this.addImport("org.slf4j.Logger")/>
+<@call this.addImport("org.slf4j.LoggerFactory")/>
 <@call this.addImport("javax.servlet.http.HttpServletRequest")/>
 <@call this.addImport("java.net.InetAddress")/>
 <@call this.addImport("java.net.NetworkInterface")/>
@@ -10,6 +12,8 @@
 <@call this.addImport("java.util.regex.Pattern")/>
 <@call this.printClassCom("IP工具")/>
 public class IpUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(IpUtil.class);
 
     /**
      * 获取客户端ip
@@ -97,7 +101,7 @@ public class IpUtil {
                 }
             } while (!finded);
         } catch (SocketException e) {
-            e.printStackTrace();
+            LOGGER.error("获取本地ip异常", e);
         }
         if ((netip != null) && (!"".equals(netip))) {
             return netip;

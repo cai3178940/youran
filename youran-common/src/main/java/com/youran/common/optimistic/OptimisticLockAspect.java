@@ -84,7 +84,6 @@ public class OptimisticLockAspect {
                             //睡100毫秒再试
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
                         }
                         logger.warn("乐观锁重试,retry=" + retry + ",method=" + thisJoinPoint.getSignature().getName());
                         return tryServiceProceed(thisJoinPoint, catchTypes, --retry);

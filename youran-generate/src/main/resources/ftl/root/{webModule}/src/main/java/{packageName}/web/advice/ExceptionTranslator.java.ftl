@@ -141,7 +141,7 @@ public class ExceptionTranslator {
     @ExceptionHandler(BusinessException.class)
     @ResponseBody
     public ResponseEntity<ReplyVO> processBusinessException(BusinessException ex) {
-        ex.printStackTrace();
+        LOGGER.error("业务异常", ex);
         ErrorCode code = ex.getErrorCode();
         ResponseEntity.BodyBuilder builder = ResponseEntity.status(Integer.parseInt(code.getValue()));
         ReplyVO replyVO = new ReplyVO(code.getValue(), ex.getMessage());

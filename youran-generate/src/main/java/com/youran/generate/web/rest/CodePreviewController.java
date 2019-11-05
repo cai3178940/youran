@@ -70,6 +70,7 @@ public class CodePreviewController extends AbstractController implements CodePre
         }
         File file = new File(dirFile, qo.getFilePath());
         if (!file.exists()) {
+            LOGGER.error("文件不存在:{}",file.getPath());
             throw new BusinessException("文件不存在");
         }
         try {
@@ -114,6 +115,8 @@ public class CodePreviewController extends AbstractController implements CodePre
         treeVO.setProjectId(projectId);
         treeVO.setProjectVersion(project.getProjectVersion());
         treeVO.setTree(fileNodeList);
+        treeVO.setTemplateId(templateId);
+        treeVO.setTemplateInnerVersion(templatePO.getInnerVersion());
         return ResponseEntity.ok(treeVO);
     }
 

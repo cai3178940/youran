@@ -54,7 +54,7 @@ public class TemplateFilePO extends BasePO {
      * @return
      */
     public String fetchFilePath() {
-        return this.fileDir + fileName;
+        return this.fileDir + "/" + fileName;
     }
 
     public Integer getFileId() {

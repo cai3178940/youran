@@ -277,7 +277,7 @@ export default {
       )
         .then(progressVO => {
           if (progressVO.status === 2) {
-            this.$refs.codePreview.show(row.projectId, row.projectName, row.templateIndex)
+            this.$refs.codePreview.show(row.projectId, row.projectName, templateIndex)
           } else {
             this.$common.showNotifyError(progressVO.msg)
           }

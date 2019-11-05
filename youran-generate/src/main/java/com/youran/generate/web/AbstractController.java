@@ -37,7 +37,7 @@ public abstract class AbstractController {
         try {
             IOUtils.write(ErrorCode.NOT_FOUND.getDesc(), response.getOutputStream(), "UTF-8");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("IO异常", e);
         }
     }
 
@@ -56,7 +56,7 @@ public abstract class AbstractController {
         try {
             IOUtils.write(text, response.getOutputStream(), "UTF-8");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("IO异常", e);
         }
     }
 
@@ -81,7 +81,7 @@ public abstract class AbstractController {
             byte[] bytes = FileUtils.readFileToByteArray(file);
             IOUtils.write(bytes, response.getOutputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("IO异常", e);
         }
     }
 

@@ -186,7 +186,6 @@ public class MetaCodeGenService {
                 // 睡10毫秒，故意慢一点，好让前端进度条反应缓慢增长
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
             //生成全局文件
             this.progressing(progressConsumer, 25, 80, 2, "代码渲染中");

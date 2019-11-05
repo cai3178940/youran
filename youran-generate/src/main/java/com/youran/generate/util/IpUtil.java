@@ -1,5 +1,8 @@
 package com.youran.generate.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -15,6 +18,8 @@ import java.util.regex.Pattern;
  * @date 2017/5/20
  */
 public class IpUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(IpUtil.class);
 
     private static final String UNKNOWN = "unknown";
     private static final String IP_SEPARATOR = ",";
@@ -107,7 +112,7 @@ public class IpUtil {
                 }
             } while (!finded);
         } catch (SocketException e) {
-            e.printStackTrace();
+            LOGGER.error("获取本地ip异常", e);
         }
         if ((netip != null) && (!"".equals(netip))) {
             return netip;
