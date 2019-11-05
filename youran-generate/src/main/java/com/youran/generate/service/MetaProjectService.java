@@ -14,7 +14,9 @@ import com.youran.generate.pojo.mapper.MetaProjectMapper;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.pojo.qo.CodeTemplateQO;
 import com.youran.generate.pojo.qo.MetaProjectQO;
+import com.youran.generate.pojo.vo.CodeTemplateListVO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 项目增删改查服务
@@ -46,6 +50,8 @@ public class MetaProjectService {
 
     @Autowired
     private GenerateProperties generateProperties;
+    @Autowired
+    private CodeTemplateService codeTemplateService;
 
     /**
      * 获取项目正规名称
@@ -156,7 +162,30 @@ public class MetaProjectService {
      * @return
      */
     public List<MetaProjectListVO> list(MetaProjectQO metaProjectQO) {
-        return metaProjectDAO.findListByQuery(metaProjectQO);
+        Map<Integer, CodeTemplateListVO> templateMap = codeTemplateService.list(new CodeTemplateQO())
+            .stream().collect(Collectors.toMap(CodeTemplateListVO::getTemplateId, o -> o));
+        List<MetaProjectListVO> list = metaProjectDAO.findListByQuery(metaProjectQO);
+        list.forEach(vo -> {
+            if(vo.getTemplateId()!=null) {
+                CodeTemplateListVO template = templateMap.get(vo.getTemplateId());
+                if(template!=null){
+                    vo.setTemplateCode(template.getCode());
+                }
+            }
+            if(vo.getTemplateId2()!=null) {
+                CodeTemplateListVO template = templateMap.get(vo.getTemplateId2());
+                if(template!=null){
+                    vo.setTemplateCode2(template.getCode());
+                }
+            }
+            if(vo.getTemplateId3()!=null) {
+                CodeTemplateListVO template = templateMap.get(vo.getTemplateId3());
+                if(template!=null){
+                    vo.setTemplateCode3(template.getCode());
+                }
+            }
+        });
+        return list;
     }
 
     /**

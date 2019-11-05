@@ -45,7 +45,7 @@
         <template v-slot="scope">
           <el-button @click="handleEntity(scope.row)" type="text" size="medium">实体管理</el-button>
           <el-button @click="handleConst(scope.row)" type="text" size="medium">枚举管理</el-button>
-          <el-dropdown trigger="click" @command="handleCommand" style="margin-left:10px;">
+          <el-dropdown size="small" trigger="click" @command="handleCommand" style="margin-left:10px;">
             <span class="el-dropdown-link button-font">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
@@ -66,27 +66,27 @@
                 <i class="iconfont icon-download dropdown-icon"></i>
                 导出元数据
               </el-dropdown-item>
-              <el-dropdown-item v-for="(item, index) in getProjectTemplateIndexs(scope.row)"
-                                :key="'preview_button_' + scope.row.projectId + '_' + item"
-                                :command="{method:'handlePreView',arg: [ scope.row , item ]}"
+              <el-dropdown-item v-for="(templateIndex, index) in getProjectTemplateIndexs(scope.row)"
+                                :key="'preview_button_' + scope.row.projectId + '_' + templateIndex"
+                                :command="{method:'handlePreView',arg: [ scope.row , templateIndex ]}"
                                 :divided="index===0">
-                <i class="iconfont icon-preview2 dropdown-icon"></i>
-                代码预览(模板{{item}}）
+                <i class="iconfont icon-preview2 dropdown-icon" :class="iconColorClass[index]"></i>
+                代码预览({{scope.row | templateCode(templateIndex) }}）
               </el-dropdown-item>
-              <el-dropdown-item v-for="(item, index) in getProjectTemplateIndexs(scope.row)"
-                                :key="'gencode_button_' + scope.row.projectId + '_' + item"
-                                :command="{method:'handleGenCode',arg: [ scope.row , item ]}"
+              <el-dropdown-item v-for="(templateIndex, index) in getProjectTemplateIndexs(scope.row)"
+                                :key="'gencode_button_' + scope.row.projectId + '_' + templateIndex"
+                                :command="{method:'handleGenCode',arg: [ scope.row , templateIndex ]}"
                                 :divided="index===0">
-                <i class="iconfont icon-code-download dropdown-icon"></i>
-                下载代码(模板{{item}}）
+                <i class="iconfont icon-code-download dropdown-icon" :class="iconColorClass[index]"></i>
+                下载代码({{scope.row | templateCode(templateIndex) }}）
               </el-dropdown-item>
               <template v-if="scope.row.remote==1">
-                <el-dropdown-item v-for="(item, index) in getProjectRemoteUrlIndexs(scope.row)"
-                                  :key="'gitcommit_button_' + scope.row.projectId + '_' + item"
-                                  :command="{method:'handleCommit',arg: [ scope.row , item ]}"
+                <el-dropdown-item v-for="(templateIndex, index) in getProjectRemoteUrlIndexs(scope.row)"
+                                  :key="'gitcommit_button_' + scope.row.projectId + '_' + templateIndex"
+                                  :command="{method:'handleCommit',arg: [ scope.row , templateIndex ]}"
                                   :divided="index===0">
-                  <i class="iconfont icon-git1 dropdown-icon"></i>
-                  提交Git(模板{{item}}）
+                  <i class="iconfont icon-git1 dropdown-icon" :class="iconColorClass[index]"></i>
+                  提交Git({{scope.row | templateCode(templateIndex) }}）
                 </el-dropdown-item>
               </template>
             </el-dropdown-menu>
@@ -166,10 +166,23 @@ export default {
           { max: 10000, message: '长度不能超过10000个字符', trigger: 'blur' }
         ]
       },
+      iconColorClass: ['color-primary', 'color-warning', 'color-success'],
       progressingProjectIds: [],
       downloadUrl: '',
       importFormVisible: false,
       importUrl: `/${apiPath}/meta_import`
+    }
+  },
+  filters: {
+    templateCode (row, templateIndex) {
+      if (templateIndex == 1) {
+        return row.templateCode
+      } else if (templateIndex == 2) {
+        return row.templateCode2
+      } else if (templateIndex == 3) {
+        return row.templateCode3
+      }
+      return ''
     }
   },
   methods: {

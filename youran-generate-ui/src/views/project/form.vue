@@ -201,6 +201,8 @@ export default {
       for (const key in initFormBean(true)) {
         this.form[key] = this.old[key]
       }
+      this.templateItemVisible2 = !!this.form.templateId2
+      this.templateItemVisible3 = !!this.form.templateId3
     },
     submit () {
       let loading = null

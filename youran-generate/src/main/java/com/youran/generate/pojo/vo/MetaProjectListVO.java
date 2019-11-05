@@ -45,6 +45,15 @@ public class MetaProjectListVO extends AbstractVO {
     @ApiModelProperty(notes = N_TEMPLATEID, example = E_TEMPLATEID)
     private Integer templateId3;
 
+    @ApiModelProperty(notes = "模板编号", example = "code-001")
+    private String templateCode;
+
+    @ApiModelProperty(notes = "模板编号2", example = "code-002")
+    private String templateCode2;
+
+    @ApiModelProperty(notes = "模板编号3", example = "code-003")
+    private String templateCode3;
+
     @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
     private String remoteUrl;
 
@@ -167,6 +176,30 @@ public class MetaProjectListVO extends AbstractVO {
 
     public void setProjectDesc(String projectDesc) {
         this.projectDesc = projectDesc;
+    }
+
+    public String getTemplateCode() {
+        return templateCode;
+    }
+
+    public void setTemplateCode(String templateCode) {
+        this.templateCode = templateCode;
+    }
+
+    public String getTemplateCode2() {
+        return templateCode2;
+    }
+
+    public void setTemplateCode2(String templateCode2) {
+        this.templateCode2 = templateCode2;
+    }
+
+    public String getTemplateCode3() {
+        return templateCode3;
+    }
+
+    public void setTemplateCode3(String templateCode3) {
+        this.templateCode3 = templateCode3;
     }
 
     @Override
