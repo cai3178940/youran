@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 /**
- * <p>Title: 代码模板</p>
- * <p>Description: 代码模板</p>
+ * 代码模板
+ * <p> 代码模板
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -24,6 +25,7 @@ public class CodeTemplatePO extends BasePO {
 
     /**
      * 模板类型【1后端，2前端】
+     *
      * @see com.youran.generate.constant.TemplateType
      */
     private Integer templateType;

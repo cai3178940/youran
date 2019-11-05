@@ -28,15 +28,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * <p>Title: 元数据导入导出服务类</p>
- * <p>Description:</p>
+ * 元数据导入导出服务类
+ *
  * @author: cbb
  * @date: 10/12/2019 21:20
  */
 @Service
 public class MetaImportExportService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MetaImportExportService.class);
 
     public static final String PROJECT_JSON_FILE = "project.json";
     public static final String CONST_JSON_FILE = "const.json";
@@ -48,8 +46,7 @@ public class MetaImportExportService {
     public static final String MTM_JSON_FILE = "manyToMany.json";
     public static final String MTM_CASCADE_EXT_JSON_FILE = "mtmCascadeExt.json";
     public static final String SYSTEM_JSON_FILE = "_system.json";
-
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetaImportExportService.class);
     @Autowired
     private MetaQueryAssembleService metaQueryAssembleService;
     @Autowired
@@ -78,6 +75,7 @@ public class MetaImportExportService {
 
     /**
      * 将项目元数据导出成zip
+     *
      * @param projectId
      * @return
      */
@@ -93,21 +91,21 @@ public class MetaImportExportService {
             FileUtils.deleteQuietly(outFile);
             FileUtils.forceMkdir(dir);
         } catch (IOException e) {
-            LOGGER.error("创建导出目录失败",e);
+            LOGGER.error("创建导出目录失败", e);
         }
         // 导出项目json文件
-        JsonUtil.writeJsonToFile(project,true,new File(dir,PROJECT_JSON_FILE));
+        JsonUtil.writeJsonToFile(project, true, new File(dir, PROJECT_JSON_FILE));
         List<MetaConstPO> consts = project.getConsts();
         // 导出枚举json文件
-        JsonUtil.writeJsonToFile(consts,true,new File(dir,CONST_JSON_FILE));
+        JsonUtil.writeJsonToFile(consts, true, new File(dir, CONST_JSON_FILE));
         List<MetaConstDetailPO> details = consts.stream()
             .flatMap(constPO -> constPO.getDetailList().stream())
             .collect(Collectors.toList());
         // 导出枚举值json文件
-        JsonUtil.writeJsonToFile(details,true,new File(dir,CONST_DETAIL_JSON_FILE));
+        JsonUtil.writeJsonToFile(details, true, new File(dir, CONST_DETAIL_JSON_FILE));
         List<MetaEntityPO> entities = project.getEntities();
         // 导出实体json文件
-        JsonUtil.writeJsonToFile(entities,true,new File(dir,ENTITY_JSON_FILE));
+        JsonUtil.writeJsonToFile(entities, true, new File(dir, ENTITY_JSON_FILE));
         List<MetaFieldPO> fields = entities.stream()
             .flatMap(entityPO -> {
                 Map<Integer, MetaFieldPO> fieldMap = entityPO.getFields();
@@ -117,13 +115,13 @@ public class MetaImportExportService {
                 return fieldMap.values().stream();
             }).collect(Collectors.toList());
         // 导出字段json文件
-        JsonUtil.writeJsonToFile(fields,true,new File(dir,FIELD_JSON_FILE));
+        JsonUtil.writeJsonToFile(fields, true, new File(dir, FIELD_JSON_FILE));
         List<MetaIndexPO> indexes = entities.stream()
             .flatMap(entityPO -> entityPO.getIndexes().stream())
             .peek(MetaIndexPO::resetFieldIds)
             .collect(Collectors.toList());
         // 导出索引json文件
-        JsonUtil.writeJsonToFile(indexes,true,new File(dir,INDEX_JSON_FILE));
+        JsonUtil.writeJsonToFile(indexes, true, new File(dir, INDEX_JSON_FILE));
 
         List<MetaCascadeExtPO> cascadeExts = fields.stream()
             .flatMap(fieldPO -> {
@@ -135,10 +133,10 @@ public class MetaImportExportService {
             })
             .collect(Collectors.toList());
         // 导出外键级联扩展json文件
-        JsonUtil.writeJsonToFile(cascadeExts,true,new File(dir,CASCADE_EXT_JSON_FILE));
+        JsonUtil.writeJsonToFile(cascadeExts, true, new File(dir, CASCADE_EXT_JSON_FILE));
         List<MetaManyToManyPO> mtms = project.getMtms();
         // 导出多对多json文件
-        JsonUtil.writeJsonToFile(mtms,true,new File(dir,MTM_JSON_FILE));
+        JsonUtil.writeJsonToFile(mtms, true, new File(dir, MTM_JSON_FILE));
         List<MetaMtmCascadeExtPO> mtmCascades = mtms.stream()
             .flatMap(mtm -> {
                 List<MetaMtmCascadeExtPO> list1 = mtm.getCascadeExtList1();
@@ -147,11 +145,11 @@ public class MetaImportExportService {
             })
             .collect(Collectors.toList());
         // 导出多对多级联扩展json文件
-        JsonUtil.writeJsonToFile(mtmCascades,true,new File(dir,MTM_CASCADE_EXT_JSON_FILE));
+        JsonUtil.writeJsonToFile(mtmCascades, true, new File(dir, MTM_CASCADE_EXT_JSON_FILE));
 
         // 导出系统信息json文件
         SystemDTO systemDTO = new SystemDTO(generateProperties.getVersion());
-        JsonUtil.writeJsonToFile(systemDTO,true,new File(dir,SYSTEM_JSON_FILE));
+        JsonUtil.writeJsonToFile(systemDTO, true, new File(dir, SYSTEM_JSON_FILE));
 
         // 将文件夹打成压缩包
         Zip4jUtil.compressFolder(dir, outFile);
@@ -160,6 +158,7 @@ public class MetaImportExportService {
 
     /**
      * 通过zip压缩包导入项目元数据
+     *
      * @param zipFile
      * @return
      */
@@ -168,13 +167,13 @@ public class MetaImportExportService {
         String importDir = tmpDirService.getPathWithoutZipFileSuffix(zipFile);
         // 解压zip包
         Zip4jUtil.extractAll(zipFile, importDir);
-        LOGGER.info("将zip包解压到：{}",importDir);
+        LOGGER.info("将zip包解压到：{}", importDir);
         // json文件所在目录
         String jsonDir = tmpDirService.getFirstChildDir(importDir) + File.separator;
         // 读取项目json文件，并解析成po
         MetaProjectPO projectFromJson = JsonUtil.parseObjectFromFile(
             new File(jsonDir + PROJECT_JSON_FILE), MetaProjectPO.class);
-        if(projectFromJson==null){
+        if (projectFromJson == null) {
             throw new BusinessException("导入失败");
         }
         MetaProjectPO project = this.saveProject(projectFromJson);
@@ -183,7 +182,7 @@ public class MetaImportExportService {
         List<MetaConstPO> constListFromJson = JsonUtil.parseArrayFromFile(
             new File(jsonDir + CONST_JSON_FILE), MetaConstPO.class);
         List<MetaConstPO> constList = constListFromJson.stream()
-            .map(constFromJson -> this.saveConst(constFromJson,project.getProjectId()))
+            .map(constFromJson -> this.saveConst(constFromJson, project.getProjectId()))
             .collect(Collectors.toList());
         Map<Integer, Integer> constIdMap = this.getIdMap(constListFromJson, constList, MetaConstPO::getConstId);
 
@@ -191,13 +190,13 @@ public class MetaImportExportService {
         List<MetaConstDetailPO> constDetailListFromJson = JsonUtil.parseArrayFromFile(
             new File(jsonDir + CONST_DETAIL_JSON_FILE), MetaConstDetailPO.class);
         constDetailListFromJson.stream()
-            .forEach(constDetailFromJson -> this.saveConstDetail(constDetailFromJson,constIdMap));
+            .forEach(constDetailFromJson -> this.saveConstDetail(constDetailFromJson, constIdMap));
 
         // 读取实体json文件，并解析成po列表
         List<MetaEntityPO> entityListFromJson = JsonUtil.parseArrayFromFile(
             new File(jsonDir + ENTITY_JSON_FILE), MetaEntityPO.class);
         List<MetaEntityPO> entityList = entityListFromJson.stream()
-            .map(entityFromJson -> this.saveEntity(entityFromJson,project.getProjectId()))
+            .map(entityFromJson -> this.saveEntity(entityFromJson, project.getProjectId()))
             .collect(Collectors.toList());
         Map<Integer, Integer> entityIdMap = this.getIdMap(entityListFromJson, entityList, MetaEntityPO::getEntityId);
 
@@ -205,33 +204,33 @@ public class MetaImportExportService {
         List<MetaFieldPO> fieldListFromJson = JsonUtil.parseArrayFromFile(
             new File(jsonDir + FIELD_JSON_FILE), MetaFieldPO.class);
         List<MetaFieldPO> fieldList = fieldListFromJson.stream()
-            .map(fieldFromJson -> this.saveField(fieldFromJson,entityIdMap))
+            .map(fieldFromJson -> this.saveField(fieldFromJson, entityIdMap))
             .collect(Collectors.toList());
         Map<Integer, Integer> fieldIdMap = this.getIdMap(fieldListFromJson, fieldList, MetaFieldPO::getFieldId);
 
         // 重置外键字段id
         fieldList.stream()
-            .filter(field -> BoolConst.isTrue(field.getForeignKey()) && field.getForeignFieldId()!=null)
-            .forEach(field -> this.resetForeignFieldId(field,fieldIdMap));
+            .filter(field -> BoolConst.isTrue(field.getForeignKey()) && field.getForeignFieldId() != null)
+            .forEach(field -> this.resetForeignFieldId(field, fieldIdMap));
 
         // 读取索引json文件，并解析成po列表
         List<MetaIndexPO> indexListFromJson = JsonUtil.parseArrayFromFile(
             new File(jsonDir + INDEX_JSON_FILE), MetaIndexPO.class);
         List<MetaIndexPO> indexList = indexListFromJson.stream()
-            .map(indexFromJson -> this.saveIndex(indexFromJson,entityIdMap,fieldIdMap))
+            .map(indexFromJson -> this.saveIndex(indexFromJson, entityIdMap, fieldIdMap))
             .collect(Collectors.toList());
 
         // 读取外键级联扩展json文件，并解析成po列表
         List<MetaCascadeExtPO> cascadeExtListFromJson = JsonUtil.parseArrayFromFile(
             new File(jsonDir + CASCADE_EXT_JSON_FILE), MetaCascadeExtPO.class);
         cascadeExtListFromJson.stream()
-            .forEach(cascadeExtFromJson -> this.saveCascadeExt(cascadeExtFromJson,entityIdMap,fieldIdMap));
+            .forEach(cascadeExtFromJson -> this.saveCascadeExt(cascadeExtFromJson, entityIdMap, fieldIdMap));
 
         // 读取多对多json文件，并解析成po列表
         List<MetaManyToManyPO> mtmListFromJson = JsonUtil.parseArrayFromFile(
             new File(jsonDir + MTM_JSON_FILE), MetaManyToManyPO.class);
         List<MetaManyToManyPO> mtmList = mtmListFromJson.stream()
-            .map(mtmFromJson -> this.saveMtm(mtmFromJson,project.getProjectId(),entityIdMap))
+            .map(mtmFromJson -> this.saveMtm(mtmFromJson, project.getProjectId(), entityIdMap))
             .collect(Collectors.toList());
         Map<Integer, Integer> mtmIdMap = this.getIdMap(mtmListFromJson, mtmList, MetaManyToManyPO::getMtmId);
 
@@ -239,38 +238,41 @@ public class MetaImportExportService {
         List<MetaMtmCascadeExtPO> mtmCascadeExtListFromJson = JsonUtil.parseArrayFromFile(
             new File(jsonDir + MTM_CASCADE_EXT_JSON_FILE), MetaMtmCascadeExtPO.class);
         mtmCascadeExtListFromJson.stream()
-            .forEach(mtmCascadeExtFromJson -> this.saveMtmCascadeExt(mtmCascadeExtFromJson,mtmIdMap,entityIdMap,fieldIdMap));
+            .forEach(mtmCascadeExtFromJson -> this.saveMtmCascadeExt(mtmCascadeExtFromJson, mtmIdMap, entityIdMap, fieldIdMap));
 
         return project;
     }
 
     /**
      * 把json中解析出来的项目保存到数据库
+     *
      * @param projectFromJson
      * @return
      */
-    private MetaProjectPO saveProject(MetaProjectPO projectFromJson){
+    private MetaProjectPO saveProject(MetaProjectPO projectFromJson) {
         MetaProjectPO project = MetaProjectMapper.INSTANCE.copyWithoutRemote(projectFromJson);
         metaProjectService.doSave(project);
-        LOGGER.debug("导入项目：{}",JsonUtil.toJSONString(project));
+        LOGGER.debug("导入项目：{}", JsonUtil.toJSONString(project));
         return project;
     }
 
     /**
      * 把json中解析出来的枚举保存到数据库
+     *
      * @param constFromJson
      * @return
      */
-    private MetaConstPO saveConst(MetaConstPO constFromJson,Integer projectId) {
+    private MetaConstPO saveConst(MetaConstPO constFromJson, Integer projectId) {
         MetaConstPO constPO = MetaConstMapper.INSTANCE.copy(constFromJson);
         constPO.setProjectId(projectId);
         metaConstService.doSave(constPO);
-        LOGGER.debug("导入枚举：{}",JsonUtil.toJSONString(constPO));
+        LOGGER.debug("导入枚举：{}", JsonUtil.toJSONString(constPO));
         return constPO;
     }
 
     /**
      * 把json中解析出来的枚举值保存到数据库
+     *
      * @param constDetailFromJson
      * @param constIdMap
      * @return
@@ -278,19 +280,20 @@ public class MetaImportExportService {
     private MetaConstDetailPO saveConstDetail(MetaConstDetailPO constDetailFromJson,
                                               Map<Integer, Integer> constIdMap) {
         Integer constId = constIdMap.get(constDetailFromJson.getConstId());
-        if(constId==null){
-            LOGGER.error("枚举值json有误：{}",JsonUtil.toJSONString(constDetailFromJson));
+        if (constId == null) {
+            LOGGER.error("枚举值json有误：{}", JsonUtil.toJSONString(constDetailFromJson));
             return null;
         }
         MetaConstDetailPO constDetailPO = MetaConstDetailMapper.INSTANCE.copy(constDetailFromJson);
         constDetailPO.setConstId(constId);
         metaConstDetailService.doSave(constDetailPO);
-        LOGGER.debug("导入枚举值：{}",JsonUtil.toJSONString(constDetailPO));
+        LOGGER.debug("导入枚举值：{}", JsonUtil.toJSONString(constDetailPO));
         return constDetailPO;
     }
 
     /**
      * 把json中解析出来的实体保存到数据库
+     *
      * @param entityFromJson
      * @param projectId
      * @return
@@ -299,12 +302,13 @@ public class MetaImportExportService {
         MetaEntityPO entityPO = MetaEntityMapper.INSTANCE.copy(entityFromJson);
         entityPO.setProjectId(projectId);
         metaEntityService.doSave(entityPO);
-        LOGGER.debug("导入实体：{}",JsonUtil.toJSONString(entityPO));
+        LOGGER.debug("导入实体：{}", JsonUtil.toJSONString(entityPO));
         return entityPO;
     }
 
     /**
      * 把json中解析出来的字段保存到数据库
+     *
      * @param fieldFromJson
      * @param entityIdMap
      * @return
@@ -313,27 +317,28 @@ public class MetaImportExportService {
                                   Map<Integer, Integer> entityIdMap) {
         Integer entityId = entityIdMap.get(fieldFromJson.getEntityId());
         Integer foreignEntityId = entityIdMap.get(fieldFromJson.getForeignEntityId());
-        if(entityId==null){
-            LOGGER.error("字段json有误：{}",JsonUtil.toJSONString(fieldFromJson));
+        if (entityId == null) {
+            LOGGER.error("字段json有误：{}", JsonUtil.toJSONString(fieldFromJson));
             return null;
         }
         MetaFieldPO fieldPO = MetaFieldMapper.INSTANCE.copy(fieldFromJson);
         fieldPO.setEntityId(entityId);
         fieldPO.setForeignEntityId(foreignEntityId);
         metaFieldService.doSave(fieldPO);
-        LOGGER.debug("导入字段：{}",JsonUtil.toJSONString(fieldPO));
+        LOGGER.debug("导入字段：{}", JsonUtil.toJSONString(fieldPO));
         return fieldPO;
     }
 
     /**
      * 重置字段的外键字段id
+     *
      * @param field
      * @param fieldIdMap
      */
     private void resetForeignFieldId(MetaFieldPO field, Map<Integer, Integer> fieldIdMap) {
         Integer foreignFieldId = fieldIdMap.get(field.getForeignFieldId());
-        if(foreignFieldId==null){
-            LOGGER.error("外键字段有误：{}",field.getForeignFieldId());
+        if (foreignFieldId == null) {
+            LOGGER.error("外键字段有误：{}", field.getForeignFieldId());
             return;
         }
         field.setForeignFieldId(foreignFieldId);
@@ -342,6 +347,7 @@ public class MetaImportExportService {
 
     /**
      * 把json中解析出来的索引保存到数据库
+     *
      * @param indexFromJson
      * @param entityIdMap
      * @param fieldIdMap
@@ -351,29 +357,30 @@ public class MetaImportExportService {
                                   Map<Integer, Integer> entityIdMap,
                                   Map<Integer, Integer> fieldIdMap) {
         Integer entityId = entityIdMap.get(indexFromJson.getEntityId());
-        if(entityId==null){
-            LOGGER.error("索引json有误：{}",JsonUtil.toJSONString(indexFromJson));
+        if (entityId == null) {
+            LOGGER.error("索引json有误：{}", JsonUtil.toJSONString(indexFromJson));
             return null;
         }
         List<Integer> fieldIds = indexFromJson.getFieldIds();
         List<Integer> convertedFieldIds;
-        if(CollectionUtils.isNotEmpty(fieldIds)){
+        if (CollectionUtils.isNotEmpty(fieldIds)) {
             convertedFieldIds = fieldIds.stream()
                 .map(id -> fieldIdMap.get(id))
                 .collect(Collectors.toList());
-        }else{
+        } else {
             convertedFieldIds = Collections.emptyList();
         }
         MetaIndexPO indexPO = MetaIndexMapper.INSTANCE.copy(indexFromJson);
         indexPO.setEntityId(entityId);
         indexPO.setFieldIds(convertedFieldIds);
         metaIndexService.doSave(indexPO);
-        LOGGER.debug("导入索引：{}",JsonUtil.toJSONString(indexPO));
+        LOGGER.debug("导入索引：{}", JsonUtil.toJSONString(indexPO));
         return indexPO;
     }
 
     /**
      * 把json中解析出来的外键级联扩展保存到数据库
+     *
      * @param cascadeExtFromJson
      * @param entityIdMap
      * @param fieldIdMap
@@ -386,9 +393,9 @@ public class MetaImportExportService {
         Integer cascadeEntityId = entityIdMap.get(cascadeExtFromJson.getCascadeEntityId());
         Integer fieldId = fieldIdMap.get(cascadeExtFromJson.getFieldId());
         Integer cascadeFieldId = fieldIdMap.get(cascadeExtFromJson.getCascadeFieldId());
-        if(entityId==null || cascadeEntityId==null ||
-            fieldId==null || cascadeFieldId==null){
-            LOGGER.error("外键级联扩展json有误：{}",JsonUtil.toJSONString(cascadeExtFromJson));
+        if (entityId == null || cascadeEntityId == null ||
+            fieldId == null || cascadeFieldId == null) {
+            LOGGER.error("外键级联扩展json有误：{}", JsonUtil.toJSONString(cascadeExtFromJson));
             return null;
         }
         MetaCascadeExtPO cascadeExtPO = MetaCascadeExtMapper.INSTANCE.copy(cascadeExtFromJson);
@@ -397,12 +404,13 @@ public class MetaImportExportService {
         cascadeExtPO.setFieldId(fieldId);
         cascadeExtPO.setCascadeFieldId(cascadeFieldId);
         metaCascadeExtService.doSave(cascadeExtPO);
-        LOGGER.debug("导入外键级联扩展：{}",JsonUtil.toJSONString(cascadeExtPO));
+        LOGGER.debug("导入外键级联扩展：{}", JsonUtil.toJSONString(cascadeExtPO));
         return cascadeExtPO;
     }
 
     /**
      * 把json中解析出来的多对多保存到数据库
+     *
      * @param mtmFromJson
      * @param projectId
      * @param entityIdMap
@@ -413,8 +421,8 @@ public class MetaImportExportService {
                                      Map<Integer, Integer> entityIdMap) {
         Integer entityId1 = entityIdMap.get(mtmFromJson.getEntityId1());
         Integer entityId2 = entityIdMap.get(mtmFromJson.getEntityId2());
-        if(entityId1==null || entityId2==null){
-            LOGGER.error("多对多json有误：{}",JsonUtil.toJSONString(mtmFromJson));
+        if (entityId1 == null || entityId2 == null) {
+            LOGGER.error("多对多json有误：{}", JsonUtil.toJSONString(mtmFromJson));
             return null;
         }
         MetaManyToManyPO mtmPO = MetaManyToManyMapper.INSTANCE.copy(mtmFromJson);
@@ -423,12 +431,13 @@ public class MetaImportExportService {
         mtmPO.setEntityId2(entityId2);
         metaManyToManyService.parseMtmFeature(mtmPO);
         metaManyToManyService.doSave(mtmPO);
-        LOGGER.debug("导入多对多：{}",JsonUtil.toJSONString(mtmPO));
+        LOGGER.debug("导入多对多：{}", JsonUtil.toJSONString(mtmPO));
         return mtmPO;
     }
 
     /**
      * 把json中解析出来的多对多级联扩展保存到数据库
+     *
      * @param mtmCascadeExtFromJson
      * @param mtmIdMap
      * @param entityIdMap
@@ -443,9 +452,9 @@ public class MetaImportExportService {
         Integer entityId = entityIdMap.get(mtmCascadeExtFromJson.getEntityId());
         Integer cascadeEntityId = entityIdMap.get(mtmCascadeExtFromJson.getCascadeEntityId());
         Integer cascadeFieldId = fieldIdMap.get(mtmCascadeExtFromJson.getCascadeFieldId());
-        if(entityId==null || cascadeEntityId==null ||
-            mtmId==null || cascadeFieldId==null){
-            LOGGER.error("多对多级联扩展json有误：{}",JsonUtil.toJSONString(mtmCascadeExtFromJson));
+        if (entityId == null || cascadeEntityId == null ||
+            mtmId == null || cascadeFieldId == null) {
+            LOGGER.error("多对多级联扩展json有误：{}", JsonUtil.toJSONString(mtmCascadeExtFromJson));
             return null;
         }
         MetaMtmCascadeExtPO mtmCascadeExtPO = MetaMtmCascadeExtMapper.INSTANCE.copy(mtmCascadeExtFromJson);
@@ -454,26 +463,27 @@ public class MetaImportExportService {
         mtmCascadeExtPO.setMtmId(mtmId);
         mtmCascadeExtPO.setCascadeFieldId(cascadeFieldId);
         metaMtmCascadeExtService.doSave(mtmCascadeExtPO);
-        LOGGER.debug("导入多对多级联扩展：{}",JsonUtil.toJSONString(mtmCascadeExtPO));
+        LOGGER.debug("导入多对多级联扩展：{}", JsonUtil.toJSONString(mtmCascadeExtPO));
         return mtmCascadeExtPO;
     }
 
     /**
      * 获取主键映射表
+     *
      * @param poListFromJson 从json文件中解析出来的元素列表
-     * @param poList 持久化后的元素列表
-     * @param idGetter 主键获取函数
-     * @param <T> 列表元素类型
-     * @param <R> 主键类型
+     * @param poList         持久化后的元素列表
+     * @param idGetter       主键获取函数
+     * @param <T>            列表元素类型
+     * @param <R>            主键类型
      * @return
      */
-    private <T,R> Map<R,R> getIdMap(List<T> poListFromJson, List<T> poList,
-                                              Function<T,R> idGetter){
-        Map<R,R> idMap = new HashMap<>(poListFromJson.size());
+    private <T, R> Map<R, R> getIdMap(List<T> poListFromJson, List<T> poList,
+                                      Function<T, R> idGetter) {
+        Map<R, R> idMap = new HashMap<>(poListFromJson.size());
         for (int i = 0; i < poListFromJson.size(); i++) {
             T poFromJson = poListFromJson.get(i);
             T po = poList.get(i);
-            if(poFromJson!=null && po!=null) {
+            if (poFromJson != null && po != null) {
                 idMap.put(idGetter.apply(poFromJson), idGetter.apply(po));
             }
         }

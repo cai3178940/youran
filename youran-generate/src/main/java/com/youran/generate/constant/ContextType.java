@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>Title: 枚举【模板上下文类型】</p>
- * <p>Description: </p>
+ * 枚举【模板上下文类型】
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -16,25 +16,21 @@ public enum ContextType {
     /**
      * 全局
      */
-    GLOBAL(1,"全局"),
+    GLOBAL(1, "全局"),
     /**
      * 实体
      */
-    ENTITY(2,"实体"),
+    ENTITY(2, "实体"),
     /**
      * 枚举
      */
-    CONST(3,"枚举");
+    CONST(3, "枚举");
 
-
-    private final Integer value;
-    private final String desc;
 
     /**
      * 枚举值罗列，给swagger接口文档展示用
      */
     public static final String VALUES_STR = "1,2,3";
-
     private static final Map<Integer, ContextType> LOOKUP = new HashMap<>();
 
     static {
@@ -42,6 +38,9 @@ public enum ContextType {
             LOOKUP.put(e.value, e);
         }
     }
+
+    private final Integer value;
+    private final String desc;
 
 
     ContextType(Integer value, String desc) {
@@ -53,9 +52,9 @@ public enum ContextType {
         return LOOKUP.get(value);
     }
 
-    public static ContextType findByDesc(String desc){
+    public static ContextType findByDesc(String desc) {
         for (ContextType e : ContextType.values()) {
-            if(e.getDesc().equals(desc)){
+            if (e.getDesc().equals(desc)) {
                 return e;
             }
         }
@@ -66,9 +65,9 @@ public enum ContextType {
      * 校验有效性
      */
     @Check
-    public static final boolean validate(Integer value){
+    public static final boolean validate(Integer value) {
         ContextType theEnum = find(value);
-        return theEnum!=null;
+        return theEnum != null;
     }
 
     public Integer getValue() {

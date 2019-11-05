@@ -9,15 +9,15 @@ import static com.youran.generate.pojo.example.TemplateFileExample.E_FILE_ID;
 import static com.youran.generate.pojo.example.TemplateFileExample.N_FILE_ID;
 
 /**
- * <p>Title: 修改【模板文件】的参数</p>
- * <p>Description: </p>
+ * 修改【模板文件】的参数
+ *
  * @author cbb
  * @date 2019/10/24
  */
 @ApiModel(description = "修改【模板文件】的参数")
 public class TemplateFileUpdateDTO extends TemplateFileAddDTO {
 
-    @ApiModelProperty(notes = N_FILE_ID,example = E_FILE_ID,required = true)
+    @ApiModelProperty(notes = N_FILE_ID, example = E_FILE_ID, required = true)
     @NotNull
     private Integer fileId;
 

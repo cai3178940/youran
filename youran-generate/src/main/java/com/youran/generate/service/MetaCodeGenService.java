@@ -1,6 +1,5 @@
 package com.youran.generate.service;
 
-import com.google.common.collect.Lists;
 import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
@@ -9,7 +8,6 @@ import com.youran.common.util.DateUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.constant.ContextType;
 import com.youran.generate.constant.DevMode;
-import com.youran.generate.constant.TemplateEnum;
 import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import com.youran.generate.pojo.po.*;
@@ -19,7 +17,6 @@ import com.youran.generate.template.context.ConstContext;
 import com.youran.generate.template.context.EntityContext;
 import com.youran.generate.template.renderer.TemplateRenderer;
 import com.youran.generate.template.renderer.TemplateRendererBuilder;
-import com.youran.generate.util.FreeMakerUtil;
 import com.youran.generate.util.Zip4jUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,8 +36,8 @@ import java.util.function.Consumer;
 
 
 /**
- * <p>Title:代码生成的核心service</p>
- * <p>Description:</p>
+ * 代码生成的核心service
+ *
  * @author: cbb
  * @date: 2017/5/14
  */
@@ -71,38 +68,17 @@ public class MetaCodeGenService {
     private ReentrantLock lock = new ReentrantLock();
 
     /**
-     * 输出建表语句
-     * @param projectId
-     */
-    public String genSql(Integer projectId) {
-        // 获取组装后的项目
-        MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
-            false,true,false, false, false, true);
-        return getSqlText(project);
-    }
-
-    /**
-     * 打印sql脚本
-     * @param project
-     * @return
-     */
-    private String getSqlText(MetaProjectPO project) {
-        String text = FreeMakerUtil.writeToStr("root/"+ TemplateEnum.SQL.getTemplate(), new BaseContext(project));
-        LOGGER.debug("------打印生成sql脚本-----");
-        LOGGER.debug(text);
-        return text;
-    }
-
-    /**
      * 生成代码压缩包
-     * @param projectId
+     *
+     * @param projectId        项目id
+     * @param templateId       模板id
      * @param progressConsumer 实时反馈进度
      * @return
      */
-    public File genCodeZip(Integer projectId, Consumer<ProgressVO> progressConsumer) {
-        String tmpDir = this.genProjectCodeIfNotExists(projectId,progressConsumer);
+    public File genCodeZip(Integer projectId, Integer templateId, Consumer<ProgressVO> progressConsumer) {
+        String tmpDir = this.genProjectCodeIfNotExists(projectId, templateId, progressConsumer);
         //压缩src目录到zip文件
-        this.progressing(progressConsumer,90, 99 ,1, "将项目打包成zip格式");
+        this.progressing(progressConsumer, 90, 99, 1, "将项目打包成zip格式");
         File zipFile = new File(tmpDir + ".zip");
         Zip4jUtil.compressFolder(new File(tmpDir), zipFile);
         //删除临时目录
@@ -115,7 +91,7 @@ public class MetaCodeGenService {
                         "请配置本地开发工程路径youran.generate.devProjectDir");
                 }
                 LOGGER.debug("------全部替换开发工程：" + devProjectDir);
-                this.progressing(progressConsumer,95,99, 1,"全部替换开发工程" + devProjectDir);
+                this.progressing(progressConsumer, 95, 99, 1, "全部替换开发工程" + devProjectDir);
                 FileUtils.deleteDirectory(new File(devProjectDir));
                 FileUtils.copyDirectory(new File(tmpDir), new File(devProjectDir));
             } else if (generateProperties.getDevMode() == DevMode.INCREMENT_REPLACE) {
@@ -124,7 +100,7 @@ public class MetaCodeGenService {
                         "请配置本地开发工程路径youran.generate.devProjectDir");
                 }
                 LOGGER.debug("------部分替换开发工程：" + devProjectDir);
-                this.progressing(progressConsumer,95, 99, 1,"部分替换开发工程" + devProjectDir);
+                this.progressing(progressConsumer, 95, 99, 1, "部分替换开发工程" + devProjectDir);
                 this.compareAndCoverFile(new File(tmpDir), new File(devProjectDir));
             }
         } catch (IOException e) {
@@ -138,14 +114,15 @@ public class MetaCodeGenService {
     /**
      * 如果当天尚未生成过最新版本的代码，则生成代码
      * 总体进度20%-80%之间
-     * @param projectId 项目id
-     * @param templateId 模板id
+     *
+     * @param projectId        项目id
+     * @param templateId       模板id
      * @param progressConsumer 进度条
      * @return 代码目录
      */
     public String genProjectCodeIfNotExists(Integer projectId, Integer templateId,
-                                            Consumer<ProgressVO> progressConsumer){
-        if(lock.tryLock()) {
+                                            Consumer<ProgressVO> progressConsumer) {
+        if (lock.tryLock()) {
             try {
                 MetaProjectPO project = metaProjectService.getProject(projectId, true);
                 // 获取最新代码目录
@@ -175,7 +152,7 @@ public class MetaCodeGenService {
             } finally {
                 lock.unlock();
             }
-        }else{
+        } else {
             throw new BusinessException(ErrorCode.TOO_MANY_REQUESTS,
                 "正在生成代码，请稍后再试！");
         }
@@ -183,22 +160,23 @@ public class MetaCodeGenService {
 
     /**
      * 在指定目录中生成代码
+     *
      * @param projectDir
      * @param projectId
      * @param templateId
      * @param progressConsumer
      */
     private void doGenCode(String projectDir, Integer projectId,
-                           Integer templateId, Consumer<ProgressVO> progressConsumer){
+                           Integer templateId, Consumer<ProgressVO> progressConsumer) {
         CodeTemplatePO templatePO = codeTemplateAssembleService.getAssembledCodeTemplate(templateId, progressConsumer);
         // 获取组装后的项目
-        this.progressing(progressConsumer,20,80,1,"获取并组装项目元数据");
+        this.progressing(progressConsumer, 20, 80, 1, "获取并组装项目元数据");
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
-            true,true,true, true, true, true);
+            true, true, true, true, true, true);
         // 构建模板渲染器
         TemplateRenderer templateRenderer = templateRendererBuilder.buildRenderer(templatePO);
         LOGGER.debug("------代码生成临时路径：" + projectDir);
-        this.progressing(progressConsumer,20,80,1,"开始渲染代码");
+        this.progressing(progressConsumer, 20, 80, 1, "开始渲染代码");
         for (TemplateFilePO templateFile : templatePO.getTemplateFiles()) {
             try {
                 // 睡10毫秒，故意慢一点，好让前端进度条反应缓慢增长
@@ -207,21 +185,21 @@ public class MetaCodeGenService {
                 e.printStackTrace();
             }
             //生成全局文件
-            this.progressing(progressConsumer,25,80, 2,"代码渲染中");
+            this.progressing(progressConsumer, 25, 80, 2, "代码渲染中");
             if (Objects.equals(templateFile.getContextType(), ContextType.GLOBAL.getValue())) {
                 BaseContext context = new BaseContext(project);
-                this.renderTemplate(templateRenderer,context,templateFile,projectDir);
+                this.renderTemplate(templateRenderer, context, templateFile, projectDir);
             } else if (Objects.equals(templateFile.getContextType(), ContextType.ENTITY.getValue())) {
                 //生成实体模版文件
                 for (MetaEntityPO metaEntityPO : project.getEntities()) {
-                    EntityContext context = new EntityContext(project,metaEntityPO);
-                    this.renderTemplate(templateRenderer,context,templateFile,projectDir);
+                    EntityContext context = new EntityContext(project, metaEntityPO);
+                    this.renderTemplate(templateRenderer, context, templateFile, projectDir);
                 }
             } else if (Objects.equals(templateFile.getContextType(), ContextType.CONST.getValue())) {
                 //生成枚举模版文件
                 for (MetaConstPO metaConstPO : project.getConsts()) {
-                    ConstContext context = new ConstContext(project,metaConstPO);
-                    this.renderTemplate(templateRenderer,context,templateFile,projectDir);
+                    ConstContext context = new ConstContext(project, metaConstPO);
+                    this.renderTemplate(templateRenderer, context, templateFile, projectDir);
                 }
             }
         }
@@ -230,6 +208,7 @@ public class MetaCodeGenService {
 
     /**
      * 对比原目录下文件与目标目录，并覆盖
+     *
      * @param sourceDir
      * @param targetDir
      * @throws IOException
@@ -258,6 +237,7 @@ public class MetaCodeGenService {
 
     /**
      * 比对文件内容是否相同（无视创建时间注释）
+     *
      * @param file1
      * @param file2
      * @return
@@ -271,8 +251,8 @@ public class MetaCodeGenService {
         if (!file1Exists) {
             return true;
         }
-        List<String> file1Content = FileUtils.readLines(file1,"utf-8");
-        List<String> file2Content = FileUtils.readLines(file2,"utf-8");
+        List<String> file1Content = FileUtils.readLines(file1, "utf-8");
+        List<String> file2Content = FileUtils.readLines(file2, "utf-8");
         for (int i = 0; i < file1Content.size(); i++) {
             String l1 = file1Content.get(i);
             String l2 = file2Content.get(i);
@@ -288,6 +268,7 @@ public class MetaCodeGenService {
 
     /**
      * 执行文件覆盖
+     *
      * @param targetFile
      * @param file
      * @throws IOException
@@ -299,20 +280,21 @@ public class MetaCodeGenService {
 
     /**
      * 渲染模板
+     *
      * @param templateRenderer 模板渲染器
-     * @param context 上下文信息
-     * @param templateFile 模板文件
-     * @param projectDir 代码输出目录
+     * @param context          上下文信息
+     * @param templateFile     模板文件
+     * @param projectDir       代码输出目录
      */
-    private void renderTemplate(TemplateRenderer templateRenderer,BaseContext context,
+    private void renderTemplate(TemplateRenderer templateRenderer, BaseContext context,
                                 TemplateFilePO templateFile, String projectDir) {
         String filePath = templateFile.buildFilePath();
-        LOGGER.debug("------开始渲染模板文件: {}",filePath);
+        LOGGER.debug("------开始渲染模板文件: {}", filePath);
         try {
-            String relativePath = templateRenderer.renderPath(templateFile,context);
+            String relativePath = templateRenderer.renderPath(templateFile, context);
             String outFilePath = projectDir + relativePath;
-            LOGGER.debug("输出代码文件：{}",outFilePath);
-            String content = templateRenderer.renderContent(templateFile,context);
+            LOGGER.debug("输出代码文件：{}", outFilePath);
+            String content = templateRenderer.renderContent(templateFile, context);
             LOGGER.trace(content);
             this.writeToFile(content, outFilePath);
         } catch (SkipCurrentException e) {
@@ -323,8 +305,9 @@ public class MetaCodeGenService {
 
     /**
      * 将文本写入文件
-     * @param text         文本内容
-     * @param outFilePath       文件路径
+     *
+     * @param text        文本内容
+     * @param outFilePath 文件路径
      */
     private void writeToFile(String text, String outFilePath) {
         File file = new File(outFilePath);
@@ -333,98 +316,89 @@ public class MetaCodeGenService {
             parentFile.mkdirs();
         }
         try {
-            FileUtils.write(file, text,"UTF-8");
+            FileUtils.write(file, text, "UTF-8");
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"写文件异常");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "写文件异常");
         }
-    }
-
-    /**
-     * sql预览
-     * @param entityId
-     * @return
-     */
-    public String sqlPreview(Integer entityId) {
-        MetaEntityPO metaEntityPO = metaQueryAssembleService.getAssembledEntity(entityId);
-        MetaProjectPO project = metaProjectService.getProject(metaEntityPO.getProjectId(),true);
-        project.setEntities(Lists.newArrayList(metaEntityPO));
-        return getSqlText(project);
     }
 
     /**
      * 提交到仓库
+     *
      * @param projectId
+     * @param templateId
      * @param progressConsumer
      * @return
      */
-    public GenHistoryPO gitCommit(Integer projectId,Consumer<ProgressVO> progressConsumer) {
-        MetaProjectPO project = metaProjectService.getProject(projectId,true);
+    public GenHistoryPO gitCommit(Integer projectId, Integer templateId, Consumer<ProgressVO> progressConsumer) {
+        MetaProjectPO project = metaProjectService.getProject(projectId, true);
         Integer remote = project.getRemote();
-        if(BoolConst.isFalse(remote)){
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"当前项目未开启Git仓库");
+        if (BoolConst.isFalse(remote)) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "当前项目未开启Git仓库");
         }
         String remoteUrl = project.getRemoteUrl();
-        if(StringUtils.isBlank(remoteUrl)){
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"仓库地址为空");
+        if (StringUtils.isBlank(remoteUrl)) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "仓库地址为空");
         }
         Date now = new Date();
         Integer lastHistoryId = project.getLastHistoryId();
         String oldBranchName = null;
-        if(lastHistoryId!=null){
+        if (lastHistoryId != null) {
             GenHistoryPO genHistory = genHistoryService.getGenHistory(lastHistoryId, true);
-            genHistoryService.checkVersion(project,genHistory);
+            genHistoryService.checkVersion(project, genHistory);
             oldBranchName = genHistory.getBranch();
         }
-        String newBranchName = "auto"+ DateUtil.getDateStr(now,"yyyyMMddHHmmss");
+        String newBranchName = "auto" + DateUtil.getDateStr(now, "yyyyMMddHHmmss");
         GitCredentialDTO credential = this.getCredentialDTO(project);
-        this.progressing(progressConsumer,5,10,1,"克隆远程仓库");
+        this.progressing(progressConsumer, 5, 10, 1, "克隆远程仓库");
         String repository = gitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
             credential, oldBranchName, newBranchName);
         File repoDir = new File(repository);
         File[] oldFiles = repoDir.listFiles((dir, name) -> !".git".equals(name));
         try {
-            this.progressing(progressConsumer,6, 10, 1,"清空旧代码");
+            this.progressing(progressConsumer, 6, 10, 1, "清空旧代码");
             for (File oldFile : oldFiles) {
                 FileUtils.forceDelete(oldFile);
             }
             //生成代码20%-80%
-            String genDir = this.genProjectCodeIfNotExists(projectId,progressConsumer);
-            this.progressing(progressConsumer,81,85,1,"拷贝新生成的代码");
+            String genDir = this.genProjectCodeIfNotExists(projectId, templateId, progressConsumer);
+            this.progressing(progressConsumer, 81, 85, 1, "拷贝新生成的代码");
             FileUtils.copyDirectory(new File(genDir), repoDir);
         } catch (IOException e) {
-            LOGGER.error("IO异常",e);
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"操作失败");
+            LOGGER.error("IO异常", e);
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "操作失败");
         }
-        this.progressing(progressConsumer,90,99,1,"提交到远程仓库");
+        this.progressing(progressConsumer, 90, 99, 1, "提交到远程仓库");
         String commit = gitService.commitAll(repository,
-            DateUtil.getDateStr(now,"yyyy-MM-dd HH:mm:ss")+"自动生成代码",
+            DateUtil.getDateStr(now, "yyyy-MM-dd HH:mm:ss") + "自动生成代码",
             credential);
         // 创建提交历史
         GenHistoryPO history = genHistoryService.save(project, commit, newBranchName);
         // 更新项目的最终提交历史
-        metaProjectService.updateLastHistory(projectId,history.getHistoryId());
+        metaProjectService.updateLastHistory(projectId, history.getHistoryId());
         return history;
     }
 
     /**
      * 获取认证DTO
+     *
      * @param project
      * @return
      */
-    private GitCredentialDTO getCredentialDTO(MetaProjectPO project){
-        if(StringUtils.isBlank(project.getUsername())){
+    private GitCredentialDTO getCredentialDTO(MetaProjectPO project) {
+        if (StringUtils.isBlank(project.getUsername())) {
             return null;
         }
-        if(StringUtils.isBlank(project.getPassword())){
+        if (StringUtils.isBlank(project.getPassword())) {
             return new GitCredentialDTO(project.getUsername(), "");
         }
         String password;
         try {
             password = AESSecurityUtil.decrypt(project.getPassword(), generateProperties.getAesKey());
         } catch (Exception e) {
-            LOGGER.error("密码解密异常",e);
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"密码解密异常");
+            LOGGER.error("密码解密异常", e);
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "密码解密异常");
         }
         return new GitCredentialDTO(project.getUsername(), password);
     }
@@ -432,15 +406,16 @@ public class MetaCodeGenService {
 
     /**
      * 执行进度通知
+     *
      * @param progressConsumer
      * @param addPercent
      * @param msg
      */
     private void progressing(Consumer<ProgressVO> progressConsumer,
                              int minPercent, int maxPercent,
-                             int addPercent, String msg){
-        if(progressConsumer!=null){
-            progressConsumer.accept(ProgressVO.progressing(minPercent,maxPercent,addPercent,msg));
+                             int addPercent, String msg) {
+        if (progressConsumer != null) {
+            progressConsumer.accept(ProgressVO.progressing(minPercent, maxPercent, addPercent, msg));
         }
     }
 

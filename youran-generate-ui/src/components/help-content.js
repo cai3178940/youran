@@ -239,8 +239,8 @@ private Integer publishSignSortSign;
 #### 生成的枚举类会包含两个属性，请看下面示例：
 \`\`\`
 /**
- * <p>Title: 枚举【开发者类型】</p>
- * <p>Description: </p>
+ * 枚举【开发者类型】
+ *
  * @author cbb
  * @date 2018/03/09
  */

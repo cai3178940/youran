@@ -15,8 +15,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * <p>Title: 【模板文件】API</p>
- * <p>Description: swagger接口文档</p>
+ * 【模板文件】API
+ * <p> swagger接口文档
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -26,7 +27,7 @@ public interface TemplateFileAPI {
     /**
      * 新增【模板文件】
      */
-    @ApiOperation(value="新增【模板文件】")
+    @ApiOperation(value = "新增【模板文件】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "templateFileAddDTO", dataType = "TemplateFileAddDTO", value = "新增【模板文件】参数", paramType = "body"),
     })
@@ -35,7 +36,7 @@ public interface TemplateFileAPI {
     /**
      * 修改【模板文件】
      */
-    @ApiOperation(value="修改【模板文件】")
+    @ApiOperation(value = "修改【模板文件】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "templateFileUpdateDTO", dataType = "TemplateFileUpdateDTO", value = "修改【模板文件】参数", paramType = "body"),
     })
@@ -44,7 +45,7 @@ public interface TemplateFileAPI {
     /**
      * 修改【模板文件内容】
      */
-    @ApiOperation(value="修改【模板文件内容】")
+    @ApiOperation(value = "修改【模板文件内容】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "fileId", dataType = "int", value = "【模板文件】id", paramType = "path"),
         @ApiImplicitParam(name = "dto", dataType = "TemplateFileContentUpdateDTO", value = "修改【模板文件内容】参数", paramType = "body"),
@@ -55,13 +56,13 @@ public interface TemplateFileAPI {
     /**
      * 列表查询【模板文件】
      */
-    @ApiOperation(value="列表查询【模板文件】")
+    @ApiOperation(value = "列表查询【模板文件】")
     ResponseEntity<List<TemplateFileListVO>> list(TemplateFileQO templateFileQO);
 
     /**
      * 查看【模板文件】详情
      */
-    @ApiOperation(value="查看【模板文件】详情")
+    @ApiOperation(value = "查看【模板文件】详情")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "fileId", dataType = "int", value = "【模板文件】id", paramType = "path"),
     })
@@ -70,7 +71,7 @@ public interface TemplateFileAPI {
     /**
      * 删除单个【模板文件】
      */
-    @ApiOperation(value="删除单个【模板文件】")
+    @ApiOperation(value = "删除单个【模板文件】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "fileId", dataType = "int", value = "【模板文件】id", paramType = "path"),
     })

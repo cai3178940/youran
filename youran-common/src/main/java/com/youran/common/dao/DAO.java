@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>Title:DAO父接口</p>
- * <p>Description:</p>
+ * DAO父接口
+ *
  * @author: cbb
  * @date: 2017/9/20
  */
@@ -29,10 +29,11 @@ public interface DAO<PO extends AbstractPO> {
 
     /**
      * 提供默认分页实现
+     *
      * @param qo
      * @return
      */
-    default  <VO extends AbstractVO, QO extends PageQO> PageVO<VO> findByPage(QO qo) {
+    default <VO extends AbstractVO, QO extends PageQO> PageVO<VO> findByPage(QO qo) {
         int count = this.findCountByQuery(qo);
         List<VO> list;
         if (count > 0) {
@@ -47,6 +48,7 @@ public interface DAO<PO extends AbstractPO> {
 
     /**
      * 根据分页条件查询记录数
+     *
      * @param qo
      * @param <QO>
      * @return
@@ -55,6 +57,7 @@ public interface DAO<PO extends AbstractPO> {
 
     /**
      * 根据分页条件查询列表
+     *
      * @param qo
      * @param <VO>
      * @param <QO>
@@ -65,6 +68,7 @@ public interface DAO<PO extends AbstractPO> {
 
     /**
      * 执行插入记录
+     *
      * @param po
      * @return
      */
@@ -72,10 +76,11 @@ public interface DAO<PO extends AbstractPO> {
 
     /**
      * 先填充附加字段，再插入记录
+     *
      * @param po
      * @return
      */
-    default int save(PO po){
+    default int save(PO po) {
         LoginContext loginContext = SpringUtil.getBean(LoginContext.class);
         po.preInsert(loginContext.getCurrentOperatorId());
         return this._save(po);
@@ -95,16 +100,16 @@ public interface DAO<PO extends AbstractPO> {
      * @param po
      * @return
      */
-    default int update(PO po){
+    default int update(PO po) {
         LoginContext loginContext = SpringUtil.getBean(LoginContext.class);
         po.preUpdate(loginContext.getCurrentOperatorId());
         int count = this._update(po);
-        if(count > 0){
+        if (count > 0) {
             po.postUpdate();
         }
         return count;
     }
-    
+
     /**
      * 删除记录
      *

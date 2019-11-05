@@ -9,8 +9,8 @@ import com.youran.generate.pojo.po.MetaIndexPO;
 import static com.youran.generate.pojo.example.MetaIndexExample.*;
 
 /**
- * <p>Title:测试数据</p>
- * <p>Description:</p>
+ * 测试数据
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -18,9 +18,10 @@ public class MetaIndexHelper {
 
     /**
      * 生成add测试数据
+     *
      * @return
      */
-    public static MetaIndexAddDTO getAddDTO(Integer... fieldIds){
+    public static MetaIndexAddDTO getAddDTO(Integer... fieldIds) {
         MetaIndexAddDTO dto = new MetaIndexAddDTO();
         dto.setIndexName(E_INDEXNAME);
         dto.setUnique(SafeUtil.getInteger(E_UNIQUE));
@@ -33,10 +34,11 @@ public class MetaIndexHelper {
 
     /**
      * 生成update测试数据
+     *
      * @return
      */
-    public static MetaIndexUpdateDTO getUpdateDTO(MetaIndexPO metaIndex, Integer... fieldIds){
-        MetaIndexUpdateDTO metaIndexUpdateDTO= new MetaIndexUpdateDTO();
+    public static MetaIndexUpdateDTO getUpdateDTO(MetaIndexPO metaIndex, Integer... fieldIds) {
+        MetaIndexUpdateDTO metaIndexUpdateDTO = new MetaIndexUpdateDTO();
         metaIndexUpdateDTO.setIndexId(metaIndex.getIndexId());
         metaIndexUpdateDTO.setIndexName(metaIndex.getIndexName());
         metaIndexUpdateDTO.setEntityId(metaIndex.getEntityId());

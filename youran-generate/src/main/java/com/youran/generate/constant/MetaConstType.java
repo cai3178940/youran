@@ -4,10 +4,9 @@ import com.youran.common.exception.BusinessException;
 import com.youran.common.validator.Check;
 
 /**
- * <p>Title: 常量字段类型</p>
- * <p>Description: </p>
+ * 常量字段类型
+ *
  * @author: cbb
- * @date: 2017/9/20
  */
 public class MetaConstType {
 
@@ -26,10 +25,10 @@ public class MetaConstType {
         return INTEGER == value || STRING == value;
     }
 
-    public static String convertString(int value){
-        if(INTEGER == value){
+    public static String convertString(int value) {
+        if (INTEGER == value) {
             return "Integer";
-        }else if(STRING == value){
+        } else if (STRING == value) {
             return "String";
         }
         throw new BusinessException("不支持的常量类型");

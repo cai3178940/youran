@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
 /**
- * <p>Title:新增项目DTO</p>
- * <p>Description:</p>
+ * 新增项目DTO
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -22,26 +22,26 @@ public class MetaProjectAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_PACKAGENAME, example = E_PACKAGENAME)
     @NotNull
-    @Length(min=1, max = 100, message = "packageName最大长度不能超过{max}")
+    @Length(min = 1, max = 100, message = "packageName最大长度不能超过{max}")
     private String packageName;
 
     @ApiModelProperty(notes = N_PROJECTNAME, example = E_PROJECTNAME)
     @NotNull
-    @Length(min=1, max = 50, message = "projectName最大长度不能超过{max}")
+    @Length(min = 1, max = 50, message = "projectName最大长度不能超过{max}")
     private String projectName;
 
     @ApiModelProperty(notes = N_PROJECTDESC, example = E_PROJECTDESC)
     @NotNull
-    @Length(min=1, max = 100, message = "projectDesc最大长度不能超过{max}")
+    @Length(min = 1, max = 100, message = "projectDesc最大长度不能超过{max}")
     private String projectDesc;
 
     @ApiModelProperty(notes = N_GROUPID, example = E_GROUPID)
     @NotNull
-    @Length(min=1, max = 50, message = "groupId最大长度不能超过{max}")
+    @Length(min = 1, max = 50, message = "groupId最大长度不能超过{max}")
     private String groupId;
 
     @ApiModelProperty(notes = N_AUTHOR, example = E_AUTHOR)
-    @Length(min=1, max = 50, message = "author最大长度不能超过{max}")
+    @Length(min = 1, max = 50, message = "author最大长度不能超过{max}")
     private String author;
 
     @ApiModelProperty(notes = N_REMOTE, example = E_REMOTE)

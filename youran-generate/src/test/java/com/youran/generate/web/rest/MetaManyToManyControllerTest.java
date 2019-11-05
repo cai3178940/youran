@@ -1,8 +1,8 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.util.JsonUtil;
-import com.youran.generate.help.MetaManyToManyHelper;
 import com.youran.generate.help.GenerateHelper;
+import com.youran.generate.help.MetaManyToManyHelper;
 import com.youran.generate.pojo.dto.MetaManyToManyAddDTO;
 import com.youran.generate.pojo.dto.MetaManyToManyUpdateDTO;
 import com.youran.generate.pojo.po.MetaEntityPO;
@@ -20,8 +20,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
  * @author: cbb
  * @date: 2017/7/4
  */
@@ -35,62 +33,61 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
     private MetaEntityPO metaEntity2;
 
     @Before
-    public void init(){
+    public void init() {
         this.metaProject = generateHelper.saveProjectExample();
-        this.metaEntity1 = generateHelper.saveEntityExample(metaProject.getProjectId(),1);
-        this.metaEntity2 = generateHelper.saveEntityExample(metaProject.getProjectId(),2);
+        this.metaEntity1 = generateHelper.saveEntityExample(metaProject.getProjectId(), 1);
+        this.metaEntity2 = generateHelper.saveEntityExample(metaProject.getProjectId(), 2);
     }
-
 
 
     @Test
     public void save() throws Exception {
         MetaManyToManyAddDTO addDTO = MetaManyToManyHelper.getAddDTO(metaProject.getProjectId(),
-                metaEntity1.getEntityId(),metaEntity2.getEntityId());
-        restMockMvc.perform(post(getApiPath()+"/meta_mtm/save")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(JsonUtil.toJSONString(addDTO)))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+            metaEntity1.getEntityId(), metaEntity2.getEntityId());
+        restMockMvc.perform(post(getApiPath() + "/meta_mtm/save")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(JsonUtil.toJSONString(addDTO)))
+            .andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
 
     @Test
     public void update() throws Exception {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
-                metaEntity1.getEntityId(),metaEntity2.getEntityId());
+            metaEntity1.getEntityId(), metaEntity2.getEntityId());
         MetaManyToManyUpdateDTO updateDTO = MetaManyToManyHelper.getUpdateDTO(metaManyToMany);
-        restMockMvc.perform(put(getApiPath()+"/meta_mtm/update")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(JsonUtil.toJSONString(updateDTO)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        restMockMvc.perform(put(getApiPath() + "/meta_mtm/update")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(JsonUtil.toJSONString(updateDTO)))
+            .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 
     @Test
     public void list() throws Exception {
         generateHelper.saveManyToManyExample(metaProject.getProjectId(),
-                metaEntity1.getEntityId(),metaEntity2.getEntityId());
-        restMockMvc.perform(get(getApiPath()+"/meta_mtm/list")
-                .param("projectId",metaProject.getProjectId()+""))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.length()").value(is(1)));
+            metaEntity1.getEntityId(), metaEntity2.getEntityId());
+        restMockMvc.perform(get(getApiPath() + "/meta_mtm/list")
+            .param("projectId", metaProject.getProjectId() + ""))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(jsonPath("$.length()").value(is(1)));
     }
 
     @Test
     public void show() throws Exception {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
-                metaEntity1.getEntityId(),metaEntity2.getEntityId());
-        restMockMvc.perform(get(getApiPath()+"/meta_mtm/{fieldId}",metaManyToMany.getMtmId()))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.mtmId").value(is(metaManyToMany.getMtmId())));
+            metaEntity1.getEntityId(), metaEntity2.getEntityId());
+        restMockMvc.perform(get(getApiPath() + "/meta_mtm/{fieldId}", metaManyToMany.getMtmId()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(jsonPath("$.mtmId").value(is(metaManyToMany.getMtmId())));
     }
 
     @Test
     public void del() throws Exception {
         MetaManyToManyPO metaManyToMany = generateHelper.saveManyToManyExample(metaProject.getProjectId(),
-                metaEntity1.getEntityId(),metaEntity2.getEntityId());
-        restMockMvc.perform(delete(getApiPath()+"/meta_mtm/{fieldId}",metaManyToMany.getMtmId()))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$").value(is(1)));
+            metaEntity1.getEntityId(), metaEntity2.getEntityId());
+        restMockMvc.perform(delete(getApiPath() + "/meta_mtm/{fieldId}", metaManyToMany.getMtmId()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(jsonPath("$").value(is(1)));
     }
 }

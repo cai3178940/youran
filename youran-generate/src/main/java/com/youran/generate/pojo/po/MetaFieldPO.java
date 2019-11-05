@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 /**
- * <p>Title:字段</p>
- * <p>Description:</p>
+ * 字段
+ *
  * @author: cbb
  * @date: 2017/4/11
  */
@@ -64,7 +64,6 @@ public class MetaFieldPO extends BasePO {
     private List<MetaCascadeExtPO> cascadeShowExts;
     @JsonIgnore
     private List<MetaCascadeExtPO> cascadeListExts;
-
 
 
     public List<MetaCascadeExtPO> getCascadeExts() {

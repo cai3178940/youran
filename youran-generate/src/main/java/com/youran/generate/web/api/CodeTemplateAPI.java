@@ -17,8 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * <p>Title: 【代码模板】API</p>
- * <p>Description: swagger接口文档</p>
+ * 【代码模板】API
+ * <p> swagger接口文档
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -28,7 +29,7 @@ public interface CodeTemplateAPI {
     /**
      * 新增【代码模板】
      */
-    @ApiOperation(value="新增【代码模板】")
+    @ApiOperation(value = "新增【代码模板】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "codeTemplateAddDTO", dataType = "CodeTemplateAddDTO", value = "新增【代码模板】参数", paramType = "body"),
     })
@@ -37,7 +38,7 @@ public interface CodeTemplateAPI {
     /**
      * 修改【代码模板】
      */
-    @ApiOperation(value="修改【代码模板】")
+    @ApiOperation(value = "修改【代码模板】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "codeTemplateUpdateDTO", dataType = "CodeTemplateUpdateDTO", value = "修改【代码模板】参数", paramType = "body"),
     })
@@ -46,13 +47,13 @@ public interface CodeTemplateAPI {
     /**
      * 分页查询【代码模板】
      */
-    @ApiOperation(value="分页查询【代码模板】")
+    @ApiOperation(value = "分页查询【代码模板】")
     ResponseEntity<List<CodeTemplateListVO>> list(CodeTemplateQO codeTemplateQO);
 
     /**
      * 查看【代码模板】详情
      */
-    @ApiOperation(value="查看【代码模板】详情")
+    @ApiOperation(value = "查看【代码模板】详情")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "templateId", dataType = "int", value = "【代码模板】id", paramType = "path"),
     })
@@ -61,7 +62,7 @@ public interface CodeTemplateAPI {
     /**
      * 删除单个【代码模板】
      */
-    @ApiOperation(value="删除单个【代码模板】")
+    @ApiOperation(value = "删除单个【代码模板】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "templateId", dataType = "int", value = "【代码模板】id", paramType = "path"),
     })
@@ -79,6 +80,7 @@ public interface CodeTemplateAPI {
 
     /**
      * 查看模板文件目录结构
+     *
      * @param templateId 模板id
      * @return
      */
@@ -90,6 +92,7 @@ public interface CodeTemplateAPI {
 
     /**
      * 模板导出
+     *
      * @param templateId
      * @param response
      */
@@ -101,6 +104,7 @@ public interface CodeTemplateAPI {
 
     /**
      * 模板导入
+     *
      * @param file
      * @return
      * @throws Exception

@@ -6,8 +6,8 @@ import com.youran.generate.pojo.dto.MetaMtmFeatureDTO;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 
 /**
- * <p>Title: 特性DTO转json</p>
- * <p>Description: </p>
+ * 特性DTO转json
+ *
  * @author cbb
  * @date 2018/11/28
  */
@@ -25,18 +25,17 @@ public class FeatureMapper {
         return dto != null ? JsonUtil.toJSONString(dto) : null;
     }
 
-    public static MetaProjectFeatureDTO asProjectFeatureDTO(String str){
-        return JsonUtil.parseObject(str,MetaProjectFeatureDTO.class);
+    public static MetaProjectFeatureDTO asProjectFeatureDTO(String str) {
+        return JsonUtil.parseObject(str, MetaProjectFeatureDTO.class);
     }
 
-    public static MetaEntityFeatureDTO asEntityFeatureDTO(String str){
-        return JsonUtil.parseObject(str,MetaEntityFeatureDTO.class);
+    public static MetaEntityFeatureDTO asEntityFeatureDTO(String str) {
+        return JsonUtil.parseObject(str, MetaEntityFeatureDTO.class);
     }
 
-    public static MetaMtmFeatureDTO asMtmFeatureDTO(String str){
-        return JsonUtil.parseObject(str,MetaMtmFeatureDTO.class);
+    public static MetaMtmFeatureDTO asMtmFeatureDTO(String str) {
+        return JsonUtil.parseObject(str, MetaMtmFeatureDTO.class);
     }
-
 
 
 }

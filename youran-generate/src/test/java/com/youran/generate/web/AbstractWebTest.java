@@ -10,12 +10,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * <p>Title:web单元测试抽象类</p>
- * <p>Description:</p>
+ * web单元测试抽象类
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
-@AutoConfigureMockMvc(printOnlyOnFailure=false)
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 public abstract class AbstractWebTest extends AbstractTest {
 
     @Autowired
@@ -27,8 +27,8 @@ public abstract class AbstractWebTest extends AbstractTest {
     @Value(WebConst.API_PATH)
     protected String apiPath;
 
-    protected String getApiPath(){
-        if(StringUtils.isBlank(apiPath)){
+    protected String getApiPath() {
+        if (StringUtils.isBlank(apiPath)) {
             return "";
         }
         return apiPath;

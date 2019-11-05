@@ -26,13 +26,14 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * <p>Title:【实体】控制器</p>
- * <p>Description: 实体增删改查</p>
+ * 【实体】控制器
+ * <p> 实体增删改查
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/meta_entity")
+@RequestMapping(WebConst.API_PATH + "/meta_entity")
 public class MetaEntityController extends AbstractController implements MetaEntityAPI {
 
     @Autowired
@@ -43,7 +44,7 @@ public class MetaEntityController extends AbstractController implements MetaEnti
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaEntityShowVO> save(@Valid @RequestBody MetaEntityAddDTO metaEntityAddDTO) throws Exception {
         MetaEntityPO metaEntityPO = metaEntityService.save(metaEntityAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/meta_entity/" + metaEntityPO.getEntityId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_entity/" + metaEntityPO.getEntityId()))
             .body(MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO));
     }
 
@@ -78,7 +79,7 @@ public class MetaEntityController extends AbstractController implements MetaEnti
     @Override
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] entityId) {
-        if(ArrayUtils.isEmpty(entityId)){
+        if (ArrayUtils.isEmpty(entityId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaEntityService.delete(entityId);
@@ -88,9 +89,9 @@ public class MetaEntityController extends AbstractController implements MetaEnti
     @Override
     @GetMapping(value = "/{entityId}/mtm_entity_list_pair")
     public ResponseEntity<MetaEntityListPairVO> mtmEntityListPair(@PathVariable Integer entityId) {
-        List<MetaMtmEntityListVO> holds = metaEntityService.mtmEntityList(entityId,true);
-        List<MetaMtmEntityListVO> unholds = metaEntityService.mtmEntityList(entityId,false);
-        return ResponseEntity.ok(new MetaEntityListPairVO(holds,unholds));
+        List<MetaMtmEntityListVO> holds = metaEntityService.mtmEntityList(entityId, true);
+        List<MetaMtmEntityListVO> unholds = metaEntityService.mtmEntityList(entityId, false);
+        return ResponseEntity.ok(new MetaEntityListPairVO(holds, unholds));
     }
 
 

@@ -25,8 +25,8 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * <p>Title: 【模板文件】控制器</p>
- * <p>Description: </p>
+ * 【模板文件】控制器
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -42,7 +42,7 @@ public class TemplateFileController extends AbstractController implements Templa
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TemplateFileShowVO> save(@Valid @RequestBody TemplateFileAddDTO templateFileAddDTO) throws Exception {
         TemplateFilePO templateFile = templateFileService.save(templateFileAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/template_file/" + templateFile.getFileId()))
+        return ResponseEntity.created(new URI(apiPath + "/template_file/" + templateFile.getFileId()))
             .body(TemplateFileMapper.INSTANCE.toShowVO(templateFile));
     }
 
@@ -86,7 +86,7 @@ public class TemplateFileController extends AbstractController implements Templa
     @Override
     @DeleteMapping
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] id) {
-        if(ArrayUtils.isEmpty(id)){
+        if (ArrayUtils.isEmpty(id)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = templateFileService.delete(id);

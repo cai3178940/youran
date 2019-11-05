@@ -4,8 +4,8 @@ package com.youran.generate.pojo.example;
 import com.youran.common.pojo.example.AbstractExample;
 
 /**
- * <p>Title: 【代码模板】参数示例</p>
- * <p>Description: </p>
+ * 【代码模板】参数示例
+ *
  * @author cbb
  * @date 2019/10/24
  */

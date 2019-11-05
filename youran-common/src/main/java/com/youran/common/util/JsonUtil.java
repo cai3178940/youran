@@ -1,25 +1,22 @@
 package com.youran.common.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
- * <p>Title:封装json操作</p>
- * <p>Description:</p>
+ * 封装json操作
+ *
  * @author: cbb
  * @date: 2017/5/20
  */
@@ -27,84 +24,52 @@ public class JsonUtil {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);
 
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_DATETIME_FORMAT2 = "yyyy-MM-dd HH:mm:ss.SSS";
+
     private static ObjectMapper mapper = new ObjectMapper();
-    static{
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+
+    static {
+        mapper.setDateFormat(new SimpleDateFormat(DEFAULT_DATETIME_FORMAT));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     private static ObjectMapper mapperExcludeNull = new ObjectMapper();
-    static{
+
+    static {
         mapperExcludeNull.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapperExcludeNull.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        mapperExcludeNull.setDateFormat(new SimpleDateFormat(DEFAULT_DATETIME_FORMAT));
         mapperExcludeNull.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
 
-    public static <T> T parseObject(String json, Class<T> clazz){
-        if(StringUtils.isBlank(json)){
+    public static <T> T parseObject(String json, Class<T> clazz) {
+        if (StringUtils.isBlank(json)) {
             return null;
         }
-        T t;
-        try {
-            t = mapper.readValue(json, clazz);
-        } catch (JsonParseException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        } catch (JsonMappingException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        } catch (IOException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        }
-        return t;
+        return doConvertRuntimeException(() -> mapper.readValue(json, clazz));
     }
 
 
-    public static String toJSONString(Object obj){
-        String str;
-        try {
-            str = mapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("json序列化异常", e);
-            throw new RuntimeException("json序列化异常",e);
-        }
-        return str;
+    public static String toJSONString(Object obj) {
+        return doConvertRuntimeException(() -> mapper.writeValueAsString(obj));
     }
 
-    public static String toJSONString(Object object,boolean prettyFormat){
-        if(prettyFormat) {
-            try {
-                return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
-            } catch (JsonProcessingException e) {
-                LOGGER.error("json序列化异常", e);
-                throw new RuntimeException("json序列化异常",e);
-            }
+    public static String toJSONString(Object object, boolean prettyFormat) {
+        if (prettyFormat) {
+            return doConvertRuntimeException(() ->
+                mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object));
         }
         return toJSONString(object);
-
     }
 
-    public static <T> List<T> parseArray(String json, Class<T> clazz){
-        if(StringUtils.isBlank(json)){
+    public static <T> List<T> parseArray(String json, Class<T> clazz) {
+        if (StringUtils.isBlank(json)) {
             return null;
         }
-        List<T> list;
-        try {
-            JavaType javaType = getCollectionType(ArrayList.class, clazz);
-            list = mapper.readValue(json, javaType);
-        } catch (JsonParseException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        } catch (JsonMappingException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        } catch (IOException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        }
-        return list;
+        JavaType javaType = getCollectionType(ArrayList.class, clazz);
+        return doConvertRuntimeException(() -> mapper.readValue(json, javaType));
     }
 
     public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
@@ -112,60 +77,51 @@ public class JsonUtil {
     }
 
     public static void writeJsonToFile(Object object, boolean prettyFormat, File file) {
-        try {
-            if(prettyFormat) {
-                mapperExcludeNull.writerWithDefaultPrettyPrinter().writeValue(file,object);
-            }else{
-                mapperExcludeNull.writeValue(file,object);
+        doConvertRuntimeException(() -> {
+            if (prettyFormat) {
+                mapperExcludeNull.writerWithDefaultPrettyPrinter().writeValue(file, object);
+            } else {
+                mapperExcludeNull.writeValue(file, object);
             }
-        } catch (IOException e) {
+            return null;
+        });
+    }
+
+    public static <T> T parseObjectFromFile(File file, Class<T> clazz) {
+        if (!file.exists()) {
+            LOGGER.warn("json文件不存在：{}", file.getPath());
+            return null;
+        }
+        return doConvertRuntimeException(() -> mapper.readValue(file, clazz));
+    }
+
+
+    public static <T> List<T> parseArrayFromFile(File file, Class<T> clazz) {
+        if (!file.exists()) {
+            LOGGER.warn("json文件不存在：{}", file.getPath());
+            return null;
+        }
+        JavaType javaType = getCollectionType(ArrayList.class, clazz);
+        return doConvertRuntimeException(() -> mapper.readValue(file, javaType));
+    }
+
+    /**
+     * 将声明式异常包装成运行时异常抛出
+     * @param callable
+     * @param <T>
+     * @return
+     */
+    private static <T> T doConvertRuntimeException(Callable<T> callable) {
+        try {
+            return callable.call();
+        } catch (Exception e) {
             LOGGER.error("json序列化异常", e);
-            throw new RuntimeException("json序列化异常",e);
+            if(e instanceof RuntimeException){
+                throw (RuntimeException)e;
+            }else {
+                throw new RuntimeException("json序列化异常", e);
+            }
         }
-    }
-
-    public static <T> T parseObjectFromFile(File file, Class<T> clazz){
-        if(!file.exists()){
-            LOGGER.warn("json文件不存在：{}", file.getPath());
-            return null;
-        }
-        T t;
-        try {
-            t = mapper.readValue(file, clazz);
-        } catch (JsonParseException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        } catch (JsonMappingException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        } catch (IOException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        }
-        return t;
-    }
-
-
-    public static <T> List<T> parseArrayFromFile(File file, Class<T> clazz){
-        if(!file.exists()){
-            LOGGER.warn("json文件不存在：{}", file.getPath());
-            return null;
-        }
-        List<T> list;
-        try {
-            JavaType javaType = getCollectionType(ArrayList.class, clazz);
-            list = mapper.readValue(file, javaType);
-        } catch (JsonParseException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        } catch (JsonMappingException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        } catch (IOException e) {
-            LOGGER.error("json反序列化异常", e);
-            throw new RuntimeException("json反序列化异常",e);
-        }
-        return list;
     }
 
 }

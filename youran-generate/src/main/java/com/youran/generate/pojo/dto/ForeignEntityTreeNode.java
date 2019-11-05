@@ -9,8 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>Title: 外键关联树节点</p>
- * <p>Description: 是代码生成过程中的中间数据结构，用来辅助代码生成</p>
+ * 外键关联树节点
+ * <p> 是代码生成过程中的中间数据结构，用来辅助代码生成
+ *
  * @author cbb
  * @date 2018/8/7
  */

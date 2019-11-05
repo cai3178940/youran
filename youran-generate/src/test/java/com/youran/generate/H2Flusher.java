@@ -9,21 +9,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>Title:H2数据库刷新器</p>
- * <p>Description:</p>
+ * H2数据库刷新器
+ *
  * @author: cbb
- * @date: 2017-09-13
+ * @date: 2017/09/13
  */
 public class H2Flusher implements InitializingBean {
 
     /**
      * 数据库脚本文件保存路径
      */
-    private final Map<String,String> scriptFilePath;
+    private final Map<String, String> scriptFilePath;
 
     private final JdbcTemplate jdbcTemplate;
 
-    public H2Flusher(JdbcTemplate jdbcTemplate,String... scriptFiles) {
+    public H2Flusher(JdbcTemplate jdbcTemplate, String... scriptFiles) {
         this.jdbcTemplate = jdbcTemplate;
         this.scriptFilePath = new HashMap<>();
         for (String scriptFile : scriptFiles) {
@@ -34,10 +34,10 @@ public class H2Flusher implements InitializingBean {
     /**
      * 刷新H2数据库
      */
-    public void flushDB(){
+    public void flushDB() {
         jdbcTemplate.execute("drop all objects;");
         for (String key : scriptFilePath.keySet()) {
-            jdbcTemplate.execute("runscript from '"+ scriptFilePath.get(key)+"'");
+            jdbcTemplate.execute("runscript from '" + scriptFilePath.get(key) + "'");
         }
     }
 

@@ -1,8 +1,8 @@
 package com.youran.generate.pojo.dto;
 
+import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.dto.AbstractDTO;
 import com.youran.common.validator.Const;
-import com.youran.common.constant.BoolConst;
 import com.youran.generate.constant.PatternConst;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,8 +15,8 @@ import static com.youran.generate.pojo.example.MetaEntityExample.*;
 
 
 /**
- * <p>Title:新增实体DTO</p>
- * <p>Description:</p>
+ * 新增实体DTO
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

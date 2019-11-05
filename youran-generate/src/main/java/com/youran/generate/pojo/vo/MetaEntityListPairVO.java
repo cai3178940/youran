@@ -5,8 +5,8 @@ import com.youran.common.pojo.vo.AbstractVO;
 import java.util.List;
 
 /**
- * <p>Title: </p>
- * <p>Description: </p>
+ * 多对多实体列表对
+ *
  * @author cbb
  * @date 2019/9/21
  */

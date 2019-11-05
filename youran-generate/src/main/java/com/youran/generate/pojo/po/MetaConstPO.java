@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>Title:常量类</p>
- * <p>Description:</p>
+ * 常量类
+ *
  * @author: cbb
  * @date: 2017/6/13
  */
@@ -44,8 +44,8 @@ public class MetaConstPO extends BasePO {
     @JsonIgnore
     private List<MetaConstDetailPO> detailList;
 
-    public void addDetail(MetaConstDetailPO metaConstDetailPO){
-        if(detailList==null){
+    public void addDetail(MetaConstDetailPO metaConstDetailPO) {
+        if (detailList == null) {
             detailList = new ArrayList<>();
         }
         detailList.add(metaConstDetailPO);

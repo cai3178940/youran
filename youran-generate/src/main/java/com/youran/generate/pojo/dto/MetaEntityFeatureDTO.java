@@ -5,8 +5,8 @@ import com.youran.common.pojo.dto.AbstractDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * <p>Title: 实体特性</p>
- * <p>Description: </p>
+ * 实体特性
+ *
  * @author cbb
  * @date 2019/9/30
  */

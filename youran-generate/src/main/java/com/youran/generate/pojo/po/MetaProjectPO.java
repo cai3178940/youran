@@ -9,8 +9,8 @@ import java.util.List;
 import static java.util.Arrays.stream;
 
 /**
- * <p>Title:项目</p>
- * <p>Description:</p>
+ * 项目
+ *
  * @author: cbb
  * @date: 2017/5/24
  */
@@ -58,22 +58,22 @@ public class MetaProjectPO extends BasePO {
     private List<MetaManyToManyPO> mtms;
 
 
-    public void addEntity(MetaEntityPO entity){
-        if(entities==null){
+    public void addEntity(MetaEntityPO entity) {
+        if (entities == null) {
             entities = new ArrayList<>();
         }
         entities.add(entity);
     }
 
-    public void addConst(MetaConstPO metaConstPO){
-        if(consts==null){
+    public void addConst(MetaConstPO metaConstPO) {
+        if (consts == null) {
             consts = new ArrayList<>();
         }
         consts.add(metaConstPO);
     }
 
-    public void addManyToMany(MetaManyToManyPO manyToMany){
-        if(mtms==null){
+    public void addManyToMany(MetaManyToManyPO manyToMany) {
+        if (mtms == null) {
             mtms = new ArrayList<>();
         }
         mtms.add(manyToMany);
@@ -83,30 +83,32 @@ public class MetaProjectPO extends BasePO {
     /**
      * 将横线分割的字符串去横线化
      * 如：gen-meta -> genMeta
+     *
      * @return
      */
-    public String fetchNormalProjectName(){
-        if(projectName==null){
+    public String fetchNormalProjectName() {
+        if (projectName == null) {
             return null;
         }
         String[] split = projectName.split("-|_");
         return stream(split)
-                .reduce((s, s2) -> s.concat(StringUtils.capitalize(s2)))
-                .get();
+            .reduce((s, s2) -> s.concat(StringUtils.capitalize(s2)))
+            .get();
     }
 
     /**
      * 获取common包名
      * packageName最后的.xxx改为.common
+     *
      * @return
      */
-    public String fetchCommonPackageName(){
-        if(StringUtils.isBlank(packageName)){
+    public String fetchCommonPackageName() {
+        if (StringUtils.isBlank(packageName)) {
             return null;
         }
         int index = packageName.lastIndexOf(".");
-        if(index>-1){
-            return packageName.substring(0,index)+".common";
+        if (index > -1) {
+            return packageName.substring(0, index) + ".common";
         }
         return "common";
     }

@@ -9,8 +9,8 @@ import static com.youran.generate.pojo.example.GenHistoryExample.E_PROJECTID;
 import static com.youran.generate.pojo.example.GenHistoryExample.N_PROJECTID;
 
 /**
- * <p>Title:分页查询参数</p>
- * <p>Description:</p>
+ * 分页查询参数
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

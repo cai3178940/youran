@@ -7,8 +7,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 项目启动入口
+ *
  * @author: cbb
  * @date: 2017/9/20
  */
@@ -23,6 +23,7 @@ public class GenerateApp extends SpringBootServletInitializer {
 
     /**
      * 兼容tomcat部署模式
+     *
      * @param application
      * @return
      */

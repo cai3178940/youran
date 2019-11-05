@@ -2,8 +2,8 @@ package com.youran.generate.constant;
 
 
 /**
- * <p>Title: 系统常量</p>
- * <p>Description: </p>
+ * 系统常量
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

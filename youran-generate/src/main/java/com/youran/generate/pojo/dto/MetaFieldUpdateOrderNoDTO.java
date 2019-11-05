@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaFieldExample.*;
 
 /**
- * <p>Title: </p>
- * <p>Description: </p>
+ * 修改字段序号
+ *
  * @author cbb
  * @date 2019/9/21
  */

@@ -8,35 +8,38 @@ import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
- * <p>Title: 【模板文件】映射</p>
- * <p>Description: </p>
+ * 【模板文件】映射
+ *
  * @author cbb
  * @date 2019/10/24
  */
 @Mapper
 public interface TemplateFileMapper {
 
-    TemplateFileMapper INSTANCE = Mappers.getMapper( TemplateFileMapper.class );
+    TemplateFileMapper INSTANCE = Mappers.getMapper(TemplateFileMapper.class);
 
     /**
-    * addDTO映射po
-    * @param templateFileAddDTO
-    * @return
-    */
+     * addDTO映射po
+     *
+     * @param templateFileAddDTO
+     * @return
+     */
     TemplateFilePO fromAddDTO(TemplateFileAddDTO templateFileAddDTO);
 
     /**
-    * 将updateDTO中的值设置到po
-    * @param templateFilePO
-    * @param templateFileUpdateDTO
-    */
+     * 将updateDTO中的值设置到po
+     *
+     * @param templateFilePO
+     * @param templateFileUpdateDTO
+     */
     void setUpdateDTO(@MappingTarget TemplateFilePO templateFilePO, TemplateFileUpdateDTO templateFileUpdateDTO);
 
     /**
-    * po映射showVO
-    * @param templateFilePO
-    * @return
-    */
+     * po映射showVO
+     *
+     * @param templateFilePO
+     * @return
+     */
     TemplateFileShowVO toShowVO(TemplateFilePO templateFilePO);
 
     @BeanMapping(ignoreByDefault = true)

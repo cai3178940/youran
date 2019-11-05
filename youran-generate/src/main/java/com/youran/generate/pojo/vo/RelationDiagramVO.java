@@ -5,9 +5,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * <p>Title: </p>
- * <p>Description: </p>
- *
  * @author cbb
  * @date 2018/7/17
  */

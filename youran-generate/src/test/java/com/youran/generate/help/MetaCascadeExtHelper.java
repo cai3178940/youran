@@ -6,8 +6,8 @@ import com.youran.generate.pojo.dto.MetaCascadeExtUpdateDTO;
 import com.youran.generate.pojo.po.MetaCascadeExtPO;
 
 /**
- * <p>Title:测试数据</p>
- * <p>Description:</p>
+ * 测试数据
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -15,13 +15,14 @@ public class MetaCascadeExtHelper {
 
     /**
      * 生成add测试数据
+     *
      * @return
      */
-    public static MetaCascadeExtAddDTO getAddDTO(Integer fieldId, Integer entityId,Integer cascadeFieldId, Integer cascadeEntityId){
+    public static MetaCascadeExtAddDTO getAddDTO(Integer fieldId, Integer entityId, Integer cascadeFieldId, Integer cascadeEntityId) {
         MetaCascadeExtAddDTO dto = new MetaCascadeExtAddDTO();
         dto.setFieldId(fieldId);
         dto.setEntityId(entityId);
-        dto.setAlias("alias"+fieldId);
+        dto.setAlias("alias" + fieldId);
         dto.setList(1);
         dto.setShow(1);
         dto.setQuery(1);
@@ -33,14 +34,15 @@ public class MetaCascadeExtHelper {
 
     /**
      * 生成update测试数据
+     *
      * @return
      */
-    public static MetaCascadeExtUpdateDTO getUpdateDTO(MetaCascadeExtPO metaCascadeExt){
-        MetaCascadeExtUpdateDTO dto= new MetaCascadeExtUpdateDTO();
+    public static MetaCascadeExtUpdateDTO getUpdateDTO(MetaCascadeExtPO metaCascadeExt) {
+        MetaCascadeExtUpdateDTO dto = new MetaCascadeExtUpdateDTO();
         dto.setCascadeExtId(metaCascadeExt.getCascadeExtId());
         dto.setFieldId(metaCascadeExt.getFieldId());
         dto.setEntityId(metaCascadeExt.getEntityId());
-        dto.setAlias(metaCascadeExt.getAlias()+"s");
+        dto.setAlias(metaCascadeExt.getAlias() + "s");
         dto.setList(metaCascadeExt.getList());
         dto.setShow(metaCascadeExt.getShow());
         dto.setQuery(metaCascadeExt.getQuery());

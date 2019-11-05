@@ -14,10 +14,10 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * <p>Title:【索引】api</p>
- * <p>Description:</p>
+ * 【索引】api
+ *
  * @author: cbb
- * Create Time:2017/5/16
+ * @date 2017/5/16
  */
 @Api(tags = "MetaIndexPO")
 public interface MetaIndexAPI {
@@ -27,7 +27,7 @@ public interface MetaIndexAPI {
      */
     @ApiOperation(value = "新增索引")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaIndexAddDTO", dataType = "MetaIndexAddDTO", value = "新增索引参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaIndexAddDTO", dataType = "MetaIndexAddDTO", value = "新增索引参数", paramType = "body"),
     })
     ResponseEntity<MetaIndexShowVO> save(MetaIndexAddDTO metaIndexAddDTO) throws Exception;
 
@@ -36,7 +36,7 @@ public interface MetaIndexAPI {
      */
     @ApiOperation(value = "修改索引")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaIndexUpdateDTO", dataType = "MetaIndexUpdateDTO", value = "修改索引参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaIndexUpdateDTO", dataType = "MetaIndexUpdateDTO", value = "修改索引参数", paramType = "body"),
     })
     ResponseEntity<MetaIndexShowVO> update(MetaIndexUpdateDTO metaIndexUpdateDTO);
 
@@ -45,7 +45,7 @@ public interface MetaIndexAPI {
      */
     @ApiOperation(value = "索引列表查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaIndexQO", dataType = "MetaIndexQO", value = "查询参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaIndexQO", dataType = "MetaIndexQO", value = "查询参数", paramType = "body"),
     })
     ResponseEntity<List<MetaIndexListVO>> list(MetaIndexQO metaIndexQO);
 
@@ -54,7 +54,7 @@ public interface MetaIndexAPI {
      */
     @ApiOperation(value = "查看索引详情")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "indexId", dataType = "int", value = "索引id", paramType = "path"),
+        @ApiImplicitParam(name = "indexId", dataType = "int", value = "索引id", paramType = "path"),
     })
     ResponseEntity<MetaIndexShowVO> show(Integer indexId);
 
@@ -63,7 +63,7 @@ public interface MetaIndexAPI {
      */
     @ApiOperation(value = "删除索引")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "indexId", dataType = "int", value = "索引id", paramType = "path"),
+        @ApiImplicitParam(name = "indexId", dataType = "int", value = "索引id", paramType = "path"),
     })
     ResponseEntity<Integer> delete(Integer indexId);
 

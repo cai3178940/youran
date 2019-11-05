@@ -7,8 +7,8 @@ import java.beans.PropertyEditorSupport;
 import java.util.Date;
 
 /**
- * <p>Title:自定义日期装换</p>
- * <p>Description:</p>
+ * 自定义日期转换
+ *
  * @author: cbb
  * @date: 2018/2/23
  */
@@ -20,7 +20,7 @@ public class MyCustomDateEditor extends PropertyEditorSupport {
         if (!StringUtils.hasText(text)) {
             // Treat empty String as null value.
             setValue(null);
-        }else {
+        } else {
             setValue(DateUtil.parseDate(text));
         }
     }

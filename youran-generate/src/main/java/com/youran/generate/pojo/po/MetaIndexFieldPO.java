@@ -3,8 +3,8 @@ package com.youran.generate.pojo.po;
 import com.youran.common.pojo.po.AbstractPO;
 
 /**
- * <p>Title:索引字段关联关系</p>
- * <p>Description:</p>
+ * 索引字段关联关系
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

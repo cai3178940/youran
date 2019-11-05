@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * <p>Title:【代码生成】api</p>
- * <p>Description:</p>
+ * 【代码生成】api
+ *
  * @author: cbb
  * @date: 2017/5/13
  */
@@ -18,22 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 public interface MetaCodeGenAPI {
 
     /**
-     * 生成建表语句
-     */
-    @Deprecated
-    @ApiOperation(value = "生成建表语句")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
-    })
-    void genSql(Integer projectId, HttpServletResponse response);
-
-    /**
      * 仅生成代码，不下载
      */
     @ApiOperation(value = "仅生成代码，不下载")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
-            @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "query"),
+        @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
+        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "query"),
     })
     ResponseEntity<Void> genCode(Integer projectId, Integer templateId);
 
@@ -42,18 +32,10 @@ public interface MetaCodeGenAPI {
      */
     @ApiOperation(value = "生成代码并下载压缩包")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
+        @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
+        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "query"),
     })
-    void genCodeAndDownload(Integer projectId, HttpServletResponse response);
-
-    /**
-     * sql预览
-     */
-    @ApiOperation(value = "sql预览")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "query"),
-    })
-    ResponseEntity<String> sqlPreview(Integer entityId);
+    void genCodeAndDownload(Integer projectId, Integer templateId, HttpServletResponse response);
 
     /**
      * 提交到仓库
@@ -61,6 +43,7 @@ public interface MetaCodeGenAPI {
     @ApiOperation(value = "提交到仓库")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
+        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "query"),
     })
-    ResponseEntity<String> gitCommit(Integer entityId);
+    ResponseEntity<String> gitCommit(Integer projectId, Integer templateId);
 }

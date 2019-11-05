@@ -5,10 +5,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- * <p>Title:合并测试类</p>
- * <p>Description:</p>
+ * 合并测试类
+ *
  * @author: cbb
- * @date: 2017-09-13
+ * @date: 2017/09/13
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -24,7 +24,6 @@ import org.junit.runners.Suite;
     ReverseEngineeringControllerTest.class
 })
 public class Main {
-
 
 
 }

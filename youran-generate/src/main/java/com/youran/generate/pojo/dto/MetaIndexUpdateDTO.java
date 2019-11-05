@@ -4,11 +4,12 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
-import static com.youran.generate.pojo.example.MetaIndexExample.*;
+import static com.youran.generate.pojo.example.MetaIndexExample.E_INDEXID;
+import static com.youran.generate.pojo.example.MetaIndexExample.N_INDEXID;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 修改索引入参
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

@@ -10,8 +10,8 @@ import static com.youran.generate.pojo.example.MetaConstDetailExample.N_CONSTID;
 
 
 /**
- * <p>Title:查询参数</p>
- * <p>Description:</p>
+ * 查询参数
+ *
  * @author: cbb
  * @date: 2017/6/14
  */

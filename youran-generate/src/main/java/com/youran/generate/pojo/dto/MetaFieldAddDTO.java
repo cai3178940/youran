@@ -15,8 +15,8 @@ import static com.youran.generate.pojo.example.MetaFieldExample.*;
 
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 新增字段参数
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

@@ -7,27 +7,27 @@ import org.hibernate.validator.constraints.Length;
 import static com.youran.generate.pojo.example.CodeTemplateExample.*;
 
 /**
- * <p>Title: 查询【代码模板】的参数</p>
- * <p>Description: </p>
+ * 查询【代码模板】的参数
+ *
  * @author cbb
  * @date 2019/10/24
  */
 public class CodeTemplateQO extends PageQO {
 
-    @ApiParam(value = N_NAME,example = E_NAME)
-    @Length(max = 32,message = "name最大长度不能超过{max}")
+    @ApiParam(value = N_NAME, example = E_NAME)
+    @Length(max = 32, message = "name最大长度不能超过{max}")
     private String name;
 
-    @ApiParam(value = N_TEMPLATE_TYPE,example = E_TEMPLATE_TYPE)
+    @ApiParam(value = N_TEMPLATE_TYPE, example = E_TEMPLATE_TYPE)
     private Integer templateType;
 
-    @ApiParam(value = N_SYS_DEFAULT,example = E_SYS_DEFAULT)
+    @ApiParam(value = N_SYS_DEFAULT, example = E_SYS_DEFAULT)
     private Boolean sysDefault;
 
-    @ApiParam(value = "创建时间排序标识【1升序,-1降序,0不排序】",example = "1")
+    @ApiParam(value = "创建时间排序标识【1升序,-1降序,0不排序】", example = "1")
     private Integer createdTimeSortSign;
 
-    @ApiParam(value = "修改时间排序标识【1升序,-1降序,0不排序】",example = "1")
+    @ApiParam(value = "修改时间排序标识【1升序,-1降序,0不排序】", example = "1")
     private Integer operatedTimeSortSign;
 
 

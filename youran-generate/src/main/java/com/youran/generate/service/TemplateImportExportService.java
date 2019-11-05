@@ -21,20 +21,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
- * <p>Title: 【代码模板】导入导出服务</p>
- * <p>Description:</p>
+ * 【代码模板】导入导出服务
+ *
  * @author: cbb
  * @date: 11/3/2019 15:03
  */
 @Service
 public class TemplateImportExportService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TemplateImportExportService.class);
-
     public static final String TEMPLATE_JSON_FILE = "template.json";
-
     public static final String TEMPLATE_FILE_DIR = "tpl";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(TemplateImportExportService.class);
     @Autowired
     private TemplateFileService templateFileService;
     @Autowired
@@ -48,11 +45,12 @@ public class TemplateImportExportService {
 
     /**
      * 模板导出
+     *
      * @param templateId
      * @return
      */
     public File exportTemplate(Integer templateId) {
-        CodeTemplatePO templatePO = codeTemplateAssembleService.getAssembledCodeTemplate(templateId,null);
+        CodeTemplatePO templatePO = codeTemplateAssembleService.getAssembledCodeTemplate(templateId, null);
         String exportDir = tmpDirService.getTemplateExportDir(templatePO);
         String zipFilePath = exportDir + ".zip";
         File dir = new File(exportDir);
@@ -76,9 +74,9 @@ public class TemplateImportExportService {
     }
 
 
-
     /**
      * 模板导入
+     *
      * @param zipFile
      * @return
      */
@@ -87,26 +85,26 @@ public class TemplateImportExportService {
         String importDir = tmpDirService.getPathWithoutZipFileSuffix(zipFile);
         // 解压zip包
         Zip4jUtil.extractAll(zipFile, importDir);
-        LOGGER.info("将zip包解压到：{}",importDir);
+        LOGGER.info("将zip包解压到：{}", importDir);
         // json文件所在目录
         String jsonDir = tmpDirService.getFirstChildDir(importDir) + File.separator;
         // 模板文件所在目录
         String tplDir = jsonDir + TEMPLATE_FILE_DIR;
         File tplDirFile = new File(tplDir);
-        if(!tplDirFile.exists() || !tplDirFile.isDirectory()){
-            throw new BusinessException("导入失败，"+TEMPLATE_FILE_DIR+"目录不存在");
+        if (!tplDirFile.exists() || !tplDirFile.isDirectory()) {
+            throw new BusinessException("导入失败，" + TEMPLATE_FILE_DIR + "目录不存在");
         }
         // 读取模板json文件，并解析成po
         CodeTemplatePO templateFromJson = JsonUtil.parseObjectFromFile(
             new File(jsonDir + TEMPLATE_JSON_FILE), CodeTemplatePO.class);
-        if(templateFromJson==null){
+        if (templateFromJson == null) {
             throw new BusinessException("导入失败");
         }
         CodeTemplatePO templatePO = this.saveTemplate(templateFromJson);
         List<TemplateFilePO> templateFiles = templateFromJson.getTemplateFiles();
-        if(CollectionUtils.isNotEmpty(templateFiles)){
+        if (CollectionUtils.isNotEmpty(templateFiles)) {
             for (TemplateFilePO templateFile : templateFiles) {
-                this.saveTemplateFile(templateFile,templatePO.getTemplateId(),tplDirFile);
+                this.saveTemplateFile(templateFile, templatePO.getTemplateId(), tplDirFile);
             }
         }
         return templatePO;
@@ -115,43 +113,45 @@ public class TemplateImportExportService {
 
     /**
      * 把json中解析出来的模板保存到数据库
+     *
      * @param templateFromJson
      * @return
      */
     private CodeTemplatePO saveTemplate(CodeTemplatePO templateFromJson) {
         CodeTemplatePO templatePO = CodeTemplateMapper.INSTANCE.copy(templateFromJson);
         codeTemplateService.doSave(templatePO);
-        LOGGER.debug("导入模板：{}",JsonUtil.toJSONString(templatePO));
+        LOGGER.debug("导入模板：{}", JsonUtil.toJSONString(templatePO));
         return templatePO;
     }
 
 
     /**
      * 把json中解析出来的模板文件保存到数据库
+     *
      * @param templateFileFromJson
      * @param templateId
      * @param tplDir
      * @return
      */
     private TemplateFilePO saveTemplateFile(TemplateFilePO templateFileFromJson,
-                                  Integer templateId, File tplDir) {
+                                            Integer templateId, File tplDir) {
         TemplateFilePO po = TemplateFileMapper.INSTANCE.copy(templateFileFromJson);
         po.setTemplateId(templateId);
         String filePath = po.getFileDir() + File.separator + po.getFileName();
         File contentFile = new File(tplDir, filePath);
-        if(!contentFile.exists() || contentFile.isDirectory()){
-            throw new BusinessException("模板文件缺失："+po.getFileName());
+        if (!contentFile.exists() || contentFile.isDirectory()) {
+            throw new BusinessException("模板文件缺失：" + po.getFileName());
         }
         String content;
         try {
             content = FileUtils.readFileToString(contentFile, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            LOGGER.error("读取文件内容异常",e);
+            LOGGER.error("读取文件内容异常", e);
             throw new BusinessException("读取模板文件内容异常");
         }
         po.setContent(content);
         templateFileService.doSave(po);
-        LOGGER.debug("导入模板文件：{}",JsonUtil.toJSONString(po));
+        LOGGER.debug("导入模板文件：{}", JsonUtil.toJSONString(po));
         return po;
     }
 

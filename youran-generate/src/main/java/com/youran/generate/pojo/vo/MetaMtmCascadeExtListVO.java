@@ -7,39 +7,39 @@ import io.swagger.annotations.ApiModelProperty;
 import static com.youran.generate.pojo.example.MetaMtmCascadeExtExample.*;
 
 /**
- * <p>Title: 【多对多级联扩展】列表展示对象</p>
- * <p>Description: </p>
+ * 【多对多级联扩展】列表展示对象
+ *
  * @author cbb
  * @date 2019/09/21
  */
 @ApiModel(description = "【多对多级联扩展】列表展示对象")
 public class MetaMtmCascadeExtListVO extends AbstractVO {
 
-    @ApiModelProperty(notes = N_MTM_CASCADE_EXT_ID,example = E_MTM_CASCADE_EXT_ID)
+    @ApiModelProperty(notes = N_MTM_CASCADE_EXT_ID, example = E_MTM_CASCADE_EXT_ID)
     private Integer mtmCascadeExtId;
 
-    @ApiModelProperty(notes = N_MTM_ID,example = E_MTM_ID)
+    @ApiModelProperty(notes = N_MTM_ID, example = E_MTM_ID)
     private Integer mtmId;
 
-    @ApiModelProperty(notes = N_ENTITY_ID,example = E_ENTITY_ID)
+    @ApiModelProperty(notes = N_ENTITY_ID, example = E_ENTITY_ID)
     private Integer entityId;
 
-    @ApiModelProperty(notes = N_CASCADE_ENTITY_ID,example = E_CASCADE_ENTITY_ID)
+    @ApiModelProperty(notes = N_CASCADE_ENTITY_ID, example = E_CASCADE_ENTITY_ID)
     private Integer cascadeEntityId;
 
-    @ApiModelProperty(notes = N_CASCADE_FIELD_ID,example = E_CASCADE_FIELD_ID)
+    @ApiModelProperty(notes = N_CASCADE_FIELD_ID, example = E_CASCADE_FIELD_ID)
     private Integer cascadeFieldId;
 
-    @ApiModelProperty(notes = N_ALIAS,example = E_ALIAS)
+    @ApiModelProperty(notes = N_ALIAS, example = E_ALIAS)
     private String alias;
 
-    @ApiModelProperty(notes = N_LIST,example = E_LIST)
+    @ApiModelProperty(notes = N_LIST, example = E_LIST)
     private Integer list;
 
-    @ApiModelProperty(notes = N_SHOW,example = E_SHOW)
+    @ApiModelProperty(notes = N_SHOW, example = E_SHOW)
     private Integer show;
 
-    @ApiModelProperty(notes = N_QUERY,example = E_QUERY)
+    @ApiModelProperty(notes = N_QUERY, example = E_QUERY)
     private Integer query;
 
     /**

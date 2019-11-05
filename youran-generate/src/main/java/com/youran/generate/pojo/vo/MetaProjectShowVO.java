@@ -3,10 +3,10 @@ package com.youran.generate.pojo.vo;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 
 /**
- * <p>Title:项目详情展示对象</p>
- * <p>Description:</p>
+ * 项目详情展示对象
+ *
  * @author: cbb
- * Create Time:2017/5/24
+ * @date 2017/5/24
  */
 public class MetaProjectShowVO extends MetaProjectListVO {
 

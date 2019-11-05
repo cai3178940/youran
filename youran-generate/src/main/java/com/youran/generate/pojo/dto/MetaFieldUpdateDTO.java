@@ -5,11 +5,12 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
-import static com.youran.generate.pojo.example.MetaFieldExample.*;
+import static com.youran.generate.pojo.example.MetaFieldExample.E_FIELDID;
+import static com.youran.generate.pojo.example.MetaFieldExample.N_FIELDID;
 
 /**
- * <p>Title:修改字段DTO</p>
- * <p>Description:</p>
+ * 修改字段DTO
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

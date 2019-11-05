@@ -8,8 +8,8 @@ import static com.youran.generate.pojo.example.MetaManyToManyExample.E_MTMID;
 import static com.youran.generate.pojo.example.MetaManyToManyExample.N_MTMID;
 
 /**
- * <p>Title:实体列表展示对象</p>
- * <p>Description:</p>
+ * 实体列表展示对象
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

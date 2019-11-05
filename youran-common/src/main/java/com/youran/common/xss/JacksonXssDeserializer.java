@@ -9,8 +9,8 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import java.io.IOException;
 
 /**
- * <p>Title:jackson防XSS反序列化器</p>
- * <p>Description:</p>
+ * jackson防XSS反序列化器
+ *
  * @author: cbb
  * @date: 2018/4/10
  */
@@ -25,6 +25,7 @@ public class JacksonXssDeserializer extends StdScalarDeserializer<String> {
         String value = StringDeserializer.instance.deserialize(p, ctxt);
         return XSSUtil.clean(value);
     }
+
     @Override
     public String deserializeWithType(JsonParser jp, DeserializationContext ctxt, TypeDeserializer typeDeserializer) throws IOException {
         String value = StringDeserializer.instance.deserializeWithType(jp, ctxt, typeDeserializer);
@@ -32,6 +33,8 @@ public class JacksonXssDeserializer extends StdScalarDeserializer<String> {
     }
 
     @Override
-    public boolean isCachable() { return StringDeserializer.instance.isCachable(); }
+    public boolean isCachable() {
+        return StringDeserializer.instance.isCachable();
+    }
 
 }

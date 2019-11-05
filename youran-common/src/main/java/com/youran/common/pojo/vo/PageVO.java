@@ -9,28 +9,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>Title:分页结果对象</p>
- * <p>Description:</p>
+ * 分页结果对象
+ *
  * @author: cbb
  * @date: 2017/8/24
  */
 @ApiModel
 public class PageVO<T> extends AbstractVO {
 
-    @ApiModelProperty(notes = "每页条数",example = "10",required = true)
+    @ApiModelProperty(notes = "每页条数", example = "10", required = true)
     private Integer pageSize;
-    @ApiModelProperty(notes = "页码",example = "1",required = true)
+    @ApiModelProperty(notes = "页码", example = "1", required = true)
     private Integer currentPage;
-    @ApiModelProperty(notes = "开始序号",example = "0",required = true)
+    @ApiModelProperty(notes = "开始序号", example = "0", required = true)
     private Integer firstIndex;
-    @ApiModelProperty(notes = "结束序号",example = "10",required = true)
+    @ApiModelProperty(notes = "结束序号", example = "10", required = true)
     private Integer lastIndex;
 
-    @ApiModelProperty(notes = "数据列表",required = true)
+    @ApiModelProperty(notes = "数据列表", required = true)
     private List<T> list;
-    @ApiModelProperty(notes = "总条数",example = "100",required = true)
+    @ApiModelProperty(notes = "总条数", example = "100", required = true)
     private Integer total;
-    @ApiModelProperty(notes = "总页数",example = "10",required = true)
+    @ApiModelProperty(notes = "总页数", example = "10", required = true)
     private Integer pageCount;
 
     public PageVO() {
@@ -43,7 +43,7 @@ public class PageVO<T> extends AbstractVO {
         this.total = total;
         this.firstIndex = (currentPage - 1) * pageSize;
         this.lastIndex = currentPage * pageSize;
-        if ( total % pageSize > 0 ) {
+        if (total % pageSize > 0) {
             this.pageCount = total / pageSize + 1;
         } else {
             this.pageCount = total / pageSize;
@@ -53,8 +53,8 @@ public class PageVO<T> extends AbstractVO {
     public PageVO(int pageSize, int currentPage, int total) {
         if (currentPage > 1 && pageSize <= 0) {
             throw new IllegalArgumentException(
-                    "Illegal paging arguments. [pageSize=" + pageSize
-                            + ", currentPage=" + currentPage + "]");
+                "Illegal paging arguments. [pageSize=" + pageSize
+                    + ", currentPage=" + currentPage + "]");
         }
         if (pageSize < 0) {
             pageSize = 0;
@@ -68,7 +68,7 @@ public class PageVO<T> extends AbstractVO {
         this.total = total;
         this.firstIndex = (currentPage - 1) * pageSize;
         this.lastIndex = currentPage * pageSize;
-        if ( total % pageSize > 0 ) {
+        if (total % pageSize > 0) {
             this.pageCount = total / pageSize + 1;
         } else {
             this.pageCount = total / pageSize;
@@ -78,20 +78,20 @@ public class PageVO<T> extends AbstractVO {
     public PageVO(int pageSize, long firstIndex, int total) {
         if (firstIndex > 1 && pageSize <= 0) {
             throw new IllegalArgumentException(
-                    "Illegal paging arguments. [pageSize=" + pageSize
-                            + ", firstIndex=" + firstIndex + "]");
+                "Illegal paging arguments. [pageSize=" + pageSize
+                    + ", firstIndex=" + firstIndex + "]");
         }
         if (pageSize < 0) {
             pageSize = 0;
         }
-        this.firstIndex = (int)firstIndex;
+        this.firstIndex = (int) firstIndex;
         if (firstIndex < 0) {
             this.firstIndex = 0;
         }
         this.pageSize = pageSize;
         this.total = total;
-        this.lastIndex = pageSize + (int)firstIndex;
-        if ( total % pageSize > 0 ) {
+        this.lastIndex = pageSize + (int) firstIndex;
+        if (total % pageSize > 0) {
             this.pageCount = total / pageSize + 1;
         } else {
             this.pageCount = total / pageSize;
@@ -99,16 +99,14 @@ public class PageVO<T> extends AbstractVO {
     }
 
     /**
-     * @param pageSize
-     *            每页记录数
-     * @param currentPage
-     *            页号
+     * @param pageSize    每页记录数
+     * @param currentPage 页号
      */
     public PageVO(int pageSize, int currentPage) {
         if (currentPage > 1 && pageSize <= 0) {
             throw new IllegalArgumentException(
-                    "Illegal paging arguments. [pageSize=" + pageSize
-                            + ", currentPage=" + currentPage + "]");
+                "Illegal paging arguments. [pageSize=" + pageSize
+                    + ", currentPage=" + currentPage + "]");
         }
         if (pageSize < 0) {
             pageSize = 0;

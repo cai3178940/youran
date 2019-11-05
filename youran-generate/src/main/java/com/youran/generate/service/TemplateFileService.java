@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * <p>Title: 【模板文件】删改查服务</p>
- * <p>Description: </p>
+ * 【模板文件】删改查服务
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -41,31 +41,33 @@ public class TemplateFileService {
 
     /**
      * 校验数据唯一性
+     *
      * @param templateFile
-     * @param isUpdate 是否更新校验
+     * @param isUpdate     是否更新校验
      */
-    private void checkUnique(TemplateFilePO templateFile, boolean isUpdate){
-        if(templateFileDAO.notUnique(templateFile.getTemplateId(), templateFile.getFileDir(), templateFile.getFileName(), isUpdate?templateFile.getFileId():null)){
+    private void checkUnique(TemplateFilePO templateFile, boolean isUpdate) {
+        if (templateFileDAO.notUnique(templateFile.getTemplateId(), templateFile.getFileDir(), templateFile.getFileName(), isUpdate ? templateFile.getFileId() : null)) {
             throw new BusinessException(ErrorCode.DUPLICATE_KEY);
         }
     }
 
     /**
      * 新增【模板文件】
+     *
      * @param templateFileDTO
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public TemplateFilePO save(TemplateFileAddDTO templateFileDTO) {
         TemplateFilePO templateFile = TemplateFileMapper.INSTANCE.fromAddDTO(templateFileDTO);
-        if(templateFile.getTemplateId() != null){
-            Assert.isTrue(codeTemplateDAO.exist(templateFile.getTemplateId()),"模板id有误");
+        if (templateFile.getTemplateId() != null) {
+            Assert.isTrue(codeTemplateDAO.exist(templateFile.getTemplateId()), "模板id有误");
         }
         // 初始化文件内容为空
         templateFile.setContent("");
         templateFile.setFileDir(this.normalizeTemplateFileDir(templateFile.getFileDir()));
         // 唯一性校验
-        this.checkUnique(templateFile,false);
+        this.checkUnique(templateFile, false);
         this.doSave(templateFile);
         // 更新模板内部版本号
         codeTemplateService.updateInnerVersion(templateFile.getTemplateId());
@@ -74,6 +76,7 @@ public class TemplateFileService {
 
     /**
      * 执行保存
+     *
      * @param po
      */
     public void doSave(TemplateFilePO po) {
@@ -82,6 +85,7 @@ public class TemplateFileService {
 
     /**
      * 修改【模板文件】
+     *
      * @param templateFileUpdateDTO
      * @return
      */
@@ -90,13 +94,13 @@ public class TemplateFileService {
     public TemplateFilePO update(TemplateFileUpdateDTO templateFileUpdateDTO) {
         Integer fileId = templateFileUpdateDTO.getFileId();
         TemplateFilePO templateFile = this.getTemplateFile(fileId, true);
-        TemplateFileMapper.INSTANCE.setUpdateDTO(templateFile,templateFileUpdateDTO);
-        if(templateFile.getTemplateId() != null){
-            Assert.isTrue(codeTemplateDAO.exist(templateFile.getTemplateId()),"模板id有误");
+        TemplateFileMapper.INSTANCE.setUpdateDTO(templateFile, templateFileUpdateDTO);
+        if (templateFile.getTemplateId() != null) {
+            Assert.isTrue(codeTemplateDAO.exist(templateFile.getTemplateId()), "模板id有误");
         }
         templateFile.setFileDir(this.normalizeTemplateFileDir(templateFile.getFileDir()));
         // 唯一性校验
-        this.checkUnique(templateFile,true);
+        this.checkUnique(templateFile, true);
         templateFileDAO.update(templateFile);
         // 更新模板内部版本号
         codeTemplateService.updateInnerVersion(templateFile.getTemplateId());
@@ -105,23 +109,24 @@ public class TemplateFileService {
 
     /**
      * 标准化文件目录
+     *
      * @param fileDir
      * @return
      */
-    private String normalizeTemplateFileDir(String fileDir){
+    private String normalizeTemplateFileDir(String fileDir) {
         fileDir = StringUtils.trim(fileDir);
-        if(StringUtils.isBlank(fileDir)){
+        if (StringUtils.isBlank(fileDir)) {
             return "/";
         }
-        fileDir = FilenameUtils.normalizeNoEndSeparator(fileDir,true);
-        if(fileDir==null){
-            throw new BusinessException(ErrorCode.BAD_REQUEST,"目录不合法");
+        fileDir = FilenameUtils.normalizeNoEndSeparator(fileDir, true);
+        if (fileDir == null) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST, "目录不合法");
         }
-        fileDir = fileDir.replaceAll("\\/+","/");
-        if(fileDir.endsWith("/")){
-            fileDir = fileDir.substring(0,fileDir.length()-1);
+        fileDir = fileDir.replaceAll("\\/+", "/");
+        if (fileDir.endsWith("/")) {
+            fileDir = fileDir.substring(0, fileDir.length() - 1);
         }
-        if(!fileDir.startsWith("/")){
+        if (!fileDir.startsWith("/")) {
             fileDir = "/" + fileDir;
         }
         return fileDir;
@@ -130,11 +135,11 @@ public class TemplateFileService {
 
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
-    public TemplateFilePO updateContent(TemplateFileContentUpdateDTO dto){
+    public TemplateFilePO updateContent(TemplateFileContentUpdateDTO dto) {
         Integer fileId = dto.getFileId();
         TemplateFilePO templateFile = this.getTemplateFile(fileId, true);
-        if(!Objects.equals(templateFile.getVersion(), dto.getVersion())){
-            throw new BusinessException(ErrorCode.CONFLICT,"文件内容更新冲突");
+        if (!Objects.equals(templateFile.getVersion(), dto.getVersion())) {
+            throw new BusinessException(ErrorCode.CONFLICT, "文件内容更新冲突");
         }
         templateFile.setContent(dto.getContent());
         templateFileDAO.update(templateFile);
@@ -145,6 +150,7 @@ public class TemplateFileService {
 
     /**
      * 查询列表
+     *
      * @param templateFileQO
      * @return
      */
@@ -155,11 +161,12 @@ public class TemplateFileService {
 
     /**
      * 根据主键获取【模板文件】
+     *
      * @param fileId 主键
-     * @param force 是否强制获取
+     * @param force  是否强制获取
      * @return
      */
-    public TemplateFilePO getTemplateFile(Integer fileId, boolean force){
+    public TemplateFilePO getTemplateFile(Integer fileId, boolean force) {
         TemplateFilePO templateFile = templateFileDAO.findById(fileId);
         if (force && templateFile == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
@@ -169,16 +176,18 @@ public class TemplateFileService {
 
     /**
      * 查询所有模板文件
+     *
      * @param templateId 模板id
      * @return
      */
-    public List<TemplateFilePO> getAllTemplateFiles(Integer templateId){
+    public List<TemplateFilePO> getAllTemplateFiles(Integer templateId) {
         return templateFileDAO.findAll(templateId);
     }
 
 
     /**
      * 查询【模板文件】详情
+     *
      * @param fileId
      * @return
      */
@@ -190,6 +199,7 @@ public class TemplateFileService {
 
     /**
      * 删除【模板文件】
+     *
      * @param fileIds
      * @return
      */
@@ -210,7 +220,6 @@ public class TemplateFileService {
         }
         return count;
     }
-
 
 
 }

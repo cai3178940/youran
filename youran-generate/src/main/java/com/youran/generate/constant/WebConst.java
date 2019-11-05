@@ -1,8 +1,8 @@
 package com.youran.generate.constant;
 
 /**
- * <p>Title: WEB相关常量</p>
- * <p>Description: </p>
+ * WEB相关常量
+ *
  * @author cbb
  * @date 2019/9/22
  */

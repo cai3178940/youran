@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * <p>Title:多对多关联增删改查服务</p>
- * <p>Description:</p>
+ * 多对多关联增删改查服务
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -43,6 +43,7 @@ public class MetaManyToManyService {
 
     /**
      * 新增多对多关联
+     *
      * @param addDTO
      * @return
      */
@@ -65,6 +66,7 @@ public class MetaManyToManyService {
 
     /**
      * 修改多对多关联
+     *
      * @param updateDTO
      * @return
      */
@@ -72,7 +74,7 @@ public class MetaManyToManyService {
     @OptimisticLock
     public MetaManyToManyPO update(MetaManyToManyUpdateDTO updateDTO) {
         Integer mtmId = updateDTO.getMtmId();
-        MetaManyToManyPO metaManyToMany = this.getMetaManyToMany(mtmId,true);
+        MetaManyToManyPO metaManyToMany = this.getMetaManyToMany(mtmId, true);
         Integer projectId = metaManyToMany.getProjectId();
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
@@ -86,55 +88,57 @@ public class MetaManyToManyService {
 
     /**
      * 校验多对多是否合法
+     *
      * @param mtm
      */
-    private void checkManyToMany(MetaManyToManyPO mtm){
-        if(BoolConst.isFalse(mtm.getHoldRefer1())
-            && BoolConst.isFalse(mtm.getHoldRefer2())){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"至少要有一个实体持有对方引用");
+    private void checkManyToMany(MetaManyToManyPO mtm) {
+        if (BoolConst.isFalse(mtm.getHoldRefer1())
+            && BoolConst.isFalse(mtm.getHoldRefer2())) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "至少要有一个实体持有对方引用");
         }
         if (!metaEntityDAO.exist(mtm.getEntityId1())) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"entityId1参数有误");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "entityId1参数有误");
         }
         if (!metaEntityDAO.exist(mtm.getEntityId2())) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"entityId2参数有误");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "entityId2参数有误");
         }
-        if(Objects.equals(mtm.getEntityId1(),mtm.getEntityId2())){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"不支持同一个实体跟自己建立多对多关系");
+        if (Objects.equals(mtm.getEntityId1(), mtm.getEntityId2())) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "不支持同一个实体跟自己建立多对多关系");
         }
-        boolean exists = metaManyToManyDAO.findManyToManyExists(mtm.getEntityId1(),mtm.getEntityId2(),
+        boolean exists = metaManyToManyDAO.findManyToManyExists(mtm.getEntityId1(), mtm.getEntityId2(),
             mtm.getMtmId());
-        if(exists){
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"两实体已经存在多对多关系");
+        if (exists) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "两实体已经存在多对多关系");
         }
-        if(BoolConst.isTrue(mtm.getHoldRefer1())){
+        if (BoolConst.isTrue(mtm.getHoldRefer1())) {
             MetaMtmEntityFeatureDTO f1 = mtm.getF1();
-            if(BoolConst.isFalse(f1.getAddRemove())
+            if (BoolConst.isFalse(f1.getAddRemove())
                 && BoolConst.isFalse(f1.getSet())
-                && BoolConst.isFalse(f1.getWithinEntity())){
-                throw new BusinessException(ErrorCode.BAD_PARAMETER,"至少勾选一项\"实体1功能\"");
+                && BoolConst.isFalse(f1.getWithinEntity())) {
+                throw new BusinessException(ErrorCode.BAD_PARAMETER, "至少勾选一项\"实体1功能\"");
             }
         }
-        if(BoolConst.isTrue(mtm.getHoldRefer2())){
+        if (BoolConst.isTrue(mtm.getHoldRefer2())) {
             MetaMtmEntityFeatureDTO f2 = mtm.getF2();
-            if(BoolConst.isFalse(f2.getAddRemove())
+            if (BoolConst.isFalse(f2.getAddRemove())
                 && BoolConst.isFalse(f2.getSet())
-                && BoolConst.isFalse(f2.getWithinEntity())){
-                throw new BusinessException(ErrorCode.BAD_PARAMETER,"至少勾选一项\"实体2功能\"");
+                && BoolConst.isFalse(f2.getWithinEntity())) {
+                throw new BusinessException(ErrorCode.BAD_PARAMETER, "至少勾选一项\"实体2功能\"");
             }
         }
     }
 
     /**
      * 获取多对多关系对象
+     *
      * @param mtmId
      * @param force
      * @return
      */
-    public MetaManyToManyPO getMetaManyToMany(Integer mtmId, boolean force){
+    public MetaManyToManyPO getMetaManyToMany(Integer mtmId, boolean force) {
         MetaManyToManyPO mtm = metaManyToManyDAO.findById(mtmId);
-        if(force && mtm==null){
-            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"多对多关系未找到");
+        if (force && mtm == null) {
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND, "多对多关系未找到");
         }
         this.parseMtmFeature(mtm);
         return mtm;
@@ -142,6 +146,7 @@ public class MetaManyToManyService {
 
     /**
      * 解析特性对象
+     *
      * @param mtm
      */
     public void parseMtmFeature(MetaManyToManyPO mtm) {
@@ -157,6 +162,7 @@ public class MetaManyToManyService {
 
     /**
      * 查询列表
+     *
      * @param metaManyToManyQO
      * @return
      */
@@ -167,17 +173,19 @@ public class MetaManyToManyService {
 
     /**
      * 查询多对多关联详情
+     *
      * @param mtmId
      * @return
      */
     public MetaManyToManyShowVO show(Integer mtmId) {
-        MetaManyToManyPO metaManyToMany = this.getMetaManyToMany(mtmId,true);
+        MetaManyToManyPO metaManyToMany = this.getMetaManyToMany(mtmId, true);
         MetaManyToManyShowVO showVO = MetaManyToManyMapper.INSTANCE.toShowVO(metaManyToMany);
         return showVO;
     }
 
     /**
      * 删除多对多关联
+     *
      * @param mtmId
      * @return
      */
@@ -186,8 +194,8 @@ public class MetaManyToManyService {
         int count = 0;
         Integer projectId = null;
         for (Integer id : mtmId) {
-            MetaManyToManyPO manyToMany = this.getMetaManyToMany(id,false);
-            if(manyToMany==null){
+            MetaManyToManyPO manyToMany = this.getMetaManyToMany(id, false);
+            if (manyToMany == null) {
                 continue;
             }
             projectId = manyToMany.getProjectId();
@@ -195,7 +203,7 @@ public class MetaManyToManyService {
             metaProjectService.checkOperatorByProjectId(projectId);
             count += metaManyToManyDAO.delete(id);
         }
-        if(count>0) {
+        if (count > 0) {
             metaProjectService.updateProjectVersion(projectId);
         }
         return count;
@@ -203,13 +211,14 @@ public class MetaManyToManyService {
 
     /**
      * 根据项目id查询多对多列表
+     *
      * @param projectId
      * @param parseFeature
      * @return
      */
-    public List<MetaManyToManyPO> findByProjectId(Integer projectId,boolean parseFeature){
+    public List<MetaManyToManyPO> findByProjectId(Integer projectId, boolean parseFeature) {
         List<MetaManyToManyPO> list = metaManyToManyDAO.findByProjectId(projectId);
-        if(parseFeature){
+        if (parseFeature) {
             list.stream().forEach(this::parseMtmFeature);
         }
         return list;

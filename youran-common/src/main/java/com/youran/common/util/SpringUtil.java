@@ -9,8 +9,8 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 
 /**
- * <p>Title:spring bean 工具类</p>
- * <p>Description:</p>
+ * spring bean 工具类
+ *
  * @author: cbb
  * @date: 2018/6/15
  */
@@ -20,19 +20,17 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 注入context
+     *
      * @param context
      */
     @Override
-    public void setApplicationContext(ApplicationContext context){
-        applicationContext = context;
-    }
-
-    public static void setApplication(ApplicationContext context){
+    public void setApplicationContext(ApplicationContext context) {
         applicationContext = context;
     }
 
     /**
      * 得到上下文
+     *
      * @return
      */
     public static ApplicationContext getApplicationContext() {
@@ -41,6 +39,7 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 根据名称获取
+     *
      * @param beanName
      * @return
      */
@@ -50,6 +49,7 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 根据名称和类型
+     *
      * @param beanName
      * @param clz
      * @return
@@ -60,6 +60,7 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 根据类型获取bean
+     *
      * @param clz
      * @return
      */
@@ -70,46 +71,52 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 根据类型获取beanName
+     *
      * @param clz
      * @return
      */
-    public static String[] getBeanNamesForType(Class<?> clz){
+    public static String[] getBeanNamesForType(Class<?> clz) {
         return applicationContext.getBeanNamesForType(clz);
     }
 
     /**
      * 根据类型获取beanMap
+     *
      * @param clz
      * @return
      */
-    public static <T> Map<String, T> getBeansOfType(Class<T> clz){
+    public static <T> Map<String, T> getBeansOfType(Class<T> clz) {
         return applicationContext.getBeansOfType(clz);
     }
 
     /**
      * 根据bean上的注解获取bean
+     *
      * @param clz
      * @return
      */
-    public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> clz){
+    public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> clz) {
         return applicationContext.getBeansWithAnnotation(clz);
     }
 
     /**
      * 获取beanFactory
+     *
      * @return
      */
-    public static DefaultListableBeanFactory getBeanFactory(){
+    public static DefaultListableBeanFactory getBeanFactory() {
         return (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
     }
+
     /**
      * 销毁bean
+     *
      * @param beanName
      * @return
      */
-    public static boolean destroy(String beanName){
+    public static boolean destroy(String beanName) {
         DefaultListableBeanFactory beanFactory = getBeanFactory();
-        if(!beanFactory.containsBean(beanName)){
+        if (!beanFactory.containsBean(beanName)) {
             return false;
         }
         beanFactory.destroySingleton(beanName);
@@ -120,29 +127,31 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 动态注册bean
+     *
      * @param beanName
      * @param clz
      * @param <T>
      * @return
      */
-    public static <T> T regist(String beanName, Class<T> clz){
+    public static <T> T regist(String beanName, Class<T> clz) {
         DefaultListableBeanFactory beanFactory = getBeanFactory();
-        if(!beanFactory.containsBean(beanName)){
+        if (!beanFactory.containsBean(beanName)) {
             BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(clz);
             beanFactory.registerBeanDefinition(beanName, beanDefinitionBuilder.getBeanDefinition());
         }
-        return getBean(beanName,clz);
+        return getBean(beanName, clz);
     }
 
     /**
      * 动态注册bean
+     *
      * @param beanName
      * @param beanDefinitionBuilder
      * @return
      */
-    public static Object regist(String beanName, BeanDefinitionBuilder beanDefinitionBuilder){
+    public static Object regist(String beanName, BeanDefinitionBuilder beanDefinitionBuilder) {
         DefaultListableBeanFactory beanFactory = getBeanFactory();
-        if(!beanFactory.containsBean(beanName)){
+        if (!beanFactory.containsBean(beanName)) {
             beanFactory.registerBeanDefinition(beanName, beanDefinitionBuilder.getBeanDefinition());
         }
         return getBean(beanName);

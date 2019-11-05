@@ -5,13 +5,14 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
-import static com.youran.generate.pojo.example.MetaProjectExample.*;
+import static com.youran.generate.pojo.example.MetaProjectExample.E_PROJECTID;
+import static com.youran.generate.pojo.example.MetaProjectExample.N_PROJECTID;
 
 /**
- * <p>Title:修改项目DTO</p>
- * <p>Description:</p>
+ * 修改项目DTO
+ *
  * @author: cbb
- * Create Time:2017/5/24
+ * @date 2017/5/24
  */
 @ApiModel(description = "修改项目参数")
 public class MetaProjectUpdateDTO extends MetaProjectAddDTO {

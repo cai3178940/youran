@@ -7,8 +7,8 @@ import com.youran.common.pojo.po.CreatedOperatedDeletedVersion;
 import java.util.Date;
 
 /**
- * <p>Title:常规抽象PO</p>
- * <p>Description:</p>
+ * 常规抽象PO
+ *
  * @author: cbb
  * @date: 7/21/2018
  */

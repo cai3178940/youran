@@ -11,18 +11,20 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
- * <p>Title:常量值映射</p>
- * <p>Description:基于mapstruct来实现，编译器自动生成实现类</p>
+ * 常量值映射
+ * <p>基于mapstruct来实现，编译器自动生成实现类
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @Mapper
 public interface MetaConstDetailMapper {
 
-    MetaConstDetailMapper INSTANCE = Mappers.getMapper( MetaConstDetailMapper.class );
+    MetaConstDetailMapper INSTANCE = Mappers.getMapper(MetaConstDetailMapper.class);
 
     /**
      * addDTO映射po
+     *
      * @param addDTO
      * @return
      */
@@ -30,6 +32,7 @@ public interface MetaConstDetailMapper {
 
     /**
      * 将updateDTO中的值设置到po
+     *
      * @param metaConstDetailPO
      * @param metaConstDetailUpdateDTO
      */
@@ -37,13 +40,14 @@ public interface MetaConstDetailMapper {
 
     /**
      * po映射showVO
+     *
      * @param metaConstDetailPO
      * @return
      */
     MetaConstDetailShowVO toShowVO(MetaConstDetailPO metaConstDetailPO);
 
     @Mappings({
-        @Mapping(target = "constDetailId",ignore = true)
+        @Mapping(target = "constDetailId", ignore = true)
     })
     MetaConstDetailPO copy(MetaConstDetailPO constDetailFromJson);
 

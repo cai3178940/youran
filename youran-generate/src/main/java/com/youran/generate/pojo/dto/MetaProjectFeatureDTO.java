@@ -8,8 +8,8 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotNull;
 
 /**
- * <p>Title: 项目特性</p>
- * <p>Description: </p>
+ * 项目特性
+ *
  * @author cbb
  * @date 2018/11/28
  */

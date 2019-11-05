@@ -17,14 +17,14 @@ import javax.validation.Valid;
 
 
 /**
- * <p>Title:【生成历史】控制器</p>
- * <p>Description: Git提交历史相关的服务接口</p>
- * Project: bbs
+ * 【生成历史】控制器
+ * <p> Git提交历史相关的服务接口
+ *
  * @author: cbb
- * @date: 2018-03-17
+ * @date: 2018/03/17
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/gen_history")
+@RequestMapping(WebConst.API_PATH + "/gen_history")
 public class GenHistoryController extends AbstractController implements GenHistoryAPI {
 
     @Autowired
@@ -37,7 +37,6 @@ public class GenHistoryController extends AbstractController implements GenHisto
         PageVO<GenHistoryListVO> page = genHistoryService.list(genHistoryQO);
         return ResponseEntity.ok(page);
     }
-
 
 
 }

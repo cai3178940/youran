@@ -3,12 +3,12 @@ package com.youran.common.exception;
 import com.youran.common.constant.ErrorCode;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 自定义业务异常
+ *
  * @author: cbb
  * @date: 2017/9/20
  */
-public class BusinessException extends RuntimeException{
+public class BusinessException extends RuntimeException {
 
     private ErrorCode errorCode;
 
@@ -22,12 +22,12 @@ public class BusinessException extends RuntimeException{
     }
 
     public BusinessException(Throwable cause) {
-        super(cause.getMessage(),cause);
+        super(cause.getMessage(), cause);
         this.errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
     public BusinessException(String message, Throwable cause) {
-        super(message,cause);
+        super(message, cause);
         this.errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
@@ -36,13 +36,13 @@ public class BusinessException extends RuntimeException{
         this.errorCode = errorCode;
     }
 
-    public BusinessException(ErrorCode errorCode,String message) {
+    public BusinessException(ErrorCode errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }
 
-    public BusinessException(ErrorCode errorCode,String message, Throwable cause) {
-        super(message,cause);
+    public BusinessException(ErrorCode errorCode, String message, Throwable cause) {
+        super(message, cause);
         this.errorCode = errorCode;
     }
 

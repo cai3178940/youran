@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * <p>Title:索引</p>
- * <p>Description:</p>
+ * 索引
+ *
  * @author: cbb
  * @date: 2017/4/11
  */
@@ -34,10 +34,10 @@ public class MetaIndexPO extends BasePO {
     private List<MetaFieldPO> fields;
 
 
-    public void resetFieldIds(){
-        if(CollectionUtils.isEmpty(fields)){
+    public void resetFieldIds() {
+        if (CollectionUtils.isEmpty(fields)) {
             this.fieldIds = Collections.emptyList();
-        }else {
+        } else {
             this.fieldIds = fields.stream()
                 .map(MetaFieldPO::getFieldId)
                 .collect(Collectors.toList());
@@ -46,6 +46,7 @@ public class MetaIndexPO extends BasePO {
 
     /**
      * 添加字段
+     *
      * @param metaFieldPO
      */
     public void addMetaField(MetaFieldPO metaFieldPO) {
@@ -104,11 +105,11 @@ public class MetaIndexPO extends BasePO {
         this.unique = unique;
     }
 
-    public void setFieldIds(List<Integer> fieldIds) {
-        this.fieldIds = fieldIds;
-    }
-
     public List<Integer> getFieldIds() {
         return fieldIds;
+    }
+
+    public void setFieldIds(List<Integer> fieldIds) {
+        this.fieldIds = fieldIds;
     }
 }

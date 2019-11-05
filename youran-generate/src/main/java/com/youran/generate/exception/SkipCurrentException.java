@@ -1,8 +1,8 @@
 package com.youran.generate.exception;
 
 /**
- * <p>Title:跳过当前文件异常</p>
- * <p>Description:</p>
+ * 跳过当前文件异常
+ *
  * @author: cbb
  * @date: 2019/10/1
  */

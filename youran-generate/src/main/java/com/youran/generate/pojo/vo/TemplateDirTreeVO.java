@@ -6,8 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 
 /**
- * <p>Title: 模板目录树</p>
- * <p>Description: </p>
+ * 模板目录树
+ *
  * @author cbb
  * @date 2019/10/30
  */

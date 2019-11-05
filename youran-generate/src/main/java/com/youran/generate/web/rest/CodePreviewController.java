@@ -5,7 +5,6 @@ import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.vo.CodeTreeVO;
 import com.youran.generate.pojo.vo.FileNodeVO;
-import com.youran.generate.service.MetaCodeGenService;
 import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.service.TmpDirService;
 import com.youran.generate.util.FileNodeUtil;
@@ -26,22 +25,18 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * <p>Title: 【代码预览】控制器</p>
- * <p>Description: </p>
+ * 【代码预览】控制器
+ *
  * @author cbb
  * @date 2019/8/29
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/code_preview")
+@RequestMapping(WebConst.API_PATH + "/code_preview")
 public class CodePreviewController extends AbstractController implements CodePreviewAPI {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CodePreviewController.class);
-
     public static final String[] EXTENSIONS_FILTER = new String[]{
-        "java","xml","md","gitignore","sql","yml","properties"};
-
-    @Autowired
-    private MetaCodeGenService metaCodeGenService;
+        "java", "xml", "md", "gitignore", "sql", "yml", "properties"};
+    private static final Logger LOGGER = LoggerFactory.getLogger(CodePreviewController.class);
     @Autowired
     private MetaProjectService metaProjectService;
     @Autowired
@@ -49,46 +44,46 @@ public class CodePreviewController extends AbstractController implements CodePre
 
 
     @Override
-    @GetMapping(value = "/{projectId}/file_content",produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = "/{projectId}/file_content", produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public ResponseEntity<String> getFileContent(@PathVariable Integer projectId,
                                                  @RequestParam Integer projectVersion,
-                                                 @RequestParam String filePath){
-        MetaProjectPO project = metaProjectService.getProject(projectId,true);
+                                                 @RequestParam String filePath) {
+        MetaProjectPO project = metaProjectService.getProject(projectId, true);
         Integer recentVersion = project.getProjectVersion();
-        if(recentVersion < projectVersion){
+        if (recentVersion < projectVersion) {
             throw new BusinessException("projectVersion有误");
         }
         String projectDir = tmpDirService.getProjectRecentDir(project);
         File dirFile = new File(projectDir);
-        if(!dirFile.exists()){
+        if (!dirFile.exists()) {
             throw new BusinessException("代码目录不存在");
         }
         String fileFullPath = projectDir + filePath;
         File file = new File(fileFullPath);
-        if(!file.exists()){
+        if (!file.exists()) {
             throw new BusinessException("文件不存在");
         }
         try {
-            if(!FileUtils.directoryContains(dirFile,file)){
+            if (!FileUtils.directoryContains(dirFile, file)) {
                 throw new BusinessException("文件路径不合法");
             }
         } catch (IOException e) {
-            LOGGER.error("文件路径不合法",e);
+            LOGGER.error("文件路径不合法", e);
             throw new BusinessException("文件路径不合法");
         }
-        if(file.isDirectory()){
+        if (file.isDirectory()) {
             throw new BusinessException("文件不合法");
         }
         String extension = FilenameUtils.getExtension(fileFullPath);
-        if(!ArrayUtils.contains(EXTENSIONS_FILTER,extension)){
+        if (!ArrayUtils.contains(EXTENSIONS_FILTER, extension)) {
             throw new BusinessException("文件类型不合法");
         }
         try {
-            String content = FileUtils.readFileToString(file,"utf-8");
+            String content = FileUtils.readFileToString(file, "utf-8");
             return ResponseEntity.ok(content);
         } catch (IOException e) {
-            LOGGER.error("读取文件异常",e);
+            LOGGER.error("读取文件异常", e);
             throw new BusinessException("读取文件异常");
         }
     }
@@ -97,10 +92,10 @@ public class CodePreviewController extends AbstractController implements CodePre
     @GetMapping(value = "/{projectId}/code_tree")
     @ResponseBody
     public ResponseEntity<CodeTreeVO> codeTree(@PathVariable Integer projectId) {
-        MetaProjectPO project = metaProjectService.getProject(projectId,true);
+        MetaProjectPO project = metaProjectService.getProject(projectId, true);
         String projectDir = tmpDirService.getProjectRecentDir(project);
         File dirFile = new File(projectDir);
-        if(!dirFile.exists()){
+        if (!dirFile.exists()) {
             throw new BusinessException("代码目录不存在");
         }
         List<FileNodeVO> fileNodeList = FileNodeUtil.recurFileNodeTree(dirFile, dirFile, EXTENSIONS_FILTER);
@@ -110,7 +105,6 @@ public class CodePreviewController extends AbstractController implements CodePre
         treeVO.setTree(fileNodeList);
         return ResponseEntity.ok(treeVO);
     }
-
 
 
 }

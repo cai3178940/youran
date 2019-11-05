@@ -14,13 +14,13 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
- * <p>Title:打印启动日志</p>
- * <p>Description:</p>
+ * 打印启动日志
+ *
  * @author: cbb
  * @date: 2018/1/16
  */
 @Component
-public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
+public class StartLogCommandLineRunner implements CommandLineRunner, Ordered {
 
     private static final Logger LOG = LoggerFactory.getLogger(StartLogCommandLineRunner.class);
 
@@ -29,17 +29,17 @@ public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
     @Value("${swagger.enabled:false}")
     private boolean swaggerEnabled;
 
-    public StartLogCommandLineRunner(Environment env){
+    public StartLogCommandLineRunner(Environment env) {
         this.env = env;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        String port = env.getProperty("server.port","8080");
-        String contextPath = env.getProperty("server.servlet.context-path","/");
-        String applicationName = env.getProperty("spring.application.name","");
+        String port = env.getProperty("server.port", "8080");
+        String contextPath = env.getProperty("server.servlet.context-path", "/");
+        String applicationName = env.getProperty("spring.application.name", "");
         String profiles = "";
-        if(ArrayUtils.isNotEmpty(env.getActiveProfiles())) {
+        if (ArrayUtils.isNotEmpty(env.getActiveProfiles())) {
             profiles = Arrays.stream(env.getActiveProfiles()).collect(Collectors.joining(","));
         }
         StringBuilder sb = new StringBuilder();
@@ -49,7 +49,7 @@ public class StartLogCommandLineRunner implements CommandLineRunner,Ordered {
             .append("\t访问路径:\n")
             .append("\t本地: \thttp://localhost:").append(port).append(contextPath).append("\n")
             .append("\t外部: \thttp://").append(IpUtil.getLocalIp()).append(":").append(port).append(contextPath).append("\n");
-        if(swaggerEnabled){
+        if (swaggerEnabled) {
             sb.append("\t文档:\thttp://").append(IpUtil.getLocalIp()).append(":").append(port).append(contextPath).append("swagger-ui.html");
         }
         sb.append("\n----------------------------------------------------------");

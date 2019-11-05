@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * <p>Title:异常信息展示</p>
- * <p>Description:</p>
+ * 异常信息展示
+ *
  * @author: cbb
  * @date: 2017/10/13
  */
@@ -38,6 +38,7 @@ public class ExceptionTranslator {
 
     /**
      * body参数校验失败
+     *
      * @param ex
      * @return
      */
@@ -47,8 +48,10 @@ public class ExceptionTranslator {
         BindingResult result = ex.getBindingResult();
         return processBindingResult(result);
     }
+
     /**
      * param参数校验失败
+     *
      * @param ex
      * @return
      */
@@ -61,6 +64,7 @@ public class ExceptionTranslator {
 
     /**
      * 参数校验
+     *
      * @param result
      * @return
      */
@@ -71,10 +75,10 @@ public class ExceptionTranslator {
         if (CollectionUtils.isNotEmpty(fieldErrors)) {
             errorMsg = fieldErrors.get(0).getDefaultMessage();
         }
-        return buildErrorResponse(ErrorCode.BAD_PARAMETER,errorMsg,this.mapFieldErrorVO(fieldErrors));
+        return buildErrorResponse(ErrorCode.BAD_PARAMETER, errorMsg, this.mapFieldErrorVO(fieldErrors));
     }
 
-    private List<FieldErrorVO> mapFieldErrorVO(List<FieldError> fieldErrors){
+    private List<FieldErrorVO> mapFieldErrorVO(List<FieldError> fieldErrors) {
         return fieldErrors.stream()
             .map(fieldError -> new FieldErrorVO(fieldError.getObjectName(), fieldError.getField(), fieldError.getDefaultMessage()))
             .collect(Collectors.toList());
@@ -83,6 +87,7 @@ public class ExceptionTranslator {
 
     /**
      * http method有误
+     *
      * @param exception
      * @return
      */
@@ -94,17 +99,19 @@ public class ExceptionTranslator {
 
     /**
      * 未传requestbody
+     *
      * @param exception
      * @return
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseBody
     public ResponseEntity<ReplyVO> processHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        return buildErrorResponse(ErrorCode.BAD_REQUEST,"HttpMessageNotReadableException");
+        return buildErrorResponse(ErrorCode.BAD_REQUEST, "HttpMessageNotReadableException");
     }
 
     /**
      * 线程异常
+     *
      * @param ex
      * @return
      */
@@ -117,6 +124,7 @@ public class ExceptionTranslator {
 
     /**
      * 唯一键重复
+     *
      * @param ex
      * @return
      */
@@ -127,9 +135,9 @@ public class ExceptionTranslator {
     }
 
 
-
     /**
      * 业务异常捕获
+     *
      * @param ex
      * @return
      */
@@ -145,30 +153,30 @@ public class ExceptionTranslator {
     }
 
 
-
     /**
      * 普通异常捕获
+     *
      * @param ex
      * @return
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<ReplyVO> processRuntimeException(Exception ex) {
-        LOGGER.error("系统内部错误",ex);
+        LOGGER.error("系统内部错误", ex);
         return buildErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
 
-    private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode){
-        return buildErrorResponse(errorCode,null, null);
+    private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode) {
+        return buildErrorResponse(errorCode, null, null);
     }
 
-    private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode,String message){
+    private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode, String message) {
         return buildErrorResponse(errorCode, message, null);
     }
 
-    private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode,String message,Object data){
-        if(StringUtils.isBlank(message)){
+    private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode, String message, Object data) {
+        if (StringUtils.isBlank(message)) {
             message = errorCode.getDesc();
         }
         return ResponseEntity.status(errorCode.getValue())

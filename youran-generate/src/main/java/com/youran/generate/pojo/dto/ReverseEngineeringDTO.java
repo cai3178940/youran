@@ -8,8 +8,8 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotNull;
 
 /**
- * <p>Title:反向工程参数</p>
- * <p>Description:</p>
+ * 反向工程参数
+ *
  * @author: cbb
  * @date: 2018/5/30
  */
@@ -22,12 +22,12 @@ public class ReverseEngineeringDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = "DDL语句", example = "create table ...")
     @NotNull
-    @Length(min=1, max = 10000, message = "ddl最大长度不能超过{max}")
+    @Length(min = 1, max = 10000, message = "ddl最大长度不能超过{max}")
     private String ddl;
 
     @ApiModelProperty(notes = "数据库类型", example = "mysql")
     @NotNull
-    @Length(min=1, max = 20, message = "dbType最大长度不能超过{max}")
+    @Length(min = 1, max = 20, message = "dbType最大长度不能超过{max}")
     private String dbType;
 
     public Integer getProjectId() {

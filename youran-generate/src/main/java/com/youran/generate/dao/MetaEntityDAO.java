@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * <p>Title:【实体】数据库操作</p>
- * <p>Description:</p>
+ * 【实体】数据库操作
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -21,32 +21,38 @@ public interface MetaEntityDAO extends DAO<MetaEntityPO> {
 
     /**
      * 查询项目下所有实体id
+     *
      * @return
      */
-    List<Integer> findIdsByProject(Integer projectId) ;
+    List<Integer> findIdsByProject(Integer projectId);
+
     /**
      * 校验类名是否不唯一
+     *
      * @return
      */
-    boolean classNameNotUnique(@Param("projectId")Integer projectId,
-                               @Param("className")String className,
-                               @Param("entityId")Integer entityId);
+    boolean classNameNotUnique(@Param("projectId") Integer projectId,
+                               @Param("className") String className,
+                               @Param("entityId") Integer entityId);
+
     /**
      * 校验表名是否不唯一
+     *
      * @return
      */
-    boolean tableNameNotUnique(@Param("projectId")Integer projectId,
-                               @Param("tableName")String tableName,
-                               @Param("entityId")Integer entityId);
+    boolean tableNameNotUnique(@Param("projectId") Integer projectId,
+                               @Param("tableName") String tableName,
+                               @Param("entityId") Integer entityId);
 
     /**
      * 查询某实体下的多对多关联实体列表
+     *
      * @param entityId 实体id
-     * @param hold 是否持有引用
+     * @param hold     是否持有引用
      * @return
      */
-    List<MetaMtmEntityListVO> findMtmEntityList(@Param("entityId")Integer entityId,
-                                                @Param("hold")boolean hold);
+    List<MetaMtmEntityListVO> findMtmEntityList(@Param("entityId") Integer entityId,
+                                                @Param("hold") boolean hold);
 
 
 }

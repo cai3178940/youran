@@ -1,8 +1,8 @@
 package com.youran.generate.pojo.po;
 
 /**
- * <p>Title:常量值</p>
- * <p>Description:</p>
+ * 常量值
+ *
  * @author: cbb
  * @date: 2017/6/13
  */

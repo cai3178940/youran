@@ -13,8 +13,8 @@ import static com.youran.generate.pojo.example.MetaConstDetailExample.*;
 
 
 /**
- * <p>Title:新增常量值DTO</p>
- * <p>Description:</p>
+ * 新增常量值DTO
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

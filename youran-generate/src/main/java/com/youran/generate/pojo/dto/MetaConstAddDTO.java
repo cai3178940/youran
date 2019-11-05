@@ -13,10 +13,9 @@ import javax.validation.constraints.Pattern;
 
 import static com.youran.generate.pojo.example.MetaConstExample.*;
 
-
 /**
- * <p>Title:新增常量类DTO</p>
- * <p>Description:</p>
+ * 新增常量类DTO
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

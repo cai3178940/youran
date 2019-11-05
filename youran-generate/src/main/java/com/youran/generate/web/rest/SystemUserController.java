@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>Title: </p>
- * <p>Description: </p>
  * @author cbb
  * @date 2019/10/23
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/system_user")
+@RequestMapping(WebConst.API_PATH + "/system_user")
 public class SystemUserController extends AbstractController implements SystemUserAPI {
 
     @Autowired

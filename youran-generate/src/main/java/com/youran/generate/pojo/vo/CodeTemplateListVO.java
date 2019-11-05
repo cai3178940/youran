@@ -8,33 +8,33 @@ import io.swagger.annotations.ApiModelProperty;
 import static com.youran.generate.pojo.example.CodeTemplateExample.*;
 
 /**
- * <p>Title: 【代码模板】列表展示对象</p>
- * <p>Description: </p>
+ * 【代码模板】列表展示对象
+ *
  * @author cbb
  * @date 2019/10/24
  */
 @ApiModel(description = "【代码模板】列表展示对象")
 public class CodeTemplateListVO extends AbstractVO {
 
-    @ApiModelProperty(notes = N_TEMPLATE_ID,example = E_TEMPLATE_ID)
+    @ApiModelProperty(notes = N_TEMPLATE_ID, example = E_TEMPLATE_ID)
     private Integer templateId;
 
-    @ApiModelProperty(notes = N_NAME,example = E_NAME)
+    @ApiModelProperty(notes = N_NAME, example = E_NAME)
     private String name;
 
-    @ApiModelProperty(notes = N_TEMPLATE_TYPE,example = E_TEMPLATE_TYPE, allowableValues = TemplateType.VALUES_STR)
+    @ApiModelProperty(notes = N_TEMPLATE_TYPE, example = E_TEMPLATE_TYPE, allowableValues = TemplateType.VALUES_STR)
     private Integer templateType;
 
-    @ApiModelProperty(notes = N_TEMPLATE_VERSION,example = E_TEMPLATE_VERSION)
+    @ApiModelProperty(notes = N_TEMPLATE_VERSION, example = E_TEMPLATE_VERSION)
     private String templateVersion;
 
-    @ApiModelProperty(notes = N_SYS_LOW_VERSION,example = E_SYS_LOW_VERSION)
+    @ApiModelProperty(notes = N_SYS_LOW_VERSION, example = E_SYS_LOW_VERSION)
     private String sysLowVersion;
 
-    @ApiModelProperty(notes = N_SYS_DEFAULT,example = E_SYS_DEFAULT)
+    @ApiModelProperty(notes = N_SYS_DEFAULT, example = E_SYS_DEFAULT)
     private Boolean sysDefault;
 
-    @ApiModelProperty(notes = N_REMARK,example = E_REMARK)
+    @ApiModelProperty(notes = N_REMARK, example = E_REMARK)
     private String remark;
 
     public Integer getTemplateId() {

@@ -1,8 +1,8 @@
 package com.youran.generate.pojo.dto;
 
 /**
- * <p>Title:git认证对象</p>
- * <p>Description:</p>
+ * git认证对象
+ *
  * @author: cbb
  * @date: 2018/3/17
  */

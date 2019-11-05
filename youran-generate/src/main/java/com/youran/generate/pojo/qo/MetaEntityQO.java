@@ -7,9 +7,10 @@ import javax.validation.constraints.NotNull;
 
 import static com.youran.generate.pojo.example.MetaEntityExample.E_PROJECTID;
 import static com.youran.generate.pojo.example.MetaEntityExample.N_PROJECTID;
+
 /**
- * <p>Title:分页查询参数</p>
- * <p>Description:</p>
+ * 分页查询参数
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

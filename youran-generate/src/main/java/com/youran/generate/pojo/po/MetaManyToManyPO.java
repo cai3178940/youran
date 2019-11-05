@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * <p>Title:多对多关联关系</p>
- * <p>Description:</p>
+ * 多对多关联关系
+ *
  * @author: cbb
  * @date: 2017/7/4
  */
@@ -129,72 +129,76 @@ public class MetaManyToManyPO extends BasePO {
 
     /**
      * 获取多对多实体特性
+     *
      * @param entityId
      * @return
      */
-    public MetaMtmEntityFeatureDTO getEntityFeature(Integer entityId){
-        if(Objects.equals(entityId,entityId1)){
+    public MetaMtmEntityFeatureDTO getEntityFeature(Integer entityId) {
+        if (Objects.equals(entityId, entityId1)) {
             return f1;
-        }else if(Objects.equals(entityId,entityId2)){
+        } else if (Objects.equals(entityId, entityId2)) {
             return f2;
         }
         throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
-            "获取多对多实体特性异常，mtm_id="+mtmId +",entityId="+entityId);
+            "获取多对多实体特性异常，mtm_id=" + mtmId + ",entityId=" + entityId);
     }
 
     /**
      * 判断传入的实体id是否持有对方引用
+     *
      * @param entityId
      * @return
      */
-    public boolean isHold(Integer entityId){
-        if(Objects.equals(entityId,entityId1)){
+    public boolean isHold(Integer entityId) {
+        if (Objects.equals(entityId, entityId1)) {
             return BoolConst.isTrue(holdRefer1);
-        }else if(Objects.equals(entityId,entityId2)){
+        } else if (Objects.equals(entityId, entityId2)) {
             return BoolConst.isTrue(holdRefer2);
         }
         throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
-            "获取多对多实体是否持有引用异常，mtm_id="+mtmId +",entityId="+entityId);
+            "获取多对多实体是否持有引用异常，mtm_id=" + mtmId + ",entityId=" + entityId);
     }
 
     /**
      * 根据传入的实体id获取其对应的外键字段别名
+     *
      * @param entityId 实体id
-     * @param forSql 是否sql字段
+     * @param forSql   是否sql字段
      * @return
      */
-    public String getFkAlias(Integer entityId,boolean forSql){
-        if(Objects.equals(entityId,entityId1)){
-            if(forSql){
+    public String getFkAlias(Integer entityId, boolean forSql) {
+        if (Objects.equals(entityId, entityId1)) {
+            if (forSql) {
                 return fkAliasForSql1;
-            }else{
+            } else {
                 return fkAliasForJava1;
             }
-        }else if(Objects.equals(entityId,entityId2)){
-            if(forSql){
+        } else if (Objects.equals(entityId, entityId2)) {
+            if (forSql) {
                 return fkAliasForSql2;
-            }else{
+            } else {
                 return fkAliasForJava2;
             }
         }
         throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
-            "获取多对多外键字段别名异常，mtm_id="+mtmId +",entityId="+entityId);
+            "获取多对多外键字段别名异常，mtm_id=" + mtmId + ",entityId=" + entityId);
     }
 
 
     /**
      * 传入宿主实体id，获取宿主实体持有的级联扩展列表
+     *
      * @param entityId 宿主实体id
      * @return
      */
-    public List<MetaMtmCascadeExtPO> getCascadeExtList(Integer entityId){
-        if(Objects.equals(entityId1, entityId)){
+    public List<MetaMtmCascadeExtPO> getCascadeExtList(Integer entityId) {
+        if (Objects.equals(entityId1, entityId)) {
             return cascadeExtList1;
-        }else if(Objects.equals(entityId2, entityId)){
+        } else if (Objects.equals(entityId2, entityId)) {
             return cascadeExtList2;
-        }else{
+        } else {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
-                "获取多对多级联扩展数据异常，mtm_id="+mtmId +",entityId="+entityId);
+                "获取多对多级联扩展数据异常，mtm_id=" + mtmId + ",entityId=" + entityId);
         }
     }
 

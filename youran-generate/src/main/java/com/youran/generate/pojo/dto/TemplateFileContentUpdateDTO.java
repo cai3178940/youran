@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.TemplateFileExample.*;
 
 /**
- * <p>Title: 修改【模板文件内容】的参数</p>
- * <p>Description: </p>
+ * 修改【模板文件内容】的参数
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -20,7 +20,7 @@ public class TemplateFileContentUpdateDTO extends AbstractDTO {
     @ApiModelProperty(hidden = true)
     private Integer fileId;
 
-    @ApiModelProperty(notes = N_VERSION,example = E_VERSION)
+    @ApiModelProperty(notes = N_VERSION, example = E_VERSION)
     @NotNull
     private Integer version;
 

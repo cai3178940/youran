@@ -3,8 +3,8 @@ package com.youran.common.pojo.qo;
 import java.io.Serializable;
 
 /**
- * <p>Title:抽象数据查询参数</p>
- * <p>Description:</p>
+ * 抽象数据查询参数
+ *
  * @author: cbb
  * @date: 2018/1/24
  */

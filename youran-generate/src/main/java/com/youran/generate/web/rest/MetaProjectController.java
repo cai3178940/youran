@@ -24,13 +24,14 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * <p>Title:【项目】控制器</p>
- * <p>Description: 项目增删改查功能</p>
+ * 【项目】控制器
+ * <p> 项目增删改查功能
+ *
  * @author: cbb
- * Create Time:2017/5/24
+ * @date 2017/5/24
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/meta_project")
+@RequestMapping(WebConst.API_PATH + "/meta_project")
 public class MetaProjectController extends AbstractController implements MetaProjectAPI {
 
     @Autowired
@@ -76,7 +77,7 @@ public class MetaProjectController extends AbstractController implements MetaPro
     @Override
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] projectId) {
-        if(ArrayUtils.isEmpty(projectId)){
+        if (ArrayUtils.isEmpty(projectId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaProjectService.delete(projectId);

@@ -8,8 +8,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * <p>Title:通用响应对象</p>
- * <p>Description:</p>
+ * 通用响应对象
+ *
  * @author: cbb
  * @date: 2017/8/24
  */
@@ -17,14 +17,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReplyVO<T> extends AbstractVO {
 
-    public static final String SUCCESS_CODE="0";
-    public static final String SUCCESS_MSG="执行成功！";
-    public static final String DEFAULT_ERROR_CODE="-1";
+    public static final String SUCCESS_CODE = "0";
+    public static final String SUCCESS_MSG = "执行成功！";
+    public static final String DEFAULT_ERROR_CODE = "-1";
 
-    @ApiModelProperty(notes = "响应代码【0成功，非0失败】",example = SUCCESS_CODE,required = true)
+    @ApiModelProperty(notes = "响应代码【0成功，非0失败】", example = SUCCESS_CODE, required = true)
     private String code;
 
-    @ApiModelProperty(notes = "结果描述",example = SUCCESS_MSG,required = true)
+    @ApiModelProperty(notes = "结果描述", example = SUCCESS_MSG, required = true)
     private String message;
 
     @ApiModelProperty(notes = "返回数据")
@@ -61,20 +61,22 @@ public class ReplyVO<T> extends AbstractVO {
 
     /**
      * 设置数据
+     *
      * @param data
      * @return
      */
-    public ReplyVO<T> data(T data){
+    public ReplyVO<T> data(T data) {
         setData(data);
         return this;
     }
 
     /**
      * 设置消息
+     *
      * @param message
      * @return
      */
-    public ReplyVO<T> message(String message){
+    public ReplyVO<T> message(String message) {
         this.setMessage(message);
         return this;
     }

@@ -14,8 +14,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * <p>Title:【常量值】api</p>
- * <p>Description:</p>
+ * 【常量值】api
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -27,7 +27,7 @@ public interface MetaConstDetailAPI {
      */
     @ApiOperation(value = "新增常量值")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaConstDetailAddDTO", dataType = "MetaConstDetailAddDTO", value = "新增常量值参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaConstDetailAddDTO", dataType = "MetaConstDetailAddDTO", value = "新增常量值参数", paramType = "body"),
     })
     ResponseEntity<MetaConstDetailShowVO> save(MetaConstDetailAddDTO metaConstDetailAddDTO) throws Exception;
 
@@ -36,7 +36,7 @@ public interface MetaConstDetailAPI {
      */
     @ApiOperation(value = "修改常量值")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaConstDetailUpdateDTO", dataType = "MetaConstDetailUpdateDTO", value = "修改常量值参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaConstDetailUpdateDTO", dataType = "MetaConstDetailUpdateDTO", value = "修改常量值参数", paramType = "body"),
     })
     ResponseEntity<MetaConstDetailShowVO> update(MetaConstDetailUpdateDTO metaConstDetailUpdateDTO);
 
@@ -45,7 +45,7 @@ public interface MetaConstDetailAPI {
      */
     @ApiOperation(value = "查询常量值列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaConstDetailQO", dataType = "MetaConstDetailQO", value = "分页查询参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaConstDetailQO", dataType = "MetaConstDetailQO", value = "分页查询参数", paramType = "body"),
     })
     ResponseEntity<List<MetaConstDetailListVO>> list(MetaConstDetailQO metaConstDetailQO);
 
@@ -54,7 +54,7 @@ public interface MetaConstDetailAPI {
      */
     @ApiOperation(value = "查看常量值详情")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "constDetailId", dataType = "int", value = "常量值id", paramType = "path"),
+        @ApiImplicitParam(name = "constDetailId", dataType = "int", value = "常量值id", paramType = "path"),
     })
     ResponseEntity<MetaConstDetailShowVO> show(Integer constDetailId);
 
@@ -63,7 +63,7 @@ public interface MetaConstDetailAPI {
      */
     @ApiOperation(value = "删除常量值")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "constDetailId", dataType = "int", value = "常量值id", paramType = "path"),
+        @ApiImplicitParam(name = "constDetailId", dataType = "int", value = "常量值id", paramType = "path"),
     })
     ResponseEntity<Integer> delete(Integer constDetailId);
 
@@ -72,7 +72,7 @@ public interface MetaConstDetailAPI {
      */
     @ApiOperation(value = "批量删除常量值")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "constDetailId", dataType = "int", value = "常量值id数组", paramType = "body"),
+        @ApiImplicitParam(name = "constDetailId", dataType = "int", value = "常量值id数组", paramType = "body"),
     })
     ResponseEntity<Integer> deleteBatch(Integer[] constDetailId);
 

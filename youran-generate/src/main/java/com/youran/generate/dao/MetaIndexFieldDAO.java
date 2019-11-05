@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * <p>Title:【索引字段关联表】操作</p>
- * <p>Description:</p>
+ * 【索引字段关联表】操作
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -22,6 +22,7 @@ public interface MetaIndexFieldDAO extends DAO<MetaIndexFieldPO> {
 
     /**
      * 根据索引id查询字段列表
+     *
      * @param indexId
      * @return
      */
@@ -29,20 +30,22 @@ public interface MetaIndexFieldDAO extends DAO<MetaIndexFieldPO> {
 
     /**
      * 根据索引id查询关联列表
+     *
      * @param indexId
      * @return
      */
-    List<Integer> findIdsByIndexId(Integer indexId) ;
+    List<Integer> findIdsByIndexId(Integer indexId);
 
     /**
      * 批量插入关联关系
+     *
      * @param indexId
      * @param fieldIdList
      * @return
      */
-    int saveBatch(@Param("indexId")Integer indexId, @Param("fieldIdList")List<Integer> fieldIdList);
+    int saveBatch(@Param("indexId") Integer indexId, @Param("fieldIdList") List<Integer> fieldIdList);
 
 
-    int remove(@Param("indexId")Integer indexId, @Param("fieldIdList")List<Integer> fieldIdList);
+    int remove(@Param("indexId") Integer indexId, @Param("fieldIdList") List<Integer> fieldIdList);
 
 }

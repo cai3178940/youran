@@ -1,8 +1,8 @@
 package com.youran.generate.constant;
 
 /**
- * <p>Title: 开发模式常量</p>
- * <p>Description: </p>
+ * 开发模式常量
+ *
  * @author cbb
  * @date 2019/2/27
  */

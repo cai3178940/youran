@@ -6,8 +6,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 
 /**
- * <p>Title: </p>
- * <p>Description: </p>
  * @author cbb
  * @date 2019/10/23
  */

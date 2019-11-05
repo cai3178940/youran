@@ -9,8 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 /**
- * <p>Title: 常量信息上下文对象</p>
- * <p>Description: 包含某个常量的所有信息</p>
+ * 常量信息上下文对象
+ * <p> 包含某个常量的所有信息
+ *
  * @author cbb
  * @date 2018/8/3
  */
@@ -115,6 +116,6 @@ public class ConstContext extends BaseContext {
 
     @Override
     public String toString() {
-        return "Const:"+constName;
+        return "Const:" + constName;
     }
 }

@@ -16,8 +16,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * <p>Title:元数据查询装配业务</p>
- * <p>Description:</p>
+ * 元数据查询装配业务
+ *
  * @author: cbb
  * @date: 2017/5/14
  */
@@ -46,48 +46,49 @@ public class MetaQueryAssembleService {
 
     /**
      * 装配整个项目的元数据
-     * @param projectId 项目id
-     * @param withConst 是否需要装配常量
-     * @param withMtm 是否需要装配多对多
-     * @param withForeign 是否需要装配外键关联
-     * @param withFkCascade 是否装配外键级联扩展
+     *
+     * @param projectId      项目id
+     * @param withConst      是否需要装配常量
+     * @param withMtm        是否需要装配多对多
+     * @param withForeign    是否需要装配外键关联
+     * @param withFkCascade  是否装配外键级联扩展
      * @param withMtmCascade 是否装配多对多级联扩展
-     * @param check 是否校验完整性
+     * @param check          是否校验完整性
      * @return
      */
-    public MetaProjectPO getAssembledProject(Integer projectId,boolean withConst,
-                                             boolean withMtm,boolean withForeign,
-                                             boolean withFkCascade,boolean withMtmCascade,
-                                             boolean check){
-        MetaProjectPO project = metaProjectService.getProject(projectId,true);
+    public MetaProjectPO getAssembledProject(Integer projectId, boolean withConst,
+                                             boolean withMtm, boolean withForeign,
+                                             boolean withFkCascade, boolean withMtmCascade,
+                                             boolean check) {
+        MetaProjectPO project = metaProjectService.getProject(projectId, true);
         // 查询实体id列表
         List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
         if (CollectionUtils.isEmpty(entityIds)) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"项目中没有实体");
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "项目中没有实体");
         }
         // 获取组装后的实体列表
         List<MetaEntityPO> metaEntities = entityIds
             .stream()
             .map(this::getAssembledEntity).collect(Collectors.toList());
         project.setEntities(metaEntities);
-        if(withForeign) {
+        if (withForeign) {
             // 装配外键实体和外键字段
             this.assembleForeign(metaEntities, withFkCascade);
         }
-        if(withConst){
+        if (withConst) {
             // 获取组装后的常量列表
             List<MetaConstPO> metaConstPOS = this.getAllAssembledConsts(projectId, true);
             project.setConsts(metaConstPOS);
         }
-        if(withMtm){
+        if (withMtm) {
             // 查询多对多列表
-            List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId,true);
+            List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId, true);
             // 装配多对多持有引用
             manyToManies = this.assembleManyToManyWithEntities(metaEntities, manyToManies, withMtmCascade);
             project.setMtms(manyToManies);
         }
         // 校验完整性
-        if(check) {
+        if (check) {
             this.checkAssembledProject(project, withConst);
         }
         return project;
@@ -95,30 +96,32 @@ public class MetaQueryAssembleService {
 
     /**
      * 装配所有常量元数据
+     *
      * @param projectId 项目id
      * @return
      */
-    public List<MetaConstPO>  getAllAssembledConsts(Integer projectId, boolean withConstDetail) {
+    public List<MetaConstPO> getAllAssembledConsts(Integer projectId, boolean withConstDetail) {
         // 查询常量id列表
         List<Integer> constIds = metaConstService.findIdsByProject(projectId);
         // 返回组装后的常量列表
         return constIds
             .stream()
-            .map(constId -> this.getAssembledConst(constId,withConstDetail))
+            .map(constId -> this.getAssembledConst(constId, withConstDetail))
             .collect(Collectors.toList());
     }
 
     /**
      * 装配常量元数据
+     *
      * @param constId 常量id
      * @return
      */
     public MetaConstPO getAssembledConst(Integer constId, boolean withConstDetail) {
-        MetaConstPO metaConst = metaConstService.getConst(constId,true);
-        if(withConstDetail){
+        MetaConstPO metaConst = metaConstService.getConst(constId, true);
+        if (withConstDetail) {
             List<MetaConstDetailPO> detailList = metaConstDetailService.findByConstId(constId);
             if (CollectionUtils.isEmpty(detailList)) {
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"枚举【"+metaConst.getConstName()+"】缺少枚举值");
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "枚举【" + metaConst.getConstName() + "】缺少枚举值");
             }
             metaConst.setDetailList(detailList);
         }
@@ -127,14 +130,15 @@ public class MetaQueryAssembleService {
 
     /**
      * 装配实体元数据
+     *
      * @param entityId 实体id
      * @return
      */
     public MetaEntityPO getAssembledEntity(Integer entityId) {
-        MetaEntityPO metaEntity = metaEntityService.getEntity(entityId,true);
+        MetaEntityPO metaEntity = metaEntityService.getEntity(entityId, true);
         List<MetaFieldPO> fieldList = metaFieldService.findByEntityId(entityId);
         if (CollectionUtils.isEmpty(fieldList)) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体中无字段，entityId=" + entityId);
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体中无字段，entityId=" + entityId);
         }
         // 给实体装配字段
         this.assembleFieldForEntity(metaEntity, fieldList);
@@ -145,7 +149,8 @@ public class MetaQueryAssembleService {
 
     /**
      * 给实体装配字段
-     * @param entity 实体
+     *
+     * @param entity    实体
      * @param fieldList 字段列表
      * @return
      */
@@ -194,13 +199,14 @@ public class MetaQueryAssembleService {
 
     /**
      * 给实体装配索引
+     *
      * @param metaEntity 实体
-     * @param fieldList 字段列表
+     * @param fieldList  字段列表
      */
     private void assembleIndexForEntity(MetaEntityPO metaEntity, List<MetaFieldPO> fieldList) {
         //将list转化为map
         Map<Integer, MetaFieldPO> fieldMap = fieldList.stream()
-            .collect(Collectors.toMap(MetaFieldPO::getFieldId,f->f));
+            .collect(Collectors.toMap(MetaFieldPO::getFieldId, f -> f));
         List<MetaIndexPO> metaIndexes = metaIndexService.findByEntityId(metaEntity.getEntityId());
         //有效索引列表
         List<MetaIndexPO> validList = new ArrayList<>();
@@ -216,13 +222,13 @@ public class MetaQueryAssembleService {
                 fieldIds.stream().forEach(fieldId -> {
                     MetaFieldPO field = fieldMap.get(fieldId);
                     if (field == null) {
-                        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"索引字段非本实体字段，indexId=" +
-                                metaIndex.getIndexId() + ",fieldId=" + fieldId);
+                        throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "索引字段非本实体字段，indexId=" +
+                            metaIndex.getIndexId() + ",fieldId=" + fieldId);
                     }
                     metaIndex.addMetaField(field);
                 });
                 validList.add(metaIndex);
-                if(BoolConst.isTrue(metaIndex.getUniqueCheck())){
+                if (BoolConst.isTrue(metaIndex.getUniqueCheck())) {
                     checkUniqueIndexes.add(metaIndex);
                 }
             }
@@ -234,14 +240,15 @@ public class MetaQueryAssembleService {
 
     /**
      * 装配多对多对象引用
-     * @param metaEntities 实体列表
-     * @param manyToManies 多对多列表
+     *
+     * @param metaEntities   实体列表
+     * @param manyToManies   多对多列表
      * @param withMtmCascade 是否装配多对多级联扩展
      * @return 装配及过滤后的多对多列表
      */
     public List<MetaManyToManyPO> assembleManyToManyWithEntities(List<MetaEntityPO> metaEntities,
-                                               List<MetaManyToManyPO> manyToManies,
-                                               boolean withMtmCascade) {
+                                                                 List<MetaManyToManyPO> manyToManies,
+                                                                 boolean withMtmCascade) {
         List<MetaManyToManyPO> result = new ArrayList<>(manyToManies.size());
         if (CollectionUtils.isEmpty(manyToManies) || CollectionUtils.isEmpty(metaEntities)) {
             return result;
@@ -253,23 +260,23 @@ public class MetaQueryAssembleService {
             MetaEntityPO entity1 = entityMap.get(mtm.getEntityId1());
             MetaEntityPO entity2 = entityMap.get(mtm.getEntityId2());
             // 如果多对多中的实体不在传入的实体列表中，则跳过本次循环
-            if(entity1 == null || entity2 == null){
+            if (entity1 == null || entity2 == null) {
                 continue;
             }
             if (BoolConst.isFalse(mtm.getHoldRefer1())) {
-                entity1.addUnHold(entity2,mtm);
+                entity1.addUnHold(entity2, mtm);
             } else {
-                entity1.addHold(entity2,mtm);
+                entity1.addHold(entity2, mtm);
             }
             if (BoolConst.isFalse(mtm.getHoldRefer2())) {
-                entity2.addUnHold(entity1,mtm);
+                entity2.addUnHold(entity1, mtm);
             } else {
-                entity2.addHold(entity1,mtm);
+                entity2.addHold(entity1, mtm);
             }
             mtm.setRefer1(entity1);
             mtm.setRefer2(entity2);
             //装配多对多级联扩展
-            if(withMtmCascade) {
+            if (withMtmCascade) {
                 this.assembleMtmCascadeExt(mtm, entityMap);
             }
             result.add(mtm);
@@ -279,10 +286,11 @@ public class MetaQueryAssembleService {
 
     /**
      * 给多对多装配级联扩展
-     * @param mtm 待装配的多对多
+     *
+     * @param mtm     待装配的多对多
      * @param entitys 所有实体
      */
-    private void assembleMtmCascadeExt(MetaManyToManyPO mtm, Map<Integer, MetaEntityPO> entitys){
+    private void assembleMtmCascadeExt(MetaManyToManyPO mtm, Map<Integer, MetaEntityPO> entitys) {
         MetaEntityPO entity1 = mtm.getRefer1();
         MetaEntityPO entity2 = mtm.getRefer2();
         List<MetaMtmCascadeExtPO> cascadeExtList1 = metaMtmCascadeExtService.findByMtmIdAndEntityId(mtm.getMtmId(),
@@ -294,14 +302,15 @@ public class MetaQueryAssembleService {
         List<MetaMtmCascadeExtPO> filteredCascadeExtList2 = this.filterAndAssembleMtmCascadeExt(cascadeExtList2, entitys);
         mtm.setCascadeExtList1(filteredCascadeExtList1);
         mtm.setCascadeExtList2(filteredCascadeExtList2);
-        mtm.setFkAliasForSql1(MetadataUtil.getMtmFkAlias(mtm,entity1,true));
-        mtm.setFkAliasForSql2(MetadataUtil.getMtmFkAlias(mtm,entity2,true));
-        mtm.setFkAliasForJava1(MetadataUtil.getMtmFkAlias(mtm,entity1,false));
-        mtm.setFkAliasForJava2(MetadataUtil.getMtmFkAlias(mtm,entity2,false));
+        mtm.setFkAliasForSql1(MetadataUtil.getMtmFkAlias(mtm, entity1, true));
+        mtm.setFkAliasForSql2(MetadataUtil.getMtmFkAlias(mtm, entity2, true));
+        mtm.setFkAliasForJava1(MetadataUtil.getMtmFkAlias(mtm, entity1, false));
+        mtm.setFkAliasForJava2(MetadataUtil.getMtmFkAlias(mtm, entity2, false));
     }
 
     /**
      * 过滤并装配多对对级联扩展
+     *
      * @param entitys
      * @param cascadeExtList
      * @return
@@ -313,11 +322,11 @@ public class MetaQueryAssembleService {
             Integer cascadeEntityId = cascadeExtPO.getCascadeEntityId();
             Integer cascadeFieldId = cascadeExtPO.getCascadeFieldId();
             MetaEntityPO cascadeEntity = entitys.get(cascadeEntityId);
-            if(cascadeEntity==null){
+            if (cascadeEntity == null) {
                 continue;
             }
             MetaFieldPO cascadeField = cascadeEntity.getFields().get(cascadeFieldId);
-            if(cascadeField==null){
+            if (cascadeField == null) {
                 continue;
             }
             cascadeExtPO.setCascadeEntity(cascadeEntity);
@@ -331,35 +340,36 @@ public class MetaQueryAssembleService {
 
     /**
      * 装配外键实体和外键字段
-     * @param metaEntities 实体列表
+     *
+     * @param metaEntities  实体列表
      * @param withFkCascade 是否装配外键级联扩展
      */
-    public void assembleForeign(List<MetaEntityPO> metaEntities, boolean withFkCascade){
+    public void assembleForeign(List<MetaEntityPO> metaEntities, boolean withFkCascade) {
         for (MetaEntityPO metaEntity : metaEntities) {
             for (MetaFieldPO metaFieldPO : metaEntity.getFields().values()) {
                 //如果不存在外键关系，则跳过
-                if(BoolConst.isFalse(metaFieldPO.getForeignKey())){
+                if (BoolConst.isFalse(metaFieldPO.getForeignKey())) {
                     continue;
                 }
                 //查找当前外键字段对应的外键实体
                 MetaEntityPO foreignEntity = this.findMetaEntityById(metaEntities, metaFieldPO.getForeignEntityId());
-                if(foreignEntity==null){
+                if (foreignEntity == null) {
                     continue;
                 }
                 metaFieldPO.setForeignEntity(foreignEntity);
                 //获取外键关联的主键字段
                 MetaFieldPO foreignField = foreignEntity.getPkField();
-                if(!Objects.equals(foreignField.getFieldType(),metaFieldPO.getFieldType())){
-                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"外键字段"+metaEntity.getTableName()+"."+metaFieldPO.getFieldName()+"与"
-                        +foreignEntity.getTableName()+"."+foreignField.getFieldName()+"字段类型不一致");
+                if (!Objects.equals(foreignField.getFieldType(), metaFieldPO.getFieldType())) {
+                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "外键字段" + metaEntity.getTableName() + "." + metaFieldPO.getFieldName() + "与"
+                        + foreignEntity.getTableName() + "." + foreignField.getFieldName() + "字段类型不一致");
                 }
-                if(!Objects.equals(foreignField.getJfieldType(),metaFieldPO.getJfieldType())){
-                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"java字段"+metaEntity.getClassName()+"."+metaFieldPO.getJfieldName()+"与"
-                        +foreignEntity.getClassName()+"."+foreignField.getJfieldName()+"字段类型不一致");
+                if (!Objects.equals(foreignField.getJfieldType(), metaFieldPO.getJfieldType())) {
+                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "java字段" + metaEntity.getClassName() + "." + metaFieldPO.getJfieldName() + "与"
+                        + foreignEntity.getClassName() + "." + foreignField.getJfieldName() + "字段类型不一致");
                 }
                 metaFieldPO.setForeignField(foreignField);
                 // 装配级联扩展列表
-                if(withFkCascade) {
+                if (withFkCascade) {
                     this.assembleCascadeExtList(metaFieldPO, foreignEntity.getFields());
                 }
                 foreignEntity.addForeignField(metaFieldPO);
@@ -379,17 +389,17 @@ public class MetaQueryAssembleService {
         List<MetaCascadeExtPO> cascadeListExts = new ArrayList<>();
         for (MetaCascadeExtPO cascadeExt : cascadeExts) {
             MetaFieldPO field = foreignFields.get(cascadeExt.getCascadeFieldId());
-            if(field==null) {
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,metaFieldPO.getFieldDesc()+"的级联扩展字段有误");
+            if (field == null) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, metaFieldPO.getFieldDesc() + "的级联扩展字段有误");
             }
             cascadeExt.setCascadeField(field);
-            if(BoolConst.isTrue(cascadeExt.getQuery())){
+            if (BoolConst.isTrue(cascadeExt.getQuery())) {
                 cascadeQueryExts.add(cascadeExt);
             }
-            if(BoolConst.isTrue(cascadeExt.getShow())){
+            if (BoolConst.isTrue(cascadeExt.getShow())) {
                 cascadeShowExts.add(cascadeExt);
             }
-            if(BoolConst.isTrue(cascadeExt.getList())){
+            if (BoolConst.isTrue(cascadeExt.getList())) {
                 cascadeListExts.add(cascadeExt);
             }
         }
@@ -401,20 +411,19 @@ public class MetaQueryAssembleService {
 
     /**
      * 从list中查找实体
+     *
      * @param metaEntities
      * @param entityId
      * @return
      */
-    private MetaEntityPO findMetaEntityById(List<MetaEntityPO> metaEntities,Integer entityId){
+    private MetaEntityPO findMetaEntityById(List<MetaEntityPO> metaEntities, Integer entityId) {
         Optional<MetaEntityPO> first = metaEntities.stream()
             .filter(entityPO -> entityPO.getEntityId().equals(entityId)).findFirst();
-        if(first.isPresent()){
+        if (first.isPresent()) {
             return first.get();
         }
         return null;
     }
-
-
 
 
     /**
@@ -423,8 +432,8 @@ public class MetaQueryAssembleService {
     private void checkAssembledProject(MetaProjectPO project, boolean checkConst) {
         List<MetaEntityPO> entities = project.getEntities();
 
-        Map<String,MetaConstPO> constMap = null;
-        if(checkConst) {
+        Map<String, MetaConstPO> constMap = null;
+        if (checkConst) {
             // 校验并获取常量Map
             constMap = checkAndGetConstMap(project.getConsts());
         }
@@ -441,10 +450,10 @@ public class MetaQueryAssembleService {
             int versionCount = 0;
             for (MetaFieldPO field : fields.values()) {
                 String specialField = field.getSpecialField();
-                if(BoolConst.isTrue(field.getPrimaryKey())){
+                if (BoolConst.isTrue(field.getPrimaryKey())) {
                     pkCount++;
-                    if(StringUtils.isNotBlank(specialField)){
-                        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】的主键【"+field.getFieldDesc()+"】不可以是特殊字段");
+                    if (StringUtils.isNotBlank(specialField)) {
+                        throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】的主键【" + field.getFieldDesc() + "】不可以是特殊字段");
                     }
                 }
                 if (MetaSpecialField.isDeleted(specialField)) {
@@ -461,37 +470,37 @@ public class MetaQueryAssembleService {
                     versionCount++;
                 }
 
-                if(StringUtils.isNotBlank(field.getDicType())
-                    &&checkConst
-                    &&!constMap.containsKey(field.getDicType())
-                    &&!defaultConst.contains(field.getDicType())){
-                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】的字段【"+field.getFieldDesc()+"】中指定的枚举字典【"+field.getDicType()+"】不存在");
+                if (StringUtils.isNotBlank(field.getDicType())
+                    && checkConst
+                    && !constMap.containsKey(field.getDicType())
+                    && !defaultConst.contains(field.getDicType())) {
+                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】的字段【" + field.getFieldDesc() + "】中指定的枚举字典【" + field.getDicType() + "】不存在");
                 }
 
             }
-            if(pkCount==0){
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】中未找到主键");
+            if (pkCount == 0) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中未找到主键");
             }
-            if(pkCount>1){
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】中存在"+pkCount+"个主键");
+            if (pkCount > 1) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + pkCount + "个主键");
             }
-            if(deletedCount>1){
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】中存在"+deletedCount+"个逻辑删除字段");
+            if (deletedCount > 1) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + deletedCount + "个逻辑删除字段");
             }
-            if(createdByCount>1){
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】中存在"+createdByCount+"个创建人员字段");
+            if (createdByCount > 1) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + createdByCount + "个创建人员字段");
             }
-            if(createdTimeCount>1){
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】中存在"+createdTimeCount+"个创建时间字段");
+            if (createdTimeCount > 1) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + createdTimeCount + "个创建时间字段");
             }
-            if(operatedByCount>1){
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】中存在"+operatedByCount+"个更新人员字段");
+            if (operatedByCount > 1) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + operatedByCount + "个更新人员字段");
             }
-            if(operatedTimeCount>1){
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】中存在"+operatedTimeCount+"个更新时间字段");
+            if (operatedTimeCount > 1) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + operatedTimeCount + "个更新时间字段");
             }
-            if(versionCount>1){
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"实体【"+entity.getTitle()+"】中存在"+versionCount+"个乐观锁版本字段");
+            if (versionCount > 1) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + versionCount + "个乐观锁版本字段");
             }
 
         }
@@ -502,16 +511,17 @@ public class MetaQueryAssembleService {
 
     /**
      * 校验并获取常量Map
+     *
      * @param consts
      * @return
      */
     private Map<String, MetaConstPO> checkAndGetConstMap(List<MetaConstPO> consts) {
         Map<String, MetaConstPO> constMap = new HashMap<>(consts.size());
         for (MetaConstPO constPO : consts) {
-            if(constMap.containsKey(constPO.getConstName())){
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"枚举类名冲突："+constPO.getConstName());
+            if (constMap.containsKey(constPO.getConstName())) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "枚举类名冲突：" + constPO.getConstName());
             }
-            constMap.put(constPO.getConstName(),constPO);
+            constMap.put(constPO.getConstName(), constPO);
         }
         return constMap;
     }

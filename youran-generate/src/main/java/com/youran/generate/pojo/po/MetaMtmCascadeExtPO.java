@@ -3,8 +3,8 @@ package com.youran.generate.pojo.po;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * <p>Title: 多对多级联扩展</p>
- * <p>Description: 多对多级联扩展</p>
+ * 多对多级联扩展
+ *
  * @author cbb
  * @date 2019/09/21
  */
@@ -167,7 +167,6 @@ public class MetaMtmCascadeExtPO extends BasePO {
     public void setHostEntity(MetaEntityPO hostEntity) {
         this.hostEntity = hostEntity;
     }
-
 
 
 }

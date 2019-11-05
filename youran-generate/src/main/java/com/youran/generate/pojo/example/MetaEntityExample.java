@@ -3,8 +3,8 @@ package com.youran.generate.pojo.example;
 import com.youran.common.pojo.example.AbstractExample;
 
 /**
- * <p>Title:实体参数示例</p>
- * <p>Description:</p>
+ * 实体参数示例
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

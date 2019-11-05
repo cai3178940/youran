@@ -4,8 +4,9 @@ package com.youran.common.constant;
 import com.youran.common.validator.Check;
 
 /**
- * <p>Title:布尔常量</p>
- * <p>Description:如果系统中使用整型0、1代表布尔值，则可以使用本常量</p>
+ * 布尔常量
+ * <p>如果系统中使用整型0、1代表布尔值，则可以使用本常量
+ *
  * @author: cbb
  * @date: 2017/6/19
  */
@@ -15,10 +16,11 @@ public class BoolConst {
 
     public static final int FALSE = 0;
 
-    public static final boolean isFalse(Integer value){
-        return value==null || FALSE==value;
+    public static final boolean isFalse(Integer value) {
+        return value == null || FALSE == value;
     }
-    public static final boolean isTrue(Integer value){
+
+    public static final boolean isTrue(Integer value) {
         return !isFalse(value);
     }
 

@@ -4,8 +4,8 @@ import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * <p>Title:抽象校验结果展示对象</p>
- * <p>Description:</p>
+ * 抽象校验结果展示对象
+ *
  * @author: cbb
  * @date: 2019/10/10
  */
@@ -18,7 +18,7 @@ public class MetaAbstractValidateVO extends AbstractVO {
         this.success = true;
     }
 
-    public void error(){
+    public void error() {
         this.success = false;
     }
 

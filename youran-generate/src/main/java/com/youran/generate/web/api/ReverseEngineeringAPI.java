@@ -7,27 +7,29 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * <p>Title:【反向工程】api</p>
- * <p>Description:</p>
+ * 【反向工程】api
+ *
  * @author: cbb
- * Create Time:2017/5/24
+ * @date 2017/5/24
  */
 @Api(tags = "ReverseEngineering")
 public interface ReverseEngineeringAPI {
 
     /**
      * 校验语法
+     *
      * @param dto
      * @return
      */
     @ApiOperation(value = "校验语法")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dto", dataType = "ReverseEngineeringDTO", value = "反向工程参数", paramType = "body"),
+        @ApiImplicitParam(name = "dto", dataType = "ReverseEngineeringDTO", value = "反向工程参数", paramType = "body"),
     })
     void check(ReverseEngineeringDTO dto);
 
     /**
      * 执行DDL反向工程
+     *
      * @param dto
      * @return
      */
@@ -36,7 +38,6 @@ public interface ReverseEngineeringAPI {
         @ApiImplicitParam(name = "dto", dataType = "ReverseEngineeringDTO", value = "反向工程参数", paramType = "body"),
     })
     void execute(ReverseEngineeringDTO dto);
-
 
 
 }

@@ -13,8 +13,8 @@ import javax.validation.constraints.Pattern;
 import static com.youran.generate.pojo.example.MetaIndexExample.*;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 新增索引入参
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

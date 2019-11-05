@@ -10,9 +10,9 @@ import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.pojo.qo.CodeTemplateQO;
 import com.youran.generate.pojo.qo.TemplateFileQO;
 import com.youran.generate.pojo.vo.*;
-import com.youran.generate.service.TemplateImportExportService;
 import com.youran.generate.service.CodeTemplateService;
 import com.youran.generate.service.TemplateFileService;
+import com.youran.generate.service.TemplateImportExportService;
 import com.youran.generate.service.TmpDirService;
 import com.youran.generate.util.FileNodeUtil;
 import com.youran.generate.web.AbstractController;
@@ -31,8 +31,8 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * <p>Title: 【代码模板】控制器</p>
- * <p>Description: </p>
+ * 【代码模板】控制器
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -54,7 +54,7 @@ public class CodeTemplateController extends AbstractController implements CodeTe
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CodeTemplateShowVO> save(@Valid @RequestBody CodeTemplateAddDTO codeTemplateAddDTO) throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateService.save(codeTemplateAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/code_template/" + codeTemplate.getTemplateId()))
+        return ResponseEntity.created(new URI(apiPath + "/code_template/" + codeTemplate.getTemplateId()))
             .body(CodeTemplateMapper.INSTANCE.toShowVO(codeTemplate));
     }
 
@@ -89,7 +89,7 @@ public class CodeTemplateController extends AbstractController implements CodeTe
     @Override
     @DeleteMapping
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] id) {
-        if(ArrayUtils.isEmpty(id)){
+        if (ArrayUtils.isEmpty(id)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = codeTemplateService.delete(id);
@@ -113,14 +113,14 @@ public class CodeTemplateController extends AbstractController implements CodeTe
 
     @Override
     @GetMapping(value = "/{templateId}/export")
-    public void export(@PathVariable Integer templateId, HttpServletResponse response){
+    public void export(@PathVariable Integer templateId, HttpServletResponse response) {
         File zipFile = templateImportExportService.exportTemplate(templateId);
         if (zipFile == null || !zipFile.exists()) {
             this.replyNotFound(response);
-        }else {
+        } else {
             CodeTemplatePO codeTemplate = codeTemplateService.getCodeTemplate(templateId, true);
-            String downloadFileName = codeTemplate.getName()+"-"
-                +codeTemplate.getTemplateVersion()+".zip";
+            String downloadFileName = codeTemplate.getName() + "-"
+                + codeTemplate.getTemplateVersion() + ".zip";
             this.replyDownloadFile(response, zipFile, downloadFileName);
         }
     }
@@ -137,7 +137,7 @@ public class CodeTemplateController extends AbstractController implements CodeTe
         }
         file.transferTo(zipFile);
         CodeTemplatePO codeTemplate = templateImportExportService.importTemplate(zipFile);
-        return ResponseEntity.created(new URI(apiPath +"/code_template/" + codeTemplate.getTemplateId()))
+        return ResponseEntity.created(new URI(apiPath + "/code_template/" + codeTemplate.getTemplateId()))
             .body(CodeTemplateMapper.INSTANCE.toShowVO(codeTemplate));
     }
 

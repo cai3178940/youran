@@ -9,8 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * <p>Title: IP工具</p>
- * <p>Description: </p>
+ * IP工具
+ *
  * @author cbb
  * @date 2017/5/20
  */
@@ -21,13 +21,14 @@ public class IpUtil {
 
     /**
      * 获取客户端ip
+     *
      * @param request request
      * @return
      */
     public static String getIpAddr(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
         if (ip != null && ip.length() != 0 && !UNKNOWN.equalsIgnoreCase(ip)) {
-            if( ip.indexOf(IP_SEPARATOR)!=-1 ){
+            if (ip.indexOf(IP_SEPARATOR) != -1) {
                 ip = ip.split(",")[0];
             }
         }
@@ -54,15 +55,16 @@ public class IpUtil {
 
     /**
      * 是否是ipv4
+     *
      * @param ipAddress
      * @return
      */
     public static boolean isIpv4(String ipAddress) {
 
         String ip = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
-                + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-                + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-                + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
+            + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+            + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+            + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
 
         Pattern pattern = Pattern.compile(ip);
         Matcher matcher = pattern.matcher(ipAddress);
@@ -89,14 +91,14 @@ public class IpUtil {
                     ip = (InetAddress) address.nextElement();
 
                     if ((!ip.isSiteLocalAddress()) && (!ip.isLoopbackAddress()) &&
-                            (ip.getHostAddress().indexOf(":") == -1)) {
+                        (ip.getHostAddress().indexOf(":") == -1)) {
                         netip = ip.getHostAddress();
                         finded = true;
                         break;
                     }
                     if ((ip.isSiteLocalAddress()) &&
-                            (!ip.isLoopbackAddress()) &&
-                            (ip.getHostAddress().indexOf(":") == -1)) {
+                        (!ip.isLoopbackAddress()) &&
+                        (ip.getHostAddress().indexOf(":") == -1)) {
                         localip = ip.getHostAddress();
                     }
                 }

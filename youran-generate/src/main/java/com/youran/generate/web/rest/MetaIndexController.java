@@ -24,13 +24,14 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * <p>Title:【索引】控制器</p>
- * <p>Description: 索引增删改查</p>
+ * 【索引】控制器
+ * <p> 索引增删改查
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/meta_index")
+@RequestMapping(WebConst.API_PATH + "/meta_index")
 public class MetaIndexController extends AbstractController implements MetaIndexAPI {
 
     @Autowired
@@ -41,7 +42,7 @@ public class MetaIndexController extends AbstractController implements MetaIndex
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaIndexShowVO> save(@Valid @RequestBody MetaIndexAddDTO metaIndexAddDTO) throws Exception {
         MetaIndexPO metaIndex = metaIndexService.save(metaIndexAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/meta_index/" + metaIndex.getIndexId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_index/" + metaIndex.getIndexId()))
             .body(MetaIndexMapper.INSTANCE.toShowVO(metaIndex));
     }
 
@@ -76,7 +77,7 @@ public class MetaIndexController extends AbstractController implements MetaIndex
     @Override
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] indexId) {
-        if(ArrayUtils.isEmpty(indexId)){
+        if (ArrayUtils.isEmpty(indexId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaIndexService.delete(indexId);
@@ -85,8 +86,8 @@ public class MetaIndexController extends AbstractController implements MetaIndex
 
     @Override
     @PutMapping(value = "/{indexId}/removeField")
-    public ResponseEntity<Integer> removeField(@PathVariable Integer indexId, @RequestBody List<Integer> fieldIds){
-        int count = metaIndexService.removeField(indexId,fieldIds);
+    public ResponseEntity<Integer> removeField(@PathVariable Integer indexId, @RequestBody List<Integer> fieldIds) {
+        int count = metaIndexService.removeField(indexId, fieldIds);
         return ResponseEntity.ok(count);
     }
 }

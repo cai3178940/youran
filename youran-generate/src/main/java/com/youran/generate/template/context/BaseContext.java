@@ -12,8 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 
 /**
- * <p>Title: 基本信息上下文对象</p>
- * <p>Description: 包含项目的基本信息</p>
+ * 基本信息上下文对象
+ * <p> 包含项目的基本信息
+ *
  * @author cbb
  * @date 2018/8/3
  */
@@ -89,7 +90,7 @@ public class BaseContext {
     protected MetaProjectFeatureDTO projectFeature;
 
 
-    public BaseContext(MetaProjectPO project){
+    public BaseContext(MetaProjectPO project) {
         //所有实体
         this.metaEntities = project.getEntities();
         //所有常量
@@ -128,85 +129,92 @@ public class BaseContext {
     /**
      * 跳过当前文件
      */
-    public void skipCurrent(){
+    public void skipCurrent() {
         throw new SkipCurrentException();
     }
 
     /**
      * 添加依赖
+     *
      * @param classPath 类全路径
      */
-    public void addImport(String classPath){
+    public void addImport(String classPath) {
         this.imports.add(classPath);
     }
 
     /**
      * 根据字段类型添加依赖
+     *
      * @param field
      */
-    public void addFieldTypeImport(MetaFieldPO field){
-        if(Objects.equals(field.getJfieldType(), JFieldType.DATE.getJavaType())){
+    public void addFieldTypeImport(MetaFieldPO field) {
+        if (Objects.equals(field.getJfieldType(), JFieldType.DATE.getJavaType())) {
             this.addImport("java.util.Date");
-        }else if(Objects.equals(field.getJfieldType(), JFieldType.BIGDECIMAL.getJavaType())){
+        } else if (Objects.equals(field.getJfieldType(), JFieldType.BIGDECIMAL.getJavaType())) {
             this.addImport("java.math.BigDecimal");
         }
     }
 
     /**
      * 添加静态依赖
+     *
      * @param classPath 类全路径
      */
-    public void addStaticImport(String classPath){
+    public void addStaticImport(String classPath) {
         this.staticImports.add(classPath);
     }
 
     /**
      * 获取常量类的全路径
+     *
      * @param constName
      * @return
      */
-    public String getConstFullClassPath(String constName){
-        if(TemplateUtil.isCommonConst(constName)){
-            return this.commonPackage+".constant."+constName;
-        }else{
-            return this.packageName+".constant."+constName;
+    public String getConstFullClassPath(String constName) {
+        if (TemplateUtil.isCommonConst(constName)) {
+            return this.commonPackage + ".constant." + constName;
+        } else {
+            return this.packageName + ".constant." + constName;
         }
     }
 
     /**
      * 导入常量依赖
+     *
      * @param constName
      */
-    public void addConstImport(String constName){
+    public void addConstImport(String constName) {
         this.addImport(this.getConstFullClassPath(constName));
     }
 
 
     /**
      * 添加spring bean注入
+     *
      * @param packageName 包名
-     * @param className 类名
+     * @param className   类名
      */
-    public void addAutowired(String packageName,String className){
+    public void addAutowired(String packageName, String className) {
         this.addImport("org.springframework.beans.factory.annotation.Autowired");
-        this.addImport(packageName+"."+className);
+        this.addImport(packageName + "." + className);
         this.autowired.add(className);
     }
 
 
     /**
      * 打印import依赖
+     *
      * @return
      */
-    public String printImport(){
+    public String printImport() {
         // 打印外部依赖
         StringBuilder sb1 = new StringBuilder();
         // 打印java内建依赖
         StringBuilder sb2 = new StringBuilder();
         for (String imp : imports) {
-            if(!imp.startsWith("java.") && !imp.startsWith("javax.")){
+            if (!imp.startsWith("java.") && !imp.startsWith("javax.")) {
                 sb1.append("import ").append(imp).append(";\n");
-            }else{
+            } else {
                 sb2.append("import ").append(imp).append(";\n");
             }
         }
@@ -215,27 +223,27 @@ public class BaseContext {
         // 打印静态java内建依赖
         StringBuilder sb4 = new StringBuilder();
         for (String imp : staticImports) {
-            if(!imp.startsWith("java.") && !imp.startsWith("javax.")){
+            if (!imp.startsWith("java.") && !imp.startsWith("javax.")) {
                 sb3.append("import static ").append(imp).append(";\n");
-            }else{
+            } else {
                 sb4.append("import static ").append(imp).append(";\n");
             }
         }
         StringBuilder sb = new StringBuilder();
-        if(sb1.length()>0){
+        if (sb1.length() > 0) {
             sb.append("\n").append(sb1);
         }
-        if(sb2.length()>0){
+        if (sb2.length() > 0) {
             sb.append("\n").append(sb2);
         }
-        if(sb3.length()>0){
+        if (sb3.length() > 0) {
             sb.append("\n").append(sb3);
         }
-        if(sb4.length()>0){
+        if (sb4.length() > 0) {
             sb.append("\n").append(sb4);
         }
 
-        if(sb.length()>0){
+        if (sb.length() > 0) {
             sb.deleteCharAt(0);
         }
 
@@ -245,9 +253,10 @@ public class BaseContext {
 
     /**
      * 打印依赖注入
+     *
      * @return
      */
-    public String printAutowired(){
+    public String printAutowired() {
         StringBuilder sb = new StringBuilder();
         for (String aw : autowired) {
             sb.append("    @Autowired\n")
@@ -259,22 +268,25 @@ public class BaseContext {
 
     /**
      * 打印类注释
+     *
      * @return
      */
-    public String printClassCom(String title){
-        return this.printClassCom(title,"");
+    public String printClassCom(String title) {
+        return this.printClassCom(title, "");
     }
+
     /**
      * 打印类注释
+     *
      * @return
      */
-    public String printClassCom(String title,String desc){
+    public String printClassCom(String title, String desc) {
         StringBuilder sb = new StringBuilder();
         sb.append("/**\n")
-            .append(" * <p>Title: ").append(title).append("</p>\n")
-            .append(" * <p>Description: ").append(desc).append("</p>\n")
+            .append(" * ").append(title).append("\n")
+            .append(" * <p> ").append(desc).append("\n")
             .append(" * @author ").append(this.author).append("\n")
-            .append(" * @date ").append(DateUtil.getDateStr(this.createdTime,"yyyy/MM/dd")).append("\n")
+            .append(" * @date ").append(DateUtil.getDateStr(this.createdTime, "yyyy/MM/dd")).append("\n")
             .append(" */").append("\n");
         return sb.toString();
     }
@@ -418,6 +430,6 @@ public class BaseContext {
 
     @Override
     public String toString() {
-        return "Project:"+projectDesc;
+        return "Project:" + projectDesc;
     }
 }

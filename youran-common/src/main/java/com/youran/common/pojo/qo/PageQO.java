@@ -6,8 +6,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 /**
- * <p>Title:分页查询dto</p>
- * <p>Description:</p>
+ * 分页查询dto
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -62,10 +62,11 @@ public class PageQO extends AbstractQO {
         this.currentPage = currentPage;
     }
 
-    public int getStartIndex(){
+    public int getStartIndex() {
         return (currentPage - 1) * pageSize;
     }
-    public int getEndIndex(){
+
+    public int getEndIndex() {
         return currentPage * pageSize;
     }
 

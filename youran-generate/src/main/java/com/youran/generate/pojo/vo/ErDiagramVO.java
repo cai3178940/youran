@@ -7,8 +7,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.List;
 
 /**
- * <p>Title: 实体关系图VO</p>
- * <p>Description: </p>
+ * 实体关系图VO
+ *
  * @author cbb
  * @date 2018/7/17
  */

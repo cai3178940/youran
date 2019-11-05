@@ -1,8 +1,8 @@
 package com.youran.generate.pojo.dto;
 
 /**
- * <p>Title: 系统导入导出专用DTO</p>
- * <p>Description: </p>
+ * 系统导入导出专用DTO
+ *
  * @author cbb
  * @date 2019/10/23
  */

@@ -20,8 +20,8 @@ import java.io.File;
 import java.net.URI;
 
 /**
- * <p>Title: 元数据导入导出controller</p>
- * <p>Description:</p>
+ * 元数据导入导出controller
+ *
  * @author: cbb
  * @date: 10/12/2019 21:15
  */
@@ -38,11 +38,11 @@ public class MetaImportExportController extends AbstractController implements Me
 
     @Override
     @GetMapping(value = "/meta_export/{projectId}")
-    public void metaExport(@PathVariable Integer projectId, HttpServletResponse response){
+    public void metaExport(@PathVariable Integer projectId, HttpServletResponse response) {
         File zipFile = metaImportExportService.metaExport(projectId);
         if (zipFile == null || !zipFile.exists()) {
             this.replyNotFound(response);
-        }else {
+        } else {
             String normalProjectName = metaProjectService.getNormalProjectName(projectId);
             String downloadFileName = normalProjectName + "Export.zip";
             this.replyDownloadFile(response, zipFile, downloadFileName);

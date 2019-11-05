@@ -14,8 +14,8 @@ import javax.validation.constraints.Pattern;
 import static com.youran.generate.pojo.example.MetaCascadeExtExample.*;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 新增级联展示入参
+ *
  * @author: cbb
  * @date: 2018/5/28
  */
@@ -82,7 +82,6 @@ public class MetaCascadeExtAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_CASCADEFIELDID, example = E_CASCADEFIELDID)
     @NotNull
     private Integer cascadeFieldId;
-
 
 
     public Integer getFieldId() {

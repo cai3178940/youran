@@ -24,13 +24,14 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * <p>Title:【级联扩展】控制器</p>
- * <p>Description: 级联扩展增删改查</p>
+ * 【级联扩展】控制器
+ * <p> 级联扩展增删改查
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/meta_cascade_ext")
+@RequestMapping(WebConst.API_PATH + "/meta_cascade_ext")
 public class MetaCascadeExtController extends AbstractController implements MetaCascadeExtAPI {
 
     @Autowired
@@ -41,7 +42,7 @@ public class MetaCascadeExtController extends AbstractController implements Meta
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaCascadeExtShowVO> save(@Valid @RequestBody MetaCascadeExtAddDTO metaCascadeExtAddDTO) throws Exception {
         MetaCascadeExtPO metaCascadeExtPO = metaCascadeExtService.save(metaCascadeExtAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/meta_cascade_ext/" + metaCascadeExtPO.getCascadeExtId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_cascade_ext/" + metaCascadeExtPO.getCascadeExtId()))
             .body(MetaCascadeExtMapper.INSTANCE.toShowVO(metaCascadeExtPO));
     }
 
@@ -76,7 +77,7 @@ public class MetaCascadeExtController extends AbstractController implements Meta
     @Override
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] cascadeExtId) {
-        if(ArrayUtils.isEmpty(cascadeExtId)){
+        if (ArrayUtils.isEmpty(cascadeExtId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaCascadeExtService.delete(cascadeExtId);

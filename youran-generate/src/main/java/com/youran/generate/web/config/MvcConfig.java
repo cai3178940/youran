@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * <p>Title:跨域支持</p>
- * <p>Description:</p>
+ * 跨域支持
+ *
  * @author: cbb
  * @date: 2018/1/16
  */
@@ -19,12 +19,13 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedOrigins("*")
-                .allowedMethods("GET", "HEAD", "POST","PUT", "DELETE", "OPTIONS")
-                .allowCredentials(false).maxAge(3600);
+            .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowCredentials(false).maxAge(3600);
     }
 
     /**
      * 映射ui资源路径
+     *
      * @param registry
      */
     @Override
@@ -35,15 +36,16 @@ public class MvcConfig implements WebMvcConfigurer {
 
     /**
      * 设置ui入口页地址映射
+     *
      * @param registry
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController( "" ).setViewName( "forward:/ui/index.html" );
-        registry.addViewController( "/" ).setViewName( "forward:/ui/index.html" );
-        registry.addViewController( "/ui" ).setViewName( "forward:/ui/index.html" );
-        registry.addViewController( "/ui/" ).setViewName( "forward:/ui/index.html" );
-        registry.setOrder( Ordered.HIGHEST_PRECEDENCE );
+        registry.addViewController("").setViewName("forward:/ui/index.html");
+        registry.addViewController("/").setViewName("forward:/ui/index.html");
+        registry.addViewController("/ui").setViewName("forward:/ui/index.html");
+        registry.addViewController("/ui/").setViewName("forward:/ui/index.html");
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
 }

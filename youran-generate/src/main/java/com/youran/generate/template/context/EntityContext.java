@@ -14,8 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 
 /**
- * <p>Title: 实体信息上下文对象</p>
- * <p>Description: 将实体对象中的大部分属性拷贝到当前类中，并且额外提供了一些转换和封装</p>
+ * 实体信息上下文对象
+ * <p> 将实体对象中的大部分属性拷贝到当前类中，并且额外提供了一些转换和封装
+ *
  * @author cbb
  * @date 2018/8/3
  */
@@ -139,17 +140,17 @@ public class EntityContext extends BaseContext {
     /**
      * 对应的外键列表(当前主键对应的其他实体外键字段)
      * 比如：
-     *  1、当前实体是部门，主键是部门id
-     *  2、对应实体是用户，用户中的外键字段是部门id
-     *  3、则此处存放的是用户表中的部门id
+     * 1、当前实体是部门，主键是部门id
+     * 2、对应实体是用户，用户中的外键字段是部门id
+     * 3、则此处存放的是用户表中的部门id
      */
     private List<MetaFieldPO> foreignFields;
     /**
      * 对应的外键实体集合(当前主键对应的其他实体)
      * 比如：
-     *  1、当前实体是部门，主键是部门id
-     *  2、对应实体是用户，用户中的外键字段是部门id
-     *  3、则此处存放的是用户实体
+     * 1、当前实体是部门，主键是部门id
+     * 2、对应实体是用户，用户中的外键字段是部门id
+     * 3、则此处存放的是用户实体
      */
     private Set<MetaEntityPO> foreignEntities;
     /**
@@ -157,7 +158,7 @@ public class EntityContext extends BaseContext {
      */
     private MetaEntityFeatureDTO entityFeature;
 
-    public EntityContext(MetaProjectPO project, MetaEntityPO entity){
+    public EntityContext(MetaProjectPO project, MetaEntityPO entity) {
         super(project);
         this.metaEntity = entity;
         this.entityId = entity.getEntityId();
@@ -194,41 +195,42 @@ public class EntityContext extends BaseContext {
 
     /**
      * 打印单元测试中的saveExample参数
+     *
      * @return
      */
-    public String printSaveExampleArg(MetaEntityPO entity){
+    public String printSaveExampleArg(MetaEntityPO entity) {
         StringBuilder sb = new StringBuilder();
         for (MetaFieldPO field : entity.getInsertFields().values()) {
             // 跳过非外键
-            if(BoolConst.isFalse(field.getForeignKey())){
+            if (BoolConst.isFalse(field.getForeignKey())) {
                 continue;
             }
-            if(BoolConst.isTrue(field.getNotNull())){
+            if (BoolConst.isTrue(field.getNotNull())) {
                 sb.append(StringUtils.uncapitalize(field.getForeignEntity().getClassName()))
                     .append(".get")
                     .append(StringUtils.capitalize(field.getForeignEntity().getPkField().getJfieldName()))
                     .append("(), ");
-            }else{
+            } else {
                 sb.append("null, ");
             }
         }
-        if(sb.length()>0){
-            sb.delete(sb.length()-2,sb.length());
+        if (sb.length() > 0) {
+            sb.delete(sb.length() - 2, sb.length());
         }
         return sb.toString();
     }
 
 
-
     /**
      * 打印单元测试中保存Example的代码
+     *
      * @return
      */
-    public List<String> getPrintingSaveExample(){
+    public List<String> getPrintingSaveExample() {
         // 定义保存所有树节点的map
         Map<Integer, ForeignEntityTreeNode> theMap = new HashMap<>(16);
         // 构建树
-        buildForeignTreeForSave(metaEntity,null, theMap);
+        buildForeignTreeForSave(metaEntity, null, theMap);
         // 遍历外键树节点，生成叶子优先的有序集合
         Set<ForeignEntityTreeNode> dealtSet = getOrderedForeignSet(theMap);
         // 将有序集合循环遍历并打印
@@ -236,24 +238,22 @@ public class EntityContext extends BaseContext {
     }
 
 
-
-
-
     /**
      * 打印单元测试中保存多对多两个实体示例的代码
+     *
      * @param otherEntity 多对多中另一个实体
      * @return
      */
-    public List<String> getPrintingSaveExampleForMtm(MetaEntityPO otherEntity){
+    public List<String> getPrintingSaveExampleForMtm(MetaEntityPO otherEntity) {
         // 定义保存所有树1和树2的所有节点的map
         Map<Integer, ForeignEntityTreeNode> theMap = new HashMap<>(16);
         Map<Integer, ForeignEntityTreeNode> otherMap = new HashMap<>(16);
         // 构建树1和树2
-        buildForeignTreeForSave(metaEntity,null, theMap);
-        buildForeignTreeForSave(otherEntity,null, otherMap);
+        buildForeignTreeForSave(metaEntity, null, theMap);
+        buildForeignTreeForSave(otherEntity, null, otherMap);
 
         // 合并树1和树2的map
-        Map<Integer, ForeignEntityTreeNode> totalMap = new HashMap<>(theMap.size()+otherMap.size());
+        Map<Integer, ForeignEntityTreeNode> totalMap = new HashMap<>(theMap.size() + otherMap.size());
         totalMap.putAll(theMap);
         totalMap.putAll(otherMap);
         // 遍历外键树节点，生成叶子优先的有序集合
@@ -265,6 +265,7 @@ public class EntityContext extends BaseContext {
 
     /**
      * 将有序集合循环遍历并打印
+     *
      * @param dealtSet
      * @return
      */
@@ -277,9 +278,9 @@ public class EntityContext extends BaseContext {
             String foreignCName = StringUtils.capitalize(entity.getClassName());
             StringBuilder line = new StringBuilder();
             // 增加依赖
-            this.addImport(this.packageName+".pojo.po."+foreignCName+"PO");
+            this.addImport(this.packageName + ".pojo.po." + foreignCName + "PO");
             // 增加注入
-            this.addAutowired(this.packageName+".help",foreignCName+"Helper");
+            this.addAutowired(this.packageName + ".help", foreignCName + "Helper");
             line.append(foreignCName).append("PO ").append(foreigncName).append(" = ")
                 .append(foreigncName).append("Helper.save").append(foreignCName).append("Example(")
                 .append(printSaveExampleArg(entity)).append(");");
@@ -290,6 +291,7 @@ public class EntityContext extends BaseContext {
 
     /**
      * 遍历外键树节点，生成叶子优先的有序集合
+     *
      * @param totalMap
      * @return
      */
@@ -297,15 +299,15 @@ public class EntityContext extends BaseContext {
         // 定义已经按顺序处理过的树节点集合
         Set<ForeignEntityTreeNode> dealtSet = new LinkedHashSet<>();
         // 多次循环遍历totalMap，从叶子开始进行处理
-        while(!totalMap.isEmpty()){
+        while (!totalMap.isEmpty()) {
             int startSize = totalMap.size();
             // 通过iterator来遍历，可以一边遍历一边删除数据
-            for (Iterator<Map.Entry<Integer, ForeignEntityTreeNode>> it = totalMap.entrySet().iterator(); it.hasNext();){
-                Map.Entry<Integer,ForeignEntityTreeNode> item = it.next();
+            for (Iterator<Map.Entry<Integer, ForeignEntityTreeNode>> it = totalMap.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry<Integer, ForeignEntityTreeNode> item = it.next();
                 ForeignEntityTreeNode node = item.getValue();
                 // 如果当前节点是叶子节点
                 List<ForeignEntityTreeNode> children = node.getChildren();
-                if(CollectionUtils.isEmpty(children) || dealtSet.containsAll(children)){
+                if (CollectionUtils.isEmpty(children) || dealtSet.containsAll(children)) {
                     // 加入处理集合中
                     dealtSet.add(node);
                     // 从总map中移除
@@ -314,7 +316,7 @@ public class EntityContext extends BaseContext {
             }
             int endSize = totalMap.size();
             // 走一遍遍历没有任何效果，则报错
-            if(endSize>0 && endSize==startSize){
+            if (endSize > 0 && endSize == startSize) {
                 throw new BusinessException("实体外键之间存在强循环依赖");
             }
         }
@@ -323,22 +325,23 @@ public class EntityContext extends BaseContext {
 
     /**
      * 构建保存某个实体时，所需的整个外键强关联树【递归】
+     *
      * @param metaEntity 当前处理实体
-     * @param map 递归时将处理过的entity放入map，防止重复处理
+     * @param map        递归时将处理过的entity放入map，防止重复处理
      * @return
      */
-    public ForeignEntityTreeNode buildForeignTreeForSave(MetaEntityPO metaEntity, ForeignEntityTreeNode parent, Map<Integer,ForeignEntityTreeNode> map){
+    public ForeignEntityTreeNode buildForeignTreeForSave(MetaEntityPO metaEntity, ForeignEntityTreeNode parent, Map<Integer, ForeignEntityTreeNode> map) {
         // 如果已经构建过则直接返回
-        if(map.containsKey(metaEntity.getEntityId())){
+        if (map.containsKey(metaEntity.getEntityId())) {
             return map.get(metaEntity.getEntityId());
         }
-        ForeignEntityTreeNode node = new ForeignEntityTreeNode(metaEntity,parent);
-        map.put(metaEntity.getEntityId(),node);
+        ForeignEntityTreeNode node = new ForeignEntityTreeNode(metaEntity, parent);
+        map.put(metaEntity.getEntityId(), node);
         Map<Integer, MetaFieldPO> insertFields = metaEntity.getInsertFields();
 
         for (MetaFieldPO field : insertFields.values()) {
             // 插入字段是外键，并且不能为空
-            if(BoolConst.isTrue(field.getForeignKey()) && BoolConst.isTrue(field.getNotNull())){
+            if (BoolConst.isTrue(field.getForeignKey()) && BoolConst.isTrue(field.getNotNull())) {
                 node.addForeign(field);
                 ForeignEntityTreeNode child = buildForeignTreeForSave(field.getForeignEntity(), node, map);
                 node.addChild(child);
@@ -346,7 +349,6 @@ public class EntityContext extends BaseContext {
         }
         return node;
     }
-
 
 
     public MetaEntityPO getMetaEntity() {
@@ -600,6 +602,6 @@ public class EntityContext extends BaseContext {
 
     @Override
     public String toString() {
-        return "Entity:"+className;
+        return "Entity:" + className;
     }
 }

@@ -12,8 +12,8 @@ import javax.validation.constraints.Pattern;
 import static com.youran.generate.pojo.example.MetaMtmCascadeExtExample.*;
 
 /**
- * <p>Title: 新增【多对多级联扩展】的参数</p>
- * <p>Description: </p>
+ * 新增【多对多级联扩展】的参数
+ *
  * @author cbb
  * @date 2019/09/21
  */

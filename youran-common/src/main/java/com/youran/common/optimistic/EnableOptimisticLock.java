@@ -6,8 +6,9 @@ import java.lang.annotation.*;
 
 /**
  * 启用乐观锁
+ *
  * @author cbb
- * @date 2017/2/21 14:21
+ * @date 2017/2/21
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -15,7 +16,6 @@ import java.lang.annotation.*;
 @Inherited
 @Import({OptimisticLockConfiguration.class})
 public @interface EnableOptimisticLock {
-
 
 
 }

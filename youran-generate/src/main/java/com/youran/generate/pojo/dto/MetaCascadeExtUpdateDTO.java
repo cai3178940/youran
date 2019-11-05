@@ -5,16 +5,17 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
-import static com.youran.generate.pojo.example.MetaCascadeExtExample.*;
+import static com.youran.generate.pojo.example.MetaCascadeExtExample.E_CASCADEEXTID;
+import static com.youran.generate.pojo.example.MetaCascadeExtExample.N_CASCADEEXTID;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 修改级联展示入参
+ *
  * @author: cbb
  * @date: 2018/5/28
  */
 @ApiModel(description = "修改级联展示入参")
-public class MetaCascadeExtUpdateDTO extends MetaCascadeExtAddDTO{
+public class MetaCascadeExtUpdateDTO extends MetaCascadeExtAddDTO {
 
 
     /**

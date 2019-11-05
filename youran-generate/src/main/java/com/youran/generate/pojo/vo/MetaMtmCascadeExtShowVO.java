@@ -3,8 +3,8 @@ package com.youran.generate.pojo.vo;
 import io.swagger.annotations.ApiModel;
 
 /**
- * <p>Title: 【多对多级联扩展】详情展示对象</p>
- * <p>Description: </p>
+ * 【多对多级联扩展】详情展示对象
+ *
  * @author cbb
  * @date 2019/09/21
  */

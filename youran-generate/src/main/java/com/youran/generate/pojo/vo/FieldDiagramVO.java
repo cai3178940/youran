@@ -5,8 +5,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * <p>Title: </p>
- * <p>Description: </p>
  * @author cbb
  * @date 2018/7/17
  */
@@ -25,7 +23,7 @@ public class FieldDiagramVO extends AbstractVO {
     public FieldDiagramVO() {
     }
 
-    public FieldDiagramVO(String name, String type,String desc) {
+    public FieldDiagramVO(String name, String type, String desc) {
         this.name = name;
         this.type = type;
         this.desc = desc;

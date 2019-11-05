@@ -2,8 +2,8 @@ package com.youran.generate.pojo.example;
 
 
 /**
- * <p>Title: 【多对多级联扩展】参数示例</p>
- * <p>Description: </p>
+ * 【多对多级联扩展】参数示例
+ *
  * @author cbb
  * @date 2019/09/21
  */

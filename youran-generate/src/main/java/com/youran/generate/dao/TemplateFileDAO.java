@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * <p>Title: 【模板文件】数据库操作</p>
- * <p>Description: </p>
+ * 【模板文件】数据库操作
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -22,6 +22,7 @@ public interface TemplateFileDAO extends DAO<TemplateFilePO> {
 
     /**
      * 根据条件查询【模板文件】列表
+     *
      * @param templateFileQO
      * @return
      */
@@ -29,10 +30,10 @@ public interface TemplateFileDAO extends DAO<TemplateFilePO> {
 
     int getCountByTemplateId(Integer templateId);
 
-    boolean notUnique(@Param("templateId")Integer templateId,
-                      @Param("fileDir")String fileDir,
-                      @Param("fileName")String fileName,
-                      @Param("fileId")Integer fileId);
+    boolean notUnique(@Param("templateId") Integer templateId,
+                      @Param("fileDir") String fileDir,
+                      @Param("fileName") String fileName,
+                      @Param("fileId") Integer fileId);
 
     List<TemplateFilePO> findAll(Integer templateId);
 

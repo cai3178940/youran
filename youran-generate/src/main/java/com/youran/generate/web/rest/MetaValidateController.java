@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>Title:【元数据校验】控制器</p>
- * <p>Description: </p>
+ * 【元数据校验】控制器
+ *
  * @author: cbb
  * @date: 2019/10/10
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/meta_validate")
-public class MetaValidateController  extends AbstractController implements MetaValidateAPI {
+@RequestMapping(WebConst.API_PATH + "/meta_validate")
+public class MetaValidateController extends AbstractController implements MetaValidateAPI {
 
     @Autowired
     private MetaValidateService metaValidateService;

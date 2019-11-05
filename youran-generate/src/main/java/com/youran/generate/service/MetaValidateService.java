@@ -16,8 +16,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * <p>Title: 元数据校验服务</p>
- * <p>Description:</p>
+ * 元数据校验服务
+ *
  * @author: cbb
  * @date: 2019/10/10
  */
@@ -34,7 +34,7 @@ public class MetaValidateService {
         // 获取装配完成的实体
         MetaEntityPO entity = metaQueryAssembleService.getAssembledEntity(entityId);
         // 获取装配完成的枚举
-        List<MetaConstPO> consts = metaQueryAssembleService.getAllAssembledConsts(entity.getProjectId(),false);
+        List<MetaConstPO> consts = metaQueryAssembleService.getAllAssembledConsts(entity.getProjectId(), false);
         // 校验实体中的所有字段
         List<MetaFieldValidateVO> fieldValidateVOS = entity.getFields().values().stream()
             .map(field -> this.doValidateField(field, consts))
@@ -46,15 +46,15 @@ public class MetaValidateService {
     }
 
     private MetaFieldValidateVO doValidateField(MetaFieldPO field,
-                                                List<MetaConstPO> consts){
+                                                List<MetaConstPO> consts) {
         MetaFieldValidateVO vo = new MetaFieldValidateVO();
         vo.setFieldId(field.getFieldId());
         // 校验枚举是否存在
         String dic = field.getDicType();
-        if(StringUtils.isNotBlank(dic) && !BOOL_CONST.equals(dic)){
+        if (StringUtils.isNotBlank(dic) && !BOOL_CONST.equals(dic)) {
             Optional<MetaConstPO> optional = consts.stream().filter(metaConstPO -> dic.equals(metaConstPO.getConstName()))
                 .findAny();
-            if(!optional.isPresent()){
+            if (!optional.isPresent()) {
                 vo.dicNotExist(dic);
                 Integer constType = GuessUtil.guessConstType(JFieldType.find(field.getJfieldType()));
                 vo.setSuggestConstType(constType);

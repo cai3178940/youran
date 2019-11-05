@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>Title: </p>
- * <p>Description: </p>
+ * er图返回结果
+ *
  * @author cbb
  * @date 2018/7/17
  */
@@ -25,11 +25,11 @@ public class EntityDiagramVO extends AbstractVO {
      */
     private List<FieldDiagramVO> fields;
 
-    public void addField(String name, String type,String desc){
-        if(fields==null){
+    public void addField(String name, String type, String desc) {
+        if (fields == null) {
             fields = new ArrayList<>();
         }
-        fields.add(new FieldDiagramVO(name,type,desc));
+        fields.add(new FieldDiagramVO(name, type, desc));
     }
 
     public String getKey() {

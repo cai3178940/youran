@@ -26,13 +26,14 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * <p>Title:【字段】控制器</p>
- * <p>Description: 字段增删改查</p>
+ * 【字段】控制器
+ * <p> 字段增删改查
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/meta_field")
+@RequestMapping(WebConst.API_PATH + "/meta_field")
 public class MetaFieldController extends AbstractController implements MetaFieldAPI {
 
     @Autowired
@@ -42,18 +43,18 @@ public class MetaFieldController extends AbstractController implements MetaField
     @PostMapping(value = "/save")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaFieldShowVO> save(@Valid @RequestBody MetaFieldAddDTO metaFieldAddDTO) throws Exception {
-        if(metaFieldAddDTO.getDefaultValue()==null){
+        if (metaFieldAddDTO.getDefaultValue() == null) {
             metaFieldAddDTO.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         }
         MetaFieldPO metaFieldPO = metaFieldService.save(metaFieldAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/meta_field/" + metaFieldPO.getFieldId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_field/" + metaFieldPO.getFieldId()))
             .body(MetaFieldMapper.INSTANCE.toShowVO(metaFieldPO));
     }
 
     @Override
     @PutMapping(value = "/update")
     public ResponseEntity<MetaFieldShowVO> update(@Valid @RequestBody MetaFieldUpdateDTO metaFieldUpdateDTO) {
-        if(metaFieldUpdateDTO.getDefaultValue()==null){
+        if (metaFieldUpdateDTO.getDefaultValue() == null) {
             metaFieldUpdateDTO.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         }
         MetaFieldPO metaFieldPO = metaFieldService.update(metaFieldUpdateDTO);
@@ -85,7 +86,7 @@ public class MetaFieldController extends AbstractController implements MetaField
     @Override
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] fieldId) {
-        if(ArrayUtils.isEmpty(fieldId)){
+        if (ArrayUtils.isEmpty(fieldId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaFieldService.delete(fieldId);

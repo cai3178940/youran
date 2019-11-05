@@ -9,8 +9,8 @@ import static com.youran.generate.pojo.example.MetaConstDetailExample.*;
 
 
 /**
- * <p>Title:常量值列表展示对象</p>
- * <p>Description:</p>
+ * 常量值列表展示对象
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -22,13 +22,13 @@ public class MetaConstDetailListVO extends AbstractVO {
     @ApiModelProperty(notes = N_CONSTID, example = E_CONSTID)
     private Integer constId;
 
-    @ApiModelProperty(notes = N_DETAILNAME,example = E_DETAILNAME)
+    @ApiModelProperty(notes = N_DETAILNAME, example = E_DETAILNAME)
     private String detailName;
 
-    @ApiModelProperty(notes = N_DETAILVALUE,example = E_DETAILVALUE)
+    @ApiModelProperty(notes = N_DETAILVALUE, example = E_DETAILVALUE)
     private String detailValue;
 
-    @ApiModelProperty(notes = N_DETAILREMARK,example = E_DETAILREMARK)
+    @ApiModelProperty(notes = N_DETAILREMARK, example = E_DETAILREMARK)
     private String detailRemark;
 
     public Integer getConstDetailId() {

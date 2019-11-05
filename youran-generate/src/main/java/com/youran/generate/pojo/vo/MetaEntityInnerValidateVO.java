@@ -5,8 +5,8 @@ import com.youran.common.pojo.vo.AbstractVO;
 import java.util.List;
 
 /**
- * <p>Title:实体内部校验结果展示对象</p>
- * <p>Description:</p>
+ * 实体内部校验结果展示对象
+ *
  * @author: cbb
  * @date: 2019/10/10
  */

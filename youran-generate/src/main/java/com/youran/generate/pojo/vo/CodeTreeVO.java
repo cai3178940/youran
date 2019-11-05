@@ -6,8 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 
 /**
- * <p>Title: </p>
- * <p>Description: </p>
+ * 代码目录树返回结果
+ *
  * @author cbb
  * @date 2019/8/29
  */

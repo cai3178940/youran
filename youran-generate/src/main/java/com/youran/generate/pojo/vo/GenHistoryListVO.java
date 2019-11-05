@@ -10,8 +10,8 @@ import java.util.Date;
 import static com.youran.generate.pojo.example.GenHistoryExample.*;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 生成历史VO
+ *
  * @author: cbb
  * @date: 2018/3/17
  */

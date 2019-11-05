@@ -24,13 +24,14 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * <p>Title:【常量值】控制器</p>
- * <p>Description: 常量值增删改查</p>
+ * 【常量值】控制器
+ * <p> 常量值增删改查
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/meta_const_detail")
+@RequestMapping(WebConst.API_PATH + "/meta_const_detail")
 public class MetaConstDetailController extends AbstractController implements MetaConstDetailAPI {
 
     @Autowired
@@ -41,7 +42,7 @@ public class MetaConstDetailController extends AbstractController implements Met
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaConstDetailShowVO> save(@Valid @RequestBody MetaConstDetailAddDTO metaConstDetailAddDTO) throws Exception {
         MetaConstDetailPO metaConstDetailPO = metaConstDetailService.save(metaConstDetailAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/meta_const_detail/" + metaConstDetailPO.getConstDetailId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_const_detail/" + metaConstDetailPO.getConstDetailId()))
             .body(MetaConstDetailMapper.INSTANCE.toShowVO(metaConstDetailPO));
     }
 
@@ -76,7 +77,7 @@ public class MetaConstDetailController extends AbstractController implements Met
     @Override
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] constDetailId) {
-        if(ArrayUtils.isEmpty(constDetailId)){
+        if (ArrayUtils.isEmpty(constDetailId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaConstDetailService.delete(constDetailId);

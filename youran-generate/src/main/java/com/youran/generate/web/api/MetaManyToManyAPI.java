@@ -14,8 +14,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * <p>Title:【多对多关联】api</p>
- * <p>Description:</p>
+ * 【多对多关联】api
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -27,7 +27,7 @@ public interface MetaManyToManyAPI {
      */
     @ApiOperation(value = "新增多对多关联")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaManyToManyAddDTO", dataType = "MetaManyToManyAddDTO", value = "新增多对多关联参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaManyToManyAddDTO", dataType = "MetaManyToManyAddDTO", value = "新增多对多关联参数", paramType = "body"),
     })
     ResponseEntity<MetaManyToManyShowVO> save(MetaManyToManyAddDTO metaManyToManyAddDTO) throws Exception;
 
@@ -36,7 +36,7 @@ public interface MetaManyToManyAPI {
      */
     @ApiOperation(value = "修改多对多关联")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaManyToManyUpdateDTO", dataType = "MetaManyToManyUpdateDTO", value = "修改多对多关联参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaManyToManyUpdateDTO", dataType = "MetaManyToManyUpdateDTO", value = "修改多对多关联参数", paramType = "body"),
     })
     ResponseEntity<MetaManyToManyShowVO> update(MetaManyToManyUpdateDTO metaManyToManyUpdateDTO);
 
@@ -45,7 +45,7 @@ public interface MetaManyToManyAPI {
      */
     @ApiOperation(value = "多对多关联列表查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaManyToManyQO", dataType = "MetaManyToManyQO", value = "查询参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaManyToManyQO", dataType = "MetaManyToManyQO", value = "查询参数", paramType = "body"),
     })
     ResponseEntity<List<MetaManyToManyListVO>> list(MetaManyToManyQO metaManyToManyQO);
 
@@ -54,7 +54,7 @@ public interface MetaManyToManyAPI {
      */
     @ApiOperation(value = "查看多对多关联详情")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "mtmId", dataType = "int", value = "多对多关联id", paramType = "path"),
+        @ApiImplicitParam(name = "mtmId", dataType = "int", value = "多对多关联id", paramType = "path"),
     })
     ResponseEntity<MetaManyToManyShowVO> show(Integer mtmId);
 
@@ -63,9 +63,10 @@ public interface MetaManyToManyAPI {
      */
     @ApiOperation(value = "删除多对多关联")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "mtmId", dataType = "int", value = "多对多关联id", paramType = "path"),
+        @ApiImplicitParam(name = "mtmId", dataType = "int", value = "多对多关联id", paramType = "path"),
     })
     ResponseEntity<Integer> delete(Integer mtmId);
+
     /**
      * 批量删除多对多关联
      */

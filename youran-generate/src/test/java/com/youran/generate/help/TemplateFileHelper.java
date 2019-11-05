@@ -18,9 +18,10 @@ public class TemplateFileHelper {
 
     /**
      * 生成add测试数据
+     *
      * @return
      */
-    public TemplateFileAddDTO getTemplateFileAddDTO(Integer templateId){
+    public TemplateFileAddDTO getTemplateFileAddDTO(Integer templateId) {
         TemplateFileAddDTO dto = new TemplateFileAddDTO();
         dto.setFileName(E_FILE_NAME);
         dto.setFileDir(E_FILE_DIR);
@@ -33,9 +34,10 @@ public class TemplateFileHelper {
 
     /**
      * 生成update测试数据
+     *
      * @return
      */
-    public TemplateFileUpdateDTO getTemplateFileUpdateDTO(TemplateFilePO templateFile){
+    public TemplateFileUpdateDTO getTemplateFileUpdateDTO(TemplateFilePO templateFile) {
         TemplateFileUpdateDTO dto = new TemplateFileUpdateDTO();
         dto.setFileId(templateFile.getFileId());
         dto.setFileName(templateFile.getFileName());
@@ -48,13 +50,13 @@ public class TemplateFileHelper {
 
     /**
      * 保存示例
+     *
      * @return
      */
-    public TemplateFilePO saveTemplateFileExample(Integer templateId){
+    public TemplateFilePO saveTemplateFileExample(Integer templateId) {
         TemplateFileAddDTO addDTO = this.getTemplateFileAddDTO(templateId);
         return templateFileService.save(addDTO);
     }
-
 
 
 }

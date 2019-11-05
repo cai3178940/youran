@@ -9,33 +9,33 @@ import static com.youran.common.pojo.example.AbstractExample.E_VERSION;
 import static com.youran.generate.pojo.example.TemplateFileExample.*;
 
 /**
- * <p>Title: 【模板文件】列表展示对象</p>
- * <p>Description: </p>
+ * 【模板文件】列表展示对象
+ *
  * @author cbb
  * @date 2019/10/24
  */
 @ApiModel(description = "【模板文件】列表展示对象")
 public class TemplateFileListVO extends AbstractVO {
 
-    @ApiModelProperty(notes = N_FILE_ID,example = E_FILE_ID)
+    @ApiModelProperty(notes = N_FILE_ID, example = E_FILE_ID)
     private Integer fileId;
 
-    @ApiModelProperty(notes = N_FILE_NAME,example = E_FILE_NAME)
+    @ApiModelProperty(notes = N_FILE_NAME, example = E_FILE_NAME)
     private String fileName;
 
-    @ApiModelProperty(notes = N_FILE_DIR,example = E_FILE_DIR)
+    @ApiModelProperty(notes = N_FILE_DIR, example = E_FILE_DIR)
     private String fileDir;
 
-    @ApiModelProperty(notes = N_TEMPLATE_ID,example = E_TEMPLATE_ID)
+    @ApiModelProperty(notes = N_TEMPLATE_ID, example = E_TEMPLATE_ID)
     private Integer templateId;
 
-    @ApiModelProperty(notes = N_CONTEXT_TYPE,example = E_CONTEXT_TYPE, allowableValues = ContextType.VALUES_STR)
+    @ApiModelProperty(notes = N_CONTEXT_TYPE, example = E_CONTEXT_TYPE, allowableValues = ContextType.VALUES_STR)
     private Integer contextType;
 
-    @ApiModelProperty(notes = N_ABSTRACTED,example = E_ABSTRACTED)
+    @ApiModelProperty(notes = N_ABSTRACTED, example = E_ABSTRACTED)
     private Boolean abstracted;
 
-    @ApiModelProperty(notes = N_VERSION,example = E_VERSION)
+    @ApiModelProperty(notes = N_VERSION, example = E_VERSION)
     private Integer version;
 
 

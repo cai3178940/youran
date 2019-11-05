@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 /**
- * <p>Title:封装单元测试使用的元数据基本操作</p>
- * <p>Description:</p>
+ * 封装单元测试使用的元数据基本操作
+ *
  * @author: cbb
  * @date: 2017/5/18
  */
 @Component
-public class GenerateHelper{
+public class GenerateHelper {
 
     @Autowired
     private MetaProjectService metaProjectService;
@@ -42,86 +42,93 @@ public class GenerateHelper{
 
     /**
      * 保存项目示例
+     *
      * @return
      */
-    public MetaProjectPO saveProjectExample(){
+    public MetaProjectPO saveProjectExample() {
         MetaProjectAddDTO addDTO = MetaProjectHelper.getAddDTO();
         return metaProjectService.save(addDTO);
     }
+
     /**
      * 保存实体示例
+     *
      * @return
      */
-    public MetaEntityPO saveEntityExample(Integer projectId, int i){
-        MetaEntityAddDTO addDTO = MetaEntityHelper.getAddDTO(projectId,i);
+    public MetaEntityPO saveEntityExample(Integer projectId, int i) {
+        MetaEntityAddDTO addDTO = MetaEntityHelper.getAddDTO(projectId, i);
         return metaEntityService.save(addDTO);
     }
 
     /**
      * 保存字段示例
+     *
      * @return
      */
-    public MetaFieldPO saveFieldExample(Integer entityId){
+    public MetaFieldPO saveFieldExample(Integer entityId) {
         MetaFieldAddDTO addDTO = MetaFieldHelper.getAddDTO(entityId);
         return metaFieldService.save(addDTO);
     }
 
     /**
      * 保存级联扩展示例
+     *
      * @return
      */
-    public MetaCascadeExtPO saveCascadeExtExample(Integer fieldId, Integer entityId,Integer cascadeFieldId, Integer cascadeEntityId){
-        MetaCascadeExtAddDTO addDTO = MetaCascadeExtHelper.getAddDTO(fieldId,entityId,cascadeFieldId,cascadeEntityId);
+    public MetaCascadeExtPO saveCascadeExtExample(Integer fieldId, Integer entityId, Integer cascadeFieldId, Integer cascadeEntityId) {
+        MetaCascadeExtAddDTO addDTO = MetaCascadeExtHelper.getAddDTO(fieldId, entityId, cascadeFieldId, cascadeEntityId);
         return metaCascadeExtService.save(addDTO);
     }
 
     /**
      * 保存级联扩展示例
+     *
      * @return
      */
-    public MetaMtmCascadeExtPO saveMtmCascadeExtExample(Integer mtmId, Integer entityId, Integer cascadeEntityId,Integer cascadeFieldId){
-        MetaMtmCascadeExtAddDTO addDTO = MetaMtmCascadeExtHelper.getAddDTO(mtmId,entityId,cascadeEntityId,cascadeFieldId);
+    public MetaMtmCascadeExtPO saveMtmCascadeExtExample(Integer mtmId, Integer entityId, Integer cascadeEntityId, Integer cascadeFieldId) {
+        MetaMtmCascadeExtAddDTO addDTO = MetaMtmCascadeExtHelper.getAddDTO(mtmId, entityId, cascadeEntityId, cascadeFieldId);
         return metaMtmCascadeExtService.save(addDTO);
     }
 
     /**
      * 保存多对多关联示例
+     *
      * @return
      */
-    public MetaManyToManyPO saveManyToManyExample(Integer projectId, Integer entityId1, Integer entityId2){
-        MetaManyToManyAddDTO addDTO = MetaManyToManyHelper.getAddDTO(projectId,entityId1,entityId2);
+    public MetaManyToManyPO saveManyToManyExample(Integer projectId, Integer entityId1, Integer entityId2) {
+        MetaManyToManyAddDTO addDTO = MetaManyToManyHelper.getAddDTO(projectId, entityId1, entityId2);
         return metaManyToManyService.save(addDTO);
     }
 
     /**
      * 保存索引示例
+     *
      * @return
      */
-    public MetaIndexPO saveIndexExample(Integer... fieldIds){
+    public MetaIndexPO saveIndexExample(Integer... fieldIds) {
         MetaIndexAddDTO addDTO = MetaIndexHelper.getAddDTO(fieldIds);
         return metaIndexService.save(addDTO);
     }
 
     /**
      * 保存常量示例
+     *
      * @return
      */
-    public MetaConstPO saveConstExample(Integer projectId){
+    public MetaConstPO saveConstExample(Integer projectId) {
         MetaConstAddDTO addDTO = MetaConstHelper.getAddDTO(projectId);
         return metaConstService.save(addDTO);
     }
+
     /**
      * 保存常量值示例
+     *
      * @return
      */
-    public MetaConstDetailPO saveConstDetailExample(Integer constId){
+    public MetaConstDetailPO saveConstDetailExample(Integer constId) {
         MetaConstDetailAddDTO addDTO = MetaConstDetailHelper.getAddDTO(constId);
         return metaConstDetailService.save(addDTO);
     }
-
-
-
-
 
 
     //保存createdTime字段
@@ -286,7 +293,7 @@ public class GenerateHelper{
     }
 
     //保存主键id字段
-    public MetaFieldPO saveIdField(MetaEntityPO entity,String fieldName,String fieldDesc,String jfieldType) {
+    public MetaFieldPO saveIdField(MetaEntityPO entity, String fieldName, String fieldDesc, String jfieldType) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setAutoIncrement(1);
         dto.setEditType(null);
@@ -297,13 +304,13 @@ public class GenerateHelper{
         dto.setInsert(0);
         dto.setJfieldName(fieldName);
         dto.setJfieldType(jfieldType);
-        if(JFieldType.LONG.equals(jfieldType)){
+        if (JFieldType.LONG.equals(jfieldType)) {
             dto.setFieldType(MySqlType.BIGINT);
             dto.setFieldLength(20);
-        }else if(JFieldType.INTEGER.equals(jfieldType)){
+        } else if (JFieldType.INTEGER.equals(jfieldType)) {
             dto.setFieldType(MySqlType.INT);
             dto.setFieldLength(10);
-        }else{
+        } else {
             throw new RuntimeException("jfieldType error");
         }
         dto.setList(1);
@@ -321,7 +328,7 @@ public class GenerateHelper{
         return metaField;
     }
 
-    public MetaFieldAddDTO newMetaFieldAddDTO(MetaEntityPO entity){
+    public MetaFieldAddDTO newMetaFieldAddDTO(MetaEntityPO entity) {
         MetaFieldAddDTO dto = new MetaFieldAddDTO();
         dto.setEntityId(entity.getEntityId());
         dto.setPrimaryKey(0);//默认非主键
@@ -343,54 +350,44 @@ public class GenerateHelper{
         return dto;
     }
 
-    public MetaEntityAddDTO newMetaEntityAddDTO(MetaProjectPO project){
+    public MetaEntityAddDTO newMetaEntityAddDTO(MetaProjectPO project) {
         MetaEntityAddDTO dto = new MetaEntityAddDTO();
         dto.setProjectId(project.getProjectId());
         dto.setSchemaName("");
         return dto;
     }
 
-    public MetaIndexAddDTO newMetaIndexAddDTO(MetaEntityPO entity){
+    public MetaIndexAddDTO newMetaIndexAddDTO(MetaEntityPO entity) {
         MetaIndexAddDTO dto = new MetaIndexAddDTO();
         dto.setUnique(0);
         dto.setEntityId(entity.getEntityId());
         return dto;
     }
 
-    public MetaIndexPO saveCommonIndex(MetaEntityPO entity,String indexName,MetaFieldPO ...fields){
+    public MetaIndexPO saveCommonIndex(MetaEntityPO entity, String indexName, MetaFieldPO... fields) {
         MetaIndexAddDTO dto = newMetaIndexAddDTO(entity);
         dto.setIndexName(indexName);
         String ids = Arrays.stream(fields)
-                .map(field -> field.getFieldId().toString())
-                .reduce((id, id2) -> id+","+id2)
-                .get();
+            .map(field -> field.getFieldId().toString())
+            .reduce((id, id2) -> id + "," + id2)
+            .get();
         dto.setFieldIds(ids);
         return metaIndexService.save(dto);
     }
 
-    public MetaIndexPO saveUniqueIndex(MetaEntityPO entity,String indexName,MetaFieldPO ...fields){
+    public MetaIndexPO saveUniqueIndex(MetaEntityPO entity, String indexName, MetaFieldPO... fields) {
         MetaIndexAddDTO dto = newMetaIndexAddDTO(entity);
         dto.setIndexName(indexName);
         String ids = Arrays.stream(fields)
-                .map(field -> field.getFieldId().toString())
-                .reduce((id, id2) -> id+","+id2)
-                .get();
+            .map(field -> field.getFieldId().toString())
+            .reduce((id, id2) -> id + "," + id2)
+            .get();
         dto.setFieldIds(ids);
         dto.setUnique(1);
         return metaIndexService.save(dto);
     }
 
-    public MetaConstPO saveConst(MetaProjectPO project,String constName,String constRemark,int constType) {
-        MetaConstAddDTO dto = new MetaConstAddDTO();
-        dto.setProjectId(project.getProjectId());
-        dto.setConstName(constName);
-        dto.setConstRemark(constRemark);
-        dto.setConstType(constType);
-        MetaConstPO metaConst = metaConstService.save(dto);
-        project.addConst(metaConst);
-        return metaConst;
-    }
-    public MetaConstPO saveConstEnum(MetaProjectPO project,String constName,String constRemark,int constType) {
+    public MetaConstPO saveConst(MetaProjectPO project, String constName, String constRemark, int constType) {
         MetaConstAddDTO dto = new MetaConstAddDTO();
         dto.setProjectId(project.getProjectId());
         dto.setConstName(constName);
@@ -401,7 +398,18 @@ public class GenerateHelper{
         return metaConst;
     }
 
-    public MetaConstDetailPO saveConstDetail(MetaConstPO metaConst,String detailName,String detailValue,String detailRemark) {
+    public MetaConstPO saveConstEnum(MetaProjectPO project, String constName, String constRemark, int constType) {
+        MetaConstAddDTO dto = new MetaConstAddDTO();
+        dto.setProjectId(project.getProjectId());
+        dto.setConstName(constName);
+        dto.setConstRemark(constRemark);
+        dto.setConstType(constType);
+        MetaConstPO metaConst = metaConstService.save(dto);
+        project.addConst(metaConst);
+        return metaConst;
+    }
+
+    public MetaConstDetailPO saveConstDetail(MetaConstPO metaConst, String detailName, String detailValue, String detailRemark) {
         MetaConstDetailAddDTO dto = new MetaConstDetailAddDTO();
         dto.setConstId(metaConst.getConstId());
         dto.setDetailName(detailName);
@@ -414,6 +422,7 @@ public class GenerateHelper{
 
     /**
      * 保存可选长字符字段，如备注字段
+     *
      * @param entity
      * @param fieldName
      * @param desc
@@ -421,7 +430,7 @@ public class GenerateHelper{
      * @param orderNo
      * @return
      */
-    public MetaFieldPO saveLongStringField(MetaEntityPO entity,String fieldName,String desc,int length,int orderNo) {
+    public MetaFieldPO saveLongStringField(MetaEntityPO entity, String fieldName, String desc, int length, int orderNo) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setEntityId(entity.getEntityId());
         dto.setFieldComment(desc);
@@ -441,14 +450,14 @@ public class GenerateHelper{
     }
 
 
-    public MetaFieldPO saveFlagField(MetaEntityPO entity, String fieldName,String desc,int orderNo) {
+    public MetaFieldPO saveFlagField(MetaEntityPO entity, String fieldName, String desc, int orderNo) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setDicType("com.youran.common.constant.BoolConst");
         dto.setDefaultValue("0");
         dto.setNotNull(1);
         dto.setFieldName(fieldName);
         dto.setFieldType(MySqlType.SMALLINT);
-        dto.setFieldComment(desc+" 1是 0否");
+        dto.setFieldComment(desc + " 1是 0否");
         dto.setFieldExample("1");
         dto.setFieldLength(1);
         dto.setFieldDesc(desc);
@@ -461,16 +470,16 @@ public class GenerateHelper{
         return metaField;
     }
 
-    public MetaFieldPO saveEnumField(MetaEntityPO entity, String fieldName,String desc,MetaConstPO enumConst,int orderNo) {
+    public MetaFieldPO saveEnumField(MetaEntityPO entity, String fieldName, String desc, MetaConstPO enumConst, int orderNo) {
         String comment = enumConst.getDetailList()
-                .stream()
-                .map(d ->" " + d.getDetailValue() + d.getDetailRemark())
-                .reduce(String::concat)
-                .get();
+            .stream()
+            .map(d -> " " + d.getDetailValue() + d.getDetailRemark())
+            .reduce(String::concat)
+            .get();
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setDicType(enumConst.getConstName());
         dto.setEditType(EditType.SELECT);
-        dto.setFieldComment(desc+comment);
+        dto.setFieldComment(desc + comment);
         dto.setFieldDesc(desc);
         dto.setFieldExample(enumConst.getDetailList().get(0).getDetailValue());
         dto.setFieldLength(2);
@@ -485,15 +494,14 @@ public class GenerateHelper{
         return metaField;
     }
 
-    public MetaFieldPO saveEnumField(MetaEntityPO entity, MetaConstPO enumConst,int orderNo) {
+    public MetaFieldPO saveEnumField(MetaEntityPO entity, MetaConstPO enumConst, int orderNo) {
         String constName = enumConst.getConstName();
         String fieldName = StringUtils.uncapitalize(constName);
-        return this.saveEnumField(entity,fieldName,enumConst.getConstRemark(),enumConst,orderNo);
+        return this.saveEnumField(entity, fieldName, enumConst.getConstRemark(), enumConst, orderNo);
     }
 
 
-
-    public MetaFieldPO saveForeignKey(MetaEntityPO entity,String fieldName,String desc,boolean bigint,boolean notnull,int orderNo) {
+    public MetaFieldPO saveForeignKey(MetaEntityPO entity, String fieldName, String desc, boolean bigint, boolean notnull, int orderNo) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setUpdate(0);
         dto.setFieldComment(desc);
@@ -501,16 +509,16 @@ public class GenerateHelper{
         dto.setFieldExample("1");
         dto.setFieldName(fieldName);
         dto.setJfieldName(fieldName);
-        if(bigint) {
+        if (bigint) {
             dto.setFieldLength(20);
             dto.setFieldType(MySqlType.BIGINT);
             dto.setJfieldType(JFieldType.LONG.getJavaType());
-        }else{
+        } else {
             dto.setFieldLength(10);
             dto.setFieldType(MySqlType.INT);
             dto.setJfieldType(JFieldType.INTEGER.getJavaType());
         }
-        if(notnull){
+        if (notnull) {
             dto.setNotNull(1);
         }
         dto.setOrderNo(orderNo);
@@ -520,7 +528,7 @@ public class GenerateHelper{
     }
 
 
-    public MetaProjectPO saveProject(String groupId,String projectName, String packageName, String author) {
+    public MetaProjectPO saveProject(String groupId, String projectName, String packageName, String author) {
         MetaProjectAddDTO dto = new MetaProjectAddDTO();
         dto.setGroupId(groupId);
         dto.setPackageName(packageName);
@@ -532,7 +540,7 @@ public class GenerateHelper{
     }
 
 
-    public void saveCreatedOperatedDeletedVersion(MetaEntityPO entity){
+    public void saveCreatedOperatedDeletedVersion(MetaEntityPO entity) {
         this.saveCreatedByField(entity);
         this.saveCreatedTimeField(entity);
         this.saveOperatedByField(entity);
@@ -541,7 +549,7 @@ public class GenerateHelper{
         this.saveDeletedField(entity);
     }
 
-    public MetaEntityPO saveMetaEntity(MetaProjectPO project,String className,String tableName,String title){
+    public MetaEntityPO saveMetaEntity(MetaProjectPO project, String className, String tableName, String title) {
         MetaEntityAddDTO dto = newMetaEntityAddDTO(project);
         dto.setProjectId(project.getProjectId());
         dto.setSchemaName("");

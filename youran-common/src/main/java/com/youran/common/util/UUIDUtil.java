@@ -3,8 +3,8 @@ package com.youran.common.util;
 import java.util.UUID;
 
 /**
- * <p>Title:获取UUID</p>
- * <p>Description:</p>
+ * UUID工具类
+ *
  * @author: cbb
  * @date: 2017/5/20
  */
@@ -16,7 +16,7 @@ public class UUIDUtil {
     }
 
     public static String getUUID16() {
-        return getUUID().substring(8,24);
+        return getUUID().substring(8, 24);
     }
 
 }

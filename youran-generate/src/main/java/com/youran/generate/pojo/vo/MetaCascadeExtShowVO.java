@@ -1,8 +1,8 @@
 package com.youran.generate.pojo.vo;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 外键级联扩展详情VO
+ *
  * @author: cbb
  * @date: 2018/5/28
  */

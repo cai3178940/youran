@@ -24,13 +24,14 @@ import javax.validation.Valid;
 import java.net.URI;
 
 /**
- * <p>Title:【常量】控制器</p>
- * <p>Description: 常量增删改查</p>
+ * 【常量】控制器
+ * <p> 常量增删改查
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/meta_const")
+@RequestMapping(WebConst.API_PATH + "/meta_const")
 public class MetaConstController extends AbstractController implements MetaConstAPI {
 
     @Autowired
@@ -41,7 +42,7 @@ public class MetaConstController extends AbstractController implements MetaConst
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaConstShowVO> save(@Valid @RequestBody MetaConstAddDTO metaConstAddDTO) throws Exception {
         MetaConstPO metaConstPO = metaConstService.save(metaConstAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/meta_const/" + metaConstPO.getConstId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_const/" + metaConstPO.getConstId()))
             .body(MetaConstMapper.INSTANCE.toShowVO(metaConstPO));
     }
 
@@ -76,7 +77,7 @@ public class MetaConstController extends AbstractController implements MetaConst
     @Override
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] constId) {
-        if(ArrayUtils.isEmpty(constId)){
+        if (ArrayUtils.isEmpty(constId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaConstService.delete(constId);

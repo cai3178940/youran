@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * <p>Title: 【代码模板】删改查服务</p>
- * <p>Description: </p>
+ * 【代码模板】删改查服务
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -32,6 +32,7 @@ public class CodeTemplateService {
 
     /**
      * 新增【代码模板】
+     *
      * @param codeTemplateDTO
      * @return
      */
@@ -46,6 +47,7 @@ public class CodeTemplateService {
 
     /**
      * 执行保存
+     *
      * @param templatePO
      */
     public void doSave(CodeTemplatePO templatePO) {
@@ -56,6 +58,7 @@ public class CodeTemplateService {
 
     /**
      * 修改【代码模板】
+     *
      * @param codeTemplateUpdateDTO
      * @return
      */
@@ -64,24 +67,26 @@ public class CodeTemplateService {
     public CodeTemplatePO update(CodeTemplateUpdateDTO codeTemplateUpdateDTO) {
         Integer templateId = codeTemplateUpdateDTO.getTemplateId();
         CodeTemplatePO codeTemplate = this.getCodeTemplate(templateId, true);
-        CodeTemplateMapper.INSTANCE.setUpdateDTO(codeTemplate,codeTemplateUpdateDTO);
-        codeTemplate.setInnerVersion(codeTemplate.getInnerVersion()+1);
+        CodeTemplateMapper.INSTANCE.setUpdateDTO(codeTemplate, codeTemplateUpdateDTO);
+        codeTemplate.setInnerVersion(codeTemplate.getInnerVersion() + 1);
         codeTemplateDAO.update(codeTemplate);
         return codeTemplate;
     }
 
     /**
      * 更新内部版本号
+     *
      * @param templateId
      */
-    public void updateInnerVersion(Integer templateId){
-        CodeTemplatePO templatePO = this.getCodeTemplate(templateId,true);
-        templatePO.setInnerVersion(templatePO.getInnerVersion()+1);
+    public void updateInnerVersion(Integer templateId) {
+        CodeTemplatePO templatePO = this.getCodeTemplate(templateId, true);
+        templatePO.setInnerVersion(templatePO.getInnerVersion() + 1);
         codeTemplateDAO.update(templatePO);
     }
 
     /**
      * 查询列表
+     *
      * @param codeTemplateQO
      * @return
      */
@@ -92,11 +97,12 @@ public class CodeTemplateService {
 
     /**
      * 根据主键获取【代码模板】
+     *
      * @param templateId 主键
-     * @param force 是否强制获取
+     * @param force      是否强制获取
      * @return
      */
-    public CodeTemplatePO getCodeTemplate(Integer templateId, boolean force){
+    public CodeTemplatePO getCodeTemplate(Integer templateId, boolean force) {
         CodeTemplatePO codeTemplate = codeTemplateDAO.findById(templateId);
         if (force && codeTemplate == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
@@ -107,6 +113,7 @@ public class CodeTemplateService {
 
     /**
      * 查询【代码模板】详情
+     *
      * @param templateId
      * @return
      */
@@ -118,6 +125,7 @@ public class CodeTemplateService {
 
     /**
      * 删除【代码模板】
+     *
      * @param templateIds
      * @return
      */
@@ -129,7 +137,6 @@ public class CodeTemplateService {
         }
         return count;
     }
-
 
 
 }

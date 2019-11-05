@@ -8,7 +8,6 @@ import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaCodeGenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +19,9 @@ import java.io.File;
 import java.util.Date;
 
 /**
- * <p>Title:【代码生成】控制器</p>
- * <p>Description: 生成代码的服务接口</p>
+ * 【代码生成】控制器
+ * <p> 生成代码的服务接口
+ *
  * @author: cbb
  * @date: 2017/5/13
  */
@@ -34,37 +34,21 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     @Autowired
     private MetaProjectService metaProjectService;
 
-    @Override
-    @GetMapping(value = "/genSql")
-    @Deprecated
-    public void genSql(Integer projectId, HttpServletResponse response) {
-        String text = metaCodeGenService.genSql(projectId);
-        this.replyDownloadText(response,text,"db.sql");
-    }
-
-    @Override
-    @GetMapping(value = "/sqlPreview",produces = MediaType.TEXT_PLAIN_VALUE)
-    @ResponseBody
-    public ResponseEntity<String> sqlPreview(Integer entityId) {
-        String text = metaCodeGenService.sqlPreview(entityId);
-        return ResponseEntity.ok(text);
-    }
-
 
     @Override
     @GetMapping(value = "/genCode")
     public ResponseEntity<Void> genCode(Integer projectId, Integer templateId) {
-        metaCodeGenService.genProjectCodeIfNotExists(projectId,templateId,null);
+        metaCodeGenService.genProjectCodeIfNotExists(projectId, templateId, null);
         return ResponseEntity.ok(null);
     }
 
     @Override
     @GetMapping(value = "/genCodeAndDownload")
-    public void genCodeAndDownload(Integer projectId, HttpServletResponse response) {
-        File zipFile = metaCodeGenService.genCodeZip(projectId,null);
+    public void genCodeAndDownload(Integer projectId, Integer templateId, HttpServletResponse response) {
+        File zipFile = metaCodeGenService.genCodeZip(projectId, templateId, null);
         if (zipFile == null || !zipFile.exists()) {
             this.replyNotFound(response);
-        }else {
+        } else {
             String normalProjectName = metaProjectService.getNormalProjectName(projectId);
             String downloadFileName = normalProjectName + DateUtil.getDateStr(new Date(), "yyyyMMddHHmmss") + ".zip";
             this.replyDownloadFile(response, zipFile, downloadFileName);
@@ -74,11 +58,11 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     @Override
     @GetMapping(value = "/gitCommit")
     @ResponseBody
-    public ResponseEntity<String> gitCommit(Integer projectId) {
+    public ResponseEntity<String> gitCommit(Integer projectId, Integer templateId) {
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
-        GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, null);
-        return ResponseEntity.ok("已创建自动分支【"+ genHistory.getBranch() +"】，并提交到远程");
+        GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, templateId, null);
+        return ResponseEntity.ok("已创建自动分支【" + genHistory.getBranch() + "】，并提交到远程");
     }
 
 }

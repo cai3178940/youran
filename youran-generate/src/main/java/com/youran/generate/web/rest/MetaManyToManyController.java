@@ -24,13 +24,14 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * <p>Title:【多对多关联】控制器</p>
- * <p>Description: 多对多关系增删改查</p>
+ * 【多对多关联】控制器
+ * <p> 多对多关系增删改查
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/meta_mtm")
+@RequestMapping(WebConst.API_PATH + "/meta_mtm")
 public class MetaManyToManyController extends AbstractController implements MetaManyToManyAPI {
 
     @Autowired
@@ -41,7 +42,7 @@ public class MetaManyToManyController extends AbstractController implements Meta
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaManyToManyShowVO> save(@Valid @RequestBody MetaManyToManyAddDTO metaManyToManyAddDTO) throws Exception {
         MetaManyToManyPO metaManyToManyPO = metaManyToManyService.save(metaManyToManyAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/meta_mtm/" + metaManyToManyPO.getMtmId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_mtm/" + metaManyToManyPO.getMtmId()))
             .body(MetaManyToManyMapper.INSTANCE.toShowVO(metaManyToManyPO));
     }
 
@@ -76,7 +77,7 @@ public class MetaManyToManyController extends AbstractController implements Meta
     @Override
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] mtmId) {
-        if(ArrayUtils.isEmpty(mtmId)){
+        if (ArrayUtils.isEmpty(mtmId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaManyToManyService.delete(mtmId);

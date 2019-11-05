@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * <p>Title:字段增删改查服务</p>
- * <p>Description:</p>
+ * 字段增删改查服务
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -38,8 +38,10 @@ public class MetaFieldService {
     private MetaCascadeExtService metaCascadeExtService;
     @Autowired
     private MetaMtmCascadeExtService metaMtmCascadeExtService;
+
     /**
      * 新增字段
+     *
      * @param metaFieldDTO
      * @return
      */
@@ -64,6 +66,7 @@ public class MetaFieldService {
 
     /**
      * 修改字段
+     *
      * @param updateDTO
      * @return
      */
@@ -73,7 +76,7 @@ public class MetaFieldService {
         // 校验字段名
         JfieldNameCheckUtil.check(updateDTO.getJfieldName());
         Integer fieldId = updateDTO.getFieldId();
-        MetaFieldPO metaField = this.getField(fieldId,true);
+        MetaFieldPO metaField = this.getField(fieldId, true);
         Integer entityId = metaField.getEntityId();
         // 校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
@@ -87,20 +90,22 @@ public class MetaFieldService {
 
     /**
      * 获取字段对象
+     *
      * @param fieldId
      * @param force
      * @return
      */
-    public MetaFieldPO getField(Integer fieldId, boolean force){
+    public MetaFieldPO getField(Integer fieldId, boolean force) {
         MetaFieldPO fieldPO = metaFieldDAO.findById(fieldId);
-        if(force && fieldPO == null){
-            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"字段未找到");
+        if (force && fieldPO == null) {
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND, "字段未找到");
         }
         return fieldPO;
     }
 
     /**
      * 查询列表
+     *
      * @param metaFieldQO
      * @return
      */
@@ -111,17 +116,19 @@ public class MetaFieldService {
 
     /**
      * 查询字段详情
+     *
      * @param fieldId
      * @return
      */
     public MetaFieldShowVO show(Integer fieldId) {
-        MetaFieldPO metaField = this.getField(fieldId,true);
+        MetaFieldPO metaField = this.getField(fieldId, true);
         MetaFieldShowVO showVO = MetaFieldMapper.INSTANCE.toShowVO(metaField);
         return showVO;
     }
 
     /**
      * 删除字段
+     *
      * @param fieldId
      * @return
      */
@@ -130,8 +137,8 @@ public class MetaFieldService {
         int count = 0;
         Integer entityId = null;
         for (Integer id : fieldId) {
-            MetaFieldPO metaField = this.getField(id,false);
-            if(metaField==null){
+            MetaFieldPO metaField = this.getField(id, false);
+            if (metaField == null) {
                 continue;
             }
             entityId = metaField.getEntityId();
@@ -141,16 +148,16 @@ public class MetaFieldService {
 
             // 删除外键级联扩展
             List<Integer> cascadeFieldIds = metaCascadeExtService.findPkByCascadeFieldId(id);
-            if(CollectionUtils.isNotEmpty(cascadeFieldIds)) {
+            if (CollectionUtils.isNotEmpty(cascadeFieldIds)) {
                 metaCascadeExtService.delete(cascadeFieldIds.toArray(new Integer[0]));
             }
             // 删除多对多级联扩展
             List<Integer> mtmCascadeFieldIds = metaMtmCascadeExtService.findPkByCascadeFieldId(id);
-            if(CollectionUtils.isNotEmpty(mtmCascadeFieldIds)) {
+            if (CollectionUtils.isNotEmpty(mtmCascadeFieldIds)) {
                 metaMtmCascadeExtService.delete(mtmCascadeFieldIds.toArray(new Integer[0]));
             }
         }
-        if(count>0) {
+        if (count > 0) {
             metaProjectService.updateProjectVersionByEntityId(entityId);
         }
         return count;
@@ -158,6 +165,7 @@ public class MetaFieldService {
 
     /**
      * 根据实体id查询字段列表
+     *
      * @param entityId
      * @return
      */
@@ -168,6 +176,7 @@ public class MetaFieldService {
 
     /**
      * 修改字段序号
+     *
      * @param dto
      * @return
      */
@@ -183,6 +192,7 @@ public class MetaFieldService {
 
     /**
      * 修改字段内容
+     *
      * @param field
      */
     public void doUpdate(MetaFieldPO field) {

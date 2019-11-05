@@ -6,8 +6,8 @@ import org.mapstruct.Named;
 import java.util.List;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 通用类型转换
+ *
  * @author: cbb
  * @date: 10/13/2019 20:51
  */

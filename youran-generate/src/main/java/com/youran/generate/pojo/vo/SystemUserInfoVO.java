@@ -4,8 +4,8 @@ import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * <p>Title: 系统及用户信息展示对象</p>
- * <p>Description: </p>
+ * 系统及用户信息展示对象
+ *
  * @author cbb
  * @date 2019/10/24
  */

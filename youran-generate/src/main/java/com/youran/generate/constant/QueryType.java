@@ -7,8 +7,8 @@ import com.youran.common.validator.Check;
 import java.util.Objects;
 
 /**
- * <p>Title: 查询方式</p>
- * <p>Description: </p>
+ * 查询方式
+ *
  * @author: cbb
  * @date: 2017/9/20
  */
@@ -48,7 +48,6 @@ public class QueryType {
     public static final int IN = 8;
 
 
-
     /**
      * 字符串使用模糊查询的长度阈值
      */
@@ -57,29 +56,36 @@ public class QueryType {
     /**
      * 制成方法，方便模板中调用
      */
-    public static final boolean isEq(Integer type){
-        return Objects.equals(EQ,type);
+    public static final boolean isEq(Integer type) {
+        return Objects.equals(EQ, type);
     }
-    public static final boolean isLike(Integer type){
-        return Objects.equals(LIKE,type);
+
+    public static final boolean isLike(Integer type) {
+        return Objects.equals(LIKE, type);
     }
-    public static final boolean isGt(Integer type){
-        return Objects.equals(GT,type);
+
+    public static final boolean isGt(Integer type) {
+        return Objects.equals(GT, type);
     }
-    public static final boolean isGe(Integer type){
-        return Objects.equals(GE,type);
+
+    public static final boolean isGe(Integer type) {
+        return Objects.equals(GE, type);
     }
-    public static final boolean isLt(Integer type){
-        return Objects.equals(LT,type);
+
+    public static final boolean isLt(Integer type) {
+        return Objects.equals(LT, type);
     }
-    public static final boolean isLe(Integer type){
-        return Objects.equals(LE,type);
+
+    public static final boolean isLe(Integer type) {
+        return Objects.equals(LE, type);
     }
-    public static final boolean isBetween(Integer type){
-        return Objects.equals(BETWEEN,type);
+
+    public static final boolean isBetween(Integer type) {
+        return Objects.equals(BETWEEN, type);
     }
-    public static final boolean isIn(Integer type){
-        return Objects.equals(IN,type);
+
+    public static final boolean isIn(Integer type) {
+        return Objects.equals(IN, type);
     }
 
     @Check
@@ -92,11 +98,12 @@ public class QueryType {
 
     /**
      * 映射符号,默认都是等号
+     *
      * @param type
      * @return
      */
     public static String mapperSymbol(Integer type) {
-        if(type==null){
+        if (type == null) {
             return "=";
         }
         switch (type) {
@@ -117,11 +124,9 @@ public class QueryType {
             case IN:
                 return "in";
             default:
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"queryType【"+type+"】不合法");
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "queryType【" + type + "】不合法");
         }
     }
-
-
 
 
 }

@@ -1,8 +1,8 @@
 package com.youran.generate.constant;
 
 /**
- * <p>Title: DTO校验正则</p>
- * <p>Description: </p>
+ * DTO校验正则
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

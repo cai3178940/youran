@@ -3,10 +3,9 @@ package com.youran.generate.constant;
 import com.youran.common.validator.Check;
 
 /**
- * <p>Title: java特殊字段常量</p>
- * <p>Description: </p>
+ * java特殊字段常量
+ *
  * @author: cbb
- * @date: 2017/9/20
  */
 public class MetaSpecialField {
 
@@ -19,6 +18,7 @@ public class MetaSpecialField {
 
     /**
      * 校验是否特殊字段
+     *
      * @param value
      * @return
      */
@@ -29,30 +29,29 @@ public class MetaSpecialField {
             || OPERATED_BY.equals(value) || VERSION.equals(value);
     }
 
-    public static final boolean isCreatedBy(String value){
+    public static final boolean isCreatedBy(String value) {
         return CREATED_BY.equals(value);
     }
 
-    public static final boolean isCreatedTime(String value){
+    public static final boolean isCreatedTime(String value) {
         return CREATED_TIME.equals(value);
     }
 
-    public static final boolean isOperatedBy(String value){
+    public static final boolean isOperatedBy(String value) {
         return OPERATED_BY.equals(value);
     }
 
-    public static final boolean isOperatedTime(String value){
+    public static final boolean isOperatedTime(String value) {
         return OPERATED_TIME.equals(value);
     }
 
-    public static final boolean isVersion(String value){
+    public static final boolean isVersion(String value) {
         return VERSION.equals(value);
     }
 
-    public static final boolean isDeleted(String value){
+    public static final boolean isDeleted(String value) {
         return DELETED.equals(value);
     }
-
 
 
 }

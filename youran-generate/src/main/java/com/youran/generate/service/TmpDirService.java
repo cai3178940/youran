@@ -17,8 +17,8 @@ import java.io.File;
 import java.util.Arrays;
 
 /**
- * <p>Title: 临时目录服务类</p>
- * <p>Description:</p>
+ * 临时目录服务类
+ *
  * @author: cbb
  * @date: 11/3/2019 13:58
  */
@@ -38,6 +38,7 @@ public class TmpDirService implements InitializingBean {
     /**
      * 启动以后清空临时文件夹根目录
      * /[tmp目录]/[spring.application.name]/[youran.version]
+     *
      * @throws Exception
      */
     @Override
@@ -50,21 +51,23 @@ public class TmpDirService implements InitializingBean {
 
     /**
      * 获取临时文件夹根目录
+     *
      * @return /[tmp目录]/[spring.application.name]_[youran.version]
      */
-    private String getTmpRootDir(){
+    private String getTmpRootDir() {
         return TempDirUtil.getTmpDir(appName, false, false)
-            + "_" +generateProperties.getVersion();
+            + "_" + generateProperties.getVersion();
     }
 
 
     /**
      * 获取最新代码目录
+     *
      * @param project
      * @return /[tmpRootDir]/code/[projectId]_[projectVersion]
      * @see #getTmpRootDir()
      */
-    public String getProjectRecentDir(MetaProjectPO project){
+    public String getProjectRecentDir(MetaProjectPO project) {
         return this.getTmpRootDir()
             + File.separator + "code"
             + File.separator + project.getProjectId()
@@ -73,6 +76,7 @@ public class TmpDirService implements InitializingBean {
 
     /**
      * 获取项目元数据导出目录
+     *
      * @param project
      * @return /[tmpRootDir]/meta_export/[projectId]_[projectVersion]
      * @see #getTmpRootDir()
@@ -86,6 +90,7 @@ public class TmpDirService implements InitializingBean {
 
     /**
      * 获取项目元数据导入文件路径
+     *
      * @return /[tmpRootDir]/meta_import/[currentTimeMillis].zip
      * @see #getTmpRootDir()
      */
@@ -98,11 +103,12 @@ public class TmpDirService implements InitializingBean {
 
     /**
      * 获取最新模板目录
+     *
      * @param templatePO
      * @return /[tmpRootDir]/tpl/[templateId]_[templateInnerVersion]
      * @see #getTmpRootDir()
      */
-    public String getTemplateRecentDir(CodeTemplatePO templatePO){
+    public String getTemplateRecentDir(CodeTemplatePO templatePO) {
         return this.getTmpRootDir()
             + File.separator + "tpl"
             + File.separator + templatePO.getTemplateId()
@@ -112,6 +118,7 @@ public class TmpDirService implements InitializingBean {
 
     /**
      * 获取模板导出目录
+     *
      * @param templatePO
      * @return /[tmpRootDir]/template_export/[templateId]_[templateInnerVersion]
      * @see #getTmpRootDir()
@@ -125,6 +132,7 @@ public class TmpDirService implements InitializingBean {
 
     /**
      * 获取模板导入文件路径
+     *
      * @return /[tmpRootDir]/template_import/[currentTimeMillis].zip
      * @see #getTmpRootDir()
      */
@@ -136,27 +144,29 @@ public class TmpDirService implements InitializingBean {
 
     /**
      * 根据zip文件去除后缀的路径
+     *
      * @return
      */
-    public String getPathWithoutZipFileSuffix(File zipFile){
+    public String getPathWithoutZipFileSuffix(File zipFile) {
         String path = zipFile.getPath();
         // 去除末尾.zip
-        return path.substring(0,path.length()-4);
+        return path.substring(0, path.length() - 4);
     }
 
     /**
      * 获取父目录下第一个子目录
+     *
      * @param parentDir
      * @return
      */
-    public String getFirstChildDir(String parentDir){
+    public String getFirstChildDir(String parentDir) {
         File parent = new File(parentDir);
-        if(!parent.exists()){
-            LOGGER.error("父目录不存在：{}",parentDir);
+        if (!parent.exists()) {
+            LOGGER.error("父目录不存在：{}", parentDir);
             throw new BusinessException();
         }
-        if(!parent.isDirectory()){
-            LOGGER.error("该路径不是文件夹：{}",parentDir);
+        if (!parent.isDirectory()) {
+            LOGGER.error("该路径不是文件夹：{}", parentDir);
             throw new BusinessException();
         }
         return Arrays.stream(parent.listFiles())
@@ -165,7 +175,6 @@ public class TmpDirService implements InitializingBean {
             .findFirst()
             .orElse(null);
     }
-
 
 
 }

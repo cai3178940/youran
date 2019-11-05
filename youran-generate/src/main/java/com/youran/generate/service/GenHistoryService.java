@@ -17,11 +17,10 @@ import java.util.Objects;
 
 
 /**
- * <p>Title:【生成历史】删改查服务</p>
- * <p>Description:</p>
- * Project: bbs
+ * 【生成历史】删改查服务
+ *
  * @author: cbb
- * @date: 2018-03-17
+ * @date: 2018/03/17
  */
 @Service
 public class GenHistoryService {
@@ -33,10 +32,11 @@ public class GenHistoryService {
 
     /**
      * 新增【生成历史】
+     *
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public GenHistoryPO save(MetaProjectPO project,String commit,String branch) {
+    public GenHistoryPO save(MetaProjectPO project, String commit, String branch) {
         GenHistoryPO genHistory = new GenHistoryPO();
         genHistory.setProjectId(project.getProjectId());
         genHistory.setRemoteUrl(project.getRemoteUrl());
@@ -50,6 +50,7 @@ public class GenHistoryService {
 
     /**
      * 查询分页列表
+     *
      * @param genHistoryQO
      * @return
      */
@@ -61,14 +62,15 @@ public class GenHistoryService {
 
     /**
      * 根据主键获取【生成历史】
+     *
      * @param historyId
      * @param force
      * @return
      */
-    public GenHistoryPO getGenHistory(Integer historyId, boolean force){
+    public GenHistoryPO getGenHistory(Integer historyId, boolean force) {
         GenHistoryPO genHistory = genHistoryDAO.findById(historyId);
         if (force && genHistory == null) {
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"未查询到记录");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "未查询到记录");
         }
         return genHistory;
     }
@@ -76,6 +78,7 @@ public class GenHistoryService {
 
     /**
      * 删除【生成历史】
+     *
      * @param historyIds
      * @return
      */
@@ -91,13 +94,14 @@ public class GenHistoryService {
 
     /**
      * 校验提交版本
+     *
      * @param project
      * @param genHistory
      */
     public void checkVersion(MetaProjectPO project, GenHistoryPO genHistory) {
-        if(Objects.equals(genHistory.getProjectVersion(),project.getProjectVersion())
-            && Objects.equals(genHistory.getSysVersion(),generateProperties.getVersion())){
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"远程仓库分支【"+genHistory.getBranch()+"】已经是最新版本");
+        if (Objects.equals(genHistory.getProjectVersion(), project.getProjectVersion())
+            && Objects.equals(genHistory.getSysVersion(), generateProperties.getVersion())) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "远程仓库分支【" + genHistory.getBranch() + "】已经是最新版本");
         }
     }
 }

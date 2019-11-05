@@ -9,20 +9,22 @@ import org.springframework.http.ResponseEntity;
 
 
 /**
- * <p>Title:【生成历史】API</p>
- * <p>Description:swagger接口文档</p>
+ * 【生成历史】API
+ * <p>swagger接口文档
+ *
  * @author: cbb
- * @date: 2018-03-17
+ * @date: 2018/03/17
  */
 @Api(tags = "GenHistory")
 public interface GenHistoryAPI {
 
     /**
      * 分页查询【生成历史】
+     *
      * @param genHistoryQO
      * @return
      */
-    @ApiOperation(value="分页查询【生成历史】")
+    @ApiOperation(value = "分页查询【生成历史】")
     ResponseEntity<PageVO<GenHistoryListVO>> list(GenHistoryQO genHistoryQO);
 
 }

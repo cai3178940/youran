@@ -13,8 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
- * <p>Title: 【模板文件】输出服务</p>
- * <p>Description:</p>
+ * 【模板文件】输出服务
+ *
  * @author: cbb
  * @date: 11/3/2019 15:35
  */
@@ -25,22 +25,23 @@ public class TemplateFileOutputService {
 
     /**
      * 把文件输出到目录
+     *
      * @param templateFiles 模板文件列表
-     * @param outputDir 输出目录
+     * @param outputDir     输出目录
      */
     public void outputTemplateFiles(List<TemplateFilePO> templateFiles, String outputDir) {
         File outputDirFile = new File(outputDir);
-        if(!outputDirFile.exists()){
+        if (!outputDirFile.exists()) {
             outputDirFile.mkdirs();
         }
         try {
             for (TemplateFilePO templateFile : templateFiles) {
                 String contentFilePath = outputDir + templateFile.getFileDir() + File.separator + templateFile.getFileName();
                 File contentFile = new File(contentFilePath);
-                FileUtils.writeStringToFile(contentFile,templateFile.getContent(), StandardCharsets.UTF_8);
+                FileUtils.writeStringToFile(contentFile, templateFile.getContent(), StandardCharsets.UTF_8);
             }
         } catch (IOException e) {
-            LOGGER.error("模板文件导出异常",e);
+            LOGGER.error("模板文件导出异常", e);
             throw new BusinessException("模板文件导出异常");
         }
     }

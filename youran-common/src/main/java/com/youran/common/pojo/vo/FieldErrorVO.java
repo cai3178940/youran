@@ -4,8 +4,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * <p>Title:参数错误-错误字段信息</p>
- * <p>Description:</p>
+ * 参数错误-错误字段信息
+ *
  * @author: cbb
  * @date: 2017/8/24
  */

@@ -12,8 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * <p>Title: 元数据导入导出API</p>
- * <p>Description:</p>
+ * 元数据导入导出API
+ *
  * @author: cbb
  * @date: 10/13/2019 15:38
  */
@@ -22,6 +22,7 @@ public interface MetaImportExportAPI {
 
     /**
      * 元数据导出
+     *
      * @param projectId
      * @param response
      */
@@ -33,6 +34,7 @@ public interface MetaImportExportAPI {
 
     /**
      * 元数据导入
+     *
      * @param file
      * @return
      * @throws Exception

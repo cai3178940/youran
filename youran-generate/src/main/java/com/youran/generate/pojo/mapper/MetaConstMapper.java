@@ -11,18 +11,20 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
- * <p>Title:常量映射</p>
- * <p>Description:基于mapstruct来实现，编译器自动生成实现类</p>
+ * 常量映射
+ * <p>基于mapstruct来实现，编译器自动生成实现类
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @Mapper
 public interface MetaConstMapper {
 
-    MetaConstMapper INSTANCE = Mappers.getMapper( MetaConstMapper.class );
+    MetaConstMapper INSTANCE = Mappers.getMapper(MetaConstMapper.class);
 
     /**
      * addDTO映射po
+     *
      * @param addDTO
      * @return
      */
@@ -30,6 +32,7 @@ public interface MetaConstMapper {
 
     /**
      * 将updateDTO中的值设置到po
+     *
      * @param metaConstPO
      * @param metaConstUpdateDTO
      */
@@ -37,14 +40,15 @@ public interface MetaConstMapper {
 
     /**
      * po映射showVO
+     *
      * @param metaConstPO
      * @return
      */
     MetaConstShowVO toShowVO(MetaConstPO metaConstPO);
 
     @Mappings({
-        @Mapping(target = "constId",ignore = true),
-        @Mapping(target = "detailList",ignore = true)
+        @Mapping(target = "constId", ignore = true),
+        @Mapping(target = "detailList", ignore = true)
     })
     MetaConstPO copy(MetaConstPO constPO);
 }

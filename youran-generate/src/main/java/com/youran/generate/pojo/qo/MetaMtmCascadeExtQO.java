@@ -6,26 +6,24 @@ import io.swagger.annotations.ApiParam;
 import static com.youran.generate.pojo.example.MetaMtmCascadeExtExample.*;
 
 /**
- * <p>Title: 查询【多对多级联扩展】的参数</p>
- * <p>Description: </p>
+ * 查询【多对多级联扩展】的参数
+ *
  * @author cbb
  * @date 2019/09/21
  */
 public class MetaMtmCascadeExtQO extends AbstractQO {
 
-    @ApiParam(value = N_MTM_ID,example = E_MTM_ID)
+    @ApiParam(value = N_MTM_ID, example = E_MTM_ID)
     private Integer mtmId;
 
-    @ApiParam(value = N_ENTITY_ID,example = E_ENTITY_ID)
+    @ApiParam(value = N_ENTITY_ID, example = E_ENTITY_ID)
     private Integer entityId;
 
-    @ApiParam(value = N_CASCADE_ENTITY_ID,example = E_CASCADE_ENTITY_ID)
+    @ApiParam(value = N_CASCADE_ENTITY_ID, example = E_CASCADE_ENTITY_ID)
     private Integer cascadeEntityId;
 
-    @ApiParam(value = N_CASCADE_FIELD_ID,example = E_CASCADE_FIELD_ID)
+    @ApiParam(value = N_CASCADE_FIELD_ID, example = E_CASCADE_FIELD_ID)
     private Integer cascadeFieldId;
-
-
 
 
     public Integer getMtmId() {

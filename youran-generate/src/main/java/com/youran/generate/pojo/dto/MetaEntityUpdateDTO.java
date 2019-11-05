@@ -5,11 +5,12 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
-import static com.youran.generate.pojo.example.MetaEntityExample.*;
+import static com.youran.generate.pojo.example.MetaEntityExample.E_ENTITYID;
+import static com.youran.generate.pojo.example.MetaEntityExample.N_ENTITYID;
 
 /**
- * <p>Title:修改实体DTO</p>
- * <p>Description:</p>
+ * 修改实体DTO
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

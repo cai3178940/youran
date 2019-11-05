@@ -10,8 +10,8 @@ import com.youran.generate.pojo.po.MetaManyToManyPO;
 import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
 
 /**
- * <p>Title:测试数据</p>
- * <p>Description:</p>
+ * 测试数据
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -19,9 +19,10 @@ public class MetaManyToManyHelper {
 
     /**
      * 生成add测试数据
+     *
      * @return
      */
-    public static MetaManyToManyAddDTO getAddDTO(Integer projectId, Integer entityId1, Integer entityId2){
+    public static MetaManyToManyAddDTO getAddDTO(Integer projectId, Integer entityId1, Integer entityId2) {
         MetaManyToManyAddDTO dto = new MetaManyToManyAddDTO();
         dto.setProjectId(projectId);
         dto.setEntityId1(entityId1);
@@ -42,10 +43,11 @@ public class MetaManyToManyHelper {
 
     /**
      * 生成update测试数据
+     *
      * @return
      */
-    public static MetaManyToManyUpdateDTO getUpdateDTO(MetaManyToManyPO metaManyToMany){
-        MetaManyToManyUpdateDTO dto= new MetaManyToManyUpdateDTO();
+    public static MetaManyToManyUpdateDTO getUpdateDTO(MetaManyToManyPO metaManyToMany) {
+        MetaManyToManyUpdateDTO dto = new MetaManyToManyUpdateDTO();
         dto.setMtmId(metaManyToMany.getMtmId());
         dto.setHoldRefer2(metaManyToMany.getHoldRefer2());
         dto.setProjectId(metaManyToMany.getProjectId());

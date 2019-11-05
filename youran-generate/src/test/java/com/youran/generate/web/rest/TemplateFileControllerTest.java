@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * <p>Title: 【模板文件】单元测试</p>
- * <p>Description: </p>
+ * 【模板文件】单元测试
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -78,7 +78,7 @@ public class TemplateFileControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateHelper.saveCodeTemplateExample();
         TemplateFilePO templateFile = templateFileHelper.saveTemplateFileExample(codeTemplate.getTemplateId());
-        restMockMvc.perform(get(getApiPath() + "/template_file/{fileId}",templateFile.getFileId()))
+        restMockMvc.perform(get(getApiPath() + "/template_file/{fileId}", templateFile.getFileId()))
             .andExpect(status().isOk());
     }
 
@@ -89,7 +89,7 @@ public class TemplateFileControllerTest extends AbstractWebTest {
     public void del() throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateHelper.saveCodeTemplateExample();
         TemplateFilePO templateFile = templateFileHelper.saveTemplateFileExample(codeTemplate.getTemplateId());
-        restMockMvc.perform(delete(getApiPath() + "/template_file/{fileId}",templateFile.getFileId()))
+        restMockMvc.perform(delete(getApiPath() + "/template_file/{fileId}", templateFile.getFileId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));
     }
@@ -107,7 +107,6 @@ public class TemplateFileControllerTest extends AbstractWebTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));
     }
-
 
 
 }

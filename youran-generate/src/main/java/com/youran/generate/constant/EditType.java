@@ -3,8 +3,8 @@ package com.youran.generate.constant;
 import com.youran.common.validator.Check;
 
 /**
- * <p>Title: 编辑类型</p>
- * <p>Description: </p>
+ * 编辑类型
+ *
  * @author: cbb
  * @date: 2017/9/20
  */

@@ -22,8 +22,9 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * <p>Title:自定义校验注解：常量校验</p>
- * <p>Description:校验常量值是否合法</p>
+ * 自定义校验注解：常量校验
+ * <p>校验常量值是否合法
+ *
  * @author: cbb
  * @date: 2017/6/15
  */
@@ -33,7 +34,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Const {
 
-    String DEFAULT_MESSAGE="常量不合法";
+    String DEFAULT_MESSAGE = "常量不合法";
 
     Class constClass();
 
@@ -75,9 +76,9 @@ public @interface Const {
             boolean success;
             try {
                 Object result = checkMethod.invoke(null, value);
-                if(result instanceof Boolean){
+                if (result instanceof Boolean) {
                     success = (Boolean) result;
-                }else{
+                } else {
                     throw new RuntimeException("校验方法返回值类型必须是boolean");
                 }
             } catch (IllegalAccessException e) {
@@ -91,7 +92,7 @@ public @interface Const {
             if (!success && StringUtils.isNotBlank(defaultMsg)) {
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(defaultMsg)
-                        .addConstraintViolation();
+                    .addConstraintViolation();
             }
             return success;
         }

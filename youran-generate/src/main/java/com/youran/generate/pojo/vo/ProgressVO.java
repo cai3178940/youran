@@ -9,8 +9,8 @@ import org.springframework.util.Assert;
 import java.util.Objects;
 
 /**
- * <p>Title: 前端进度条VO</p>
- * <p>Description: </p>
+ * 进度条VO
+ *
  * @author cbb
  * @date 2019/1/28
  */
@@ -54,10 +54,11 @@ public class ProgressVO extends AbstractVO {
 
     /**
      * 初始化进度条
+     *
      * @param sessionId
      * @return
      */
-    public static ProgressVO initProgress(String sessionId){
+    public static ProgressVO initProgress(String sessionId) {
         ProgressVO vo = new ProgressVO();
         vo.setStatus(PROGRESSING);
         vo.setPercentage(0);
@@ -69,76 +70,79 @@ public class ProgressVO extends AbstractVO {
 
     /**
      * 进度增加
+     *
      * @param addPercent 增加进度
-     * @param msg 消息
+     * @param msg        消息
      * @return
      */
-    public static ProgressVO progressing(int minPercent,int maxPercent,int addPercent,String msg){
-        Assert.isTrue(maxPercent>=minPercent,"最大百分比必须大于最小百分比");
+    public static ProgressVO progressing(int minPercent, int maxPercent, int addPercent, String msg) {
+        Assert.isTrue(maxPercent >= minPercent, "最大百分比必须大于最小百分比");
         ProgressVO vo = threadLocal.get();
-        if(vo==null){
+        if (vo == null) {
             throw new BusinessException("进度条VO未初始化");
         }
         // 如果不是进行中，则直接返回
-        if(!Objects.equals(vo.getStatus(),PROGRESSING)){
+        if (!Objects.equals(vo.getStatus(), PROGRESSING)) {
             return vo;
         }
         Integer oldPercent = vo.getPercentage();
-        int currentPercent = oldPercent +addPercent;
+        int currentPercent = oldPercent + addPercent;
         // 如果当前进度小于最小值，则赋值成下限
-        if(currentPercent < minPercent){
+        if (currentPercent < minPercent) {
             currentPercent = minPercent;
         }
         // 如果之前进度就大于最大值，则保持不变
-        if(oldPercent > maxPercent){
+        if (oldPercent > maxPercent) {
             currentPercent = oldPercent;
         }
         // 如果当前进度大于最大值，则赋值成上限
-        else if(currentPercent > maxPercent){
+        else if (currentPercent > maxPercent) {
             currentPercent = maxPercent;
         }
         // 进度增长过程中，进度值不能超过99%
-        if(currentPercent >= LAST_PERCENT){
+        if (currentPercent >= LAST_PERCENT) {
             currentPercent = LAST_PERCENT;
         }
         vo.setPercentage(currentPercent);
-        if(msg!=null) {
+        if (msg != null) {
             vo.setMsg(msg);
         }
         return vo;
     }
 
 
-
     /**
      * 返回成功
+     *
      * @param msg
      * @return
      */
-    public static ProgressVO success(String msg){
-        return done(msg,SUCCESS,100);
+    public static ProgressVO success(String msg) {
+        return done(msg, SUCCESS, 100);
     }
 
     /**
      * 返回异常
+     *
      * @param msg
      * @return
      */
-    public static ProgressVO error(String msg){
-        return done(msg,ERROR,-1);
+    public static ProgressVO error(String msg) {
+        return done(msg, ERROR, -1);
     }
 
     /**
      * 进度条完成
+     *
      * @param msg
      * @param status
      * @param percent
      * @return
      */
-    private static ProgressVO done(String msg,int status, int percent){
+    private static ProgressVO done(String msg, int status, int percent) {
         ProgressVO vo = threadLocal.get();
         threadLocal.remove();
-        if(vo==null){
+        if (vo == null) {
             throw new BusinessException("进度条VO未初始化");
         }
         vo.setStatus(status);

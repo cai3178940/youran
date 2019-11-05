@@ -8,18 +8,20 @@ import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
- * <p>Title:字段映射</p>
- * <p>Description:基于mapstruct来实现，编译器自动生成实现类</p>
+ * 字段映射
+ * <p>基于mapstruct来实现，编译器自动生成实现类
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @Mapper
 public interface MetaFieldMapper {
 
-    MetaFieldMapper INSTANCE = Mappers.getMapper( MetaFieldMapper.class );
+    MetaFieldMapper INSTANCE = Mappers.getMapper(MetaFieldMapper.class);
 
     /**
      * addDTO映射po
+     *
      * @param addDTO
      * @return
      */
@@ -27,6 +29,7 @@ public interface MetaFieldMapper {
 
     /**
      * 将updateDTO中的值设置到po
+     *
      * @param metaFieldPO
      * @param metaFieldUpdateDTO
      */
@@ -35,6 +38,7 @@ public interface MetaFieldMapper {
 
     /**
      * po映射showVO
+     *
      * @param metaFieldPO
      * @return
      */
@@ -71,7 +75,6 @@ public interface MetaFieldMapper {
         @Mapping(target = "specialField"),
     })
     MetaFieldPO copy(MetaFieldPO field);
-
 
 
 }

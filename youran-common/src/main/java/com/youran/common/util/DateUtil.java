@@ -8,8 +8,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
- * <p>Title:日期工具</p>
- * <p>Description:</p>
+ * 日期工具
+ *
  * @author: cbb
  * @date: 2017/9/19
  */
@@ -17,62 +17,68 @@ public class DateUtil {
 
     public static final String DATE_FORMAT_1 = "yyyy-MM-dd";
     public static final String DATE_FORMAT_2 = "yyyy-MM-dd HH:mm:ss";
+
     /**
      * 获取日期字符串yyyy-MM-dd
+     *
      * @param date
      * @return
      */
     public static String getDateStr(Date date) {
-        return getDateStr(date,DATE_FORMAT_1);
+        return getDateStr(date, DATE_FORMAT_1);
     }
 
     /**
      * 获取指定格式的日期字符串
+     *
      * @param date
      * @param dateFormat
      * @return
      */
     public static String getDateStr(Date date, String dateFormat) {
-        if(date==null || StringUtils.isBlank(dateFormat)){
+        if (date == null || StringUtils.isBlank(dateFormat)) {
             return "";
         }
-        return DateFormatUtils.format(date,dateFormat);
+        return DateFormatUtils.format(date, dateFormat);
     }
 
     /**
      * 解析日期字符串
+     *
      * @param datatime
      * @param dateFormat
      * @return
      */
-    public static Date parseDate(String datatime,String dateFormat){
-        if(StringUtils.isBlank(datatime)){
+    public static Date parseDate(String datatime, String dateFormat) {
+        if (StringUtils.isBlank(datatime)) {
             return null;
         }
         try {
-            return DateUtils.parseDate(datatime,dateFormat);
+            return DateUtils.parseDate(datatime, dateFormat);
         } catch (ParseException e) {
             throw new IllegalArgumentException(e);
         }
     }
+
     /**
      * 解析日期字符串yyyy-MM-dd
+     *
      * @param datatime
      * @return
      */
-    public static Date parseDate(String datatime){
-        if(StringUtils.isBlank(datatime)){
+    public static Date parseDate(String datatime) {
+        if (StringUtils.isBlank(datatime)) {
             return null;
         }
         String dateFormat;
-        if(datatime.length()==DATE_FORMAT_1.length()){
+        if (datatime.length() == DATE_FORMAT_1.length()) {
             dateFormat = DATE_FORMAT_1;
-        }else if(datatime.length()==DATE_FORMAT_2.length()){
+        } else if (datatime.length() == DATE_FORMAT_2.length()) {
             dateFormat = DATE_FORMAT_2;
-        }else{
-            throw new IllegalArgumentException("日期格式有误，datatime="+datatime);
+        } else {
+            throw new IllegalArgumentException("日期格式有误，datatime=" + datatime);
         }
-        return parseDate(datatime,dateFormat);
+        return parseDate(datatime, dateFormat);
     }
 
 }

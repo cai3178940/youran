@@ -10,8 +10,8 @@ import static com.youran.generate.pojo.example.MetaManyToManyExample.N_PROJECTID
 
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 多对多查询参数
+ *
  * @author: cbb
  * @date: 2017/7/4
  */

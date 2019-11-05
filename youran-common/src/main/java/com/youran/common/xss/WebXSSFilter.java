@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * <p>Title:防止通过parameter传入XSS脚本</p>
- * <p>Description:</p>
+ * 防止通过parameter传入XSS脚本
+ *
  * @author: cbb
  * @date: 2018/3/2
  */

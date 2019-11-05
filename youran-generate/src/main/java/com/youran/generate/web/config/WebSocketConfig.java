@@ -9,8 +9,8 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 /**
- * <p>Title: websocket配置</p>
- * <p>Description: </p>
+ * websocket配置
+ *
  * @author cbb
  * @date 2019/2/21
  */

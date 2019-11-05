@@ -4,8 +4,9 @@ package com.youran.common.pojo.vo;
 import java.io.Serializable;
 
 /**
- * <p>Title: 抽象VO</p>
- * <p>Description: 还没想好要抽象点啥，先留着</p>
+ * 抽象VO
+ * <p>还没想好要抽象点啥，先留着
+ *
  * @author: cbb
  * @date: 2017/10/17
  */

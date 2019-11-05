@@ -3,8 +3,9 @@ package com.youran.generate.pojo.po;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * <p>Title:级联扩展</p>
- * <p>Description:从外键字段对应的表中级联查出要展示的字段</p>
+ * 级联扩展
+ * <p>从外键字段对应的表中级联查出要展示的字段
+ *
  * @author: cbb
  * @date: 2018/5/28
  */

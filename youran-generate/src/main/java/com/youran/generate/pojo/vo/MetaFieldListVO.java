@@ -8,8 +8,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import static com.youran.generate.pojo.example.MetaFieldExample.*;
 
 /**
- * <p>Title:字段列表展示对象</p>
- * <p>Description:</p>
+ * 字段列表展示对象
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

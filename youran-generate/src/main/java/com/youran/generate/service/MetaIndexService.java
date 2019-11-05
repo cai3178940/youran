@@ -23,8 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * <p>Title:索引增删改查服务</p>
- * <p>Description:</p>
+ * 索引增删改查服务
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -39,8 +39,10 @@ public class MetaIndexService {
     private MetaIndexFieldDAO metaIndexFieldDAO;
     @Autowired
     private MetaProjectService metaProjectService;
+
     /**
      * 新增索引
+     *
      * @param metaIndexAddDTO
      * @return
      */
@@ -61,19 +63,20 @@ public class MetaIndexService {
         //校验字段id是否是本实体下存在的字段
         int fieldCount = metaFieldDAO.findCount(indexPO.getEntityId(), fieldIdList);
         if (fieldCount != fieldIdList.size()) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"索引字段异常");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "索引字段异常");
         }
         //保存索引对象
         metaIndexDAO.save(indexPO);
         //保存关联关系
         int count = metaIndexFieldDAO.saveBatch(indexPO.getIndexId(), fieldIdList);
         if (count == 0 || fieldIdList.size() != count) {
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"索引保存异常");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "索引保存异常");
         }
     }
 
     /**
      * 修改索引
+     *
      * @param metaIndexUpdateDTO
      * @return
      */
@@ -84,13 +87,13 @@ public class MetaIndexService {
         //校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
         Integer indexId = metaIndexUpdateDTO.getIndexId();
-        MetaIndexPO metaIndex = this.getIndex(indexId,true);
+        MetaIndexPO metaIndex = this.getIndex(indexId, true);
         //校验新字段id是否是本实体下存在的字段
         String fieldIds = metaIndexUpdateDTO.getFieldIds();
         List<Integer> fieldIdList = ConvertUtil.convertIntegerList(fieldIds);
         int fieldCount = metaFieldDAO.findCount(entityId, fieldIdList);
         if (fieldCount != fieldIdList.size()) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER,"索引字段异常");
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "索引字段异常");
         }
         //映射属性
         MetaIndexMapper.INSTANCE.setPO(metaIndex, metaIndexUpdateDTO);
@@ -101,7 +104,7 @@ public class MetaIndexService {
         //保存新的关联关系
         int count = metaIndexFieldDAO.saveBatch(metaIndex.getIndexId(), fieldIdList);
         if (count == 0 || fieldIdList.size() != count) {
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"索引更新异常");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "索引更新异常");
         }
 
         metaProjectService.updateProjectVersionByEntityId(entityId);
@@ -110,20 +113,22 @@ public class MetaIndexService {
 
     /**
      * 获取索引对象
+     *
      * @param indexId
      * @param force
      * @return
      */
-    public MetaIndexPO getIndex(Integer indexId,boolean force){
+    public MetaIndexPO getIndex(Integer indexId, boolean force) {
         MetaIndexPO indexPO = metaIndexDAO.findById(indexId);
-        if(force && indexPO == null){
-            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"索引未找到");
+        if (force && indexPO == null) {
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND, "索引未找到");
         }
         return indexPO;
     }
 
     /**
      * 查询列表
+     *
      * @param metaIndexQO
      * @return
      */
@@ -134,11 +139,12 @@ public class MetaIndexService {
 
     /**
      * 查询索引详情
+     *
      * @param indexId
      * @return
      */
     public MetaIndexShowVO show(Integer indexId) {
-        MetaIndexPO metaIndex = this.getIndex(indexId,true);
+        MetaIndexPO metaIndex = this.getIndex(indexId, true);
         MetaIndexShowVO showVO = MetaIndexMapper.INSTANCE.toShowVO(metaIndex);
         List<MetaFieldListVO> fields = metaIndexFieldDAO.findByIndexId(showVO.getIndexId());
         showVO.setFields(fields);
@@ -147,6 +153,7 @@ public class MetaIndexService {
 
     /**
      * 删除索引
+     *
      * @param indexId
      * @return
      */
@@ -155,8 +162,8 @@ public class MetaIndexService {
         int count = 0;
         Integer entityId = null;
         for (Integer id : indexId) {
-            MetaIndexPO metaIndex = this.getIndex(id,false);
-            if(metaIndex==null){
+            MetaIndexPO metaIndex = this.getIndex(id, false);
+            if (metaIndex == null) {
                 continue;
             }
             entityId = metaIndex.getEntityId();
@@ -165,7 +172,7 @@ public class MetaIndexService {
             metaIndexFieldDAO.delete(id);
             count += metaIndexDAO.delete(id);
         }
-        if(count>0) {
+        if (count > 0) {
             metaProjectService.updateProjectVersionByEntityId(entityId);
         }
         return count;
@@ -173,29 +180,30 @@ public class MetaIndexService {
 
     /**
      * 移除索引字段
+     *
      * @param indexId
      * @param fieldIds
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public int removeField(Integer indexId, List<Integer> fieldIds) {
-        MetaIndexPO metaIndex = this.getIndex(indexId,false);
-        if(metaIndex==null){
+        MetaIndexPO metaIndex = this.getIndex(indexId, false);
+        if (metaIndex == null) {
             return 0;
         }
         Integer entityId = metaIndex.getEntityId();
         //校验操作人
         metaProjectService.checkOperatorByEntityId(entityId);
-        int count = metaIndexFieldDAO.remove(indexId,fieldIds);
-        if(count==0){
+        int count = metaIndexFieldDAO.remove(indexId, fieldIds);
+        if (count == 0) {
             return 0;
         }
         List<MetaFieldListVO> fields = metaIndexFieldDAO.findByIndexId(indexId);
         // 如果所有字段都已经清空，则删除整个索引
-        if(CollectionUtils.isEmpty(fields)){
+        if (CollectionUtils.isEmpty(fields)) {
             metaIndexDAO.delete(indexId);
         }
-        if(count>0) {
+        if (count > 0) {
             metaProjectService.updateProjectVersionByEntityId(entityId);
         }
         return count;
@@ -203,6 +211,7 @@ public class MetaIndexService {
 
     /**
      * 根据实体id查询索引对象列表
+     *
      * @param entityId
      * @return
      */
@@ -212,6 +221,7 @@ public class MetaIndexService {
 
     /**
      * 根据索引id查询字段id列表
+     *
      * @param indexId
      * @return
      */

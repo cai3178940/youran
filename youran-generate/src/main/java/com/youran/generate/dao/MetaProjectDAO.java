@@ -6,10 +6,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * <p>Title:【项目】数据库操作</p>
- * <p>Description:</p>
+ * 【项目】数据库操作
+ *
  * @author: cbb
- * Create Time:2017/5/24
+ * @date: 2017/5/24
  */
 @Repository
 @Mapper

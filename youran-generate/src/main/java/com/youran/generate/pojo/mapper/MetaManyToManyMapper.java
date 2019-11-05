@@ -8,18 +8,19 @@ import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 多对多映射
+ *
  * @author: cbb
  * @date: 2017/7/4
  */
 @Mapper(uses = FeatureMapper.class)
 public interface MetaManyToManyMapper {
 
-    MetaManyToManyMapper INSTANCE = Mappers.getMapper( MetaManyToManyMapper.class );
+    MetaManyToManyMapper INSTANCE = Mappers.getMapper(MetaManyToManyMapper.class);
 
     /**
      * addDTO映射po
+     *
      * @param dto
      * @return
      */
@@ -31,8 +32,9 @@ public interface MetaManyToManyMapper {
 
     /**
      * 将updateDTO中的值设置到po
+     *
      * @param metaManyToManyPO
-     * @param metaManyToManyUpdateDTO
+     * @param dto
      */
     @Mappings(value = {
         @Mapping(target = "f1", expression = "java(dto.getFeature()==null ? null:dto.getFeature().getF1())"),
@@ -43,6 +45,7 @@ public interface MetaManyToManyMapper {
 
     /**
      * po映射showVO
+     *
      * @param metaManyToManyPO
      * @return
      */

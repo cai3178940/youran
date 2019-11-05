@@ -14,8 +14,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * <p>Title: 【多对多级联扩展】API</p>
- * <p>Description: swagger接口文档</p>
+ * 【多对多级联扩展】API
+ * <p> swagger接口文档
+ *
  * @author cbb
  * @date 2019/09/21
  */
@@ -25,7 +26,7 @@ public interface MetaMtmCascadeExtAPI {
     /**
      * 新增【多对多级联扩展】
      */
-    @ApiOperation(value="新增【多对多级联扩展】")
+    @ApiOperation(value = "新增【多对多级联扩展】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "metaMtmCascadeExtAddDTO", dataType = "MetaMtmCascadeExtAddDTO", value = "新增【多对多级联扩展】参数", paramType = "body"),
     })
@@ -34,20 +35,22 @@ public interface MetaMtmCascadeExtAPI {
     /**
      * 修改【多对多级联扩展】
      */
-    @ApiOperation(value="修改【多对多级联扩展】")
+    @ApiOperation(value = "修改【多对多级联扩展】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "metaMtmCascadeExtUpdateDTO", dataType = "MetaMtmCascadeExtUpdateDTO", value = "修改【多对多级联扩展】参数", paramType = "body"),
     })
     ResponseEntity<MetaMtmCascadeExtShowVO> update(MetaMtmCascadeExtUpdateDTO metaMtmCascadeExtUpdateDTO);
+
     /**
      * 列表查询【多对多级联扩展】
      */
-    @ApiOperation(value="列表查询【多对多级联扩展】")
+    @ApiOperation(value = "列表查询【多对多级联扩展】")
     ResponseEntity<List<MetaMtmCascadeExtListVO>> list(MetaMtmCascadeExtQO metaMtmCascadeExtQO);
+
     /**
      * 查看【多对多级联扩展】详情
      */
-    @ApiOperation(value="查看【多对多级联扩展】详情")
+    @ApiOperation(value = "查看【多对多级联扩展】详情")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "mtmCascadeExtId", dataType = "int", value = "【多对多级联扩展】id", paramType = "path"),
     })
@@ -56,7 +59,7 @@ public interface MetaMtmCascadeExtAPI {
     /**
      * 删除单个【多对多级联扩展】
      */
-    @ApiOperation(value="删除单个【多对多级联扩展】")
+    @ApiOperation(value = "删除单个【多对多级联扩展】")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "mtmCascadeExtId", dataType = "int", value = "【多对多级联扩展】id", paramType = "path"),
     })
@@ -70,7 +73,6 @@ public interface MetaMtmCascadeExtAPI {
         @ApiImplicitParam(name = "id", dataType = "int", value = "id数组", paramType = "body"),
     })
     ResponseEntity<Integer> deleteBatch(Integer[] id);
-
 
 
 }

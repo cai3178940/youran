@@ -15,8 +15,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * <p>Title:【字段】api</p>
- * <p>Description:</p>
+ * 【字段】api
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -28,7 +28,7 @@ public interface MetaFieldAPI {
      */
     @ApiOperation(value = "新增字段")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaFieldAddDTO", dataType = "MetaFieldAddDTO", value = "新增字段参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaFieldAddDTO", dataType = "MetaFieldAddDTO", value = "新增字段参数", paramType = "body"),
     })
     ResponseEntity<MetaFieldShowVO> save(MetaFieldAddDTO metaFieldAddDTO) throws Exception;
 
@@ -37,7 +37,7 @@ public interface MetaFieldAPI {
      */
     @ApiOperation(value = "修改字段")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaFieldUpdateDTO", dataType = "MetaFieldUpdateDTO", value = "修改字段参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaFieldUpdateDTO", dataType = "MetaFieldUpdateDTO", value = "修改字段参数", paramType = "body"),
     })
     ResponseEntity<MetaFieldShowVO> update(MetaFieldUpdateDTO metaFieldUpdateDTO);
 
@@ -46,7 +46,7 @@ public interface MetaFieldAPI {
      */
     @ApiOperation(value = "字段列表查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaFieldQO", dataType = "MetaFieldQO", value = "查询参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaFieldQO", dataType = "MetaFieldQO", value = "查询参数", paramType = "body"),
     })
     ResponseEntity<List<MetaFieldListVO>> list(MetaFieldQO metaFieldQO);
 
@@ -55,7 +55,7 @@ public interface MetaFieldAPI {
      */
     @ApiOperation(value = "查看字段详情")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "fieldId", dataType = "int", value = "字段id", paramType = "path"),
+        @ApiImplicitParam(name = "fieldId", dataType = "int", value = "字段id", paramType = "path"),
     })
     ResponseEntity<MetaFieldShowVO> show(Integer fieldId);
 
@@ -64,7 +64,7 @@ public interface MetaFieldAPI {
      */
     @ApiOperation(value = "删除字段")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "fieldId", dataType = "int", value = "字段id", paramType = "path"),
+        @ApiImplicitParam(name = "fieldId", dataType = "int", value = "字段id", paramType = "path"),
     })
     ResponseEntity<Integer> delete(Integer fieldId);
 

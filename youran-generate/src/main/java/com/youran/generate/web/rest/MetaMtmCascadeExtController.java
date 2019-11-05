@@ -24,8 +24,8 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * <p>Title: 【多对多级联扩展】控制器</p>
- * <p>Description: </p>
+ * 【多对多级联扩展】控制器
+ *
  * @author cbb
  * @date 2019/09/21
  */
@@ -41,7 +41,7 @@ public class MetaMtmCascadeExtController extends AbstractController implements M
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaMtmCascadeExtShowVO> save(@Valid @RequestBody MetaMtmCascadeExtAddDTO metaMtmCascadeExtAddDTO) throws Exception {
         MetaMtmCascadeExtPO metaMtmCascadeExt = metaMtmCascadeExtService.save(metaMtmCascadeExtAddDTO);
-        return ResponseEntity.created(new URI(apiPath +"/metaMtmCascadeExt/" + metaMtmCascadeExt.getMtmCascadeExtId()))
+        return ResponseEntity.created(new URI(apiPath + "/metaMtmCascadeExt/" + metaMtmCascadeExt.getMtmCascadeExtId()))
             .body(MetaMtmCascadeExtMapper.INSTANCE.toShowVO(metaMtmCascadeExt));
     }
 
@@ -76,7 +76,7 @@ public class MetaMtmCascadeExtController extends AbstractController implements M
     @Override
     @PutMapping(value = "deleteBatch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] id) {
-        if(ArrayUtils.isEmpty(id)){
+        if (ArrayUtils.isEmpty(id)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
         }
         int count = metaMtmCascadeExtService.delete(id);

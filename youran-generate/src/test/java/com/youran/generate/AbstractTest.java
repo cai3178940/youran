@@ -8,10 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * <p>Title:单元测试抽象类</p>
- * <p>Description:</p>
+ * 单元测试抽象类
+ *
  * @author: cbb
- * @date: 2017-09-13
+ * @date: 2017/09/13
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = GenerateApp.class)
@@ -25,10 +25,10 @@ public class AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        if(!jdbcUrl.startsWith("jdbc:h2:mem:")){
+        if (!jdbcUrl.startsWith("jdbc:h2:mem:")) {
             return;
         }
-        if(h2Flusher==null){
+        if (h2Flusher == null) {
             throw new RuntimeException("请使用H2内存数据库作为数据源");
         }
         // 每次执行单元测试之前都要刷新数据库

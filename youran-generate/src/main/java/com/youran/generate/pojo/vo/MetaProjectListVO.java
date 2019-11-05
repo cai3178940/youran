@@ -8,10 +8,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
 /**
- * <p>Title:项目列表展示对象</p>
- * <p>Description:</p>
+ * 项目列表展示对象
+ *
  * @author: cbb
- * Create Time:2017/5/24
+ * @date 2017/5/24
  */
 public class MetaProjectListVO extends AbstractVO {
 

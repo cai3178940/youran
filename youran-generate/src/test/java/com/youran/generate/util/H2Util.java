@@ -17,8 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
- * <p>Title:H2数据库工具类</p>
- * <p>Description:</p>
+ * H2数据库工具类
+ *
  * @author: june
  * @author: cbb
  * @date: 2019/9/24
@@ -27,12 +27,13 @@ public class H2Util {
 
     /**
      * 修改数据库脚本并保存到临时目录
+     *
      * @param pathInClass 文件在classpath下路径
      * @return 临时文件路径
      */
     public static String getH2Script(String pathInClass) {
-        String tempFolder =  TempDirUtil.getTmpDir(null,true,false);
-        String path = tempFolder+File.separator+pathInClass;
+        String tempFolder = TempDirUtil.getTmpDir(null, true, false);
+        String path = tempFolder + File.separator + pathInClass;
         File file = new File(path);
         File parentFile = file.getParentFile();
         if (!parentFile.exists()) {
@@ -332,9 +333,9 @@ public class H2Util {
         @Override
         public String toString() {
             return "CREATE" + (unique ? " UNIQUE" : "") + (indexType != null ? " " + indexType : "") + " INDEX" + (ifNotExists ? " IF NOT EXISTS" : "") +
-                    (indexName != null ? " " + indexName : "") +
-                    " ON " + tableName + " (" + Joiner.on(',').join(columnNames) + ")"
-                    ;
+                (indexName != null ? " " + indexName : "") +
+                " ON " + tableName + " (" + Joiner.on(',').join(columnNames) + ")"
+                ;
         }
     }
 }

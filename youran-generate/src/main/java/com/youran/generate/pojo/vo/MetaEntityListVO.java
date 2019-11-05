@@ -8,8 +8,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import static com.youran.generate.pojo.example.MetaEntityExample.*;
 
 /**
- * <p>Title:实体列表展示对象</p>
- * <p>Description:</p>
+ * 实体列表展示对象
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

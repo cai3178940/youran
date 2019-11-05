@@ -19,8 +19,8 @@ import java.io.BufferedWriter;
 import java.io.StringWriter;
 
 /**
- * <p>Title: freeMarker模板渲染器</p>
- * <p>Description:</p>
+ * freeMarker模板渲染器
+ *
  * @author: cbb
  * @date: 11/4/2019 22:06
  */
@@ -38,15 +38,15 @@ public class FreeMarkerRenderer implements TemplateRenderer {
     public String renderPath(TemplateFilePO templateFilePO, BaseContext context) {
         String packageName = context.getPackageName();
         if (StringUtils.isBlank(packageName)) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,"包名未设置");
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "包名未设置");
         }
-        String relativePath = templateFilePO.getFileDir()+templateFilePO.getFileName();
+        String relativePath = templateFilePO.getFileDir() + templateFilePO.getFileName();
         relativePath = relativePath
-            .replace("{commonModule}",context.getProjectNameSplit()+"-common")
-            .replace("{coreModule}",context.getProjectNameSplit()+"-core")
-            .replace("{webModule}",context.getProjectNameSplit()+"-web")
+            .replace("{commonModule}", context.getProjectNameSplit() + "-common")
+            .replace("{coreModule}", context.getProjectNameSplit() + "-core")
+            .replace("{webModule}", context.getProjectNameSplit() + "-web")
             .replace("{packageName}", packageName.replaceAll("\\.", "/"))
-            .replace("{commonPackage}",context.getCommonPackage().replaceAll("\\.", "/"))
+            .replace("{commonPackage}", context.getCommonPackage().replaceAll("\\.", "/"))
             .replace("{ProjectName}", context.getProjectNameUpper())
             .replace("{projectName}", context.getProjectName())
             .replace("{project-name}", context.getProjectNameSplit());
@@ -64,7 +64,7 @@ public class FreeMarkerRenderer implements TemplateRenderer {
 
     @Override
     public String renderContent(TemplateFilePO templateFilePO, BaseContext context) {
-        String relativePath = templateFilePO.getFileDir()+templateFilePO.getFileName();
+        String relativePath = templateFilePO.getFileDir() + templateFilePO.getFileName();
         try {
             StringWriter stringWriter = new StringWriter();
             BufferedWriter writer = new BufferedWriter(stringWriter);
@@ -73,20 +73,20 @@ public class FreeMarkerRenderer implements TemplateRenderer {
             return stringWriter.getBuffer().toString();
         } catch (Exception e) {
             String extraErrorMsg = "";
-            if(e instanceof _TemplateModelException){
+            if (e instanceof _TemplateModelException) {
                 Throwable cause = e.getCause();
-                if(cause!=null){
-                    if(cause instanceof SkipCurrentException){
-                        throw (SkipCurrentException)cause;
-                    }else if(cause instanceof BusinessException){
-                        extraErrorMsg = ",原因："+cause.getMessage();
+                if (cause != null) {
+                    if (cause instanceof SkipCurrentException) {
+                        throw (SkipCurrentException) cause;
+                    } else if (cause instanceof BusinessException) {
+                        extraErrorMsg = ",原因：" + cause.getMessage();
                     }
                 }
             }
             LOGGER.error(e.getMessage(), e);
             e.printStackTrace();
             throw new BusinessException("freemarker解析异常,dataModel="
-                +context+",templateName="+relativePath+extraErrorMsg,e);
+                + context + ",templateName=" + relativePath + extraErrorMsg, e);
         }
     }
 

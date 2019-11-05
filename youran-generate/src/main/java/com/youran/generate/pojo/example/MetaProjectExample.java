@@ -3,10 +3,10 @@ package com.youran.generate.pojo.example;
 import com.youran.common.pojo.example.AbstractExample;
 
 /**
- * <p>Title:项目参数示例</p>
- * <p>Description:</p>
+ * 项目参数示例
+ *
  * @author: cbb
- * Create Time:2017/5/24
+ * @date 2017/5/24
  */
 public class MetaProjectExample extends AbstractExample {
 

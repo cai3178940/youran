@@ -1,15 +1,15 @@
 package com.youran.common.pojo.example;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 常用参数示例
+ *
  * @author: cbb
  * @date: 2017/9/14
  */
 public abstract class AbstractExample {
 
     public static final String N_CREATEDTIME = "创建日期";
-    public static final String E_CREATEDTIME= "2017-05-22 00:00:00";
+    public static final String E_CREATEDTIME = "2017-05-22 00:00:00";
     public static final String N_CREATEDBY = "创建人";
     public static final String E_CREATEDBY = "admin";
     public static final String N_OPERATEDTIME = "操作日期";

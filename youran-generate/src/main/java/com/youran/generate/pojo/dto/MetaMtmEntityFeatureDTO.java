@@ -6,8 +6,8 @@ import com.youran.common.validator.Const;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * <p>Title: 多对多实体特性</p>
- * <p>Description: </p>
+ * 多对多实体特性
+ *
  * @author cbb
  * @date 2019/9/30
  */

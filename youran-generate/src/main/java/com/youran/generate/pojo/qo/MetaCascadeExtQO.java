@@ -9,8 +9,8 @@ import static com.youran.generate.pojo.example.MetaCascadeExtExample.E_FIELDID;
 import static com.youran.generate.pojo.example.MetaCascadeExtExample.N_FIELDID;
 
 /**
- * <p>Title:查询参数</p>
- * <p>Description:</p>
+ * 查询参数
+ *
  * @author: cbb
  * @date: 2017/6/14
  */

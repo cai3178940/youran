@@ -13,12 +13,13 @@ public class MetaMtmCascadeExtHelper {
 
     /**
      * 生成add测试数据
+     *
      * @return
      */
     public static MetaMtmCascadeExtAddDTO getAddDTO(Integer mtmId,
                                                     Integer entityId,
                                                     Integer cascadeEntityId,
-                                                    Integer cascadeFieldId){
+                                                    Integer cascadeFieldId) {
         MetaMtmCascadeExtAddDTO dto = new MetaMtmCascadeExtAddDTO();
         dto.setMtmId(mtmId);
         dto.setEntityId(entityId);
@@ -34,9 +35,10 @@ public class MetaMtmCascadeExtHelper {
 
     /**
      * 生成update测试数据
+     *
      * @return
      */
-    public static MetaMtmCascadeExtUpdateDTO getUpdateDTO(MetaMtmCascadeExtPO metaMtmCascadeExt){
+    public static MetaMtmCascadeExtUpdateDTO getUpdateDTO(MetaMtmCascadeExtPO metaMtmCascadeExt) {
         MetaMtmCascadeExtUpdateDTO dto = new MetaMtmCascadeExtUpdateDTO();
         dto.setMtmCascadeExtId(metaMtmCascadeExt.getMtmCascadeExtId());
         dto.setMtmId(metaMtmCascadeExt.getMtmId());
@@ -49,7 +51,6 @@ public class MetaMtmCascadeExtHelper {
         dto.setQuery(metaMtmCascadeExt.getQuery());
         return dto;
     }
-
 
 
 }

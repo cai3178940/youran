@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.TemplateFileExample.*;
 
 /**
- * <p>Title: 新增【模板文件】的参数</p>
- * <p>Description: </p>
+ * 新增【模板文件】的参数
+ *
  * @author cbb
  * @date 2019/10/24
  */

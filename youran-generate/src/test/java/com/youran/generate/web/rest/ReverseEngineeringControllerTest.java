@@ -12,9 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 /**
- * <p>Title:</p>
- * <p>Description:</p>
  * @author: cbb
  * @date: 2018/5/31
  */
@@ -28,7 +27,7 @@ public class ReverseEngineeringControllerTest extends AbstractWebTest {
     private String ddl;
 
     @Before
-    public void init(){
+    public void init() {
         this.metaProject = generateHelper.saveProjectExample();
         this.ddl = "CREATE TABLE `meta_entity` (\n" +
             "  `entityId` int(11) AUTO_INCREMENT COMMENT '实体id',\n" +
@@ -59,12 +58,12 @@ public class ReverseEngineeringControllerTest extends AbstractWebTest {
         dto.setDdl(ddl);
         dto.setDbType("mysql");
 
-        restMockMvc.perform(post(getApiPath()+"/reverse_engineering/check")
+        restMockMvc.perform(post(getApiPath() + "/reverse_engineering/check")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(dto)))
             .andExpect(MockMvcResultMatchers.status().isOk());
 
-        restMockMvc.perform(post(getApiPath()+"/reverse_engineering/execute")
+        restMockMvc.perform(post(getApiPath() + "/reverse_engineering/execute")
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(JsonUtil.toJSONString(dto)))
             .andExpect(MockMvcResultMatchers.status().isOk());

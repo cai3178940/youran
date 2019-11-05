@@ -12,49 +12,49 @@ import javax.validation.constraints.Pattern;
 import static com.youran.generate.pojo.example.MetaMtmCascadeExtExample.*;
 
 /**
- * <p>Title: 修改【多对多级联扩展】的参数</p>
- * <p>Description: </p>
+ * 修改【多对多级联扩展】的参数
+ *
  * @author cbb
  * @date 2019/09/21
  */
 @ApiModel(description = "修改【多对多级联扩展】的参数")
 public class MetaMtmCascadeExtUpdateDTO extends AbstractDTO {
 
-    @ApiModelProperty(notes = N_MTM_CASCADE_EXT_ID,example = E_MTM_CASCADE_EXT_ID,required = true)
+    @ApiModelProperty(notes = N_MTM_CASCADE_EXT_ID, example = E_MTM_CASCADE_EXT_ID, required = true)
     @NotNull
     private Integer mtmCascadeExtId;
 
-    @ApiModelProperty(notes = N_MTM_ID,example = E_MTM_ID,required = true)
+    @ApiModelProperty(notes = N_MTM_ID, example = E_MTM_ID, required = true)
     @NotNull
     private Integer mtmId;
 
-    @ApiModelProperty(notes = N_ENTITY_ID,example = E_ENTITY_ID,required = true)
+    @ApiModelProperty(notes = N_ENTITY_ID, example = E_ENTITY_ID, required = true)
     @NotNull
     private Integer entityId;
 
-    @ApiModelProperty(notes = N_CASCADE_ENTITY_ID,example = E_CASCADE_ENTITY_ID,required = true)
+    @ApiModelProperty(notes = N_CASCADE_ENTITY_ID, example = E_CASCADE_ENTITY_ID, required = true)
     @NotNull
     private Integer cascadeEntityId;
 
-    @ApiModelProperty(notes = N_CASCADE_FIELD_ID,example = E_CASCADE_FIELD_ID,required = true)
+    @ApiModelProperty(notes = N_CASCADE_FIELD_ID, example = E_CASCADE_FIELD_ID, required = true)
     @NotNull
     private Integer cascadeFieldId;
 
-    @ApiModelProperty(notes = N_ALIAS,example = E_ALIAS,required = true)
+    @ApiModelProperty(notes = N_ALIAS, example = E_ALIAS, required = true)
     @NotNull
     @Length(max = 255)
     @Pattern(regexp = PatternConst.J_FIELD_NAME, message = PatternConst.J_FIELD_NAME_MSG)
     private String alias;
 
-    @ApiModelProperty(notes = N_LIST,example = E_LIST,required = true)
+    @ApiModelProperty(notes = N_LIST, example = E_LIST, required = true)
     @NotNull
     private Integer list;
 
-    @ApiModelProperty(notes = N_SHOW,example = E_SHOW,required = true)
+    @ApiModelProperty(notes = N_SHOW, example = E_SHOW, required = true)
     @NotNull
     private Integer show;
 
-    @ApiModelProperty(notes = N_QUERY,example = E_QUERY,required = true)
+    @ApiModelProperty(notes = N_QUERY, example = E_QUERY, required = true)
     @NotNull
     private Integer query;
 

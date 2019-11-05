@@ -6,8 +6,8 @@ import static com.youran.generate.pojo.example.MetaFieldExample.E_FIELDID;
 import static com.youran.generate.pojo.example.MetaFieldExample.N_FIELDID;
 
 /**
- * <p>Title:字段校验结果展示对象</p>
- * <p>Description:</p>
+ * 字段校验结果展示对象
+ *
  * @author: cbb
  * @date: 2019/10/10
  */
@@ -42,9 +42,10 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
 
     /**
      * 设置枚举不存在
+     *
      * @param dic
      */
-    public void dicNotExist(String dic){
+    public void dicNotExist(String dic) {
         this.error();
         this.dicExistSuccess = false;
         this.dicNotExist = dic;

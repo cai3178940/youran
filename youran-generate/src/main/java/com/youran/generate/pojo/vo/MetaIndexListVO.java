@@ -10,8 +10,8 @@ import java.util.List;
 import static com.youran.generate.pojo.example.MetaIndexExample.*;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 索引列表VO
+ *
  * @author: cbb
  * @date: 2017/5/16
  */

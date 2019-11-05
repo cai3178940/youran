@@ -13,8 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 
 /**
- * <p>Title:【常量】api</p>
- * <p>Description:</p>
+ * 【常量】api
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -26,7 +26,7 @@ public interface MetaConstAPI {
      */
     @ApiOperation(value = "新增常量")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaConstAddDTO", dataType = "MetaConstAddDTO", value = "新增常量参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaConstAddDTO", dataType = "MetaConstAddDTO", value = "新增常量参数", paramType = "body"),
     })
     ResponseEntity<MetaConstShowVO> save(MetaConstAddDTO metaConstAddDTO) throws Exception;
 
@@ -35,7 +35,7 @@ public interface MetaConstAPI {
      */
     @ApiOperation(value = "修改常量")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaConstUpdateDTO", dataType = "MetaConstUpdateDTO", value = "修改常量参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaConstUpdateDTO", dataType = "MetaConstUpdateDTO", value = "修改常量参数", paramType = "body"),
     })
     ResponseEntity<MetaConstShowVO> update(MetaConstUpdateDTO metaConstUpdateDTO);
 
@@ -44,7 +44,7 @@ public interface MetaConstAPI {
      */
     @ApiOperation(value = "分页查询常量")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaConstQO", dataType = "MetaConstQO", value = "分页查询参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaConstQO", dataType = "MetaConstQO", value = "分页查询参数", paramType = "body"),
     })
     ResponseEntity<PageVO<MetaConstListVO>> list(MetaConstQO metaConstQO);
 
@@ -53,7 +53,7 @@ public interface MetaConstAPI {
      */
     @ApiOperation(value = "查看常量详情")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "constId", dataType = "int", value = "常量id", paramType = "path"),
+        @ApiImplicitParam(name = "constId", dataType = "int", value = "常量id", paramType = "path"),
     })
     ResponseEntity<MetaConstShowVO> show(Integer constId);
 
@@ -62,7 +62,7 @@ public interface MetaConstAPI {
      */
     @ApiOperation(value = "删除常量")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "constId", dataType = "int", value = "常量id", paramType = "path"),
+        @ApiImplicitParam(name = "constId", dataType = "int", value = "常量id", paramType = "path"),
     })
     ResponseEntity<Integer> delete(Integer constId);
 

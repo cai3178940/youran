@@ -14,8 +14,8 @@ import javax.validation.constraints.Pattern;
 import static com.youran.generate.pojo.example.CodeTemplateExample.*;
 
 /**
- * <p>Title: 新增【代码模板】的参数</p>
- * <p>Description: </p>
+ * 新增【代码模板】的参数
+ *
  * @author cbb
  * @date 2019/10/24
  */

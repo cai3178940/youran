@@ -8,8 +8,8 @@ import com.youran.generate.pojo.po.MetaFieldPO;
 import static com.youran.generate.pojo.example.MetaFieldExample.*;
 
 /**
- * <p>Title:测试数据</p>
- * <p>Description:</p>
+ * 测试数据
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -17,9 +17,10 @@ public class MetaFieldHelper {
 
     /**
      * 生成add测试数据
+     *
      * @return
      */
-    public static MetaFieldAddDTO getAddDTO(Integer entityId){
+    public static MetaFieldAddDTO getAddDTO(Integer entityId) {
         MetaFieldAddDTO dto = new MetaFieldAddDTO();
         dto.setEntityId(entityId);
         dto.setAutoIncrement(SafeUtil.getInteger(E_AUTOINCREMENT));
@@ -53,10 +54,11 @@ public class MetaFieldHelper {
 
     /**
      * 生成update测试数据
+     *
      * @return
      */
-    public static MetaFieldUpdateDTO getUpdateDTO(MetaFieldPO metaField){
-        MetaFieldUpdateDTO metaFieldUpdateDTO= new MetaFieldUpdateDTO();
+    public static MetaFieldUpdateDTO getUpdateDTO(MetaFieldPO metaField) {
+        MetaFieldUpdateDTO metaFieldUpdateDTO = new MetaFieldUpdateDTO();
         metaFieldUpdateDTO.setFieldId(metaField.getFieldId());
         metaFieldUpdateDTO.setAutoIncrement(metaField.getAutoIncrement());
         metaFieldUpdateDTO.setDefaultValue(metaField.getDefaultValue());

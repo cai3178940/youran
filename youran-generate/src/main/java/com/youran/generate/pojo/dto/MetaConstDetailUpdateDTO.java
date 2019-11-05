@@ -5,12 +5,13 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
-import static com.youran.generate.pojo.example.MetaConstDetailExample.*;
+import static com.youran.generate.pojo.example.MetaConstDetailExample.E_CONSTDETAILID;
+import static com.youran.generate.pojo.example.MetaConstDetailExample.N_CONSTDETAILID;
 
 
 /**
- * <p>Title:修改常量值DTO</p>
- * <p>Description:</p>
+ * 修改常量值DTO
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

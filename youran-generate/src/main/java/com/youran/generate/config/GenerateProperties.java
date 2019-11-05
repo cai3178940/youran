@@ -1,12 +1,11 @@
 package com.youran.generate.config;
 
-import com.youran.generate.constant.DevMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>Title:配置参数类</p>
- * <p>Description:该类中的参数来自配置文件</p>
+ * 配置参数类，该类中的参数来自配置文件
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -21,7 +20,8 @@ public class GenerateProperties {
 
     /**
      * 开发模式：0非开发模式，1本地工程全替换，2本地工程部分替换
-     * @see DevMode
+     *
+     * @see com.youran.generate.constant.DevMode
      */
     private Integer devMode = 0;
 
@@ -91,7 +91,6 @@ public class GenerateProperties {
     public void setDevProjectDir(String devProjectDir) {
         this.devProjectDir = devProjectDir;
     }
-
 
 
 }

@@ -10,8 +10,8 @@ import java.util.Date;
 import static com.youran.generate.pojo.example.MetaCascadeExtExample.*;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 外键级联扩展列表VO
+ *
  * @author: cbb
  * @date: 2018/5/28
  */
@@ -83,7 +83,6 @@ public class MetaCascadeExtListVO extends AbstractVO {
      */
     @ApiModelProperty(notes = "级联展示字段描述", example = "名称")
     private String cascadeFieldDesc;
-
 
 
     @ApiModelProperty(notes = N_CREATEDTIME, example = E_CREATEDTIME)

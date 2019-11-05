@@ -29,13 +29,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * <p>Title: 【ER图】控制器</p>
- * <p>Description: </p>
+ * 【ER图】控制器
+ *
  * @author cbb
  * @date 2018/7/17
  */
 @RestController
-@RequestMapping(WebConst.API_PATH +"/er_diagram")
+@RequestMapping(WebConst.API_PATH + "/er_diagram")
 public class ErDiagramController extends AbstractController implements ErDiagramAPI {
 
     @Autowired
@@ -47,10 +47,11 @@ public class ErDiagramController extends AbstractController implements ErDiagram
 
     @Override
     @GetMapping(value = "/show")
-    public ResponseEntity<ErDiagramVO> show(@RequestParam Integer projectId, @RequestParam(required = false) List<Integer> entityIds) {
+    public ResponseEntity<ErDiagramVO> show(@RequestParam Integer projectId,
+                                            @RequestParam(required = false) List<Integer> entityIds) {
 
         // 如果没有传入实体id列表，则获取项目下所有实体id
-        if(CollectionUtils.isEmpty(entityIds)){
+        if (CollectionUtils.isEmpty(entityIds)) {
             entityIds = metaEntityService.findIdsByProject(projectId);
         }
         // 获取组装完的实体列表
@@ -60,7 +61,7 @@ public class ErDiagramController extends AbstractController implements ErDiagram
         // 组装外键实体和外键字段
         metaQueryAssembleService.assembleForeign(metaEntities, false);
         // 查询多对多列表
-        List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId,false);
+        List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId, false);
         // 组装多对多对象引用
         manyToManies = metaQueryAssembleService.assembleManyToManyWithEntities(metaEntities, manyToManies, false);
 
@@ -72,21 +73,21 @@ public class ErDiagramController extends AbstractController implements ErDiagram
             entityDiagramVO.setKey(metaEntity.getTableName());
             for (MetaFieldPO field : metaEntity.getFields().values()) {
                 String type = "";
-                if(BoolConst.isTrue(field.getPrimaryKey())){
+                if (BoolConst.isTrue(field.getPrimaryKey())) {
                     type = FieldDiagramVO.PRIMARY_KEY;
-                }else if(BoolConst.isTrue(field.getForeignKey())){
+                } else if (BoolConst.isTrue(field.getForeignKey())) {
                     type = FieldDiagramVO.FOREIGN_KEY;
-                }else if(MetaSpecialField.isVersion(field.getSpecialField())){
+                } else if (MetaSpecialField.isVersion(field.getSpecialField())) {
                     type = FieldDiagramVO.VERSION;
-                }else if(MetaSpecialField.isDeleted(field.getSpecialField())){
+                } else if (MetaSpecialField.isDeleted(field.getSpecialField())) {
                     type = FieldDiagramVO.DELETE;
                 }
-                entityDiagramVO.addField(field.getFieldName(),type,field.getFieldDesc());
+                entityDiagramVO.addField(field.getFieldName(), type, field.getFieldDesc());
             }
             nodeData.add(entityDiagramVO);
 
             Set<MetaEntityPO> foreignEntities = metaEntity.getForeignEntities();
-            if(CollectionUtils.isNotEmpty(foreignEntities)){
+            if (CollectionUtils.isNotEmpty(foreignEntities)) {
                 for (MetaEntityPO foreignEntity : foreignEntities) {
                     RelationDiagramVO realtionVO = new RelationDiagramVO();
                     realtionVO.setFrom(foreignEntity.getTableName());
@@ -102,7 +103,7 @@ public class ErDiagramController extends AbstractController implements ErDiagram
         for (MetaManyToManyPO manyToManyPO : manyToManies) {
             MetaEntityPO refer1 = manyToManyPO.getRefer1();
             MetaEntityPO refer2 = manyToManyPO.getRefer2();
-            if(refer1 == null || refer2 == null){
+            if (refer1 == null || refer2 == null) {
                 continue;
             }
             RelationDiagramVO realtionVO = new RelationDiagramVO();
@@ -113,7 +114,7 @@ public class ErDiagramController extends AbstractController implements ErDiagram
             linkData.add(realtionVO);
         }
 
-        ErDiagramVO vo = new ErDiagramVO(nodeData,linkData);
+        ErDiagramVO vo = new ErDiagramVO(nodeData, linkData);
 
         return ResponseEntity.ok(vo);
     }

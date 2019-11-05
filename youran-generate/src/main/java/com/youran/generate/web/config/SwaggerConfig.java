@@ -9,8 +9,8 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * <p>Title:swagger配置引入</p>
- * <p>Description:</p>
+ * swagger配置引入
+ *
  * @author: cbb
  * @date: 2018/1/16
  */
@@ -19,7 +19,8 @@ public class SwaggerConfig {
 
     @EnableSwagger2Doc
     @ConditionalOnProperty(value = "swagger.enabled")
-    public static class SwaggerEnabledConfig{}
+    public static class SwaggerEnabledConfig {
+    }
 
     /**
      * 如果没有开启swagger，则需要手动隐藏swagger-ui.html静态页面
@@ -31,7 +32,7 @@ public class SwaggerConfig {
         @Override
         public void addViewControllers(ViewControllerRegistry registry) {
             registry.addStatusController("/swagger-ui.html", HttpStatus.NOT_FOUND);
-            registry.setOrder( Ordered.HIGHEST_PRECEDENCE );
+            registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         }
 
     }

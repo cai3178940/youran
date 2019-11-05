@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * <p>Title: 【多对多级联扩展】数据库操作</p>
- * <p>Description: </p>
+ * 【多对多级联扩展】数据库操作
+ *
  * @author cbb
  * @date 2019/09/21
  */
@@ -22,6 +22,7 @@ public interface MetaMtmCascadeExtDAO extends DAO<MetaMtmCascadeExtPO> {
 
     /**
      * 根据条件查询【多对多级联扩展】列表
+     *
      * @param metaMtmCascadeExtQO
      * @return
      */
@@ -29,29 +30,32 @@ public interface MetaMtmCascadeExtDAO extends DAO<MetaMtmCascadeExtPO> {
 
     /**
      * 判断级联字段id是否存在
-     * @param mtmId 级联所属多对多
-     * @param entityId 级联所属实体
-     * @param cascadeFieldId 待检测的字段id
+     *
+     * @param mtmId           级联所属多对多
+     * @param entityId        级联所属实体
+     * @param cascadeFieldId  待检测的字段id
      * @param mtmCascadeExtId 需要排除的主键
      * @return
      */
-    boolean cascadeFieldIdExists(@Param("mtmId")Integer mtmId,
-                                 @Param("entityId")Integer entityId,
-                                 @Param("cascadeFieldId")Integer cascadeFieldId,
-                                 @Param("mtmCascadeExtId")Integer mtmCascadeExtId);
+    boolean cascadeFieldIdExists(@Param("mtmId") Integer mtmId,
+                                 @Param("entityId") Integer entityId,
+                                 @Param("cascadeFieldId") Integer cascadeFieldId,
+                                 @Param("mtmCascadeExtId") Integer mtmCascadeExtId);
 
     /**
      * 根据多对多id和当前实体id查询【多对多级联扩展】
+     *
      * @param mtmId
      * @param entityId
      * @return
      */
-    List<MetaMtmCascadeExtPO> findByMtmIdAndEntityId(@Param("mtmId")Integer mtmId,
-                                         @Param("entityId")Integer entityId) ;
+    List<MetaMtmCascadeExtPO> findByMtmIdAndEntityId(@Param("mtmId") Integer mtmId,
+                                                     @Param("entityId") Integer entityId);
 
 
     /**
      * 根据级联字段id查询主键列表
+     *
      * @param cascadeFieldId
      * @return
      */

@@ -3,8 +3,8 @@ package com.youran.generate.pojo.po;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * <p>Title: 模板文件</p>
- * <p>Description: 模板文件</p>
+ * 模板文件
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -32,6 +32,7 @@ public class TemplateFilePO extends BasePO {
 
     /**
      * 上下文类型【1全局、2实体、3常量】
+     *
      * @see com.youran.generate.constant.ContextType
      */
     private Integer contextType;
@@ -49,10 +50,11 @@ public class TemplateFilePO extends BasePO {
 
     /**
      * 构建模板文件路径
+     *
      * @return
      */
-    public String buildFilePath(){
-        return this.fileDir+fileName;
+    public String buildFilePath() {
+        return this.fileDir + fileName;
     }
 
     public Integer getFileId() {

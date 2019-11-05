@@ -1,8 +1,8 @@
 package com.youran.generate.pojo.vo;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 索引详情VO
+ *
  * @author: cbb
  * @date: 2017/5/16
  */

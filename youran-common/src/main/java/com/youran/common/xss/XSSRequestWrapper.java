@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 具有过滤XSS功能的Request包装类
+ *
  * @author: cbb
  * @date: 2018/3/2
  */
-public class XSSRequestWrapper  extends HttpServletRequestWrapper {
+public class XSSRequestWrapper extends HttpServletRequestWrapper {
 
-    private Map<String , String[]> params = new HashMap<>();
+    private Map<String, String[]> params = new HashMap<>();
 
-    @SuppressWarnings("unchecked")
+
     public XSSRequestWrapper(HttpServletRequest request) {
         // 将request交给父类，以便于调用对应方法的时候，将其输出，其实父亲类的实现方式和第一种new的方式类似
         super(request);
@@ -25,13 +25,14 @@ public class XSSRequestWrapper  extends HttpServletRequestWrapper {
 
     /**
      * 重写getParameter，代表参数从当前类中的map获取
+     *
      * @param name
      * @return
      */
     @Override
     public String getParameter(String name) {
-        String[]values = params.get(name);
-        if(values == null || values.length == 0) {
+        String[] values = params.get(name);
+        if (values == null || values.length == 0) {
             return null;
         }
         String result = values[0];
@@ -43,20 +44,20 @@ public class XSSRequestWrapper  extends HttpServletRequestWrapper {
     @Override
     public String[] getParameterValues(String name) {
         //数组
-        if(params.get(name) instanceof String[]) {
+        if (params.get(name) instanceof String[]) {
             int size = (params.get(name)).length;
             String[] vals = new String[size];
-            for(int i=0;i<(params.get(name)).length;i++) {
+            for (int i = 0; i < (params.get(name)).length; i++) {
                 //转码
                 String str = clean((params.get(name))[i]);
                 vals[i] = str;
             }
-            return  vals;
+            return vals;
         }
         return null;
     }
 
-    private String clean(String value){
+    private String clean(String value) {
         return XSSUtil.clean(value);
     }
 

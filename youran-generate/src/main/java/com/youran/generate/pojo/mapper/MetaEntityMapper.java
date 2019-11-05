@@ -8,18 +8,20 @@ import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
- * <p>Title:实体映射</p>
- * <p>Description:基于mapstruct来实现，编译器自动生成实现类</p>
+ * 实体映射
+ * <p>基于mapstruct来实现，编译器自动生成实现类
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
 @Mapper(uses = FeatureMapper.class)
 public interface MetaEntityMapper {
 
-    MetaEntityMapper INSTANCE = Mappers.getMapper( MetaEntityMapper.class );
+    MetaEntityMapper INSTANCE = Mappers.getMapper(MetaEntityMapper.class);
 
     /**
      * addDTO映射po
+     *
      * @param addDTO
      * @return
      */
@@ -27,6 +29,7 @@ public interface MetaEntityMapper {
 
     /**
      * 将updateDTO中的值设置到po
+     *
      * @param metaEntityPO
      * @param metaEntityUpdateDTO
      */
@@ -34,6 +37,7 @@ public interface MetaEntityMapper {
 
     /**
      * po映射showVO
+     *
      * @param metaEntityPO
      * @return
      */

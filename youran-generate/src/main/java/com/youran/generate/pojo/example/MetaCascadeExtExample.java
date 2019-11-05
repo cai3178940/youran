@@ -3,8 +3,8 @@ package com.youran.generate.pojo.example;
 import com.youran.common.pojo.example.AbstractExample;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 外键级联扩展参数示例
+ *
  * @author: cbb
  * @date: 2018/5/28
  */

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * <p>Title:【索引】数据库操作</p>
- * <p>Description:</p>
+ * 【索引】数据库操作
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -20,6 +20,7 @@ public interface MetaIndexDAO extends DAO<MetaIndexPO> {
 
     /**
      * 根据实体id查询索引列表
+     *
      * @param entityId
      * @return
      */

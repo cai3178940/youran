@@ -4,8 +4,8 @@ import com.youran.common.context.LoginContext;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 当前系统的用户登录上下文
+ *
  * @author: cbb
  * @date: 2017/9/18
  */

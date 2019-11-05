@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * <p>Title:常量增删改查服务</p>
- * <p>Description:</p>
+ * 常量增删改查服务
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -31,8 +31,10 @@ public class MetaConstService {
     private MetaConstDAO metaConstDAO;
     @Autowired
     private MetaProjectService metaProjectService;
+
     /**
      * 新增常量
+     *
      * @param metaConstDTO
      * @return
      */
@@ -53,6 +55,7 @@ public class MetaConstService {
 
     /**
      * 修改常量
+     *
      * @param metaConstUpdateDTO
      * @return
      */
@@ -60,7 +63,7 @@ public class MetaConstService {
     @OptimisticLock
     public MetaConstPO update(MetaConstUpdateDTO metaConstUpdateDTO) {
         Integer constId = metaConstUpdateDTO.getConstId();
-        MetaConstPO metaConst = this.getConst(constId,true);
+        MetaConstPO metaConst = this.getConst(constId, true);
         Integer projectId = metaConst.getProjectId();
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
@@ -72,20 +75,22 @@ public class MetaConstService {
 
     /**
      * 获取常量对象
+     *
      * @param constId
      * @param force
      * @return
      */
-    public MetaConstPO getConst(Integer constId, boolean force){
+    public MetaConstPO getConst(Integer constId, boolean force) {
         MetaConstPO metaConstPO = metaConstDAO.findById(constId);
-        if(force && metaConstPO==null){
-            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"常量不存在");
+        if (force && metaConstPO == null) {
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND, "常量不存在");
         }
         return metaConstPO;
     }
 
     /**
      * 查询分页列表
+     *
      * @param metaConstQO
      * @return
      */
@@ -96,17 +101,19 @@ public class MetaConstService {
 
     /**
      * 查询常量详情
+     *
      * @param constId
      * @return
      */
     public MetaConstShowVO show(Integer constId) {
-        MetaConstPO metaConst = this.getConst(constId,true);
+        MetaConstPO metaConst = this.getConst(constId, true);
         MetaConstShowVO showVO = MetaConstMapper.INSTANCE.toShowVO(metaConst);
         return showVO;
     }
 
     /**
      * 删除常量
+     *
      * @param constId
      * @return
      */
@@ -115,8 +122,8 @@ public class MetaConstService {
         int count = 0;
         Integer projectId = null;
         for (Integer id : constId) {
-            MetaConstPO metaConst = this.getConst(id,false);
-            if(metaConst==null){
+            MetaConstPO metaConst = this.getConst(id, false);
+            if (metaConst == null) {
                 continue;
             }
             projectId = metaConst.getProjectId();
@@ -124,7 +131,7 @@ public class MetaConstService {
             metaProjectService.checkOperatorByProjectId(projectId);
             count += metaConstDAO.delete(id);
         }
-        if(count>0) {
+        if (count > 0) {
             metaProjectService.updateProjectVersion(projectId);
         }
         return count;
@@ -132,6 +139,7 @@ public class MetaConstService {
 
     /**
      * 根据项目id查询常量id列表
+     *
      * @param projectId
      * @return
      */

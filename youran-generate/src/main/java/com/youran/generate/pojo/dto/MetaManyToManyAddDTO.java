@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
 import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
 
 /**
- * <p>Title:新增实体DTO</p>
- * <p>Description:</p>
+ * 新增多对多关系参数
+ *
  * @author: cbb
  * @date: 2017/5/12
  */

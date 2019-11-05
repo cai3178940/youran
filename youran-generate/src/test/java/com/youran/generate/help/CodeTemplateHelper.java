@@ -18,9 +18,10 @@ public class CodeTemplateHelper {
 
     /**
      * 生成add测试数据
+     *
      * @return
      */
-    public CodeTemplateAddDTO getCodeTemplateAddDTO(){
+    public CodeTemplateAddDTO getCodeTemplateAddDTO() {
         CodeTemplateAddDTO dto = new CodeTemplateAddDTO();
         dto.setName(E_NAME);
         dto.setTemplateType(SafeUtil.getInteger(E_TEMPLATE_TYPE));
@@ -33,9 +34,10 @@ public class CodeTemplateHelper {
 
     /**
      * 生成update测试数据
+     *
      * @return
      */
-    public CodeTemplateUpdateDTO getCodeTemplateUpdateDTO(CodeTemplatePO codeTemplate){
+    public CodeTemplateUpdateDTO getCodeTemplateUpdateDTO(CodeTemplatePO codeTemplate) {
         CodeTemplateUpdateDTO dto = new CodeTemplateUpdateDTO();
         dto.setTemplateId(codeTemplate.getTemplateId());
         dto.setName(codeTemplate.getName());
@@ -48,13 +50,13 @@ public class CodeTemplateHelper {
 
     /**
      * 保存示例
+     *
      * @return
      */
-    public CodeTemplatePO saveCodeTemplateExample(){
+    public CodeTemplatePO saveCodeTemplateExample() {
         CodeTemplateAddDTO addDTO = this.getCodeTemplateAddDTO();
         return codeTemplateService.save(addDTO);
     }
-
 
 
 }

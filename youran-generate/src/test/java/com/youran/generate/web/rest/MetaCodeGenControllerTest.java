@@ -14,17 +14,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
  * @author: cbb
  * @date: 2017/5/14
  */
 public class MetaCodeGenControllerTest extends AbstractWebTest {
 
-    @Autowired
-    private GenerateHelper generateHelper;
-    @Autowired
-    private MetaProjectService metaProjectService;
     @Autowired
     protected MetaEntityService metaEntityService;
     @Autowired
@@ -35,7 +29,10 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
     protected MetaConstService metaConstService;
     @Autowired
     protected MetaConstDetailService metaConstDetailService;
-
+    @Autowired
+    private GenerateHelper generateHelper;
+    @Autowired
+    private MetaProjectService metaProjectService;
     private MetaProjectPO bbsProject;
     private MetaEntityPO userEntity;
     private MetaFieldPO idField;
@@ -57,8 +54,8 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
      * 构建元数据
      */
     @Before
-    public void buildMetadata(){
-        this.bbsProject = generateHelper.saveProject("com.cbb","bbs","com.cbb.bbs","cbb");
+    public void buildMetadata() {
+        this.bbsProject = generateHelper.saveProject("com.cbb", "bbs", "com.cbb.bbs", "cbb");
         this.userEntity = this.saveUserEntity(this.bbsProject);
         this.idField = this.saveIdField(this.userEntity);
         this.userNameField = this.saveUserNameField(this.userEntity);
@@ -70,7 +67,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         this.operatedTimeField = generateHelper.saveOperatedTimeField(this.userEntity);
         this.operatedByField = generateHelper.saveOperatedByField(this.userEntity);
         this.versionField = generateHelper.saveVersionField(this.userEntity);
-        this.usernameIndex = this.saveUsernameIndex(this.userEntity,this.userNameField);
+        this.usernameIndex = this.saveUsernameIndex(this.userEntity, this.userNameField);
         this.sexEnum = this.saveSexEnum(this.bbsProject);
         this.manConstDetail = this.saveManConstDetail(this.sexEnum);
         this.womanConstDetail = this.saveWomanConstDetail(this.sexEnum);
@@ -218,7 +215,6 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
     }
 
 
-
     //保存用户名唯一索引
     private MetaIndexPO saveUsernameIndex(MetaEntityPO userEntity, MetaFieldPO userNameField) {
         MetaIndexAddDTO dto = new MetaIndexAddDTO();
@@ -262,15 +258,16 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
 
     @Test
     public void genSql() throws Exception {
-        restMockMvc.perform(get(getApiPath()+"/code_gen/genSql")
-                .param("projectId",bbsProject.getProjectId()+""))
-                .andExpect(status().isOk());
+        restMockMvc.perform(get(getApiPath() + "/code_gen/genSql")
+            .param("projectId", bbsProject.getProjectId() + ""))
+            .andExpect(status().isOk());
     }
+
     @Test
     public void genCode() throws Exception {
-        restMockMvc.perform(get(getApiPath()+"/code_gen/genCode")
-                .param("projectId",bbsProject.getProjectId()+""))
-                .andExpect(status().isOk());
+        restMockMvc.perform(get(getApiPath() + "/code_gen/genCode")
+            .param("projectId", bbsProject.getProjectId() + ""))
+            .andExpect(status().isOk());
     }
 
 }

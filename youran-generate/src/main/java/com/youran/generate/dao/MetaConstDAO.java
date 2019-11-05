@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * <p>Title:【常量】数据库操作</p>
- * <p>Description:</p>
+ * 【常量】数据库操作
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -19,9 +19,10 @@ public interface MetaConstDAO extends DAO<MetaConstPO> {
 
     /**
      * 根据项目id查询常量id列表
+     *
      * @param projectId
      * @return
      */
-    List<Integer> findIdsByProject(Integer projectId) ;
+    List<Integer> findIdsByProject(Integer projectId);
 
 }

@@ -7,36 +7,36 @@ import org.hibernate.validator.constraints.Length;
 import static com.youran.generate.pojo.example.TemplateFileExample.*;
 
 /**
- * <p>Title: 查询【模板文件】的参数</p>
- * <p>Description: </p>
+ * 查询【模板文件】的参数
+ *
  * @author cbb
  * @date 2019/10/24
  */
 public class TemplateFileQO extends AbstractQO {
 
-    @ApiParam(value = N_FILE_NAME,example = E_FILE_NAME)
-    @Length(max = 100,message = "fileName最大长度不能超过{max}")
+    @ApiParam(value = N_FILE_NAME, example = E_FILE_NAME)
+    @Length(max = 100, message = "fileName最大长度不能超过{max}")
     private String fileName;
 
-    @ApiParam(value = N_TEMPLATE_ID,example = E_TEMPLATE_ID)
+    @ApiParam(value = N_TEMPLATE_ID, example = E_TEMPLATE_ID)
     private Integer templateId;
 
-    @ApiParam(value = N_CONTEXT_TYPE,example = E_CONTEXT_TYPE)
+    @ApiParam(value = N_CONTEXT_TYPE, example = E_CONTEXT_TYPE)
     private Integer contextType;
 
-    @ApiParam(value = N_ABSTRACTED,example = E_ABSTRACTED)
+    @ApiParam(value = N_ABSTRACTED, example = E_ABSTRACTED)
     private Boolean abstracted;
 
-    @ApiParam(value = "文件名排序标识【1升序,-1降序,0不排序】",example = "1")
+    @ApiParam(value = "文件名排序标识【1升序,-1降序,0不排序】", example = "1")
     private Integer fileNameSortSign;
 
-    @ApiParam(value = "文件目录排序标识【1升序,-1降序,0不排序】",example = "1")
+    @ApiParam(value = "文件目录排序标识【1升序,-1降序,0不排序】", example = "1")
     private Integer fileDirSortSign;
 
-    @ApiParam(value = "创建时间排序标识【1升序,-1降序,0不排序】",example = "1")
+    @ApiParam(value = "创建时间排序标识【1升序,-1降序,0不排序】", example = "1")
     private Integer createdTimeSortSign;
 
-    @ApiParam(value = "修改时间排序标识【1升序,-1降序,0不排序】",example = "1")
+    @ApiParam(value = "修改时间排序标识【1升序,-1降序,0不排序】", example = "1")
     private Integer operatedTimeSortSign;
 
 

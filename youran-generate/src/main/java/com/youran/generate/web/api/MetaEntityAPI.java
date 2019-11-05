@@ -15,8 +15,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * <p>Title:【实体】api</p>
- * <p>Description:</p>
+ * 【实体】api
+ *
  * @author: cbb
  * @date: 2017/5/12
  */
@@ -28,7 +28,7 @@ public interface MetaEntityAPI {
      */
     @ApiOperation(value = "新增实体")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaEntityAddDTO", dataType = "MetaEntityAddDTO", value = "新增实体参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaEntityAddDTO", dataType = "MetaEntityAddDTO", value = "新增实体参数", paramType = "body"),
     })
     ResponseEntity<MetaEntityShowVO> save(MetaEntityAddDTO metaEntityAddDTO) throws Exception;
 
@@ -37,7 +37,7 @@ public interface MetaEntityAPI {
      */
     @ApiOperation(value = "修改实体")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaEntityUpdateDTO", dataType = "MetaEntityUpdateDTO", value = "修改实体参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaEntityUpdateDTO", dataType = "MetaEntityUpdateDTO", value = "修改实体参数", paramType = "body"),
     })
     ResponseEntity<MetaEntityShowVO> update(MetaEntityUpdateDTO metaEntityUpdateDTO);
 
@@ -46,7 +46,7 @@ public interface MetaEntityAPI {
      */
     @ApiOperation(value = "查询实体列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "metaEntityQO", dataType = "MetaEntityQO", value = "查询参数", paramType = "query"),
+        @ApiImplicitParam(name = "metaEntityQO", dataType = "MetaEntityQO", value = "查询参数", paramType = "query"),
     })
     ResponseEntity<List<MetaEntityListVO>> list(MetaEntityQO metaEntityQO);
 
@@ -55,7 +55,7 @@ public interface MetaEntityAPI {
      */
     @ApiOperation(value = "查看实体详情")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
+        @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
     })
     ResponseEntity<MetaEntityShowVO> show(Integer entityId);
 
@@ -64,15 +64,16 @@ public interface MetaEntityAPI {
      */
     @ApiOperation(value = "删除实体")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
+        @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
     })
     ResponseEntity<Integer> delete(Integer entityId);
+
     /**
      * 批量删除实体
      */
     @ApiOperation(value = "批量删除实体")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id数组", paramType = "body"),
+        @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id数组", paramType = "body"),
     })
     ResponseEntity<Integer> deleteBatch(Integer[] entityId);
 
@@ -81,7 +82,7 @@ public interface MetaEntityAPI {
      */
     @ApiOperation(value = "查询某实体下的多对多关联实体")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
+        @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
     })
     ResponseEntity<MetaEntityListPairVO> mtmEntityListPair(Integer entityId);
 

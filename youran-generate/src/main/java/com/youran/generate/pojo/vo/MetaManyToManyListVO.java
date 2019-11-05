@@ -8,8 +8,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import static com.youran.generate.pojo.example.MetaManyToManyExample.*;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 多对多列表VO
+ *
  * @author: cbb
  * @date: 2017/7/4
  */

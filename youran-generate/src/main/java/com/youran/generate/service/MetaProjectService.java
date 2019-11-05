@@ -27,10 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * <p>Title:项目增删改查服务</p>
- * <p>Description:</p>
+ * 项目增删改查服务
+ *
  * @author: cbb
- * Create Time:2017/5/24
+ * @date 2017/5/24
  */
 @Service
 public class MetaProjectService {
@@ -49,15 +49,18 @@ public class MetaProjectService {
 
     /**
      * 获取项目正规名称
+     *
      * @param projectId
      * @return
      */
-    public String getNormalProjectName(Integer projectId){
-        MetaProjectPO projectPO = this.getProject(projectId,true);
+    public String getNormalProjectName(Integer projectId) {
+        MetaProjectPO projectPO = this.getProject(projectId, true);
         return projectPO.fetchNormalProjectName();
     }
+
     /**
      * 新增项目
+     *
      * @param metaProjectDTO
      * @return
      */
@@ -65,13 +68,13 @@ public class MetaProjectService {
     public MetaProjectPO save(MetaProjectAddDTO metaProjectDTO) {
         MetaProjectPO project = MetaProjectMapper.INSTANCE.fromAddDTO(metaProjectDTO);
         String password = project.getPassword();
-        if(StringUtils.isNotBlank(password)){
+        if (StringUtils.isNotBlank(password)) {
             String encrypt;
             try {
                 encrypt = AESSecurityUtil.encrypt(password, generateProperties.getAesKey());
             } catch (Exception e) {
-                LOGGER.error("密码加密异常",e);
-                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"密码加密异常");
+                LOGGER.error("密码加密异常", e);
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "密码加密异常");
             }
             project.setPassword(encrypt);
         }
@@ -86,6 +89,7 @@ public class MetaProjectService {
 
     /**
      * 修改项目
+     *
      * @param updateDTO
      * @return
      */
@@ -93,16 +97,16 @@ public class MetaProjectService {
     @OptimisticLock
     public MetaProjectPO update(MetaProjectUpdateDTO updateDTO) {
         Integer projectId = updateDTO.getProjectId();
-        MetaProjectPO project = this.getProject(projectId,true);
+        MetaProjectPO project = this.getProject(projectId, true);
         this.doCheckOperator(project);
         MetaProjectMapper.INSTANCE.setPO(project, updateDTO);
-        if(StringUtils.isNotBlank(updateDTO.getPassword())){
+        if (StringUtils.isNotBlank(updateDTO.getPassword())) {
             String encrypt;
             try {
                 encrypt = AESSecurityUtil.encrypt(updateDTO.getPassword(), generateProperties.getAesKey());
             } catch (Exception e) {
-                LOGGER.error("密码加密异常",e);
-                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,"密码加密异常");
+                LOGGER.error("密码加密异常", e);
+                throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "密码加密异常");
             }
             project.setPassword(encrypt);
         }
@@ -114,6 +118,7 @@ public class MetaProjectService {
 
     /**
      * 查询项目实体
+     *
      * @param projectId
      * @param force
      * @return
@@ -121,7 +126,7 @@ public class MetaProjectService {
     public MetaProjectPO getProject(Integer projectId, boolean force) {
         MetaProjectPO project = metaProjectDAO.findById(projectId);
         if (force && project == null) {
-            throw new BusinessException(ErrorCode.RECORD_NOT_FIND,"项目不存在");
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND, "项目不存在");
         }
         // 兼容旧数据，如果feature字段为空，则设置默认值
         if (StringUtils.isBlank(project.getFeature())) {
@@ -133,10 +138,11 @@ public class MetaProjectService {
 
     /**
      * 更新项目的最终提交历史
+     *
      * @param projectId
      * @param historyId
      */
-    public void updateLastHistory(Integer projectId,Integer historyId){
+    public void updateLastHistory(Integer projectId, Integer historyId) {
         MetaProjectPO project = this.getProject(projectId, true);
         project.setLastHistoryId(historyId);
         metaProjectDAO.update(project);
@@ -145,6 +151,7 @@ public class MetaProjectService {
 
     /**
      * 查询分页列表
+     *
      * @param metaProjectQO
      * @return
      */
@@ -154,17 +161,19 @@ public class MetaProjectService {
 
     /**
      * 查询项目详情
+     *
      * @param projectId
      * @return
      */
     public MetaProjectShowVO show(Integer projectId) {
-        MetaProjectPO metaProject = this.getProject(projectId,true);
+        MetaProjectPO metaProject = this.getProject(projectId, true);
         MetaProjectShowVO showVO = MetaProjectMapper.INSTANCE.toShowVO(metaProject);
         return showVO;
     }
 
     /**
      * 删除项目
+     *
      * @param projectId
      * @return
      */
@@ -181,23 +190,28 @@ public class MetaProjectService {
 
     /**
      * 更新项目版本号
+     *
      * @param projectId
      */
-    public void updateProjectVersion(Integer projectId){
-        MetaProjectPO projectPO = this.getProject(projectId,true);
-        projectPO.setProjectVersion(projectPO.getProjectVersion()+1);
+    public void updateProjectVersion(Integer projectId) {
+        MetaProjectPO projectPO = this.getProject(projectId, true);
+        projectPO.setProjectVersion(projectPO.getProjectVersion() + 1);
         metaProjectDAO.update(projectPO);
     }
+
     /**
      * 通过entityId更新项目版本号
+     *
      * @param entityId
      */
     public void updateProjectVersionByEntityId(Integer entityId) {
-        MetaEntityPO entityPO = metaEntityService.getEntity(entityId,true);
+        MetaEntityPO entityPO = metaEntityService.getEntity(entityId, true);
         this.updateProjectVersion(entityPO.getProjectId());
     }
+
     /**
      * 通过constId更新项目版本号
+     *
      * @param constId
      */
     public void updateProjectVersionByConstId(Integer constId) {
@@ -208,15 +222,17 @@ public class MetaProjectService {
     /**
      * 根据项目id校验操作人
      * 如果当前操作人不是创建人，则抛异常
+     *
      * @param projectId
      */
-    public void checkOperatorByProjectId(Integer projectId){
-        MetaProjectPO projectPO = this.getProject(projectId,true);
+    public void checkOperatorByProjectId(Integer projectId) {
+        MetaProjectPO projectPO = this.getProject(projectId, true);
         doCheckOperator(projectPO);
     }
 
     /**
      * 执行操作人校验
+     *
      * @param projectPO
      */
     private void doCheckOperator(MetaProjectPO projectPO) {
@@ -233,10 +249,11 @@ public class MetaProjectService {
     /**
      * 根据实体id校验操作人
      * 如果当前操作人不是创建人，则抛异常
+     *
      * @param entityId
      */
     public void checkOperatorByEntityId(Integer entityId) {
-        MetaEntityPO entityPO = metaEntityService.getEntity(entityId,true);
+        MetaEntityPO entityPO = metaEntityService.getEntity(entityId, true);
         this.checkOperatorByProjectId(entityPO.getProjectId());
     }
 
@@ -244,13 +261,13 @@ public class MetaProjectService {
     /**
      * 根据常量id校验操作人
      * 如果当前操作人不是创建人，则抛异常
+     *
      * @param constId
      */
     public void checkOperatorByConstId(Integer constId) {
         MetaConstPO constPO = metaConstService.getConst(constId, true);
         this.checkOperatorByProjectId(constPO.getProjectId());
     }
-
 
 
 }

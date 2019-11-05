@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>Title: 代码文件节点</p>
- * <p>Description: </p>
+ * 代码文件节点
+ *
  * @author cbb
  * @date 2019/8/29
  */
@@ -56,9 +56,9 @@ public class FileNodeVO<T> extends AbstractVO implements TreeNode<FileNodeVO> {
     public FileNodeVO(Boolean dir, String path, T info) {
         this.dir = dir;
         this.path = path;
-        this.name = path.substring(path.lastIndexOf("/")+1);
+        this.name = path.substring(path.lastIndexOf("/") + 1);
         this.type = FilenameUtils.getExtension(this.name);
-        if(dir){
+        if (dir) {
             this.children = new ArrayList<>();
         }
         this.info = info;

@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>Title:web配置</p>
- * <p>Description:</p>
+ * web配置
+ *
  * @author: cbb
  * @date: 2018/2/11
  */
@@ -26,6 +26,7 @@ public class WebConfig {
 
     /**
      * 防止通过parameter传入XSS脚本
+     *
      * @return
      */
     @Bean
@@ -41,33 +42,34 @@ public class WebConfig {
 
     /**
      * 防止通过body传入XSS脚本
+     *
      * @return
      */
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jacksonXssCustomizer(){
+    public Jackson2ObjectMapperBuilderCustomizer jacksonXssCustomizer() {
         return jacksonObjectMapperBuilder ->
-            jacksonObjectMapperBuilder.deserializerByType(String.class,new JacksonXssDeserializer());
+            jacksonObjectMapperBuilder.deserializerByType(String.class, new JacksonXssDeserializer());
     }
 
     /**
      * security配置
      */
     @Configuration
-    public static class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
+    public static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         @Autowired
         private GenerateProperties generateProperties;
 
         @Override
-        protected void configure(HttpSecurity http) throws Exception{
-            if(generateProperties.isSecurityEnabled()){
+        protected void configure(HttpSecurity http) throws Exception {
+            if (generateProperties.isSecurityEnabled()) {
                 http.csrf().disable()
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin().and()
                     .httpBasic();
-            }else{
+            } else {
                 http.csrf().disable().authorizeRequests().anyRequest().permitAll();
             }
         }

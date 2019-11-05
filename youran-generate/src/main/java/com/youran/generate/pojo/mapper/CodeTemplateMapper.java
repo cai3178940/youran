@@ -8,35 +8,38 @@ import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
- * <p>Title: 【代码模板】映射</p>
- * <p>Description: </p>
+ * 【代码模板】映射
+ *
  * @author cbb
  * @date 2019/10/24
  */
 @Mapper
 public interface CodeTemplateMapper {
 
-    CodeTemplateMapper INSTANCE = Mappers.getMapper( CodeTemplateMapper.class );
+    CodeTemplateMapper INSTANCE = Mappers.getMapper(CodeTemplateMapper.class);
 
     /**
-    * addDTO映射po
-    * @param codeTemplateAddDTO
-    * @return
-    */
+     * addDTO映射po
+     *
+     * @param codeTemplateAddDTO
+     * @return
+     */
     CodeTemplatePO fromAddDTO(CodeTemplateAddDTO codeTemplateAddDTO);
 
     /**
-    * 将updateDTO中的值设置到po
-    * @param codeTemplatePO
-    * @param codeTemplateUpdateDTO
-    */
+     * 将updateDTO中的值设置到po
+     *
+     * @param codeTemplatePO
+     * @param codeTemplateUpdateDTO
+     */
     void setUpdateDTO(@MappingTarget CodeTemplatePO codeTemplatePO, CodeTemplateUpdateDTO codeTemplateUpdateDTO);
 
     /**
-    * po映射showVO
-    * @param codeTemplatePO
-    * @return
-    */
+     * po映射showVO
+     *
+     * @param codeTemplatePO
+     * @return
+     */
     CodeTemplateShowVO toShowVO(CodeTemplatePO codeTemplatePO);
 
 

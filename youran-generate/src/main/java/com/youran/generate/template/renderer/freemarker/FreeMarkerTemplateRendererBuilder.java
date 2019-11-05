@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>Title: freeMarker模板渲染器建造者</p>
- * <p>Description:</p>
+ * freeMarker模板渲染器建造者
+ *
  * @author: cbb
  * @date: 11/4/2019 22:26
  */

@@ -6,8 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * <p>Title: 【代码模板】数据库操作</p>
- * <p>Description: </p>
+ * 【代码模板】数据库操作
+ *
  * @author cbb
  * @date 2019/10/24
  */

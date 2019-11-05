@@ -3,8 +3,8 @@ package com.youran.generate.pojo.vo;
 import com.youran.generate.pojo.dto.MetaMtmFeatureDTO;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
+ * 多对多详情VO
+ *
  * @author: cbb
  * @date: 2017/7/4
  */

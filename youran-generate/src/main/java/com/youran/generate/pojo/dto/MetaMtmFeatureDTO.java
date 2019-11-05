@@ -3,8 +3,8 @@ package com.youran.generate.pojo.dto;
 import com.youran.common.pojo.dto.AbstractDTO;
 
 /**
- * <p>Title: 多对多特性</p>
- * <p>Description: </p>
+ * 多对多特性
+ *
  * @author cbb
  * @date 2019/9/30
  */

@@ -8,8 +8,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 
 /**
- * <p>Title:【实体】api</p>
- * <p>Description: </p>
+ * 【实体】api
+ *
  * @author: cbb
  * @date: 2019/10/10
  */

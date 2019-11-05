@@ -17,8 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * <p>Title: 【代码模板】单元测试</p>
- * <p>Description: </p>
+ * 【代码模板】单元测试
+ *
  * @author cbb
  * @date 2019/10/24
  */
@@ -70,7 +70,7 @@ public class CodeTemplateControllerTest extends AbstractWebTest {
     @Test
     public void show() throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateHelper.saveCodeTemplateExample();
-        restMockMvc.perform(get(getApiPath() + "/code_template/{templateId}",codeTemplate.getTemplateId()))
+        restMockMvc.perform(get(getApiPath() + "/code_template/{templateId}", codeTemplate.getTemplateId()))
             .andExpect(status().isOk());
     }
 
@@ -80,7 +80,7 @@ public class CodeTemplateControllerTest extends AbstractWebTest {
     @Test
     public void del() throws Exception {
         CodeTemplatePO codeTemplate = codeTemplateHelper.saveCodeTemplateExample();
-        restMockMvc.perform(delete(getApiPath() + "/code_template/{templateId}",codeTemplate.getTemplateId()))
+        restMockMvc.perform(delete(getApiPath() + "/code_template/{templateId}", codeTemplate.getTemplateId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));
     }
@@ -97,7 +97,6 @@ public class CodeTemplateControllerTest extends AbstractWebTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));
     }
-
 
 
 }

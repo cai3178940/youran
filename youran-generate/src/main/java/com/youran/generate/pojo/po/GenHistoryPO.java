@@ -1,8 +1,6 @@
 package com.youran.generate.pojo.po;
 
 /**
- * <p>Title:</p>
- * <p>Description:</p>
  * @author: cbb
  * @date: 2018/3/17
  */

@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * <p>Title: 实体关系图</p>
- * <p>Description: </p>
+ * 实体关系图
+ *
  * @author cbb
  * @date 2018/7/17
  */
@@ -20,6 +20,7 @@ public interface ErDiagramAPI {
 
     /**
      * ER图查看
+     *
      * @param projectId 项目id
      * @param entityIds 实体id
      * @return
