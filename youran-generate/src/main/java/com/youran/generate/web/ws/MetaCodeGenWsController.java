@@ -61,20 +61,20 @@ public class MetaCodeGenWsController extends AbstractController {
     /**
      * websocket服务:只生成代码
      *
-     * @param sessionId  websocket连接id
-     * @param projectId  项目id
-     * @param templateId 模板id
+     * @param sessionId     websocket连接id
+     * @param projectId     项目id
+     * @param templateIndex 模板序号
      */
     @MessageMapping(value = "/genCode/{sessionId}")
     public void genCode(@DestinationVariable String sessionId,
-                        @Header Integer projectId, @Header Integer templateId) {
+                        @Header Integer projectId, @Header Integer templateIndex) {
         // 进度响应主题
         String topic = "/code_gen/genCode_progress/" + sessionId;
         try {
             // 初始化进度条
             ProgressVO.initProgress(sessionId);
             // 生成代码压缩包
-            metaCodeGenService.genProjectCodeIfNotExists(projectId, templateId,
+            metaCodeGenService.genProjectCodeIfNotExists(projectId, templateIndex,
                 progressVO -> this.replyProgress(topic, progressVO));
             this.replyProgress(topic, ProgressVO.success("代码生成完毕"));
         } catch (BusinessException e) {
@@ -90,20 +90,20 @@ public class MetaCodeGenWsController extends AbstractController {
     /**
      * websocket服务:生成代码并打压缩包
      *
-     * @param sessionId  websocket连接id
-     * @param projectId  项目id
-     * @param templateId 模板id
+     * @param sessionId     websocket连接id
+     * @param projectId     项目id
+     * @param templateIndex 模板序号
      */
     @MessageMapping(value = "/genCodeAndZip/{sessionId}")
     public void genCodeAndZip(@DestinationVariable String sessionId,
-                              @Header Integer projectId, @Header Integer templateId) {
+                              @Header Integer projectId, @Header Integer templateIndex) {
         // 进度响应主题
         String topic = "/code_gen/genCodeAndZip_progress/" + sessionId;
         try {
             // 初始化进度条
             ProgressVO.initProgress(sessionId);
             // 生成代码压缩包
-            File zipFile = metaCodeGenService.genCodeZip(projectId, templateId,
+            File zipFile = metaCodeGenService.genCodeZip(projectId, templateIndex,
                 progressVO -> this.replyProgress(topic, progressVO));
             // 将zip文件路径存入缓存，随后浏览器就能下载了
             lruCache.put(sessionId, new Object[]{projectId, zipFile.getPath()});
@@ -148,13 +148,13 @@ public class MetaCodeGenWsController extends AbstractController {
     /**
      * websocket服务:提交Git
      *
-     * @param sessionId  websocket连接id
-     * @param projectId  项目id
-     * @param templateId 模板id
+     * @param sessionId     websocket连接id
+     * @param projectId     项目id
+     * @param templateIndex 模板序号
      */
     @MessageMapping(value = "/gitCommit/{sessionId}")
     public void gitCommit(@DestinationVariable String sessionId,
-                          @Header Integer projectId, @Header Integer templateId) {
+                          @Header Integer projectId, @Header Integer templateIndex) {
         // 进度响应主题
         String topic = "/code_gen/gitCommit_progress/" + sessionId;
         try {
@@ -163,7 +163,7 @@ public class MetaCodeGenWsController extends AbstractController {
             // 校验操作人
             metaProjectService.checkOperatorByProjectId(projectId);
             // 提交到仓库
-            GenHistoryPO history = metaCodeGenService.gitCommit(projectId, templateId,
+            GenHistoryPO history = metaCodeGenService.gitCommit(projectId, templateIndex,
                 progressVO -> this.replyProgress(topic, progressVO));
             this.replyProgress(topic, ProgressVO.success("已创建自动分支【" + history.getBranch() + "】，并提交到远程"));
         } catch (BusinessException e) {

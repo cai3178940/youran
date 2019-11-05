@@ -17,12 +17,14 @@ public class CodeTemplatePO extends BasePO {
      * 主键ID
      */
     private Integer templateId;
-
+    /**
+     * 模板编号
+     */
+    private String code;
     /**
      * 模板名称
      */
     private String name;
-
     /**
      * 模板类型【1后端，2前端】
      *
@@ -75,6 +77,14 @@ public class CodeTemplatePO extends BasePO {
 
     public void setTemplateId(Integer templateId) {
         this.templateId = templateId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {

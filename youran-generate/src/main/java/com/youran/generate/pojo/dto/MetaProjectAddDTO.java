@@ -44,6 +44,16 @@ public class MetaProjectAddDTO extends AbstractDTO {
     @Length(min = 1, max = 50, message = "author最大长度不能超过{max}")
     private String author;
 
+    @ApiModelProperty(notes = N_TEMPLATEID, example = E_TEMPLATEID)
+    @NotNull
+    private Integer templateId;
+
+    @ApiModelProperty(notes = N_TEMPLATEID, example = E_TEMPLATEID)
+    private Integer templateId2;
+
+    @ApiModelProperty(notes = N_TEMPLATEID, example = E_TEMPLATEID)
+    private Integer templateId3;
+
     @ApiModelProperty(notes = N_REMOTE, example = E_REMOTE)
     @NotNull
     @Const(constClass = BoolConst.class)
@@ -52,6 +62,14 @@ public class MetaProjectAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
     @Length(max = 256, message = "remoteUrl最大长度不能超过{max}")
     private String remoteUrl;
+
+    @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
+    @Length(max = 256, message = "remoteUrl2最大长度不能超过{max}")
+    private String remoteUrl2;
+
+    @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
+    @Length(max = 256, message = "remoteUrl3最大长度不能超过{max}")
+    private String remoteUrl3;
 
     @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME)
     @Length(max = 32, message = "username最大长度不能超过{max}")
@@ -144,5 +162,45 @@ public class MetaProjectAddDTO extends AbstractDTO {
 
     public void setProjectDesc(String projectDesc) {
         this.projectDesc = projectDesc;
+    }
+
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
+    }
+
+    public Integer getTemplateId2() {
+        return templateId2;
+    }
+
+    public void setTemplateId2(Integer templateId2) {
+        this.templateId2 = templateId2;
+    }
+
+    public Integer getTemplateId3() {
+        return templateId3;
+    }
+
+    public void setTemplateId3(Integer templateId3) {
+        this.templateId3 = templateId3;
+    }
+
+    public String getRemoteUrl2() {
+        return remoteUrl2;
+    }
+
+    public void setRemoteUrl2(String remoteUrl2) {
+        this.remoteUrl2 = remoteUrl2;
+    }
+
+    public String getRemoteUrl3() {
+        return remoteUrl3;
+    }
+
+    public void setRemoteUrl3(String remoteUrl3) {
+        this.remoteUrl3 = remoteUrl3;
     }
 }

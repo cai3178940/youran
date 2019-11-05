@@ -29,6 +29,18 @@ public class CodeTemplateService {
     @Autowired
     private CodeTemplateDAO codeTemplateDAO;
 
+    /**
+     * 校验数据唯一性
+     *
+     * @param codeTemplate
+     * @param isUpdate     是否更新校验
+     */
+    private void checkUnique(CodeTemplatePO codeTemplate, boolean isUpdate) {
+        if (codeTemplateDAO.notUnique(codeTemplate.getCode(), codeTemplate.getTemplateVersion(),
+            isUpdate ? codeTemplate.getTemplateId() : null)) {
+            throw new BusinessException(ErrorCode.DUPLICATE_KEY,"模板编码+版本号有重复");
+        }
+    }
 
     /**
      * 新增【代码模板】
@@ -51,6 +63,8 @@ public class CodeTemplateService {
      * @param templatePO
      */
     public void doSave(CodeTemplatePO templatePO) {
+        // 唯一性校验
+        this.checkUnique(templatePO, false);
         // 默认内部版本号为0
         templatePO.setInnerVersion(0);
         codeTemplateDAO.save(templatePO);
@@ -69,6 +83,8 @@ public class CodeTemplateService {
         CodeTemplatePO codeTemplate = this.getCodeTemplate(templateId, true);
         CodeTemplateMapper.INSTANCE.setUpdateDTO(codeTemplate, codeTemplateUpdateDTO);
         codeTemplate.setInnerVersion(codeTemplate.getInnerVersion() + 1);
+        // 唯一性校验
+        this.checkUnique(codeTemplate, true);
         codeTemplateDAO.update(codeTemplate);
         return codeTemplate;
     }

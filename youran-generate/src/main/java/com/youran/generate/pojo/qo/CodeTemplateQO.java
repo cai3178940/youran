@@ -14,6 +14,10 @@ import static com.youran.generate.pojo.example.CodeTemplateExample.*;
  */
 public class CodeTemplateQO extends PageQO {
 
+    @ApiParam(value = N_CODE, example = E_CODE)
+    @Length(max = 32, message = "code最大长度不能超过{max}")
+    private String code;
+
     @ApiParam(value = N_NAME, example = E_NAME)
     @Length(max = 32, message = "name最大长度不能超过{max}")
     private String name;
@@ -30,6 +34,14 @@ public class CodeTemplateQO extends PageQO {
     @ApiParam(value = "修改时间排序标识【1升序,-1降序,0不排序】", example = "1")
     private Integer operatedTimeSortSign;
 
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getName() {
         return this.name;

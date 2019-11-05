@@ -22,6 +22,8 @@ public class MetaProjectExample extends AbstractExample {
     public static final String E_GROUPID = "com.myGroup";
     public static final String N_AUTHOR = "开发者";
     public static final String E_AUTHOR = "cbb";
+    public static final String N_TEMPLATEID = "模板ID";
+    public static final String E_TEMPLATEID = "1";
     public static final String N_REMOTE = "启用Git仓库";
     public static final String E_REMOTE = "0";
     public static final String N_REMOTEURL = "Git仓库地址";

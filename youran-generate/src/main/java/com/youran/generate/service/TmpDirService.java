@@ -64,14 +64,17 @@ public class TmpDirService implements InitializingBean {
      * 获取最新代码目录
      *
      * @param project
-     * @return /[tmpRootDir]/code/[projectId]_[projectVersion]
+     * @param templatePO
+     * @return /[tmpRootDir]/code/[projectId]_[projectVersion]_[templateId]_[templateInnerVersion]
      * @see #getTmpRootDir()
      */
-    public String getProjectRecentDir(MetaProjectPO project) {
+    public String getProjectRecentDir(MetaProjectPO project, CodeTemplatePO templatePO) {
         return this.getTmpRootDir()
             + File.separator + "code"
             + File.separator + project.getProjectId()
-            + "_" + project.getProjectVersion();
+            + "_" + project.getProjectVersion()
+            + "_" + templatePO.getTemplateId()
+            + "_" + templatePO.getInnerVersion();
     }
 
     /**

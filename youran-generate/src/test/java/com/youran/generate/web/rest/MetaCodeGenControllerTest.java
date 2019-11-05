@@ -256,12 +256,6 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         return metaConstDetailService.save(dto);
     }
 
-    @Test
-    public void genSql() throws Exception {
-        restMockMvc.perform(get(getApiPath() + "/code_gen/genSql")
-            .param("projectId", bbsProject.getProjectId() + ""))
-            .andExpect(status().isOk());
-    }
 
     @Test
     public void genCode() throws Exception {

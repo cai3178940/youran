@@ -22,6 +22,11 @@ import static com.youran.generate.pojo.example.CodeTemplateExample.*;
 @ApiModel(description = "新增【代码模板】的参数")
 public class CodeTemplateAddDTO extends AbstractDTO {
 
+    @ApiModelProperty(notes = N_CODE, example = E_CODE, required = true)
+    @NotNull
+    @Length(max = 32)
+    private String code;
+
     @ApiModelProperty(notes = N_NAME, example = E_NAME, required = true)
     @NotNull
     @Length(max = 32)
@@ -48,6 +53,13 @@ public class CodeTemplateAddDTO extends AbstractDTO {
     @Length(max = 256)
     private String remark;
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getName() {
         return this.name;

@@ -15,5 +15,13 @@ $el-table-padding: 3px 0;
     .el-form-item__error {
         margin-left: 10px;
     }
+    .col-left {
+        padding-left: 0px!important;
+        line-height: normal;
+    }
+    .col-right {
+        padding-right: 0px!important;;
+        line-height: normal;
+    }
 }
 

@@ -45,6 +45,7 @@ public interface CodeTemplateMapper {
 
     @BeanMapping(ignoreByDefault = true)
     @Mappings({
+        @Mapping(target = "code"),
         @Mapping(target = "name"),
         @Mapping(target = "templateType"),
         @Mapping(target = "templateVersion"),

@@ -68,6 +68,7 @@ export default {
   data () {
     return {
       projectId: null,
+      templateIndex: null,
       projectName: '',
       treeProps: {
         children: 'children',
@@ -77,6 +78,8 @@ export default {
       codeTree: {
         projectId: null,
         projectVersion: null,
+        templateId: null,
+        templateInnerVersion: null,
         tree: []
       },
       cmOptions: {
@@ -96,17 +99,18 @@ export default {
     }
   },
   methods: {
-    initData (projectId, projectName) {
+    initData (projectId, projectName, templateIndex) {
       this.projectId = projectId
       this.projectName = projectName
+      this.templateIndex = templateIndex
       this.codeTree.tree = []
       this.paths = []
       this.codeTabs = []
     },
-    show (projectId, projectName) {
+    show (projectId, projectName, templateIndex) {
       this.visible = true
-      this.initData(projectId, projectName)
-      this.queryCodeTree(projectId)
+      this.initData(projectId, projectName, templateIndex)
+      this.queryCodeTree(projectId, templateIndex)
     },
     /**
      * 菜单自由伸缩
@@ -136,9 +140,15 @@ export default {
       splitLine.setCapture && splitLine.setCapture()
       return false
     },
-    queryCodeTree (projectId) {
+    queryCodeTree (projectId, templateIndex) {
       this.codeTreeLoading = true
-      return this.$ajax.get(`/${apiPath}/code_preview/${projectId}/code_tree`)
+      return this.$ajax.get(`/${apiPath}/code_preview/code_tree`,
+        {
+          params: {
+            'projectId': projectId,
+            'templateIndex': templateIndex
+          }
+        })
         .then(response => this.$common.checkResult(response))
         .then(data => { this.codeTree = data })
         .catch(error => this.$common.showNotifyError(error))
@@ -185,7 +195,17 @@ export default {
       }
       this.parsePath(data)
       const tab = this.addTab(data)
-      this.$ajax.get(`/${apiPath}/code_preview/${this.codeTree.projectId}/file_content?projectVersion=${this.codeTree.projectId}&filePath=${encodeURIComponent(data.path)}`, { responseType: 'text' })
+      this.$ajax.get(`/${apiPath}/code_preview/file_content`,
+        {
+          responseType: 'text',
+          params: {
+            'projectId': this.codeTree.projectId,
+            'projectVersion': this.codeTree.projectVersion,
+            'templateId': this.codeTree.templateId,
+            'templateInnerVersion': this.codeTree.templateInnerVersion,
+            'filePath': encodeURIComponent(data.path)
+          }
+        })
         .then(response => this.$common.checkResult(response))
         .then(fileData => {
           this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)

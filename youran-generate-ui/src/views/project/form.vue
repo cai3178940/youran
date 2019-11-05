@@ -42,6 +42,61 @@
               </el-radio-group>
             </help-popover>
           </el-form-item>
+          <el-form-item label="模板" prop="templateId">
+            <help-popover name="project.templateId">
+              <el-col :span="18" class="col-left">
+                <el-select style="width:100%;" v-model="form.templateId" placeholder="请选择代码模板">
+                  <el-option
+                    v-for="item in templateList"
+                    :key="item.templateId"
+                    :disabled="item.templateId===form.templateId2 || item.templateId===form.templateId3"
+                    :label="item.name"
+                    :value="item.templateId">
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="6" class="col-right">
+                <el-button v-if="!templateItemVisible2 || !templateItemVisible3"
+                           size="small" type="text" @click="addTemplateItem">再加一个模板</el-button>
+              </el-col>
+            </help-popover>
+          </el-form-item>
+          <el-form-item v-if="templateItemVisible2" prop="templateId2">
+            <help-popover name="project.templateId2">
+              <el-col :span="18" class="col-left">
+                <el-select style="width:100%;" v-model="form.templateId2" placeholder="请选择代码模板">
+                  <el-option
+                    v-for="item in templateList"
+                    :key="item.templateId"
+                    :disabled="item.templateId===form.templateId || item.templateId===form.templateId3"
+                    :label="item.name"
+                    :value="item.templateId">
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="6" class="col-right">
+                <el-button size="small" type="text" @click="removeTemplateItem(2)">移除模板</el-button>
+              </el-col>
+            </help-popover>
+          </el-form-item>
+          <el-form-item v-if="templateItemVisible3" prop="templateId3">
+            <help-popover name="project.templateId3">
+              <el-col :span="18" class="col-left">
+                <el-select style="width:100%;" v-model="form.templateId3" placeholder="请选择代码模板">
+                  <el-option
+                    v-for="item in templateList"
+                    :key="item.templateId"
+                    :disabled="item.templateId===form.templateId || item.templateId===form.templateId2"
+                    :label="item.name"
+                    :value="item.templateId">
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="6" class="col-right">
+                <el-button size="small" type="text" @click="removeTemplateItem(3)">移除模板</el-button>
+              </el-col>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="启用Git仓库" prop="remote">
             <help-popover name="project.remote">
               <el-switch v-model="form.remote"
@@ -93,7 +148,10 @@ export default {
       boolOptions: options.boolOptions,
       old: initFormBean(edit),
       form: initFormBean(edit),
-      rules: getRules()
+      rules: getRules(),
+      templateList: [],
+      templateItemVisible2: false,
+      templateItemVisible3: false
     }
   },
   methods: {
@@ -102,6 +160,42 @@ export default {
         .then(response => this.$common.checkResult(response))
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
+    },
+    getTemplateList () {
+      return this.$ajax.get(`/${apiPath}/code_template`)
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          this.templateList = data
+        })
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    /**
+     * 再加一个模板
+     */
+    addTemplateItem () {
+      if (!this.templateItemVisible2) {
+        this.templateItemVisible2 = true
+      } else if (!this.templateItemVisible3) {
+        this.templateItemVisible3 = true
+      }
+    },
+    /**
+     * 移除模板
+     */
+    removeTemplateItem (i) {
+      if (i === 2) {
+        if (this.templateItemVisible3) {
+          this.form.templateId2 = this.form.templateId3
+          this.form.templateId3 = null
+          this.templateItemVisible3 = false
+        } else {
+          this.form.templateId2 = null
+          this.templateItemVisible2 = false
+        }
+      } else if (i === 3) {
+        this.templateItemVisible3 = false
+        this.form.templateId3 = null
+      }
     },
     reset () {
       for (const key in initFormBean(true)) {
@@ -121,9 +215,9 @@ export default {
             return this.$ajax.post(`/${apiPath}/meta_project/save`, this.form)
           }
         })
-      // 校验返回结果
+        // 校验返回结果
         .then(response => this.$common.checkResult(response))
-      // 执行页面跳转
+        // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '操作成功')
           this.goBack(false)
@@ -145,7 +239,11 @@ export default {
   },
   created () {
     if (this.edit) {
-      this.getProject().then(() => this.reset())
+      this.getProject()
+        .then(() => this.getTemplateList())
+        .then(() => this.reset())
+    } else {
+      this.getTemplateList()
     }
   }
 }

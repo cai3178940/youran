@@ -51,40 +51,44 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" >
-                <i class="iconfont icon-edit_small1"
-                   style="margin-right: 0px;"></i>
+                <i class="iconfont icon-edit_small1 dropdown-icon"></i>
                 编辑
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" >
-                <i class="iconfont icon-jushounixiangdan-moren"
-                   style="margin-right: 0px;"></i>
-                反向工程
-              </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handlePreView',arg:scope.row}" >
-                <i class="iconfont icon-preview2"
-                   style="margin-right: 0px;"></i>
-                代码预览
-              </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleGenCode',arg:scope.row}" >
-                <i class="iconfont icon-code-download"
-                   style="margin-right: 0px;"></i>
-                下载代码
-              </el-dropdown-item>
-              <el-dropdown-item v-if="scope.row.remote==1" :command="{method:'handleCommit',arg:scope.row}" >
-                <i class="iconfont icon-git1"
-                   style="margin-right: 0px;"></i>
-                提交Git
-              </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleDel',arg:scope.row}" >
-                <i class="iconfont icon-trash"
-                   style="margin-right: 0px;"></i>
+                <i class="iconfont icon-trash dropdown-icon"></i>
                 删除
               </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" divided>
+                <i class="iconfont icon-jushounixiangdan-moren dropdown-icon"></i>
+                反向工程
+              </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleExport',arg:scope.row}" >
-                <i class="iconfont icon-download"
-                   style="margin-right: 0px;"></i>
+                <i class="iconfont icon-download dropdown-icon"></i>
                 导出元数据
               </el-dropdown-item>
+              <el-dropdown-item v-for="(item, index) in getProjectTemplateIndexs(scope.row)"
+                                :key="'preview_button_' + scope.row.projectId + '_' + item"
+                                :command="{method:'handlePreView',arg: [ scope.row , item ]}"
+                                :divided="index===0">
+                <i class="iconfont icon-preview2 dropdown-icon"></i>
+                代码预览(模板{{item}}）
+              </el-dropdown-item>
+              <el-dropdown-item v-for="(item, index) in getProjectTemplateIndexs(scope.row)"
+                                :key="'gencode_button_' + scope.row.projectId + '_' + item"
+                                :command="{method:'handleGenCode',arg: [ scope.row , item ]}"
+                                :divided="index===0">
+                <i class="iconfont icon-code-download dropdown-icon"></i>
+                下载代码(模板{{item}}）
+              </el-dropdown-item>
+              <template v-if="scope.row.remote==1">
+                <el-dropdown-item v-for="(item, index) in getProjectRemoteUrlIndexs(scope.row)"
+                                  :key="'gitcommit_button_' + scope.row.projectId + '_' + item"
+                                  :command="{method:'handleCommit',arg: [ scope.row , item ]}"
+                                  :divided="index===0">
+                  <i class="iconfont icon-git1 dropdown-icon"></i>
+                  提交Git(模板{{item}}）
+                </el-dropdown-item>
+              </template>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -198,6 +202,38 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
+    /**
+     * 获取当前项目的模板序号列表
+     */
+    getProjectTemplateIndexs (row) {
+      const indexs = []
+      if (row.templateId) {
+        indexs.push(1)
+      }
+      if (row.templateId2) {
+        indexs.push(2)
+      }
+      if (row.templateId3) {
+        indexs.push(3)
+      }
+      return indexs
+    },
+    /**
+     * 获取当前项目的远程git仓库序号列表
+     */
+    getProjectRemoteUrlIndexs (row) {
+      const indexs = []
+      if (row.templateId && row.remoteUrl) {
+        indexs.push(1)
+      }
+      if (row.templateId2 && row.remoteUrl2) {
+        indexs.push(2)
+      }
+      if (row.templateId3 && row.remoteUrl3) {
+        indexs.push(3)
+      }
+      return indexs
+    },
     handleAdd () {
       this.$router.push('/project/add')
     },
@@ -231,17 +267,17 @@ export default {
         this.downloadUrl = null
       }, 2000)
     },
-    handlePreView (row) {
+    handlePreView ([row, templateIndex]) {
       const projectId = row.projectId
       this.callCodeGenWebSocketService(
         'genCode',
-        { 'projectId': projectId },
+        { 'projectId': projectId, 'templateIndex': templateIndex },
         () => this.progressingProjectIds.push(projectId),
         progressVO => this.rowProgressChange(row, progressVO)
       )
         .then(progressVO => {
           if (progressVO.status === 2) {
-            this.$refs.codePreview.show(row.projectId, row.projectName)
+            this.$refs.codePreview.show(row.projectId, row.projectName, row.templateIndex)
           } else {
             this.$common.showNotifyError(progressVO.msg)
           }
@@ -299,12 +335,12 @@ export default {
         })
       })
     },
-    handleGenCode (row) {
+    handleGenCode ([row, templateIndex]) {
       const projectId = row.projectId
       this.$common.confirm('是否确认下载')
         .then(() => this.callCodeGenWebSocketService(
           'genCodeAndZip',
-          { 'projectId': projectId },
+          { 'projectId': projectId, 'templateIndex': templateIndex },
           () => this.progressingProjectIds.push(projectId),
           progressVO => this.rowProgressChange(row, progressVO)
         ))
@@ -367,12 +403,12 @@ export default {
           }
         })
     },
-    handleCommit (row) {
+    handleCommit ([row, templateIndex]) {
       const projectId = row.projectId
       this.$common.confirm('是否确认提交到远程git仓库')
         .then(() => this.callCodeGenWebSocketService(
           'gitCommit',
-          { 'projectId': projectId },
+          { 'projectId': projectId, 'templateIndex': templateIndex },
           () => this.progressingProjectIds.push(projectId),
           progressVO => this.rowProgressChange(row, progressVO)
         ))
@@ -442,5 +478,11 @@ export default {
       font: 400 13.3333px Arial;
     }
 
+    /**
+     * 下拉菜单图标
+     */
+    .dropdown-icon {
+      margin-right: 0px;
+    }
   }
 </style>

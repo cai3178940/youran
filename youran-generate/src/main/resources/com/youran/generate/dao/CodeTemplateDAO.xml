@@ -7,6 +7,7 @@
 
     <sql id="codeTemplateColumns">
         ${alias}.template_id as templateId,
+        ${alias}.`code`,
         ${alias}.`name`,
         ${alias}.template_type as templateType,
         ${alias}.template_version as templateVersion,
@@ -45,6 +46,7 @@
     <insert id="_save" useGeneratedKeys="true" keyProperty="templateId" parameterType="CodeTemplatePO">
         insert into code_template(
         template_id,
+        `code`,
         `name`,
         template_type,
         template_version,
@@ -60,6 +62,7 @@
         deleted
         ) VALUES (
         #{templateId,jdbcType=INTEGER},
+        #{code,jdbcType=VARCHAR},
         #{name,jdbcType=VARCHAR},
         #{templateType,jdbcType=INTEGER},
         #{templateVersion,jdbcType=VARCHAR},
@@ -79,6 +82,7 @@
 
     <update id="_update" parameterType="CodeTemplatePO">
         update code_template set
+            `code`=#{code,jdbcType=VARCHAR},
             `name`=#{name,jdbcType=VARCHAR},
             template_type=#{templateType,jdbcType=INTEGER},
             template_version=#{templateVersion,jdbcType=VARCHAR},
@@ -103,6 +107,10 @@
 
 
     <sql id="queryCondition">
+        <if test="code != null and code !='' ">
+            <bind name="code_pattern" value="'%' + code + '%'" />
+            and t.`code` like #{code_pattern}
+        </if>
         <if test="name != null and name !='' ">
             <bind name="name_pattern" value="'%' + name + '%'" />
             and t.`name` like #{name_pattern}
@@ -143,6 +151,18 @@
         <include refid="queryCondition"/>
         </where>
         <include refid="orderCondition"/>
+    </select>
+
+    <select id="notUnique" resultType="java.lang.Boolean">
+        select count(1) from code_template t
+        <where>
+            and t.deleted=0
+            and t.`code` = #{code}
+            and t.template_version = #{templateVersion}
+            <if test="templateId != null  ">
+                and t.template_id != #{templateId}
+            </if>
+        </where>
     </select>
 
 

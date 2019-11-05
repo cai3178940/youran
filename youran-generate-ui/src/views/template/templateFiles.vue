@@ -145,7 +145,7 @@ const menuOptions2 = [
  * 打印日志函数
  */
 function log (value) {
-  //console.info(value)
+  // console.info(value)
 }
 
 /**

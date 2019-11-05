@@ -2,6 +2,7 @@ import options from '@/components/options'
 
 export function initFormBean (forEdit) {
   const formBean = {
+    code: '',
     name: '',
     templateType: 1,
     templateVersion: '',
@@ -16,6 +17,10 @@ export function initFormBean (forEdit) {
 
 export function getRules () {
   return {
+    code: [
+      { required: true, message: '请输入模板编码', trigger: 'blur' },
+      { max: 32, message: '长度不能超过32个字符', trigger: 'blur' }
+    ],
     name: [
       { required: true, message: '请输入模板名称', trigger: 'blur' },
       { max: 32, message: '长度不能超过32个字符', trigger: 'blur' }

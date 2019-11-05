@@ -23,9 +23,9 @@ public interface MetaCodeGenAPI {
     @ApiOperation(value = "仅生成代码，不下载")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
-        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "query"),
+        @ApiImplicitParam(name = "templateIndex", dataType = "int", value = "第几个模板", paramType = "query"),
     })
-    ResponseEntity<Void> genCode(Integer projectId, Integer templateId);
+    ResponseEntity<Void> genCode(Integer projectId, Integer templateIndex);
 
     /**
      * 生成代码并下载压缩包
@@ -33,9 +33,9 @@ public interface MetaCodeGenAPI {
     @ApiOperation(value = "生成代码并下载压缩包")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
-        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "query"),
+        @ApiImplicitParam(name = "templateIndex", dataType = "int", value = "第几个模板", paramType = "query"),
     })
-    void genCodeAndDownload(Integer projectId, Integer templateId, HttpServletResponse response);
+    void genCodeAndDownload(Integer projectId, Integer templateIndex, HttpServletResponse response);
 
     /**
      * 提交到仓库
@@ -43,7 +43,7 @@ public interface MetaCodeGenAPI {
     @ApiOperation(value = "提交到仓库")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
-        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "query"),
+        @ApiImplicitParam(name = "templateIndex", dataType = "int", value = "第几个模板", paramType = "query"),
     })
-    ResponseEntity<String> gitCommit(Integer projectId, Integer templateId);
+    ResponseEntity<String> gitCommit(Integer projectId, Integer templateIndex);
 }

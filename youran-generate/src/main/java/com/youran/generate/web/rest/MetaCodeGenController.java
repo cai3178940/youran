@@ -37,15 +37,15 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
 
     @Override
     @GetMapping(value = "/genCode")
-    public ResponseEntity<Void> genCode(Integer projectId, Integer templateId) {
-        metaCodeGenService.genProjectCodeIfNotExists(projectId, templateId, null);
+    public ResponseEntity<Void> genCode(Integer projectId, Integer templateIndex) {
+        metaCodeGenService.genProjectCodeIfNotExists(projectId, templateIndex, null);
         return ResponseEntity.ok(null);
     }
 
     @Override
     @GetMapping(value = "/genCodeAndDownload")
-    public void genCodeAndDownload(Integer projectId, Integer templateId, HttpServletResponse response) {
-        File zipFile = metaCodeGenService.genCodeZip(projectId, templateId, null);
+    public void genCodeAndDownload(Integer projectId, Integer templateIndex, HttpServletResponse response) {
+        File zipFile = metaCodeGenService.genCodeZip(projectId, templateIndex, null);
         if (zipFile == null || !zipFile.exists()) {
             this.replyNotFound(response);
         } else {
@@ -58,10 +58,10 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     @Override
     @GetMapping(value = "/gitCommit")
     @ResponseBody
-    public ResponseEntity<String> gitCommit(Integer projectId, Integer templateId) {
+    public ResponseEntity<String> gitCommit(Integer projectId, Integer templateIndex) {
         //校验操作人
         metaProjectService.checkOperatorByProjectId(projectId);
-        GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, templateId, null);
+        GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, templateIndex, null);
         return ResponseEntity.ok("已创建自动分支【" + genHistory.getBranch() + "】，并提交到远程");
     }
 

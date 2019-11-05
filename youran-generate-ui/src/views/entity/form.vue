@@ -170,15 +170,6 @@ export default {
   .entityFormDiv .entityForm {
     @include youran-form;
 
-    .col-left {
-      padding-left: 0px!important;
-      line-height: normal;
-    }
-    .col-right {
-      padding-right: 0px!important;;
-      line-height: normal;
-    }
-
   }
 
 </style>

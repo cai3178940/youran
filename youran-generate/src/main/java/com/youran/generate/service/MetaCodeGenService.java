@@ -59,6 +59,8 @@ public class MetaCodeGenService {
     @Autowired
     private TmpDirService tmpDirService;
     @Autowired
+    private CodeTemplateService codeTemplateService;
+    @Autowired
     private CodeTemplateAssembleService codeTemplateAssembleService;
     @Autowired
     private TemplateRendererBuilder templateRendererBuilder;
@@ -71,12 +73,12 @@ public class MetaCodeGenService {
      * 生成代码压缩包
      *
      * @param projectId        项目id
-     * @param templateId       模板id
+     * @param templateIndex    模板序号
      * @param progressConsumer 实时反馈进度
      * @return
      */
-    public File genCodeZip(Integer projectId, Integer templateId, Consumer<ProgressVO> progressConsumer) {
-        String tmpDir = this.genProjectCodeIfNotExists(projectId, templateId, progressConsumer);
+    public File genCodeZip(Integer projectId, Integer templateIndex, Consumer<ProgressVO> progressConsumer) {
+        String tmpDir = this.genProjectCodeIfNotExists(projectId, templateIndex, progressConsumer);
         //压缩src目录到zip文件
         this.progressing(progressConsumer, 90, 99, 1, "将项目打包成zip格式");
         File zipFile = new File(tmpDir + ".zip");
@@ -116,17 +118,19 @@ public class MetaCodeGenService {
      * 总体进度20%-80%之间
      *
      * @param projectId        项目id
-     * @param templateId       模板id
+     * @param templateIndex    模板序号
      * @param progressConsumer 进度条
      * @return 代码目录
      */
-    public String genProjectCodeIfNotExists(Integer projectId, Integer templateId,
+    public String genProjectCodeIfNotExists(Integer projectId, Integer templateIndex,
                                             Consumer<ProgressVO> progressConsumer) {
         if (lock.tryLock()) {
             try {
                 MetaProjectPO project = metaProjectService.getProject(projectId, true);
+                Integer templateId = project.forceGetTemplateIdByIndex(templateIndex);
+                CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
                 // 获取最新代码目录
-                String projectDir = tmpDirService.getProjectRecentDir(project);
+                String projectDir = tmpDirService.getProjectRecentDir(project, templatePO);
                 File dir = new File(projectDir);
                 // 如果当天尚未生成过同一个版本的代码，则执行代码生成
                 if (!dir.exists()) {
@@ -326,12 +330,12 @@ public class MetaCodeGenService {
     /**
      * 提交到仓库
      *
-     * @param projectId
-     * @param templateId
-     * @param progressConsumer
+     * @param projectId        项目id
+     * @param templateIndex    模板序号
+     * @param progressConsumer 进度条
      * @return
      */
-    public GenHistoryPO gitCommit(Integer projectId, Integer templateId, Consumer<ProgressVO> progressConsumer) {
+    public GenHistoryPO gitCommit(Integer projectId, Integer templateIndex, Consumer<ProgressVO> progressConsumer) {
         MetaProjectPO project = metaProjectService.getProject(projectId, true);
         Integer remote = project.getRemote();
         if (BoolConst.isFalse(remote)) {
@@ -362,7 +366,7 @@ public class MetaCodeGenService {
                 FileUtils.forceDelete(oldFile);
             }
             //生成代码20%-80%
-            String genDir = this.genProjectCodeIfNotExists(projectId, templateId, progressConsumer);
+            String genDir = this.genProjectCodeIfNotExists(projectId, templateIndex, progressConsumer);
             this.progressing(progressConsumer, 81, 85, 1, "拷贝新生成的代码");
             FileUtils.copyDirectory(new File(genDir), repoDir);
         } catch (IOException e) {

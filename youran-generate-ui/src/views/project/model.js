@@ -5,8 +5,13 @@ export function initFormBean (forEdit) {
     projectDesc: '',
     packageName: '',
     author: '',
+    templateId: null,
+    templateId2: null,
+    templateId3: null,
     remote: 0,
-    remoteUrl: '',
+    remoteUrl: null,
+    remoteUrl2: null,
+    remoteUrl3: null,
     username: '',
     password: '',
     feature: {
@@ -52,6 +57,15 @@ export function getRules () {
     ],
     remote: [
       { required: true, type: 'number', message: '请选择是否启用', trigger: 'change' }
+    ],
+    templateId: [
+      { required: true, type: 'number', message: '请选择模板', trigger: 'change' }
+    ],
+    templateId2: [
+      { required: true, type: 'number', message: '请选择模板2', trigger: 'change' }
+    ],
+    templateId3: [
+      { required: true, type: 'number', message: '请选择模板3', trigger: 'change' }
     ],
     remoteUrl: [
       { max: 256, message: '长度不能超过256个字符', trigger: 'blur' }

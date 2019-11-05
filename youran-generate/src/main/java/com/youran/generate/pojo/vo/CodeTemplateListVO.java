@@ -19,6 +19,9 @@ public class CodeTemplateListVO extends AbstractVO {
     @ApiModelProperty(notes = N_TEMPLATE_ID, example = E_TEMPLATE_ID)
     private Integer templateId;
 
+    @ApiModelProperty(notes = N_CODE, example = E_CODE)
+    private String code;
+
     @ApiModelProperty(notes = N_NAME, example = E_NAME)
     private String name;
 
@@ -43,6 +46,14 @@ public class CodeTemplateListVO extends AbstractVO {
 
     public void setTemplateId(Integer templateId) {
         this.templateId = templateId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {

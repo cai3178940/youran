@@ -1,6 +1,8 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -29,10 +31,25 @@ public class MetaProjectPO extends BasePO {
     private String author;
 
     @JsonIgnore
+    private Integer templateId;
+
+    @JsonIgnore
+    private Integer templateId2;
+
+    @JsonIgnore
+    private Integer templateId3;
+
+    @JsonIgnore
     private Integer remote;
 
     @JsonIgnore
     private String remoteUrl;
+
+    @JsonIgnore
+    private String remoteUrl2;
+
+    @JsonIgnore
+    private String remoteUrl3;
 
     @JsonIgnore
     private String username;
@@ -42,6 +59,12 @@ public class MetaProjectPO extends BasePO {
 
     @JsonIgnore
     private Integer lastHistoryId;
+
+    @JsonIgnore
+    private Integer lastHistoryId2;
+
+    @JsonIgnore
+    private Integer lastHistoryId3;
 
     @JsonIgnore
     private Integer projectVersion;
@@ -57,6 +80,27 @@ public class MetaProjectPO extends BasePO {
     @JsonIgnore
     private List<MetaManyToManyPO> mtms;
 
+    /**
+     * 根据序号获取模板id
+     * <p>获取不到则抛出异常
+     *
+     * @param index
+     * @return
+     */
+    public Integer forceGetTemplateIdByIndex(int index) {
+        Integer tid = null;
+        if (index == 1) {
+            tid = templateId;
+        } else if (index == 2) {
+            tid = templateId2;
+        } else if (index == 3) {
+            tid = templateId3;
+        }
+        if (templateId == null) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "模板未设置");
+        }
+        return tid;
+    }
 
     public void addEntity(MetaEntityPO entity) {
         if (entities == null) {
@@ -241,4 +285,59 @@ public class MetaProjectPO extends BasePO {
         this.feature = feature;
     }
 
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
+    }
+
+    public Integer getTemplateId2() {
+        return templateId2;
+    }
+
+    public void setTemplateId2(Integer templateId2) {
+        this.templateId2 = templateId2;
+    }
+
+    public Integer getTemplateId3() {
+        return templateId3;
+    }
+
+    public void setTemplateId3(Integer templateId3) {
+        this.templateId3 = templateId3;
+    }
+
+    public String getRemoteUrl2() {
+        return remoteUrl2;
+    }
+
+    public void setRemoteUrl2(String remoteUrl2) {
+        this.remoteUrl2 = remoteUrl2;
+    }
+
+    public String getRemoteUrl3() {
+        return remoteUrl3;
+    }
+
+    public void setRemoteUrl3(String remoteUrl3) {
+        this.remoteUrl3 = remoteUrl3;
+    }
+
+    public Integer getLastHistoryId2() {
+        return lastHistoryId2;
+    }
+
+    public void setLastHistoryId2(Integer lastHistoryId2) {
+        this.lastHistoryId2 = lastHistoryId2;
+    }
+
+    public Integer getLastHistoryId3() {
+        return lastHistoryId3;
+    }
+
+    public void setLastHistoryId3(Integer lastHistoryId3) {
+        this.lastHistoryId3 = lastHistoryId3;
+    }
 }

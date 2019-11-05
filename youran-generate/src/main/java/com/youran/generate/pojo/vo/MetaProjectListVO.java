@@ -36,8 +36,23 @@ public class MetaProjectListVO extends AbstractVO {
     @ApiModelProperty(notes = N_REMOTE, example = E_REMOTE)
     private Integer remote;
 
+    @ApiModelProperty(notes = N_TEMPLATEID, example = E_TEMPLATEID)
+    private Integer templateId;
+
+    @ApiModelProperty(notes = N_TEMPLATEID, example = E_TEMPLATEID)
+    private Integer templateId2;
+
+    @ApiModelProperty(notes = N_TEMPLATEID, example = E_TEMPLATEID)
+    private Integer templateId3;
+
     @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
     private String remoteUrl;
+
+    @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
+    private String remoteUrl2;
+
+    @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
+    private String remoteUrl3;
 
     @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME)
     private String username;
@@ -98,6 +113,46 @@ public class MetaProjectListVO extends AbstractVO {
         this.projectName = projectName;
     }
 
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
+    }
+
+    public Integer getTemplateId2() {
+        return templateId2;
+    }
+
+    public void setTemplateId2(Integer templateId2) {
+        this.templateId2 = templateId2;
+    }
+
+    public Integer getTemplateId3() {
+        return templateId3;
+    }
+
+    public void setTemplateId3(Integer templateId3) {
+        this.templateId3 = templateId3;
+    }
+
+    public String getRemoteUrl2() {
+        return remoteUrl2;
+    }
+
+    public void setRemoteUrl2(String remoteUrl2) {
+        this.remoteUrl2 = remoteUrl2;
+    }
+
+    public String getRemoteUrl3() {
+        return remoteUrl3;
+    }
+
+    public void setRemoteUrl3(String remoteUrl3) {
+        this.remoteUrl3 = remoteUrl3;
+    }
+
     public String getAuthor() {
         return author;
     }
@@ -124,8 +179,6 @@ public class MetaProjectListVO extends AbstractVO {
             .append("groupId", groupId)
             .append("author", author)
             .append("remote", remote)
-            .append("remoteUrl", remoteUrl)
-            .append("username", username)
             .toString();
     }
 }

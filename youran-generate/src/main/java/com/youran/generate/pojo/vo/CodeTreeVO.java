@@ -19,8 +19,30 @@ public class CodeTreeVO extends AbstractVO {
     @ApiModelProperty(notes = "项目版本号", example = "10")
     private Integer projectVersion;
 
+    @ApiModelProperty(notes = "模板id", example = "2")
+    private Integer templateId;
+
+    @ApiModelProperty(notes = "项目内部版本号", example = "2")
+    private Integer templateInnerVersion;
+
     @ApiModelProperty(notes = "代码目录树")
     private List<FileNodeVO> tree;
+
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
+    }
+
+    public Integer getTemplateInnerVersion() {
+        return templateInnerVersion;
+    }
+
+    public void setTemplateInnerVersion(Integer templateInnerVersion) {
+        this.templateInnerVersion = templateInnerVersion;
+    }
 
     public Integer getProjectId() {
         return projectId;

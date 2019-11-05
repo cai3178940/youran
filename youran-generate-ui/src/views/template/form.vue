@@ -22,6 +22,11 @@
               </el-radio-group>
             </help-popover>
           </el-form-item>
+          <el-form-item label="模板编码" prop="code">
+            <help-popover>
+              <el-input v-model="form.code" placeholder="例如：code-001"></el-input>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="版本号" prop="templateVersion">
             <help-popover name="template.templateVersion">
               <el-input v-model="form.templateVersion" placeholder="例如：1.0.0"></el-input>

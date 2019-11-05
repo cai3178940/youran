@@ -2,9 +2,12 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.WebConst;
+import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.pojo.qo.CodeContentQO;
 import com.youran.generate.pojo.vo.CodeTreeVO;
 import com.youran.generate.pojo.vo.FileNodeVO;
+import com.youran.generate.service.CodeTemplateService;
 import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.service.TmpDirService;
 import com.youran.generate.util.FileNodeUtil;
@@ -20,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -40,27 +44,31 @@ public class CodePreviewController extends AbstractController implements CodePre
     @Autowired
     private MetaProjectService metaProjectService;
     @Autowired
+    private CodeTemplateService codeTemplateService;
+    @Autowired
     private TmpDirService tmpDirService;
 
 
     @Override
-    @GetMapping(value = "/{projectId}/file_content", produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(value = "/file_content", produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
-    public ResponseEntity<String> getFileContent(@PathVariable Integer projectId,
-                                                 @RequestParam Integer projectVersion,
-                                                 @RequestParam String filePath) {
-        MetaProjectPO project = metaProjectService.getProject(projectId, true);
-        Integer recentVersion = project.getProjectVersion();
-        if (recentVersion < projectVersion) {
+    public ResponseEntity<String> getFileContent(@Valid CodeContentQO qo) {
+        MetaProjectPO project = metaProjectService.getProject(qo.getProjectId(), true);
+        if (project.getProjectVersion() < qo.getProjectVersion()) {
             throw new BusinessException("projectVersion有误");
         }
-        String projectDir = tmpDirService.getProjectRecentDir(project);
+
+        CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(qo.getTemplateId(), true);
+        if (templatePO.getInnerVersion() < qo.getTemplateInnerVersion()) {
+            throw new BusinessException("模板已更新，请返回重试");
+        }
+
+        String projectDir = tmpDirService.getProjectRecentDir(project, templatePO);
         File dirFile = new File(projectDir);
         if (!dirFile.exists()) {
             throw new BusinessException("代码目录不存在");
         }
-        String fileFullPath = projectDir + filePath;
-        File file = new File(fileFullPath);
+        File file = new File(dirFile, qo.getFilePath());
         if (!file.exists()) {
             throw new BusinessException("文件不存在");
         }
@@ -75,7 +83,7 @@ public class CodePreviewController extends AbstractController implements CodePre
         if (file.isDirectory()) {
             throw new BusinessException("文件不合法");
         }
-        String extension = FilenameUtils.getExtension(fileFullPath);
+        String extension = FilenameUtils.getExtension(qo.getFilePath());
         if (!ArrayUtils.contains(EXTENSIONS_FILTER, extension)) {
             throw new BusinessException("文件类型不合法");
         }
@@ -89,14 +97,17 @@ public class CodePreviewController extends AbstractController implements CodePre
     }
 
     @Override
-    @GetMapping(value = "/{projectId}/code_tree")
+    @GetMapping(value = "/code_tree")
     @ResponseBody
-    public ResponseEntity<CodeTreeVO> codeTree(@PathVariable Integer projectId) {
+    public ResponseEntity<CodeTreeVO> codeTree(@RequestParam Integer projectId,
+                                               @RequestParam Integer templateIndex) {
         MetaProjectPO project = metaProjectService.getProject(projectId, true);
-        String projectDir = tmpDirService.getProjectRecentDir(project);
+        Integer templateId = project.forceGetTemplateIdByIndex(templateIndex);
+        CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
+        String projectDir = tmpDirService.getProjectRecentDir(project, templatePO);
         File dirFile = new File(projectDir);
         if (!dirFile.exists()) {
-            throw new BusinessException("代码目录不存在");
+            throw new BusinessException("代码目录不存在，请返回重试");
         }
         List<FileNodeVO> fileNodeList = FileNodeUtil.recurFileNodeTree(dirFile, dirFile, EXTENSIONS_FILTER);
         CodeTreeVO treeVO = new CodeTreeVO();
