@@ -76,6 +76,10 @@ input, textarea, select, button {
     color: $color-primary;
 }
 
+.color-purple {
+    color: $color-purple;
+}
+
 .color-warning {
     color: $color-warning;
 }
@@ -94,6 +98,10 @@ input, textarea, select, button {
 
 .color-warning-before::before {
     color: $color-warning;
+}
+
+.color-purple-before::before {
+    color: $color-purple;
 }
 
 /**

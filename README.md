@@ -8,8 +8,8 @@
 - 基于[H2](http://www.h2database.com)内存数据库的单元测试
 
 ## 创建本地数据库
-1. 先修改数据库配置：[youran-generate/src/main/resources/application-local.yml](./youran-generate/src/main/resources/application-local.yml)
-2. 建表语句参考：[youran-generate/src/test/resources/DB/generate.sql](./youran-generate/src/test/resources/DB/generate.sql)
+1. 先修改数据库配置：[youran-generate-web/src/main/resources/application-local.yml](./youran-generate-web/src/main/resources/application-local.yml)
+2. 建表语句参考：[youran-generate-web/src/test/resources/DB/generate.sql](./youran-generate-web/src/test/resources/DB/generate.sql)
 
 ## 安装部署
 
@@ -20,7 +20,7 @@
 mvn clean package
 
 # 运行spring-boot项目
-java -jar youran-generate/target/youran-generate.war
+java -jar youran-generate-web/target/youran-generate-web-2.2.0-SNAPSHOT.war
 
 ```
 
@@ -34,7 +34,7 @@ npm install
 # npm run dev
 
 # 将前端资源编译到后端项目中
-# 编译目标路径：youran-generate/src/main/resources/ui
+# 编译目标路径：youran-generate-web/src/main/resources/ui
 npm run build
 
 # 后端代码编译打包
@@ -42,7 +42,7 @@ cd ../
 mvn clean package
 
 # 运行spring-boot项目
-java -jar youran-generate/target/youran-generate.war
+java -jar youran-generate-web/target/youran-generate-web-2.2.0-SNAPSHOT.war
 
 ```
 ### 项目管理页面

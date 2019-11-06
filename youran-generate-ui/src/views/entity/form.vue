@@ -24,13 +24,13 @@
           </el-form-item>
           <el-form-item label="实体名" prop="title">
             <help-popover name="entity.title">
-              <el-input v-model="form.title" placeholder="例如：用户"></el-input>
+              <el-input v-model="form.title" placeholder="例如：用户" tabindex="10"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="类名/表名" prop="classAndTableName">
             <help-popover name="entity.classAndTableName">
               <el-col :span="11" class="col-left">
-                <el-input v-model="form.className" placeholder="java类名，例如：User"></el-input>
+                <el-input v-model="form.className" placeholder="java类名，例如：User" tabindex="20"></el-input>
                 <el-button size="mini" type="text" @click="form.className = $common.upperCaseFirst($common.camelCase(form.className))">转驼峰</el-button>
               </el-col>
               <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
@@ -41,37 +41,39 @@
                 </el-tooltip>
               </el-col>
               <el-col :span="11" class="col-right">
-                <el-input v-model="form.tableName" placeholder="mysql表名，例如：t_user"></el-input>
+                <el-input v-model="form.tableName" placeholder="mysql表名，例如：t_user" tabindex="30"></el-input>
                 <el-button size="mini" type="text" @click="form.tableName = $common.snakeCase(form.tableName)">转下划线</el-button>
               </el-col>
             </help-popover>
           </el-form-item>
           <el-form-item label="描述" prop="desc">
             <help-popover name="entity.desc">
-              <el-input v-model="form.desc" type="textarea" :autosize="{ minRows: 2, maxRows: 100}"></el-input>
+              <el-input v-model="form.desc" type="textarea"
+                        :autosize="{ minRows: 2, maxRows: 100}"
+                        tabindex="40"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="分页" prop="pageSign">
             <help-popover name="entity.pageSign">
-              <el-checkbox v-model="form.pageSign" :true-label="1" :false-label="0">
+              <el-checkbox v-model="form.pageSign" :true-label="1" :false-label="0" tabindex="50">
                 支持分页
               </el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item label="rest服务">
             <help-popover name="entity.feature">
-              <el-checkbox v-model="form.feature.save" :true-label="1" :false-label="0">添加</el-checkbox>
-              <el-checkbox v-model="form.feature.update" :true-label="1" :false-label="0">修改</el-checkbox>
-              <el-checkbox v-model="form.feature.delete" :true-label="1" :false-label="0">单个删除</el-checkbox>
-              <el-checkbox v-model="form.feature.deleteBatch" :true-label="1" :false-label="0">批量删除</el-checkbox>
-              <el-checkbox v-model="form.feature.show" :true-label="1" :false-label="0">详情</el-checkbox>
-              <el-checkbox v-model="form.feature.list" :true-label="1" :false-label="0">列表查询</el-checkbox>
+              <el-checkbox v-model="form.feature.save" :true-label="1" :false-label="0" tabindex="60">添加</el-checkbox>
+              <el-checkbox v-model="form.feature.update" :true-label="1" :false-label="0" tabindex="70">修改</el-checkbox>
+              <el-checkbox v-model="form.feature.delete" :true-label="1" :false-label="0" tabindex="80">单个删除</el-checkbox>
+              <el-checkbox v-model="form.feature.deleteBatch" :true-label="1" :false-label="0" tabindex="90">批量删除</el-checkbox>
+              <el-checkbox v-model="form.feature.show" :true-label="1" :false-label="0" tabindex="100">详情</el-checkbox>
+              <el-checkbox v-model="form.feature.list" :true-label="1" :false-label="0" tabindex="110">列表查询</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit()">提交</el-button>
-            <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
-            <el-button @click="goBack(true)">返回</el-button>
+            <el-button type="primary" @click="submit()" tabindex="120">提交</el-button>
+            <el-button v-if="edit" type="warning" @click="reset()" tabindex="130">重置</el-button>
+            <el-button @click="goBack(true)" tabindex="140">返回</el-button>
           </el-form-item>
         </el-form>
       </el-col>

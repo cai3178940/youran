@@ -12,7 +12,8 @@
         <el-form ref="constForm" class="constForm" :rules="rules" :model="form" label-width="80px" size="small">
           <el-form-item label="项目" prop="projectId">
             <help-popover name="const.projectId">
-              <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
+              <el-select v-model="form.projectId" style="width:100%;"
+                         filterable :disabled="true">
                 <el-option
                   v-for="item in projectList"
                   :key="item.projectId"
@@ -24,25 +25,30 @@
           </el-form-item>
           <el-form-item label="枚举名称" prop="constRemark">
             <help-popover name="const.constRemark">
-              <el-input v-model="form.constRemark" placeholder="例如：性别"></el-input>
+              <el-input v-model="form.constRemark" placeholder="例如：性别" tabindex="10"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="枚举类名" prop="constName">
             <help-popover name="const.constName">
-              <el-input v-model="form.constName" placeholder="例如：Sex"></el-input>
+              <el-input v-model="form.constName" placeholder="例如：Sex" tabindex="20"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="类型" prop="constType">
             <help-popover name="const.constType">
               <el-radio-group v-model="form.constType">
-                <el-radio border v-for="item in constTypeOptions" :key="item.value" :label="item.value">{{item.label}}</el-radio>
+                <!-- 解决bug:el-radio-group下第一个el-radio的tabindex一直等于0 -->
+                <el-radio style="display: none;"></el-radio>
+                <el-radio border v-for="item in constTypeOptions"
+                          :key="item.value"
+                          :tabindex="30+item.value"
+                          :label="item.value">{{item.label}}</el-radio>
               </el-radio-group>
             </help-popover>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit()">提交</el-button>
-            <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
-            <el-button @click="goBack(true)">返回</el-button>
+            <el-button type="primary" @click="submit()" tabindex="40">提交</el-button>
+            <el-button v-if="edit" type="warning" @click="reset()" tabindex="50">重置</el-button>
+            <el-button @click="goBack(true)" tabindex="60">返回</el-button>
           </el-form-item>
         </el-form>
       </el-col>

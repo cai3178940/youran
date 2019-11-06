@@ -4,8 +4,7 @@ export function initFormBean (forEdit) {
   const formBean = {
     code: '',
     name: '',
-    templateType: 1,
-    templateVersion: '',
+    templateVersion: '0.0.1',
     sysLowVersion: '',
     remark: ''
   }
@@ -25,10 +24,8 @@ export function getRules () {
       { required: true, message: '请输入模板名称', trigger: 'blur' },
       { max: 32, message: '长度不能超过32个字符', trigger: 'blur' }
     ],
-    templateType: [
-      { required: true, type: 'number', message: '请选择模板类型', trigger: 'change' }
-    ],
     templateVersion: [
+      { required: true, message: '请输入版本号', trigger: 'blur' },
       { max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
       { validator: (rule, value, callback) => {
         if (!/^([1-9]\d|[0-9])(\.([1-9]\d|\d)){2}$/.test(value)) {
@@ -39,6 +36,7 @@ export function getRules () {
       trigger: 'blur' }
     ],
     sysLowVersion: [
+      { required: true, message: '请输入最低系统兼容版本', trigger: 'blur' },
       { max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
       { validator: (rule, value, callback) => {
         if (!/^([1-9]\d|[0-9])(\.([1-9]\d|\d)){2}$/.test(value)) {

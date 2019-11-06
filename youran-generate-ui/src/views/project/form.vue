@@ -11,41 +11,42 @@
         <el-form ref="projectForm" class="projectForm" :rules="rules" :model="form" label-width="120px" size="small">
           <el-form-item label="groupId" prop="groupId">
             <help-popover name="project.groupId">
-              <el-input v-model="form.groupId" placeholder="例如：com.mygroup"></el-input>
+              <el-input v-model="form.groupId" placeholder="例如：com.mygroup" tabindex="10"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="项目标识" prop="projectName">
             <help-popover name="project.projectName">
-              <el-input v-model="form.projectName" placeholder="例如：bbs"></el-input>
+              <el-input v-model="form.projectName" placeholder="例如：bbs" tabindex="20"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="项目名称" prop="projectDesc">
             <help-popover name="project.projectDesc">
-              <el-input v-model="form.projectDesc" placeholder="例如：论坛"></el-input>
+              <el-input v-model="form.projectDesc" placeholder="例如：论坛" tabindex="30"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="包名" prop="packageName">
             <help-popover name="project.packageName">
-              <el-input v-model="form.packageName" placeholder="例如：com.cbb.bbs"></el-input>
+              <el-input v-model="form.packageName" placeholder="例如：com.cbb.bbs" tabindex="40"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="作者" prop="author">
             <help-popover name="project.author">
-              <el-input v-model="form.author" placeholder="例如：Jack"></el-input>
+              <el-input v-model="form.author" placeholder="例如：Jack" tabindex="50"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="spring-boot版本" prop="feature.bootVersion">
             <help-popover name="project.feature.bootVersion">
               <el-radio-group v-model="form.feature.bootVersion">
-                <el-radio border :label="1">1.5.x</el-radio>
-                <el-radio border :label="2">2.1.x</el-radio>
+                <el-radio border :label="1" tabindex="60">1.5.x</el-radio>
+                <el-radio border :label="2" tabindex="61">2.1.x</el-radio>
               </el-radio-group>
             </help-popover>
           </el-form-item>
           <el-form-item label="模板" prop="templateId">
             <help-popover name="project.templateId">
               <el-col :span="18" class="col-left">
-                <el-select style="width:100%;" v-model="form.templateId" placeholder="请选择代码模板">
+                <el-select style="width:100%;" v-model="form.templateId"
+                           placeholder="请选择代码模板" tabindex="70" clearable>
                   <el-option
                     v-for="item in templateList"
                     :key="item.templateId"
@@ -64,7 +65,8 @@
           <el-form-item v-if="templateItemVisible2" prop="templateId2">
             <help-popover name="project.templateId2">
               <el-col :span="18" class="col-left">
-                <el-select style="width:100%;" v-model="form.templateId2" placeholder="请选择代码模板">
+                <el-select style="width:100%;" v-model="form.templateId2"
+                           placeholder="请选择第二模板" tabindex="80" clearable>
                   <el-option
                     v-for="item in templateList"
                     :key="item.templateId"
@@ -75,14 +77,15 @@
                 </el-select>
               </el-col>
               <el-col :span="6" class="col-right">
-                <el-button size="small" type="text" @click="removeTemplateItem(2)">移除模板</el-button>
+                <el-button size="small" type="text" @click="removeTemplateItem(2)">移除第二模板</el-button>
               </el-col>
             </help-popover>
           </el-form-item>
           <el-form-item v-if="templateItemVisible3" prop="templateId3">
             <help-popover name="project.templateId3">
               <el-col :span="18" class="col-left">
-                <el-select style="width:100%;" v-model="form.templateId3" placeholder="请选择代码模板">
+                <el-select style="width:100%;" v-model="form.templateId3"
+                           placeholder="请选择第三模板" tabindex="90" clearable>
                   <el-option
                     v-for="item in templateList"
                     :key="item.templateId"
@@ -93,7 +96,7 @@
                 </el-select>
               </el-col>
               <el-col :span="6" class="col-right">
-                <el-button size="small" type="text" @click="removeTemplateItem(3)">移除模板</el-button>
+                <el-button size="small" type="text" @click="removeTemplateItem(3)">移除第三模板</el-button>
               </el-col>
             </help-popover>
           </el-form-item>
@@ -101,31 +104,47 @@
             <help-popover name="project.remote">
               <el-switch v-model="form.remote"
                          :active-value="1"
-                         :inactive-value="0">
+                         :inactive-value="0" tabindex="100">
               </el-switch>
             </help-popover>
           </el-form-item>
           <template v-if="form.remote==1">
             <el-form-item label="Git仓库地址" prop="remoteUrl">
               <help-popover name="project.remoteUrl">
-                <el-input v-model="form.remoteUrl" placeholder="例如：https://github.com/github/testrepo.git"></el-input>
+                <el-input v-model="form.remoteUrl"
+                          placeholder="例如：https://github.com/github/testrepo.git"
+                          tabindex="110"></el-input>
+              </help-popover>
+            </el-form-item>
+            <el-form-item v-if="templateItemVisible2" prop="remoteUrl2">
+              <help-popover name="project.remoteUrl2">
+                <el-input v-model="form.remoteUrl2"
+                          placeholder="第二模板对应的Git仓库"
+                          tabindex="120"></el-input>
+              </help-popover>
+            </el-form-item>
+            <el-form-item v-if="templateItemVisible3" prop="remoteUrl3">
+              <help-popover name="project.remoteUrl3">
+                <el-input v-model="form.remoteUrl3"
+                          placeholder="第三模板对应的Git仓库"
+                          tabindex="130"></el-input>
               </help-popover>
             </el-form-item>
             <el-form-item label="Git用户名" prop="username">
               <help-popover name="project.username">
-                <el-input v-model="form.username" placeholder="例如：zhangsan"></el-input>
+                <el-input v-model="form.username" placeholder="例如：zhangsan" tabindex="140"></el-input>
               </help-popover>
             </el-form-item>
             <el-form-item label="Git密码/token" prop="password">
               <help-popover name="project.password">
-                <el-input v-model="form.password" placeholder="例如：123456"></el-input>
+                <el-input v-model="form.password" placeholder="例如：123456" tabindex="150"></el-input>
               </help-popover>
             </el-form-item>
           </template>
           <el-form-item>
-            <el-button type="primary" @click="submit()">提交</el-button>
-            <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
-            <el-button @click="goBack(true)">返回</el-button>
+            <el-button type="primary" @click="submit()" tabindex="160">提交</el-button>
+            <el-button v-if="edit" type="warning" @click="reset()" tabindex="170">重置</el-button>
+            <el-button @click="goBack(true)" tabindex="180">返回</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -184,17 +203,22 @@ export default {
      */
     removeTemplateItem (i) {
       if (i === 2) {
+        // 如果第三个模板存在，则把第三个模板内容移到第二个，再删除第三个
         if (this.templateItemVisible3) {
           this.form.templateId2 = this.form.templateId3
+          this.form.remoteUrl2 = this.form.remoteUrl3
           this.form.templateId3 = null
+          this.form.remoteUrl3 = null
           this.templateItemVisible3 = false
         } else {
           this.form.templateId2 = null
+          this.form.remoteUrl2 = null
           this.templateItemVisible2 = false
         }
       } else if (i === 3) {
-        this.templateItemVisible3 = false
         this.form.templateId3 = null
+        this.form.remoteUrl3 = null
+        this.templateItemVisible3 = false
       }
     },
     reset () {

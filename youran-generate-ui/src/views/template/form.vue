@@ -11,41 +11,37 @@
         <el-form ref="templateForm" class="templateForm" :rules="rules" :model="form" label-width="120px" size="small">
           <el-form-item label="模板名称" prop="name">
             <help-popover>
-              <el-input v-model="form.name" placeholder="例如：标准java后端模板"></el-input>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="模板类型" prop="templateType">
-            <help-popover name="template.templateType">
-              <el-radio-group v-model="form.templateType">
-                <el-radio border :label="1">后端</el-radio>
-                <el-radio border :label="2">前端</el-radio>
-              </el-radio-group>
+              <el-input v-model="form.name" placeholder="例如：标准java后端模板" tabindex="10"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="模板编码" prop="code">
             <help-popover>
-              <el-input v-model="form.code" placeholder="例如：code-001"></el-input>
+              <el-input v-model="form.code" placeholder="例如：code-001" tabindex="20"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="版本号" prop="templateVersion">
             <help-popover name="template.templateVersion">
-              <el-input v-model="form.templateVersion" placeholder="例如：1.0.0"></el-input>
+              <el-input v-model="form.templateVersion" placeholder="例如：0.0.1" tabindex="30"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="最低系统兼容" prop="sysLowVersion">
             <help-popover name="template.sysLowVersion">
-              <el-input v-model="form.sysLowVersion" :placeholder="'当前系统版本为：'+this.systemUserInfo.sysVersion"></el-input>
+              <el-input v-model="form.sysLowVersion"
+                        :placeholder="'当前系统版本为：'+this.systemUserInfo.sysVersion"
+                        tabindex="40"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="备注" prop="remark">
             <help-popover name="template.remark">
-              <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 2, maxRows: 10}"></el-input>
+              <el-input v-model="form.remark" type="textarea"
+                        :autosize="{ minRows: 2, maxRows: 10}"
+                        tabindex="50"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit()">提交</el-button>
-            <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
-            <el-button @click="goBack(true)">返回</el-button>
+            <el-button type="primary" @click="submit()" tabindex="60">提交</el-button>
+            <el-button v-if="edit" type="warning" @click="reset()" tabindex="70">重置</el-button>
+            <el-button @click="goBack(true)" tabindex="80">返回</el-button>
           </el-form-item>
         </el-form>
       </el-col>

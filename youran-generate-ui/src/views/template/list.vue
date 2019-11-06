@@ -17,12 +17,6 @@
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column property="code" width="100" label="模板编码"></el-table-column>
       <el-table-column property="name" label="模板名称"></el-table-column>
-      <el-table-column property="templateType" width="100" label="模板类型">
-        <template v-slot="scope">
-          <span v-if="scope.row.templateType===1">后端</span>
-          <span v-else>前端</span>
-        </template>
-      </el-table-column>
       <el-table-column property="templateVersion" width="150" label="版本号"></el-table-column>
       <el-table-column property="sysLowVersion" width="150" label="最低系统兼容"></el-table-column>
       <el-table-column

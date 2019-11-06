@@ -323,9 +323,6 @@ public enum DevType {
     `
   },
   template: {
-    templateType: `
-**模板类型**：分后端模板和前端模板两种类型，如果想把前后端代码放入一个模板中，则选后端
-    `,
     templateVersion: `
 **版本号**：当前模板的版本号
     `,

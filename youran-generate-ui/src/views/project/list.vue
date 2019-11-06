@@ -51,19 +51,19 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" >
-                <i class="iconfont icon-edit_small1 dropdown-icon"></i>
+                <i class="iconfont icon-edit_small1 dropdown-icon color-primary"></i>
                 编辑
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleDel',arg:scope.row}" >
-                <i class="iconfont icon-trash dropdown-icon"></i>
+                <i class="iconfont icon-trash dropdown-icon color-danger"></i>
                 删除
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" divided>
-                <i class="iconfont icon-jushounixiangdan-moren dropdown-icon"></i>
+                <i class="iconfont icon-jushounixiangdan-moren dropdown-icon color-warning"></i>
                 反向工程
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleExport',arg:scope.row}" >
-                <i class="iconfont icon-download dropdown-icon"></i>
+                <i class="iconfont icon-download dropdown-icon color-purple"></i>
                 导出元数据
               </el-dropdown-item>
               <el-dropdown-item v-for="(templateIndex, index) in getProjectTemplateIndexs(scope.row)"
@@ -175,11 +175,11 @@ export default {
   },
   filters: {
     templateCode (row, templateIndex) {
-      if (templateIndex == 1) {
+      if (templateIndex === 1) {
         return row.templateCode
-      } else if (templateIndex == 2) {
+      } else if (templateIndex === 2) {
         return row.templateCode2
-      } else if (templateIndex == 3) {
+      } else if (templateIndex === 3) {
         return row.templateCode3
       }
       return ''
@@ -491,11 +491,12 @@ export default {
       font: 400 13.3333px Arial;
     }
 
-    /**
-     * 下拉菜单图标
-     */
-    .dropdown-icon {
-      margin-right: 0px;
-    }
+  }
+  /**
+   * 下拉菜单图标
+   */
+  .dropdown-icon {
+    margin-right: 0px;
+    vertical-align: -4%;
   }
 </style>
