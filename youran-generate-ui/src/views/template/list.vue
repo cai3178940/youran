@@ -15,7 +15,14 @@
     </el-row>
     <el-table :data="list" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column property="code" width="100" label="模板编码"></el-table-column>
+      <el-table-column label="模板编码">
+        <template v-slot="scope">
+          {{scope.row.code}}
+          <span v-if="scope.row.sysDefault" class="sys-default-tag">
+            预置模板
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column property="name" label="模板名称"></el-table-column>
       <el-table-column property="templateVersion" width="150" label="版本号"></el-table-column>
       <el-table-column property="sysLowVersion" width="150" label="最低系统兼容"></el-table-column>
@@ -121,6 +128,20 @@ export default {
       min-width: 160px;
       text-align: left;
       padding: 0 0 0 20px;
+    }
+
+    /**
+     * 预置标签
+     */
+    .sys-default-tag {
+      font-size: 11px;
+      background-color: $color-warning;
+      color: #FFFFFF;
+      padding: 2px;
+      border: 2px solid transparent;
+      border-radius:4px;
+      margin: 0px;
+      user-select: none;
     }
 
     /**
