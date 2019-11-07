@@ -38,7 +38,7 @@ public class CodeTemplateService {
     private void checkUnique(CodeTemplatePO codeTemplate, boolean isUpdate) {
         if (codeTemplateDAO.notUnique(codeTemplate.getCode(), codeTemplate.getTemplateVersion(),
             isUpdate ? codeTemplate.getTemplateId() : null)) {
-            throw new BusinessException(ErrorCode.DUPLICATE_KEY,"模板编码+版本号有重复");
+            throw new BusinessException(ErrorCode.DUPLICATE_KEY, "模板编码+版本号有重复");
         }
     }
 
@@ -121,7 +121,7 @@ public class CodeTemplateService {
     public CodeTemplatePO getCodeTemplate(Integer templateId, boolean force) {
         CodeTemplatePO codeTemplate = codeTemplateDAO.findById(templateId);
         if (force && codeTemplate == null) {
-            throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND, "模板id=" + templateId + "不存在");
         }
         return codeTemplate;
     }

@@ -166,22 +166,28 @@ public class MetaProjectService {
             .stream().collect(Collectors.toMap(CodeTemplateListVO::getTemplateId, o -> o));
         List<MetaProjectListVO> list = metaProjectDAO.findListByQuery(metaProjectQO);
         list.forEach(vo -> {
-            if(vo.getTemplateId()!=null) {
+            if (vo.getTemplateId() != null) {
                 CodeTemplateListVO template = templateMap.get(vo.getTemplateId());
-                if(template!=null){
+                if (template != null) {
                     vo.setTemplateCode(template.getCode());
+                } else {
+                    vo.setTemplateId(null);
                 }
             }
-            if(vo.getTemplateId2()!=null) {
+            if (vo.getTemplateId2() != null) {
                 CodeTemplateListVO template = templateMap.get(vo.getTemplateId2());
-                if(template!=null){
+                if (template != null) {
                     vo.setTemplateCode2(template.getCode());
+                } else {
+                    vo.setTemplateId(null);
                 }
             }
-            if(vo.getTemplateId3()!=null) {
+            if (vo.getTemplateId3() != null) {
                 CodeTemplateListVO template = templateMap.get(vo.getTemplateId3());
-                if(template!=null){
+                if (template != null) {
                     vo.setTemplateCode3(template.getCode());
+                } else {
+                    vo.setTemplateId(null);
                 }
             }
         });
