@@ -13,7 +13,9 @@
         <el-button @click.native="handleDel" type="danger">删除模板</el-button>
       </el-col>
     </el-row>
-    <el-table :data="list" style="width: 100%" @selection-change="selectionChange" v-loading="loading">
+    <el-table :data="list" style="width: 100%"
+              @selection-change="selectionChange"
+              v-loading="loading" :border="true">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="模板编码">
         <template v-slot="scope">
