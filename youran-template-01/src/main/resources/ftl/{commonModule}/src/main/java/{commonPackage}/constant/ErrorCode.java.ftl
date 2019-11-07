@@ -40,9 +40,6 @@ public enum ErrorCode {
     CASCADE_DELETE_ERROR("524", "error.cascade_delete_error");
 
 
-    private final String value;
-    private final String desc;
-
     private static final Map<String, ErrorCode> LOOKUP = new HashMap<>();
 
     static {
@@ -50,6 +47,9 @@ public enum ErrorCode {
             LOOKUP.put(e.value, e);
         }
     }
+
+    private final String value;
+    private final String desc;
 
 
     ErrorCode(String value, String desc) {
@@ -61,9 +61,9 @@ public enum ErrorCode {
         return LOOKUP.get(value);
     }
 
-    public static ErrorCode findByDesc(String desc){
+    public static ErrorCode findByDesc(String desc) {
         for (ErrorCode e : ErrorCode.values()) {
-            if(e.getDesc().equals(desc)){
+            if (e.getDesc().equals(desc)) {
                 return e;
             }
         }

@@ -283,8 +283,11 @@ public class BaseContext {
     public String printClassCom(String title, String desc) {
         StringBuilder sb = new StringBuilder();
         sb.append("/**\n")
-            .append(" * ").append(title).append("\n")
-            .append(" * <p> ").append(desc).append("\n")
+            .append(" * ").append(title).append("\n");
+        if (StringUtils.isNotBlank(desc)) {
+            sb.append(" * <p>").append(desc).append("\n");
+        }
+        sb.append(" *\n")
             .append(" * @author ").append(this.author).append("\n")
             .append(" * @date ").append(DateUtil.getDateStr(this.createdTime, "yyyy/MM/dd")).append("\n")
             .append(" */").append("\n");

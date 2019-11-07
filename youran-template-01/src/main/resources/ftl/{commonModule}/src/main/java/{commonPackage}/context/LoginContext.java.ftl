@@ -5,8 +5,9 @@
 public interface LoginContext {
 
     /**
-     * 获取当前登录用户id
-     * @return
+     * 获取当前登录用户唯一标识
+     *
+     * @return 用户唯一标识
      */
     String getCurrentOperatorId();
 

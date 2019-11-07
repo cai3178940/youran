@@ -16,8 +16,8 @@
     <modules>
         <module>../youran-common</module>
         <module>../youran-generate-core</module>
-        <module>../youran-generate-web</module>
         <module>../youran-template-01</module>
+        <module>../youran-generate-web</module>
     </modules>
 
     <properties>

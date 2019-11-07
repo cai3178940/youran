@@ -56,10 +56,10 @@ public class PageQO extends AbstractQO {
         this.pageNo = pageNo;
     }
 
-    public int getStartIndex(){
+    public int getStartIndex() {
         return (pageNo - 1) * pageSize;
     }
-    public int getEndIndex(){
+    public int getEndIndex() {
         return pageNo * pageSize;
     }
 

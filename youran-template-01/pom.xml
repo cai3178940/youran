@@ -11,19 +11,38 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>youran-template-01</artifactId>
+
+    <properties>
+        <output.zip.copyDir>youran-generate-web/target/classes/template</output.zip.copyDir>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>youran-generate-core</artifactId>
         </dependency>
-
-
     </dependencies>
 
 
     <build>
         <plugins>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/package.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

@@ -10,7 +10,7 @@ public class OptimisticLockConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(OptimisticLockConfiguration.class);
 
     @Bean
-    public OptimisticLockAspect optimisticLockAspect(){
+    public OptimisticLockAspect optimisticLockAspect() {
         logger.info("创建OptimisticLockAspect");
         return new OptimisticLockAspect();
     }

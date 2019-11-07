@@ -2,7 +2,7 @@
 <#--定义主体代码-->
 <#assign code>
 <@call this.printClassCom("乐观锁异常")/>
-public class OptimisticException extends RuntimeException{
+public class OptimisticException extends RuntimeException {
 
     public OptimisticException() {
 

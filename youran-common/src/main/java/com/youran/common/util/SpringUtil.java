@@ -1,5 +1,6 @@
 package com.youran.common.util;
 
+import com.youran.common.exception.BusinessException;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -44,6 +45,9 @@ public class SpringUtil implements ApplicationContextAware {
      * @return
      */
     public static Object getBean(String beanName) {
+        if (applicationContext == null) {
+            return null;
+        }
         return applicationContext.getBean(beanName);
     }
 
@@ -55,6 +59,9 @@ public class SpringUtil implements ApplicationContextAware {
      * @return
      */
     public static <T> T getBean(String beanName, Class<T> clz) {
+        if (applicationContext == null) {
+            return null;
+        }
         return applicationContext.getBean(beanName, clz);
     }
 
@@ -65,6 +72,9 @@ public class SpringUtil implements ApplicationContextAware {
      * @return
      */
     public static <T> T getBean(Class<T> clz) {
+        if (applicationContext == null) {
+            return null;
+        }
         return applicationContext.getBean(clz);
     }
 
@@ -76,6 +86,9 @@ public class SpringUtil implements ApplicationContextAware {
      * @return
      */
     public static String[] getBeanNamesForType(Class<?> clz) {
+        if (applicationContext == null) {
+            return null;
+        }
         return applicationContext.getBeanNamesForType(clz);
     }
 
@@ -86,6 +99,9 @@ public class SpringUtil implements ApplicationContextAware {
      * @return
      */
     public static <T> Map<String, T> getBeansOfType(Class<T> clz) {
+        if (applicationContext == null) {
+            return null;
+        }
         return applicationContext.getBeansOfType(clz);
     }
 
@@ -96,6 +112,9 @@ public class SpringUtil implements ApplicationContextAware {
      * @return
      */
     public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> clz) {
+        if (applicationContext == null) {
+            return null;
+        }
         return applicationContext.getBeansWithAnnotation(clz);
     }
 
@@ -105,6 +124,9 @@ public class SpringUtil implements ApplicationContextAware {
      * @return
      */
     public static DefaultListableBeanFactory getBeanFactory() {
+        if (applicationContext == null) {
+            return null;
+        }
         return (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
     }
 
@@ -116,6 +138,9 @@ public class SpringUtil implements ApplicationContextAware {
      */
     public static boolean destroy(String beanName) {
         DefaultListableBeanFactory beanFactory = getBeanFactory();
+        if (beanFactory == null) {
+            throw new BusinessException("spring容器未启动");
+        }
         if (!beanFactory.containsBean(beanName)) {
             return false;
         }
@@ -135,6 +160,9 @@ public class SpringUtil implements ApplicationContextAware {
      */
     public static <T> T regist(String beanName, Class<T> clz) {
         DefaultListableBeanFactory beanFactory = getBeanFactory();
+        if (beanFactory == null) {
+            throw new BusinessException("spring容器未启动");
+        }
         if (!beanFactory.containsBean(beanName)) {
             BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(clz);
             beanFactory.registerBeanDefinition(beanName, beanDefinitionBuilder.getBeanDefinition());
@@ -151,6 +179,9 @@ public class SpringUtil implements ApplicationContextAware {
      */
     public static Object regist(String beanName, BeanDefinitionBuilder beanDefinitionBuilder) {
         DefaultListableBeanFactory beanFactory = getBeanFactory();
+        if (beanFactory == null) {
+            throw new BusinessException("spring容器未启动");
+        }
         if (!beanFactory.containsBean(beanName)) {
             beanFactory.registerBeanDefinition(beanName, beanDefinitionBuilder.getBeanDefinition());
         }

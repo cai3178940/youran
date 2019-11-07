@@ -14,7 +14,7 @@ public class MyCustomDateEditor extends PropertyEditorSupport {
         if (!StringUtils.hasText(text)) {
             // Treat empty String as null value.
             setValue(null);
-        }else {
+        } else {
             setValue(DateUtil.parseDate(text));
         }
     }

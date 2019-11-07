@@ -4,14 +4,13 @@
 <@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
 <@call this.addImport("${this.commonPackage}.util.MessageSourceUtil")/>
 <@call this.printClassCom("业务异常")/>
-public class BusinessException extends RuntimeException{
+public class BusinessException extends RuntimeException {
 
     private ErrorCode code;
 
     public BusinessException() {
         super(MessageSourceUtil.getMessage(ErrorCode.INTERNAL_SERVER_ERROR.getDesc()));
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
-
     }
 
     public BusinessException(String message) {
@@ -20,12 +19,12 @@ public class BusinessException extends RuntimeException{
     }
 
     public BusinessException(Throwable cause) {
-        super(cause.getMessage(),cause);
+        super(cause.getMessage(), cause);
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
-    public BusinessException(String message,Throwable cause) {
-        super(message,cause);
+    public BusinessException(String message, Throwable cause) {
+        super(message, cause);
         this.code = ErrorCode.INTERNAL_SERVER_ERROR;
     }
 
@@ -34,7 +33,7 @@ public class BusinessException extends RuntimeException{
         this.code = code;
     }
 
-    public BusinessException(ErrorCode code,String message) {
+    public BusinessException(ErrorCode code, String message) {
         super(message);
         this.code = code;
     }
@@ -46,6 +45,7 @@ public class BusinessException extends RuntimeException{
     public void setErrorCode(ErrorCode code) {
         this.code = code;
     }
+
 }
 </#assign>
 <#--开始渲染代码-->
