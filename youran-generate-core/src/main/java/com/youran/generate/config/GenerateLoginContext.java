@@ -12,9 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class GenerateLoginContext implements LoginContext {
 
+    public static final String DEFAULT_LOGIN_USER = "admin";
+
+
     @Override
     public String getCurrentOperatorId() {
-        return "admin";
+        return DEFAULT_LOGIN_USER;
     }
 
 }

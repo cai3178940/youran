@@ -362,6 +362,10 @@ export default {
             // 修改iframe的地址，进行文件下载
             this.downloadUrl = `${this.$common.BASE_API_URL}/${apiPath}/code_gen/downloadCode/${progressVO.sessionId}`
             this.$common.showMsg('success', progressVO.msg)
+            // 隔2秒改成null，修复不能重复下载的bug
+            setTimeout(() => {
+              this.downloadUrl = null
+            }, 2000)
           } else {
             this.$common.showNotifyError(progressVO.msg)
           }

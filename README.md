@@ -45,14 +45,13 @@ mvn clean package
 java -jar youran-generate-web/target/youran-generate-web-2.2.0-SNAPSHOT.war
 
 ```
-### 项目管理页面
-![image](doc/image1.png)
-### 实体管理页面
-![image](doc/image2.png)
-### 字段管理页面
-![image](doc/image3.png)
-### 字段添加页面
-![image](doc/image4.png)
+
+
+**安装完成以后首次访问系统，请导入代码模板**
+
+模板文件路径：
+
+- 标准java后端模板： youran-template-01/target/youran-template-01-2.2.0-SNAPSHOT-src.zip
 
 
 ## 术语解析

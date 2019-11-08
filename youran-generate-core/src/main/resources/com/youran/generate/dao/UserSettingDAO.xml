@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.dao.UserSettingDAO">
+
+
+    <sql id="userSettingColumns">
+        ${alias}.id,
+        ${alias}.username,
+        ${alias}.template_enabled as templateEnabled,
+        ${alias}.created_time as createdTime,
+        ${alias}.created_by as createdBy,
+        ${alias}.operated_time as operatedTime,
+        ${alias}.operated_by as operatedBy,
+        ${alias}.version,
+        ${alias}.deleted
+    </sql>
+
+
+    <select id="findById" resultType="UserSettingPO">
+        select
+            <include refid="userSettingColumns"><property name="alias" value="t"/></include>
+        from user_setting t
+        <where>
+            and t.deleted=0
+            and t.id = #{arg0}
+        </where>
+        limit 1
+    </select>
+
+    <select id="exist" resultType="boolean">
+        select count(1) from user_setting
+        <where>
+            and deleted=0
+            and id = #{arg0}
+        </where>
+    </select>
+
+    <insert id="_save" useGeneratedKeys="true" keyProperty="id" parameterType="UserSettingPO">
+        insert into user_setting(
+        id,
+        username,
+        template_enabled,
+        created_time,
+        created_by,
+        operated_time,
+        operated_by,
+        version,
+        deleted
+        ) VALUES (
+        #{id,jdbcType=INTEGER},
+        #{username,jdbcType=VARCHAR},
+        #{templateEnabled,jdbcType=BOOLEAN},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{createdBy,jdbcType=VARCHAR},
+        #{operatedTime,jdbcType=TIMESTAMP},
+        #{operatedBy,jdbcType=VARCHAR},
+        #{version,jdbcType=INTEGER},
+        #{deleted,jdbcType=BOOLEAN}
+        )
+    </insert>
+
+
+    <update id="_update" parameterType="UserSettingPO">
+        update user_setting set
+            username=#{username,jdbcType=VARCHAR},
+            template_enabled=#{templateEnabled,jdbcType=BOOLEAN},
+            operated_time=#{operatedTime,jdbcType=TIMESTAMP},
+            operated_by=#{operatedBy,jdbcType=VARCHAR},
+            version = version+1,
+            deleted=#{deleted,jdbcType=BOOLEAN}
+        where id=#{id,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and deleted=0
+    </update>
+
+    <delete id="delete">
+        update user_setting set deleted=1
+        where id=#{arg0,jdbcType=INTEGER}
+        and deleted=0
+    </delete>
+
+
+    <sql id="queryCondition">
+        <if test="username != null and username !='' ">
+            and t.username = #{username}
+        </if>
+        <if test="templateEnabled != null ">
+            and t.template_enabled = #{templateEnabled}
+        </if>
+    </sql>
+
+    <sql id="orderCondition">
+        order by
+        <if test="createdTimeSortSign != null and createdTimeSortSign!=0">
+            t.created_time <if test="createdTimeSortSign > 0">asc</if><if test="createdTimeSortSign &lt; 0">desc</if>,
+        </if>
+        <if test="operatedTimeSortSign != null and operatedTimeSortSign!=0">
+            t.operated_time <if test="operatedTimeSortSign > 0">asc</if><if test="operatedTimeSortSign &lt; 0">desc</if>,
+        </if>
+            t.operated_time desc
+    </sql>
+
+    <select id="findCountByQuery" parameterType="UserSettingQO" resultType="int">
+        select count(1) from user_setting t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+    </select>
+
+    <select id="findListByQuery" parameterType="UserSettingQO" resultType="UserSettingListVO">
+        select
+            <include refid="userSettingColumns"><property name="alias" value="t"/></include>
+        from user_setting t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+        <include refid="orderCondition"/>
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="notUnique" resultType="boolean">
+        select count(1) from user_setting t
+        <where>
+            and t.deleted=0
+            and t.username = #{username}
+        <if test="id != null  ">
+            and t.id != #{id}
+        </if>
+        </where>
+    </select>
+
+    <select id="findByUsername" resultType="UserSettingPO">
+        select
+            <include refid="userSettingColumns"><property name="alias" value="t"/></include>
+        from user_setting t
+        <where>
+            and t.deleted=0
+            and t.username = #{arg0}
+        </where>
+        limit 1
+    </select>
+
+
+</mapper>

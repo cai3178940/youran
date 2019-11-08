@@ -20,6 +20,8 @@ public interface CodeTemplateDAO extends DAO<CodeTemplatePO> {
                       @Param("templateVersion") String templateVersion,
                       @Param("templateId") Integer templateId);
 
+    boolean exists();
+
 }
 
 

@@ -158,5 +158,13 @@
         </where>
     </select>
 
+    <select id="exists" resultType="java.lang.Boolean">
+        select count(1) from (
+            select 1 from code_template t
+            where t.deleted=0
+            limit 1
+        ) as _t
+    </select>
+
 
 </mapper>

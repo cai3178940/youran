@@ -305,3 +305,19 @@ CREATE TABLE `template_file` (
     KEY `IDX_TEMPLATE_FILE_1` (`template_id`,`file_dir`,`file_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='模板文件';
 
+DROP TABLE IF EXISTS `user_setting`;
+
+CREATE TABLE `user_setting` (
+    `id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `username` varchar(32) NOT NULL COMMENT '用户名',
+    `template_enabled` tinyint(4) NOT NULL COMMENT '启用自定义模板',
+    `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
+    `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
+    `operated_time` datetime NOT NULL COMMENT '修改时间【yyyy-MM-dd HH:mm:ss】',
+    `operated_by` varchar(20) NOT NULL COMMENT '修改人【最大长度20】',
+    `version` int(11) NOT NULL COMMENT '乐观锁版本号【整型】',
+    `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
+    PRIMARY KEY (`id`),
+    KEY `IDX_KM9P3FO` (`username`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户配置';
+

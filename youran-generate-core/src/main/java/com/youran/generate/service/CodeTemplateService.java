@@ -154,6 +154,15 @@ public class CodeTemplateService {
         return count;
     }
 
+    /**
+     * 判断模板是否存在
+     *
+     * @return
+     */
+    public boolean exists() {
+        return codeTemplateDAO.exists();
+    }
+
 
 }
 

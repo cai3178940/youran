@@ -9,14 +9,23 @@ export default new Vuex.Store({
      * 系统用户信息
      */
     systemUserInfo: {
+      id: null,
       /**
        * 当前登录用户
        */
-      user: '',
+      username: '',
+      /**
+       * 启用自定义模板
+       */
+      templateEnabled: false,
       /**
        * 系统版本
        */
-      sysVersion: ''
+      sysVersion: '',
+      /**
+       * 系统中存在模板
+       */
+      templateExists: true
     },
     /**
      * 缓存的字段模板数量
@@ -56,7 +65,7 @@ export default new Vuex.Store({
      * @param info
      */
     setSystemUserInfo: (state, info) => {
-      state.systemUserInfo = info
+      Object.assign(state.systemUserInfo, info)
     },
     /**
      * 从缓存中移除字段模板

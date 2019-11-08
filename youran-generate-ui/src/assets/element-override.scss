@@ -10,6 +10,9 @@
   padding-bottom: 20px;
 }
 
+.el-breadcrumb__inner {
+  font-weight: bold!important;
+}
 
 .el-breadcrumb__inner.is-link{
   cursor:pointer;

@@ -39,7 +39,8 @@
             </svg>
             <span slot="title">项目管理</span>
           </el-menu-item>
-          <el-menu-item index="/template" :class="{'is-active': isRouteIndexOf('/template')}">
+          <el-menu-item v-if="this.systemUserInfo.templateEnabled"
+                        index="/template" :class="{'is-active': isRouteIndexOf('/template')}">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-TEMPLATE"></use>
             </svg>
@@ -57,15 +58,21 @@
     <el-dialog title="系统信息" :visible.sync="systemDialogVisible" width="350px">
       <el-form size="small">
         <el-form-item label="登录用户：" label-width="100px">
-          {{systemUserInfo.user}}
+          {{systemUserInfo.username}}
         </el-form-item>
         <el-form-item label="系统版本：" label-width="100px">
           {{systemUserInfo.sysVersion}}
         </el-form-item>
+        <el-form-item label="自定义模板：" label-width="100px">
+          <el-switch v-model="form.templateEnabled"
+                     active-text="开启"
+                     inactive-text="关闭" @change="formChange">
+          </el-switch>
+        </el-form-item>
       </el-form>
     </el-dialog>
     <!-- 模板导入对话框 -->
-    <import-template></import-template>
+    <import-template ref="importTemplate"></import-template>
   </el-container>
 </template>
 
@@ -81,7 +88,10 @@ export default {
   data () {
     return {
       avatar,
-      systemDialogVisible: false
+      systemDialogVisible: false,
+      form: {
+        templateEnabled: false
+      }
     }
   },
   computed: {
@@ -101,6 +111,19 @@ export default {
     },
     showSystemDialog () {
       this.systemDialogVisible = true
+    },
+    formChange () {
+      this.$ajax.put(`/${apiPath}/system_user/setting`,
+        {
+          id: this.systemUserInfo.id,
+          templateEnabled: this.form.templateEnabled
+        })
+        .then(response => this.$common.checkResult(response))
+        .then(data => {
+          this.setSystemUserInfo({
+            templateEnabled: data.templateEnabled
+          })
+        })
     }
   },
   watch: {
@@ -113,6 +136,17 @@ export default {
       .then(response => this.$common.checkResult(response))
       .then(data => {
         this.setSystemUserInfo(data)
+      })
+      .then(() => {
+        if (!this.systemUserInfo.templateExists) {
+          this.$confirm('系统中还没有任何代码模板，是否需要手动导入模板?', '提示', {
+            confirmButtonText: '立即导入',
+            cancelButtonText: '不需要导入，随便看看先',
+            type: 'warning'
+          }).then(() => {
+            this.$refs.importTemplate.show()
+          })
+        }
       })
   }
 }

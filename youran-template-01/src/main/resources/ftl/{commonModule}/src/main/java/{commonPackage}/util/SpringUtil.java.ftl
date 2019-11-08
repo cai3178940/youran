@@ -1,7 +1,7 @@
 <#include "/abstracted/common.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@call this.addImport("com.jd.common.exception.BusinessException")/>
+<@call this.addImport("${this.commonPackage}.exception.BusinessException")/>
 <@call this.addImport("org.springframework.beans.factory.support.BeanDefinitionBuilder")/>
 <@call this.addImport("org.springframework.beans.factory.support.DefaultListableBeanFactory")/>
 <@call this.addImport("org.springframework.context.ApplicationContext")/>
