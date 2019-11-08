@@ -60,7 +60,7 @@ public class MetaQueryAssembleService {
                                              boolean withMtm, boolean withForeign,
                                              boolean withFkCascade, boolean withMtmCascade,
                                              boolean check) {
-        MetaProjectPO project = metaProjectService.getProject(projectId, true);
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         // 查询实体id列表
         List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
         if (CollectionUtils.isEmpty(entityIds)) {

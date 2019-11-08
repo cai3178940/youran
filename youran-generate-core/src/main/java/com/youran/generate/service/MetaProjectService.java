@@ -222,7 +222,7 @@ public class MetaProjectService {
      * @return
      */
     public MetaProjectShowVO show(Integer projectId) {
-        MetaProjectPO metaProject = this.getProject(projectId, true, true);
+        MetaProjectPO metaProject = this.getAndCheckProject(projectId);
         MetaProjectShowVO showVO = MetaProjectMapper.INSTANCE.toShowVO(metaProject);
         return showVO;
     }

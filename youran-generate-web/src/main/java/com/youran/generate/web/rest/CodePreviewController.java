@@ -53,7 +53,7 @@ public class CodePreviewController extends AbstractController implements CodePre
     @GetMapping(value = "/file_content", produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public ResponseEntity<String> getFileContent(@Valid CodeContentQO qo) {
-        MetaProjectPO project = metaProjectService.getProject(qo.getProjectId(), true);
+        MetaProjectPO project = metaProjectService.getAndCheckProject(qo.getProjectId());
         if (project.getProjectVersion() < qo.getProjectVersion()) {
             throw new BusinessException("projectVersion有误");
         }
@@ -70,7 +70,7 @@ public class CodePreviewController extends AbstractController implements CodePre
         }
         File file = new File(dirFile, qo.getFilePath());
         if (!file.exists()) {
-            LOGGER.error("文件不存在:{}",file.getPath());
+            LOGGER.error("文件不存在:{}", file.getPath());
             throw new BusinessException("文件不存在");
         }
         try {
@@ -102,7 +102,7 @@ public class CodePreviewController extends AbstractController implements CodePre
     @ResponseBody
     public ResponseEntity<CodeTreeVO> codeTree(@RequestParam Integer projectId,
                                                @RequestParam Integer templateIndex) {
-        MetaProjectPO project = metaProjectService.getProject(projectId, true);
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         Integer templateId = project.forceGetTemplateIdByIndex(templateIndex);
         CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
         String projectDir = tmpDirService.getProjectRecentDir(project, templatePO);
