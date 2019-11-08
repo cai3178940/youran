@@ -9,6 +9,7 @@ import com.youran.generate.pojo.dto.MetaFieldUpdateDTO;
 import com.youran.generate.pojo.dto.MetaFieldUpdateOrderNoDTO;
 import com.youran.generate.pojo.mapper.MetaFieldMapper;
 import com.youran.generate.pojo.po.MetaFieldPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
@@ -50,11 +51,12 @@ public class MetaFieldService {
         // 校验字段名
         JfieldNameCheckUtil.check(metaFieldDTO.getJfieldName());
         Integer entityId = metaFieldDTO.getEntityId();
-        // 校验操作人
-        metaProjectService.checkOperatorByEntityId(entityId);
+        // 获取项目，并校验操作人
+        MetaProjectPO project = metaProjectService.getProjectByEntityId(entityId, true);
         MetaFieldPO field = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
+        field.setProjectId(project.getProjectId());
         this.doSave(field);
-        metaProjectService.updateProjectVersionByEntityId(entityId);
+        metaProjectService.updateProject(project);
         return field;
     }
 
@@ -78,13 +80,13 @@ public class MetaFieldService {
         Integer fieldId = updateDTO.getFieldId();
         MetaFieldPO metaField = this.getField(fieldId, true);
         Integer entityId = metaField.getEntityId();
-        // 校验操作人
-        metaProjectService.checkOperatorByEntityId(entityId);
+        // 查询项目,同时校验用户权限
+        MetaProjectPO project = metaProjectService.getAndCheckProject(metaField.getProjectId());
         MetaFieldMapper.INSTANCE.setPO(metaField, updateDTO);
         // 校验字段属性
         MetaFieldCheckUtil.checkFieldPO(metaField);
         metaFieldDAO.update(metaField);
-        metaProjectService.updateProjectVersionByEntityId(entityId);
+        metaProjectService.updateProject(project);
         return metaField;
     }
 
@@ -135,15 +137,13 @@ public class MetaFieldService {
     @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... fieldId) {
         int count = 0;
-        Integer entityId = null;
         for (Integer id : fieldId) {
             MetaFieldPO metaField = this.getField(id, false);
             if (metaField == null) {
                 continue;
             }
-            entityId = metaField.getEntityId();
-            // 校验操作人
-            metaProjectService.checkOperatorByEntityId(entityId);
+            // 查询项目,同时校验用户权限
+            MetaProjectPO project = metaProjectService.getAndCheckProject(metaField.getProjectId());
             count += metaFieldDAO.delete(id);
 
             // 删除外键级联扩展
@@ -156,9 +156,7 @@ public class MetaFieldService {
             if (CollectionUtils.isNotEmpty(mtmCascadeFieldIds)) {
                 metaMtmCascadeExtService.delete(mtmCascadeFieldIds.toArray(new Integer[0]));
             }
-        }
-        if (count > 0) {
-            metaProjectService.updateProjectVersionByEntityId(entityId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }
@@ -184,8 +182,11 @@ public class MetaFieldService {
     @OptimisticLock
     public Integer updateOrderNo(MetaFieldUpdateOrderNoDTO dto) {
         MetaFieldPO field = this.getField(dto.getFieldId(), true);
+        // 查询项目,同时校验用户权限
+        MetaProjectPO project = metaProjectService.getAndCheckProject(field.getProjectId());
         field.setOrderNo(dto.getOrderNo());
         metaFieldDAO.update(field);
+        metaProjectService.updateProject(project);
         return field.getOrderNo();
     }
 

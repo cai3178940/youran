@@ -23,28 +23,48 @@
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="indexId" parameterType="MetaIndexPO">
         insert into meta_index (
-          index_id, index_name, entity_id,
-          `unique`,unique_check, created_time, created_by,
-          operated_time, operated_by, deleted,
-          version)
-        values (#{indexId,jdbcType=INTEGER}, #{indexName,jdbcType=VARCHAR}, #{entityId,jdbcType=INTEGER},
-          #{unique,jdbcType=INTEGER}, #{uniqueCheck,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR},
-          #{operatedTime,jdbcType=TIMESTAMP}, #{operatedBy,jdbcType=VARCHAR}, #{deleted,jdbcType=INTEGER},
-          #{version,jdbcType=INTEGER})
+            index_id,
+            project_id,
+            index_name,
+            entity_id,
+            `unique`,
+            unique_check,
+            created_time,
+            created_by,
+            operated_time,
+            operated_by,
+            deleted,
+            version)
+        values (
+            #{indexId,jdbcType=INTEGER},
+            #{projectId,jdbcType=INTEGER},
+            #{indexName,jdbcType=VARCHAR},
+            #{entityId,jdbcType=INTEGER},
+            #{unique,jdbcType=INTEGER},
+            #{uniqueCheck,jdbcType=INTEGER},
+            #{createdTime,jdbcType=TIMESTAMP},
+            #{createdBy,jdbcType=VARCHAR},
+            #{operatedTime,jdbcType=TIMESTAMP},
+            #{operatedBy,jdbcType=VARCHAR},
+            #{deleted,jdbcType=INTEGER},
+            #{version,jdbcType=INTEGER})
     </insert>
 
     <update id="_update" parameterType="MetaIndexPO">
         update meta_index
-        set index_name = #{indexName,jdbcType=VARCHAR},
-        entity_id = #{entityId,jdbcType=INTEGER},
-        `unique` = #{unique,jdbcType=INTEGER},
-        unique_check = #{uniqueCheck,jdbcType=INTEGER},
-        operated_time = #{operatedTime,jdbcType=TIMESTAMP},
-        operated_by = #{operatedBy,jdbcType=VARCHAR},
-        version = #{version,jdbcType=INTEGER}
-        where index_id = #{indexId,jdbcType=INTEGER}
-        and version=#{version,jdbcType=INTEGER}
-        and deleted=0
+        set
+            index_name = #{indexName,jdbcType=VARCHAR},
+            project_id = #{projectId,jdbcType=INTEGER},
+            entity_id = #{entityId,jdbcType=INTEGER},
+            `unique` = #{unique,jdbcType=INTEGER},
+            unique_check = #{uniqueCheck,jdbcType=INTEGER},
+            operated_time = #{operatedTime,jdbcType=TIMESTAMP},
+            operated_by = #{operatedBy,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER}
+        where
+            index_id = #{indexId,jdbcType=INTEGER}
+            and version=#{version,jdbcType=INTEGER}
+            and deleted=0
     </update>
 
     <delete id="delete">

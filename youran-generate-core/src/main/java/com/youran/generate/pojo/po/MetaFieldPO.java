@@ -12,34 +12,125 @@ import java.util.List;
  */
 public class MetaFieldPO extends BasePO {
 
+    /**
+     * 字段id
+     */
     private Integer fieldId;
+    /**
+     * 所属项目id
+     */
+    private Integer projectId;
+    /**
+     * 所属实体id
+     */
     private Integer entityId;
+    /**
+     * java字段名称
+     */
     private String jfieldName;
+    /**
+     * mysql字段名称
+     */
     private String fieldName;
+    /**
+     * java字段类型
+     */
     private String jfieldType;
+    /**
+     * mysql字段类型
+     */
     private String fieldType;
+    /**
+     * 字段简短描述
+     */
     private String fieldDesc;
+    /**
+     * 字段示例
+     */
     private String fieldExample;
+    /**
+     * 字段详细描述
+     */
     private String fieldComment;
+    /**
+     * 字段长度
+     */
     private Integer fieldLength;
+    /**
+     * 字段精度
+     */
     private Integer fieldScale;
+    /**
+     * 是否主键
+     */
     private Integer primaryKey;
+    /**
+     * 是否自动递增
+     */
     private Integer autoIncrement;
+    /**
+     * 是否不能为空
+     */
     private Integer notNull;
+    /**
+     * 默认值
+     */
     private String defaultValue;
+    /**
+     * 是否外键
+     */
     private Integer foreignKey;
+    /**
+     * 外键实体id
+     */
     private Integer foreignEntityId;
+    /**
+     * 外键字段id
+     */
     private Integer foreignFieldId;
+    /**
+     * 字段编辑方式：文本框、下拉框等
+     */
     private Integer editType;
+    /**
+     * 字典类型
+     */
     private String dicType;
+    /**
+     * 是否新增字段
+     */
     private Integer insert;
+    /**
+     * 是否编辑字段
+     */
     private Integer update;
+    /**
+     * 是否列表字段
+     */
     private Integer list;
+    /**
+     * 是否支持排序
+     */
     private Integer listSort;
+    /**
+     * 是否详情字段
+     */
     private Integer show;
+    /**
+     * 是否查询字段
+     */
     private Integer query;
+    /**
+     * 查询方式
+     */
     private Integer queryType;
+    /**
+     * 排序号
+     */
     private Integer orderNo;
+    /**
+     * 特殊字段类型
+     */
     private String specialField;
 
     /**
@@ -65,6 +156,14 @@ public class MetaFieldPO extends BasePO {
     @JsonIgnore
     private List<MetaCascadeExtPO> cascadeListExts;
 
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
 
     public List<MetaCascadeExtPO> getCascadeExts() {
         return cascadeExts;

@@ -11,6 +11,7 @@ import com.youran.generate.pojo.dto.MetaMtmCascadeExtUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaMtmCascadeExtMapper;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaMtmCascadeExtPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaMtmCascadeExtQO;
 import com.youran.generate.pojo.vo.MetaMtmCascadeExtListVO;
 import com.youran.generate.pojo.vo.MetaMtmCascadeExtShowVO;
@@ -49,12 +50,13 @@ public class MetaMtmCascadeExtService {
     public MetaMtmCascadeExtPO save(MetaMtmCascadeExtAddDTO addDTO) {
         // 校验别名
         JfieldNameCheckUtil.check(addDTO.getAlias());
-        Integer entityId = addDTO.getEntityId();
-        // 校验操作人
-        metaProjectService.checkOperatorByEntityId(entityId);
+        // 获取项目，并校验操作人
+        MetaProjectPO project = metaProjectService.getProjectByEntityId(addDTO.getEntityId(),
+            true);
         MetaMtmCascadeExtPO metaMtmCascadeExt = MetaMtmCascadeExtMapper.INSTANCE.fromAddDTO(addDTO);
+        metaMtmCascadeExt.setProjectId(project.getProjectId());
         this.doSave(metaMtmCascadeExt);
-        metaProjectService.updateProjectVersionByEntityId(entityId);
+        metaProjectService.updateProject(project);
         return metaMtmCascadeExt;
     }
 
@@ -77,14 +79,13 @@ public class MetaMtmCascadeExtService {
         JfieldNameCheckUtil.check(updateDTO.getAlias());
         Integer mtmCascadeExtId = updateDTO.getMtmCascadeExtId();
         MetaMtmCascadeExtPO metaMtmCascadeExt = this.getMetaMtmCascadeExt(mtmCascadeExtId, true);
-        Integer entityId = metaMtmCascadeExt.getEntityId();
-        // 校验操作人
-        metaProjectService.checkOperatorByEntityId(entityId);
+        // 获取项目，并校验操作人
+        MetaProjectPO project = metaProjectService.getAndCheckProject(metaMtmCascadeExt.getProjectId());
         MetaMtmCascadeExtMapper.INSTANCE.setUpdateDTO(metaMtmCascadeExt, updateDTO);
         // 校验级联扩展
         this.checkCascadeExtPO(metaMtmCascadeExt);
         metaMtmCascadeExtDAO.update(metaMtmCascadeExt);
-        metaProjectService.updateProjectVersionByEntityId(entityId);
+        metaProjectService.updateProject(project);
         return metaMtmCascadeExt;
     }
 
@@ -139,19 +140,15 @@ public class MetaMtmCascadeExtService {
     @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... mtmCascadeExtIds) {
         int count = 0;
-        Integer entityId = null;
         for (Integer mtmCascadeExtId : mtmCascadeExtIds) {
             MetaMtmCascadeExtPO po = this.getMetaMtmCascadeExt(mtmCascadeExtId, false);
             if (po == null) {
                 continue;
             }
-            entityId = po.getEntityId();
-            //校验操作人
-            metaProjectService.checkOperatorByEntityId(entityId);
+            // 获取项目，并校验操作人
+            MetaProjectPO project = metaProjectService.getAndCheckProject(po.getProjectId());
             count += metaMtmCascadeExtDAO.delete(mtmCascadeExtId);
-        }
-        if (count > 0) {
-            metaProjectService.updateProjectVersionByEntityId(entityId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }

@@ -58,6 +58,7 @@ DROP TABLE IF EXISTS `meta_field`;
 
 CREATE TABLE `meta_field` (
   `field_id` int(11) AUTO_INCREMENT COMMENT '主键',
+  `project_id` int(11) NOT NULL COMMENT '所属项目id',
   `entity_id` int(11) NOT NULL COMMENT '所属实体id',
   `jfield_name` varchar(50) NOT NULL COMMENT '实体字段名称',
   `field_name` varchar(64) NOT NULL COMMENT '表字段名称',
@@ -100,6 +101,7 @@ DROP TABLE IF EXISTS `meta_index`;
 
 CREATE TABLE `meta_index` (
   `index_id` int(11) AUTO_INCREMENT COMMENT '主键',
+  `project_id` int(11) NOT NULL COMMENT '所属项目id',
   `index_name` varchar(40) NOT NULL COMMENT '索引名称',
   `entity_id` int(11) NOT NULL COMMENT '所属实体id',
   `unique` tinyint(1) NOT NULL COMMENT '是否唯一索引',
@@ -119,6 +121,7 @@ DROP TABLE IF EXISTS `meta_index_field`;
 CREATE TABLE `meta_index_field` (
   `index_id` int(11) NOT NULL COMMENT '索引id',
   `field_id` int(11) NOT NULL COMMENT '字段id',
+  `project_id` int(11) NOT NULL COMMENT '项目id',
   `order_no` int(11) NOT NULL COMMENT '排序号',
   PRIMARY KEY (`index_id`,`field_id`),
   KEY `i_meta_index_field_0` (`index_id`) USING BTREE,
@@ -147,6 +150,7 @@ DROP TABLE IF EXISTS `meta_const_detail`;
 
 CREATE TABLE `meta_const_detail` (
   `const_detail_id` int(11) AUTO_INCREMENT COMMENT '常量值id',
+  `project_id` int(11) NOT NULL COMMENT '所属项目id',
   `const_id` int(11) NOT NULL COMMENT '常量类id',
   `detail_name` varchar(50) NOT NULL COMMENT '常量字段名称',
   `detail_value` varchar(50) NOT NULL COMMENT '常量值',
@@ -194,6 +198,7 @@ DROP TABLE IF EXISTS `meta_cascade_ext`;
 
 CREATE TABLE `meta_cascade_ext` (
     `cascade_ext_id` int(11) AUTO_INCREMENT COMMENT '主键id',
+    `project_id` int(11) NOT NULL COMMENT '所属项目id',
     `field_id` int(11) NOT NULL COMMENT '所属字段id',
     `entity_id` int(11) NOT NULL COMMENT '所属实体id',
     `alias` varchar(255) NOT NULL COMMENT '展示字段别名',
@@ -220,6 +225,7 @@ DROP TABLE IF EXISTS `meta_mtm_cascade_ext`;
 
 CREATE TABLE `meta_mtm_cascade_ext` (
     `mtm_cascade_ext_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `project_id` int(11) NOT NULL COMMENT '所属项目id',
     `mtm_id` int(11) NOT NULL COMMENT '多对多id',
     `entity_id` int(11) NOT NULL COMMENT '实体id',
     `cascade_entity_id` int(11) NOT NULL COMMENT '级联所属实体id',

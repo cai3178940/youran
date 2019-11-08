@@ -14,47 +14,42 @@ public class MetaMtmCascadeExtPO extends BasePO {
      * 主键ID
      */
     private Integer mtmCascadeExtId;
-
+    /**
+     * 所属项目id
+     */
+    private Integer projectId;
     /**
      * 多对多id
      */
     private Integer mtmId;
-
     /**
      * 宿主实体id
      */
     private Integer entityId;
-
     /**
      * 级联所属实体id
      */
     private Integer cascadeEntityId;
-
     /**
      * 级联所属字段id
      */
     private Integer cascadeFieldId;
-
     /**
      * 级联查询字段别名
      */
     private String alias;
-
     /**
      * 是否在列表中展示
      */
     private Integer list;
-
     /**
      * 是否在详情中展示
      */
     private Integer show;
-
     /**
      * 是否为查询条件
      */
     private Integer query;
-
     /**
      * 宿主实体
      */
@@ -71,6 +66,14 @@ public class MetaMtmCascadeExtPO extends BasePO {
     @JsonIgnore
     private MetaFieldPO cascadeField;
 
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
 
     public Integer getMtmCascadeExtId() {
         return mtmCascadeExtId;

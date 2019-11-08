@@ -60,7 +60,7 @@ public class MetaProjectService {
      * @return
      */
     public String getNormalProjectName(Integer projectId) {
-        MetaProjectPO projectPO = this.getProject(projectId, true);
+        MetaProjectPO projectPO = this.getProject(projectId, true, false);
         return projectPO.fetchNormalProjectName();
     }
 
@@ -103,8 +103,7 @@ public class MetaProjectService {
     @OptimisticLock
     public MetaProjectPO update(MetaProjectUpdateDTO updateDTO) {
         Integer projectId = updateDTO.getProjectId();
-        MetaProjectPO project = this.getProject(projectId, true);
-        this.doCheckOperator(project);
+        MetaProjectPO project = this.getAndCheckProject(projectId);
         MetaProjectMapper.INSTANCE.setPO(project, updateDTO);
         if (StringUtils.isNotBlank(updateDTO.getPassword())) {
             String encrypt;
@@ -116,23 +115,36 @@ public class MetaProjectService {
             }
             project.setPassword(encrypt);
         }
-        metaProjectDAO.update(project);
-        this.updateProjectVersion(project.getProjectId());
+        this.updateProject(project);
         return project;
     }
 
+
+    /**
+     * 查询项目,同时校验用户权限
+     *
+     * @param projectId
+     * @return
+     */
+    public MetaProjectPO getAndCheckProject(Integer projectId) {
+        return this.getProject(projectId, true, true);
+    }
 
     /**
      * 查询项目实体
      *
      * @param projectId
      * @param force
+     * @param checkOperator 是否校验操作人
      * @return
      */
-    public MetaProjectPO getProject(Integer projectId, boolean force) {
+    public MetaProjectPO getProject(Integer projectId, boolean force, boolean checkOperator) {
         MetaProjectPO project = metaProjectDAO.findById(projectId);
         if (force && project == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND, "项目不存在");
+        }
+        if (checkOperator) {
+            this.checkOperatorByProject(project);
         }
         // 兼容旧数据，如果feature字段为空，则设置默认值
         if (StringUtils.isBlank(project.getFeature())) {
@@ -147,10 +159,19 @@ public class MetaProjectService {
      *
      * @param projectId
      * @param historyId
+     * @param templateIndex
      */
-    public void updateLastHistory(Integer projectId, Integer historyId) {
-        MetaProjectPO project = this.getProject(projectId, true);
-        project.setLastHistoryId(historyId);
+    public void updateLastHistory(Integer projectId, Integer historyId, Integer templateIndex) {
+        MetaProjectPO project = this.getProject(projectId, true, false);
+        if (templateIndex == 1) {
+            project.setLastHistoryId(historyId);
+        } else if (templateIndex == 2) {
+            project.setLastHistoryId2(historyId);
+        } else if (templateIndex == 3) {
+            project.setLastHistoryId3(historyId);
+        } else {
+            throw new BusinessException("模板序号有误：" + templateIndex);
+        }
         metaProjectDAO.update(project);
     }
 
@@ -201,7 +222,7 @@ public class MetaProjectService {
      * @return
      */
     public MetaProjectShowVO show(Integer projectId) {
-        MetaProjectPO metaProject = this.getProject(projectId, true);
+        MetaProjectPO metaProject = this.getProject(projectId, true, true);
         MetaProjectShowVO showVO = MetaProjectMapper.INSTANCE.toShowVO(metaProject);
         return showVO;
     }
@@ -216,7 +237,7 @@ public class MetaProjectService {
     public int delete(Integer... projectId) {
         int count = 0;
         for (Integer id : projectId) {
-            this.checkOperatorByProjectId(id);
+            this.getAndCheckProject(id);
             count += metaProjectDAO.delete(id);
         }
         return count;
@@ -224,53 +245,48 @@ public class MetaProjectService {
 
 
     /**
-     * 更新项目版本号
+     * 更新项目信息（增加内部版本号）
      *
-     * @param projectId
+     * @param projectPO
      */
-    public void updateProjectVersion(Integer projectId) {
-        MetaProjectPO projectPO = this.getProject(projectId, true);
+    public void updateProject(MetaProjectPO projectPO) {
         projectPO.setProjectVersion(projectPO.getProjectVersion() + 1);
         metaProjectDAO.update(projectPO);
     }
 
     /**
-     * 通过entityId更新项目版本号
+     * 通过实体Id获取项目
      *
-     * @param entityId
+     * @param entityId      实体id
+     * @param checkOperator 是否校验用户权限
+     * @return 项目
      */
-    public void updateProjectVersionByEntityId(Integer entityId) {
+    public MetaProjectPO getProjectByEntityId(Integer entityId, boolean checkOperator) {
         MetaEntityPO entityPO = metaEntityService.getEntity(entityId, true);
-        this.updateProjectVersion(entityPO.getProjectId());
+        MetaProjectPO projectPO = this.getProject(entityPO.getProjectId(), true, checkOperator);
+        return projectPO;
     }
 
     /**
-     * 通过constId更新项目版本号
+     * 通过常量Id获取项目
      *
-     * @param constId
+     * @param constId       常量id
+     * @param checkOperator 是否校验用户权限
+     * @return 项目
      */
-    public void updateProjectVersionByConstId(Integer constId) {
+    public MetaProjectPO getProjectByConstId(Integer constId, boolean checkOperator) {
         MetaConstPO constPO = metaConstService.getConst(constId, true);
-        this.updateProjectVersion(constPO.getProjectId());
+        MetaProjectPO projectPO = this.getProject(constPO.getProjectId(), true, checkOperator);
+        return projectPO;
     }
 
-    /**
-     * 根据项目id校验操作人
-     * 如果当前操作人不是创建人，则抛异常
-     *
-     * @param projectId
-     */
-    public void checkOperatorByProjectId(Integer projectId) {
-        MetaProjectPO projectPO = this.getProject(projectId, true);
-        doCheckOperator(projectPO);
-    }
 
     /**
-     * 执行操作人校验
+     * 根据项目校验操作人
      *
      * @param projectPO
      */
-    private void doCheckOperator(MetaProjectPO projectPO) {
+    public void checkOperatorByProject(MetaProjectPO projectPO) {
         /*String currentUser = loginContext.getCurrentOperatorId();
         if(StringUtils.isBlank(currentUser)){
             throw new BusinessException("获取当前登录用户失败");
@@ -278,30 +294,6 @@ public class MetaProjectService {
         if(!currentUser.equals(projectPO.getCreatedBy())){
             throw new BusinessException("您不是该项目的创建者，无此操作权限");
         }*/
-    }
-
-
-    /**
-     * 根据实体id校验操作人
-     * 如果当前操作人不是创建人，则抛异常
-     *
-     * @param entityId
-     */
-    public void checkOperatorByEntityId(Integer entityId) {
-        MetaEntityPO entityPO = metaEntityService.getEntity(entityId, true);
-        this.checkOperatorByProjectId(entityPO.getProjectId());
-    }
-
-
-    /**
-     * 根据常量id校验操作人
-     * 如果当前操作人不是创建人，则抛异常
-     *
-     * @param constId
-     */
-    public void checkOperatorByConstId(Integer constId) {
-        MetaConstPO constPO = metaConstService.getConst(constId, true);
-        this.checkOperatorByProjectId(constPO.getProjectId());
     }
 
 

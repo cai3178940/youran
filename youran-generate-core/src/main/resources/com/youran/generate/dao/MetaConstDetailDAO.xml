@@ -19,6 +19,7 @@
     <insert id="_save" useGeneratedKeys="true" keyProperty="constDetailId" parameterType="MetaConstDetailPO">
         insert into meta_const_detail (
             const_detail_id,
+            project_id,
             const_id,
             detail_name,
             detail_value,
@@ -31,6 +32,7 @@
             version)
         values (
             #{constDetailId,jdbcType=INTEGER},
+            #{projectId,jdbcType=INTEGER},
             #{constId,jdbcType=INTEGER},
             #{detailName,jdbcType=VARCHAR},
             #{detailValue,jdbcType=VARCHAR},
@@ -46,6 +48,7 @@
     <update id="_update" parameterType="MetaConstDetailPO">
         update meta_const_detail
         set const_id = #{constId,jdbcType=INTEGER},
+            project_id = #{projectId,jdbcType=INTEGER},
             detail_name = #{detailName,jdbcType=VARCHAR},
             detail_value = #{detailValue,jdbcType=VARCHAR},
             detail_remark = #{detailRemark,jdbcType=VARCHAR},

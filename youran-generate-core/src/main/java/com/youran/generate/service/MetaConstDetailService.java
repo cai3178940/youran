@@ -8,6 +8,7 @@ import com.youran.generate.pojo.dto.MetaConstDetailAddDTO;
 import com.youran.generate.pojo.dto.MetaConstDetailUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaConstDetailMapper;
 import com.youran.generate.pojo.po.MetaConstDetailPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
 import com.youran.generate.pojo.vo.MetaConstDetailShowVO;
@@ -40,11 +41,12 @@ public class MetaConstDetailService {
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaConstDetailPO save(MetaConstDetailAddDTO metaConstDetailDTO) {
         Integer constId = metaConstDetailDTO.getConstId();
-        //校验操作人
-        metaProjectService.checkOperatorByConstId(constId);
+        // 查询项目，并校验操作人
+        MetaProjectPO project = metaProjectService.getProjectByConstId(constId, true);
         MetaConstDetailPO metaConstDetail = MetaConstDetailMapper.INSTANCE.fromAddDTO(metaConstDetailDTO);
+        metaConstDetail.setProjectId(project.getProjectId());
         this.doSave(metaConstDetail);
-        metaProjectService.updateProjectVersionByConstId(constId);
+        metaProjectService.updateProject(project);
         return metaConstDetail;
     }
 
@@ -62,12 +64,11 @@ public class MetaConstDetailService {
     @OptimisticLock
     public MetaConstDetailPO update(MetaConstDetailUpdateDTO metaConstDetailUpdateDTO) {
         MetaConstDetailPO metaConstDetail = this.getMetaConstDetail(metaConstDetailUpdateDTO.getConstDetailId(), true);
-        Integer constId = metaConstDetail.getConstId();
-        //校验操作人
-        metaProjectService.checkOperatorByConstId(constId);
+        // 查询项目，并校验操作人
+        MetaProjectPO project = metaProjectService.getAndCheckProject(metaConstDetail.getProjectId());
         MetaConstDetailMapper.INSTANCE.setPO(metaConstDetail, metaConstDetailUpdateDTO);
         metaConstDetailDAO.update(metaConstDetail);
-        metaProjectService.updateProjectVersionByConstId(constId);
+        metaProjectService.updateProject(project);
         return metaConstDetail;
     }
 
@@ -117,19 +118,15 @@ public class MetaConstDetailService {
     @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... constDetailId) {
         int count = 0;
-        Integer constId = null;
         for (Integer id : constDetailId) {
             MetaConstDetailPO metaConstDetail = this.getMetaConstDetail(id, false);
             if (metaConstDetail == null) {
                 continue;
             }
-            constId = metaConstDetail.getConstId();
-            //校验操作人
-            metaProjectService.checkOperatorByConstId(constId);
+            // 查询项目，并校验操作人
+            MetaProjectPO project = metaProjectService.getAndCheckProject(metaConstDetail.getProjectId());
             count += metaConstDetailDAO.delete(id);
-        }
-        if (count > 0) {
-            metaProjectService.updateProjectVersionByConstId(constId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }

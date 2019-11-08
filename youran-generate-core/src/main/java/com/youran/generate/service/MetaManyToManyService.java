@@ -14,6 +14,7 @@ import com.youran.generate.pojo.dto.MetaMtmFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.MetaManyToManyMapper;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaManyToManyQO;
 import com.youran.generate.pojo.vo.MetaManyToManyListVO;
 import com.youran.generate.pojo.vo.MetaManyToManyShowVO;
@@ -51,10 +52,10 @@ public class MetaManyToManyService {
     public MetaManyToManyPO save(MetaManyToManyAddDTO addDTO) {
         Integer projectId = addDTO.getProjectId();
         //校验操作人
-        metaProjectService.checkOperatorByProjectId(projectId);
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         MetaManyToManyPO metaManyToMany = MetaManyToManyMapper.INSTANCE.fromAddDTO(addDTO);
         this.doSave(metaManyToMany);
-        metaProjectService.updateProjectVersion(projectId);
+        metaProjectService.updateProject(project);
         return metaManyToMany;
     }
 
@@ -76,13 +77,13 @@ public class MetaManyToManyService {
         Integer mtmId = updateDTO.getMtmId();
         MetaManyToManyPO metaManyToMany = this.getMetaManyToMany(mtmId, true);
         Integer projectId = metaManyToMany.getProjectId();
-        //校验操作人
-        metaProjectService.checkOperatorByProjectId(projectId);
+        // 查询项目,同时校验用户权限
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         MetaManyToManyMapper.INSTANCE.setPO(metaManyToMany, updateDTO);
-        //校验数据是否合法
+        // 校验数据是否合法
         this.checkManyToMany(metaManyToMany);
         metaManyToManyDAO.update(metaManyToMany);
-        metaProjectService.updateProjectVersion(projectId);
+        metaProjectService.updateProject(project);
         return metaManyToMany;
     }
 
@@ -192,19 +193,16 @@ public class MetaManyToManyService {
     @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... mtmId) {
         int count = 0;
-        Integer projectId = null;
         for (Integer id : mtmId) {
             MetaManyToManyPO manyToMany = this.getMetaManyToMany(id, false);
             if (manyToMany == null) {
                 continue;
             }
-            projectId = manyToMany.getProjectId();
+            Integer projectId = manyToMany.getProjectId();
             //校验操作人
-            metaProjectService.checkOperatorByProjectId(projectId);
+            MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
             count += metaManyToManyDAO.delete(id);
-        }
-        if (count > 0) {
-            metaProjectService.updateProjectVersion(projectId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }

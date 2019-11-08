@@ -9,6 +9,7 @@ import com.youran.generate.pojo.dto.MetaConstAddDTO;
 import com.youran.generate.pojo.dto.MetaConstUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaConstMapper;
 import com.youran.generate.pojo.po.MetaConstPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaConstQO;
 import com.youran.generate.pojo.vo.MetaConstListVO;
 import com.youran.generate.pojo.vo.MetaConstShowVO;
@@ -41,11 +42,10 @@ public class MetaConstService {
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaConstPO save(MetaConstAddDTO metaConstDTO) {
         Integer projectId = metaConstDTO.getProjectId();
-        //校验操作人
-        metaProjectService.checkOperatorByProjectId(projectId);
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         MetaConstPO metaConst = MetaConstMapper.INSTANCE.fromAddDTO(metaConstDTO);
         this.doSave(metaConst);
-        metaProjectService.updateProjectVersion(projectId);
+        metaProjectService.updateProject(project);
         return metaConst;
     }
 
@@ -65,11 +65,10 @@ public class MetaConstService {
         Integer constId = metaConstUpdateDTO.getConstId();
         MetaConstPO metaConst = this.getConst(constId, true);
         Integer projectId = metaConst.getProjectId();
-        //校验操作人
-        metaProjectService.checkOperatorByProjectId(projectId);
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         MetaConstMapper.INSTANCE.setPO(metaConst, metaConstUpdateDTO);
         metaConstDAO.update(metaConst);
-        metaProjectService.updateProjectVersion(projectId);
+        metaProjectService.updateProject(project);
         return metaConst;
     }
 
@@ -120,19 +119,14 @@ public class MetaConstService {
     @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... constId) {
         int count = 0;
-        Integer projectId = null;
         for (Integer id : constId) {
             MetaConstPO metaConst = this.getConst(id, false);
             if (metaConst == null) {
                 continue;
             }
-            projectId = metaConst.getProjectId();
-            //校验操作人
-            metaProjectService.checkOperatorByProjectId(projectId);
+            MetaProjectPO project = metaProjectService.getAndCheckProject(metaConst.getProjectId());
             count += metaConstDAO.delete(id);
-        }
-        if (count > 0) {
-            metaProjectService.updateProjectVersion(projectId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }

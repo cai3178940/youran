@@ -126,7 +126,7 @@ public class MetaCodeGenService {
                                             Consumer<ProgressVO> progressConsumer) {
         if (lock.tryLock()) {
             try {
-                MetaProjectPO project = metaProjectService.getProject(projectId, true);
+                MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
                 Integer templateId = project.forceGetTemplateIdByIndex(templateIndex);
                 CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
                 // 获取最新代码目录
@@ -339,7 +339,7 @@ public class MetaCodeGenService {
      * @return
      */
     public GenHistoryPO gitCommit(Integer projectId, Integer templateIndex, Consumer<ProgressVO> progressConsumer) {
-        MetaProjectPO project = metaProjectService.getProject(projectId, true);
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         Integer remote = project.getRemote();
         if (BoolConst.isFalse(remote)) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "当前项目未开启Git仓库");
@@ -383,7 +383,7 @@ public class MetaCodeGenService {
         // 创建提交历史
         GenHistoryPO history = genHistoryService.save(project, commit, newBranchName);
         // 更新项目的最终提交历史
-        metaProjectService.updateLastHistory(projectId, history.getHistoryId());
+        metaProjectService.updateLastHistory(projectId, history.getHistoryId(), templateIndex);
         return history;
     }
 

@@ -112,7 +112,7 @@ public class ReverseEngineeringService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public void execute(ReverseEngineeringDTO dto) {
-        MetaProjectPO project = metaProjectService.getProject(dto.getProjectId(), true);
+        MetaProjectPO project = metaProjectService.getAndCheckProject(dto.getProjectId());
         List<SQLStatement> list = this.parse(dto);
         for (SQLStatement sqlStatement : list) {
             SQLCreateTableStatement createTableStatement = (SQLCreateTableStatement) sqlStatement;

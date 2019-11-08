@@ -59,8 +59,6 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     @GetMapping(value = "/gitCommit")
     @ResponseBody
     public ResponseEntity<String> gitCommit(Integer projectId, Integer templateIndex) {
-        //校验操作人
-        metaProjectService.checkOperatorByProjectId(projectId);
         GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, templateIndex, null);
         return ResponseEntity.ok("已创建自动分支【" + genHistory.getBranch() + "】，并提交到远程");
     }

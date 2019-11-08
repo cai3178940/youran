@@ -20,6 +20,7 @@
     <insert id="_save" useGeneratedKeys="true" keyProperty="cascadeExtId" parameterType="MetaCascadeExtPO">
         insert into `meta_cascade_ext`(
             `cascade_ext_id`,
+            `project_id`,
             `field_id`,
             `entity_id`,
             `alias`,
@@ -36,6 +37,7 @@
             `version`
         ) VALUES (
             #{cascadeExtId,jdbcType=INTEGER},
+            #{projectId,jdbcType=INTEGER},
             #{fieldId,jdbcType=INTEGER},
             #{entityId,jdbcType=INTEGER},
             #{alias,jdbcType=VARCHAR},
@@ -58,6 +60,7 @@
         update meta_cascade_ext
         set
             `field_id` = #{fieldId,jdbcType=INTEGER},
+            `project_id` = #{projectId,jdbcType=INTEGER},
             `entity_id` = #{entityId,jdbcType=INTEGER},
             `alias` = #{alias,jdbcType=VARCHAR},
             `list` = #{list,jdbcType=INTEGER},

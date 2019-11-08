@@ -18,65 +18,116 @@ import static java.util.Arrays.stream;
  */
 public class MetaProjectPO extends BasePO {
 
+    /**
+     * 项目id
+     */
     private Integer projectId;
-
+    /**
+     * 包名
+     */
     private String packageName;
-
+    /**
+     * 项目名
+     */
     private String projectName;
-
+    /**
+     * 项目描述
+     */
     private String projectDesc;
-
+    /**
+     * maven的groupId
+     */
     private String groupId;
-
+    /**
+     * 代码注释中的作者
+     */
     private String author;
-
+    /**
+     * 第1个模板id
+     */
     @JsonIgnore
     private Integer templateId;
-
+    /**
+     * 第2个模板id
+     */
     @JsonIgnore
     private Integer templateId2;
-
+    /**
+     * 第3个模板id
+     */
     @JsonIgnore
     private Integer templateId3;
-
+    /**
+     * 是否开启Git远程仓库功能
+     */
     @JsonIgnore
     private Integer remote;
-
+    /**
+     * 远程仓库地址1
+     * 对应第1个模板
+     */
     @JsonIgnore
     private String remoteUrl;
-
+    /**
+     * 远程仓库地址2
+     * 对应第2个模板
+     */
     @JsonIgnore
     private String remoteUrl2;
-
+    /**
+     * 远程仓库地址3
+     * 对应第3个模板
+     */
     @JsonIgnore
     private String remoteUrl3;
-
+    /**
+     * 远程仓库用户名
+     */
     @JsonIgnore
     private String username;
-
+    /**
+     * 远程仓库密码
+     * 支持accessToken
+     */
     @JsonIgnore
     private String password;
-
+    /**
+     * 远程仓库地址1的最后提交历史id
+     */
     @JsonIgnore
     private Integer lastHistoryId;
-
+    /**
+     * 远程仓库地址2的最后提交历史id
+     */
     @JsonIgnore
     private Integer lastHistoryId2;
-
+    /**
+     * 远程仓库地址3的最后提交历史id
+     */
     @JsonIgnore
     private Integer lastHistoryId3;
-
+    /**
+     * 项目内部版本号
+     */
     @JsonIgnore
     private Integer projectVersion;
-
+    /**
+     * 项目特性
+     */
     private String feature;
-
+    /**
+     * 项目下的所有实体
+     */
     @JsonIgnore
     private List<MetaEntityPO> entities;
-
+    /**
+     * 项目下的所有常量
+     */
     @JsonIgnore
     private List<MetaConstPO> consts;
-
+    /**
+     * 项目下的所有多对多
+     */
     @JsonIgnore
     private List<MetaManyToManyPO> mtms;
 

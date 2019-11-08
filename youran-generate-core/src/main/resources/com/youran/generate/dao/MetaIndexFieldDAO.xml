@@ -6,10 +6,13 @@
 
     <insert id="saveBatch">
         insert into meta_index_field (
-        index_id, field_id, order_no)
+            index_id,
+            project_id,
+            field_id,
+            order_no)
         values
         <foreach collection="fieldIdList" index="index" item="fieldId" separator=",">
-            (#{indexId},#{fieldId},#{index})
+            (#{indexId},#{projectId},#{fieldId},#{index})
         </foreach>
     </insert>
 

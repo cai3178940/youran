@@ -10,6 +10,7 @@ import com.youran.generate.pojo.dto.MetaCascadeExtUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaCascadeExtMapper;
 import com.youran.generate.pojo.po.MetaCascadeExtPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaCascadeExtQO;
 import com.youran.generate.pojo.vo.MetaCascadeExtListVO;
 import com.youran.generate.pojo.vo.MetaCascadeExtShowVO;
@@ -49,12 +50,15 @@ public class MetaCascadeExtService {
     public MetaCascadeExtPO save(MetaCascadeExtAddDTO addDTO) {
         // 校验别名
         JfieldNameCheckUtil.check(addDTO.getAlias());
-        Integer entityId = addDTO.getEntityId();
-        // 校验操作人
-        metaProjectService.checkOperatorByEntityId(entityId);
+        // 获取项目信息,并校验操作人
+        MetaProjectPO project = metaProjectService.getProjectByEntityId(addDTO.getEntityId(),
+            true);
         MetaCascadeExtPO cascadeExt = MetaCascadeExtMapper.INSTANCE.fromAddDTO(addDTO);
+        cascadeExt.setProjectId(project.getProjectId());
+        // 保存记录扩展
         this.doSave(cascadeExt);
-        metaProjectService.updateProjectVersionByEntityId(entityId);
+        // 更新项目内部版本号
+        metaProjectService.updateProject(project);
         return cascadeExt;
     }
 
@@ -76,14 +80,15 @@ public class MetaCascadeExtService {
         // 校验别名
         JfieldNameCheckUtil.check(updateDTO.getAlias());
         MetaCascadeExtPO metaCascadeExt = this.getMetaCascadeExt(updateDTO.getCascadeExtId(), true);
-        Integer entityId = metaCascadeExt.getEntityId();
-        // 校验操作人
-        metaProjectService.checkOperatorByEntityId(entityId);
+        // 获取项目信息,并校验操作人
+        MetaProjectPO project = metaProjectService.getAndCheckProject(metaCascadeExt.getProjectId());
         MetaCascadeExtMapper.INSTANCE.setPO(metaCascadeExt, updateDTO);
         // 校验级联扩展
         this.checkCascadeExtPO(metaCascadeExt);
+        // 更新级联扩展
         metaCascadeExtDAO.update(metaCascadeExt);
-        metaProjectService.updateProjectVersionByEntityId(entityId);
+        // 更新项目内部版本号
+        metaProjectService.updateProject(project);
         return metaCascadeExt;
     }
 
@@ -156,19 +161,15 @@ public class MetaCascadeExtService {
     @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... cascadeExtId) {
         int count = 0;
-        Integer entityId = null;
         for (Integer id : cascadeExtId) {
             MetaCascadeExtPO cascadeExtPO = this.getMetaCascadeExt(id, false);
             if (cascadeExtPO == null) {
                 continue;
             }
-            entityId = cascadeExtPO.getEntityId();
-            //校验操作人
-            metaProjectService.checkOperatorByEntityId(entityId);
+            // 获取项目，并校验操作人
+            MetaProjectPO project = metaProjectService.getAndCheckProject(cascadeExtPO.getProjectId());
             count += metaCascadeExtDAO.delete(id);
-        }
-        if (count > 0) {
-            metaProjectService.updateProjectVersionByEntityId(entityId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }

@@ -11,6 +11,7 @@ import com.youran.generate.pojo.dto.MetaIndexAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaIndexMapper;
 import com.youran.generate.pojo.po.MetaIndexPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaIndexQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaIndexListVO;
@@ -48,13 +49,14 @@ public class MetaIndexService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaIndexPO save(MetaIndexAddDTO metaIndexAddDTO) {
-        Integer entityId = metaIndexAddDTO.getEntityId();
-        //校验操作人
-        metaProjectService.checkOperatorByEntityId(entityId);
+        // 查询项目,同时校验用户权限
+        MetaProjectPO project = metaProjectService.getProjectByEntityId(metaIndexAddDTO.getEntityId(),
+            true);
         //映射属性
         MetaIndexPO metaIndex = MetaIndexMapper.INSTANCE.fromAddDTO(metaIndexAddDTO);
+        metaIndex.setProjectId(project.getProjectId());
         this.doSave(metaIndex);
-        metaProjectService.updateProjectVersionByEntityId(entityId);
+        metaProjectService.updateProject(project);
         return metaIndex;
     }
 
@@ -68,7 +70,7 @@ public class MetaIndexService {
         //保存索引对象
         metaIndexDAO.save(indexPO);
         //保存关联关系
-        int count = metaIndexFieldDAO.saveBatch(indexPO.getIndexId(), fieldIdList);
+        int count = metaIndexFieldDAO.saveBatch(indexPO.getIndexId(), fieldIdList, indexPO.getProjectId());
         if (count == 0 || fieldIdList.size() != count) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "索引保存异常");
         }
@@ -83,15 +85,13 @@ public class MetaIndexService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetaIndexPO update(MetaIndexUpdateDTO metaIndexUpdateDTO) {
-        Integer entityId = metaIndexUpdateDTO.getEntityId();
-        //校验操作人
-        metaProjectService.checkOperatorByEntityId(entityId);
-        Integer indexId = metaIndexUpdateDTO.getIndexId();
-        MetaIndexPO metaIndex = this.getIndex(indexId, true);
+        MetaIndexPO metaIndex = this.getIndex(metaIndexUpdateDTO.getIndexId(), true);
+        Integer projectId = metaIndex.getProjectId();
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         //校验新字段id是否是本实体下存在的字段
         String fieldIds = metaIndexUpdateDTO.getFieldIds();
         List<Integer> fieldIdList = ConvertUtil.convertIntegerList(fieldIds);
-        int fieldCount = metaFieldDAO.findCount(entityId, fieldIdList);
+        int fieldCount = metaFieldDAO.findCount(metaIndexUpdateDTO.getEntityId(), fieldIdList);
         if (fieldCount != fieldIdList.size()) {
             throw new BusinessException(ErrorCode.BAD_PARAMETER, "索引字段异常");
         }
@@ -102,12 +102,12 @@ public class MetaIndexService {
         //先清除旧关联关系
         metaIndexFieldDAO.delete(metaIndex.getIndexId());
         //保存新的关联关系
-        int count = metaIndexFieldDAO.saveBatch(metaIndex.getIndexId(), fieldIdList);
+        int count = metaIndexFieldDAO.saveBatch(metaIndex.getIndexId(), fieldIdList, projectId);
         if (count == 0 || fieldIdList.size() != count) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "索引更新异常");
         }
 
-        metaProjectService.updateProjectVersionByEntityId(entityId);
+        metaProjectService.updateProject(project);
         return metaIndex;
     }
 
@@ -160,20 +160,16 @@ public class MetaIndexService {
     @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... indexId) {
         int count = 0;
-        Integer entityId = null;
         for (Integer id : indexId) {
             MetaIndexPO metaIndex = this.getIndex(id, false);
             if (metaIndex == null) {
                 continue;
             }
-            entityId = metaIndex.getEntityId();
             //校验操作人
-            metaProjectService.checkOperatorByEntityId(entityId);
+            MetaProjectPO project = metaProjectService.getAndCheckProject(metaIndex.getProjectId());
             metaIndexFieldDAO.delete(id);
             count += metaIndexDAO.delete(id);
-        }
-        if (count > 0) {
-            metaProjectService.updateProjectVersionByEntityId(entityId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }
@@ -191,9 +187,8 @@ public class MetaIndexService {
         if (metaIndex == null) {
             return 0;
         }
-        Integer entityId = metaIndex.getEntityId();
         //校验操作人
-        metaProjectService.checkOperatorByEntityId(entityId);
+        MetaProjectPO project = metaProjectService.getAndCheckProject(metaIndex.getProjectId());
         int count = metaIndexFieldDAO.remove(indexId, fieldIds);
         if (count == 0) {
             return 0;
@@ -203,9 +198,7 @@ public class MetaIndexService {
         if (CollectionUtils.isEmpty(fields)) {
             metaIndexDAO.delete(indexId);
         }
-        if (count > 0) {
-            metaProjectService.updateProjectVersionByEntityId(entityId);
-        }
+        metaProjectService.updateProject(project);
         return count;
     }
 

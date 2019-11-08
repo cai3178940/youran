@@ -16,19 +16,36 @@ import java.util.stream.Collectors;
  */
 public class MetaIndexPO extends BasePO {
 
+    /**
+     * 索引id
+     */
     private Integer indexId;
-
+    /**
+     * 所属项目id
+     */
+    private Integer projectId;
+    /**
+     * 索引名称
+     */
     private String indexName;
-
+    /**
+     * 实体id
+     */
     private Integer entityId;
-
+    /**
+     * 是否唯一索引
+     */
     private Integer unique;
-
+    /**
+     * 是否唯一校验
+     */
     private Integer uniqueCheck;
-
+    /**
+     * 索引中的字段id列表
+     */
     private List<Integer> fieldIds;
     /**
-     * 索引字段
+     * 索引字段列表
      */
     @JsonIgnore
     private List<MetaFieldPO> fields;
@@ -56,6 +73,13 @@ public class MetaIndexPO extends BasePO {
         fields.add(metaFieldPO);
     }
 
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
 
     public Integer getUniqueCheck() {
         return uniqueCheck;

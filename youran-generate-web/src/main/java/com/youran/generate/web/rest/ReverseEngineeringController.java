@@ -2,7 +2,6 @@ package com.youran.generate.web.rest;
 
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.ReverseEngineeringDTO;
-import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.service.ReverseEngineeringService;
 import com.youran.generate.web.api.ReverseEngineeringAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +26,6 @@ public class ReverseEngineeringController implements ReverseEngineeringAPI {
 
     @Autowired
     private ReverseEngineeringService reverseEngineeringService;
-    @Autowired
-    private MetaProjectService metaProjectService;
 
 
     @Override
@@ -40,8 +37,6 @@ public class ReverseEngineeringController implements ReverseEngineeringAPI {
     @Override
     @PostMapping(value = "/execute")
     public void execute(@Valid @RequestBody ReverseEngineeringDTO dto) {
-        //校验操作人
-        metaProjectService.checkOperatorByProjectId(dto.getProjectId());
         reverseEngineeringService.execute(dto);
     }
 }

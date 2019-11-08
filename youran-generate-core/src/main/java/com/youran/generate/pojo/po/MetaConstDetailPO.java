@@ -13,26 +13,34 @@ public class MetaConstDetailPO extends BasePO {
      * 常量值id
      */
     private Integer constDetailId;
-
+    /**
+     * 所属项目id
+     */
+    private Integer projectId;
     /**
      * 常量id
      */
     private Integer constId;
-
     /**
      * 常量字段名称
      */
     private String detailName;
-
     /**
      * 常量值数值
      */
     private String detailValue;
-
     /**
      * 常量值备注
      */
     private String detailRemark;
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
 
     public String getDetailRemark() {
         return detailRemark;

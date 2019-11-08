@@ -12,6 +12,7 @@ import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.MetaEntityMapper;
 import com.youran.generate.pojo.po.MetaEntityPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
@@ -64,16 +65,15 @@ public class MetaEntityService {
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaEntityPO save(MetaEntityAddDTO metaEntityDTO) {
         Integer projectId = metaEntityDTO.getProjectId();
-        //校验操作人
-        metaProjectService.checkOperatorByProjectId(projectId);
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         MetaEntityPO metaEntity = MetaEntityMapper.INSTANCE.fromAddDTO(metaEntityDTO);
         this.doSave(metaEntity);
-        metaProjectService.updateProjectVersion(projectId);
+        metaProjectService.updateProject(project);
         return metaEntity;
     }
 
     public void doSave(MetaEntityPO entityPO) {
-        //唯一性校验
+        // 唯一性校验
         this.checkUnique(entityPO, false);
         metaEntityDAO.save(entityPO);
     }
@@ -89,13 +89,13 @@ public class MetaEntityService {
     public MetaEntityPO update(MetaEntityUpdateDTO metaEntityUpdateDTO) {
         MetaEntityPO metaEntity = this.getEntity(metaEntityUpdateDTO.getEntityId(), true);
         Integer projectId = metaEntity.getProjectId();
-        //校验操作人
-        metaProjectService.checkOperatorByProjectId(projectId);
+        // 获取项目并校验操作人
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         MetaEntityMapper.INSTANCE.setPO(metaEntity, metaEntityUpdateDTO);
-        //唯一性校验
+        // 唯一性校验
         this.checkUnique(metaEntity, true);
         metaEntityDAO.update(metaEntity);
-        metaProjectService.updateProjectVersion(projectId);
+        metaProjectService.updateProject(project);
         return metaEntity;
     }
 
@@ -163,20 +163,17 @@ public class MetaEntityService {
     @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... entityId) {
         int count = 0;
-        Integer projectId = null;
         for (Integer id : entityId) {
             MetaEntityPO entityPO = this.getEntity(id, false);
             if (entityPO == null) {
                 continue;
             }
             this.checkDeleteByMtm(id);
-            projectId = entityPO.getProjectId();
+            Integer projectId = entityPO.getProjectId();
             //校验操作人
-            metaProjectService.checkOperatorByProjectId(projectId);
+            MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
             count += metaEntityDAO.delete(id);
-        }
-        if (count > 0) {
-            metaProjectService.updateProjectVersion(projectId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }
