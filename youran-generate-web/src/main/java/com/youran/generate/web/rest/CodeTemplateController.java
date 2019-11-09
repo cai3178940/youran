@@ -10,10 +10,7 @@ import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.pojo.qo.CodeTemplateQO;
 import com.youran.generate.pojo.qo.TemplateFileQO;
 import com.youran.generate.pojo.vo.*;
-import com.youran.generate.service.CodeTemplateService;
-import com.youran.generate.service.TemplateFileService;
-import com.youran.generate.service.TemplateImportExportService;
-import com.youran.generate.service.TmpDirService;
+import com.youran.generate.service.*;
 import com.youran.generate.util.FileNodeUtil;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.CodeTemplateAPI;
@@ -48,6 +45,8 @@ public class CodeTemplateController extends AbstractController implements CodeTe
     private TmpDirService tmpDirService;
     @Autowired
     private TemplateImportExportService templateImportExportService;
+    @Autowired
+    private CodeTemplateAssembleAndCopyService codeTemplateAssembleAndCopyService;
 
     @Override
     @PostMapping
@@ -123,6 +122,15 @@ public class CodeTemplateController extends AbstractController implements CodeTe
                 + codeTemplate.getTemplateVersion() + ".zip";
             this.replyDownloadFile(response, zipFile, downloadFileName);
         }
+    }
+
+    @Override
+    @PostMapping(value = "/{templateId}/copy")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<CodeTemplateShowVO> copy(@PathVariable Integer templateId) throws Exception {
+        CodeTemplatePO codeTemplate = codeTemplateAssembleAndCopyService.copyCodeTemplate(templateId);
+        return ResponseEntity.created(new URI(apiPath + "/code_template/" + codeTemplate.getTemplateId()))
+            .body(CodeTemplateMapper.INSTANCE.toShowVO(codeTemplate));
     }
 
     @Override

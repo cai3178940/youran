@@ -32,9 +32,16 @@
         label="操作"
         width="200">
         <template v-slot="scope">
-          <el-button @click="handleEdit(scope.row)" type="text" size="medium">编辑</el-button>
-          <el-button @click="exportTemplate(scope.row)" type="text" size="medium">导出</el-button>
-          <el-button @click="handleTemplateFile(scope.row)" type="text" size="medium">文件管理</el-button>
+          <el-button v-if="!scope.row.sysDefault"
+                     @click="handleEdit(scope.row)"
+                     type="text" size="medium">编辑</el-button>
+          <el-button @click="exportTemplate(scope.row)"
+                     type="text" size="medium">导出</el-button>
+          <el-button @click="copyTemplate(scope.row)"
+                     type="text" size="medium">复制</el-button>
+          <el-button v-if="!scope.row.sysDefault"
+                     @click="handleTemplateFile(scope.row)"
+                     type="text" size="medium">文件管理</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -112,6 +119,13 @@ export default {
       setTimeout(() => {
         this.downloadUrl = null
       }, 2000)
+    },
+    copyTemplate (row) {
+      this.$common.confirm(`是否确认复制模板(${row.code})`)
+        .then(() => this.$ajax.post(`/${apiPath}/code_template/${row.templateId}/copy`))
+        .then(response => this.$common.checkResult(response))
+        .then(() => this.doQuery())
+        .catch(error => this.$common.showNotifyError(error))
     },
     handleImport () {
       this.$refs.importTemplate.show()

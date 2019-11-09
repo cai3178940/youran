@@ -61,7 +61,7 @@ public class MetaCodeGenService {
     @Autowired
     private CodeTemplateService codeTemplateService;
     @Autowired
-    private CodeTemplateAssembleService codeTemplateAssembleService;
+    private CodeTemplateAssembleAndCopyService codeTemplateAssembleAndCopyService;
     @Autowired
     private TemplateRendererBuilder templateRendererBuilder;
     /**
@@ -168,13 +168,15 @@ public class MetaCodeGenService {
      * @param projectDir
      * @param projectId
      * @param templateId
-     * @param progressConsumer
+     * @param progressConsumer 代码生成进度条
      */
     private void doGenCode(String projectDir, Integer projectId,
                            Integer templateId, Consumer<ProgressVO> progressConsumer) {
-        CodeTemplatePO templatePO = codeTemplateAssembleService.getAssembledCodeTemplate(templateId, progressConsumer);
+        // 获取组装后的模板
+        this.progressing(progressConsumer, 10, 80, 2, "获取并组装代码模板");
+        CodeTemplatePO templatePO = codeTemplateAssembleAndCopyService.getAssembledCodeTemplate(templateId);
         // 获取组装后的项目
-        this.progressing(progressConsumer, 20, 80, 1, "获取并组装项目元数据");
+        this.progressing(progressConsumer, 20, 80, 5, "获取并组装项目元数据");
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
             true, true, true, true, true, true);
         // 构建模板渲染器
@@ -191,19 +193,19 @@ public class MetaCodeGenService {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
             }
-            //生成全局文件
             this.progressing(progressConsumer, 25, 80, 2, "代码渲染中");
             if (Objects.equals(templateFile.getContextType(), ContextType.GLOBAL.getValue())) {
+                // 生成全局文件
                 BaseContext context = new BaseContext(project);
                 this.renderTemplate(templateRenderer, context, templateFile, projectDir);
             } else if (Objects.equals(templateFile.getContextType(), ContextType.ENTITY.getValue())) {
-                //生成实体模版文件
+                // 生成实体模版文件
                 for (MetaEntityPO metaEntityPO : project.getEntities()) {
                     EntityContext context = new EntityContext(project, metaEntityPO);
                     this.renderTemplate(templateRenderer, context, templateFile, projectDir);
                 }
             } else if (Objects.equals(templateFile.getContextType(), ContextType.CONST.getValue())) {
-                //生成枚举模版文件
+                // 生成枚举模版文件
                 for (MetaConstPO metaConstPO : project.getConsts()) {
                     ConstContext context = new ConstContext(project, metaConstPO);
                     this.renderTemplate(templateRenderer, context, templateFile, projectDir);

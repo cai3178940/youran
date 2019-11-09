@@ -41,7 +41,7 @@ public class TemplateImportExportService {
     @Autowired
     private TemplateFileOutputService templateFileOutputService;
     @Autowired
-    private CodeTemplateAssembleService codeTemplateAssembleService;
+    private CodeTemplateAssembleAndCopyService codeTemplateAssembleAndCopyService;
 
     /**
      * 模板导出
@@ -50,7 +50,7 @@ public class TemplateImportExportService {
      * @return
      */
     public File exportTemplate(Integer templateId) {
-        CodeTemplatePO templatePO = codeTemplateAssembleService.getAssembledCodeTemplate(templateId, null);
+        CodeTemplatePO templatePO = codeTemplateAssembleAndCopyService.getAssembledCodeTemplate(templateId);
         String exportDir = tmpDirService.getTemplateExportDir(templatePO);
         String zipFilePath = exportDir + ".zip";
         File dir = new File(exportDir);

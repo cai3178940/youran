@@ -103,6 +103,17 @@ public interface CodeTemplateAPI {
     void export(Integer templateId, HttpServletResponse response);
 
     /**
+     * 模板复制
+     *
+     * @param templateId
+     */
+    @ApiOperation(value = "模板复制")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "path")
+    })
+    ResponseEntity<CodeTemplateShowVO> copy(Integer templateId) throws Exception;
+
+    /**
      * 模板导入
      *
      * @param file
