@@ -1,5 +1,9 @@
 package com.youran.generate.pojo.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.generate.constant.JFieldType;
+import com.youran.generate.pojo.po.MetaFieldPO;
+import com.youran.generate.util.GuessUtil;
 import io.swagger.annotations.ApiModelProperty;
 
 import static com.youran.generate.pojo.example.MetaFieldExample.E_FIELDID;
@@ -13,6 +17,16 @@ import static com.youran.generate.pojo.example.MetaFieldExample.N_FIELDID;
  */
 public class MetaFieldValidateVO extends MetaAbstractValidateVO {
 
+    /**
+     * 当前字段
+     */
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    private MetaFieldPO field;
+
+    /**
+     * 字段id
+     */
     @ApiModelProperty(notes = N_FIELDID, example = E_FIELDID)
     private Integer fieldId;
     /**
@@ -35,20 +49,62 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
      */
     @ApiModelProperty(notes = "推荐的常量描述", example = "性别")
     private String suggestConstRemark;
+    /**
+     * java字段重名校验通过
+     */
+    @ApiModelProperty(notes = "java字段重名校验通过", example = "true")
+    private Boolean sameJfieldNameSuccess;
+    /**
+     * mysql字段重名校验通过
+     */
+    @ApiModelProperty(notes = "mysql字段重名校验通过", example = "true")
+    private Boolean sameFieldNameSuccess;
 
-    public MetaFieldValidateVO() {
+
+    public MetaFieldValidateVO(MetaFieldPO field) {
+        this.field = field;
+        this.fieldId = field.getFieldId();
         this.dicExistSuccess = true;
+        this.sameJfieldNameSuccess = true;
+        this.sameFieldNameSuccess = true;
     }
 
     /**
-     * 设置枚举不存在
-     *
-     * @param dic
+     * 设置枚举不存在错误
      */
-    public void dicNotExist(String dic) {
+    public void dicNotExistError() {
+        String dic = this.field.getDicType();
+        Integer constType = GuessUtil.guessConstType(JFieldType.find(this.field.getJfieldType()));
         this.error();
         this.dicExistSuccess = false;
         this.dicNotExist = dic;
+        this.suggestConstType = constType;
+        this.suggestConstRemark = this.field.getFieldDesc();
+    }
+
+
+    /**
+     * 设置java字段名重复错误
+     */
+    public void sameJfieldNameError() {
+        this.error();
+        this.sameJfieldNameSuccess = false;
+    }
+
+    /**
+     * 设置mysql字段名重复错误
+     */
+    public void sameFieldNameError() {
+        this.error();
+        this.sameFieldNameSuccess = false;
+    }
+
+    public MetaFieldPO getField() {
+        return field;
+    }
+
+    public void setField(MetaFieldPO field) {
+        this.field = field;
     }
 
     public Integer getFieldId() {
@@ -89,5 +145,21 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
 
     public void setSuggestConstRemark(String suggestConstRemark) {
         this.suggestConstRemark = suggestConstRemark;
+    }
+
+    public Boolean getSameJfieldNameSuccess() {
+        return sameJfieldNameSuccess;
+    }
+
+    public void setSameJfieldNameSuccess(Boolean sameJfieldNameSuccess) {
+        this.sameJfieldNameSuccess = sameJfieldNameSuccess;
+    }
+
+    public Boolean getSameFieldNameSuccess() {
+        return sameFieldNameSuccess;
+    }
+
+    public void setSameFieldNameSuccess(Boolean sameFieldNameSuccess) {
+        this.sameFieldNameSuccess = sameFieldNameSuccess;
     }
 }

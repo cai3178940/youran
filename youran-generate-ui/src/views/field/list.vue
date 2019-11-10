@@ -73,6 +73,14 @@
               <span class="popper-remark-label">备注：</span>
               {{ scope.row.fieldComment }}
             </p>
+            <p v-if="!scope.row.validate.sameJfieldNameSuccess" style="margin-top: 5px;">
+              <span class="popper-warn-label">异常：</span>
+              java字段名"{{ scope.row.jfieldName }}"重复
+            </p>
+            <p v-if="!scope.row.validate.sameFieldNameSuccess" style="margin-top: 5px;">
+              <span class="popper-warn-label">异常：</span>
+              mysql字段名"{{ scope.row.fieldName }}"重复
+            </p>
             <p v-if="!scope.row.validate.dicExistSuccess" style="margin-top: 5px;">
               <span class="popper-warn-label">异常：</span>
               枚举"{{ scope.row.validate.dicNotExist }}"不存在
