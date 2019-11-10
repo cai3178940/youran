@@ -82,7 +82,7 @@ public interface DAO<PO extends AbstractPO> {
      */
     default int save(PO po) {
         LoginContext loginContext = SpringUtil.getBean(LoginContext.class);
-        po.preInsert(loginContext.getCurrentOperatorId());
+        po.preInsert(loginContext.getCurrentUser());
         return this._save(po);
     }
 
@@ -102,7 +102,7 @@ public interface DAO<PO extends AbstractPO> {
      */
     default int update(PO po) {
         LoginContext loginContext = SpringUtil.getBean(LoginContext.class);
-        po.preUpdate(loginContext.getCurrentOperatorId());
+        po.preUpdate(loginContext.getCurrentUser());
         int count = this._update(po);
         if (count > 0) {
             po.postUpdate();

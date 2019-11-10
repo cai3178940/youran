@@ -16,7 +16,7 @@ public class GenerateLoginContext implements LoginContext {
 
 
     @Override
-    public String getCurrentOperatorId() {
+    public String getCurrentUser() {
         return DEFAULT_LOGIN_USER;
     }
 

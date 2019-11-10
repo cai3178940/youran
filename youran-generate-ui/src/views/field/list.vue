@@ -915,7 +915,7 @@ export default {
   /**
    * 新增字段特效-颜色渐变
    */
-  @keyframes fade {
+  @keyframes add-imm-field-sfx {
     from{
       background-color: $add-imm-color;
     }
@@ -956,7 +956,7 @@ export default {
      * 新增字段红色渐隐特效
      */
     .add-imm-field {
-      animation: fade 3s linear;
+      animation: add-imm-field-sfx 3s linear;
     }
     /**
      * 选中数量展示行样式

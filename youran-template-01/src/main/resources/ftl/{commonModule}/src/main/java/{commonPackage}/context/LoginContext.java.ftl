@@ -9,7 +9,7 @@ public interface LoginContext {
      *
      * @return 用户唯一标识
      */
-    String getCurrentOperatorId();
+    String getCurrentUser();
 
 }
 </#assign>

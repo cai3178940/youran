@@ -40,7 +40,10 @@
             <span slot="title">项目管理</span>
           </el-menu-item>
           <el-menu-item v-if="this.systemUserInfo.templateEnabled"
-                        index="/template" :class="{'is-active': isRouteIndexOf('/template')}">
+                        index="/template" :class="{
+                          'is-active': isRouteIndexOf('/template'),
+                          'menu-template-show-sfx': menuTemplateShowSfx
+                        }">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-TEMPLATE"></use>
             </svg>
@@ -91,7 +94,11 @@ export default {
       systemDialogVisible: false,
       form: {
         templateEnabled: false
-      }
+      },
+      // 模板管理菜单显示特效
+      menuTemplateShowSfx: false,
+      // 模板管理菜单显示特效清除任务id
+      menuTemplateShowSfxClearTaskId: null
     }
   },
   computed: {
@@ -123,6 +130,18 @@ export default {
           this.setSystemUserInfo({
             templateEnabled: data.templateEnabled
           })
+          // 处理菜单项（模板管理）的特效
+          if (data.templateEnabled) {
+            this.menuTemplateShowSfx = true
+            this.menuTemplateShowSfxClearTaskId = setTimeout(() => {
+              this.menuTemplateShowSfx = false
+              this.menuTemplateShowSfxClearTaskId = null
+            }, 6000)
+          } else {
+            if (this.menuTemplateShowSfxClearTaskId) {
+              clearTimeout(this.menuTemplateShowSfxClearTaskId)
+            }
+          }
         })
     }
   },
@@ -136,6 +155,7 @@ export default {
       .then(response => this.$common.checkResult(response))
       .then(data => {
         this.setSystemUserInfo(data)
+        this.form.templateEnabled = data.templateEnabled
       })
       .then(() => {
         if (!this.systemUserInfo.templateExists) {
@@ -154,6 +174,18 @@ export default {
 
 <style lang="scss">
   @import 'assets/common.scss';
+
+  /**
+   * 菜单显示特效-背景颜色渐变
+   */
+  @keyframes menu-sfx {
+    from{
+      background-color: #ff3300;
+    }
+    to{
+      background-color: #FFFFFF;
+    }
+  }
 
   .wrapper {
     height: 100%;
@@ -216,6 +248,13 @@ export default {
 
     .menu {
       width:150px!important;
+
+      /**
+       * 菜单项（模板管理）显示特效
+       */
+      .menu-template-show-sfx {
+        animation: menu-sfx 3s linear;
+      }
 
       .el-menu-item {
         font-size: 16px;

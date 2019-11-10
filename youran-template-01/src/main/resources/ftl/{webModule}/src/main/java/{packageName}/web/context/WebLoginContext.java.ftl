@@ -12,7 +12,7 @@ public class WebLoginContext implements LoginContext{
      * @return
      */
     @Override
-    public String getCurrentOperatorId() {
+    public String getCurrentUser() {
         return "admin";
     }
 

@@ -40,7 +40,7 @@ public class SystemUserController extends AbstractController implements SystemUs
     @Override
     @PutMapping(value = "/setting")
     public ResponseEntity<UserSettingShowVO> updateSetting(@Valid @RequestBody UserSettingUpdateDTO userSettingUpdateDTO) {
-        String currentUser = loginContext.getCurrentOperatorId();
+        String currentUser = loginContext.getCurrentUser();
         userSettingUpdateDTO.setUsername(currentUser);
         UserSettingPO userSetting = userSettingService.update(userSettingUpdateDTO);
         return ResponseEntity.ok(UserSettingMapper.INSTANCE.toShowVO(userSetting));
@@ -49,7 +49,7 @@ public class SystemUserController extends AbstractController implements SystemUs
     @Override
     @GetMapping(value = "/info")
     public ResponseEntity<SystemUserInfoVO> info() {
-        String currentUser = loginContext.getCurrentOperatorId();
+        String currentUser = loginContext.getCurrentUser();
         UserSettingPO userSetting = userSettingService.getUserSettingByUsername(currentUser, true);
         SystemUserInfoVO vo = new SystemUserInfoVO();
         vo.setId(userSetting.getId());

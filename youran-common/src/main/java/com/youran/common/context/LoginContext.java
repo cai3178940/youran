@@ -9,10 +9,10 @@ package com.youran.common.context;
 public interface LoginContext {
 
     /**
-     * 获取当前登录用户id
+     * 获取当前登录用户唯一标识
      *
      * @return
      */
-    String getCurrentOperatorId();
+    String getCurrentUser();
 
 }
