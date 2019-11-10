@@ -57,11 +57,13 @@
       <el-form ref="templateFileForm" :rules="templateFileRules" class="addTemplateForm" :model="templateFileForm" size="small">
         <el-form-item prop="fileName" label="文件名：" label-width="120px">
           <el-input style="width:300px;" v-model="templateFileForm.fileName"
-                    placeholder="例如：xxxx.ftl"></el-input>
+                    placeholder="例如：xxxx.ftl"
+                    tabindex="10"></el-input>
         </el-form-item>
         <el-form-item prop="fileDir" label="目录：" label-width="120px">
           <el-input style="width:300px;" v-model="templateFileForm.fileDir"
-                    placeholder="例如：/aaa/bbb"></el-input>
+                    placeholder="例如：/aaa/bbb"
+                    tabindex="20"></el-input>
         </el-form-item>
         <el-form-item label="是否抽象文件：" label-width="120px">
           <el-radio-group v-model="templateFileForm.abstracted">

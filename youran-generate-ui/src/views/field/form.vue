@@ -52,7 +52,7 @@
           <el-form-item label="字段名" prop="jieldNameCouple">
             <help-popover name="field.jfieldName">
               <el-col :span="11" class="col-left">
-                <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age"></el-input>
+                <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age" tabindex="10"></el-input>
                 <!--
                 <el-button size="mini" type="text" @click="form.jfieldName = $common.snakeCase(form.jfieldName)">转下划线</el-button>
                 -->
@@ -66,7 +66,7 @@
                 </el-tooltip>
               </el-col>
               <el-col :span="11" class="col-right">
-                <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age"></el-input>
+                <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age" tabindex="20"></el-input>
                 <el-button size="mini" type="text" @click="form.fieldName = $common.snakeCase(form.fieldName)">转下划线</el-button>
                 <!--
                 <el-button size="mini" type="text" @click="form.fieldName = $common.camelCase(form.fieldName)">转驼峰</el-button>
@@ -76,23 +76,26 @@
           </el-form-item>
           <el-form-item label="字段标题" prop="fieldDesc">
             <help-popover name="field.fieldDesc">
-              <el-input v-model="form.fieldDesc" placeholder="字段标题，例如：年龄"></el-input>
+              <el-input v-model="form.fieldDesc" placeholder="字段标题，例如：年龄" tabindex="30"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段备注" prop="fieldComment">
             <help-popover name="field.fieldComment">
-              <el-input v-model="form.fieldComment" type="textarea" :rows="2" placeholder="字段备注，例如：年龄【整型】"></el-input>
+              <el-input v-model="form.fieldComment" type="textarea" :rows="2"
+                        placeholder="字段备注，例如：年龄【整型】" tabindex="40"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段示例" prop="fieldExample">
             <help-popover name="field.fieldExample">
-              <el-input v-model="form.fieldExample" placeholder="字段示例，例如年龄字段：21"></el-input>
+              <el-input v-model="form.fieldExample" placeholder="字段示例，例如年龄字段：21"
+                        tabindex="50"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段类型" prop="fieldType">
             <help-popover name="field.fieldType">
               <el-col :span="6" class="col-left">
-                <el-select v-model="form.jfieldType" @change="jfieldTypeChange" style="width:100%;" filterable placeholder="java类型">
+                <el-select v-model="form.jfieldType" @change="jfieldTypeChange"
+                           style="width:100%;" filterable placeholder="java类型" tabindex="60">
                   <el-option
                     v-for="item in jfieldTypeOptions"
                     :key="item.value"
@@ -102,7 +105,8 @@
                 </el-select>
               </el-col>
               <el-col :span="6">
-                <el-select v-model="form.fieldType" @change="fieldTypeChange" style="width:100%;" filterable placeholder="sql类型">
+                <el-select v-model="form.fieldType" @change="fieldTypeChange"
+                           style="width:100%;" filterable placeholder="sql类型" tabindex="70">
                   <el-option
                     v-for="item in fieldTypeOptions"
                     :key="item.value"
@@ -115,15 +119,21 @@
               </el-col>
               <template v-if="fieldLengthVisible && fieldScaleVisible">
                 <el-col :span="6">
-                  <el-input-number v-model="form.fieldLength" controls-position="right" style="width:100%;" :min="0" placeholder="长度"></el-input-number>
+                  <el-input-number v-model="form.fieldLength" controls-position="right"
+                                   style="width:100%;" :min="0" placeholder="长度"
+                                   tabindex="80"></el-input-number>
                 </el-col>
                 <el-col :span="6" class="col-right">
-                  <el-input-number v-model="form.fieldScale" controls-position="right" style="width:100%;" :min="0" placeholder="精度"></el-input-number>
+                  <el-input-number v-model="form.fieldScale" controls-position="right"
+                                   style="width:100%;" :min="0" placeholder="精度"
+                                   tabindex="90"></el-input-number>
                 </el-col>
               </template>
               <template v-if="fieldLengthVisible && !fieldScaleVisible">
                 <el-col :span="12" class="col-right">
-                  <el-input-number v-model="form.fieldLength" controls-position="right" style="width:100%;" :min="0" placeholder="长度"></el-input-number>
+                  <el-input-number v-model="form.fieldLength" controls-position="right"
+                                   style="width:100%;" :min="0" placeholder="长度"
+                                   tabindex="100"></el-input-number>
                 </el-col>
               </template>
             </help-popover>
@@ -134,24 +144,28 @@
                                v-model="form.dicType"
                                :fetch-suggestions="queryDicType"
                                placeholder="请输入枚举字典"
+                               tabindex="110"
               ></el-autocomplete>
             </help-popover>
           </el-form-item>
           <el-form-item label="不能为空" prop="notNull">
             <help-popover name="field.notNull">
-              <el-checkbox v-model="form.notNull" :disabled="isAttrDisable('notNull')" :true-label="true" :false-label="false">是</el-checkbox>
+              <el-checkbox v-model="form.notNull" :disabled="isAttrDisable('notNull')"
+                           :true-label="true" :false-label="false"
+                           tabindex="120">是</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item v-if="!isAttrHide('query')" label="可搜索" prop="query">
             <help-popover name="field.query">
               <el-row type="flex" align="middle" :gutter="10">
                 <el-col :span="6">
-                  <el-checkbox v-model="form.query" :true-label="true" :false-label="false">是</el-checkbox>
+                  <el-checkbox v-model="form.query" :true-label="true" :false-label="false"
+                               tabindex="130">是</el-checkbox>
                 </el-col>
                 <el-col :span="18" class="col-right">
                   <span class="inline-label">搜索方式</span>
                   <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="" filterable
-                             placeholder="请选择">
+                             placeholder="请选择" tabindex="140">
                     <el-option
                       v-for="item in queryTypeOptions"
                       :key="item.value"
@@ -168,31 +182,36 @@
               <el-checkbox v-model="form.insert"
                            :true-label="true"
                            :false-label="false"
-                           :disabled="isAttrDisable('attr-insert')">
+                           :disabled="isAttrDisable('attr-insert')"
+                           tabindex="150">
                 可插入
               </el-checkbox>
               <el-checkbox v-model="form.update"
                            :true-label="true"
                            :false-label="false"
-                           :disabled="isAttrDisable('attr-update')">
+                           :disabled="isAttrDisable('attr-update')"
+                           tabindex="160">
                 可修改
               </el-checkbox>
               <el-checkbox v-model="form.list"
                            :true-label="true"
                            :false-label="false"
-                           :disabled="isAttrDisable('attr-list')">
+                           :disabled="isAttrDisable('attr-list')"
+                           tabindex="170">
                 列表展示
               </el-checkbox>
               <el-checkbox v-model="form.show"
                            :true-label="true"
                            :false-label="false"
-                           :disabled="isAttrDisable('attr-show')">
+                           :disabled="isAttrDisable('attr-show')"
+                           tabindex="180">
                 详情展示
               </el-checkbox>
               <el-checkbox v-model="form.listSort"
                            :true-label="true"
                            :false-label="false"
-                           :disabled="isAttrDisable('attr-listSort')">
+                           :disabled="isAttrDisable('attr-listSort')"
+                           tabindex="190">
                 可排序
               </el-checkbox>
             </help-popover>
