@@ -14,10 +14,15 @@
           <el-scrollbar style="height:100%">
             <el-tree :props="treeProps"
                      :data="codeTree.tree"
-                     :render-content="renderTreeNode"
                      :expand-on-click-node="false"
                      @node-expand="expandSingleNode"
                      @node-click="nodeClick">
+              <span slot-scope="{ node, data }"
+                    class="codeTreeNode"
+                    @dblclick="codeTreeNodeDblclick(data, node)">
+                <i :class="getCodeTreeNodeIcon(data)"></i>
+                <span style="margin-left: 3px;">{{node.label}}</span>
+              </span>
             </el-tree>
           </el-scrollbar>
         </el-aside>
@@ -154,13 +159,23 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.codeTreeLoading = false })
     },
-    renderTreeNode (h, { node, data, store }) {
-      const icon = data.dir ? FileTypeUtil.getIcon('folder') : FileTypeUtil.getIcon(data.type)
-      return h('span', [
-        h('i', { class: icon }),
-        h('span', '     '),
-        h('span', node.label)
-      ])
+    /**
+     * 目录树节点图标
+     */
+    getCodeTreeNodeIcon (data) {
+      return data.dir ? FileTypeUtil.getIcon('folder') : FileTypeUtil.getIcon(data.type)
+    },
+    /**
+     * 双击树节点
+     */
+    codeTreeNodeDblclick (data, node) {
+      if (!node.isLeaf) {
+        const expanded = node.expanded
+        node.expanded = !expanded
+        if (!expanded) {
+          this.expandSingleNode(data, node)
+        }
+      }
     },
     parsePath (data) {
       this.paths = [{

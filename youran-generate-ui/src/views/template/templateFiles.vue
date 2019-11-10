@@ -29,11 +29,16 @@
                      :default-expanded-keys="fileExpandedDirs"
                      :props="treeProps"
                      :data="codeTree.tree"
-                     :render-content="renderTreeNode"
                      :expand-on-click-node="false"
                      @node-expand="expandSingleNode"
                      @node-contextmenu="showContextMenu"
                      @node-click="nodeClick">
+              <span slot-scope="{ node, data }"
+                    class="codeTreeNode"
+                    @dblclick="codeTreeNodeDblclick(data, node)">
+                <i :class="getCodeTreeNodeIcon(data)"></i>
+                <span style="margin-left: 3px;">{{node.label}}</span>
+              </span>
             </el-tree>
           </el-scrollbar>
         </el-aside>
@@ -348,9 +353,9 @@ export default {
       this.codeTree = codeTree
     },
     /**
-     * 渲染树节点
+     * 目录树节点图标
      */
-    renderTreeNode (h, { node, data, store }) {
+    getCodeTreeNodeIcon (data) {
       let icon
       if (data.dir) {
         icon = [...FileTypeUtil.getIcon('folder')]
@@ -369,11 +374,19 @@ export default {
           }
         }
       }
-      return h('span', [
-        h('i', { class: icon }),
-        h('span', '     '),
-        h('span', node.label)
-      ])
+      return icon
+    },
+    /**
+     * 双击树节点
+     */
+    codeTreeNodeDblclick (data, node) {
+      if (!node.isLeaf) {
+        const expanded = node.expanded
+        node.expanded = !expanded
+        if (!expanded) {
+          this.expandSingleNode(data, node)
+        }
+      }
     },
     parsePath (data) {
       this.paths = [{
