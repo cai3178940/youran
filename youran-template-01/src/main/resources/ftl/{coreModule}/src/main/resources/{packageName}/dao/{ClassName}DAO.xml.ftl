@@ -45,7 +45,7 @@
         </where>
     </select>
 
-    <insert id="_save" <#if isTrue(this.pk.autoIncrement)>useGeneratedKeys="true" </#if>keyProperty="${this.id}" parameterType="${this.classNameUpper}PO">
+    <insert id="_save" <#if this.pk.autoIncrement>useGeneratedKeys="true" </#if>keyProperty="${this.id}" parameterType="${this.classNameUpper}PO">
         insert into ${wrapTableName}(
     <#list this.fields as id,field>
         ${wrapMysqlKeyword(field.fieldName)}<#if id_has_next>,</#if>
@@ -64,14 +64,14 @@
         <#--过滤出需要设值的字段-->
         <#list this.fields as id,field>
             <#--去除主键、创建人、创建时间-->
-            <#if isFalse(field.primaryKey) && !MetaSpecialField.isCreatedBy(field.specialField)  && !MetaSpecialField.isCreatedTime(field.specialField) >
+            <#if !field.primaryKey && !MetaSpecialField.isCreatedBy(field.specialField)  && !MetaSpecialField.isCreatedTime(field.specialField) >
                 <#assign set_field_arr = set_field_arr + [ field ] >
             </#if>
         </#list>
         <#list set_field_arr as field>
             <#if field.specialField?? && field.specialField==MetaSpecialField.VERSION>
             ${wrapMysqlKeyword(field.fieldName)} = ${wrapMysqlKeyword(field.fieldName)}+1<#if field_has_next>,</#if>
-            <#elseIf isFalse(field.primaryKey) && !MetaSpecialField.isCreatedBy(field.specialField)  && !MetaSpecialField.isCreatedTime(field.specialField) >
+            <#elseIf !field.primaryKey && !MetaSpecialField.isCreatedBy(field.specialField)  && !MetaSpecialField.isCreatedTime(field.specialField) >
             ${wrapMysqlKeyword(field.fieldName)}=${r'#'}{${field.jfieldName},jdbcType=${JFieldType.mapperJdbcType(field.jfieldType)}}<#if field_has_next>,</#if>
             </#if>
         </#list>
@@ -305,7 +305,7 @@
         <include refid="queryCondition"/>
         </where>
         <include refid="orderCondition"/>
-    <#if isTrue(this.pageSign)>
+    <#if this.pageSign>
         limit ${r'#'}{startIndex},${r'#'}{pageSize}
     </#if>
     </select>

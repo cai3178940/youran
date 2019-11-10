@@ -160,11 +160,11 @@ export default {
   // 布尔枚举
   boolOptions: [
     {
-      value: 1,
+      value: true,
       label: '是'
     },
     {
-      value: 0,
+      value: false,
       label: '否'
     }
   ],
@@ -302,9 +302,9 @@ export default {
    */
   getFieldFeature (field) {
     // 主键也作为特性返回
-    if (field.primaryKey === 1) {
+    if (field.primaryKey) {
       return pkFeature
-    } else if (field.foreignKey === 1) {
+    } else if (field.foreignKey) {
     // 外键也作为特性返回
       return fkFeature
     } else if (field.specialField) {

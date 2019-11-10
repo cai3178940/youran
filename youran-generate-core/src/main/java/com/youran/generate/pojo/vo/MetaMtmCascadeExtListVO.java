@@ -34,13 +34,13 @@ public class MetaMtmCascadeExtListVO extends AbstractVO {
     private String alias;
 
     @ApiModelProperty(notes = N_LIST, example = E_LIST)
-    private Integer list;
+    private Boolean list;
 
     @ApiModelProperty(notes = N_SHOW, example = E_SHOW)
-    private Integer show;
+    private Boolean show;
 
     @ApiModelProperty(notes = N_QUERY, example = E_QUERY)
-    private Integer query;
+    private Boolean query;
 
     /**
      * 级联展示字段名
@@ -118,30 +118,28 @@ public class MetaMtmCascadeExtListVO extends AbstractVO {
         this.alias = alias;
     }
 
-    public Integer getList() {
-        return this.list;
+    public Boolean getList() {
+        return list;
     }
 
-    public void setList(Integer list) {
+    public void setList(Boolean list) {
         this.list = list;
     }
 
-    public Integer getShow() {
-        return this.show;
+    public Boolean getShow() {
+        return show;
     }
 
-    public void setShow(Integer show) {
+    public void setShow(Boolean show) {
         this.show = show;
     }
 
-    public Integer getQuery() {
-        return this.query;
+    public Boolean getQuery() {
+        return query;
     }
 
-    public void setQuery(Integer query) {
+    public void setQuery(Boolean query) {
         this.query = query;
     }
-
-
 }
 

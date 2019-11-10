@@ -1,6 +1,5 @@
 package com.youran.generate.service;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.config.GenerateProperties;
@@ -211,7 +210,7 @@ public class MetaImportExportService {
 
         // 重置外键字段id
         fieldList.stream()
-            .filter(field -> BoolConst.isTrue(field.getForeignKey()) && field.getForeignFieldId() != null)
+            .filter(field -> field.getForeignKey() && field.getForeignFieldId() != null)
             .forEach(field -> this.resetForeignFieldId(field, fieldIdMap));
 
         // 读取索引json文件，并解析成po列表

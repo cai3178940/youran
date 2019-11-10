@@ -40,12 +40,12 @@
         <template v-slot="scope">
           <template v-if="scope.row.editFlag">
             <el-checkbox v-model="scope.row.query"
-                       :true-label="1"
-                       :false-label="0">
+                       :true-label="true"
+                       :false-label="false">
             </el-checkbox>
           </template>
           <template v-else>
-            <i v-if="scope.row.query==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+            <i v-if="scope.row.query" class="iconfont icon-check2 table-cell-icon color-success"></i>
             <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
           </template>
         </template>
@@ -54,12 +54,12 @@
         <template v-slot="scope">
           <template v-if="scope.row.editFlag">
             <el-checkbox v-model="scope.row.list"
-                         :true-label="1"
-                         :false-label="0">
+                         :true-label="true"
+                         :false-label="false">
             </el-checkbox>
           </template>
           <template v-else>
-            <i v-if="scope.row.list==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+            <i v-if="scope.row.list" class="iconfont icon-check2 table-cell-icon color-success"></i>
             <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
           </template>
         </template>
@@ -68,12 +68,12 @@
         <template v-slot="scope">
           <template v-if="scope.row.editFlag">
             <el-checkbox v-model="scope.row.show"
-                         :true-label="1"
-                         :false-label="0">
+                         :true-label="true"
+                         :false-label="false">
             </el-checkbox>
           </template>
           <template v-else>
-            <i v-if="scope.row.show==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+            <i v-if="scope.row.show" class="iconfont icon-check2 table-cell-icon color-success"></i>
             <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
           </template>
         </template>
@@ -101,11 +101,11 @@ const cascadeExtModel = {
   // 别名
   alias: '',
   // 是否在列表中展示
-  list: 1,
+  list: true,
   // 是否在详情中展示
-  show: 1,
+  show: true,
   // 是否为搜索条件
-  query: 1,
+  query: true,
   // 级联实体的id
   cascadeEntityId: null,
   // 级联展示字段的id

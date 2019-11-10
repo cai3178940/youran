@@ -23,9 +23,9 @@ public class MetaCascadeExtHelper {
         dto.setFieldId(fieldId);
         dto.setEntityId(entityId);
         dto.setAlias("alias" + fieldId);
-        dto.setList(1);
-        dto.setShow(1);
-        dto.setQuery(1);
+        dto.setList(true);
+        dto.setShow(true);
+        dto.setQuery(true);
         dto.setCascadeEntityId(cascadeEntityId);
         dto.setCascadeFieldId(cascadeFieldId);
         return dto;

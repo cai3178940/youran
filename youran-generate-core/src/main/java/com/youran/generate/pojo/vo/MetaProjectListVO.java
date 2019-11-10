@@ -34,7 +34,7 @@ public class MetaProjectListVO extends AbstractVO {
     private String author;
 
     @ApiModelProperty(notes = N_REMOTE, example = E_REMOTE)
-    private Integer remote;
+    private Boolean remote;
 
     @ApiModelProperty(notes = N_TEMPLATEID, example = E_TEMPLATEID)
     private Integer templateId;
@@ -74,11 +74,11 @@ public class MetaProjectListVO extends AbstractVO {
         this.groupId = groupId;
     }
 
-    public Integer getRemote() {
+    public Boolean getRemote() {
         return remote;
     }
 
-    public void setRemote(Integer remote) {
+    public void setRemote(Boolean remote) {
         this.remote = remote;
     }
 

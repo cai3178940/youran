@@ -14,8 +14,8 @@ public class ${this.classNameUpper}AddDTO extends AbstractDTO {
     <@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
     <#--字段名转下划线大写-->
     <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
-    @ApiModelProperty(notes = N_${jfieldNameSnakeCase}, example = E_${jfieldNameSnakeCase}<#if isTrue(field.notNull)>, required = true</#if><#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
-    <#if isTrue(field.notNull)>
+    @ApiModelProperty(notes = N_${jfieldNameSnakeCase}, example = E_${jfieldNameSnakeCase}<#if field.notNull>, required = true</#if><#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
+    <#if field.notNull>
         <@call this.addImport("javax.validation.constraints.NotNull")/>
     @NotNull
     </#if>
@@ -38,7 +38,7 @@ public class ${this.classNameUpper}AddDTO extends AbstractDTO {
 </#list>
 <#list this.holds! as otherEntity,mtm>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-    <#if isTrue(entityFeature.withinEntity)>
+    <#if entityFeature.withinEntity>
         <#assign otherPk=otherEntity.pkField>
         <#assign othercName=otherEntity.className?uncapFirst>
         <@call this.addImport("java.util.List")/>
@@ -52,7 +52,7 @@ public class ${this.classNameUpper}AddDTO extends AbstractDTO {
 </#list>
 <#list this.holds! as otherEntity,mtm>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-    <#if isTrue(entityFeature.withinEntity)>
+    <#if entityFeature.withinEntity>
         <#assign otherPk=otherEntity.pkField>
         <#assign othercName=otherEntity.className?uncapFirst>
         <@call TemplateUtil.printGetterSetterList(othercName,otherPk.jfieldType)/>

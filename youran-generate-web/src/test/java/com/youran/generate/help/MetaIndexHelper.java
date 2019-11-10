@@ -24,8 +24,8 @@ public class MetaIndexHelper {
     public static MetaIndexAddDTO getAddDTO(Integer... fieldIds) {
         MetaIndexAddDTO dto = new MetaIndexAddDTO();
         dto.setIndexName(E_INDEXNAME);
-        dto.setUnique(SafeUtil.getInteger(E_UNIQUE));
-        dto.setUniqueCheck(SafeUtil.getInteger(E_UNIQUECHECK));
+        dto.setUnique(SafeUtil.getBoolean(E_UNIQUE));
+        dto.setUniqueCheck(SafeUtil.getBoolean(E_UNIQUECHECK));
         dto.setFieldIds(Joiner.on(",").join(fieldIds));
         dto.setEntityId(SafeUtil.getInteger(E_ENTITYID));
         return dto;

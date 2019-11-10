@@ -1,8 +1,6 @@
 package com.youran.generate.pojo.dto;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.dto.AbstractDTO;
-import com.youran.common.validator.Const;
 import com.youran.generate.constant.PatternConst;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -53,8 +51,7 @@ public class MetaEntityAddDTO extends AbstractDTO {
     private String desc;
 
     @ApiModelProperty(notes = N_PAGESIGN, example = E_PAGESIGN)
-    @Const(constClass = BoolConst.class)
-    private Integer pageSign;
+    private Boolean pageSign;
 
     /**
      * 实体特性
@@ -69,11 +66,11 @@ public class MetaEntityAddDTO extends AbstractDTO {
         this.feature = feature;
     }
 
-    public Integer getPageSign() {
+    public Boolean getPageSign() {
         return pageSign;
     }
 
-    public void setPageSign(Integer pageSign) {
+    public void setPageSign(Boolean pageSign) {
         this.pageSign = pageSign;
     }
 

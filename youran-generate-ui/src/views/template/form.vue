@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import options from '@/components/options'
 import { apiPath } from '@/components/common'
 import { initFormBean, getRules } from './model'
 import { mapState } from 'vuex'
@@ -62,7 +61,6 @@ export default {
     const edit = !!this.templateId
     return {
       edit: edit,
-      boolOptions: options.boolOptions,
       old: initFormBean(edit),
       form: initFormBean(edit),
       rules: getRules()

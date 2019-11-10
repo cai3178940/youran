@@ -34,15 +34,15 @@ public class MetaCascadeExtPO extends BasePO {
     /**
      * 是否在列表中展示
      */
-    private Integer list;
+    private Boolean list;
     /**
      * 是否在详情中展示
      */
-    private Integer show;
+    private Boolean show;
     /**
      * 是否为列表查询条件
      */
-    private Integer query;
+    private Boolean query;
     /**
      * 级联实体的id
      */
@@ -105,27 +105,27 @@ public class MetaCascadeExtPO extends BasePO {
         this.alias = alias;
     }
 
-    public Integer getList() {
+    public Boolean getList() {
         return list;
     }
 
-    public void setList(Integer list) {
+    public void setList(Boolean list) {
         this.list = list;
     }
 
-    public Integer getShow() {
+    public Boolean getShow() {
         return show;
     }
 
-    public void setShow(Integer show) {
+    public void setShow(Boolean show) {
         this.show = show;
     }
 
-    public Integer getQuery() {
+    public Boolean getQuery() {
         return query;
     }
 
-    public void setQuery(Integer query) {
+    public void setQuery(Boolean query) {
         this.query = query;
     }
 

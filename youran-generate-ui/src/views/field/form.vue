@@ -35,7 +35,7 @@
           </el-form-item>
           <el-form-item v-if="!isAttrHide('autoIncrement')" label="主键策略">
             <help-popover name="field.autoIncrement">
-              <el-checkbox v-model="form.autoIncrement" :true-label="1" :false-label="0">自增</el-checkbox>
+              <el-checkbox v-model="form.autoIncrement" :true-label="true" :false-label="false">自增</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item v-if="!isAttrHide('foreignKey')" label="外键关联" prop="foreignKey">
@@ -139,14 +139,14 @@
           </el-form-item>
           <el-form-item label="不能为空" prop="notNull">
             <help-popover name="field.notNull">
-              <el-checkbox v-model="form.notNull" :disabled="isAttrDisable('notNull')" :true-label="1" :false-label="0">是</el-checkbox>
+              <el-checkbox v-model="form.notNull" :disabled="isAttrDisable('notNull')" :true-label="true" :false-label="false">是</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item v-if="!isAttrHide('query')" label="可搜索" prop="query">
             <help-popover name="field.query">
               <el-row type="flex" align="middle" :gutter="10">
                 <el-col :span="6">
-                  <el-checkbox v-model="form.query" :true-label="1" :false-label="0">是</el-checkbox>
+                  <el-checkbox v-model="form.query" :true-label="true" :false-label="false">是</el-checkbox>
                 </el-col>
                 <el-col :span="18" class="col-right">
                   <span class="inline-label">搜索方式</span>
@@ -166,32 +166,32 @@
           <el-form-item v-if="!isAttrHide('attributes')" label="字段功能">
             <help-popover name="field.attributes">
               <el-checkbox v-model="form.insert"
-                           :true-label="1"
-                           :false-label="0"
+                           :true-label="true"
+                           :false-label="false"
                            :disabled="isAttrDisable('attr-insert')">
                 可插入
               </el-checkbox>
               <el-checkbox v-model="form.update"
-                           :true-label="1"
-                           :false-label="0"
+                           :true-label="true"
+                           :false-label="false"
                            :disabled="isAttrDisable('attr-update')">
                 可修改
               </el-checkbox>
               <el-checkbox v-model="form.list"
-                           :true-label="1"
-                           :false-label="0"
+                           :true-label="true"
+                           :false-label="false"
                            :disabled="isAttrDisable('attr-list')">
                 列表展示
               </el-checkbox>
               <el-checkbox v-model="form.show"
-                           :true-label="1"
-                           :false-label="0"
+                           :true-label="true"
+                           :false-label="false"
                            :disabled="isAttrDisable('attr-show')">
                 详情展示
               </el-checkbox>
               <el-checkbox v-model="form.listSort"
-                           :true-label="1"
-                           :false-label="0"
+                           :true-label="true"
+                           :false-label="false"
                            :disabled="isAttrDisable('attr-listSort')">
                 可排序
               </el-checkbox>
@@ -246,7 +246,7 @@ export default {
   },
   computed: {
     dicTypeDisabled () {
-      if (this.form.primaryKey === 1 || this.form.specialField) {
+      if (this.form.primaryKey || this.form.specialField) {
         return true
       }
       return false
@@ -260,15 +260,15 @@ export default {
   },
   watch: {
     'form.primaryKey' (value) {
-      if (value === 1) {
-        this.form.notNull = 1
+      if (value) {
+        this.form.notNull = true
         this.form.specialField = ''
       } else {
-        this.form.autoIncrement = 0
+        this.form.autoIncrement = false
       }
     },
     'form.query' (value) {
-      if (value === 1) {
+      if (value) {
         this.queryTypeDisabled = false
       } else {
         this.queryTypeDisabled = true
@@ -354,7 +354,7 @@ export default {
       return this.$common.getFieldOptions(entityId)
         .then(response => this.$common.checkResult(response))
         .then(data => {
-          entity.children = data.filter(field => field.primaryKey === 1)
+          entity.children = data.filter(field => field.primaryKey)
             .map(field => ({
               value: field.fieldId,
               label: field.fieldDesc,
@@ -481,14 +481,14 @@ export default {
      * 切换普通字段
      */
     changeCommonFeature () {
-      this.form.foreignKey = 0
+      this.form.foreignKey = false
       this.formReady()
     },
     /**
      * 切换外键字段
      */
     changeFkFeature () {
-      this.form.foreignKey = 1
+      this.form.foreignKey = true
       this.formReady()
     }
   },

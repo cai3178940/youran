@@ -35,10 +35,10 @@ public class MetaManyToManyListVO extends AbstractVO {
     private Integer entityId2;
 
     @ApiModelProperty(notes = N_HOLDREFER1, example = E_HOLDREFER1)
-    private Integer holdRefer1;
+    private Boolean holdRefer1;
 
     @ApiModelProperty(notes = N_HOLDREFER2, example = E_HOLDREFER2)
-    private Integer holdRefer2;
+    private Boolean holdRefer2;
 
     /**
      * 实体A对应多对多关联表的id字段名
@@ -108,19 +108,19 @@ public class MetaManyToManyListVO extends AbstractVO {
         this.entityId2 = entityId2;
     }
 
-    public Integer getHoldRefer1() {
+    public Boolean getHoldRefer1() {
         return holdRefer1;
     }
 
-    public void setHoldRefer1(Integer holdRefer1) {
+    public void setHoldRefer1(Boolean holdRefer1) {
         this.holdRefer1 = holdRefer1;
     }
 
-    public Integer getHoldRefer2() {
+    public Boolean getHoldRefer2() {
         return holdRefer2;
     }
 
-    public void setHoldRefer2(Integer holdRefer2) {
+    public void setHoldRefer2(Boolean holdRefer2) {
         this.holdRefer2 = holdRefer2;
     }
 

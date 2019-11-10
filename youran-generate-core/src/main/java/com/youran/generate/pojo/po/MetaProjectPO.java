@@ -61,7 +61,7 @@ public class MetaProjectPO extends BasePO {
      * 是否开启Git远程仓库功能
      */
     @JsonIgnore
-    private Integer remote;
+    private Boolean remote;
     /**
      * 远程仓库地址1
      * 对应第1个模板
@@ -264,11 +264,11 @@ public class MetaProjectPO extends BasePO {
         this.projectName = projectName;
     }
 
-    public Integer getRemote() {
+    public Boolean getRemote() {
         return remote;
     }
 
-    public void setRemote(Integer remote) {
+    public void setRemote(Boolean remote) {
         this.remote = remote;
     }
 

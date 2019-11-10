@@ -1,6 +1,5 @@
 package com.youran.generate.help;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.generate.constant.*;
 import com.youran.generate.pojo.dto.*;
 import com.youran.generate.pojo.po.*;
@@ -134,7 +133,7 @@ public class GenerateHelper {
     //保存createdTime字段
     public MetaFieldPO saveCreatedTimeField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
-        dto.setNotNull(1);
+        dto.setNotNull(true);
         dto.setFieldName("createdTime");
         dto.setFieldType(MySqlType.DATETIME);
         dto.setFieldComment("创建日期");
@@ -145,13 +144,13 @@ public class GenerateHelper {
         dto.setJfieldType(JFieldType.DATE.getJavaType());
         dto.setEditType(EditType.DATE);
         dto.setOrderNo(1001);
-        dto.setInsert(0);
-        dto.setQuery(0);
+        dto.setInsert(false);
+        dto.setQuery(false);
         dto.setQueryType(null);
-        dto.setList(1);
-        dto.setListSort(1);
-        dto.setShow(1);
-        dto.setUpdate(0);
+        dto.setList(true);
+        dto.setListSort(true);
+        dto.setShow(true);
+        dto.setUpdate(false);
         dto.setSpecialField(MetaSpecialField.CREATED_TIME);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
@@ -160,7 +159,7 @@ public class GenerateHelper {
 
     public MetaFieldPO saveCreatedByField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
-        dto.setNotNull(1);
+        dto.setNotNull(true);
         dto.setFieldName("createdBy");
         dto.setFieldType(MySqlType.VARCHAR);
         dto.setFieldComment("创建人");
@@ -171,13 +170,13 @@ public class GenerateHelper {
         dto.setJfieldType(JFieldType.STRING.getJavaType());
         dto.setEditType(EditType.TEXT);
         dto.setOrderNo(1002);
-        dto.setInsert(0);
-        dto.setQuery(0);
+        dto.setInsert(false);
+        dto.setQuery(false);
         dto.setQueryType(null);
-        dto.setList(1);
-        dto.setListSort(0);
-        dto.setShow(1);
-        dto.setUpdate(0);
+        dto.setList(true);
+        dto.setListSort(false);
+        dto.setShow(true);
+        dto.setUpdate(false);
         dto.setSpecialField(MetaSpecialField.CREATED_BY);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
@@ -186,7 +185,7 @@ public class GenerateHelper {
 
     public MetaFieldPO saveOperatedTimeField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
-        dto.setNotNull(1);
+        dto.setNotNull(true);
         dto.setFieldName("operatedTime");
         dto.setFieldType(MySqlType.DATETIME);
         dto.setFieldComment("操作日期");
@@ -197,13 +196,13 @@ public class GenerateHelper {
         dto.setJfieldType(JFieldType.DATE.getJavaType());
         dto.setEditType(EditType.DATE);
         dto.setOrderNo(1003);
-        dto.setInsert(0);
-        dto.setQuery(0);
+        dto.setInsert(false);
+        dto.setQuery(false);
         dto.setQueryType(null);
-        dto.setList(1);
-        dto.setListSort(1);
-        dto.setShow(1);
-        dto.setUpdate(0);
+        dto.setList(true);
+        dto.setListSort(true);
+        dto.setShow(true);
+        dto.setUpdate(false);
         dto.setSpecialField(MetaSpecialField.OPERATED_TIME);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
@@ -212,7 +211,7 @@ public class GenerateHelper {
 
     public MetaFieldPO saveOperatedByField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
-        dto.setNotNull(1);
+        dto.setNotNull(true);
         dto.setFieldName("operatedBy");
         dto.setFieldType(MySqlType.VARCHAR);
         dto.setFieldComment("操作人");
@@ -223,13 +222,13 @@ public class GenerateHelper {
         dto.setJfieldType(JFieldType.STRING.getJavaType());
         dto.setEditType(EditType.TEXT);
         dto.setOrderNo(1004);
-        dto.setInsert(0);
-        dto.setQuery(0);
+        dto.setInsert(false);
+        dto.setQuery(false);
         dto.setQueryType(null);
-        dto.setList(1);
-        dto.setListSort(0);
-        dto.setShow(1);
-        dto.setUpdate(0);
+        dto.setList(true);
+        dto.setListSort(false);
+        dto.setShow(true);
+        dto.setUpdate(false);
         dto.setSpecialField(MetaSpecialField.OPERATED_BY);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
@@ -240,7 +239,7 @@ public class GenerateHelper {
     public MetaFieldPO saveVersionField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setDefaultValue("1");
-        dto.setNotNull(1);
+        dto.setNotNull(true);
         dto.setFieldName("version");
         dto.setFieldType(MySqlType.INT);
         dto.setFieldComment("乐观锁版本号");
@@ -251,13 +250,13 @@ public class GenerateHelper {
         dto.setJfieldType(JFieldType.INTEGER.getJavaType());
         dto.setEditType(null);
         dto.setOrderNo(1005);
-        dto.setInsert(0);
-        dto.setQuery(0);
+        dto.setInsert(false);
+        dto.setQuery(false);
         dto.setQueryType(null);
-        dto.setList(0);
-        dto.setListSort(0);
-        dto.setShow(0);
-        dto.setUpdate(0);
+        dto.setList(false);
+        dto.setListSort(false);
+        dto.setShow(false);
+        dto.setUpdate(false);
         dto.setSpecialField(MetaSpecialField.VERSION);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
@@ -268,7 +267,7 @@ public class GenerateHelper {
     public MetaFieldPO saveDeletedField(MetaEntityPO entity) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setDefaultValue("0");
-        dto.setNotNull(1);
+        dto.setNotNull(true);
         dto.setFieldName("deleted");
         dto.setFieldType(MySqlType.SMALLINT);
         dto.setFieldComment("是否删除");
@@ -279,13 +278,13 @@ public class GenerateHelper {
         dto.setJfieldType(JFieldType.BOOLEAN.getJavaType());
         dto.setEditType(null);
         dto.setOrderNo(1006);
-        dto.setInsert(0);
-        dto.setQuery(0);
+        dto.setInsert(false);
+        dto.setQuery(false);
         dto.setQueryType(null);
-        dto.setList(0);
-        dto.setListSort(0);
-        dto.setShow(0);
-        dto.setUpdate(0);
+        dto.setList(false);
+        dto.setListSort(false);
+        dto.setShow(false);
+        dto.setUpdate(false);
         dto.setSpecialField(MetaSpecialField.DELETED);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
@@ -295,13 +294,13 @@ public class GenerateHelper {
     //保存主键id字段
     public MetaFieldPO saveIdField(MetaEntityPO entity, String fieldName, String fieldDesc, String jfieldType) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
-        dto.setAutoIncrement(1);
+        dto.setAutoIncrement(true);
         dto.setEditType(null);
         dto.setFieldComment(fieldDesc);
         dto.setFieldDesc(fieldDesc);
         dto.setFieldExample("1");
         dto.setFieldName(fieldName);
-        dto.setInsert(0);
+        dto.setInsert(false);
         dto.setJfieldName(fieldName);
         dto.setJfieldType(jfieldType);
         if (JFieldType.LONG.equals(jfieldType)) {
@@ -313,15 +312,15 @@ public class GenerateHelper {
         } else {
             throw new RuntimeException("jfieldType error");
         }
-        dto.setList(1);
-        dto.setListSort(1);
-        dto.setNotNull(1);
+        dto.setList(true);
+        dto.setListSort(true);
+        dto.setNotNull(true);
         dto.setOrderNo(1);
-        dto.setPrimaryKey(1);
-        dto.setQuery(0);
+        dto.setPrimaryKey(true);
+        dto.setQuery(false);
         dto.setQueryType(null);
-        dto.setShow(1);
-        dto.setUpdate(0);
+        dto.setShow(true);
+        dto.setUpdate(false);
         dto.setSpecialField(null);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
@@ -331,21 +330,21 @@ public class GenerateHelper {
     public MetaFieldAddDTO newMetaFieldAddDTO(MetaEntityPO entity) {
         MetaFieldAddDTO dto = new MetaFieldAddDTO();
         dto.setEntityId(entity.getEntityId());
-        dto.setPrimaryKey(0);//默认非主键
-        dto.setForeignKey(0);
-        dto.setAutoIncrement(0);//默认非自动递增
+        dto.setPrimaryKey(false);//默认非主键
+        dto.setForeignKey(false);
+        dto.setAutoIncrement(false);//默认非自动递增
         dto.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);//默认值为null
-        dto.setNotNull(0);//默认可为空
+        dto.setNotNull(false);//默认可为空
         dto.setEditType(EditType.TEXT);
         dto.setFieldScale(null);
         dto.setDicType(null);
-        dto.setInsert(1);
-        dto.setQuery(1);
+        dto.setInsert(true);
+        dto.setQuery(true);
         dto.setQueryType(QueryType.EQ);
-        dto.setList(1);
-        dto.setListSort(0);
-        dto.setShow(1);
-        dto.setUpdate(1);
+        dto.setList(true);
+        dto.setListSort(false);
+        dto.setShow(true);
+        dto.setUpdate(true);
         dto.setSpecialField(null);
         return dto;
     }
@@ -359,7 +358,7 @@ public class GenerateHelper {
 
     public MetaIndexAddDTO newMetaIndexAddDTO(MetaEntityPO entity) {
         MetaIndexAddDTO dto = new MetaIndexAddDTO();
-        dto.setUnique(0);
+        dto.setUnique(false);
         dto.setEntityId(entity.getEntityId());
         return dto;
     }
@@ -383,7 +382,7 @@ public class GenerateHelper {
             .reduce((id, id2) -> id + "," + id2)
             .get();
         dto.setFieldIds(ids);
-        dto.setUnique(1);
+        dto.setUnique(true);
         return metaIndexService.save(dto);
     }
 
@@ -442,7 +441,7 @@ public class GenerateHelper {
         dto.setJfieldName(fieldName);
         dto.setJfieldType(JFieldType.STRING.getJavaType());
         dto.setOrderNo(orderNo);
-        dto.setQuery(0);
+        dto.setQuery(false);
         dto.setQueryType(null);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
@@ -454,7 +453,7 @@ public class GenerateHelper {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setDicType("com.youran.common.constant.BoolConst");
         dto.setDefaultValue("0");
-        dto.setNotNull(1);
+        dto.setNotNull(true);
         dto.setFieldName(fieldName);
         dto.setFieldType(MySqlType.SMALLINT);
         dto.setFieldComment(desc + " 1是 0否");
@@ -487,7 +486,7 @@ public class GenerateHelper {
         dto.setFieldType(MySqlType.SMALLINT);
         dto.setJfieldName(fieldName);
         dto.setJfieldType(JFieldType.INTEGER.getJavaType());
-        dto.setNotNull(1);
+        dto.setNotNull(true);
         dto.setOrderNo(orderNo);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
@@ -503,7 +502,7 @@ public class GenerateHelper {
 
     public MetaFieldPO saveForeignKey(MetaEntityPO entity, String fieldName, String desc, boolean bigint, boolean notnull, int orderNo) {
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
-        dto.setUpdate(0);
+        dto.setUpdate(false);
         dto.setFieldComment(desc);
         dto.setFieldDesc(desc);
         dto.setFieldExample("1");
@@ -519,7 +518,7 @@ public class GenerateHelper {
             dto.setJfieldType(JFieldType.INTEGER.getJavaType());
         }
         if (notnull) {
-            dto.setNotNull(1);
+            dto.setNotNull(true);
         }
         dto.setOrderNo(orderNo);
         MetaFieldPO metaField = metaFieldService.save(dto);
@@ -535,7 +534,7 @@ public class GenerateHelper {
         dto.setProjectName(projectName);
         dto.setProjectDesc(projectName);
         dto.setAuthor(author);
-        dto.setRemote(BoolConst.FALSE);
+        dto.setRemote(false);
         return metaProjectService.save(dto);
     }
 
@@ -557,7 +556,7 @@ public class GenerateHelper {
         dto.setTableName(tableName);
         dto.setTitle(title);
         dto.setDesc(title);
-        dto.setPageSign(1);
+        dto.setPageSign(true);
         MetaEntityPO metaEntity = metaEntityService.save(dto);
         project.addEntity(metaEntity);
         return metaEntity;

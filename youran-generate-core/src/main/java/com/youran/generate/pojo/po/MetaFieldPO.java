@@ -63,15 +63,15 @@ public class MetaFieldPO extends BasePO {
     /**
      * 是否主键
      */
-    private Integer primaryKey;
+    private Boolean primaryKey;
     /**
      * 是否自动递增
      */
-    private Integer autoIncrement;
+    private Boolean autoIncrement;
     /**
      * 是否不能为空
      */
-    private Integer notNull;
+    private Boolean notNull;
     /**
      * 默认值
      */
@@ -79,7 +79,7 @@ public class MetaFieldPO extends BasePO {
     /**
      * 是否外键
      */
-    private Integer foreignKey;
+    private Boolean foreignKey;
     /**
      * 外键实体id
      */
@@ -99,27 +99,27 @@ public class MetaFieldPO extends BasePO {
     /**
      * 是否新增字段
      */
-    private Integer insert;
+    private Boolean insert;
     /**
      * 是否编辑字段
      */
-    private Integer update;
+    private Boolean update;
     /**
      * 是否列表字段
      */
-    private Integer list;
+    private Boolean list;
     /**
      * 是否支持排序
      */
-    private Integer listSort;
+    private Boolean listSort;
     /**
      * 是否详情字段
      */
-    private Integer show;
+    private Boolean show;
     /**
      * 是否查询字段
      */
-    private Integer query;
+    private Boolean query;
     /**
      * 查询方式
      */
@@ -197,14 +197,6 @@ public class MetaFieldPO extends BasePO {
         this.foreignEntityId = foreignEntityId;
     }
 
-    public Integer getForeignKey() {
-        return foreignKey;
-    }
-
-    public void setForeignKey(Integer foreignKey) {
-        this.foreignKey = foreignKey;
-    }
-
     public Integer getForeignFieldId() {
         return foreignFieldId;
     }
@@ -227,14 +219,6 @@ public class MetaFieldPO extends BasePO {
 
     public void setSpecialField(String specialField) {
         this.specialField = specialField;
-    }
-
-    public Integer getShow() {
-        return show;
-    }
-
-    public void setShow(Integer show) {
-        this.show = show;
     }
 
     public Integer getFieldId() {
@@ -317,30 +301,6 @@ public class MetaFieldPO extends BasePO {
         this.fieldScale = fieldScale;
     }
 
-    public Integer getPrimaryKey() {
-        return primaryKey;
-    }
-
-    public void setPrimaryKey(Integer primaryKey) {
-        this.primaryKey = primaryKey;
-    }
-
-    public Integer getAutoIncrement() {
-        return autoIncrement;
-    }
-
-    public void setAutoIncrement(Integer autoIncrement) {
-        this.autoIncrement = autoIncrement;
-    }
-
-    public Integer getNotNull() {
-        return notNull;
-    }
-
-    public void setNotNull(Integer notNull) {
-        this.notNull = notNull;
-    }
-
     public String getDefaultValue() {
         return defaultValue;
     }
@@ -363,46 +323,6 @@ public class MetaFieldPO extends BasePO {
 
     public void setDicType(String dicType) {
         this.dicType = dicType;
-    }
-
-    public Integer getInsert() {
-        return insert;
-    }
-
-    public void setInsert(Integer insert) {
-        this.insert = insert;
-    }
-
-    public Integer getUpdate() {
-        return update;
-    }
-
-    public void setUpdate(Integer update) {
-        this.update = update;
-    }
-
-    public Integer getList() {
-        return list;
-    }
-
-    public void setList(Integer list) {
-        this.list = list;
-    }
-
-    public Integer getListSort() {
-        return listSort;
-    }
-
-    public void setListSort(Integer listSort) {
-        this.listSort = listSort;
-    }
-
-    public Integer getQuery() {
-        return query;
-    }
-
-    public void setQuery(Integer query) {
-        this.query = query;
     }
 
     public Integer getQueryType() {
@@ -443,5 +363,85 @@ public class MetaFieldPO extends BasePO {
 
     public void setCascadeListExts(List<MetaCascadeExtPO> cascadeListExts) {
         this.cascadeListExts = cascadeListExts;
+    }
+
+    public Boolean getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(Boolean primaryKey) {
+        this.primaryKey = primaryKey;
+    }
+
+    public Boolean getAutoIncrement() {
+        return autoIncrement;
+    }
+
+    public void setAutoIncrement(Boolean autoIncrement) {
+        this.autoIncrement = autoIncrement;
+    }
+
+    public Boolean getNotNull() {
+        return notNull;
+    }
+
+    public void setNotNull(Boolean notNull) {
+        this.notNull = notNull;
+    }
+
+    public Boolean getForeignKey() {
+        return foreignKey;
+    }
+
+    public void setForeignKey(Boolean foreignKey) {
+        this.foreignKey = foreignKey;
+    }
+
+    public Boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(Boolean insert) {
+        this.insert = insert;
+    }
+
+    public Boolean getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(Boolean update) {
+        this.update = update;
+    }
+
+    public Boolean getList() {
+        return list;
+    }
+
+    public void setList(Boolean list) {
+        this.list = list;
+    }
+
+    public Boolean getListSort() {
+        return listSort;
+    }
+
+    public void setListSort(Boolean listSort) {
+        this.listSort = listSort;
+    }
+
+    public Boolean getShow() {
+        return show;
+    }
+
+    public void setShow(Boolean show) {
+        this.show = show;
+    }
+
+    public Boolean getQuery() {
+        return query;
+    }
+
+    public void setQuery(Boolean query) {
+        this.query = query;
     }
 }

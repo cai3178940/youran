@@ -23,7 +23,7 @@ public class MetaFieldHelper {
     public static MetaFieldAddDTO getAddDTO(Integer entityId) {
         MetaFieldAddDTO dto = new MetaFieldAddDTO();
         dto.setEntityId(entityId);
-        dto.setAutoIncrement(SafeUtil.getInteger(E_AUTOINCREMENT));
+        dto.setAutoIncrement(SafeUtil.getBoolean(E_AUTOINCREMENT));
         dto.setDefaultValue(E_DEFAULTVALUE);
         dto.setDicType(E_DICTYPE);
         dto.setEditType(SafeUtil.getInteger(E_EDITTYPE));
@@ -34,19 +34,19 @@ public class MetaFieldHelper {
         dto.setFieldName(E_FIELDNAME);
         dto.setFieldScale(SafeUtil.getInteger(E_FIELDSCALE));
         dto.setFieldType(E_FIELDTYPE);
-        dto.setInsert(SafeUtil.getInteger(E_INSERT));
+        dto.setInsert(SafeUtil.getBoolean(E_INSERT));
         dto.setJfieldName(E_JFIELDNAME);
         dto.setJfieldType(E_JFIELDTYPE);
-        dto.setList(SafeUtil.getInteger(E_LIST));
-        dto.setListSort(SafeUtil.getInteger(E_LIST_SORT));
-        dto.setNotNull(SafeUtil.getInteger(E_NOTNULL));
+        dto.setList(SafeUtil.getBoolean(E_LIST));
+        dto.setListSort(SafeUtil.getBoolean(E_LIST_SORT));
+        dto.setNotNull(SafeUtil.getBoolean(E_NOTNULL));
         dto.setOrderNo(SafeUtil.getInteger(E_ORDERNO));
-        dto.setPrimaryKey(SafeUtil.getInteger(E_PRIMARYKEY));
-        dto.setForeignKey(SafeUtil.getInteger(E_FOREIGNKEY));
-        dto.setQuery(SafeUtil.getInteger(E_QUERY));
+        dto.setPrimaryKey(SafeUtil.getBoolean(E_PRIMARYKEY));
+        dto.setForeignKey(SafeUtil.getBoolean(E_FOREIGNKEY));
+        dto.setQuery(SafeUtil.getBoolean(E_QUERY));
         dto.setQueryType(SafeUtil.getInteger(E_QUERYTYPE));
-        dto.setShow(SafeUtil.getInteger(E_SHOW));
-        dto.setUpdate(SafeUtil.getInteger(E_UPDATE));
+        dto.setShow(SafeUtil.getBoolean(E_SHOW));
+        dto.setUpdate(SafeUtil.getBoolean(E_UPDATE));
         dto.setSpecialField(E_SPECIALFIELD);
         return dto;
     }

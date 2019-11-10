@@ -27,7 +27,7 @@ public class MetaEntityHelper {
         dto.setSchemaName(E_SCHEMANAME);
         dto.setClassName(E_CLASSNAME + i);
         dto.setTableName(E_TABLENAME + i);
-        dto.setPageSign(SafeUtil.getInteger(E_PAGESIGN));
+        dto.setPageSign(SafeUtil.getBoolean(E_PAGESIGN));
         dto.setDesc(E_DESC + i);
         dto.setTitle(E_TITLE + i);
         return dto;

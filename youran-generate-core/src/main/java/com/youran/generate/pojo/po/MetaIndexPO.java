@@ -35,11 +35,11 @@ public class MetaIndexPO extends BasePO {
     /**
      * 是否唯一索引
      */
-    private Integer unique;
+    private Boolean unique;
     /**
      * 是否唯一校验
      */
-    private Integer uniqueCheck;
+    private Boolean uniqueCheck;
     /**
      * 索引中的字段id列表
      */
@@ -81,14 +81,6 @@ public class MetaIndexPO extends BasePO {
         this.projectId = projectId;
     }
 
-    public Integer getUniqueCheck() {
-        return uniqueCheck;
-    }
-
-    public void setUniqueCheck(Integer uniqueCheck) {
-        this.uniqueCheck = uniqueCheck;
-    }
-
     public Integer getEntityId() {
         return entityId;
     }
@@ -121,19 +113,27 @@ public class MetaIndexPO extends BasePO {
         this.fields = fields;
     }
 
-    public Integer getUnique() {
-        return unique;
-    }
-
-    public void setUnique(Integer unique) {
-        this.unique = unique;
-    }
-
     public List<Integer> getFieldIds() {
         return fieldIds;
     }
 
     public void setFieldIds(List<Integer> fieldIds) {
         this.fieldIds = fieldIds;
+    }
+
+    public Boolean getUnique() {
+        return unique;
+    }
+
+    public void setUnique(Boolean unique) {
+        this.unique = unique;
+    }
+
+    public Boolean getUniqueCheck() {
+        return uniqueCheck;
+    }
+
+    public void setUniqueCheck(Boolean uniqueCheck) {
+        this.uniqueCheck = uniqueCheck;
     }
 }

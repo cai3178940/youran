@@ -24,8 +24,6 @@ import java.util.stream.Collectors;
 @Service
 public class MetaValidateService {
 
-    public static final String BOOL_CONST = "BoolConst";
-
     @Autowired
     private MetaQueryAssembleService metaQueryAssembleService;
 
@@ -51,7 +49,7 @@ public class MetaValidateService {
         vo.setFieldId(field.getFieldId());
         // 校验枚举是否存在
         String dic = field.getDicType();
-        if (StringUtils.isNotBlank(dic) && !BOOL_CONST.equals(dic)) {
+        if (StringUtils.isNotBlank(dic)) {
             Optional<MetaConstPO> optional = consts.stream().filter(metaConstPO -> dic.equals(metaConstPO.getConstName()))
                 .findAny();
             if (!optional.isPresent()) {

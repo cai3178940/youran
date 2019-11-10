@@ -1,8 +1,6 @@
 package com.youran.generate.pojo.dto;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.dto.AbstractDTO;
-import com.youran.common.validator.Const;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -16,43 +14,40 @@ public class MetaMtmEntityFeatureDTO extends AbstractDTO {
     /**
      * 是否生成实体单独添加和移除对方关联关系的方法
      */
-    @ApiModelProperty(notes = "是否生成实体单独添加和移除对方关联关系的方法", example = "0")
-    @Const(constClass = BoolConst.class)
-    private Integer addRemove = BoolConst.FALSE;
+    @ApiModelProperty(notes = "是否生成实体单独添加和移除对方关联关系的方法", example = "false")
+    private Boolean addRemove = false;
     /**
      * 是否生成实体设置对方关联关系的方法
      */
-    @ApiModelProperty(notes = "是否生成实体设置对方关联关系的方法", example = "1")
-    @Const(constClass = BoolConst.class)
-    private Integer set = BoolConst.TRUE;
+    @ApiModelProperty(notes = "是否生成实体设置对方关联关系的方法", example = "true")
+    private Boolean set = true;
     /**
      * 实体是否在添加修改操作时一同维护对方关联
      */
-    @ApiModelProperty(notes = "实体是否在添加修改操作时一同维护对方关联", example = "1")
-    @Const(constClass = BoolConst.class)
-    private Integer withinEntity = BoolConst.TRUE;
+    @ApiModelProperty(notes = "实体是否在添加修改操作时一同维护对方关联", example = "true")
+    private Boolean withinEntity = true;
 
-    public Integer getAddRemove() {
+    public Boolean getAddRemove() {
         return addRemove;
     }
 
-    public void setAddRemove(Integer addRemove) {
+    public void setAddRemove(Boolean addRemove) {
         this.addRemove = addRemove;
     }
 
-    public Integer getSet() {
+    public Boolean getSet() {
         return set;
     }
 
-    public void setSet(Integer set) {
+    public void setSet(Boolean set) {
         this.set = set;
     }
 
-    public Integer getWithinEntity() {
+    public Boolean getWithinEntity() {
         return withinEntity;
     }
 
-    public void setWithinEntity(Integer withinEntity) {
+    public void setWithinEntity(Boolean withinEntity) {
         this.withinEntity = withinEntity;
     }
 }

@@ -34,13 +34,13 @@ public class ${this.classNameUpper}Service {
 </#list>
 <#-- 引入外键对应的DAO （插入字段对应的外键）-->
 <#list this.insertFields as id,field>
-    <#if isTrue(field.foreignKey)>
+    <#if field.foreignKey>
         <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
 </#list>
 <#-- 引入外键对应的DAO （更新字段对应的外键）-->
 <#list this.updateFields as id,field>
-    <#if isTrue(field.foreignKey)>
+    <#if field.foreignKey>
         <@call this.addAutowired("${this.packageName}.dao" "${field.foreignEntity.className?capFirst}DAO")/>
     </#if>
 </#list>
@@ -79,7 +79,7 @@ public class ${this.classNameUpper}Service {
 <#-- 抽象出公共方法【校验外键字段对应实体是否存在】 -->
 <#macro checkForeignKeys fields>
     <#list fields as id,field>
-        <#if isTrue(field.foreignKey)>
+        <#if field.foreignKey>
             <@call this.addImport("org.springframework.util.Assert")/>
             <#assign foreigncName=field.foreignEntity.className?uncapFirst>
         if(${this.className}.get${field.jfieldName?capFirst}() != null){
@@ -104,7 +104,7 @@ public class ${this.classNameUpper}Service {
 </#if>
 <#-- addDTO中没有并且不能为空的非主键字段，赋初始值 -->
 <#list this.fields as id,field>
-    <#if isFalse(field.insert) && isTrue(field.notNull) && isFalse(field.primaryKey) && field.specialField?default("")?length == 0>
+    <#if !field.insert && field.notNull && !field.primaryKey && field.specialField?default("")?length == 0>
         ${this.className}.set${field.jfieldName?capFirst}(${guessDefaultJfieldValue(field.jfieldType)});
     </#if>
 </#list>
@@ -116,7 +116,7 @@ public class ${this.classNameUpper}Service {
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-    <#if isTrue(entityFeature.withinEntity)>
+    <#if entityFeature.withinEntity>
         List<${otherPk.jfieldType}> ${othercName}List = ${this.className}DTO.get${otherCName}List();
         if(CollectionUtils.isNotEmpty(${othercName}List)) {
             this.doAdd${otherCName}(${this.className}.get${this.idUpper}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
@@ -153,7 +153,7 @@ public class ${this.classNameUpper}Service {
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign othercName=otherEntity.className?uncapFirst>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-    <#if isTrue(entityFeature.withinEntity)>
+    <#if entityFeature.withinEntity>
         List<${otherPk.jfieldType}> ${othercName}List = ${this.className}UpdateDTO.get${otherCName}List();
         if(${othercName}List != null) {
             this.set${otherCName}(${this.className}.get${this.idUpper}(), ${othercName}List.toArray(new ${otherPk.jfieldType}[]{}));
@@ -162,7 +162,7 @@ public class ${this.classNameUpper}Service {
 </#list>
         return ${this.className};
     }
-<#if isTrue(this.pageSign)>
+<#if this.pageSign>
     <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     /**
      * 查询分页列表
@@ -362,7 +362,7 @@ public class ${this.classNameUpper}Service {
         return count;
     }
 
-    <#if isTrue(entityFeature.addRemove)>
+    <#if entityFeature.addRemove>
     /**
      * 添加【${otherEntity.title}】
      * @param ${this.id}
@@ -394,7 +394,7 @@ public class ${this.classNameUpper}Service {
     }
 
     </#if>
-    <#if isTrue(entityFeature.set)||isTrue(entityFeature.withinEntity)>
+    <#if entityFeature.set || entityFeature.withinEntity>
     /**
      * 设置【${otherEntity.title}】
      * @param ${this.id}

@@ -1,8 +1,6 @@
 package com.youran.generate.pojo.dto;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.dto.AbstractDTO;
-import com.youran.common.validator.Const;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -47,13 +45,11 @@ public class MetaManyToManyAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_HOLDREFER1, example = E_HOLDREFER1)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer holdRefer1;
+    private Boolean holdRefer1;
 
     @ApiModelProperty(notes = N_HOLDREFER2, example = E_HOLDREFER2)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer holdRefer2;
+    private Boolean holdRefer2;
 
     /**
      * 实体A对应多对多关联表的id字段名
@@ -147,14 +143,6 @@ public class MetaManyToManyAddDTO extends AbstractDTO {
         this.desc = desc;
     }
 
-    public Integer getHoldRefer2() {
-        return holdRefer2;
-    }
-
-    public void setHoldRefer2(Integer holdRefer2) {
-        this.holdRefer2 = holdRefer2;
-    }
-
     public Integer getProjectId() {
         return projectId;
     }
@@ -179,19 +167,27 @@ public class MetaManyToManyAddDTO extends AbstractDTO {
         this.entityId2 = entityId2;
     }
 
-    public Integer getHoldRefer1() {
-        return holdRefer1;
-    }
-
-    public void setHoldRefer1(Integer holdRefer1) {
-        this.holdRefer1 = holdRefer1;
-    }
-
     public String getTableName() {
         return tableName;
     }
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public Boolean getHoldRefer1() {
+        return holdRefer1;
+    }
+
+    public void setHoldRefer1(Boolean holdRefer1) {
+        this.holdRefer1 = holdRefer1;
+    }
+
+    public Boolean getHoldRefer2() {
+        return holdRefer2;
+    }
+
+    public void setHoldRefer2(Boolean holdRefer2) {
+        this.holdRefer2 = holdRefer2;
     }
 }

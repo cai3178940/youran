@@ -20,14 +20,14 @@ public class MetaFieldQO extends AbstractQO {
     @NotNull
     private Integer entityId;
 
-    @ApiParam(value = "是否携带级联字段数量", example = "1")
-    private Integer withCascadeFieldNum;
+    @ApiParam(value = "是否携带级联字段数量", example = "true")
+    private Boolean withCascadeFieldNum;
 
-    public Integer getWithCascadeFieldNum() {
+    public Boolean getWithCascadeFieldNum() {
         return withCascadeFieldNum;
     }
 
-    public void setWithCascadeFieldNum(Integer withCascadeFieldNum) {
+    public void setWithCascadeFieldNum(Boolean withCascadeFieldNum) {
         this.withCascadeFieldNum = withCascadeFieldNum;
     }
 

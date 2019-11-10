@@ -22,7 +22,7 @@ public class MetaFieldListVO extends AbstractVO {
     private Integer entityId;
 
     @ApiModelProperty(notes = N_AUTOINCREMENT, example = E_AUTOINCREMENT)
-    private Integer autoIncrement;
+    private Boolean autoIncrement;
 
     @ApiModelProperty(notes = N_DEFAULTVALUE, example = E_DEFAULTVALUE)
     private String defaultValue;
@@ -55,7 +55,7 @@ public class MetaFieldListVO extends AbstractVO {
     private String fieldType;
 
     @ApiModelProperty(notes = N_INSERT, example = E_INSERT)
-    private Integer insert;
+    private Boolean insert;
 
     @ApiModelProperty(notes = N_JFIELDNAME, example = E_JFIELDNAME)
     private String jfieldName;
@@ -64,22 +64,22 @@ public class MetaFieldListVO extends AbstractVO {
     private String jfieldType;
 
     @ApiModelProperty(notes = N_LIST, example = E_LIST)
-    private Integer list;
+    private Boolean list;
 
     @ApiModelProperty(notes = N_LIST_SORT, example = E_LIST_SORT)
-    private Integer listSort;
+    private Boolean listSort;
 
     @ApiModelProperty(notes = N_NOTNULL, example = E_NOTNULL)
-    private Integer notNull;
+    private Boolean notNull;
 
     @ApiModelProperty(notes = N_ORDERNO, example = E_ORDERNO)
     private Integer orderNo;
 
     @ApiModelProperty(notes = N_PRIMARYKEY, example = E_PRIMARYKEY)
-    private Integer primaryKey;
+    private Boolean primaryKey;
 
     @ApiModelProperty(notes = N_FOREIGNKEY, example = E_FOREIGNKEY)
-    private Integer foreignKey;
+    private Boolean foreignKey;
 
     @ApiModelProperty(notes = N_FOREIGNENTITYID, example = E_FOREIGNENTITYID)
     private Integer foreignEntityId;
@@ -88,16 +88,16 @@ public class MetaFieldListVO extends AbstractVO {
     private Integer foreignFieldId;
 
     @ApiModelProperty(notes = N_QUERY, example = E_QUERY)
-    private Integer query;
+    private Boolean query;
 
     @ApiModelProperty(notes = N_QUERYTYPE, example = E_QUERYTYPE)
     private Integer queryType;
 
     @ApiModelProperty(notes = N_SHOW, example = E_SHOW)
-    private Integer show;
+    private Boolean show;
 
     @ApiModelProperty(notes = N_UPDATE, example = E_UPDATE)
-    private Integer update;
+    private Boolean update;
 
     @ApiModelProperty(notes = N_SPECIALFIELD, example = E_SPECIALFIELD)
     private String specialField;
@@ -121,28 +121,12 @@ public class MetaFieldListVO extends AbstractVO {
         this.foreignEntityId = foreignEntityId;
     }
 
-    public Integer getForeignKey() {
-        return foreignKey;
-    }
-
-    public void setForeignKey(Integer foreignKey) {
-        this.foreignKey = foreignKey;
-    }
-
     public Integer getForeignFieldId() {
         return foreignFieldId;
     }
 
     public void setForeignFieldId(Integer foreignFieldId) {
         this.foreignFieldId = foreignFieldId;
-    }
-
-    public Integer getListSort() {
-        return listSort;
-    }
-
-    public void setListSort(Integer listSort) {
-        this.listSort = listSort;
     }
 
     public String getFieldExample() {
@@ -175,14 +159,6 @@ public class MetaFieldListVO extends AbstractVO {
 
     public void setEntityId(Integer entityId) {
         this.entityId = entityId;
-    }
-
-    public Integer getAutoIncrement() {
-        return autoIncrement;
-    }
-
-    public void setAutoIncrement(Integer autoIncrement) {
-        this.autoIncrement = autoIncrement;
     }
 
     public String getDefaultValue() {
@@ -257,14 +233,6 @@ public class MetaFieldListVO extends AbstractVO {
         this.fieldType = fieldType;
     }
 
-    public Integer getInsert() {
-        return insert;
-    }
-
-    public void setInsert(Integer insert) {
-        this.insert = insert;
-    }
-
     public String getJfieldName() {
         return jfieldName;
     }
@@ -281,44 +249,12 @@ public class MetaFieldListVO extends AbstractVO {
         this.jfieldType = jfieldType;
     }
 
-    public Integer getList() {
-        return list;
-    }
-
-    public void setList(Integer list) {
-        this.list = list;
-    }
-
-    public Integer getNotNull() {
-        return notNull;
-    }
-
-    public void setNotNull(Integer notNull) {
-        this.notNull = notNull;
-    }
-
     public Integer getOrderNo() {
         return orderNo;
     }
 
     public void setOrderNo(Integer orderNo) {
         this.orderNo = orderNo;
-    }
-
-    public Integer getPrimaryKey() {
-        return primaryKey;
-    }
-
-    public void setPrimaryKey(Integer primaryKey) {
-        this.primaryKey = primaryKey;
-    }
-
-    public Integer getQuery() {
-        return query;
-    }
-
-    public void setQuery(Integer query) {
-        this.query = query;
     }
 
     public Integer getQueryType() {
@@ -329,22 +265,85 @@ public class MetaFieldListVO extends AbstractVO {
         this.queryType = queryType;
     }
 
-    public Integer getShow() {
+    public Boolean getAutoIncrement() {
+        return autoIncrement;
+    }
+
+    public void setAutoIncrement(Boolean autoIncrement) {
+        this.autoIncrement = autoIncrement;
+    }
+
+    public Boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(Boolean insert) {
+        this.insert = insert;
+    }
+
+    public Boolean getList() {
+        return list;
+    }
+
+    public void setList(Boolean list) {
+        this.list = list;
+    }
+
+    public Boolean getListSort() {
+        return listSort;
+    }
+
+    public void setListSort(Boolean listSort) {
+        this.listSort = listSort;
+    }
+
+    public Boolean getNotNull() {
+        return notNull;
+    }
+
+    public void setNotNull(Boolean notNull) {
+        this.notNull = notNull;
+    }
+
+    public Boolean getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(Boolean primaryKey) {
+        this.primaryKey = primaryKey;
+    }
+
+    public Boolean getForeignKey() {
+        return foreignKey;
+    }
+
+    public void setForeignKey(Boolean foreignKey) {
+        this.foreignKey = foreignKey;
+    }
+
+    public Boolean getQuery() {
+        return query;
+    }
+
+    public void setQuery(Boolean query) {
+        this.query = query;
+    }
+
+    public Boolean getShow() {
         return show;
     }
 
-    public void setShow(Integer show) {
+    public void setShow(Boolean show) {
         this.show = show;
     }
 
-    public Integer getUpdate() {
+    public Boolean getUpdate() {
         return update;
     }
 
-    public void setUpdate(Integer update) {
+    public void setUpdate(Boolean update) {
         this.update = update;
     }
-
 
     @Override
     public String toString() {

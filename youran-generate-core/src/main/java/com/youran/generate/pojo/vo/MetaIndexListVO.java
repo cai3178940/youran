@@ -27,21 +27,14 @@ public class MetaIndexListVO extends AbstractVO {
     private Integer entityId;
 
     @ApiModelProperty(notes = N_UNIQUE, example = E_UNIQUE)
-    private Integer unique;
+    private Boolean unique;
 
     @ApiModelProperty(notes = N_UNIQUECHECK, example = E_UNIQUECHECK)
-    private Integer uniqueCheck;
+    private Boolean uniqueCheck;
 
     @ApiModelProperty(notes = "字段列表")
     private List<MetaFieldListVO> fields;
 
-    public Integer getUniqueCheck() {
-        return uniqueCheck;
-    }
-
-    public void setUniqueCheck(Integer uniqueCheck) {
-        this.uniqueCheck = uniqueCheck;
-    }
 
     public Integer getIndexId() {
         return indexId;
@@ -67,12 +60,20 @@ public class MetaIndexListVO extends AbstractVO {
         this.entityId = entityId;
     }
 
-    public Integer getUnique() {
+    public Boolean getUnique() {
         return unique;
     }
 
-    public void setUnique(Integer unique) {
+    public void setUnique(Boolean unique) {
         this.unique = unique;
+    }
+
+    public Boolean getUniqueCheck() {
+        return uniqueCheck;
+    }
+
+    public void setUniqueCheck(Boolean uniqueCheck) {
+        this.uniqueCheck = uniqueCheck;
     }
 
     public List<MetaFieldListVO> getFields() {

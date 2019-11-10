@@ -22,11 +22,11 @@ public class MetaMtmCascadeExtExample {
     public static final String N_ALIAS = "级联查询字段别名";
     public static final String E_ALIAS = "name1";
     public static final String N_LIST = "是否在列表中展示";
-    public static final String E_LIST = "1";
+    public static final String E_LIST = "true";
     public static final String N_SHOW = "是否在详情中展示";
-    public static final String E_SHOW = "1";
+    public static final String E_SHOW = "true";
     public static final String N_QUERY = "是否为查询条件";
-    public static final String E_QUERY = "1";
+    public static final String E_QUERY = "true";
     public static final String N_CREATED_TIME = "创建时间【yyyy-MM-dd HH:mm:ss】";
     public static final String E_CREATED_TIME = "2017-12-07 00:00:00";
     public static final String N_CREATED_BY = "创建人【最大长度20】";

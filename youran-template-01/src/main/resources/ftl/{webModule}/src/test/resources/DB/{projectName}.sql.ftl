@@ -11,7 +11,7 @@ CREATE TABLE `${metaEntity.tableName}` (
     PRIMARY KEY (`${metaEntity.pkField.fieldName}`)<#if metaEntity.indexes?? && (metaEntity.indexes?size > 0)>,</#if>
     </#if>
     <#list metaEntity.indexes! as index>
-    <#if isTrue(index.unique)>UNIQUE </#if>KEY `${index.indexName}` (<#list index.fields as field>`${field.fieldName}`<#if field_has_next >,</#if></#list>) USING BTREE<#if index_has_next>,</#if>
+    <#if index.unique>UNIQUE </#if>KEY `${index.indexName}` (<#list index.fields as field>`${field.fieldName}`<#if field_has_next >,</#if></#list>) USING BTREE<#if index_has_next>,</#if>
     </#list>
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4${MetadataUtil.getCommentDisplay(metaEntity.desc,false)};
 

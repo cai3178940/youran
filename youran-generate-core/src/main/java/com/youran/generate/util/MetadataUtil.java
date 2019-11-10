@@ -1,7 +1,6 @@
 package com.youran.generate.util;
 
 import com.google.common.base.Joiner;
-import com.youran.common.constant.BoolConst;
 import com.youran.generate.constant.DefaultValue;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MySqlType;
@@ -204,8 +203,8 @@ public class MetadataUtil {
      * @return
      */
     public static String getAutoIncrementDisplay(MetaFieldPO field) {
-        if (BoolConst.isTrue(field.getPrimaryKey())
-            && BoolConst.isTrue(field.getAutoIncrement())) {
+        if (field.getPrimaryKey()
+            && field.getAutoIncrement()) {
             return " AUTO_INCREMENT";
         }
         return "";
@@ -217,8 +216,8 @@ public class MetadataUtil {
      * @return
      */
     public static String getNotNullDisplay(MetaFieldPO field) {
-        if (BoolConst.isFalse(field.getPrimaryKey())
-            && BoolConst.isTrue(field.getNotNull())) {
+        if (!field.getPrimaryKey()
+            && field.getNotNull()) {
             return " NOT NULL";
         }
         return "";
@@ -232,11 +231,11 @@ public class MetadataUtil {
      */
     public static String getDefaultDisplay(MetaFieldPO field) {
         // 主键无默认值
-        if (BoolConst.isTrue(field.getPrimaryKey())) {
+        if (field.getPrimaryKey()) {
             return "";
         }
         if (DefaultValue.NULL.equalsIgnoreCase(field.getDefaultValue())) {
-            if (BoolConst.isFalse(field.getNotNull())) {
+            if (!field.getNotNull()) {
                 return " DEFAULT NULL";
             } else {
                 return "";

@@ -87,28 +87,28 @@
                     :class="[
                       'index_span',
                       (activeIndexId==index.indexId)?'indexActive':'',
-                      index.unique==1?'index_u_span':(index.uniqueCheck==1?'index_check_span':'index_com_span')
+                      index.unique?'index_u_span':(index.uniqueCheck?'index_check_span':'index_com_span')
                       ]"
-                    :title="[index.unique==1?'唯一索引':(index.uniqueCheck==1?'普通索引(唯一性校验)':'普通索引')]">
+                    :title="[index.unique?'唯一索引':(index.uniqueCheck?'普通索引(唯一性校验)':'普通索引')]">
                 {{index.indexName}}
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{method:'handleDelIndexField',arg:[index,scope.row]}">
                   <i class="iconfont icon-times1 table-cell-icon"
                      style="margin-right: 0px; vertical-align: middle;"
-                     :class="[index.unique==1?'color-danger':'color-primary']"></i>
+                     :class="[index.unique?'color-danger':'color-primary']"></i>
                   删除索引字段
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleDelIndex',arg:[index]}">
                   <i class="iconfont icon-trash table-cell-icon"
                      style="margin-right: 0px; vertical-align: middle;"
-                     :class="[index.unique==1?'color-danger':'color-primary']"></i>
+                     :class="[index.unique?'color-danger':'color-primary']"></i>
                   删除整个索引
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleIndexEdit',arg:[index]}">
                   <i class="iconfont icon-edit_small1 table-cell-icon"
                      style="margin-right: 0px; vertical-align: middle;"
-                     :class="[index.unique==1?'color-danger':'color-primary']"></i>
+                     :class="[index.unique?'color-danger':'color-primary']"></i>
                   编辑索引
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -129,7 +129,7 @@
       </el-table-column>
       <el-table-column label="非空" width="50px">
         <template v-slot="scope">
-          <i v-if="scope.row.notNull==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+          <i v-if="scope.row.notNull" class="iconfont icon-check2 table-cell-icon color-success"></i>
           <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
         </template>
       </el-table-column>
@@ -152,7 +152,7 @@
                      :disabled="fieldCached(scope.row.fieldId) || fieldToCache(scope.row.fieldId)"
                      @click="handleCopyOne(scope.row,$event)"
                      type="text" size="medium" class="copyButtion">复制</el-button>
-          <el-badge v-if="scope.row.foreignKey==1" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
+          <el-badge v-if="scope.row.foreignKey" :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
             <el-button @click="handleShowCascadeExt(scope.row)" type="text" size="medium" style="margin-left: 5px;">级联</el-button>
           </el-badge>
         </template>
@@ -209,11 +209,11 @@
 
         <el-form-item label="模式：" label-width="100px">
           <el-radio-group v-model="templateForm.multiple">
-            <el-radio border label="0">表单编辑</el-radio>
-            <el-radio border label="1">批量保存</el-radio>
+            <el-radio border :label="false">表单编辑</el-radio>
+            <el-radio border :label="true">批量保存</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-show="templateForm.multiple=='0'" label="模板：" label-width="100px">
+        <el-form-item v-show="!templateForm.multiple" label="模板：" label-width="100px">
           <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
             <el-select v-model="templateForm.template" @change="handleTemplateChange">
               <el-option-group>
@@ -266,7 +266,7 @@
             </el-select>
           </el-badge>
         </el-form-item>
-        <el-form-item v-show="templateForm.multiple=='1'" label="模板：" label-width="100px">
+        <el-form-item v-show="templateForm.multiple" label="模板：" label-width="100px">
           <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
             <el-select
               v-model="templateForm.templates"
@@ -309,14 +309,14 @@
             </el-select>
           </el-badge>
         </el-form-item>
-        <el-form-item v-show="templateForm.multiple=='0'" label="序号：" label-width="100px">
+        <el-form-item v-show="!templateForm.multiple" label="序号：" label-width="100px">
           <el-input-number v-model="templateForm.orderNo" :min="1"></el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addTemplateFormVisible = false">取 消</el-button>
-        <el-button v-if="templateForm.multiple=='0'" type="primary" @click="handleAdd">开始编辑</el-button>
-        <el-button v-if="templateForm.multiple=='1'" type="success" @click="handleAddImm">立即保存</el-button>
+        <el-button v-if="templateForm.multiple" type="success" @click="handleAddImm">立即保存</el-button>
+        <el-button v-else type="primary" @click="handleAdd">开始编辑</el-button>
       </div>
     </el-dialog>
 
@@ -362,7 +362,7 @@ const initListContains = function () {
  */
 const initTemplateForm = function () {
   return {
-    multiple: '0',
+    multiple: false,
     template: '普通字段模板',
     templates: [],
     orderNo: 1
@@ -685,7 +685,7 @@ export default {
       }
       const loading = this.$loading()
       let promise = null
-      if (multiple === '0') {
+      if (!multiple) {
         promise = doAddImm(template, true)
       } else {
         promise = Promise.all(templates.map(temp => doAddImm(temp)))

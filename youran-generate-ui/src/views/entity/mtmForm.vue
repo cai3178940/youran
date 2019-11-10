@@ -46,8 +46,8 @@
               </el-col>
               <el-col :span="12" style="padding-right: 0px;">
                 <el-radio-group v-model="form.holdRefer1" size="medium">
-                  <el-radio-button :key="1" :label="1">持有引用</el-radio-button>
-                  <el-radio-button :key="0" :label="0">不持有</el-radio-button>
+                  <el-radio-button :key="1" :label="true">持有引用</el-radio-button>
+                  <el-radio-button :key="0" :label="false">不持有</el-radio-button>
                 </el-radio-group>
               </el-col>
             </help-popover>
@@ -66,24 +66,24 @@
               </el-col>
               <el-col :span="12" style="padding-right: 0px;">
                 <el-radio-group v-model="form.holdRefer2" size="medium">
-                  <el-radio-button :key="1" :label="1">持有引用</el-radio-button>
-                  <el-radio-button :key="0" :label="0">不持有</el-radio-button>
+                  <el-radio-button :key="1" :label="true">持有引用</el-radio-button>
+                  <el-radio-button :key="0" :label="false">不持有</el-radio-button>
                 </el-radio-group>
               </el-col>
             </help-popover>
           </el-form-item>
-          <el-form-item v-if="form.holdRefer1===1" label="实体1功能">
+          <el-form-item v-if="form.holdRefer1" label="实体1功能">
             <help-popover name="mtm.feature">
-              <el-checkbox v-model="form.feature.f1.withinEntity" :true-label="1" :false-label="0">随实体一起维护</el-checkbox>
-              <el-checkbox v-model="form.feature.f1.set" :true-label="1" :false-label="0">设置关联</el-checkbox>
-              <el-checkbox v-model="form.feature.f1.addRemove" :true-label="1" :false-label="0">添加+移除</el-checkbox>
+              <el-checkbox v-model="form.feature.f1.withinEntity" :true-label="true" :false-label="false">随实体一起维护</el-checkbox>
+              <el-checkbox v-model="form.feature.f1.set" :true-label="true" :false-label="false">设置关联</el-checkbox>
+              <el-checkbox v-model="form.feature.f1.addRemove" :true-label="true" :false-label="false">添加+移除</el-checkbox>
             </help-popover>
           </el-form-item>
-          <el-form-item v-if="form.holdRefer2===1" label="实体2功能">
+          <el-form-item v-if="form.holdRefer2" label="实体2功能">
             <help-popover name="mtm.feature">
-              <el-checkbox v-model="form.feature.f2.withinEntity" :true-label="1" :false-label="0">随实体一起维护</el-checkbox>
-              <el-checkbox v-model="form.feature.f2.set" :true-label="1" :false-label="0">设置关联</el-checkbox>
-              <el-checkbox v-model="form.feature.f2.addRemove" :true-label="1" :false-label="0">添加+移除</el-checkbox>
+              <el-checkbox v-model="form.feature.f2.withinEntity" :true-label="true" :false-label="false">随实体一起维护</el-checkbox>
+              <el-checkbox v-model="form.feature.f2.set" :true-label="true" :false-label="false">设置关联</el-checkbox>
+              <el-checkbox v-model="form.feature.f2.addRemove" :true-label="true" :false-label="false">添加+移除</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item label="实体1外键字段" prop="entityIdField1">
@@ -124,7 +124,6 @@
 </template>
 
 <script>
-import options from '@/components/options'
 import { apiPath } from '@/components/common'
 import { initMtmFormBean, getMtmRules } from './model'
 
@@ -135,7 +134,6 @@ export default {
     const edit = !!this.mtmId
     return {
       edit: edit,
-      boolOptions: options.boolOptions,
       projectList: [],
       entityList: [],
       old: initMtmFormBean(edit),

@@ -102,13 +102,11 @@
           </el-form-item>
           <el-form-item label="启用Git仓库" prop="remote">
             <help-popover name="project.remote">
-              <el-switch v-model="form.remote"
-                         :active-value="1"
-                         :inactive-value="0" tabindex="100">
+              <el-switch v-model="form.remote" tabindex="100">
               </el-switch>
             </help-popover>
           </el-form-item>
-          <template v-if="form.remote==1">
+          <template v-if="form.remote">
             <el-form-item label="Git仓库地址" prop="remoteUrl">
               <help-popover name="project.remoteUrl">
                 <el-input v-model="form.remoteUrl"
@@ -153,7 +151,6 @@
 </template>
 
 <script>
-import options from '@/components/options'
 import { apiPath } from '@/components/common'
 import { initFormBean, getRules } from './model'
 
@@ -164,7 +161,6 @@ export default {
     const edit = !!this.projectId
     return {
       edit: edit,
-      boolOptions: options.boolOptions,
       old: initFormBean(edit),
       form: initFormBean(edit),
       rules: getRules(),

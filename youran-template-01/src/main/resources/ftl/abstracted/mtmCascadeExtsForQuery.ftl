@@ -16,7 +16,7 @@
         <#list mtm.getCascadeExtList(hostEntityId) as mtmCascadeExt>
             <#assign cascadeField=mtmCascadeExt.cascadeField>
             <#--开启级联查询开关 && (是主键 || 字段支持查询) -->
-            <#if isTrue(mtmCascadeExt.query) && (isTrue(cascadeField.primaryKey) || isTrue(cascadeField.query))>
+            <#if mtmCascadeExt.query && (cascadeField.primaryKey || cascadeField.query)>
                 <#assign mtmCascadeExts +=[mtmCascadeExt]>
                 <#assign mtmCascadeExtsForQuery += [mtmCascadeExt]>
             </#if>

@@ -46,19 +46,19 @@ public class MetaCascadeExtListVO extends AbstractVO {
      * 是否在列表中展示
      */
     @ApiModelProperty(notes = N_LIST, example = E_LIST)
-    private Integer list;
+    private Boolean list;
 
     /**
      * 是否在详情中展示
      */
     @ApiModelProperty(notes = N_SHOW, example = E_SHOW)
-    private Integer show;
+    private Boolean show;
 
     /**
      * 是否为查询条件
      */
     @ApiModelProperty(notes = N_QUERY, example = E_QUERY)
-    private Integer query;
+    private Boolean query;
 
     /**
      * 级联实体的id
@@ -121,27 +121,27 @@ public class MetaCascadeExtListVO extends AbstractVO {
         this.alias = alias;
     }
 
-    public Integer getList() {
+    public Boolean getList() {
         return list;
     }
 
-    public void setList(Integer list) {
+    public void setList(Boolean list) {
         this.list = list;
     }
 
-    public Integer getShow() {
+    public Boolean getShow() {
         return show;
     }
 
-    public void setShow(Integer show) {
+    public void setShow(Boolean show) {
         this.show = show;
     }
 
-    public Integer getQuery() {
+    public Boolean getQuery() {
         return query;
     }
 
-    public void setQuery(Integer query) {
+    public void setQuery(Boolean query) {
         this.query = query;
     }
 

@@ -1,8 +1,6 @@
 package com.youran.generate.pojo.dto;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.dto.AbstractDTO;
-import com.youran.common.validator.Const;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -56,8 +54,7 @@ public class MetaProjectAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_REMOTE, example = E_REMOTE)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer remote;
+    private Boolean remote;
 
     @ApiModelProperty(notes = N_REMOTEURL, example = E_REMOTEURL)
     @Length(max = 256, message = "remoteUrl最大长度不能超过{max}")
@@ -100,11 +97,11 @@ public class MetaProjectAddDTO extends AbstractDTO {
         this.groupId = groupId;
     }
 
-    public Integer getRemote() {
+    public Boolean getRemote() {
         return remote;
     }
 
-    public void setRemote(Integer remote) {
+    public void setRemote(Boolean remote) {
         this.remote = remote;
     }
 

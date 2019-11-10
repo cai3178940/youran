@@ -31,7 +31,7 @@ public class MetaProjectHelper {
         metaProjectAddDTO.setPackageName(E_PACKAGENAME);
         metaProjectAddDTO.setProjectDesc(E_PROJECTDESC);
         metaProjectAddDTO.setGroupId(E_GROUPID);
-        metaProjectAddDTO.setRemote(SafeUtil.getInteger(E_REMOTE));
+        metaProjectAddDTO.setRemote(SafeUtil.getBoolean(E_REMOTE));
         metaProjectAddDTO.setFeature(getFeature());
         return metaProjectAddDTO;
     }

@@ -8,7 +8,6 @@ import com.alibaba.druid.sql.dialect.mysql.ast.MySqlKey;
 import com.alibaba.druid.sql.dialect.mysql.ast.MySqlPrimaryKey;
 import com.alibaba.druid.sql.dialect.mysql.ast.MySqlUnique;
 import com.alibaba.druid.sql.parser.ParserException;
-import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.SafeUtil;
@@ -198,7 +197,7 @@ public class ReverseEngineeringService {
         metaEntityDTO.setTableName(tableName);
         metaEntityDTO.setTitle(StringUtils.abbreviate(comment, 25));
         metaEntityDTO.setDesc(StringUtils.abbreviate(comment, 250));
-        metaEntityDTO.setPageSign(BoolConst.TRUE);
+        metaEntityDTO.setPageSign(true);
         return metaEntityService.save(metaEntityDTO);
     }
 
@@ -230,7 +229,7 @@ public class ReverseEngineeringService {
         MetaFieldAddDTO metaFieldDTO = new MetaFieldAddDTO();
 
         metaFieldDTO.setEntityId(entity.getEntityId());
-        metaFieldDTO.setAutoIncrement(autoIncrement ? BoolConst.TRUE : BoolConst.FALSE);
+        metaFieldDTO.setAutoIncrement(autoIncrement);
         metaFieldDTO.setDefaultValue(defaultValue);
         metaFieldDTO.setDicType(null);
         metaFieldDTO.setEditType(null);
@@ -241,21 +240,21 @@ public class ReverseEngineeringService {
         metaFieldDTO.setFieldName(fieldName);
         metaFieldDTO.setFieldScale(fieldScale);
         metaFieldDTO.setFieldType(fieldType);
-        metaFieldDTO.setInsert(autoIncrement ? BoolConst.FALSE : BoolConst.TRUE);
+        metaFieldDTO.setInsert(!autoIncrement);
         metaFieldDTO.setJfieldName(MetadataUtil.underlineToCamelCase(fieldName, false));
         metaFieldDTO.setJfieldType(jFieldType.getJavaType());
-        metaFieldDTO.setList(BoolConst.TRUE);
-        metaFieldDTO.setListSort(BoolConst.TRUE);
+        metaFieldDTO.setList(true);
+        metaFieldDTO.setListSort(true);
         metaFieldDTO.setOrderNo(orderNo);
-        metaFieldDTO.setPrimaryKey(pk ? BoolConst.TRUE : BoolConst.FALSE);
-        metaFieldDTO.setForeignKey(BoolConst.FALSE);
-        metaFieldDTO.setNotNull(notNull ? BoolConst.TRUE : BoolConst.FALSE);
+        metaFieldDTO.setPrimaryKey(pk);
+        metaFieldDTO.setForeignKey(false);
+        metaFieldDTO.setNotNull(notNull);
         metaFieldDTO.setForeignEntityId(null);
         metaFieldDTO.setForeignFieldId(null);
-        metaFieldDTO.setQuery(pk ? BoolConst.FALSE : BoolConst.TRUE);
+        metaFieldDTO.setQuery(!pk);
         metaFieldDTO.setQueryType(GuessUtil.guessQueryType(jFieldType, fieldLength));
-        metaFieldDTO.setShow(BoolConst.TRUE);
-        metaFieldDTO.setUpdate(pk ? BoolConst.FALSE : BoolConst.TRUE);
+        metaFieldDTO.setShow(true);
+        metaFieldDTO.setUpdate(!pk);
         metaFieldDTO.setSpecialField(specialField);
 
         return metaFieldService.save(metaFieldDTO);
@@ -274,8 +273,8 @@ public class ReverseEngineeringService {
         MetaIndexAddDTO metaIndexAddDTO = new MetaIndexAddDTO();
         metaIndexAddDTO.setIndexName(indexName);
         metaIndexAddDTO.setEntityId(entity.getEntityId());
-        metaIndexAddDTO.setUnique(unique ? BoolConst.TRUE : BoolConst.FALSE);
-        metaIndexAddDTO.setUniqueCheck(unique ? BoolConst.TRUE : BoolConst.FALSE);
+        metaIndexAddDTO.setUnique(unique);
+        metaIndexAddDTO.setUniqueCheck(unique);
         String fieldIds = fields.stream()
             .map(field -> field.getFieldId().toString())
             .collect(Collectors.joining(","));

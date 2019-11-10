@@ -1,6 +1,5 @@
 package com.youran.generate.template.context;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.ForeignEntityTreeNode;
 import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
@@ -73,7 +72,7 @@ public class EntityContext extends BaseContext {
     /**
      * 是否分页查询
      */
-    private Integer pageSign;
+    private Boolean pageSign;
     /**
      * 版本字段
      */
@@ -202,10 +201,10 @@ public class EntityContext extends BaseContext {
         StringBuilder sb = new StringBuilder();
         for (MetaFieldPO field : entity.getInsertFields().values()) {
             // 跳过非外键
-            if (BoolConst.isFalse(field.getForeignKey())) {
+            if (!field.getForeignKey()) {
                 continue;
             }
-            if (BoolConst.isTrue(field.getNotNull())) {
+            if (field.getNotNull()) {
                 sb.append(StringUtils.uncapitalize(field.getForeignEntity().getClassName()))
                     .append(".get")
                     .append(StringUtils.capitalize(field.getForeignEntity().getPkField().getJfieldName()))
@@ -341,7 +340,7 @@ public class EntityContext extends BaseContext {
 
         for (MetaFieldPO field : insertFields.values()) {
             // 插入字段是外键，并且不能为空
-            if (BoolConst.isTrue(field.getForeignKey()) && BoolConst.isTrue(field.getNotNull())) {
+            if (field.getForeignKey() && field.getNotNull()) {
                 node.addForeign(field);
                 ForeignEntityTreeNode child = buildForeignTreeForSave(field.getForeignEntity(), node, map);
                 node.addChild(child);
@@ -439,11 +438,11 @@ public class EntityContext extends BaseContext {
         this.type = type;
     }
 
-    public Integer getPageSign() {
+    public Boolean getPageSign() {
         return pageSign;
     }
 
-    public void setPageSign(Integer pageSign) {
+    public void setPageSign(Boolean pageSign) {
         this.pageSign = pageSign;
     }
 

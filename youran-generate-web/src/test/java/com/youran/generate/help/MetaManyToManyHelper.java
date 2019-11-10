@@ -27,8 +27,8 @@ public class MetaManyToManyHelper {
         dto.setProjectId(projectId);
         dto.setEntityId1(entityId1);
         dto.setEntityId2(entityId2);
-        dto.setHoldRefer1(1);
-        dto.setHoldRefer2(1);
+        dto.setHoldRefer1(true);
+        dto.setHoldRefer2(true);
         dto.setTableName(E_TABLENAME);
         dto.setSchemaName(E_SCHEMANAME);
         dto.setDesc(E_DESC);

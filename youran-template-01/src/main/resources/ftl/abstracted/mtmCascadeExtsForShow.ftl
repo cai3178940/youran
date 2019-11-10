@@ -13,7 +13,7 @@
     <#list mtm.getCascadeExtList(this.entityId) as mtmCascadeExt>
         <#assign cascadeField=mtmCascadeExt.cascadeField>
         <#--判断是否开启级联详情展示开关-->
-        <#if isTrue(mtmCascadeExt.show)>
+        <#if mtmCascadeExt.show>
             <#assign mtmCascadeExts +=[mtmCascadeExt]>
         </#if>
     </#list>

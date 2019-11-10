@@ -26,7 +26,7 @@
       <el-table-column property="packageName" label="包名" width="180"></el-table-column>
       <el-table-column label="Git仓库" width="90px">
         <template v-slot="scope">
-          <i v-if="scope.row.remote==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+          <i v-if="scope.row.remote" class="iconfont icon-check2 table-cell-icon color-success"></i>
           <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
         </template>
       </el-table-column>
@@ -80,7 +80,7 @@
                 <i class="iconfont icon-code-download dropdown-icon" :class="iconColorClass[index]"></i>
                 下载代码({{scope.row | templateCode(templateIndex) }}）
               </el-dropdown-item>
-              <template v-if="scope.row.remote==1">
+              <template v-if="scope.row.remote">
                 <el-dropdown-item v-for="(templateIndex, index) in getProjectRemoteUrlIndexs(scope.row)"
                                   :key="'gitcommit_button_' + scope.row.projectId + '_' + templateIndex"
                                   :command="{method:'handleCommit',arg: [ scope.row , templateIndex ]}"

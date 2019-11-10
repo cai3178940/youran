@@ -23,7 +23,7 @@
 <#assign saveExampleCode=this.getPrintingSaveExample()/>
 <#--定义方法区代码-->
 <#assign methodCode>
-<#if isTrue(this.entityFeature.save)>
+<#if this.entityFeature.save>
     /**
      * 新增【${this.title}】
      */
@@ -42,7 +42,7 @@
     }
 
 </#if>
-<#if isTrue(this.entityFeature.update)>
+<#if this.entityFeature.update>
     /**
      * 修改【${this.title}】
      */
@@ -59,9 +59,9 @@
     }
 
 </#if>
-<#if isTrue(this.entityFeature.list)>
+<#if this.entityFeature.list>
     /**
-    <#if isTrue(this.pageSign)>
+    <#if this.pageSign>
      * 分页查询【${this.title}】
     <#else>
      * 列表查询【${this.title}】
@@ -74,7 +74,7 @@
     </#list>
         restMockMvc.perform(get(WebConst.API_PATH + "/${this.className}"))
             .andExpect(status().isOk())
-    <#if isTrue(this.pageSign)>
+    <#if this.pageSign>
             .andExpect(jsonPath("$.list.length()").value(is(1)));
     <#else>
             .andExpect(jsonPath("$.length()").value(is(1)));
@@ -82,7 +82,7 @@
     }
 
 </#if>
-<#if isTrue(this.entityFeature.show)>
+<#if this.entityFeature.show>
     /**
      * 查看【${this.title}】详情
      */
@@ -96,7 +96,7 @@
     }
 
 </#if>
-<#if isTrue(this.entityFeature.delete)>
+<#if this.entityFeature.delete>
     /**
      * 删除单个【${this.title}】
      */
@@ -111,7 +111,7 @@
     }
 
 </#if>
-<#if isTrue(this.entityFeature.deleteBatch)>
+<#if this.entityFeature.deleteBatch>
     /**
      * 批量删除【${this.title}】
      */
@@ -136,7 +136,7 @@
     <#--获取保存Example的代码-->
     <#assign saveExampleCode=this.getPrintingSaveExampleForMtm(otherEntity)/>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-    <#if isTrue(entityFeature.addRemove)>
+    <#if entityFeature.addRemove>
     /**
      * 添加/移除【${otherEntity.title}】关联
      */
@@ -162,7 +162,7 @@
     }
 
     </#if>
-    <#if isTrue(entityFeature.set)>
+    <#if entityFeature.set>
     /**
      * 设置【${otherEntity.title}】关联
      */

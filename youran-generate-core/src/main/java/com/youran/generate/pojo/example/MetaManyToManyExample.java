@@ -25,9 +25,9 @@ public class MetaManyToManyExample extends AbstractExample {
     public static final String N_ENTITYID2 = "实体B的id";
     public static final String E_ENTITYID2 = "2";
     public static final String N_HOLDREFER1 = "实体A是否持有B的引用";
-    public static final String E_HOLDREFER1 = "1";
+    public static final String E_HOLDREFER1 = "true";
     public static final String N_HOLDREFER2 = "实体B是否持有A的引用";
-    public static final String E_HOLDREFER2 = "1";
+    public static final String E_HOLDREFER2 = "true";
     public static final String N_ENTITYIDFIELD1 = "实体A对应多对多关联表的id字段名";
     public static final String E_ENTITYIDFIELD1 = "id_1";
     public static final String N_ENTITYIDFIELD2 = "实体B对应多对多关联表的id字段名";

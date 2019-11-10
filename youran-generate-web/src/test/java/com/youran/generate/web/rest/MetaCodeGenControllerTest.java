@@ -82,7 +82,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setTableName("t_user");
         dto.setTitle("用户");
         dto.setDesc("用户");
-        dto.setPageSign(1);
+        dto.setPageSign(true);
         return metaEntityService.save(dto);
     }
 
@@ -90,7 +90,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
     private MetaFieldPO saveIdField(MetaEntityPO userEntity) {
         MetaFieldAddDTO dto = new MetaFieldAddDTO();
         dto.setEntityId(userEntity.getEntityId());
-        dto.setAutoIncrement(1);
+        dto.setAutoIncrement(true);
         dto.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         dto.setDicType(null);
         dto.setEditType(null);
@@ -101,19 +101,19 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setFieldName("id");
         dto.setFieldScale(null);
         dto.setFieldType(MySqlType.INT);
-        dto.setInsert(0);
+        dto.setInsert(false);
         dto.setJfieldName("id");
         dto.setJfieldType(JFieldType.INTEGER.getJavaType());
-        dto.setList(1);
-        dto.setListSort(1);
-        dto.setNotNull(1);
+        dto.setList(true);
+        dto.setListSort(true);
+        dto.setNotNull(true);
         dto.setOrderNo(1);
-        dto.setPrimaryKey(1);
-        dto.setForeignKey(0);
-        dto.setQuery(0);
+        dto.setPrimaryKey(true);
+        dto.setForeignKey(false);
+        dto.setQuery(false);
         dto.setQueryType(null);
-        dto.setShow(1);
-        dto.setUpdate(0);
+        dto.setShow(true);
+        dto.setUpdate(false);
         dto.setSpecialField(null);
         return metaFieldService.save(dto);
     }
@@ -122,7 +122,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
     private MetaFieldPO saveUserNameField(MetaEntityPO userEntity) {
         MetaFieldAddDTO dto = new MetaFieldAddDTO();
         dto.setEntityId(userEntity.getEntityId());
-        dto.setAutoIncrement(0);
+        dto.setAutoIncrement(false);
         dto.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         dto.setDicType(null);
         dto.setEditType(EditType.TEXT);
@@ -133,19 +133,19 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setFieldName("userName");
         dto.setFieldScale(null);
         dto.setFieldType(MySqlType.VARCHAR);
-        dto.setInsert(1);
+        dto.setInsert(true);
         dto.setJfieldName("userName");
         dto.setJfieldType(JFieldType.STRING.getJavaType());
-        dto.setList(1);
-        dto.setListSort(0);
-        dto.setNotNull(1);
+        dto.setList(true);
+        dto.setListSort(false);
+        dto.setNotNull(true);
         dto.setOrderNo(2);
-        dto.setPrimaryKey(0);
-        dto.setForeignKey(0);
-        dto.setQuery(1);
+        dto.setPrimaryKey(false);
+        dto.setForeignKey(false);
+        dto.setQuery(true);
         dto.setQueryType(QueryType.LIKE);
-        dto.setShow(1);
-        dto.setUpdate(1);
+        dto.setShow(true);
+        dto.setUpdate(true);
         dto.setSpecialField(null);
         return metaFieldService.save(dto);
     }
@@ -154,7 +154,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
     private MetaFieldPO saveSexField(MetaEntityPO userEntity) {
         MetaFieldAddDTO dto = new MetaFieldAddDTO();
         dto.setEntityId(userEntity.getEntityId());
-        dto.setAutoIncrement(0);
+        dto.setAutoIncrement(false);
         dto.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         dto.setDicType("SexEnum");
         dto.setEditType(EditType.SELECT);
@@ -165,19 +165,19 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setFieldName("sex");
         dto.setFieldScale(null);
         dto.setFieldType(MySqlType.SMALLINT);
-        dto.setInsert(1);
+        dto.setInsert(true);
         dto.setJfieldName("sex");
         dto.setJfieldType(JFieldType.INTEGER.getJavaType());
-        dto.setList(1);
-        dto.setListSort(1);
-        dto.setNotNull(1);
+        dto.setList(true);
+        dto.setListSort(true);
+        dto.setNotNull(true);
         dto.setOrderNo(3);
-        dto.setPrimaryKey(0);
-        dto.setForeignKey(0);
-        dto.setQuery(1);
+        dto.setPrimaryKey(false);
+        dto.setForeignKey(false);
+        dto.setQuery(true);
         dto.setQueryType(QueryType.EQ);
-        dto.setShow(1);
-        dto.setUpdate(1);
+        dto.setShow(true);
+        dto.setUpdate(true);
         dto.setSpecialField(null);
         return metaFieldService.save(dto);
     }
@@ -186,7 +186,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
     public MetaFieldPO saveBirthdayField(MetaEntityPO userEntity) {
         MetaFieldAddDTO dto = new MetaFieldAddDTO();
         dto.setEntityId(userEntity.getEntityId());
-        dto.setAutoIncrement(0);
+        dto.setAutoIncrement(false);
         dto.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         dto.setDicType(null);
         dto.setEditType(EditType.DATE);
@@ -197,19 +197,19 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setFieldName("birthday");
         dto.setFieldScale(null);
         dto.setFieldType(MySqlType.DATETIME);
-        dto.setInsert(1);
+        dto.setInsert(true);
         dto.setJfieldName("birthday");
         dto.setJfieldType(JFieldType.DATE.getJavaType());
-        dto.setList(1);
-        dto.setListSort(1);
-        dto.setNotNull(0);
+        dto.setList(true);
+        dto.setListSort(true);
+        dto.setNotNull(false);
         dto.setOrderNo(4);
-        dto.setPrimaryKey(0);
-        dto.setForeignKey(0);
-        dto.setQuery(1);
+        dto.setPrimaryKey(false);
+        dto.setForeignKey(false);
+        dto.setQuery(true);
         dto.setQueryType(QueryType.BETWEEN);
-        dto.setShow(1);
-        dto.setUpdate(1);
+        dto.setShow(true);
+        dto.setUpdate(true);
         dto.setSpecialField(null);
         return metaFieldService.save(dto);
     }
@@ -219,8 +219,8 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
     private MetaIndexPO saveUsernameIndex(MetaEntityPO userEntity, MetaFieldPO userNameField) {
         MetaIndexAddDTO dto = new MetaIndexAddDTO();
         dto.setIndexName("i_user_username");
-        dto.setUnique(1);
-        dto.setUniqueCheck(1);
+        dto.setUnique(true);
+        dto.setUniqueCheck(true);
         dto.setFieldIds(userNameField.getFieldId().toString());
         dto.setEntityId(userEntity.getEntityId());
         return metaIndexService.save(dto);

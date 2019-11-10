@@ -20,7 +20,7 @@
 @Api(tags = "【${this.title}】API")
 public interface ${this.classNameUpper}API {
 
-<#if isTrue(this.entityFeature.save)>
+<#if this.entityFeature.save>
     /**
      * 新增【${this.title}】
      */
@@ -31,7 +31,7 @@ public interface ${this.classNameUpper}API {
     ResponseEntity<${this.classNameUpper}ShowVO> save(${this.classNameUpper}AddDTO ${this.className}AddDTO) throws Exception;
 
 </#if>
-<#if isTrue(this.entityFeature.update)>
+<#if this.entityFeature.update>
     /**
      * 修改【${this.title}】
      */
@@ -42,8 +42,8 @@ public interface ${this.classNameUpper}API {
     ResponseEntity<${this.classNameUpper}ShowVO> update(${this.classNameUpper}UpdateDTO ${this.className}UpdateDTO);
 
 </#if>
-<#if isTrue(this.entityFeature.list)>
-    <#if isTrue(this.pageSign)>
+<#if this.entityFeature.list>
+    <#if this.pageSign>
         <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     /**
      * 分页查询【${this.title}】
@@ -60,7 +60,7 @@ public interface ${this.classNameUpper}API {
     </#if>
 
 </#if>
-<#if isTrue(this.entityFeature.show)>
+<#if this.entityFeature.show>
     /**
      * 查看【${this.title}】详情
      */
@@ -71,7 +71,7 @@ public interface ${this.classNameUpper}API {
     ResponseEntity<${this.classNameUpper}ShowVO> show(${this.type} ${this.id});
 
 </#if>
-<#if isTrue(this.entityFeature.delete)>
+<#if this.entityFeature.delete>
     /**
      * 删除单个【${this.title}】
      */
@@ -82,7 +82,7 @@ public interface ${this.classNameUpper}API {
     ResponseEntity<Integer> delete(${this.type} ${this.id});
 
 </#if>
-<#if isTrue(this.entityFeature.deleteBatch)>
+<#if this.entityFeature.deleteBatch>
     /**
      * 批量删除【${this.title}】
      */
@@ -98,7 +98,7 @@ public interface ${this.classNameUpper}API {
     <#assign otherCName=otherEntity.className?capFirst>
     <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-    <#if isTrue(entityFeature.addRemove)>
+    <#if entityFeature.addRemove>
     /**
      * 添加【${otherEntity.title}】关联
      */
@@ -120,7 +120,7 @@ public interface ${this.classNameUpper}API {
     ResponseEntity<Integer> remove${otherCName}(${this.type} ${this.id},${otherPk.jfieldType}[] ${otherFkId});
 
     </#if>
-    <#if isTrue(entityFeature.set)>
+    <#if entityFeature.set>
     /**
      * 设置【${otherEntity.title}】关联
      */

@@ -1,6 +1,5 @@
 package com.youran.generate.pojo.dto;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.dto.AbstractDTO;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -15,79 +14,79 @@ public class MetaEntityFeatureDTO extends AbstractDTO {
     /**
      * 是否生成save方法
      */
-    @ApiModelProperty(notes = "是否生成save方法", example = "1")
-    private Integer save = BoolConst.TRUE;
+    @ApiModelProperty(notes = "是否生成save方法", example = "true")
+    private Boolean save = true;
     /**
      * 是否生成update方法
      */
-    @ApiModelProperty(notes = "是否生成update方法", example = "1")
-    private Integer update = BoolConst.TRUE;
+    @ApiModelProperty(notes = "是否生成update方法", example = "true")
+    private Boolean update = true;
     /**
      * 是否生成delete方法
      */
-    @ApiModelProperty(notes = "是否生成delete方法", example = "1")
-    private Integer delete = BoolConst.TRUE;
+    @ApiModelProperty(notes = "是否生成delete方法", example = "true")
+    private Boolean delete = true;
     /**
      * 是否生成deleteBatch方法
      */
-    @ApiModelProperty(notes = "是否生成deleteBatch方法", example = "1")
-    private Integer deleteBatch = BoolConst.TRUE;
+    @ApiModelProperty(notes = "是否生成deleteBatch方法", example = "true")
+    private Boolean deleteBatch = true;
     /**
      * 是否生成list方法
      */
-    @ApiModelProperty(notes = "是否生成list方法", example = "1")
-    private Integer list = BoolConst.TRUE;
+    @ApiModelProperty(notes = "是否生成list方法", example = "true")
+    private Boolean list = true;
     /**
      * 是否生成show方法
      */
-    @ApiModelProperty(notes = "是否生成show方法", example = "1")
-    private Integer show = BoolConst.TRUE;
+    @ApiModelProperty(notes = "是否生成show方法", example = "true")
+    private Boolean show = true;
 
-    public Integer getSave() {
+    public Boolean getSave() {
         return save;
     }
 
-    public void setSave(Integer save) {
+    public void setSave(Boolean save) {
         this.save = save;
     }
 
-    public Integer getUpdate() {
+    public Boolean getUpdate() {
         return update;
     }
 
-    public void setUpdate(Integer update) {
+    public void setUpdate(Boolean update) {
         this.update = update;
     }
 
-    public Integer getDelete() {
+    public Boolean getDelete() {
         return delete;
     }
 
-    public void setDelete(Integer delete) {
+    public void setDelete(Boolean delete) {
         this.delete = delete;
     }
 
-    public Integer getDeleteBatch() {
+    public Boolean getDeleteBatch() {
         return deleteBatch;
     }
 
-    public void setDeleteBatch(Integer deleteBatch) {
+    public void setDeleteBatch(Boolean deleteBatch) {
         this.deleteBatch = deleteBatch;
     }
 
-    public Integer getList() {
+    public Boolean getList() {
         return list;
     }
 
-    public void setList(Integer list) {
+    public void setList(Boolean list) {
         this.list = list;
     }
 
-    public Integer getShow() {
+    public Boolean getShow() {
         return show;
     }
 
-    public void setShow(Integer show) {
+    public void setShow(Boolean show) {
         this.show = show;
     }
 }

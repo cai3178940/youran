@@ -1,8 +1,6 @@
 package com.youran.generate.pojo.dto;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.dto.AbstractDTO;
-import com.youran.common.validator.Const;
 import com.youran.generate.constant.PatternConst;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -32,13 +30,11 @@ public class MetaIndexAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_UNIQUE, example = E_UNIQUE)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer unique;
+    private Boolean unique;
 
     @ApiModelProperty(notes = N_UNIQUECHECK, example = E_UNIQUECHECK)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer uniqueCheck;
+    private Boolean uniqueCheck;
 
     @ApiModelProperty(notes = N_FIELDIDS, example = E_FIELDIDS)
     @NotNull
@@ -70,19 +66,19 @@ public class MetaIndexAddDTO extends AbstractDTO {
         this.entityId = entityId;
     }
 
-    public Integer getUnique() {
+    public Boolean getUnique() {
         return unique;
     }
 
-    public void setUnique(Integer unique) {
+    public void setUnique(Boolean unique) {
         this.unique = unique;
     }
 
-    public Integer getUniqueCheck() {
+    public Boolean getUniqueCheck() {
         return uniqueCheck;
     }
 
-    public void setUniqueCheck(Integer uniqueCheck) {
+    public void setUniqueCheck(Boolean uniqueCheck) {
         this.uniqueCheck = uniqueCheck;
     }
 }

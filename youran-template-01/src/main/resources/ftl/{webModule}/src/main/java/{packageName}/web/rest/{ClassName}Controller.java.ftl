@@ -33,7 +33,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     <@call this.addAutowired("${this.packageName}.service" "${this.classNameUpper}Service")/>
     <@call this.printAutowired()/>
 
-<#if isTrue(this.entityFeature.save)>
+<#if this.entityFeature.save>
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -44,7 +44,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     }
 
 </#if>
-<#if isTrue(this.entityFeature.update)>
+<#if this.entityFeature.update>
     @Override
     @PutMapping
     public ResponseEntity<${this.classNameUpper}ShowVO> update(@Valid @RequestBody ${this.classNameUpper}UpdateDTO ${this.className}UpdateDTO) {
@@ -53,8 +53,8 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     }
 
 </#if>
-<#if isTrue(this.entityFeature.list)>
-    <#if isTrue(this.pageSign)>
+<#if this.entityFeature.list>
+    <#if this.pageSign>
         <@call this.addImport("${this.commonPackage}.pojo.vo.PageVO")/>
     @Override
     @GetMapping
@@ -73,7 +73,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     </#if>
 
 </#if>
-<#if isTrue(this.entityFeature.show)>
+<#if this.entityFeature.show>
     @Override
     @GetMapping(value = "/{${this.id}}")
     public ResponseEntity<${this.classNameUpper}ShowVO> show(@PathVariable ${this.type} ${this.id}) {
@@ -82,7 +82,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     }
 
 </#if>
-<#if isTrue(this.entityFeature.delete)>
+<#if this.entityFeature.delete>
     @Override
     @DeleteMapping(value = "/{${this.id}}")
     public ResponseEntity<Integer> delete(@PathVariable ${this.type} ${this.id}) {
@@ -91,7 +91,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     }
 
 </#if>
-<#if isTrue(this.entityFeature.deleteBatch)>
+<#if this.entityFeature.deleteBatch>
     @Override
     @DeleteMapping
     public ResponseEntity<Integer> deleteBatch(@RequestBody ${this.type}[] id) {
@@ -109,7 +109,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     <#assign othercName=otherEntity.className?uncapFirst>
     <#assign otherFkId=mtm.getFkAlias(otherEntity.entityId,false)>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-    <#if isTrue(entityFeature.addRemove)>
+    <#if entityFeature.addRemove>
     @Override
     @PostMapping(value = "/{${this.id}}/${othercName}")
     public ResponseEntity<Integer> add${otherCName}(@PathVariable ${this.type} ${this.id},
@@ -127,7 +127,7 @@ public class ${this.classNameUpper}Controller extends AbstractController impleme
     }
 
     </#if>
-    <#if isTrue(entityFeature.set)>
+    <#if entityFeature.set>
     @Override
     @PutMapping(value = "/{${this.id}}/${othercName}")
     public ResponseEntity<Integer> set${otherCName}(@PathVariable ${this.type} ${this.id},

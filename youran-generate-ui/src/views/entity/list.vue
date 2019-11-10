@@ -41,7 +41,7 @@
                     :class="[
                       'mtm_span',
                       (activeMtmId==mtm.mtmId)?'mtmActive':'',
-                      ((mtm.holdRefer1==1&&mtm.entityId1==scope.row.entityId)||(mtm.holdRefer2==1&&mtm.entityId2==scope.row.entityId))?'mtm_hold_span':'mtm_unhold_span'
+                      ((mtm.holdRefer1&&mtm.entityId1==scope.row.entityId)||(mtm.holdRefer2&&mtm.entityId2==scope.row.entityId))?'mtm_hold_span':'mtm_unhold_span'
                     ]"
                 title="多对多">
                 {{mtm.tableName}}
@@ -66,7 +66,7 @@
       <el-table-column property="tableName" label="表名"></el-table-column>
       <el-table-column label="分页" width="60px">
         <template v-slot="scope">
-          <i v-if="scope.row.pageSign==1" class="iconfont icon-check2 table-cell-icon color-success"></i>
+          <i v-if="scope.row.pageSign" class="iconfont icon-check2 table-cell-icon color-success"></i>
           <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
         </template>
       </el-table-column>

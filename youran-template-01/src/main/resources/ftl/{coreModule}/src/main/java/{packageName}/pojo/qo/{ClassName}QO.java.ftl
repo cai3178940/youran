@@ -3,14 +3,14 @@
 <#--定义主体代码-->
 <#assign code>
 <@call this.addImport("io.swagger.annotations.ApiParam")/>
-<#if isTrue(this.pageSign)>
+<#if this.pageSign>
     <@call this.addImport("${this.commonPackage}.pojo.qo.PageQO")/>
 <#else>
     <@call this.addImport("${this.commonPackage}.pojo.qo.AbstractQO")/>
 </#if>
 <@call this.addStaticImport("${this.packageName}.pojo.example.${this.classNameUpper}Example.*")/>
 <@call this.printClassCom("查询【${this.title}】的参数")/>
-public class ${this.classNameUpper}QO extends <#if isTrue(this.pageSign)>PageQO<#else>AbstractQO</#if> {
+public class ${this.classNameUpper}QO extends <#if this.pageSign>PageQO<#else>AbstractQO</#if> {
 
 <#--定义宏-查询字段申明模块
     field-字段对象

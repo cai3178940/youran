@@ -6,7 +6,6 @@ import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.*;
-import com.youran.generate.util.TemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -171,11 +170,7 @@ public class BaseContext {
      * @return
      */
     public String getConstFullClassPath(String constName) {
-        if (TemplateUtil.isCommonConst(constName)) {
-            return this.commonPackage + ".constant." + constName;
-        } else {
-            return this.packageName + ".constant." + constName;
-        }
+        return this.packageName + ".constant." + constName;
     }
 
     /**

@@ -26,17 +26,6 @@ public class TemplateUtil {
         return classPath;
     }
 
-
-    /**
-     * 判断是否通用的常量
-     *
-     * @param constName 常量名称
-     * @return
-     */
-    public static boolean isCommonConst(String constName) {
-        return "BoolConst".equals(constName);
-    }
-
     /**
      * 打印gettersetter方法
      *

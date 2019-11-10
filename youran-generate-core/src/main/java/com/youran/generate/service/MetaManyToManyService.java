@@ -1,6 +1,5 @@
 package com.youran.generate.service;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
@@ -93,8 +92,8 @@ public class MetaManyToManyService {
      * @param mtm
      */
     private void checkManyToMany(MetaManyToManyPO mtm) {
-        if (BoolConst.isFalse(mtm.getHoldRefer1())
-            && BoolConst.isFalse(mtm.getHoldRefer2())) {
+        if (!mtm.getHoldRefer1()
+            && !mtm.getHoldRefer2()) {
             throw new BusinessException(ErrorCode.BAD_PARAMETER, "至少要有一个实体持有对方引用");
         }
         if (!metaEntityDAO.exist(mtm.getEntityId1())) {
@@ -111,19 +110,19 @@ public class MetaManyToManyService {
         if (exists) {
             throw new BusinessException(ErrorCode.BAD_PARAMETER, "两实体已经存在多对多关系");
         }
-        if (BoolConst.isTrue(mtm.getHoldRefer1())) {
+        if (mtm.getHoldRefer1()) {
             MetaMtmEntityFeatureDTO f1 = mtm.getF1();
-            if (BoolConst.isFalse(f1.getAddRemove())
-                && BoolConst.isFalse(f1.getSet())
-                && BoolConst.isFalse(f1.getWithinEntity())) {
+            if (!f1.getAddRemove()
+                && !f1.getSet()
+                && !f1.getWithinEntity()) {
                 throw new BusinessException(ErrorCode.BAD_PARAMETER, "至少勾选一项\"实体1功能\"");
             }
         }
-        if (BoolConst.isTrue(mtm.getHoldRefer2())) {
+        if (mtm.getHoldRefer2()) {
             MetaMtmEntityFeatureDTO f2 = mtm.getF2();
-            if (BoolConst.isFalse(f2.getAddRemove())
-                && BoolConst.isFalse(f2.getSet())
-                && BoolConst.isFalse(f2.getWithinEntity())) {
+            if (!f2.getAddRemove()
+                && !f2.getSet()
+                && !f2.getWithinEntity()) {
                 throw new BusinessException(ErrorCode.BAD_PARAMETER, "至少勾选一项\"实体2功能\"");
             }
         }

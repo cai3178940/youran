@@ -1,7 +1,6 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.MetaMtmEntityFeatureDTO;
@@ -45,11 +44,11 @@ public class MetaManyToManyPO extends BasePO {
     /**
      * 实体A是否持有B引用
      */
-    private Integer holdRefer1;
+    private Boolean holdRefer1;
     /**
      * 实体B是否持有A引用
      */
-    private Integer holdRefer2;
+    private Boolean holdRefer2;
     /**
      * 实体A对应多对多关联表的id字段名
      * 2019-08-07新增
@@ -151,9 +150,9 @@ public class MetaManyToManyPO extends BasePO {
      */
     public boolean isHold(Integer entityId) {
         if (Objects.equals(entityId, entityId1)) {
-            return BoolConst.isTrue(holdRefer1);
+            return holdRefer1;
         } else if (Objects.equals(entityId, entityId2)) {
-            return BoolConst.isTrue(holdRefer2);
+            return holdRefer2;
         }
         throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
             "获取多对多实体是否持有引用异常，mtm_id=" + mtmId + ",entityId=" + entityId);
@@ -275,19 +274,19 @@ public class MetaManyToManyPO extends BasePO {
         this.entityId2 = entityId2;
     }
 
-    public Integer getHoldRefer1() {
+    public Boolean getHoldRefer1() {
         return holdRefer1;
     }
 
-    public void setHoldRefer1(Integer holdRefer1) {
+    public void setHoldRefer1(Boolean holdRefer1) {
         this.holdRefer1 = holdRefer1;
     }
 
-    public Integer getHoldRefer2() {
+    public Boolean getHoldRefer2() {
         return holdRefer2;
     }
 
-    public void setHoldRefer2(Integer holdRefer2) {
+    public void setHoldRefer2(Boolean holdRefer2) {
         this.holdRefer2 = holdRefer2;
     }
 

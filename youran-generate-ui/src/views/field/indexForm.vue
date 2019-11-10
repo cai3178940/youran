@@ -83,8 +83,8 @@ export default {
       }
     },
     'form.unique' (value) {
-      if (value === 1) {
-        this.form.uniqueCheck = 1
+      if (value) {
+        this.form.uniqueCheck = true
         this.uniqueCheckDisabled = true
       } else {
         this.uniqueCheckDisabled = false

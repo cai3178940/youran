@@ -37,13 +37,13 @@ public class MetaEntityListVO extends AbstractVO {
     private String desc;
 
     @ApiModelProperty(notes = N_PAGESIGN, example = E_PAGESIGN)
-    private Integer pageSign;
+    private Boolean pageSign;
 
-    public Integer getPageSign() {
+    public Boolean getPageSign() {
         return pageSign;
     }
 
-    public void setPageSign(Integer pageSign) {
+    public void setPageSign(Boolean pageSign) {
         this.pageSign = pageSign;
     }
 

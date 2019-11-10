@@ -8,7 +8,7 @@ export function initFormBean (forEdit) {
     templateId: null,
     templateId2: null,
     templateId3: null,
-    remote: 0,
+    remote: false,
     remoteUrl: null,
     remoteUrl2: null,
     remoteUrl3: null,
@@ -56,7 +56,7 @@ export function getRules () {
       { max: 50, message: '长度不能超过50个字符', trigger: 'blur' }
     ],
     remote: [
-      { required: true, type: 'number', message: '请选择是否启用', trigger: 'change' }
+      { required: true, type: 'boolean', message: '请选择是否启用', trigger: 'change' }
     ],
     templateId: [
       { required: true, type: 'number', message: '请选择模板', trigger: 'change' }

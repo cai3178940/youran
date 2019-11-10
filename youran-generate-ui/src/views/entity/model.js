@@ -5,14 +5,14 @@ export function initFormBean (forEdit) {
     className: '',
     tableName: '',
     desc: '',
-    pageSign: 1,
+    pageSign: true,
     feature: {
-      save: 1,
-      update: 1,
-      delete: 1,
-      deleteBatch: 1,
-      list: 1,
-      show: 1
+      save: true,
+      update: true,
+      delete: true,
+      deleteBatch: true,
+      list: true,
+      show: true
     }
   }
   if (forEdit) {
@@ -57,7 +57,7 @@ export function getRules (vm) {
       { max: 50, message: '长度不能超过50个字符', trigger: 'blur' }
     ],
     pageSign: [
-      { required: true, type: 'number', message: '请选择是否支持分页', trigger: 'change' }
+      { required: true, type: 'boolean', message: '请选择是否支持分页', trigger: 'change' }
     ],
     desc: [
       { max: 250, message: '长度不能超过250个字符', trigger: 'blur' }
@@ -75,18 +75,18 @@ export function initMtmFormBean (forEdit) {
     entityId2: null,
     entityIdField1: '',
     entityIdField2: '',
-    holdRefer1: 0,
-    holdRefer2: 0,
+    holdRefer1: false,
+    holdRefer2: false,
     feature: {
       f1: {
-        addRemove: 0,
-        set: 1,
-        withinEntity: 1
+        addRemove: false,
+        set: true,
+        withinEntity: true
       },
       f2: {
-        addRemove: 0,
-        set: 1,
-        withinEntity: 1
+        addRemove: false,
+        set: true,
+        withinEntity: true
       }
     }
   }
@@ -126,10 +126,10 @@ export function getMtmRules () {
       { required: true, type: 'number', message: '请选择实体2', trigger: 'change' }
     ],
     holdRefer1: [
-      { required: true, type: 'number', message: '请选择实体1持有引用', trigger: 'change' }
+      { required: true, type: 'boolean', message: '请选择实体1持有引用', trigger: 'change' }
     ],
     holdRefer2: [
-      { required: true, type: 'number', message: '请选择实体2持有引用', trigger: 'change' }
+      { required: true, type: 'boolean', message: '请选择实体2持有引用', trigger: 'change' }
     ]
   }
 }

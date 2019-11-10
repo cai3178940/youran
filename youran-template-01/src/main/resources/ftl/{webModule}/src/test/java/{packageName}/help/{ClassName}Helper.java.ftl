@@ -15,7 +15,7 @@ public class ${this.classNameUpper}Helper {
     <#assign foreignArg="">
     <#assign foreignArg2="">
     <#list this.insertFields as id,field>
-        <#if isTrue(field.foreignKey)>
+        <#if field.foreignKey>
             <#assign foreignArg=foreignArg+"${field.jfieldType} ${field.jfieldName}, ">
             <#assign foreignArg2=foreignArg2+"${field.jfieldName}, ">
         </#if>
@@ -34,7 +34,7 @@ public class ${this.classNameUpper}Helper {
         <#--字段名转下划线大写-->
         <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
         <#assign arg="">
-        <#if isTrue(field.foreignKey)>
+        <#if field.foreignKey>
             <#assign arg="${field.jfieldName}">
         <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
             <#assign arg="E_${jfieldNameSnakeCase}">

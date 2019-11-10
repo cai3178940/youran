@@ -47,7 +47,7 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     /**
      * 是否支持分页查询
      */
-    private Integer pageSign;
+    private Boolean pageSign;
     /**
      * 特性json
      * 后续有新的特性直接往里加，省的再扩展新字段
@@ -262,11 +262,11 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
         this.foreignEntities = foreignEntities;
     }
 
-    public Integer getPageSign() {
+    public Boolean getPageSign() {
         return pageSign;
     }
 
-    public void setPageSign(Integer pageSign) {
+    public void setPageSign(Boolean pageSign) {
         this.pageSign = pageSign;
     }
 

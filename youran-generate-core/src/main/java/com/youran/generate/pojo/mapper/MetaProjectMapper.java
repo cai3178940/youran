@@ -1,6 +1,5 @@
 package com.youran.generate.pojo.mapper;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
@@ -58,7 +57,7 @@ public interface MetaProjectMapper {
         @Mapping(target = "projectDesc"),
         @Mapping(target = "groupId"),
         @Mapping(target = "author"),
-        @Mapping(target = "remote", constant = BoolConst.FALSE + ""),
+        @Mapping(target = "remote", constant = "false"),
         @Mapping(target = "feature"),
     })
     MetaProjectPO copyWithoutRemote(MetaProjectPO project);

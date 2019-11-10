@@ -18,18 +18,36 @@
 
     <insert id="_save" useGeneratedKeys="true" keyProperty="entityId" parameterType="MetaEntityPO">
         insert into meta_entity (
-          entity_id, project_id, `schema_name`,
-          class_name, `table_name`, title, `desc`,
-          page_sign, feature,
-          created_time, created_by,
-          operated_time, operated_by, deleted,
+          entity_id,
+          project_id,
+          `schema_name`,
+          class_name,
+          `table_name`,
+          title,
+          `desc`,
+          page_sign,
+          feature,
+          created_time,
+          created_by,
+          operated_time,
+          operated_by,
+          deleted,
           version)
-        values (#{entityId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{schemaName,jdbcType=VARCHAR},
-          #{className,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+        values (
+          #{entityId,jdbcType=INTEGER},
+          #{projectId,jdbcType=INTEGER},
+          #{schemaName,jdbcType=VARCHAR},
+          #{className,jdbcType=VARCHAR},
+          #{tableName,jdbcType=VARCHAR},
+          #{title,jdbcType=VARCHAR},
           #{desc,jdbcType=VARCHAR},
-          #{pageSign,jdbcType=SMALLINT}, #{feature,jdbcType=VARCHAR},
-          #{createdTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR},
-          #{operatedTime,jdbcType=TIMESTAMP}, #{operatedBy,jdbcType=VARCHAR}, #{deleted,jdbcType=SMALLINT},
+          #{pageSign,jdbcType=BOOLEAN},
+          #{feature,jdbcType=VARCHAR},
+          #{createdTime,jdbcType=TIMESTAMP},
+          #{createdBy,jdbcType=VARCHAR},
+          #{operatedTime,jdbcType=TIMESTAMP},
+          #{operatedBy,jdbcType=VARCHAR},
+          #{deleted,jdbcType=SMALLINT},
           #{version,jdbcType=INTEGER})
     </insert>
 
@@ -41,7 +59,7 @@
           `table_name` = #{tableName,jdbcType=VARCHAR},
           title = #{title,jdbcType=VARCHAR},
           `desc` = #{desc,jdbcType=VARCHAR},
-          page_sign = #{pageSign,jdbcType=SMALLINT},
+          page_sign = #{pageSign,jdbcType=BOOLEAN},
           feature = #{feature,jdbcType=VARCHAR},
           operated_time = #{operatedTime,jdbcType=TIMESTAMP},
           operated_by = #{operatedBy,jdbcType=VARCHAR},
@@ -124,7 +142,7 @@
             and m.deleted = 0
             and t2.deleted = 0
             and t.entity_id = #{entityId,jdbcType=INTEGER}
-            and m.hold_refer1 = #{hold,jdbcType=INTEGER}
+            and m.hold_refer1 = #{hold,jdbcType=BOOLEAN}
 
         union all
 
@@ -148,6 +166,6 @@
             and m.deleted = 0
             and t2.deleted = 0
             and t.entity_id = #{entityId,jdbcType=INTEGER}
-            and m.hold_refer2 = #{hold,jdbcType=INTEGER}
+            and m.hold_refer2 = #{hold,jdbcType=BOOLEAN}
     </select>
 </mapper>

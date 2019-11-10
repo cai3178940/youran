@@ -26,9 +26,9 @@ public class MetaMtmCascadeExtHelper {
         dto.setCascadeEntityId(cascadeEntityId);
         dto.setCascadeFieldId(cascadeFieldId);
         dto.setAlias(E_ALIAS);
-        dto.setList(SafeUtil.getInteger(E_LIST));
-        dto.setShow(SafeUtil.getInteger(E_SHOW));
-        dto.setQuery(SafeUtil.getInteger(E_QUERY));
+        dto.setList(SafeUtil.getBoolean(E_LIST));
+        dto.setShow(SafeUtil.getBoolean(E_SHOW));
+        dto.setQuery(SafeUtil.getBoolean(E_QUERY));
         return dto;
     }
 

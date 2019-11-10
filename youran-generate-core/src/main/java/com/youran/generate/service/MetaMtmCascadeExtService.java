@@ -1,6 +1,5 @@
 package com.youran.generate.service;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
@@ -161,7 +160,7 @@ public class MetaMtmCascadeExtService {
      */
     private void checkCascadeExtPO(MetaMtmCascadeExtPO po) {
         List<String> jFieldNames = metaFieldDAO.findJFieldNamesForQuery(po.getEntityId());
-        if (BoolConst.isTrue(po.getQuery()) && jFieldNames.contains(po.getAlias())) {
+        if (po.getQuery() && jFieldNames.contains(po.getAlias())) {
             throw new BusinessException(ErrorCode.BAD_PARAMETER, "查询字段别名有冲突：" + po.getAlias());
         }
         // 校验重复添加

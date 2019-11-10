@@ -1,6 +1,5 @@
 package com.youran.generate.service;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.AESSecurityUtil;
@@ -342,8 +341,7 @@ public class MetaCodeGenService {
      */
     public GenHistoryPO gitCommit(Integer projectId, Integer templateIndex, Consumer<ProgressVO> progressConsumer) {
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        Integer remote = project.getRemote();
-        if (BoolConst.isFalse(remote)) {
+        if (!project.getRemote()) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "当前项目未开启Git仓库");
         }
         String remoteUrl = project.getRemoteUrl();

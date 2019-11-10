@@ -14,8 +14,8 @@
 |字段名 | 类型 | 非空 | 键 | 注释 |
 |------ | ---- | --- | --- | ---- |
     <#list metaEntity.fields as fieldId,field>
-        <#assign pk_display><#if isTrue(field.primaryKey)>主键</#if></#assign>
-        <#assign notNull_display><#if isTrue(field.notNull)>是<#elseif field.defaultValue=='NULL'> 否 </#if></#assign>
+        <#assign pk_display><#if field.primaryKey>主键</#if></#assign>
+        <#assign notNull_display><#if field.notNull>是<#elseif field.defaultValue=='NULL'> 否 </#if></#assign>
 | ${field.fieldName} | ${field.fieldType}${MetadataUtil.getLengthDisplay(field)} | ${notNull_display} | ${pk_display} | ${MetadataUtil.convertCommentDisplay(field.fieldComment)} |
     </#list>
 </#list>

@@ -16,15 +16,15 @@ export function initFormBean (forEdit) {
     // 字段精度
     fieldScale: 0,
     // 是否主键
-    primaryKey: 0,
+    primaryKey: false,
     // 是否自增
-    autoIncrement: 0,
+    autoIncrement: false,
     // 默认值(暂时不用)
     defaultValue: '',
     // 不能为空
-    notNull: 0,
+    notNull: false,
     // 是否外键
-    foreignKey: 0,
+    foreignKey: false,
     // 外键实体id
     foreignEntityId: null,
     // 外键字段id
@@ -38,19 +38,19 @@ export function initFormBean (forEdit) {
     // 枚举字典
     dicType: '',
     // 是否查询字段
-    query: 0,
+    query: false,
     // 查询方式
     queryType: null,
     // 是否新增字段
-    insert: 1,
+    insert: true,
     // 是否编辑字段
-    update: 1,
+    update: true,
     // 是否列表字段
-    list: 1,
+    list: true,
     // 是否支持排序
-    listSort: 0,
+    listSort: false,
     // 是否详情字段
-    show: 1,
+    show: true,
     // 编辑方式(暂时不用)
     editType: null,
     // 排序号
@@ -107,13 +107,13 @@ export function getRules (vm) {
       { required: true, message: '请输入字段精度', trigger: 'blur' }
     ],
     primaryKey: [
-      { required: false, type: 'number', message: '请选择是否主键', trigger: 'change' }
+      { required: false, type: 'boolean', message: '请选择是否主键', trigger: 'change' }
     ],
     notNull: [
-      { required: false, type: 'number', message: '请选择不能为空', trigger: 'change' }
+      { required: false, type: 'boolean', message: '请选择不能为空', trigger: 'change' }
     ],
     foreignKey: [
-      { required: true, type: 'number', message: '请选择是否外键', trigger: 'change' }
+      { required: true, type: 'boolean', message: '请选择是否外键', trigger: 'change' }
     ],
     fieldExample: [
       { required: true, message: '请输入字段示例', trigger: 'blur' },
@@ -127,12 +127,12 @@ export function getRules (vm) {
       { max: 40, message: '长度不能超过40个字符', trigger: 'blur' }
     ],
     query: [
-      { required: false, type: 'number', message: '请选择是否查询字段', trigger: 'change' }
+      { required: false, type: 'boolean', message: '请选择是否查询字段', trigger: 'change' }
     ],
     queryType: [
       {
         validator: (rule, value, callback) => {
-          if (!value && vm.form.query === 1) {
+          if (!value && vm.form.query) {
             callback(new Error('请选择查询方式'))
           } else {
             callback()
@@ -153,9 +153,9 @@ export function initIndexFormBean (forEdit) {
     // 索引名
     indexName: '',
     // 是否唯一
-    unique: 0,
+    unique: false,
     // 唯一性校验
-    uniqueCheck: 0,
+    uniqueCheck: false,
     fieldIds: []
   }
   if (forEdit) {
@@ -171,10 +171,10 @@ export function getIndexRules () {
       { max: 20, message: '长度不能超过20个字符', trigger: 'blur' }
     ],
     unique: [
-      { required: true, type: 'number', message: '请选择是否唯一', trigger: 'change' }
+      { required: true, type: 'boolean', message: '请选择是否唯一', trigger: 'change' }
     ],
     uniqueCheck: [
-      { required: true, type: 'number', message: '请选择唯一性校验', trigger: 'change' }
+      { required: true, type: 'boolean', message: '请选择唯一性校验', trigger: 'change' }
     ],
     fieldIds: [
       { required: true, type: 'array', message: '请选择字段', trigger: 'change' }

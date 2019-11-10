@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.po.MetaEntityPO;
@@ -73,9 +72,9 @@ public class ErDiagramController extends AbstractController implements ErDiagram
             entityDiagramVO.setKey(metaEntity.getTableName());
             for (MetaFieldPO field : metaEntity.getFields().values()) {
                 String type = "";
-                if (BoolConst.isTrue(field.getPrimaryKey())) {
+                if (field.getPrimaryKey()) {
                     type = FieldDiagramVO.PRIMARY_KEY;
-                } else if (BoolConst.isTrue(field.getForeignKey())) {
+                } else if (field.getForeignKey()) {
                     type = FieldDiagramVO.FOREIGN_KEY;
                 } else if (MetaSpecialField.isVersion(field.getSpecialField())) {
                     type = FieldDiagramVO.VERSION;

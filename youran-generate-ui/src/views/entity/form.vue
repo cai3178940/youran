@@ -55,19 +55,19 @@
           </el-form-item>
           <el-form-item label="分页" prop="pageSign">
             <help-popover name="entity.pageSign">
-              <el-checkbox v-model="form.pageSign" :true-label="1" :false-label="0" tabindex="50">
+              <el-checkbox v-model="form.pageSign" :true-label="true" :false-label="false" tabindex="50">
                 支持分页
               </el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item label="rest服务">
             <help-popover name="entity.feature">
-              <el-checkbox v-model="form.feature.save" :true-label="1" :false-label="0" tabindex="60">添加</el-checkbox>
-              <el-checkbox v-model="form.feature.update" :true-label="1" :false-label="0" tabindex="70">修改</el-checkbox>
-              <el-checkbox v-model="form.feature.delete" :true-label="1" :false-label="0" tabindex="80">单个删除</el-checkbox>
-              <el-checkbox v-model="form.feature.deleteBatch" :true-label="1" :false-label="0" tabindex="90">批量删除</el-checkbox>
-              <el-checkbox v-model="form.feature.show" :true-label="1" :false-label="0" tabindex="100">详情</el-checkbox>
-              <el-checkbox v-model="form.feature.list" :true-label="1" :false-label="0" tabindex="110">列表查询</el-checkbox>
+              <el-checkbox v-model="form.feature.save" :true-label="true" :false-label="false" tabindex="60">添加</el-checkbox>
+              <el-checkbox v-model="form.feature.update" :true-label="true" :false-label="false" tabindex="70">修改</el-checkbox>
+              <el-checkbox v-model="form.feature.delete" :true-label="true" :false-label="false" tabindex="80">单个删除</el-checkbox>
+              <el-checkbox v-model="form.feature.deleteBatch" :true-label="true" :false-label="false" tabindex="90">批量删除</el-checkbox>
+              <el-checkbox v-model="form.feature.show" :true-label="true" :false-label="false" tabindex="100">详情</el-checkbox>
+              <el-checkbox v-model="form.feature.list" :true-label="true" :false-label="false" tabindex="110">列表查询</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item>
@@ -82,9 +82,9 @@
 </template>
 
 <script>
-import options from '@/components/options'
 import { apiPath } from '@/components/common'
 import { initFormBean, getRules } from './model'
+
 export default {
   name: 'entityForm',
   props: ['projectId', 'entityId'],
@@ -92,7 +92,6 @@ export default {
     const edit = !!this.entityId
     return {
       edit: edit,
-      boolOptions: options.boolOptions,
       projectList: [],
       old: initFormBean(edit),
       form: initFormBean(edit),

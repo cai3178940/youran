@@ -1,6 +1,5 @@
 package com.youran.generate.pojo.dto;
 
-import com.youran.common.constant.BoolConst;
 import com.youran.common.pojo.dto.AbstractDTO;
 import com.youran.common.validator.Const;
 import com.youran.generate.constant.*;
@@ -29,8 +28,7 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_AUTOINCREMENT, example = E_AUTOINCREMENT)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer autoIncrement;
+    private Boolean autoIncrement;
 
 
     @ApiModelProperty(notes = N_DEFAULTVALUE, example = E_DEFAULTVALUE)
@@ -82,8 +80,7 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_INSERT, example = E_INSERT)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer insert;
+    private Boolean insert;
 
     @ApiModelProperty(notes = N_JFIELDNAME, example = E_JFIELDNAME)
     @Length(max = 50, message = "jfieldName最大长度不能超过{max}")
@@ -96,18 +93,15 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_LIST, example = E_LIST)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer list;
+    private Boolean list;
 
     @ApiModelProperty(notes = N_LIST_SORT, example = E_LIST_SORT)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer listSort;
+    private Boolean listSort;
 
     @ApiModelProperty(notes = N_NOTNULL, example = E_NOTNULL)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer notNull;
+    private Boolean notNull;
 
 
     @ApiModelProperty(notes = N_ORDERNO, example = E_ORDERNO)
@@ -116,13 +110,11 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_PRIMARYKEY, example = E_PRIMARYKEY)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer primaryKey;
+    private Boolean primaryKey;
 
     @ApiModelProperty(notes = N_FOREIGNKEY, example = E_FOREIGNKEY)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer foreignKey;
+    private Boolean foreignKey;
 
     @ApiModelProperty(notes = N_FOREIGNENTITYID, example = E_FOREIGNENTITYID)
     private Integer foreignEntityId;
@@ -132,8 +124,7 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_QUERY, example = E_QUERY)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer query;
+    private Boolean query;
 
     @ApiModelProperty(notes = N_QUERYTYPE, example = E_QUERYTYPE)
     @Const(constClass = QueryType.class)
@@ -141,13 +132,11 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_SHOW, example = E_SHOW)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer show;
+    private Boolean show;
 
     @ApiModelProperty(notes = N_UPDATE, example = E_UPDATE)
     @NotNull
-    @Const(constClass = BoolConst.class)
-    private Integer update;
+    private Boolean update;
 
     @ApiModelProperty(notes = N_SPECIALFIELD, example = E_SPECIALFIELD)
     @Const(constClass = MetaSpecialField.class)
@@ -159,14 +148,6 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     public void setForeignEntityId(Integer foreignEntityId) {
         this.foreignEntityId = foreignEntityId;
-    }
-
-    public Integer getForeignKey() {
-        return foreignKey;
-    }
-
-    public void setForeignKey(Integer foreignKey) {
-        this.foreignKey = foreignKey;
     }
 
     public Integer getForeignFieldId() {
@@ -199,14 +180,6 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     public void setEntityId(Integer entityId) {
         this.entityId = entityId;
-    }
-
-    public Integer getAutoIncrement() {
-        return autoIncrement;
-    }
-
-    public void setAutoIncrement(Integer autoIncrement) {
-        this.autoIncrement = autoIncrement;
     }
 
     public String getDefaultValue() {
@@ -281,14 +254,6 @@ public class MetaFieldAddDTO extends AbstractDTO {
         this.fieldType = fieldType;
     }
 
-    public Integer getInsert() {
-        return insert;
-    }
-
-    public void setInsert(Integer insert) {
-        this.insert = insert;
-    }
-
     public String getJfieldName() {
         return jfieldName;
     }
@@ -305,52 +270,12 @@ public class MetaFieldAddDTO extends AbstractDTO {
         this.jfieldType = jfieldType;
     }
 
-    public Integer getList() {
-        return list;
-    }
-
-    public void setList(Integer list) {
-        this.list = list;
-    }
-
-    public Integer getListSort() {
-        return listSort;
-    }
-
-    public void setListSort(Integer listSort) {
-        this.listSort = listSort;
-    }
-
-    public Integer getNotNull() {
-        return notNull;
-    }
-
-    public void setNotNull(Integer notNull) {
-        this.notNull = notNull;
-    }
-
     public Integer getOrderNo() {
         return orderNo;
     }
 
     public void setOrderNo(Integer orderNo) {
         this.orderNo = orderNo;
-    }
-
-    public Integer getPrimaryKey() {
-        return primaryKey;
-    }
-
-    public void setPrimaryKey(Integer primaryKey) {
-        this.primaryKey = primaryKey;
-    }
-
-    public Integer getQuery() {
-        return query;
-    }
-
-    public void setQuery(Integer query) {
-        this.query = query;
     }
 
     public Integer getQueryType() {
@@ -361,19 +286,83 @@ public class MetaFieldAddDTO extends AbstractDTO {
         this.queryType = queryType;
     }
 
-    public Integer getShow() {
+    public Boolean getAutoIncrement() {
+        return autoIncrement;
+    }
+
+    public void setAutoIncrement(Boolean autoIncrement) {
+        this.autoIncrement = autoIncrement;
+    }
+
+    public Boolean getInsert() {
+        return insert;
+    }
+
+    public void setInsert(Boolean insert) {
+        this.insert = insert;
+    }
+
+    public Boolean getList() {
+        return list;
+    }
+
+    public void setList(Boolean list) {
+        this.list = list;
+    }
+
+    public Boolean getListSort() {
+        return listSort;
+    }
+
+    public void setListSort(Boolean listSort) {
+        this.listSort = listSort;
+    }
+
+    public Boolean getNotNull() {
+        return notNull;
+    }
+
+    public void setNotNull(Boolean notNull) {
+        this.notNull = notNull;
+    }
+
+    public Boolean getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(Boolean primaryKey) {
+        this.primaryKey = primaryKey;
+    }
+
+    public Boolean getForeignKey() {
+        return foreignKey;
+    }
+
+    public void setForeignKey(Boolean foreignKey) {
+        this.foreignKey = foreignKey;
+    }
+
+    public Boolean getQuery() {
+        return query;
+    }
+
+    public void setQuery(Boolean query) {
+        this.query = query;
+    }
+
+    public Boolean getShow() {
         return show;
     }
 
-    public void setShow(Integer show) {
+    public void setShow(Boolean show) {
         this.show = show;
     }
 
-    public Integer getUpdate() {
+    public Boolean getUpdate() {
         return update;
     }
 
-    public void setUpdate(Integer update) {
+    public void setUpdate(Boolean update) {
         this.update = update;
     }
 }

@@ -12,7 +12,7 @@
 @Mapper
 public interface ${this.classNameUpper}DAO extends DAO<${this.classNameUpper}PO> {
 
-<#if isFalse(this.pageSign)>
+<#if !this.pageSign>
     <@call this.addImport("${this.packageName}.pojo.qo.${this.classNameUpper}QO")/>
     <@call this.addImport("${this.packageName}.pojo.vo.${this.classNameUpper}ListVO")/>
     <@call this.addImport("java.util.List")/>
