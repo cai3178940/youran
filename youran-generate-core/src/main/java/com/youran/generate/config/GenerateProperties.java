@@ -26,6 +26,12 @@ public class GenerateProperties {
     private Integer devMode = 0;
 
     /**
+     * 数据文件夹路径
+     * 如果不指定，则自动使用操作系统临时文件目录
+     */
+    private String dataDir;
+
+    /**
      * 本地开发工程路径
      */
     private String devProjectDir;
@@ -43,6 +49,14 @@ public class GenerateProperties {
      * 是否启用登录校验
      */
     private boolean securityEnabled;
+
+    public String getDataDir() {
+        return dataDir;
+    }
+
+    public void setDataDir(String dataDir) {
+        this.dataDir = dataDir;
+    }
 
     public boolean isSecurityEnabled() {
         return securityEnabled;

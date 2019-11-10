@@ -56,7 +56,7 @@ public class MetaCodeGenService {
     @Autowired
     private GenHistoryService genHistoryService;
     @Autowired
-    private TmpDirService tmpDirService;
+    private DataDirService dataDirService;
     @Autowired
     private CodeTemplateService codeTemplateService;
     @Autowired
@@ -129,7 +129,7 @@ public class MetaCodeGenService {
                 Integer templateId = project.forceGetTemplateIdByIndex(templateIndex);
                 CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
                 // 获取最新代码目录
-                String projectDir = tmpDirService.getProjectRecentDir(project, templatePO);
+                String projectDir = dataDirService.getProjectRecentDir(project, templatePO);
                 File dir = new File(projectDir);
                 // 如果尚未生成过同一个版本的代码，则执行代码生成
                 if (!dir.exists()) {

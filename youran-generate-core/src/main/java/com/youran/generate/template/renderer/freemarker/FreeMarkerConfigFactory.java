@@ -7,7 +7,7 @@ import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.constant.QueryType;
 import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.service.TemplateFileOutputService;
-import com.youran.generate.service.TmpDirService;
+import com.youran.generate.service.DataDirService;
 import com.youran.generate.util.MetadataUtil;
 import com.youran.generate.util.TemplateUtil;
 import freemarker.ext.beans.BeansWrapper;
@@ -39,7 +39,7 @@ public class FreeMarkerConfigFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(FreeMarkerConfigFactory.class);
 
     @Autowired
-    private TmpDirService tmpDirService;
+    private DataDirService dataDirService;
     @Autowired
     private TemplateFileOutputService templateFileOutputService;
 
@@ -102,7 +102,7 @@ public class FreeMarkerConfigFactory {
      * @return
      */
     private Pair<Configuration, Integer> buildPair(CodeTemplatePO templatePO) {
-        String templateDir = tmpDirService.getTemplateRecentDir(templatePO);
+        String templateDir = dataDirService.getTemplateRecentDir(templatePO);
         LOGGER.info("开始构建FreeMarker Configuration,templateId={},innerVersion={},模板文件输出目录：{}",
             templatePO.getTemplateId(), templatePO.getInnerVersion(), templateDir);
         // 把模板输出到目录

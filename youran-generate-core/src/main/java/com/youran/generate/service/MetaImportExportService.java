@@ -69,7 +69,7 @@ public class MetaImportExportService {
     @Autowired
     private MetaMtmCascadeExtService metaMtmCascadeExtService;
     @Autowired
-    private TmpDirService tmpDirService;
+    private DataDirService dataDirService;
 
 
     /**
@@ -81,7 +81,7 @@ public class MetaImportExportService {
     public File metaExport(Integer projectId) {
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
             true, true, true, true, true, false);
-        String exportDir = tmpDirService.getProjectExportDir(project);
+        String exportDir = dataDirService.getProjectExportDir(project);
         String zipFilePath = exportDir + ".zip";
         File dir = new File(exportDir);
         File outFile = new File(zipFilePath);
@@ -163,12 +163,12 @@ public class MetaImportExportService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaProjectPO metaImport(File zipFile) {
-        String importDir = tmpDirService.getPathWithoutZipFileSuffix(zipFile);
+        String importDir = dataDirService.getPathWithoutZipFileSuffix(zipFile);
         // 解压zip包
         Zip4jUtil.extractAll(zipFile, importDir);
         LOGGER.info("将zip包解压到：{}", importDir);
         // json文件所在目录
-        String jsonDir = tmpDirService.getFirstChildDir(importDir) + File.separator;
+        String jsonDir = dataDirService.getFirstChildDir(importDir) + File.separator;
         // 读取项目json文件，并解析成po
         MetaProjectPO projectFromJson = JsonUtil.parseObjectFromFile(
             new File(jsonDir + PROJECT_JSON_FILE), MetaProjectPO.class);

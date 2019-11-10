@@ -42,7 +42,7 @@ public class CodeTemplateController extends AbstractController implements CodeTe
     @Autowired
     private TemplateFileService templateFileService;
     @Autowired
-    private TmpDirService tmpDirService;
+    private DataDirService dataDirService;
     @Autowired
     private TemplateImportExportService templateImportExportService;
     @Autowired
@@ -137,7 +137,7 @@ public class CodeTemplateController extends AbstractController implements CodeTe
     @PostMapping(value = "/import")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CodeTemplateShowVO> importTemplate(@RequestParam(value = "file") MultipartFile file) throws Exception {
-        String importFilePath = tmpDirService.getTemplateImportFilePath();
+        String importFilePath = dataDirService.getTemplateImportFilePath();
         File zipFile = new File(importFilePath);
         File parentFile = zipFile.getParentFile();
         if (!parentFile.exists()) {

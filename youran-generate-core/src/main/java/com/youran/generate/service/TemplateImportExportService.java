@@ -35,7 +35,7 @@ public class TemplateImportExportService {
     @Autowired
     private TemplateFileService templateFileService;
     @Autowired
-    private TmpDirService tmpDirService;
+    private DataDirService dataDirService;
     @Autowired
     private CodeTemplateService codeTemplateService;
     @Autowired
@@ -51,7 +51,7 @@ public class TemplateImportExportService {
      */
     public File exportTemplate(Integer templateId) {
         CodeTemplatePO templatePO = codeTemplateAssembleAndCopyService.getAssembledCodeTemplate(templateId);
-        String exportDir = tmpDirService.getTemplateExportDir(templatePO);
+        String exportDir = dataDirService.getTemplateExportDir(templatePO);
         String zipFilePath = exportDir + ".zip";
         File dir = new File(exportDir);
         File outFile = new File(zipFilePath);
@@ -82,12 +82,12 @@ public class TemplateImportExportService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public CodeTemplatePO importTemplate(File zipFile) {
-        String importDir = tmpDirService.getPathWithoutZipFileSuffix(zipFile);
+        String importDir = dataDirService.getPathWithoutZipFileSuffix(zipFile);
         // 解压zip包
         Zip4jUtil.extractAll(zipFile, importDir);
         LOGGER.info("将zip包解压到：{}", importDir);
         // json文件所在目录
-        String jsonDir = tmpDirService.getFirstChildDir(importDir) + File.separator;
+        String jsonDir = dataDirService.getFirstChildDir(importDir) + File.separator;
         // 模板文件所在目录
         String tplDir = jsonDir + TEMPLATE_FILE_DIR;
         File tplDirFile = new File(tplDir);

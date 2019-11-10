@@ -9,7 +9,7 @@ import com.youran.generate.pojo.vo.CodeTreeVO;
 import com.youran.generate.pojo.vo.FileNodeVO;
 import com.youran.generate.service.CodeTemplateService;
 import com.youran.generate.service.MetaProjectService;
-import com.youran.generate.service.TmpDirService;
+import com.youran.generate.service.DataDirService;
 import com.youran.generate.util.FileNodeUtil;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.CodePreviewAPI;
@@ -46,7 +46,7 @@ public class CodePreviewController extends AbstractController implements CodePre
     @Autowired
     private CodeTemplateService codeTemplateService;
     @Autowired
-    private TmpDirService tmpDirService;
+    private DataDirService dataDirService;
 
 
     @Override
@@ -63,7 +63,7 @@ public class CodePreviewController extends AbstractController implements CodePre
             throw new BusinessException("模板已更新，请返回重试");
         }
 
-        String projectDir = tmpDirService.getProjectRecentDir(project, templatePO);
+        String projectDir = dataDirService.getProjectRecentDir(project, templatePO);
         File dirFile = new File(projectDir);
         if (!dirFile.exists()) {
             throw new BusinessException("代码目录不存在");
@@ -105,7 +105,7 @@ public class CodePreviewController extends AbstractController implements CodePre
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         Integer templateId = project.forceGetTemplateIdByIndex(templateIndex);
         CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
-        String projectDir = tmpDirService.getProjectRecentDir(project, templatePO);
+        String projectDir = dataDirService.getProjectRecentDir(project, templatePO);
         File dirFile = new File(projectDir);
         if (!dirFile.exists()) {
             throw new BusinessException("代码目录不存在，请返回重试");

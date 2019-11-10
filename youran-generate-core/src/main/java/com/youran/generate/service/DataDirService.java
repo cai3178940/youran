@@ -6,6 +6,7 @@ import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,15 +18,15 @@ import java.io.File;
 import java.util.Arrays;
 
 /**
- * 临时目录服务类
+ * 数据目录服务类
  *
  * @author: cbb
  * @date: 11/3/2019 13:58
  */
 @Service
-public class TmpDirService implements InitializingBean {
+public class DataDirService implements InitializingBean {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TmpDirService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataDirService.class);
 
     /**
      * 本系统名称，这里用于指定导入导出文件目录所在的父文件夹名称
@@ -35,26 +36,36 @@ public class TmpDirService implements InitializingBean {
     @Autowired
     private GenerateProperties generateProperties;
 
+
     /**
-     * 启动以后清空临时文件夹根目录
-     * /[tmp目录]/[spring.application.name]/[youran.version]
+     * 启动以后清空数据目录
      *
      * @throws Exception
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        // 获取临时文件夹根目录
-        String tmpRootDir = this.getTmpRootDir();
-        File tmpRootDirFile = new File(tmpRootDir);
-        FileUtils.deleteDirectory(tmpRootDirFile);
+        // 获取数据目录
+        String dataDir = this.getDataDir();
+        File dataDirFile = new File(dataDir);
+        if(dataDirFile.exists()) {
+            FileUtils.deleteDirectory(dataDirFile);
+        }else{
+            dataDirFile.mkdirs();
+        }
+        LOGGER.info("初始化数据目录：{}",dataDirFile.getPath());
     }
 
     /**
-     * 获取临时文件夹根目录
+     * 获取数据目录
      *
-     * @return /[tmp目录]/[spring.application.name]_[youran.version]
+     * @return 数据目录
      */
-    private String getTmpRootDir() {
+    private String getDataDir() {
+        String dataDir = generateProperties.getDataDir();
+        if (StringUtils.isNotBlank(dataDir)) {
+            return dataDir;
+        }
+        // 如果没有配置，则默认使用 /[tmp目录]/[spring.application.name]_[youran.version]
         return TempDirUtil.getTmpDir(appName, false, false)
             + "_" + generateProperties.getVersion();
     }
@@ -65,11 +76,11 @@ public class TmpDirService implements InitializingBean {
      *
      * @param project
      * @param templatePO
-     * @return /[tmpRootDir]/code/[projectId]_[projectVersion]_[templateId]_[templateInnerVersion]
-     * @see #getTmpRootDir()
+     * @return /[dataDir]/code/[projectId]_[projectVersion]_[templateId]_[templateInnerVersion]
+     * @see #getDataDir()
      */
     public String getProjectRecentDir(MetaProjectPO project, CodeTemplatePO templatePO) {
-        return this.getTmpRootDir()
+        return this.getDataDir()
             + File.separator + "code"
             + File.separator + project.getProjectId()
             + "_" + project.getProjectVersion()
@@ -81,11 +92,11 @@ public class TmpDirService implements InitializingBean {
      * 获取项目元数据导出目录
      *
      * @param project
-     * @return /[tmpRootDir]/meta_export/[projectId]_[projectVersion]
-     * @see #getTmpRootDir()
+     * @return /[dataDir]/meta_export/[projectId]_[projectVersion]
+     * @see #getDataDir()
      */
     public String getProjectExportDir(MetaProjectPO project) {
-        return this.getTmpRootDir()
+        return this.getDataDir()
             + File.separator + "meta_export"
             + File.separator + project.getProjectId()
             + "_" + project.getProjectVersion();
@@ -94,11 +105,11 @@ public class TmpDirService implements InitializingBean {
     /**
      * 获取项目元数据导入文件路径
      *
-     * @return /[tmpRootDir]/meta_import/[currentTimeMillis].zip
-     * @see #getTmpRootDir()
+     * @return /[dataDir]/meta_import/[currentTimeMillis].zip
+     * @see #getDataDir()
      */
     public String getProjectImportFilePath() {
-        return this.getTmpRootDir()
+        return this.getDataDir()
             + File.separator + "meta_import"
             + File.separator + System.currentTimeMillis() + ".zip";
     }
@@ -108,11 +119,11 @@ public class TmpDirService implements InitializingBean {
      * 获取最新模板目录
      *
      * @param templatePO
-     * @return /[tmpRootDir]/tpl/[templateId]_[templateInnerVersion]
-     * @see #getTmpRootDir()
+     * @return /[dataDir]/tpl/[templateId]_[templateInnerVersion]
+     * @see #getDataDir()
      */
     public String getTemplateRecentDir(CodeTemplatePO templatePO) {
-        return this.getTmpRootDir()
+        return this.getDataDir()
             + File.separator + "tpl"
             + File.separator + templatePO.getTemplateId()
             + "_" + templatePO.getInnerVersion();
@@ -123,11 +134,11 @@ public class TmpDirService implements InitializingBean {
      * 获取模板导出目录
      *
      * @param templatePO
-     * @return /[tmpRootDir]/template_export/[templateId]_[templateInnerVersion]
-     * @see #getTmpRootDir()
+     * @return /[dataDir]/template_export/[templateId]_[templateInnerVersion]
+     * @see #getDataDir()
      */
     public String getTemplateExportDir(CodeTemplatePO templatePO) {
-        return this.getTmpRootDir()
+        return this.getDataDir()
             + File.separator + "template_export"
             + File.separator + templatePO.getTemplateId()
             + "_" + templatePO.getInnerVersion();
@@ -136,11 +147,11 @@ public class TmpDirService implements InitializingBean {
     /**
      * 获取模板导入文件路径
      *
-     * @return /[tmpRootDir]/template_import/[currentTimeMillis].zip
-     * @see #getTmpRootDir()
+     * @return /[dataDir]/template_import/[currentTimeMillis].zip
+     * @see #getDataDir()
      */
     public String getTemplateImportFilePath() {
-        return this.getTmpRootDir()
+        return this.getDataDir()
             + File.separator + "template_import"
             + File.separator + System.currentTimeMillis() + ".zip";
     }
