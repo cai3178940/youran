@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
@@ -37,14 +38,17 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
 
     @Override
     @GetMapping(value = "/genCode")
-    public ResponseEntity<Void> genCode(Integer projectId, Integer templateIndex) {
+    public ResponseEntity<Void> genCode(@RequestParam Integer projectId,
+                                        @RequestParam Integer templateIndex) {
         metaCodeGenService.genProjectCodeIfNotExists(projectId, templateIndex, null);
         return ResponseEntity.ok(null);
     }
 
     @Override
     @GetMapping(value = "/genCodeAndDownload")
-    public void genCodeAndDownload(Integer projectId, Integer templateIndex, HttpServletResponse response) {
+    public void genCodeAndDownload(@RequestParam Integer projectId,
+                                   @RequestParam  Integer templateIndex,
+                                   HttpServletResponse response) {
         File zipFile = metaCodeGenService.genCodeZip(projectId, templateIndex, null);
         if (zipFile == null || !zipFile.exists()) {
             this.replyNotFound(response);
@@ -58,7 +62,8 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     @Override
     @GetMapping(value = "/gitCommit")
     @ResponseBody
-    public ResponseEntity<String> gitCommit(Integer projectId, Integer templateIndex) {
+    public ResponseEntity<String> gitCommit(@RequestParam Integer projectId,
+                                            @RequestParam Integer templateIndex) {
         GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, templateIndex, null);
         return ResponseEntity.ok("已创建自动分支【" + genHistory.getBranch() + "】，并提交到远程");
     }

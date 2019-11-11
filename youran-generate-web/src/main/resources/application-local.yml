@@ -13,6 +13,7 @@ logging:
 swagger:
     enabled: true
 youran:
+    defaultUserInit: true
     devMode: 1
     dev-project-dir: D:\\workspace_cbb\\auto
     security-enabled: false

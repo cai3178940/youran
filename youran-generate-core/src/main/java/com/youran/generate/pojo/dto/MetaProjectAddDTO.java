@@ -43,7 +43,6 @@ public class MetaProjectAddDTO extends AbstractDTO {
     private String author;
 
     @ApiModelProperty(notes = N_TEMPLATEID, example = E_TEMPLATEID)
-    @NotNull
     private Integer templateId;
 
     @ApiModelProperty(notes = N_TEMPLATEID, example = E_TEMPLATEID)
