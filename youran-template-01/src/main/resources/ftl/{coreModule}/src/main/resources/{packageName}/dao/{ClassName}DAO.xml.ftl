@@ -136,13 +136,13 @@
                 <#assign cascadeField=cascadeExt.cascadeField>
                 <#--非between类型-->
                 <#if !QueryType.isBetween(cascadeField.queryType)>
-                    <#assign con_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_con_ex">
+                    <#assign con_ex="${CommonTemplateFunction.camelCaseToSnakeCase(cascadeExt.alias,false)}_con_ex">
                     <#assign con_ex_arr = con_ex_arr + [ con_ex ] >
         <bind name="${con_ex}" value="${ifNotEmptyConditionWithAlias(cascadeExt.alias,cascadeField)}" />
                 <#else>
                 <#--between类型-->
-                    <#assign con_start_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_start_con_ex">
-                    <#assign con_end_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_end_con_ex">
+                    <#assign con_start_ex="${CommonTemplateFunction.camelCaseToSnakeCase(cascadeExt.alias,false)}_start_con_ex">
+                    <#assign con_end_ex="${CommonTemplateFunction.camelCaseToSnakeCase(cascadeExt.alias,false)}_end_con_ex">
                     <#assign con_ex_arr = con_ex_arr + [ con_start_ex,con_end_ex ] >
         <bind name="${con_start_ex}" value="${ifNotEmptyConditionWithAlias(cascadeExt.alias+'Start',cascadeField)}" />
         <bind name="${con_end_ex}" value="${ifNotEmptyConditionWithAlias(cascadeExt.alias+'End',cascadeField)}" />
@@ -159,7 +159,7 @@
                 <#assign cascadeField=cascadeExt.cascadeField>
                 <#--非between类型-->
                 <#if !QueryType.isBetween(cascadeField.queryType)>
-                    <#assign con_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_con_ex">
+                    <#assign con_ex="${CommonTemplateFunction.camelCaseToSnakeCase(cascadeExt.alias,false)}_con_ex">
             <if test="${con_ex}">
                     <#if QueryType.isLike(cascadeField.queryType)>
                 <bind name="${cascadeExt.alias}_pattern" value="'%' + ${cascadeExt.alias} + '%'" />
@@ -170,8 +170,8 @@
             </if>
                 <#else>
                 <#--between类型-->
-                    <#assign con_start_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_start_con_ex">
-                    <#assign con_end_ex="${MetadataUtil.camelCaseToSnakeCase(cascadeExt.alias,false)}_end_con_ex">
+                    <#assign con_start_ex="${CommonTemplateFunction.camelCaseToSnakeCase(cascadeExt.alias,false)}_start_con_ex">
+                    <#assign con_end_ex="${CommonTemplateFunction.camelCaseToSnakeCase(cascadeExt.alias,false)}_end_con_ex">
             <if test="${con_start_ex}">
                 and e${cascadeIndex}.${wrapMysqlKeyword(cascadeField.fieldName)} >= ${r'#'}{${cascadeExt.alias}Start}
             </if>
@@ -196,13 +196,13 @@
             <#assign cascadeField=mtmCascadeExt.cascadeField>
             <#--非between类型-->
             <#if !QueryType.isBetween(cascadeField.queryType)>
-                <#assign con_ex="${MetadataUtil.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_con_ex">
+                <#assign con_ex="${CommonTemplateFunction.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_con_ex">
                 <#assign con_ex_arr = con_ex_arr + [ con_ex ] >
         <bind name="${con_ex}" value="${ifNotEmptyConditionWithAlias(mtmCascadeExt.alias,cascadeField)}" />
             <#else>
             <#--between类型-->
-                <#assign con_start_ex="${MetadataUtil.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_start_con_ex">
-                <#assign con_end_ex="${MetadataUtil.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_end_con_ex">
+                <#assign con_start_ex="${CommonTemplateFunction.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_start_con_ex">
+                <#assign con_end_ex="${CommonTemplateFunction.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_end_con_ex">
                 <#assign con_ex_arr = con_ex_arr + [ con_start_ex,con_end_ex ] >
         <bind name="${con_start_ex}" value="${ifNotEmptyConditionWithAlias(mtmCascadeExt.alias+'Start',cascadeField)}" />
         <bind name="${con_end_ex}" value="${ifNotEmptyConditionWithAlias(mtmCascadeExt.alias+'End',cascadeField)}" />
@@ -221,7 +221,7 @@
                 <#assign cascadeField=mtmCascadeExt.cascadeField>
                 <#--非between类型-->
                 <#if !QueryType.isBetween(cascadeField.queryType)>
-                    <#assign con_ex="${MetadataUtil.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_con_ex">
+                    <#assign con_ex="${CommonTemplateFunction.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_con_ex">
             <if test="${con_ex}">
                     <#if QueryType.isLike(cascadeField.queryType)>
                 <bind name="${mtmCascadeExt.alias}_pattern" value="'%' + ${mtmCascadeExt.alias} + '%'" />
@@ -232,8 +232,8 @@
             </if>
                 <#else>
                 <#--between类型-->
-                    <#assign con_start_ex="${MetadataUtil.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_start_con_ex">
-                    <#assign con_end_ex="${MetadataUtil.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_end_con_ex">
+                    <#assign con_start_ex="${CommonTemplateFunction.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_start_con_ex">
+                    <#assign con_end_ex="${CommonTemplateFunction.camelCaseToSnakeCase(mtmCascadeExt.alias,false)}_end_con_ex">
             <if test="${con_start_ex}">
                 and ${table_m}.${wrapMysqlKeyword(cascadeField.fieldName)} >= ${r'#'}{${mtmCascadeExt.alias}Start}
             </if>

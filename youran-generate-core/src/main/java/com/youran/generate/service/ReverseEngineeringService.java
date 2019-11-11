@@ -21,7 +21,7 @@ import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.util.GuessUtil;
-import com.youran.generate.util.MetadataUtil;
+import com.youran.generate.util.SwitchCaseUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -193,7 +193,7 @@ public class ReverseEngineeringService {
         MetaEntityAddDTO metaEntityDTO = new MetaEntityAddDTO();
         metaEntityDTO.setProjectId(project.getProjectId());
         metaEntityDTO.setSchemaName("");
-        metaEntityDTO.setClassName(MetadataUtil.underlineToCamelCase(tableName, true));
+        metaEntityDTO.setClassName(SwitchCaseUtil.underlineToCamelCase(tableName, true));
         metaEntityDTO.setTableName(tableName);
         metaEntityDTO.setTitle(StringUtils.abbreviate(comment, 25));
         metaEntityDTO.setDesc(StringUtils.abbreviate(comment, 250));
@@ -241,7 +241,7 @@ public class ReverseEngineeringService {
         metaFieldDTO.setFieldScale(fieldScale);
         metaFieldDTO.setFieldType(fieldType);
         metaFieldDTO.setInsert(!autoIncrement);
-        metaFieldDTO.setJfieldName(MetadataUtil.underlineToCamelCase(fieldName, false));
+        metaFieldDTO.setJfieldName(SwitchCaseUtil.underlineToCamelCase(fieldName, false));
         metaFieldDTO.setJfieldType(jFieldType.getJavaType());
         metaFieldDTO.setList(true);
         metaFieldDTO.setListSort(true);

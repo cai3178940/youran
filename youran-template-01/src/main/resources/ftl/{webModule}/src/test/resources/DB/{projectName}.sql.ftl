@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS `${metaEntity.tableName}`;
 CREATE TABLE `${metaEntity.tableName}` (
     <#list metaEntity.fields as fieldId,field>
         <#assign comma_holder><#if metaEntity_has_next || metaEntity.pkField?? || (metaEntity.indexes?? && (metaEntity.indexes?size > 0))>,</#if></#assign>
-    `${field.fieldName}` ${field.fieldType}${MetadataUtil.getLengthDisplay(field)}${MetadataUtil.getAutoIncrementDisplay(field)}${MetadataUtil.getNotNullDisplay(field)}${MetadataUtil.getDefaultDisplay(field)}${MetadataUtil.getCommentDisplay(field.fieldComment,true)}${comma_holder}
+    `${field.fieldName}` ${field.fieldType}${SqlTemplateFunction.getLengthDisplay(field)}${SqlTemplateFunction.getAutoIncrementDisplay(field)}${SqlTemplateFunction.getNotNullDisplay(field)}${SqlTemplateFunction.getDefaultDisplay(field)}${SqlTemplateFunction.getCommentDisplay(field.fieldComment,true)}${comma_holder}
     </#list>
     <#if metaEntity.pkField??>
     PRIMARY KEY (`${metaEntity.pkField.fieldName}`)<#if metaEntity.indexes?? && (metaEntity.indexes?size > 0)>,</#if>
@@ -13,7 +13,7 @@ CREATE TABLE `${metaEntity.tableName}` (
     <#list metaEntity.indexes! as index>
     <#if index.unique>UNIQUE </#if>KEY `${index.indexName}` (<#list index.fields as field>`${field.fieldName}`<#if field_has_next >,</#if></#list>) USING BTREE<#if index_has_next>,</#if>
     </#list>
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4${MetadataUtil.getCommentDisplay(metaEntity.desc,false)};
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4${SqlTemplateFunction.getCommentDisplay(metaEntity.desc,false)};
 
 </#list>
 <#list this.mtms! as mtm>
@@ -25,14 +25,14 @@ CREATE TABLE `${mtm.tableName}` (
     <#if mtm.needId>
     `id` <#if mtm.bigId>bigint(20)<#else>int(11)</#if> AUTO_INCREMENT COMMENT '主键',
     </#if>
-    `${mtm.fkAliasForSql1}` ${field1.fieldType}${MetadataUtil.getLengthDisplay(field1)} NOT NULL${MetadataUtil.getCommentDisplay(field1.fieldComment,true)},
-    `${mtm.fkAliasForSql2}` ${field2.fieldType}${MetadataUtil.getLengthDisplay(field2)} NOT NULL${MetadataUtil.getCommentDisplay(field2.fieldComment,true)},
+    `${mtm.fkAliasForSql1}` ${field1.fieldType}${SqlTemplateFunction.getLengthDisplay(field1)} NOT NULL${SqlTemplateFunction.getCommentDisplay(field1.fieldComment,true)},
+    `${mtm.fkAliasForSql2}` ${field2.fieldType}${SqlTemplateFunction.getLengthDisplay(field2)} NOT NULL${SqlTemplateFunction.getCommentDisplay(field2.fieldComment,true)},
     `created_time` datetime DEFAULT NULL COMMENT '创建时间',
     <#if mtm.needId>
     PRIMARY KEY (`id`),
     </#if>
     KEY `IDX_${mtm.tableName?upper_case}_1` (`${mtm.fkAliasForSql1}`),
     KEY `IDX_${mtm.tableName?upper_case}_2` (`${mtm.fkAliasForSql2}`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4${MetadataUtil.getCommentDisplay(mtm.desc,false)};
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4${SqlTemplateFunction.getCommentDisplay(mtm.desc,false)};
 
 </#list>

@@ -11,7 +11,7 @@ public class ${this.classNameUpper}UpdateDTO extends AbstractDTO {
 
     <@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
     <#--字段名转下划线大写-->
-    <#assign pkNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(this.pk.jfieldName,true)>
+    <#assign pkNameSnakeCase = CommonTemplateFunction.camelCaseToSnakeCase(this.pk.jfieldName,true)>
     @ApiModelProperty(notes = N_${pkNameSnakeCase},example = E_${pkNameSnakeCase},required = true)
     @NotNull
     <#if this.pk.jfieldType==JFieldType.STRING.getJavaType()>
@@ -27,15 +27,15 @@ public class ${this.classNameUpper}UpdateDTO extends AbstractDTO {
     <@call this.addFieldTypeImport(field)/>
     <@call this.addImport("io.swagger.annotations.ApiModelProperty")/>
     <#--字段名转下划线大写-->
-    <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
-    @ApiModelProperty(notes = N_${jfieldNameSnakeCase},example = E_${jfieldNameSnakeCase}<#if field.notNull>,required = true</#if><#if field.dicType??>, allowableValues = ${TemplateUtil.fetchClassName(field.dicType)}.VALUES_STR</#if>)
+    <#assign jfieldNameSnakeCase = CommonTemplateFunction.camelCaseToSnakeCase(field.jfieldName,true)>
+    @ApiModelProperty(notes = N_${jfieldNameSnakeCase},example = E_${jfieldNameSnakeCase}<#if field.notNull>,required = true</#if><#if field.dicType??>, allowableValues = ${JavaTemplateFunction.fetchClassName(field.dicType)}.VALUES_STR</#if>)
     <#if field.notNull>
     @NotNull
     </#if>
     <#if field.dicType??>
         <@call this.addImport("${this.commonPackage}.validator.Const")/>
         <@call this.addConstImport(field.dicType)/>
-    @Const(constClass = ${TemplateUtil.fetchClassName(field.dicType)}.class)
+    @Const(constClass = ${JavaTemplateFunction.fetchClassName(field.dicType)}.class)
     <#elseIf field.jfieldType==JFieldType.STRING.getJavaType()>
         <#if field.fieldLength gt 0 >
             <@call this.addImport("org.hibernate.validator.constraints.Length")/>
@@ -60,16 +60,16 @@ public class ${this.classNameUpper}UpdateDTO extends AbstractDTO {
     </#if>
 </#list>
 
-<@call TemplateUtil.printGetterSetter(this.pk)/>
+<@call JavaTemplateFunction.printGetterSetter(this.pk)/>
 <#list this.updateFields as id,field>
-    <@call TemplateUtil.printGetterSetter(field)/>
+    <@call JavaTemplateFunction.printGetterSetter(field)/>
 </#list>
 <#list this.holds! as otherEntity,mtm>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
     <#if entityFeature.withinEntity>
         <#assign otherPk=otherEntity.pkField>
         <#assign othercName=otherEntity.className?uncapFirst>
-        <@call TemplateUtil.printGetterSetterList(othercName,otherPk.jfieldType)/>
+        <@call JavaTemplateFunction.printGetterSetterList(othercName,otherPk.jfieldType)/>
     </#if>
 </#list>
 

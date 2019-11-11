@@ -13,8 +13,7 @@ import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaFieldQO;
 import com.youran.generate.pojo.vo.MetaFieldListVO;
 import com.youran.generate.pojo.vo.MetaFieldShowVO;
-import com.youran.generate.util.JfieldNameCheckUtil;
-import com.youran.generate.util.MetaFieldCheckUtil;
+import com.youran.generate.util.MetadataUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +48,7 @@ public class MetaFieldService {
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaFieldPO save(MetaFieldAddDTO metaFieldDTO) {
         // 校验字段名
-        JfieldNameCheckUtil.check(metaFieldDTO.getJfieldName());
+        MetadataUtil.jfieldNameCheck(metaFieldDTO.getJfieldName());
         Integer entityId = metaFieldDTO.getEntityId();
         // 获取项目，并校验操作人
         MetaProjectPO project = metaProjectService.getProjectByEntityId(entityId, true);
@@ -62,7 +61,7 @@ public class MetaFieldService {
 
     public void doSave(MetaFieldPO field) {
         // 校验字段属性
-        MetaFieldCheckUtil.checkFieldPO(field);
+        MetadataUtil.checkFieldPO(field);
         metaFieldDAO.save(field);
     }
 
@@ -76,7 +75,7 @@ public class MetaFieldService {
     @OptimisticLock
     public MetaFieldPO update(MetaFieldUpdateDTO updateDTO) {
         // 校验字段名
-        JfieldNameCheckUtil.check(updateDTO.getJfieldName());
+        MetadataUtil.jfieldNameCheck(updateDTO.getJfieldName());
         Integer fieldId = updateDTO.getFieldId();
         MetaFieldPO metaField = this.getField(fieldId, true);
         Integer entityId = metaField.getEntityId();
@@ -84,7 +83,7 @@ public class MetaFieldService {
         MetaProjectPO project = metaProjectService.getAndCheckProject(metaField.getProjectId());
         MetaFieldMapper.INSTANCE.setPO(metaField, updateDTO);
         // 校验字段属性
-        MetaFieldCheckUtil.checkFieldPO(metaField);
+        MetadataUtil.checkFieldPO(metaField);
         metaFieldDAO.update(metaField);
         metaProjectService.updateProject(project);
         return metaField;

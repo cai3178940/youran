@@ -6,10 +6,11 @@ import com.youran.generate.constant.MetaConstType;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.constant.QueryType;
 import com.youran.generate.pojo.po.CodeTemplatePO;
-import com.youran.generate.service.TemplateFileOutputService;
 import com.youran.generate.service.DataDirService;
-import com.youran.generate.util.MetadataUtil;
-import com.youran.generate.util.TemplateUtil;
+import com.youran.generate.service.TemplateFileOutputService;
+import com.youran.generate.template.function.CommonTemplateFunction;
+import com.youran.generate.template.function.JavaTemplateFunction;
+import com.youran.generate.template.function.SqlTemplateFunction;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
@@ -46,22 +47,24 @@ public class FreeMarkerConfigFactory {
     private Map<Integer, Pair<Configuration, Integer>> cache;
     private BeansWrapperBuilder beansWrapperBuilder;
     private TemplateModel metaConstTypeModel;
-    private TemplateModel metadataUtilModel;
-    private TemplateModel templateUtilModel;
     private TemplateModel jFieldTypeModel;
     private TemplateModel queryTypeModel;
     private TemplateModel metaSpecialFieldModel;
+    private TemplateModel commonTemplateFunctionModel;
+    private TemplateModel javaTemplateFunctionModel;
+    private TemplateModel sqlTemplateFunctionModel;
 
     public FreeMarkerConfigFactory() {
         this.cache = new ConcurrentHashMap<>();
         this.beansWrapperBuilder = new BeansWrapperBuilder(Configuration.VERSION_2_3_21);
         this.beansWrapperBuilder.setExposeFields(true);
         this.metaConstTypeModel = getStaticModel(MetaConstType.class);
-        this.metadataUtilModel = getStaticModel(MetadataUtil.class);
-        this.templateUtilModel = getStaticModel(TemplateUtil.class);
         this.jFieldTypeModel = getStaticModel(JFieldType.class);
         this.queryTypeModel = getStaticModel(QueryType.class);
         this.metaSpecialFieldModel = getStaticModel(MetaSpecialField.class);
+        this.commonTemplateFunctionModel = getStaticModel(CommonTemplateFunction.class);
+        this.javaTemplateFunctionModel = getStaticModel(JavaTemplateFunction.class);
+        this.sqlTemplateFunctionModel = getStaticModel(SqlTemplateFunction.class);
     }
 
     /**
@@ -118,11 +121,12 @@ public class FreeMarkerConfigFactory {
         cfg.setNumberFormat("#");
         // 设置可访问的静态工具类
         cfg.setSharedVariable("MetaConstType", metaConstTypeModel);
-        cfg.setSharedVariable("MetadataUtil", metadataUtilModel);
-        cfg.setSharedVariable("TemplateUtil", templateUtilModel);
         cfg.setSharedVariable("JFieldType", jFieldTypeModel);
         cfg.setSharedVariable("QueryType", queryTypeModel);
         cfg.setSharedVariable("MetaSpecialField", metaSpecialFieldModel);
+        cfg.setSharedVariable("CommonTemplateFunction", commonTemplateFunctionModel);
+        cfg.setSharedVariable("JavaTemplateFunction", javaTemplateFunctionModel);
+        cfg.setSharedVariable("SqlTemplateFunction", sqlTemplateFunctionModel);
         return Pair.of(cfg, templatePO.getInnerVersion());
     }
 

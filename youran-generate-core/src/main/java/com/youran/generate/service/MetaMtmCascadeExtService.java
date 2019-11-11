@@ -14,7 +14,7 @@ import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaMtmCascadeExtQO;
 import com.youran.generate.pojo.vo.MetaMtmCascadeExtListVO;
 import com.youran.generate.pojo.vo.MetaMtmCascadeExtShowVO;
-import com.youran.generate.util.JfieldNameCheckUtil;
+import com.youran.generate.util.MetadataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +48,7 @@ public class MetaMtmCascadeExtService {
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaMtmCascadeExtPO save(MetaMtmCascadeExtAddDTO addDTO) {
         // 校验别名
-        JfieldNameCheckUtil.check(addDTO.getAlias());
+        MetadataUtil.jfieldNameCheck(addDTO.getAlias());
         // 获取项目，并校验操作人
         MetaProjectPO project = metaProjectService.getProjectByEntityId(addDTO.getEntityId(),
             true);
@@ -75,7 +75,7 @@ public class MetaMtmCascadeExtService {
     @OptimisticLock
     public MetaMtmCascadeExtPO update(MetaMtmCascadeExtUpdateDTO updateDTO) {
         // 校验别名
-        JfieldNameCheckUtil.check(updateDTO.getAlias());
+        MetadataUtil.jfieldNameCheck(updateDTO.getAlias());
         Integer mtmCascadeExtId = updateDTO.getMtmCascadeExtId();
         MetaMtmCascadeExtPO metaMtmCascadeExt = this.getMetaMtmCascadeExt(mtmCascadeExtId, true);
         // 获取项目，并校验操作人

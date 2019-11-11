@@ -16,5 +16,5 @@
 </#function>
 <#-- 将mysql中的关键字加``包裹 -->
 <#function wrapMysqlKeyword fieldName>
-    <#return "${MetadataUtil.wrapMysqlKeyword(fieldName)}" >
+    <#return "${SqlTemplateFunction.wrapMysqlKeyword(fieldName)}" >
 </#function>

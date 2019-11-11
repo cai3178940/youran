@@ -24,7 +24,7 @@ public class ${this.classNameUpper}QO extends <#if this.pageSign>PageQO<#else>Ab
         <#assign jfieldName=field.jfieldName>
     </#if>
     <#--字段名转下划线大写-->
-    <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
+    <#assign jfieldNameSnakeCase = CommonTemplateFunction.camelCaseToSnakeCase(field.jfieldName,true)>
     <#--查询方式：IN-->
     <#if QueryType.isIn(field.queryType)>
         <@call this.addImport("java.util.List")/>
@@ -58,10 +58,10 @@ public class ${this.classNameUpper}QO extends <#if this.pageSign>PageQO<#else>Ab
     </#if>
     <#--查询方式：IN-->
     <#if QueryType.isIn(field.queryType)>
-        <@call TemplateUtil.printGetterSetterList("${jfieldName}","${field.jfieldType}",false)/>
+        <@call JavaTemplateFunction.printGetterSetterList("${jfieldName}","${field.jfieldType}",false)/>
     <#else>
     <#--其他查询方式-->
-        <@call TemplateUtil.printGetterSetter("${jfieldName}","${field.jfieldType}")/>
+        <@call JavaTemplateFunction.printGetterSetter("${jfieldName}","${field.jfieldType}")/>
     </#if>
 </#macro>
 <#--开始渲染查询字段声明语句-->
@@ -146,7 +146,7 @@ public class ${this.classNameUpper}QO extends <#if this.pageSign>PageQO<#else>Ab
 
 <#--开始渲染排序字段getter-setter方法-->
 <#list this.listSortFields as id,field>
-    <@call TemplateUtil.printGetterSetter("${field.jfieldName}SortSign","Integer")/>
+    <@call JavaTemplateFunction.printGetterSetter("${field.jfieldName}SortSign","Integer")/>
 </#list>
 }
 </#assign>

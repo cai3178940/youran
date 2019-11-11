@@ -1,16 +1,19 @@
-package com.youran.generate.util;
+package com.youran.generate.template.function;
 
+import com.youran.generate.constant.JFieldType;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 模板打印辅助类
+ * java模板函数
+ * <p>作为内置函数用来辅助freemarker模板
  *
  * @author cbb
- * @date 2018/8/3
+ * @date 2019/11/11
  */
-public class TemplateUtil {
+public class JavaTemplateFunction {
+
 
     /**
      * 类名截取函数
@@ -25,6 +28,7 @@ public class TemplateUtil {
         }
         return classPath;
     }
+
 
     /**
      * 打印gettersetter方法
@@ -41,6 +45,8 @@ public class TemplateUtil {
         }
         return printGetterSetter(metaFieldPO.getJfieldName(), metaFieldPO.getJfieldType(), override, 1);
     }
+
+
 
     /**
      * 打印gettersetter方法
@@ -138,6 +144,45 @@ public class TemplateUtil {
             .append("    public void set").append(cap).append(suffix).append("(List<").append(jfieldType).append("> ").append(uncap).append(suffix).append(") {\n")
             .append("        this.").append(uncap).append(suffix).append(" = ").append(uncap).append(suffix).append(";\n")
             .append("    }\n\n");
+        return sb.toString();
+    }
+
+
+
+    /**
+     * 映射swagger字段类型常量
+     *
+     * @param jfieldType
+     * @return
+     */
+    public static String getSwaggerType(String jfieldType) {
+        JFieldType jFieldType = JFieldType.find(jfieldType);
+        if (jFieldType == JFieldType.INTEGER) {
+            return "int";
+        }
+        return jfieldType;
+    }
+
+
+    /**
+     * 转换【备注】展示，增加缩进星号
+     *
+     * @param comment
+     * @return
+     */
+    public static String convertCommentDisplayWithIndentStar(String comment) {
+        if (StringUtils.isBlank(comment)) {
+            return "     *";
+        }
+        String[] lines = comment.split("\n");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+            sb.append("     * ").append(line);
+            if (i < lines.length - 1) {
+                sb.append("\n");
+            }
+        }
         return sb.toString();
     }
 

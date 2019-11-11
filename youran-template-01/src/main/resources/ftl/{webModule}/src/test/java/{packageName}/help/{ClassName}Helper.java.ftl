@@ -32,7 +32,7 @@ public class ${this.classNameUpper}Helper {
         ${this.classNameUpper}AddDTO dto = new ${this.classNameUpper}AddDTO();
     <#list this.insertFields as id,field>
         <#--字段名转下划线大写-->
-        <#assign jfieldNameSnakeCase = MetadataUtil.camelCaseToSnakeCase(field.jfieldName,true)>
+        <#assign jfieldNameSnakeCase = CommonTemplateFunction.camelCaseToSnakeCase(field.jfieldName,true)>
         <#assign arg="">
         <#if field.foreignKey>
             <#assign arg="${field.jfieldName}">

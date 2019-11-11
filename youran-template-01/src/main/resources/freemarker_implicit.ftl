@@ -5,9 +5,10 @@
 [#-- @ftlvariable name=".data_model" type="com.youran.generate.template.context.ConstContext"--]
 [#-- @ftlvariable name=".data_model" type="com.youran.generate.template.context.EntityContext"--]
 [#-- @ftlvariable name="MetaConstType" type="com.youran.generate.constant.MetaConstType.static"--]
-[#-- @ftlvariable name="MetadataUtil" type="com.youran.generate.util.MetadataUtil.static"--]
-[#-- @ftlvariable name="TemplateUtil" type="com.youran.generate.util.TemplateUtil.static"--]
 [#-- @ftlvariable name="JFieldType" type="com.youran.generate.constant.JFieldType.static"--]
 [#-- @ftlvariable name="QueryType" type="com.youran.generate.constant.QueryType.static"--]
 [#-- @ftlvariable name="MetaSpecialField" type="com.youran.generate.constant.MetaSpecialField.static"--]
+[#-- @ftlvariable name="CommonTemplateFunction" type="com.youran.generate.template.function.CommonTemplateFunction.static"--]
+[#-- @ftlvariable name="SqlTemplateFunction" type="com.youran.generate.template.function.SqlTemplateFunction.static"--]
+[#-- @ftlvariable name="JavaTemplateFunction" type="com.youran.generate.template.function.JavaTemplateFunction.static"--]
 

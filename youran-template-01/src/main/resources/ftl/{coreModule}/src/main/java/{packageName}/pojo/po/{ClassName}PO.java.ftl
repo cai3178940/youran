@@ -93,7 +93,7 @@ public class ${this.classNameUpper}PO extends AbstractPO${implementsStr} {
     <#--import字段类型-->
     <@call this.addFieldTypeImport(field)/>
     /**
-${MetadataUtil.convertCommentDisplayWithIndentStar(field.fieldComment)}
+${JavaTemplateFunction.convertCommentDisplayWithIndentStar(field.fieldComment)}
     <#if field.dicType??>
      * @see ${this.getConstFullClassPath(field.dicType)}
     </#if>
@@ -108,7 +108,7 @@ ${MetadataUtil.convertCommentDisplayWithIndentStar(field.fieldComment)}
     </#list>
 
 <#list this.fields as id,field>
-    <@call TemplateUtil.printGetterSetterForPO(field)/>
+    <@call JavaTemplateFunction.printGetterSetterForPO(field)/>
 </#list>
 
 <#if implementsDeleteSign && this.delField.jfieldName!="deleted">
@@ -184,7 +184,7 @@ ${MetadataUtil.convertCommentDisplayWithIndentStar(field.fieldComment)}
 
 </#if>
     <#list this.holds! as otherEntity,mtm>
-    <@call TemplateUtil.printGetterSetterList("${otherEntity.className}PO","${otherEntity.className}PO")/>
+    <@call JavaTemplateFunction.printGetterSetterList("${otherEntity.className}PO","${otherEntity.className}PO")/>
     </#list>
 
 }
