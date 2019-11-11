@@ -76,7 +76,7 @@ public class MetaQueryAssembleService {
         }
         if (withConst) {
             // 获取组装后的常量列表
-            List<MetaConstPO> metaConstPOS = this.getAllAssembledConsts(projectId, true);
+            List<MetaConstPO> metaConstPOS = this.getAllAssembledConsts(projectId, true, check);
             project.setConsts(metaConstPOS);
         }
         if (withMtm) {
@@ -96,30 +96,34 @@ public class MetaQueryAssembleService {
     /**
      * 装配所有常量元数据
      *
-     * @param projectId 项目id
+     * @param projectId       项目id
+     * @param withConstDetail 是否查询枚举值
+     * @param check           是否校验数据有效性
      * @return
      */
-    public List<MetaConstPO> getAllAssembledConsts(Integer projectId, boolean withConstDetail) {
+    public List<MetaConstPO> getAllAssembledConsts(Integer projectId, boolean withConstDetail, boolean check) {
         // 查询常量id列表
         List<Integer> constIds = metaConstService.findIdsByProject(projectId);
         // 返回组装后的常量列表
         return constIds
             .stream()
-            .map(constId -> this.getAssembledConst(constId, withConstDetail))
+            .map(constId -> this.getAssembledConst(constId, withConstDetail, check))
             .collect(Collectors.toList());
     }
 
     /**
-     * 装配常量元数据
+     * 装配枚举元数据
      *
-     * @param constId 常量id
+     * @param constId         常量id
+     * @param withConstDetail 是否查询枚举值
+     * @param check           是否校验数据有效性
      * @return
      */
-    public MetaConstPO getAssembledConst(Integer constId, boolean withConstDetail) {
+    public MetaConstPO getAssembledConst(Integer constId, boolean withConstDetail, boolean check) {
         MetaConstPO metaConst = metaConstService.getConst(constId, true);
         if (withConstDetail) {
             List<MetaConstDetailPO> detailList = metaConstDetailService.findByConstId(constId);
-            if (CollectionUtils.isEmpty(detailList)) {
+            if (check && CollectionUtils.isEmpty(detailList)) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "枚举【" + metaConst.getConstName() + "】缺少枚举值");
             }
             metaConst.setDetailList(detailList);

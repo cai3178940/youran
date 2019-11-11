@@ -30,6 +30,7 @@ public class MetaValidateService {
 
     /**
      * 校验实体内部数据
+     *
      * @param entityId
      * @return
      */
@@ -37,11 +38,12 @@ public class MetaValidateService {
         // 获取装配完成的实体
         MetaEntityPO entity = metaQueryAssembleService.getAssembledEntity(entityId);
         // 获取装配完成的枚举
-        List<MetaConstPO> consts = metaQueryAssembleService.getAllAssembledConsts(entity.getProjectId(), false);
+        List<MetaConstPO> consts = metaQueryAssembleService.getAllAssembledConsts(entity.getProjectId(),
+            false, false);
         Map<Integer, MetaFieldPO> fields = entity.getFields();
         // 校验实体中的所有字段
         List<MetaFieldValidateVO> fieldValidateVOS = fields.values().stream()
-            .map(field -> this.doValidateField(field,fields, consts))
+            .map(field -> this.doValidateField(field, fields, consts))
             .collect(Collectors.toList());
 
         MetaEntityInnerValidateVO vo = new MetaEntityInnerValidateVO();
@@ -51,7 +53,8 @@ public class MetaValidateService {
 
     /**
      * 字段校验
-     * @param field 被校验的字段
+     *
+     * @param field  被校验的字段
      * @param fields 实体中所有字段
      * @param consts 项目内所有枚举
      * @return
@@ -70,16 +73,16 @@ public class MetaValidateService {
             }
         }
         for (Map.Entry<Integer, MetaFieldPO> entry : fields.entrySet()) {
-            if(field.getFieldId().equals(entry.getKey())){
+            if (field.getFieldId().equals(entry.getKey())) {
                 continue;
             }
             MetaFieldPO otherField = entry.getValue();
             // 校验java字段名重复
-            if(Objects.equals(field.getJfieldName(), otherField.getJfieldName())){
+            if (Objects.equals(field.getJfieldName(), otherField.getJfieldName())) {
                 vo.sameJfieldNameError();
             }
             // 校验mysql字段名重复
-            if(Objects.equals(field.getFieldName(), otherField.getFieldName())){
+            if (Objects.equals(field.getFieldName(), otherField.getFieldName())) {
                 vo.sameFieldNameError();
             }
         }
