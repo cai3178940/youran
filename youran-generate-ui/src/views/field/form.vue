@@ -10,7 +10,9 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="10">
       <el-col :span="14">
-        <el-form v-if="ready" ref="fieldForm" class="fieldForm" :rules="rules" :model="form" label-width="120px" size="small">
+        <el-form v-if="ready" ref="fieldForm" class="fieldForm"
+                 :rules="rules" :model="form"
+                 label-width="120px" size="small">
           <el-form-item label="性质">
             <help-popover name="field.feature">
               <el-input class="featureInput" :value="fieldFeature.label" readonly>

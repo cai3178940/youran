@@ -8,7 +8,9 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="templateForm" class="templateForm" :rules="rules" :model="form" label-width="120px" size="small">
+        <el-form ref="templateForm" class="templateForm"
+                 :rules="rules" :model="form"
+                 label-width="120px" size="small" v-loading="formLoading">
           <el-form-item label="模板名称" prop="name">
             <help-popover>
               <el-input v-model="form.name" placeholder="例如：标准java后端模板" tabindex="10"></el-input>
@@ -61,6 +63,7 @@ export default {
     const edit = !!this.templateId
     return {
       edit: edit,
+      formLoading: false,
       old: initFormBean(edit),
       form: initFormBean(edit),
       rules: getRules()
@@ -73,10 +76,12 @@ export default {
   },
   methods: {
     getTemplate () {
+      this.formLoading = true
       return this.$ajax.get(`/${apiPath}/code_template/${this.templateId}`)
         .then(response => this.$common.checkResult(response))
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.formLoading = false })
     },
     reset () {
       for (const key in initFormBean(true)) {

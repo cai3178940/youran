@@ -9,7 +9,9 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="entityForm" class="entityForm" :rules="rules" :model="form" label-width="90px" size="small">
+        <el-form ref="entityForm" class="entityForm"
+                 :rules="rules" :model="form"
+                 label-width="90px" size="small" v-loading="formLoading">
           <el-form-item label="项目" prop="projectId">
             <help-popover name="entity.projectId">
               <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
@@ -93,6 +95,7 @@ export default {
     return {
       edit: edit,
       projectList: [],
+      formLoading: false,
       old: initFormBean(edit),
       form: initFormBean(edit),
       rules: getRules(this)
@@ -100,15 +103,19 @@ export default {
   },
   methods: {
     queryProject () {
+      this.formLoading = true
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response))
         .then(data => { this.projectList = data })
+        .finally(() => { this.formLoading = false })
     },
     getEntity () {
+      this.formLoading = true
       return this.$ajax.get(`/${apiPath}/meta_entity/${this.entityId}`)
         .then(response => this.$common.checkResult(response))
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.formLoading = false })
     },
     reset () {
       for (const key in initFormBean(true)) {

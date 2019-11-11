@@ -10,7 +10,9 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="indexForm" class="indexForm" :rules="rules" :model="form" label-width="120px" size="small">
+        <el-form ref="indexForm" class="indexForm"
+                 :rules="rules" :model="form"
+                 label-width="120px" size="small" v-loading="formLoading">
           <el-form-item label="索引名" prop="indexName">
             <help-popover name="index.indexName">
               <el-input v-model="form.indexName" placeholder="索引名，例如：IDX_ORDER_1"></el-input>
@@ -69,6 +71,7 @@ export default {
       edit: edit,
       boolOptions: options.boolOptions,
       fieldList: [],
+      formLoading: false,
       old: initIndexFormBean(edit),
       form: initIndexFormBean(edit),
       uniqueCheckDisabled: false,
@@ -93,11 +96,14 @@ export default {
   },
   methods: {
     queryField (entityId) {
+      this.formLoading = true
       return this.$common.getFieldOptions(entityId)
         .then(response => this.$common.checkResult(response))
         .then(data => { this.fieldList = data })
+        .finally(() => { this.formLoading = false })
     },
     getIndex () {
+      this.formLoading = true
       return this.$ajax.get(`/${apiPath}/meta_index/${this.indexId}`)
         .then(response => this.$common.checkResult(response))
         .then(data => {
@@ -109,6 +115,7 @@ export default {
           this.old = old
         })
         .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.formLoading = false })
     },
     reset () {
       for (const key in initIndexFormBean(true)) {

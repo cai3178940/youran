@@ -8,7 +8,9 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="projectForm" class="projectForm" :rules="rules" :model="form" label-width="120px" size="small">
+        <el-form ref="projectForm" class="projectForm"
+                 :rules="rules" :model="form" label-width="120px"
+                 size="small" v-loading="formLoading">
           <el-form-item label="groupId" prop="groupId">
             <help-popover name="project.groupId">
               <el-input v-model="form.groupId" placeholder="例如：com.mygroup" tabindex="10"></el-input>
@@ -161,6 +163,7 @@ export default {
     const edit = !!this.projectId
     return {
       edit: edit,
+      formLoading: false,
       old: initFormBean(edit),
       form: initFormBean(edit),
       rules: getRules(),
@@ -171,10 +174,12 @@ export default {
   },
   methods: {
     getProject () {
+      this.formLoading = true
       return this.$ajax.get(`/${apiPath}/meta_project/${this.projectId}`)
         .then(response => this.$common.checkResult(response))
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.formLoading = false })
     },
     getTemplateList () {
       return this.$ajax.get(`/${apiPath}/code_template`)

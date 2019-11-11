@@ -9,7 +9,9 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="12">
-        <el-form ref="constForm" class="constForm" :rules="rules" :model="form" label-width="80px" size="small">
+        <el-form ref="constForm" class="constForm"
+                 :rules="rules" :model="form"
+                 label-width="80px" size="small" v-loading="formLoading">
           <el-form-item label="项目" prop="projectId">
             <help-popover name="const.projectId">
               <el-select v-model="form.projectId" style="width:100%;"
@@ -76,6 +78,7 @@ export default {
       edit: edit,
       constTypeOptions: options.constTypeOptions,
       projectList: [],
+      formLoading: false,
       old: initFormBean(edit),
       form: initFormBean(edit),
       rules: getRules()
@@ -83,15 +86,19 @@ export default {
   },
   methods: {
     queryProject () {
+      this.formLoading = true
       return this.$common.getProjectOptions()
         .then(response => this.$common.checkResult(response))
         .then(data => { this.projectList = data })
+        .finally(() => { this.formLoading = false })
     },
     getConst () {
+      this.formLoading = true
       return this.$ajax.get(`/${apiPath}/meta_const/${this.constId}`)
         .then(response => this.$common.checkResult(response))
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.formLoading = false })
     },
     reset () {
       for (const key in initFormBean(true)) {
