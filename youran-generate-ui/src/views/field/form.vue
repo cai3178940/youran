@@ -60,7 +60,7 @@
               </el-col>
               <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
                 <el-tooltip class="item" effect="dark" content="粘贴到右边并转下划线" placement="top">
-                  <el-button type="text" @click="copyJfieldNameToFieldName()">
+                  <el-button type="text" @click="copyJfieldNameToFieldName()" tabindex="11">
                     <i class="iconfont icon-double-right table-cell-icon color-primary" style="vertical-align: middle;"></i>
                   </el-button>
                 </el-tooltip>

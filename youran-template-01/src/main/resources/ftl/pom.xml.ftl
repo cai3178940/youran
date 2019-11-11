@@ -31,7 +31,7 @@
         <commons-collections.version>4.4</commons-collections.version>
         <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
         <jsoup.version>1.11.2</jsoup.version>
-        <h2.version>1.4.193</h2.version>
+        <h2.version>1.4.200</h2.version>
         <mysql2h2.version>0.2.1</mysql2h2.version>
         <spring-boot-swagger.version><#if this.projectFeature.bootVersion==2>1.9.0.RELEASE<#else>1.6.0.RELEASE</#if></spring-boot-swagger.version>
     </properties>
