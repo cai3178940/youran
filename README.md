@@ -20,7 +20,7 @@
 mvn clean package
 
 # 运行spring-boot项目
-java -jar youran-generate-web/target/youran-generate-web-2.2.0-SNAPSHOT.war
+java -jar youran-generate-web/target/youran-generate-web-3.0.0-SNAPSHOT.war
 
 ```
 
@@ -42,7 +42,7 @@ cd ../
 mvn clean package
 
 # 运行spring-boot项目
-java -jar youran-generate-web/target/youran-generate-web-2.2.0-SNAPSHOT.war
+java -jar youran-generate-web/target/youran-generate-web-3.0.0-SNAPSHOT.war
 
 ```
 
@@ -51,7 +51,7 @@ java -jar youran-generate-web/target/youran-generate-web-2.2.0-SNAPSHOT.war
 
 模板文件路径：
 
-- 标准java后端模板： youran-template-01/target/youran-template-01-2.2.0-SNAPSHOT-src.zip
+- 标准java后端模板： youran-template-01/target/youran-template-01-3.0.0-SNAPSHOT-src.zip
 
 
 ## 术语解析

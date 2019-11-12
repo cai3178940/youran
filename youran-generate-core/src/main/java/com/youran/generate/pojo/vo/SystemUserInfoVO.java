@@ -23,7 +23,7 @@ public class SystemUserInfoVO extends AbstractVO {
     @ApiModelProperty(notes = "当前用户", example = "admin")
     private String username;
 
-    @ApiModelProperty(notes = "系统版本", example = "2.2.0")
+    @ApiModelProperty(notes = "系统版本", example = "3.0.0")
     private String sysVersion;
 
     @ApiModelProperty(notes = "系统中存在模板", example = "false")

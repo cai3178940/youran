@@ -47,7 +47,7 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     @Override
     @GetMapping(value = "/genCodeAndDownload")
     public void genCodeAndDownload(@RequestParam Integer projectId,
-                                   @RequestParam  Integer templateIndex,
+                                   @RequestParam Integer templateIndex,
                                    HttpServletResponse response) {
         File zipFile = metaCodeGenService.genCodeZip(projectId, templateIndex, null);
         if (zipFile == null || !zipFile.exists()) {
