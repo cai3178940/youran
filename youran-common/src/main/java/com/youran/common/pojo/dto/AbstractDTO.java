@@ -13,6 +13,8 @@ import java.io.Serializable;
  */
 public abstract class AbstractDTO implements Serializable {
 
+    private static final long serialVersionUID = 1915714417292764241L;
+
     @Override
     public String toString() {
         return JsonUtil.toJSONString(this);

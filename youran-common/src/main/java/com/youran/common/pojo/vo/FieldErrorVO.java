@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author: cbb
  * @date: 2017/8/24
  */
-public class FieldErrorVO {
+public class FieldErrorVO extends AbstractVO {
 
     private final String objectName;
 

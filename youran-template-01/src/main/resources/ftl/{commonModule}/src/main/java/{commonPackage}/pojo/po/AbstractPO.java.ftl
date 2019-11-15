@@ -6,6 +6,8 @@
 <@call this.printClassCom("抽象PO")/>
 public abstract class AbstractPO implements Serializable {
 
+    private static final long serialVersionUID = 640619331196056814L;
+
     public void preInsert(String createdBy) {
         Date now = new Date();
         if (this instanceof Deleted) {

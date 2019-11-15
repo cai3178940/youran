@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public abstract class AbstractPO implements Serializable {
 
+    private static final long serialVersionUID = 4790064644111394641L;
+
     public void preInsert(String createdBy) {
         Date now = new Date();
         if (this instanceof Deleted) {

@@ -3,7 +3,7 @@
 <#assign code>
 <@call this.addImport("${this.commonPackage}.util.JsonUtil")/>
 <@call this.printClassCom("参数错误-错误字段信息")/>
-public class FieldErrorVO {
+public class FieldErrorVO extends AbstractVO {
 
     private final String objectName;
 

@@ -6,6 +6,8 @@
 <@call this.printClassCom("数据查询参数对象超类")/>
 public abstract class AbstractQO implements Serializable {
 
+    private static final long serialVersionUID = -2460649808778841614L;
+
     @Override
     public String toString() {
         return JsonUtil.toJSONString(this);
