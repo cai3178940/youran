@@ -345,6 +345,7 @@ import cascadeExtList from '../cascadeExt/list'
 import mtmCascadeExtList from '../mtmCascadeExt/list'
 import options from '@/components/options'
 import { apiPath } from '@/components/common'
+import projectApi from '@/api/project'
 import { flexibleTemplate, fixedTemplate, findSystemTemplate } from '@/components/fieldTemplate'
 import meteor from '@/components/meteor'
 import { mapGetters, mapState, mapMutations } from 'vuex'
@@ -540,9 +541,14 @@ export default {
       }
     },
     initProjectOptions () {
-      return this.$common.getProjectOptions()
-        .then(response => this.$common.checkResult(response))
-        .then(data => { this.queryForm.projectEntityOptions = data.map(project => ({ value: project.projectId, label: project.projectDesc, children: [] })) })
+      return projectApi.getList()
+        .then(data => {
+          this.queryForm.projectEntityOptions = data.map(project => ({
+            value: project.projectId,
+            label: project.projectDesc,
+            children: []
+          }))
+        })
     },
     handleProjectChange (optionArray) {
       const projectId = optionArray[0]

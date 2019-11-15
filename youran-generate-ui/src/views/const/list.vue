@@ -105,6 +105,7 @@
 import Vue from 'vue'
 import options from '@/components/options'
 import { apiPath } from '@/components/common'
+import projectApi from '@/api/project'
 import { initDetailFormBean } from './model'
 
 const constDetailModel = initDetailFormBean(false)
@@ -179,8 +180,7 @@ export default {
     },
     queryProject () {
       this.loading = true
-      return this.$common.getProjectOptions()
-        .then(response => this.$common.checkResult(response))
+      return projectApi.getList()
         .then(data => { this.projectList = data })
         .finally(() => { this.loading = false })
     },

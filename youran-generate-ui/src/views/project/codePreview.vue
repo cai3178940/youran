@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import { apiPath } from '@/components/common'
-import FileTypeUtil from '@/components/file-type-util'
 /**
  * 代码编辑器
  * https://codemirror.net/
@@ -64,6 +62,8 @@ import 'codemirror/mode/yaml/yaml.js'
 import 'codemirror/mode/properties/properties.js'
 import 'codemirror/mode/sql/sql.js'
 import 'codemirror/mode/markdown/markdown.js'
+import FileTypeUtil from '@/components/file-type-util'
+import projectApi from '@/api/project'
 
 export default {
   name: 'code-preview',
@@ -147,13 +147,7 @@ export default {
     },
     queryCodeTree (projectId, templateIndex) {
       this.codeTreeLoading = true
-      return this.$ajax.get(`/${apiPath}/code_preview/code_tree`,
-        {
-          params: {
-            'projectId': projectId,
-            'templateIndex': templateIndex
-          }
-        })
+      return projectApi.getCodeTree(projectId, templateIndex)
         .then(response => this.$common.checkResult(response))
         .then(data => { this.codeTree = data })
         .catch(error => this.$common.showNotifyError(error))
@@ -210,16 +204,13 @@ export default {
       }
       this.parsePath(data)
       const tab = this.addTab(data)
-      this.$ajax.get(`/${apiPath}/code_preview/file_content`,
+      projectApi.getCodeFileContent(
         {
-          responseType: 'text',
-          params: {
-            'projectId': this.codeTree.projectId,
-            'projectVersion': this.codeTree.projectVersion,
-            'templateId': this.codeTree.templateId,
-            'templateInnerVersion': this.codeTree.templateInnerVersion,
-            'filePath': data.path
-          }
+          'projectId': this.codeTree.projectId,
+          'projectVersion': this.codeTree.projectVersion,
+          'templateId': this.codeTree.templateId,
+          'templateInnerVersion': this.codeTree.templateInnerVersion,
+          'filePath': data.path
         })
         .then(response => this.$common.checkResult(response))
         .then(fileData => {

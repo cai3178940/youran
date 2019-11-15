@@ -149,7 +149,6 @@ export default {
   components: { CodePreview },
   data () {
     return {
-      query: {},
       activeNum: 0,
       selectItems: [],
       list: [],
@@ -193,7 +192,7 @@ export default {
     },
     handleDel (row) {
       this.$common.confirm('是否确认删除')
-        .then(() => this.$ajax.put(`/${apiPath}/meta_project/deleteBatch`, [row.projectId]))
+        .then(() => projectApi.deleteBatch([row.projectId]))
         .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
@@ -202,8 +201,7 @@ export default {
     doQuery () {
       this.loading = true
       this.loadingText = '列表加载中'
-      projectApi.getList(this.query)
-        .then(response => this.$common.checkResult(response))
+      projectApi.getList()
         .then(data => {
           // 下载进度条数据初始化
           data.forEach(r => {
@@ -385,7 +383,7 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          return this.$ajax.post(`/${apiPath}/reverse_engineering/check`, this.reverseEngineeringForm)
+          return projectApi.reverseEngineeringCheck(this.reverseEngineeringForm)
         })
       // 校验返回结果
         .then(response => this.$common.checkResult(response))
@@ -406,7 +404,7 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          return this.$ajax.post(`/${apiPath}/reverse_engineering/execute`, this.reverseEngineeringForm)
+          return projectApi.reverseEngineeringExecute(this.reverseEngineeringForm)
         })
         // 校验返回结果
         .then(response => this.$common.checkResult(response))

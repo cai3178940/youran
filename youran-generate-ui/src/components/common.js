@@ -34,10 +34,6 @@ export const CommonPlugin = {
       upperCaseFirst: upperCaseFirst,
       // 首字母转小写
       lowerCaseFirst: lowerCaseFirst,
-      // 查询项目下拉列表
-      getProjectOptions () {
-        return ajax.get(`/${apiPath}/meta_project/list`)
-      },
       // 查询实体下拉列表
       getEntityOptions (projectId) {
         return ajax.get(`/${apiPath}/meta_entity/list`, {

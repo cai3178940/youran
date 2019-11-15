@@ -125,6 +125,7 @@
 
 <script>
 import { apiPath } from '@/components/common'
+import projectApi from '@/api/project'
 import { initMtmFormBean, getMtmRules } from './model'
 
 export default {
@@ -145,8 +146,7 @@ export default {
   },
   methods: {
     queryProject () {
-      return this.$common.getProjectOptions()
-        .then(response => this.$common.checkResult(response))
+      return projectApi.getList()
         .then(data => { this.projectList = data })
     },
     queryEntity (projectId) {

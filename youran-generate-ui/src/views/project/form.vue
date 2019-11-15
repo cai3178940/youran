@@ -153,7 +153,8 @@
 </template>
 
 <script>
-import { apiPath } from '@/components/common'
+import projectApi from '@/api/project'
+import templateApi from '@/api/template'
 import { initFormBean, getRules } from './model'
 
 export default {
@@ -175,14 +176,14 @@ export default {
   methods: {
     getProject () {
       this.formLoading = true
-      return this.$ajax.get(`/${apiPath}/meta_project/${this.projectId}`)
+      return projectApi.get(this.projectId)
         .then(response => this.$common.checkResult(response))
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.formLoading = false })
     },
     getTemplateList () {
-      return this.$ajax.get(`/${apiPath}/code_template`)
+      return templateApi.getList()
         .then(response => this.$common.checkResult(response))
         .then(data => {
           this.templateList = data
@@ -237,9 +238,9 @@ export default {
         .then(() => {
           loading = this.$loading()
           if (this.edit) {
-            return this.$ajax.put(`/${apiPath}/meta_project/update`, this.form)
+            return projectApi.update(this.form)
           } else {
-            return this.$ajax.post(`/${apiPath}/meta_project/save`, this.form)
+            return projectApi.save(this.form)
           }
         })
         // 校验返回结果

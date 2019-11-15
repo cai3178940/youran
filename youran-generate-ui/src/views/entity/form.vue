@@ -85,6 +85,7 @@
 
 <script>
 import { apiPath } from '@/components/common'
+import projectApi from '@/api/project'
 import { initFormBean, getRules } from './model'
 
 export default {
@@ -104,8 +105,7 @@ export default {
   methods: {
     queryProject () {
       this.formLoading = true
-      return this.$common.getProjectOptions()
-        .then(response => this.$common.checkResult(response))
+      return projectApi.getList()
         .then(data => { this.projectList = data })
         .finally(() => { this.formLoading = false })
     },

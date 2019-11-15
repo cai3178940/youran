@@ -17,5 +17,13 @@ export const request = axios.create({
     })
   }
 })
-
-
+// 校验服务器返回结果
+export const checkResult = function (response) {
+  return new Promise((resolve, reject) => {
+    if (response.status >= 200 && response.status < 300) {
+      return resolve(response.data)
+    } else {
+      return reject(new Error(response.data))
+    }
+  })
+}

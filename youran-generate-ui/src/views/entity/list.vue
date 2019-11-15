@@ -86,7 +86,9 @@
 </template>
 
 <script>
-import { apiPath } from '@/components/common'
+import projectApi from '@/api/project'
+import entityApi from '@/api/entity'
+import mtmApi from '@/api/mtm'
 import ErDiagram from './erDiagram'
 
 export default {
@@ -150,7 +152,7 @@ export default {
         return
       }
       this.$common.confirm('是否确认删除')
-        .then(() => this.$ajax.put(`/${apiPath}/meta_entity/deleteBatch`, this.selectItems.map(entity => entity.entityId)))
+        .then(() => entityApi.deleteBatch(this.selectItems.map(entity => entity.entityId)))
         .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .then(() => this.doQueryMtm())
@@ -158,8 +160,7 @@ export default {
     },
     queryProject () {
       this.loading = true
-      return this.$common.getProjectOptions()
-        .then(response => this.$common.checkResult(response))
+      return projectApi.getList()
         .then(data => { this.projectList = data })
         .finally(() => { this.loading = false })
     },
@@ -180,8 +181,7 @@ export default {
         return
       }
       this.loading = true
-      return this.$ajax.get(`/${apiPath}/meta_entity/list`, { params: this.query })
-        .then(response => this.$common.checkResult(response))
+      return entityApi.getList(this.query)
         .then(data => {
           data.forEach(value => {
             value.mtms = []
@@ -197,7 +197,7 @@ export default {
         return
       }
       this.loading = true
-      return this.$ajax.get(`/${apiPath}/meta_mtm/list`, { params: { projectId: this.query.projectId } })
+      return mtmApi.getList(this.query.projectId)
         .then(response => this.$common.checkResult(response))
         .then(data => { this.mtms = data })
         .catch(error => this.$common.showNotifyError(error))
@@ -222,7 +222,7 @@ export default {
     },
     handleMtmDel (mtm) {
       this.$common.confirm(`请确认是否删除多对多【${mtm.tableName}】`)
-        .then(() => this.$ajax.delete(`/${apiPath}/meta_mtm/${mtm.mtmId}`))
+        .then(() => mtmApi.deleteSingle(mtm.mtmId))
         .then(response => this.$common.checkResult(response))
         .then(() => this.doQueryMtm())
         .catch(error => this.$common.showNotifyError(error))
