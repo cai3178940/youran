@@ -134,6 +134,7 @@
 
 <script>
 import { apiPath, wsApiPath } from '@/components/common'
+import projectApi from '@/api/project'
 /**
  * websocket前端组件
  * https://www.npmjs.com/package/webstomp-client
@@ -201,7 +202,7 @@ export default {
     doQuery () {
       this.loading = true
       this.loadingText = '列表加载中'
-      this.$ajax.get(`/${apiPath}/meta_project/list`, { params: this.query })
+      projectApi.getList(this.query)
         .then(response => this.$common.checkResult(response))
         .then(data => {
           // 下载进度条数据初始化
