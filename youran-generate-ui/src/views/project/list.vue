@@ -166,7 +166,6 @@ export default {
       },
       iconColorClass: ['color-primary', 'color-warning', 'color-success'],
       progressingProjectIds: [],
-      downloadUrl: '',
       importFormVisible: false,
       importUrl: `/${apiPath}/meta_import`
     }
@@ -270,11 +269,7 @@ export default {
       this.$router.push(`/project/show/${row.projectId}`)
     },
     handleExport (row) {
-      this.downloadUrl = `/${apiPath}/meta_export/${row.projectId}`
-      // 隔2秒改成null，修复不能重复下载的bug
-      setTimeout(() => {
-        this.downloadUrl = null
-      }, 2000)
+      projectApi.exportCodeZip(row.projectId)
     },
     handlePreView ([row, templateIndex]) {
       const projectId = row.projectId
@@ -355,13 +350,9 @@ export default {
         ))
         .then(progressVO => {
           if (progressVO.status === 2) {
-            // 修改iframe的地址，进行文件下载
-            this.downloadUrl = `${this.$common.BASE_API_URL}/${apiPath}/code_gen/downloadCode/${progressVO.sessionId}`
             this.$common.showMsg('success', progressVO.msg)
-            // 隔2秒改成null，修复不能重复下载的bug
-            setTimeout(() => {
-              this.downloadUrl = null
-            }, 2000)
+            // 下载代码文件
+            projectApi.exportCodeZipBySessionId(progressVO.sessionId)
           } else {
             this.$common.showNotifyError(progressVO.msg)
           }

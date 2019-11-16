@@ -42,7 +42,7 @@ export default {
    * 复制模板
    */
   copy (templateId) {
-    return request.delete(`/${apiPath}/code_template/${templateId}/copy`)
+    return request.post(`/${apiPath}/code_template/${templateId}/copy`)
       .then(response => checkResult(response))
   },
   /**

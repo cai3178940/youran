@@ -1,4 +1,5 @@
 import { request, apiPath, checkResult } from '@/utils/request'
+import store from '@/store'
 
 export default {
 
@@ -49,6 +50,20 @@ export default {
   reverseEngineeringExecute (data) {
     return request.post(`/${apiPath}/reverse_engineering/execute`, data)
       .then(response => checkResult(response))
+  },
+  /**
+   * 导出代码文件压缩包
+   */
+  exportCodeZip (projectId) {
+    const downloadUrl = `/${apiPath}/meta_export/${projectId}`
+    store.dispatch('downloadFile', downloadUrl)
+  },
+  /**
+   * 导出代码文件压缩包
+   */
+  exportCodeZipBySessionId (sessionId) {
+    const downloadUrl = `/${apiPath}/code_gen/downloadCode/${sessionId}`
+    store.dispatch('downloadFile', downloadUrl)
   },
   /**
    * 获取代码目录树

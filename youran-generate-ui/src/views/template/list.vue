@@ -67,8 +67,7 @@ export default {
       activeNum: 0,
       selectItems: [],
       list: [],
-      loading: false,
-      downloadUrl: null
+      loading: false
     }
   },
   methods: {

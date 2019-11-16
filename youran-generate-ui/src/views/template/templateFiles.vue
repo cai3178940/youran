@@ -527,7 +527,7 @@ export default {
      */
     doSaveTemplateFileContent (fileId, version, content) {
       log('执行保存')
-      return templateApi.updateTemplateFileContent(version, content)
+      return templateApi.updateTemplateFileContent(fileId, version, content)
         .then(version => {
           // 保存成功以后把最新乐观锁版本号写回当前文件
           this.currentFile.version = version
