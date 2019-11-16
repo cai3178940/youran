@@ -1,14 +1,8 @@
 import { snakeCase, camelCase, upperCaseFirst, lowerCaseFirst } from 'change-case'
-const BASE_API_URL = process.env.VUE_APP_BASE_API_URL
 
-export const apiPath = process.env.VUE_APP_API_PATH
-export const wsApiPath = process.env.VUE_APP_WS_API_PATH
-
-export const CommonPlugin = {
+export default {
   install (Vue, options) {
     Vue.prototype.$common = {
-
-      BASE_API_URL,
       // 字符串转下划线格式
       snakeCase: snakeCase,
       // 字符串转驼峰格式

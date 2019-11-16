@@ -4,12 +4,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 import store from './store'
-import { CommonPlugin } from './components/common'
+import CommonPlugin from './utils/common-plugin'
 import './assets/icon/iconfont.css'
 import './assets/icon/iconfont.js'
 import './assets/main.scss'
 import './assets/element-override.scss'
-import helpPopover from './components/help-popover'
+import HelpPopover from './components/HelpPopover'
 import browser from 'browser-detect'
 
 const result = browser()
@@ -21,7 +21,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(CommonPlugin)
 
-Vue.component('help-popover', helpPopover)
+Vue.component('help-popover', HelpPopover)
 new Vue({
   store,
   router,

@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '../assets/common.scss';
+  @import '../../assets/common.scss';
   .help-popover .question-circle {
     cursor: pointer;
     color: #409EFF

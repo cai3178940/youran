@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import options from '@/components/options'
+import options from '@/utils/options'
 import projectApi from '@/api/project'
 import constApi from '@/api/const'
 import { initFormBean, getRules } from './model'

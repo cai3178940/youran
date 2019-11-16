@@ -91,7 +91,7 @@
 
 <script>
 import Vue from 'vue'
-import options from '@/components/options'
+import options from '@/utils/options'
 import projectApi from '@/api/project'
 import constApi from '@/api/const'
 import { initDetailFormBean } from './model'

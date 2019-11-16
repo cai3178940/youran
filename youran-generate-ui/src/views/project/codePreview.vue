@@ -62,7 +62,7 @@ import 'codemirror/mode/yaml/yaml.js'
 import 'codemirror/mode/properties/properties.js'
 import 'codemirror/mode/sql/sql.js'
 import 'codemirror/mode/markdown/markdown.js'
-import FileTypeUtil from '@/components/file-type-util'
+import FileTypeUtil from '@/utils/file-type-util'
 import projectApi from '@/api/project'
 
 export default {

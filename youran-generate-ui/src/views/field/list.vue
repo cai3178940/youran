@@ -343,13 +343,13 @@
 import Vue from 'vue'
 import cascadeExtList from '../cascadeExt/list'
 import mtmCascadeExtList from '../mtmCascadeExt/list'
-import options from '@/components/options'
+import options from '@/utils/options'
 import projectApi from '@/api/project'
 import entityApi from '@/api/entity'
 import fieldApi from '@/api/field'
 import indexApi from '@/api/index'
-import { flexibleTemplate, fixedTemplate, findSystemTemplate } from '@/components/fieldTemplate'
-import meteor from '@/components/meteor'
+import { flexibleTemplate, fixedTemplate, findSystemTemplate } from '@/utils/field-template'
+import Meteor from '@/components/Meteor'
 import { mapGetters, mapState, mapMutations } from 'vuex'
 import shortid from 'shortid'
 
@@ -386,7 +386,7 @@ export default {
   components: {
     'cascade-ext-list': cascadeExtList,
     'mtm-cascade-ext-list': mtmCascadeExtList,
-    meteor
+    Meteor
   },
   data () {
     return {

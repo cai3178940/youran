@@ -1,4 +1,4 @@
-import options from '@/components/options'
+import options from '@/utils/options'
 
 export function initFormBean (forEdit) {
   const formBean = {

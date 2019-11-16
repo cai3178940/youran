@@ -131,15 +131,8 @@
 </template>
 
 <script>
-import { apiPath, wsApiPath } from '@/components/common'
+import { apiPath } from '@/utils/request'
 import projectApi from '@/api/project'
-/**
- * websocket前端组件
- * https://www.npmjs.com/package/webstomp-client
- */
-import webstomp from 'webstomp-client'
-import SockJS from 'sockjs-client'
-import shortid from 'shortid'
 import CodePreview from './codePreview'
 
 export default {
@@ -273,7 +266,7 @@ export default {
     },
     handlePreView ([row, templateIndex]) {
       const projectId = row.projectId
-      this.callCodeGenWebSocketService(
+      projectApi.callCodeGenWebSocketService(
         'genCode',
         { 'projectId': projectId, 'templateIndex': templateIndex },
         () => this.progressingProjectIds.push(projectId),
@@ -309,40 +302,10 @@ export default {
       }
       return done
     },
-    /**
-     * 调用【代码生成】相关websocket服务
-     * @param serviceName 服务名
-     * @param params 请求参数
-     * @param afterConnect 连接建立之后的回调
-     * @param doProgress 处理进度消息回调
-     */
-    callCodeGenWebSocketService (serviceName, params, afterConnect, doProgress) {
-      return new Promise((resolve, reject) => {
-        const sock = new SockJS(`${this.$common.BASE_API_URL}/${wsApiPath}`)
-        const stompClient = webstomp.over(sock)
-        stompClient.connect({}, () => {
-          // 生成随机sessionId
-          const sessionId = shortid.generate()
-          // 订阅进度变化的topic
-          stompClient.subscribe(`/code_gen/${serviceName}_progress/${sessionId}`, (frame) => {
-            const progressVO = JSON.parse(frame.body)
-            const done = doProgress(progressVO)
-            if (done) {
-              // 如果进度结束，则断开websocket连接
-              stompClient.disconnect()
-              resolve(progressVO)
-            }
-          })
-          afterConnect()
-          // 请求生成代码
-          stompClient.send(`/code_gen/${serviceName}/${sessionId}`, '', params)
-        })
-      })
-    },
     handleGenCode ([row, templateIndex]) {
       const projectId = row.projectId
       this.$common.confirm('是否确认下载')
-        .then(() => this.callCodeGenWebSocketService(
+        .then(() => projectApi.callCodeGenWebSocketService(
           'genCodeAndZip',
           { 'projectId': projectId, 'templateIndex': templateIndex },
           () => this.progressingProjectIds.push(projectId),
@@ -406,7 +369,7 @@ export default {
     handleCommit ([row, templateIndex]) {
       const projectId = row.projectId
       this.$common.confirm('是否确认提交到远程git仓库')
-        .then(() => this.callCodeGenWebSocketService(
+        .then(() => projectApi.callCodeGenWebSocketService(
           'gitCommit',
           { 'projectId': projectId, 'templateIndex': templateIndex },
           () => this.progressingProjectIds.push(projectId),

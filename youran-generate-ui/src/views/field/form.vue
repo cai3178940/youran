@@ -231,12 +231,12 @@
 </template>
 
 <script>
-import options from '@/components/options'
+import options from '@/utils/options'
 import entityApi from '@/api/entity'
 import fieldApi from '@/api/field'
 import constApi from '@/api/const'
 import { initFormBean, getRules } from './model'
-import { findSystemTemplate } from '@/components/fieldTemplate'
+import { findSystemTemplate } from '@/utils/field-template'
 
 export default {
   name: 'fieldForm',

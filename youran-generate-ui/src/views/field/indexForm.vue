@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import options from '@/components/options'
+import options from '@/utils/options'
 import fieldApi from '@/api/field'
 import indexApi from '@/api/index'
 import { initIndexFormBean, getIndexRules } from './model'

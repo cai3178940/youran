@@ -15,7 +15,7 @@
   </el-dialog>
 </template>
 <script>
-import { apiPath } from '@/components/common'
+import { apiPath } from '@/utils/request'
 
 export default {
   name: 'import-template',

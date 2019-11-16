@@ -117,7 +117,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '../assets/common.scss';
+  @import '../../assets/common.scss';
   .meteor-container{
     position: relative;
   }

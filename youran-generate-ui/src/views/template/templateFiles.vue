@@ -109,9 +109,9 @@ import 'codemirror/mode/xml/xml.js'
 import VueSimpleContextMenu from 'vue-simple-context-menu'
 import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
 import { initTemplateFileFormBean, getTemplateFileRulesRules } from './model'
-import options from '@/components/options'
-import { getExpandedNodes } from '@/components/element-tree-util'
-import FileTypeUtil from '@/components/file-type-util'
+import options from '@/utils/options'
+import { getExpandedNodes } from '@/utils/element-tree-util'
+import FileTypeUtil from '@/utils/file-type-util'
 import templateApi from '@/api/template'
 
 // 如果文件保存中，则等待多久以后再提交
