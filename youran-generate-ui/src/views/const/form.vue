@@ -60,8 +60,8 @@
 
 <script>
 import options from '@/components/options'
-import { apiPath } from '@/components/common'
 import projectApi from '@/api/project'
+import constApi from '@/api/const'
 import { initFormBean, getRules } from './model'
 
 export default {
@@ -94,8 +94,7 @@ export default {
     },
     getConst () {
       this.formLoading = true
-      return this.$ajax.get(`/${apiPath}/meta_const/${this.constId}`)
-        .then(response => this.$common.checkResult(response))
+      return constApi.get(this.constId)
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.formLoading = false })
@@ -112,15 +111,9 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          if (this.edit) {
-            return this.$ajax.put(`/${apiPath}/meta_const/update`, this.form)
-          } else {
-            return this.$ajax.post(`/${apiPath}/meta_const/save`, this.form)
-          }
+          return constApi.saveOrUpdate(this.form, this.edit)
         })
-      // 校验返回结果
-        .then(response => this.$common.checkResult(response))
-      // 执行页面跳转
+        // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '操作成功')
           this.goBack(false)

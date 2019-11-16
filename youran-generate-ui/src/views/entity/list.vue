@@ -153,7 +153,6 @@ export default {
       }
       this.$common.confirm('是否确认删除')
         .then(() => entityApi.deleteBatch(this.selectItems.map(entity => entity.entityId)))
-        .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .then(() => this.doQueryMtm())
         .catch(error => this.$common.showNotifyError(error))
@@ -181,7 +180,7 @@ export default {
         return
       }
       this.loading = true
-      return entityApi.getList(this.query)
+      return entityApi.getList(this.query.projectId)
         .then(data => {
           data.forEach(value => {
             value.mtms = []
@@ -198,7 +197,6 @@ export default {
       }
       this.loading = true
       return mtmApi.getList(this.query.projectId)
-        .then(response => this.$common.checkResult(response))
         .then(data => { this.mtms = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
@@ -223,7 +221,6 @@ export default {
     handleMtmDel (mtm) {
       this.$common.confirm(`请确认是否删除多对多【${mtm.tableName}】`)
         .then(() => mtmApi.deleteSingle(mtm.mtmId))
-        .then(response => this.$common.checkResult(response))
         .then(() => this.doQueryMtm())
         .catch(error => this.$common.showNotifyError(error))
     },

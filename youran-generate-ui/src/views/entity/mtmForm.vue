@@ -124,8 +124,9 @@
 </template>
 
 <script>
-import { apiPath } from '@/components/common'
 import projectApi from '@/api/project'
+import entityApi from '@/api/entity'
+import mtmApi from '@/api/mtm'
 import { initMtmFormBean, getMtmRules } from './model'
 
 export default {
@@ -150,13 +151,11 @@ export default {
         .then(data => { this.projectList = data })
     },
     queryEntity (projectId) {
-      return this.$common.getEntityOptions(projectId)
-        .then(response => this.$common.checkResult(response))
+      return entityApi.getList(projectId)
         .then(data => { this.entityList = data })
     },
     getMtm () {
-      return this.$ajax.get(`/${apiPath}/meta_mtm/${this.mtmId}`)
-        .then(response => this.$common.checkResult(response))
+      return mtmApi.get(this.mtmId)
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
     },
@@ -172,15 +171,9 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          if (this.edit) {
-            return this.$ajax.put(`/${apiPath}/meta_mtm/update`, this.form)
-          } else {
-            return this.$ajax.post(`/${apiPath}/meta_mtm/save`, this.form)
-          }
+          return mtmApi.saveOrUpdate(this.form, this.edit)
         })
-      // 校验返回结果
-        .then(response => this.$common.checkResult(response))
-      // 执行页面跳转
+        // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '操作成功')
           this.goBack(false)

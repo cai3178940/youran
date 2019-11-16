@@ -91,7 +91,8 @@
 </template>
 <script>
 import Vue from 'vue'
-import { apiPath } from '@/components/common'
+import cascadeExtApi from '@/api/cascadeExt'
+import fieldApi from '@/api/field'
 
 // 记录扩展模型
 const cascadeExtModel = {
@@ -142,15 +143,13 @@ export default {
       this.activeNum = this.selectItems.length
     },
     initCascadeFieldOptions () {
-      this.$ajax.get(`/${apiPath}/meta_field/list`, { params: { entityId: this.cascadeEntityId } })
-        .then(response => this.$common.checkResult(response))
+      fieldApi.getList(this.cascadeEntityId)
         .then(data => { this.cascadeFieldList = data })
         .catch(error => this.$common.showNotifyError(error))
     },
     doQuery () {
       this.loading = true
-      this.$ajax.get(`/${apiPath}/meta_cascade_ext/list`, { params: { fieldId: this.fieldId } })
-        .then(response => this.$common.checkResult(response))
+      cascadeExtApi.getList(this.fieldId)
         .then(data => {
           this.list = data
           this.$emit('cascadeFieldNumChange', this.fieldId, this.list.length)
@@ -174,17 +173,9 @@ export default {
       row.alias = cascadeField.jfieldName
     },
     handleSave (row) {
-      let saveURL = `/${apiPath}/meta_cascade_ext/save`
-      let method = 'post'
-      if (row.cascadeExtId) {
-        saveURL = `/${apiPath}/meta_cascade_ext/update`
-        method = 'put'
-      }
       const loading = this.$loading()
       // 提交
-      this.$ajax[method](saveURL, row)
-      // 校验返回结果
-        .then(response => this.$common.checkResult(response))
+      cascadeExtApi.saveOrUpdate(row, !!row.cascadeExtId)
       // 执行页面跳转
         .then(data => {
           this.$common.showMsg('success', '保存成功')
@@ -192,9 +183,8 @@ export default {
             row.cascadeExtId = data.cascadeExtId
             this.$emit('cascadeFieldNumAdd', this.fieldId, 1)
           }
-          return this.$ajax.get(`/${apiPath}/meta_cascade_ext/${row.cascadeExtId}`)
+          return cascadeExtApi.get(row.cascadeExtId)
         })
-        .then(response => this.$common.checkResult(response))
         .then(data => {
           Object.assign(row, data, {
             editFlag: false
@@ -216,10 +206,9 @@ export default {
       this.$common.confirm('是否确认删除')
         .then(() => {
           if (params.length > 0) {
-            return this.$ajax.put(`/${apiPath}/meta_cascade_ext/deleteBatch`, params)
+            return cascadeExtApi.deleteBatch(params)
           }
         })
-        .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
     }

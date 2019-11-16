@@ -76,12 +76,14 @@
     </el-dialog>
     <!-- 模板导入对话框 -->
     <import-template ref="importTemplate"></import-template>
+    <!-- 文件下载专用iframe -->
+    <iframe style="display:none;" :src="downloadUrl"></iframe>
   </el-container>
 </template>
 
 <script>
 import avatar from '@/assets/avatar.jpg'
-import { apiPath } from '@/components/common'
+import systemApi from '@/api/system'
 import { mapState, mapMutations } from 'vuex'
 import importTemplate from './views/template/import.vue'
 
@@ -103,7 +105,8 @@ export default {
   },
   computed: {
     ...mapState([
-      'systemUserInfo'
+      'systemUserInfo',
+      'downloadUrl'
     ])
   },
   methods: {
@@ -120,12 +123,11 @@ export default {
       this.systemDialogVisible = true
     },
     formChange () {
-      this.$ajax.put(`/${apiPath}/system_user/setting`,
+      systemApi.updateUserSetting(
         {
           id: this.systemUserInfo.id,
           templateEnabled: this.form.templateEnabled
         })
-        .then(response => this.$common.checkResult(response))
         .then(data => {
           this.setSystemUserInfo({
             templateEnabled: data.templateEnabled
@@ -151,8 +153,7 @@ export default {
     }
   },
   created () {
-    this.$ajax.get(`/${apiPath}/system_user/info`)
-      .then(response => this.$common.checkResult(response))
+    systemApi.getSystemUserInfo()
       .then(data => {
         this.setSystemUserInfo(data)
         this.form.templateEnabled = data.templateEnabled

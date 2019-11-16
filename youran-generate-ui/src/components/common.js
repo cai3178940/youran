@@ -1,28 +1,11 @@
-import axios from 'axios'
-import qs from 'qs'
 import { snakeCase, camelCase, upperCaseFirst, lowerCaseFirst } from 'change-case'
 const BASE_API_URL = process.env.VUE_APP_BASE_API_URL
-const ajax = axios.create({
-  baseURL: BASE_API_URL,
-  timeout: 60000,
-  responseType: 'json',
-  headers: {
-    'Content-Type': 'application/json; charset=utf-8'
-  },
-  paramsSerializer (params) {
-    return qs.stringify(params, {
-      arrayFormat: 'repeat'
-    })
-  }
-})
 
 export const apiPath = process.env.VUE_APP_API_PATH
 export const wsApiPath = process.env.VUE_APP_WS_API_PATH
 
 export const CommonPlugin = {
   install (Vue, options) {
-    Vue.prototype.$ajax = ajax
-
     Vue.prototype.$common = {
 
       BASE_API_URL,
@@ -34,32 +17,6 @@ export const CommonPlugin = {
       upperCaseFirst: upperCaseFirst,
       // 首字母转小写
       lowerCaseFirst: lowerCaseFirst,
-      // 查询实体下拉列表
-      getEntityOptions (projectId) {
-        return ajax.get(`/${apiPath}/meta_entity/list`, {
-          params: {
-            projectId
-          }
-        })
-      },
-      // 查询字段下拉列表
-      getFieldOptions (entityId) {
-        return ajax.get(`/${apiPath}/meta_field/list`, {
-          params: {
-            entityId
-          }
-        })
-      },
-      // 查询枚举下拉列表
-      getConstOptions (projectId) {
-        return ajax.get(`/${apiPath}/meta_const/list`, {
-          params: {
-            projectId,
-            pageSize: 1000,
-            currentPage: 1
-          }
-        })
-      },
 
       confirm (msg) {
         return Vue.prototype.$confirm(msg, '提示', {

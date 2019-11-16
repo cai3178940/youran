@@ -177,14 +177,12 @@ export default {
     getProject () {
       this.formLoading = true
       return projectApi.get(this.projectId)
-        .then(response => this.$common.checkResult(response))
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.formLoading = false })
     },
     getTemplateList () {
       return templateApi.getList()
-        .then(response => this.$common.checkResult(response))
         .then(data => {
           this.templateList = data
         })
@@ -237,14 +235,8 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          if (this.edit) {
-            return projectApi.update(this.form)
-          } else {
-            return projectApi.save(this.form)
-          }
+          return projectApi.saveOrUpdate(this.form, this.edit)
         })
-        // 校验返回结果
-        .then(response => this.$common.checkResult(response))
         // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '操作成功')

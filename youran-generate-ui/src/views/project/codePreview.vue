@@ -148,7 +148,6 @@ export default {
     queryCodeTree (projectId, templateIndex) {
       this.codeTreeLoading = true
       return projectApi.getCodeTree(projectId, templateIndex)
-        .then(response => this.$common.checkResult(response))
         .then(data => { this.codeTree = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.codeTreeLoading = false })
@@ -212,7 +211,6 @@ export default {
           'templateInnerVersion': this.codeTree.templateInnerVersion,
           'filePath': data.path
         })
-        .then(response => this.$common.checkResult(response))
         .then(fileData => {
           this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
           tab.content = fileData

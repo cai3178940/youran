@@ -344,8 +344,10 @@ import Vue from 'vue'
 import cascadeExtList from '../cascadeExt/list'
 import mtmCascadeExtList from '../mtmCascadeExt/list'
 import options from '@/components/options'
-import { apiPath } from '@/components/common'
 import projectApi from '@/api/project'
+import entityApi from '@/api/entity'
+import fieldApi from '@/api/field'
+import indexApi from '@/api/index'
 import { flexibleTemplate, fixedTemplate, findSystemTemplate } from '@/components/fieldTemplate'
 import meteor from '@/components/meteor'
 import { mapGetters, mapState, mapMutations } from 'vuex'
@@ -508,8 +510,7 @@ export default {
         return
       }
       this.$common.confirm('是否确认删除')
-        .then(() => this.$ajax.put(`/${apiPath}/meta_field/deleteBatch`, this.selectItems.map(field => field.fieldId)))
-        .then(response => this.$common.checkResult(response))
+        .then(() => fieldApi.deleteBatch(this.selectItems.map(field => field.fieldId)))
         .then(() => this.doQuery())
         .then(() => this.doQueryIndex())
         .then(() => this.doValidateEntityInner())
@@ -558,8 +559,7 @@ export default {
         return
       }
       this.loading = true
-      return this.$common.getEntityOptions(projectId)
-        .then(response => this.$common.checkResult(response))
+      return entityApi.getList(projectId)
         .then(data => { project.children = data.map(entity => ({ value: entity.entityId, label: entity.title })) })
         .finally(() => { this.loading = false })
     },
@@ -585,8 +585,7 @@ export default {
         return
       }
       this.loading = true
-      return this.$ajax.get(`/${apiPath}/meta_field/list`, { params: { ...this.query, withCascadeFieldNum: 1 } })
-        .then(response => this.$common.checkResult(response))
+      return fieldApi.getList(this.query.entityId, true)
         .then(data => {
           data.forEach(value => {
             value.indexes = []
@@ -627,8 +626,7 @@ export default {
         return
       }
       this.loading = true
-      return this.$ajax.get(`/${apiPath}/meta_index/list`, { params: this.query })
-        .then(response => this.$common.checkResult(response))
+      return indexApi.getList(this.query)
         .then(data => { this.indexes = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
@@ -639,8 +637,7 @@ export default {
         return
       }
       this.mtmEntitiesLoading = true
-      return this.$ajax.get(`/${apiPath}/meta_entity/${this.query.entityId}/mtm_entity_list_pair`)
-        .then(response => this.$common.checkResult(response))
+      return entityApi.getMtmEntityListPair(this.query.entityId)
         .then(data => { this.mtmEntities = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.mtmEntitiesLoading = false })
@@ -667,11 +664,11 @@ export default {
       const templates = this.templateForm.templates
       const template = this.templateForm.template
       const callback = (form, refresh) => {
-        return this.$ajax.post(`/${apiPath}/meta_field/save`, {
-          ...this.$common.removeBlankField(form),
-          entityId: this.entityId
-        })
-          .then(response => this.$common.checkResult(response))
+        return fieldApi.saveOrUpdate(
+          {
+            ...this.$common.removeBlankField(form),
+            entityId: this.entityId
+          }, false)
           // 执行页面刷新
           .then(data => {
             // 将字段放入特效列表
@@ -688,8 +685,7 @@ export default {
       const doAddImm = (temp, refresh) => {
         // 如果目标值是数字，则为临时模板
         if (typeof temp === 'number') {
-          return this.$ajax.get(`/${apiPath}/meta_field/${temp}`)
-            .then(response => this.$common.checkResult(response))
+          return fieldApi.get(temp)
             .then(data => callback(data, refresh))
             .catch(error => this.$common.showNotifyError(error))
         } else {
@@ -789,15 +785,13 @@ export default {
     },
     handleDelIndexField (index, field) {
       this.$common.confirm(`请确认是否从索引【${index.indexName}】中删除【${field.fieldDesc}】字段`)
-        .then(() => this.$ajax.put(`/${apiPath}/meta_index/${index.indexId}/removeField`, [field.fieldId]))
-        .then(response => this.$common.checkResult(response))
+        .then(() => indexApi.removeField(index.indexId, [field.fieldId]))
         .then(() => this.doQueryIndex())
         .catch(error => this.$common.showNotifyError(error))
     },
     handleDelIndex (index) {
       this.$common.confirm(`请确认是否删除索引【${index.indexName}】`)
-        .then(() => this.$ajax.delete(`/${apiPath}/meta_index/${index.indexId}`))
-        .then(response => this.$common.checkResult(response))
+        .then(() => indexApi.deleteSingle(index.indexId))
         .then(() => this.doQueryIndex())
         .catch(error => this.$common.showNotifyError(error))
     },
@@ -823,8 +817,7 @@ export default {
         field.orderNoEdit = false
         return
       }
-      this.$ajax.put(`/${apiPath}/meta_field/update_order_no`, { orderNo: field.orderNo, fieldId: field.fieldId })
-        .then(response => this.$common.checkResult(response))
+      fieldApi.updateOrderNo(field.fieldId, field.orderNo)
         .then(data => {
           field.orderNoEdit = false
           field.oldOrderNo = data
@@ -851,8 +844,7 @@ export default {
       if (!this.query.projectId || !this.query.entityId || !this.list.length) {
         return
       }
-      return this.$ajax.get(`/${apiPath}/meta_validate/entity_inner/${this.query.entityId}`)
-        .then(response => this.$common.checkResult(response))
+      return entityApi.validateEntityInner(this.query.entityId)
         .then(data => {
           const fieldValidates = data.fields
           this.list.forEach(field => {
@@ -888,8 +880,7 @@ export default {
         return
       }
       if (typeof value === 'number') {
-        this.$ajax.get(`/${apiPath}/meta_field/${value}`)
-          .then(response => this.$common.checkResult(response))
+        fieldApi.get(value)
           .then(data => {
             this.templateForm.orderNo = data.orderNo
           })

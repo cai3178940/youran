@@ -232,7 +232,9 @@
 
 <script>
 import options from '@/components/options'
-import { apiPath } from '@/components/common'
+import entityApi from '@/api/entity'
+import fieldApi from '@/api/field'
+import constApi from '@/api/const'
 import { initFormBean, getRules } from './model'
 import { findSystemTemplate } from '@/components/fieldTemplate'
 
@@ -357,8 +359,7 @@ export default {
       }
     },
     initForeignEntityOptions () {
-      return this.$common.getEntityOptions(this.projectId)
-        .then(response => this.$common.checkResult(response))
+      return entityApi.getList(this.projectId)
         .then(data => { this.entityFieldOptions = data.map(entity => ({ value: entity.entityId, label: entity.title, children: [] })) })
     },
     handleForeignEntityChange (optionArray) {
@@ -372,8 +373,7 @@ export default {
       if (entity.children.length) {
         return
       }
-      return this.$common.getFieldOptions(entityId)
-        .then(response => this.$common.checkResult(response))
+      return fieldApi.getList(entityId, false)
         .then(data => {
           entity.children = data.filter(field => field.primaryKey)
             .map(field => ({
@@ -419,8 +419,7 @@ export default {
       if (this.constList) {
         action()
       } else {
-        this.$common.getConstOptions(this.projectId)
-          .then(response => this.$common.checkResult(response))
+        constApi.getList(this.projectId)
           .then(data => {
             this.constList = data.list
             action()
@@ -428,8 +427,7 @@ export default {
       }
     },
     getField () {
-      return this.$ajax.get(`/${apiPath}/meta_field/${this.fieldId}`)
-        .then(response => this.$common.checkResult(response))
+      return fieldApi.get(this.fieldId)
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
     },
@@ -452,15 +450,9 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          if (this.edit) {
-            return this.$ajax.put(`/${apiPath}/meta_field/update`, this.$common.removeBlankField(this.form))
-          } else {
-            return this.$ajax.post(`/${apiPath}/meta_field/save`, this.$common.removeBlankField(this.form))
-          }
+          return fieldApi.saveOrUpdate(this.$common.removeBlankField(this.form), this.edit)
         })
-      // 校验返回结果
-        .then(response => this.$common.checkResult(response))
-      // 执行页面跳转
+        // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '操作成功')
           this.goBack(false)
@@ -545,8 +537,7 @@ export default {
         this.formReady()
       }
       if (type === 'temp') {
-        const promise2 = this.$ajax.get(`/${apiPath}/meta_field/${template}`)
-          .then(response => this.$common.checkResult(response))
+        const promise2 = fieldApi.get(template)
           .then(data => new Promise((resolve, reject) => {
             this.form = Object.assign({}, data, {
               entityId: entityId,

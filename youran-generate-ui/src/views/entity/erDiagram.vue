@@ -9,8 +9,9 @@
 </template>
 
 <script>
-import { apiPath } from '@/components/common'
 import go from 'gojs'
+import entityApi from '@/api/entity'
+
 export default {
   name: 'er-diagram',
   data () {
@@ -32,8 +33,7 @@ export default {
 
     queryErDiagram (projectId, entityIds) {
       this.loading = true
-      return this.$ajax.get(`/${apiPath}/er_diagram/show`, { params: { projectId, entityIds } })
-        .then(response => this.$common.checkResult(response))
+      return entityApi.getErDiagram(projectId, entityIds)
         .then(data => { this.erDiagram = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })

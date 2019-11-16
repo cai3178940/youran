@@ -94,8 +94,6 @@
 </template>
 
 <script>
-import { apiPath } from '@/components/common'
-import FileTypeUtil from '@/components/file-type-util'
 /**
  * 代码编辑器
  * https://codemirror.net/
@@ -103,12 +101,7 @@ import FileTypeUtil from '@/components/file-type-util'
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/base16-dark.css'
-import 'codemirror/mode/clike/clike.js'
 import 'codemirror/mode/xml/xml.js'
-import 'codemirror/mode/yaml/yaml.js'
-import 'codemirror/mode/properties/properties.js'
-import 'codemirror/mode/sql/sql.js'
-import 'codemirror/mode/markdown/markdown.js'
 /**
  * 右键菜单组件
  * https://github.com/johndatserakis/vue-simple-context-menu
@@ -118,6 +111,8 @@ import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
 import { initTemplateFileFormBean, getTemplateFileRulesRules } from './model'
 import options from '@/components/options'
 import { getExpandedNodes } from '@/components/element-tree-util'
+import FileTypeUtil from '@/components/file-type-util'
+import templateApi from '@/api/template'
 
 // 如果文件保存中，则等待多久以后再提交
 const savingWaitTime = 2000
@@ -339,8 +334,7 @@ export default {
       return false
     },
     queryCodeTree (templateId) {
-      return this.$ajax.get(`/${apiPath}/code_template/${templateId}/dir_tree`)
-        .then(response => this.$common.checkResult(response))
+      return templateApi.getDirTree(templateId)
         .then(data => this.setCodeTree(data))
         .catch(error => this.$common.showNotifyError(error))
     },
@@ -408,8 +402,7 @@ export default {
     },
     queryFileInfo (fileId, callback) {
       this.fileLoading = true
-      return this.$ajax.get(`/${apiPath}/template_file/${fileId}`)
-        .then(response => this.$common.checkResult(response))
+      return templateApi.getTemplateFile(fileId)
         .then(file => callback(file))
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.fileLoading = false })
@@ -459,8 +452,7 @@ export default {
     handleDeleteTemplateFile (fileId) {
       this.$common.confirm('是否确认删除')
         .then(() => this.forceSaveCurrentTemplateFileContent())
-        .then(() => this.$ajax.delete(`/${apiPath}/template_file/${fileId}`))
-        .then(response => this.$common.checkResult(response))
+        .then(() => templateApi.deleteTemplateFile(fileId))
         .then(() => {
           if (fileId === this.currentFile.fileId) {
             this.setCurrentFile(initTemplateFileFormBean())
@@ -476,15 +468,9 @@ export default {
     handleSaveTemplateFile () {
       this.$refs.templateFileForm.validate()
         .then(() => {
-          if (this.editTemplateFile) {
-            return this.$ajax.put(`/${apiPath}/template_file`,
-              Object.assign({}, this.templateFileForm, { templateId: this.templateId }))
-          } else {
-            return this.$ajax.post(`/${apiPath}/template_file`,
-              Object.assign({}, this.templateFileForm, { templateId: this.templateId }))
-          }
+          const templateFileDTO = Object.assign({}, this.templateFileForm, { templateId: this.templateId })
+          return templateApi.saveOrUpdateTemplateFile(templateFileDTO, this.editTemplateFile)
         })
-        .then(response => this.$common.checkResult(response))
         .then(() => {
           this.templateFileFormVisible = false
         })
@@ -541,9 +527,7 @@ export default {
      */
     doSaveTemplateFileContent (fileId, version, content) {
       log('执行保存')
-      return this.$ajax.put(`/${apiPath}/template_file/${fileId}/content`,
-        Object.assign({}, { version: version, content: content }))
-        .then(response => this.$common.checkResult(response))
+      return templateApi.updateTemplateFileContent(version, content)
         .then(version => {
           // 保存成功以后把最新乐观锁版本号写回当前文件
           this.currentFile.version = version

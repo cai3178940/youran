@@ -46,17 +46,15 @@
       </el-table-column>
     </el-table>
     <template-files ref="templateFiles"></template-files>
-    <!-- 文件下载专用iframe -->
-    <iframe style="display:none;" :src="downloadUrl"></iframe>
     <!-- 模板导入对话框 -->
     <import-template ref="importTemplate" @success="doQuery"></import-template>
   </div>
 </template>
 
 <script>
-import { apiPath } from '@/components/common'
 import templateFiles from './templateFiles'
 import importTemplate from './import.vue'
+import templateApi from '@/api/template'
 
 export default {
   name: 'templateList',
@@ -66,7 +64,6 @@ export default {
   },
   data () {
     return {
-      query: {},
       activeNum: 0,
       selectItems: [],
       list: [],
@@ -84,21 +81,16 @@ export default {
         this.$common.showMsg('warning', '请选择模板')
         return
       }
+      const templateIds = this.selectItems.map(template => template.templateId)
       this.$common.confirm('是否确认删除')
-        .then(() => this.$ajax.delete(`/${apiPath}/code_template`,
-          {
-            data: this.selectItems.map(template => template.templateId)
-          }))
-        .then(response => this.$common.checkResult(response))
+        .then(() => templateApi.deleteBatch(templateIds))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
     },
     // 列表查询
     doQuery () {
       this.loading = true
-      this.loadingText = '列表加载中'
-      return this.$ajax.get(`/${apiPath}/code_template`, { params: this.query })
-        .then(response => this.$common.checkResult(response))
+      return templateApi.getList()
         .then(data => {
           this.list = data
         })
@@ -115,15 +107,11 @@ export default {
       this.$refs.templateFiles.show(row.templateId, row.name)
     },
     exportTemplate (row) {
-      this.downloadUrl = `/${apiPath}/code_template/${row.templateId}/export`
-      setTimeout(() => {
-        this.downloadUrl = null
-      }, 2000)
+      templateApi.exportZip(row.templateId)
     },
     copyTemplate (row) {
       this.$common.confirm(`是否确认复制模板(${row.code})`)
-        .then(() => this.$ajax.post(`/${apiPath}/code_template/${row.templateId}/copy`))
-        .then(response => this.$common.checkResult(response))
+        .then(() => templateApi.copy(row.templateId))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
     },

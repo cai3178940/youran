@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { apiPath } from '@/components/common'
+import templateApi from '@/api/template'
 import { initFormBean, getRules } from './model'
 import { mapState } from 'vuex'
 
@@ -77,8 +77,7 @@ export default {
   methods: {
     getTemplate () {
       this.formLoading = true
-      return this.$ajax.get(`/${apiPath}/code_template/${this.templateId}`)
-        .then(response => this.$common.checkResult(response))
+      return templateApi.get(this.templateId)
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.formLoading = false })
@@ -95,14 +94,8 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          if (this.edit) {
-            return this.$ajax.put(`/${apiPath}/code_template`, this.form)
-          } else {
-            return this.$ajax.post(`/${apiPath}/code_template`, this.form)
-          }
+          return templateApi.saveOrUpdate(this.form, this.edit)
         })
-        // 校验返回结果
-        .then(response => this.$common.checkResult(response))
         // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '操作成功')

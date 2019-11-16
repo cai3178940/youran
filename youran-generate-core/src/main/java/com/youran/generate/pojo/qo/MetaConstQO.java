@@ -1,6 +1,6 @@
 package com.youran.generate.pojo.qo;
 
-import com.youran.common.pojo.qo.PageQO;
+import com.youran.common.pojo.qo.AbstractQO;
 import io.swagger.annotations.ApiParam;
 
 import javax.validation.constraints.NotNull;
@@ -14,7 +14,7 @@ import static com.youran.generate.pojo.example.MetaConstExample.N_PROJECTID;
  * @author: cbb
  * @date: 2017/6/14
  */
-public class MetaConstQO extends PageQO {
+public class MetaConstQO extends AbstractQO {
 
     @ApiParam(value = N_PROJECTID, example = E_PROJECTID)
     @NotNull

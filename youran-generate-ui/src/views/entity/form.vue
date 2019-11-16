@@ -37,7 +37,7 @@
               </el-col>
               <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
                 <el-tooltip class="item" effect="dark" content="粘贴到右边并转下划线" placement="top">
-                  <el-button type="text" @click="copyClassNameToTableName()" tabindex="21">
+                  <el-button type="text" @click="copyClassNameToTableName()" tabindex="25">
                     <i class="iconfont icon-double-right table-cell-icon color-primary" style="vertical-align: middle;"></i>
                   </el-button>
                 </el-tooltip>
@@ -84,8 +84,8 @@
 </template>
 
 <script>
-import { apiPath } from '@/components/common'
 import projectApi from '@/api/project'
+import entityApi from '@/api/entity'
 import { initFormBean, getRules } from './model'
 
 export default {
@@ -111,8 +111,7 @@ export default {
     },
     getEntity () {
       this.formLoading = true
-      return this.$ajax.get(`/${apiPath}/meta_entity/${this.entityId}`)
-        .then(response => this.$common.checkResult(response))
+      return entityApi.get(this.entityId)
         .then(data => { this.old = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.formLoading = false })
@@ -129,15 +128,9 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          if (this.edit) {
-            return this.$ajax.put(`/${apiPath}/meta_entity/update`, this.form)
-          } else {
-            return this.$ajax.post(`/${apiPath}/meta_entity/save`, this.form)
-          }
+          return entityApi.saveOrUpdate(this.form, this.edit)
         })
-      // 校验返回结果
-        .then(response => this.$common.checkResult(response))
-      // 执行页面跳转
+        // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '操作成功')
           this.goBack(false)

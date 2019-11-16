@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  strict: true,
   state: {
     /**
      * 系统用户信息
@@ -38,7 +39,11 @@ export default new Vuex.Store({
     /**
      * 待缓存的字段模板
      */
-    toCacheFieldTemplate: []
+    toCacheFieldTemplate: [],
+    /**
+     * 文件下载地址
+     */
+    downloadUrl: null
   },
   getters: {
     /**
@@ -112,6 +117,27 @@ export default new Vuex.Store({
       if (index > -1) {
         state.toCacheFieldTemplate.splice(index, 1)
       }
+    },
+    /**
+     * 设置文件下载路径
+     * @param state
+     * @param url
+     */
+    setDownloadUrl: (state, url) => {
+      state.downloadUrl = url
+    }
+  },
+  actions: {
+    /**
+     * 执行文件下载操作
+     * @param context
+     * @param url
+     */
+    downloadFile (context, url) {
+      context.commit('setDownloadUrl', url)
+      setTimeout(() => {
+        context.commit('setDownloadUrl', null)
+      }, 2000)
     }
   }
 })

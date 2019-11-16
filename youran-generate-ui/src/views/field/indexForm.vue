@@ -59,7 +59,8 @@
 
 <script>
 import options from '@/components/options'
-import { apiPath } from '@/components/common'
+import fieldApi from '@/api/field'
+import indexApi from '@/api/index'
 import { initIndexFormBean, getIndexRules } from './model'
 
 export default {
@@ -97,15 +98,13 @@ export default {
   methods: {
     queryField (entityId) {
       this.formLoading = true
-      return this.$common.getFieldOptions(entityId)
-        .then(response => this.$common.checkResult(response))
+      return fieldApi.getList(entityId, false)
         .then(data => { this.fieldList = data })
         .finally(() => { this.formLoading = false })
     },
     getIndex () {
       this.formLoading = true
-      return this.$ajax.get(`/${apiPath}/meta_index/${this.indexId}`)
-        .then(response => this.$common.checkResult(response))
+      return indexApi.get(this.indexId)
         .then(data => {
           const old = {
             ...data
@@ -133,15 +132,9 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          if (this.edit) {
-            return this.$ajax.put(`/${apiPath}/meta_index/update`, this.$common.removeBlankField(params))
-          } else {
-            return this.$ajax.post(`/${apiPath}/meta_index/save`, this.$common.removeBlankField(params))
-          }
+          return indexApi.saveOrUpdate(this.$common.removeBlankField(params), this.edit)
         })
-      // 校验返回结果
-        .then(response => this.$common.checkResult(response))
-      // 执行页面跳转
+        // 执行页面跳转
         .then(() => {
           this.$common.showMsg('success', '操作成功')
           this.goBack(false)

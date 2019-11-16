@@ -62,7 +62,6 @@
         where t.deleted=0
         and t.project_id = #{projectId,jdbcType=INTEGER}
         order by t.created_time
-        limit #{startIndex},#{pageSize}
     </select>
 
     <select id="findIdsByProject" resultType="int">

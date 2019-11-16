@@ -7,31 +7,66 @@ export default {
    */
   get (entityId) {
     return request.get(`/${apiPath}/meta_entity/${entityId}`)
-  },
-  /**
-   * 查询实体列表
-   */
-  getList (params) {
-    return request.get(`/${apiPath}/meta_entity/list`, { params: params })
       .then(response => checkResult(response))
   },
   /**
-   * 新增实体
+   * 查询项目下的实体列表
    */
-  save (data) {
-    return request.post(`/${apiPath}/meta_entity/save`, data)
+  getList (projectId) {
+    return request.get(`/${apiPath}/meta_entity/list`,
+      {
+        params: {
+          projectId
+        }
+      })
+      .then(response => checkResult(response))
   },
   /**
-   * 修改实体
+   * 保存实体
    */
-  update (data) {
-    return request.put(`/${apiPath}/meta_entity/update`, data)
+  saveOrUpdate (data, isUpdate) {
+    let saveURL = `/${apiPath}/meta_entity/save`
+    let method = 'post'
+    if (isUpdate) {
+      saveURL = `/${apiPath}/meta_entity/update`
+      method = 'put'
+    }
+    return request[method](saveURL, data)
+      .then(response => checkResult(response))
   },
   /**
    * 批量删除实体
    */
   deleteBatch (data) {
     return request.put(`/${apiPath}/meta_entity/deleteBatch`, data)
+      .then(response => checkResult(response))
   },
+  /**
+   * 查询多对多关联实体
+   */
+  getMtmEntityListPair (entityId) {
+    return request.get(`/${apiPath}/meta_entity/${entityId}/mtm_entity_list_pair`)
+      .then(response => checkResult(response))
+  },
+  /**
+   * 校验实体内部数据
+   */
+  validateEntityInner (entityId) {
+    return request.get(`/${apiPath}/meta_validate/entity_inner/${entityId}`)
+      .then(response => checkResult(response))
+  },
+  /**
+   * 查询ER图数据
+   */
+  getErDiagram (projectId, entityIds) {
+    return request.get(`/${apiPath}/er_diagram/show`,
+      {
+        params: {
+          projectId,
+          entityIds
+        }
+      })
+      .then(response => checkResult(response))
+  }
 
 }

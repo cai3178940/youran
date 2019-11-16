@@ -93,7 +93,8 @@
 </template>
 <script>
 import Vue from 'vue'
-import { apiPath } from '@/components/common'
+import fieldApi from '@/api/field'
+import mtmCascadeExtApi from '@/api/mtmCascadeExt'
 
 // 记录扩展模型
 const cascadeExtModel = {
@@ -148,22 +149,13 @@ export default {
       this.activeNum = this.selectItems.length
     },
     initCascadeFieldOptions () {
-      this.$ajax.get(`/${apiPath}/meta_field/list`, { params: { entityId: this.cascadeEntityId } })
-        .then(response => this.$common.checkResult(response))
+      fieldApi.getList(this.cascadeEntityId, false)
         .then(data => { this.cascadeFieldList = data })
         .catch(error => this.$common.showNotifyError(error))
     },
     doQuery () {
       this.loading = true
-      this.$ajax.get(`/${apiPath}/meta_mtm_cascade_ext/list`,
-        {
-          params: {
-            mtmId: this.mtmId,
-            entityId: this.entityId,
-            cascadeEntityId: this.cascadeEntityId
-          }
-        })
-        .then(response => this.$common.checkResult(response))
+      mtmCascadeExtApi.getList(this.mtmId, this.entityId, this.cascadeEntityId)
         .then(data => {
           this.list = data
           this.$emit('cascadeFieldNumChange', this.mtmId, this.cascadeEntityId, this.list.length)
@@ -195,17 +187,9 @@ export default {
       }
     },
     handleSave (row) {
-      let saveURL = `/${apiPath}/meta_mtm_cascade_ext/save`
-      let method = 'post'
-      if (row.mtmCascadeExtId) {
-        saveURL = `/${apiPath}/meta_mtm_cascade_ext/update`
-        method = 'put'
-      }
       const loading = this.$loading()
       // 提交
-      this.$ajax[method](saveURL, row)
-      // 校验返回结果
-        .then(response => this.$common.checkResult(response))
+      mtmCascadeExtApi.saveOrUpdate(row, !!row.mtmCascadeExtId)
       // 执行页面跳转
         .then(data => {
           this.$common.showMsg('success', '保存成功')
@@ -213,9 +197,8 @@ export default {
             row.mtmCascadeExtId = data.mtmCascadeExtId
             this.$emit('cascadeFieldNumAdd', this.mtmId, this.cascadeEntityId, 1)
           }
-          return this.$ajax.get(`/${apiPath}/meta_mtm_cascade_ext/${row.mtmCascadeExtId}`)
+          return mtmCascadeExtApi.get(row.mtmCascadeExtId)
         })
-        .then(response => this.$common.checkResult(response))
         .then(data => {
           Object.assign(row, data, {
             editFlag: false
@@ -237,10 +220,9 @@ export default {
       this.$common.confirm('是否确认删除')
         .then(() => {
           if (params.length > 0) {
-            return this.$ajax.put(`/${apiPath}/meta_mtm_cascade_ext/deleteBatch`, params)
+            return mtmCascadeExtApi.deleteBatch(params)
           }
         })
-        .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
     }

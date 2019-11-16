@@ -127,8 +127,6 @@
     </el-dialog>
 
     <code-preview ref="codePreview"></code-preview>
-    <!-- 文件下载专用iframe -->
-    <iframe style="display:none;" :src="downloadUrl"></iframe>
   </div>
 </template>
 
@@ -193,7 +191,6 @@ export default {
     handleDel (row) {
       this.$common.confirm('是否确认删除')
         .then(() => projectApi.deleteBatch([row.projectId]))
-        .then(response => this.$common.checkResult(response))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
     },
@@ -385,8 +382,6 @@ export default {
           loading = this.$loading()
           return projectApi.reverseEngineeringCheck(this.reverseEngineeringForm)
         })
-      // 校验返回结果
-        .then(response => this.$common.checkResult(response))
         .then(() => {
           this.$common.showMsg('success', '校验通过')
         })
@@ -406,8 +401,6 @@ export default {
           loading = this.$loading()
           return projectApi.reverseEngineeringExecute(this.reverseEngineeringForm)
         })
-        // 校验返回结果
-        .then(response => this.$common.checkResult(response))
         .then(() => {
           this.$common.showMsg('success', '执行成功')
           this.reverseEngineeringFormVisible = false

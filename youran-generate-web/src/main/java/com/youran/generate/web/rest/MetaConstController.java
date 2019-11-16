@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 /**
  * 【常量】控制器
@@ -55,9 +56,9 @@ public class MetaConstController extends AbstractController implements MetaConst
 
     @Override
     @GetMapping(value = "/list")
-    public ResponseEntity<PageVO<MetaConstListVO>> list(@Valid MetaConstQO metaConstQO) {
-        PageVO<MetaConstListVO> page = metaConstService.list(metaConstQO);
-        return ResponseEntity.ok(page);
+    public ResponseEntity<List<MetaConstListVO>> list(@Valid MetaConstQO metaConstQO) {
+        List<MetaConstListVO> list = metaConstService.list(metaConstQO);
+        return ResponseEntity.ok(list);
     }
 
     @Override

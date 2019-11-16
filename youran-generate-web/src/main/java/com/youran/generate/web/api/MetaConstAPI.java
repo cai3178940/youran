@@ -1,6 +1,5 @@
 package com.youran.generate.web.api;
 
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.pojo.dto.MetaConstAddDTO;
 import com.youran.generate.pojo.dto.MetaConstUpdateDTO;
 import com.youran.generate.pojo.qo.MetaConstQO;
@@ -11,6 +10,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 /**
  * 【常量】api
@@ -40,13 +41,13 @@ public interface MetaConstAPI {
     ResponseEntity<MetaConstShowVO> update(MetaConstUpdateDTO metaConstUpdateDTO);
 
     /**
-     * 分页查询常量
+     * 查询常量列表
      */
-    @ApiOperation(value = "分页查询常量")
+    @ApiOperation(value = "查询常量列表")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "metaConstQO", dataType = "MetaConstQO", value = "分页查询参数", paramType = "body"),
     })
-    ResponseEntity<PageVO<MetaConstListVO>> list(MetaConstQO metaConstQO);
+    ResponseEntity<List<MetaConstListVO>> list(MetaConstQO metaConstQO);
 
     /**
      * 查看常量详情

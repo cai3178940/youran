@@ -27,7 +27,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table ref="constTable" :data="page.list" style="width: 100%" :border="true"
+    <el-table ref="constTable" :data="list" style="width: 100%" :border="true"
               @selection-change="selectionChange" @expand-change="expandChange" v-loading="loading">
       <el-table-column type="expand" width="50">
         <template v-slot="scope">
@@ -86,26 +86,14 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <el-row type="flex" justify="end" style="padding:20px 0; ">
-      <el-pagination
-        @size-change="sizeChange"
-        @current-change="currentChange"
-        :current-page="page.currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="page.pageSize"
-        layout="sizes, prev, pager, next"
-        :total="page.total">
-      </el-pagination>
-    </el-row>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import options from '@/components/options'
-import { apiPath } from '@/components/common'
 import projectApi from '@/api/project'
+import constApi from '@/api/const'
 import { initDetailFormBean } from './model'
 
 const constDetailModel = initDetailFormBean(false)
@@ -125,12 +113,7 @@ export default {
       projectList: [],
       activeNum: 0,
       selectItems: [],
-      page: {
-        currentPage: 1,
-        total: 0,
-        pageSize: 20,
-        list: []
-      },
+      list: [],
       expandedRow: null,
       loading: false,
       detailList: [],
@@ -165,18 +148,9 @@ export default {
         return
       }
       this.$common.confirm('是否确认删除')
-        .then(() => this.$ajax.put(`/${apiPath}/meta_const/deleteBatch`, this.selectItems.map(c => c.constId)))
-        .then(response => this.$common.checkResult(response))
+        .then(() => constApi.deleteBatch(this.selectItems.map(c => c.constId)))
         .then(() => this.doQuery())
         .catch(error => this.$common.showNotifyError(error))
-    },
-    sizeChange (pageSize) {
-      this.page.pageSize = pageSize
-      this.doQuery()
-    },
-    currentChange (currentPage) {
-      this.page.currentPage = currentPage
-      this.doQuery()
     },
     queryProject () {
       this.loading = true
@@ -199,16 +173,9 @@ export default {
       if (!this.query.projectId) {
         return
       }
-      // 将查询参数和分页参数合并
-      const params = {
-        ...this.query,
-        currentPage: this.page.currentPage,
-        pageSize: this.page.pageSize
-      }
       this.loading = true
-      return this.$ajax.get(`/${apiPath}/meta_const/list`, { params: params })
-        .then(response => this.$common.checkResult(response))
-        .then(data => { this.page = data })
+      return constApi.getList(this.query.projectId)
+        .then(data => { this.list = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
@@ -244,8 +211,11 @@ export default {
     // 枚举值列表查询
     doDetailQuery (constId) {
       this.detailLoading = true
-      return this.$ajax.get(`/${apiPath}/meta_const_detail/list`, { params: { 'projectId': this.query.projectId, 'constId': constId } })
-        .then(response => this.$common.checkResult(response))
+      return constApi.getDetailList(
+        {
+          'projectId': this.query.projectId,
+          'constId': constId
+        })
         .then(data => { this.detailList = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.detailLoading = false })
@@ -266,32 +236,23 @@ export default {
       Vue.set(detail, 'editFlag', true)
     },
     handleDetailSave (detail) {
-      let saveURL = `/${apiPath}/meta_const_detail/save`
-      let method = 'post'
-      const isEdit = !!detail.constDetailId
-      if (isEdit) {
-        saveURL = `/${apiPath}/meta_const_detail/update`
-        method = 'put'
-      }
+      const isUpdate = !!detail.constDetailId
       const loading = this.$loading()
       // 提交
-      this.$ajax[method](saveURL, detail)
-      // 校验返回结果
-        .then(response => this.$common.checkResult(response))
+      constApi.saveOrUpdateDetail(detail, isUpdate)
         // 执行页面跳转
         .then(data => {
           this.$common.showMsg('success', '保存成功')
           if (!detail.constDetailId) {
             detail.constDetailId = data.constDetailId
           }
-          return this.$ajax.get(`/${apiPath}/meta_const_detail/${detail.constDetailId}`)
+          return constApi.getDetail(detail.constDetailId)
         })
-        .then(response => this.$common.checkResult(response))
         .then(data => {
           Object.assign(detail, data, {
             editFlag: false
           })
-          if (!isEdit) {
+          if (!isUpdate) {
             this.removeDetailAdd(detail)
             this.detailList.push(detail)
           }
@@ -316,8 +277,7 @@ export default {
     handleDetailDel (theConst, detail) {
       if (detail.constDetailId) {
         this.$common.confirm('是否确认删除枚举值')
-          .then(() => this.$ajax.put(`/${apiPath}/meta_const_detail/deleteBatch`, [detail.constDetailId]))
-          .then(response => this.$common.checkResult(response))
+          .then(() => constApi.deleteDetailBatch([detail.constDetailId]))
           .then(() => this.doDetailQuery(theConst.constId))
           .catch(error => this.$common.showNotifyError(error))
       } else {
@@ -345,7 +305,7 @@ export default {
       .then(() => this.doQuery())
       .then(() => {
         if (this.constId) {
-          const row = this.page.list.find(e => e.constId === parseInt(this.constId))
+          const row = this.list.find(e => e.constId === parseInt(this.constId))
           this.$refs.constTable.toggleRowExpansion(row, true)
         }
       })

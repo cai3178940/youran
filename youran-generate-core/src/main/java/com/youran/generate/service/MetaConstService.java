@@ -3,7 +3,6 @@ package com.youran.generate.service;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.dao.MetaConstDAO;
 import com.youran.generate.pojo.dto.MetaConstAddDTO;
 import com.youran.generate.pojo.dto.MetaConstUpdateDTO;
@@ -93,9 +92,9 @@ public class MetaConstService {
      * @param metaConstQO
      * @return
      */
-    public PageVO<MetaConstListVO> list(MetaConstQO metaConstQO) {
-        PageVO<MetaConstListVO> page = metaConstDAO.findByPage(metaConstQO);
-        return page;
+    public List<MetaConstListVO> list(MetaConstQO metaConstQO) {
+        List<MetaConstListVO> list = metaConstDAO.findListByQuery(metaConstQO);
+        return list;
     }
 
     /**
