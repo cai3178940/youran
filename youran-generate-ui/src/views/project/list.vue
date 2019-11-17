@@ -26,8 +26,8 @@
       <el-table-column property="packageName" label="包名" width="180"></el-table-column>
       <el-table-column label="Git仓库" width="90px">
         <template v-slot="scope">
-          <i v-if="scope.row.remote" class="iconfont icon-check2 table-cell-icon color-success"></i>
-          <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
+          <svg-icon v-if="scope.row.remote" className="table-cell-icon color-success" iconClass="check"></svg-icon>
+          <svg-icon v-else className="table-cell-icon color-danger" iconClass="times"></svg-icon>
         </template>
       </el-table-column>
       <!--代码下载进度条-->
@@ -51,33 +51,33 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" >
-                <i class="iconfont icon-edit_small1 dropdown-icon color-primary"></i>
+                <svg-icon className="dropdown-icon color-primary" iconClass="edit3"></svg-icon>
                 编辑
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleDel',arg:scope.row}" >
-                <i class="iconfont icon-trash dropdown-icon color-danger"></i>
+                <svg-icon className="dropdown-icon color-danger" iconClass="trash"></svg-icon>
                 删除
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" divided>
-                <i class="iconfont icon-jushounixiangdan-moren dropdown-icon color-warning"></i>
+                <svg-icon className="dropdown-icon color-warning" iconClass="reverse-engineering"></svg-icon>
                 反向工程
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleExport',arg:scope.row}" >
-                <i class="iconfont icon-download dropdown-icon color-purple"></i>
+                <svg-icon className="dropdown-icon color-purple" iconClass="download"></svg-icon>
                 导出元数据
               </el-dropdown-item>
               <el-dropdown-item v-for="(templateIndex, index) in getProjectTemplateIndexs(scope.row)"
                                 :key="'preview_button_' + scope.row.projectId + '_' + templateIndex"
                                 :command="{method:'handlePreView',arg: [ scope.row , templateIndex ]}"
                                 :divided="index===0">
-                <i class="iconfont icon-preview2 dropdown-icon" :class="iconColorClass[index]"></i>
+                <svg-icon :className="'dropdown-icon ' + iconColorClass[index]" iconClass="preview"></svg-icon>
                 代码预览({{scope.row | templateCode(templateIndex) }}）
               </el-dropdown-item>
               <el-dropdown-item v-for="(templateIndex, index) in getProjectTemplateIndexs(scope.row)"
                                 :key="'gencode_button_' + scope.row.projectId + '_' + templateIndex"
                                 :command="{method:'handleGenCode',arg: [ scope.row , templateIndex ]}"
                                 :divided="index===0">
-                <i class="iconfont icon-code-download dropdown-icon" :class="iconColorClass[index]"></i>
+                <svg-icon :className="'dropdown-icon ' + iconColorClass[index]" iconClass="code-download"></svg-icon>
                 下载代码({{scope.row | templateCode(templateIndex) }}）
               </el-dropdown-item>
               <template v-if="scope.row.remote">
@@ -85,7 +85,7 @@
                                   :key="'gitcommit_button_' + scope.row.projectId + '_' + templateIndex"
                                   :command="{method:'handleCommit',arg: [ scope.row , templateIndex ]}"
                                   :divided="index===0">
-                  <i class="iconfont icon-git1 dropdown-icon" :class="iconColorClass[index]"></i>
+                  <svg-icon :className="'dropdown-icon ' + iconColorClass[index]" iconClass="git"></svg-icon>
                   提交Git({{scope.row | templateCode(templateIndex) }}）
                 </el-dropdown-item>
               </template>
@@ -446,6 +446,7 @@ export default {
    * 下拉菜单图标
    */
   .dropdown-icon {
+    font-size: 14px;
     margin-right: 0px;
     vertical-align: -4%;
   }

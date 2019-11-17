@@ -39,8 +39,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <i v-if="scope.row.query" class="iconfont icon-check2 table-cell-icon color-success"></i>
-            <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
+            <svg-icon v-if="scope.row.query" className="table-cell-icon color-success" iconClass="check"></svg-icon>
+            <svg-icon v-else className="table-cell-icon color-danger" iconClass="times"></svg-icon>
           </template>
         </template>
       </el-table-column>
@@ -61,8 +61,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <i v-if="scope.row.list" class="iconfont icon-check2 table-cell-icon color-success"></i>
-            <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
+            <svg-icon v-if="scope.row.list" className="table-cell-icon color-success" iconClass="check"></svg-icon>
+            <svg-icon v-else className="table-cell-icon color-danger" iconClass="times"></svg-icon>
           </template>
         </template>
       </el-table-column>
@@ -75,8 +75,8 @@
             </el-checkbox>
           </template>
           <template v-else>
-            <i v-if="scope.row.show" class="iconfont icon-check2 table-cell-icon color-success"></i>
-            <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
+            <svg-icon v-if="scope.row.show" className="table-cell-icon color-success" iconClass="check"></svg-icon>
+            <svg-icon v-else className="table-cell-icon color-danger" iconClass="times"></svg-icon>
           </template>
         </template>
       </el-table-column>

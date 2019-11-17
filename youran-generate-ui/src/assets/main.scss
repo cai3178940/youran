@@ -74,6 +74,7 @@ input, textarea, select, button {
 
 .color-primary {
     color: $color-primary;
+    fill: $color-primary !important;
 }
 
 .color-purple {
@@ -108,6 +109,8 @@ input, textarea, select, button {
  * 表格中的图标
  */
 .table-cell-icon {
+    font-size: 17px;
+    margin: 0 5px;
     vertical-align: middle;
 }
 

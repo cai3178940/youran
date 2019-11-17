@@ -11,6 +11,7 @@ import './assets/main.scss'
 import './assets/element-override.scss'
 import HelpPopover from './components/HelpPopover'
 import browser from 'browser-detect'
+import '@/icons'
 
 const result = browser()
 if (result.name !== 'chrome') {

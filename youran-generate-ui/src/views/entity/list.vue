@@ -48,13 +48,13 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{method:'handleMtmDel',arg:[mtm]}">
-                  <i class="iconfont icon-trash table-cell-icon color-danger"
-                     style="margin-right: 0px; vertical-align: middle;"></i>
+                  <svg-icon className="index-menu-icon color-danger"
+                            iconClass="trash"></svg-icon>
                   删除多对多
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleMtmEdit',arg:[mtm]}">
-                  <i class="iconfont icon-edit_small1 table-cell-icon color-danger"
-                     style="margin-right: 0px; vertical-align: middle; "></i>
+                  <svg-icon className="index-menu-icon color-danger"
+                            iconClass="edit3"></svg-icon>
                   编辑多对多
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -66,8 +66,8 @@
       <el-table-column property="tableName" label="表名"></el-table-column>
       <el-table-column label="分页" width="60px">
         <template v-slot="scope">
-          <i v-if="scope.row.pageSign" class="iconfont icon-check2 table-cell-icon color-success"></i>
-          <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
+          <svg-icon v-if="scope.row.pageSign" className="table-cell-icon color-success" iconClass="check"></svg-icon>
+          <svg-icon v-else className="table-cell-icon color-danger" iconClass="times"></svg-icon>
         </template>
       </el-table-column>
       <el-table-column property="desc" label="描述"></el-table-column>
@@ -304,5 +304,10 @@ export default {
       border-color: $active-color;
     }
 
+  }
+
+  .index-menu-icon {
+    font-size: 17px;
+    vertical-align: middle !important;
   }
 </style>

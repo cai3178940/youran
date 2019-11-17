@@ -64,7 +64,7 @@
       <el-table-column label="字段标题">
         <template v-slot="scope">
           <template v-if="!scope.row.validate.success">
-            <i class="iconfont icon-exclamationmarkcircle color-warning"></i>
+            <svg-icon className="table-cell-icon color-warning" iconClass="mark-circle"></svg-icon>
           </template>
           <el-popover
             placement="top"
@@ -102,21 +102,18 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{method:'handleDelIndexField',arg:[index,scope.row]}">
-                  <i class="iconfont icon-times1 table-cell-icon"
-                     style="margin-right: 0px; vertical-align: middle;"
-                     :class="[index.unique?'color-danger':'color-primary']"></i>
+                  <svg-icon :className="'index-menu-icon '+(index.unique?'color-danger':'color-primary')"
+                            iconClass="times"></svg-icon>
                   删除索引字段
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleDelIndex',arg:[index]}">
-                  <i class="iconfont icon-trash table-cell-icon"
-                     style="margin-right: 0px; vertical-align: middle;"
-                     :class="[index.unique?'color-danger':'color-primary']"></i>
+                  <svg-icon :className="'index-menu-icon '+(index.unique?'color-danger':'color-primary')"
+                            iconClass="trash"></svg-icon>
                   删除整个索引
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleIndexEdit',arg:[index]}">
-                  <i class="iconfont icon-edit_small1 table-cell-icon"
-                     style="margin-right: 0px; vertical-align: middle;"
-                     :class="[index.unique?'color-danger':'color-primary']"></i>
+                  <svg-icon :className="'index-menu-icon '+(index.unique?'color-danger':'color-primary')"
+                            iconClass="edit3"></svg-icon>
                   编辑索引
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -137,8 +134,8 @@
       </el-table-column>
       <el-table-column label="非空" width="50px">
         <template v-slot="scope">
-          <i v-if="scope.row.notNull" class="iconfont icon-check2 table-cell-icon color-success"></i>
-          <i v-else class="iconfont icon-times1 table-cell-icon color-danger"></i>
+          <svg-icon v-if="scope.row.notNull" className="table-cell-icon color-success" iconClass="check"></svg-icon>
+          <svg-icon v-else className="table-cell-icon color-danger" iconClass="times"></svg-icon>
         </template>
       </el-table-column>
       <el-table-column label="性质" width="70px">
@@ -1102,5 +1099,10 @@ export default {
     .fa-icon {
       vertical-align: text-top;
     }
+  }
+
+  .index-menu-icon {
+    font-size: 17px;
+    vertical-align: middle !important;
   }
 </style>

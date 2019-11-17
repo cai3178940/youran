@@ -2,9 +2,7 @@
   <el-container class="wrapper">
     <el-header class="header">
       <div class="header-logo-wrapper">
-        <svg class="icon header-logo" aria-hidden="true">
-          <use xlink:href="#icon-youran"></use>
-        </svg>
+        <svg-icon className="header-logo" iconClass="logo"></svg-icon>
       </div>
       <div class="header-title">
         <h2 align="left" style="color:#FFFFFF;margin: 10px 0;">Youran代码自动化平台</h2>
@@ -28,15 +26,11 @@
       <el-aside class="menu">
         <el-menu :router="true">
           <el-menu-item index="/" :class="{'is-active': isRoutePath('/')}">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-Home"></use>
-            </svg>
+            <svg-icon className="menu-icon" iconClass="home"></svg-icon>
             <span slot="title">首页</span>
           </el-menu-item>
           <el-menu-item index="/project" :class="{'is-active': isRouteIndexOf('/project')}">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-project1"></use>
-            </svg>
+            <svg-icon className="menu-icon" iconClass="project"></svg-icon>
             <span slot="title">项目管理</span>
           </el-menu-item>
           <el-menu-item v-if="this.systemUserInfo.templateEnabled"
@@ -44,9 +38,7 @@
                           'is-active': isRouteIndexOf('/template'),
                           'menu-template-show-sfx': menuTemplateShowSfx
                         }">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-TEMPLATE"></use>
-            </svg>
+            <svg-icon className="menu-icon" iconClass="template"></svg-icon>
             <span slot="title">模板管理</span>
           </el-menu-item>
         </el-menu>
@@ -200,7 +192,7 @@ export default {
         width: 50px;
         height: 50px;
         .header-logo {
-          fill: #FFFFFF;
+          color: #FFFFFF;
           height: 50px;
           width: 50px;
         }
@@ -261,7 +253,7 @@ export default {
         font-size: 16px;
         font-weight: bold;
 
-        .icon {
+        .menu-icon {
           margin-right: 5px;
           font-size: 25px;
           vertical-align: middle;

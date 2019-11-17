@@ -11,7 +11,7 @@
       <slot></slot>
     </el-col>
     <el-col v-if="!!html" :span="2">
-      <i class="iconfont icon-icon-question color-primary" style="cursor: pointer;" v-popover:popover></i>
+      <svg-icon className="question-icon color-primary" iconClass="question" v-popover:popover></svg-icon>
     </el-col>
   </div>
 </template>
@@ -44,8 +44,10 @@ export default {
 
 <style lang="scss">
   @import '../../assets/common.scss';
-  .help-popover .question-circle {
+  .help-popover .question-icon {
     cursor: pointer;
+    font-size: 17px;
+    user-select: none;
     color: #409EFF
   }
 </style>
