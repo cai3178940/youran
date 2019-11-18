@@ -24,11 +24,15 @@
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item :disabled="fieldFeature.value===commonFeature.value"
                                       :command="{method:'changeCommonFeature'}">
-                      <span :class="commonFeature.icon"></span> {{commonFeature.label}}
+                      <svg-icon :className="commonFeature.iconClassName"
+                                :iconClass="commonFeature.icon"></svg-icon>
+                      {{commonFeature.label}}
                     </el-dropdown-item>
                     <el-dropdown-item :disabled="fieldFeature.value===fkFeature.value"
                                       :command="{method:'changeFkFeature'}">
-                      <span :class="fkFeature.icon"></span> {{fkFeature.label}}
+                      <svg-icon :className="fkFeature.iconClassName"
+                                :iconClass="fkFeature.icon"></svg-icon>
+                      {{fkFeature.label}}
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -64,7 +68,7 @@
                 <el-tooltip class="item" effect="dark" content="粘贴到右边并转下划线" placement="top">
                   <el-button type="text" @click="copyJfieldNameToFieldName()" tabindex="11">
                     <svg-icon className="table-cell-icon color-primary"
-                              style="vertical-align: middle;" iconClass="double-right"></svg-icon>
+                              svgStyle="vertical-align: middle;" iconClass="double-right"></svg-icon>
                   </el-button>
                 </el-tooltip>
               </el-col>

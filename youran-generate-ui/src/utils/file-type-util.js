@@ -1,14 +1,14 @@
 export default {
-  map: {
-    'xml': ['iconfont', 'icon-XML1'],
-    'ftl': ['iconfont', 'icon-icon-code-file-fill'],
-    'java': ['iconfont', 'icon-JAVA'],
-    'yml': ['iconfont', 'icon-YAML'],
-    'properties': ['iconfont', 'icon-properties-'],
-    'md': ['iconfont', 'icon-MD'],
-    'sql': ['iconfont', 'icon-sql'],
-    'folder': ['iconfont', 'icon-folder1'],
-    'txt': ['iconfont', 'icon-uicon_txt']
+  iconMap: {
+    'xml': 'xml',
+    'ftl': 'code',
+    'java': 'java',
+    'yml': 'yaml',
+    'properties': 'properties',
+    'md': 'md',
+    'sql': 'sql',
+    'folder': 'folder',
+    'txt': 'txt'
   },
   cmMode: {
     'xml': 'application/xml',
@@ -20,11 +20,11 @@ export default {
     'sql': 'text/x-mysql'
   },
   getIcon (type) {
-    const icon = this.map[type]
+    const icon = this.iconMap[type]
     if (icon) {
       return icon
     }
-    return this.map['txt']
+    return this.iconMap['txt']
   },
   getCmMode (type) {
     const mode = this.cmMode[type]

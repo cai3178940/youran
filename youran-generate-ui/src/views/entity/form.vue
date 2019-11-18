@@ -39,7 +39,7 @@
                 <el-tooltip class="item" effect="dark" content="粘贴到右边并转下划线" placement="top">
                   <el-button type="text" @click="copyClassNameToTableName()" tabindex="25">
                     <svg-icon className="table-cell-icon color-primary"
-                              style="vertical-align: middle;"
+                              svgStyle="vertical-align: middle;"
                               iconClass="double-right"></svg-icon>
                   </el-button>
                 </el-tooltip>

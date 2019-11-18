@@ -7,7 +7,11 @@
         <template v-for="(node,index) in paths">
           <span :key="node.key" class="codePathCell">
             <i v-if="index>0"  class="el-icon-arrow-right"></i>
-            <span><i :class="node.icon"></i> {{node.name}}</span>
+            <span>
+              <svg-icon v-if="node.icon" className=""
+                            :iconClass="node.icon"></svg-icon>
+              {{node.name}}
+            </span>
           </span>
         </template>
         <template v-if="currentFileStatus.visible">
@@ -36,7 +40,8 @@
               <span slot-scope="{ node, data }"
                     class="codeTreeNode"
                     @dblclick="codeTreeNodeDblclick(data, node)">
-                <i :class="getCodeTreeNodeIcon(data)"></i>
+                <svg-icon :iconClass="getCodeTreeNodeIcon(data).icon"
+                          :className="getCodeTreeNodeIcon(data).className"></svg-icon>
                 <span style="margin-left: 3px;">{{node.label}}</span>
               </span>
             </el-tree>
@@ -106,8 +111,7 @@ import 'codemirror/mode/xml/xml.js'
  * 右键菜单组件
  * https://github.com/johndatserakis/vue-simple-context-menu
  */
-import VueSimpleContextMenu from 'vue-simple-context-menu'
-import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
+import VueSimpleContextMenu from '@/components/VueSimpleContextMenu'
 import { initTemplateFileFormBean, getTemplateFileRulesRules } from './model'
 import options from '@/utils/options'
 import { getExpandedNodes } from '@/utils/element-tree-util'
@@ -122,24 +126,28 @@ const menuOptions1 = [
   {
     name: '新建模板文件',
     value: 'addTemplateFile',
-    class: ['iconfont', 'icon--Add-File', 'color-success-before']
+    svgIcon: 'add-file',
+    svgClassName: 'color-success'
   }
 ]
 const menuOptions2 = [
   {
     name: '新建模板文件',
     value: 'addTemplateFile',
-    class: ['iconfont', 'icon--Add-File', 'color-success-before']
+    svgIcon: 'add-file',
+    svgClassName: 'color-success'
   },
   {
     name: '修改文件属性',
     value: 'editTemplateFile',
-    class: ['iconfont', 'icon--Edit-File', 'color-primary-before']
+    svgIcon: 'edit-file',
+    svgClassName: 'color-primary'
   },
   {
     name: '删除模板文件',
     value: 'deleteTemplateFile',
-    class: ['iconfont', 'icon--Delete-File', 'color-danger-before']
+    svgIcon: 'delete-file',
+    svgClassName: 'color-danger'
   }
 ]
 
@@ -350,25 +358,28 @@ export default {
      * 目录树节点图标
      */
     getCodeTreeNodeIcon (data) {
-      let icon
+      const svgIcon = {
+        icon: '',
+        className: ''
+      }
       if (data.dir) {
-        icon = [...FileTypeUtil.getIcon('folder')]
+        svgIcon.icon = FileTypeUtil.getIcon('folder')
       } else {
-        icon = [...FileTypeUtil.getIcon(data.type)]
+        svgIcon.icon = FileTypeUtil.getIcon(data.type)
         if (data.info.abstracted) {
           // 抽象文件-红色图标
-          icon.push('color-danger')
+          svgIcon.className += 'color-danger'
         } else {
           if (data.info.contextType === 2) {
             // 实体上下文-蓝色图标
-            icon.push('color-primary')
+            svgIcon.className += 'color-primary'
           } else if (data.info.contextType === 3) {
             // 枚举上下文-黄色图标
-            icon.push('color-warning')
+            svgIcon.className += 'color-warning'
           }
         }
       }
-      return icon
+      return svgIcon
     },
     /**
      * 双击树节点
@@ -582,12 +593,6 @@ export default {
     }
 
     .el-dialog {
-    }
-
-    #context-menu {
-      .iconfont::before {
-        margin-right: 5px;
-      }
     }
 
     .file-status-cell {

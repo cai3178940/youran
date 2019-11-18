@@ -1,5 +1,5 @@
 <template>
-  <svg :class="svgClass" :style="style" aria-hidden="true" v-on="$listeners">
+  <svg :class="svgClass" :style="svgStyle" aria-hidden="true" v-on="$listeners">
     <use :href="iconName" />
   </svg>
 </template>
@@ -17,7 +17,7 @@ export default {
       type: String,
       default: ''
     },
-    style: {
+    svgStyle: {
       type: String,
       default: ''
     }

@@ -5,7 +5,11 @@
         <template v-for="(node,index) in paths">
           <span :key="node.key" class="codePathCell">
             <i v-if="index>0"  class="el-icon-arrow-right"></i>
-            <span><i :class="node.icon"></i> {{node.name}}</span>
+            <span>
+              <svg-icon v-if="node.icon" className=""
+                        :iconClass="node.icon"></svg-icon>
+              {{node.name}}
+            </span>
           </span>
         </template>
       </el-header>
@@ -20,7 +24,7 @@
               <span slot-scope="{ node, data }"
                     class="codeTreeNode"
                     @dblclick="codeTreeNodeDblclick(data, node)">
-                <i :class="getCodeTreeNodeIcon(data)"></i>
+                <svg-icon :iconClass="getCodeTreeNodeIcon(data)"></svg-icon>
                 <span style="margin-left: 3px;">{{node.label}}</span>
               </span>
             </el-tree>

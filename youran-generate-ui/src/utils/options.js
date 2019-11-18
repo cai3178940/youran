@@ -83,7 +83,8 @@ function getFieldTypeOptions () {
 const commonFeature = {
   value: 'default',
   label: '普通字段',
-  icon: ['iconfont', 'icon-pu2'],
+  icon: 'common',
+  iconClassName: '',
   hiddenAttrs: ['autoIncrement', 'foreignKey'],
   disabledAttrs: []
 }
@@ -91,7 +92,8 @@ const commonFeature = {
 const pkFeature = {
   value: 'pk',
   label: '主键',
-  icon: ['iconfont', 'icon-key', 'color-warning'],
+  icon: 'key',
+  iconClassName: 'color-warning',
   hiddenAttrs: ['foreignKey', 'dicType', 'attributes'],
   disabledAttrs: ['notNull']
 }
@@ -99,7 +101,8 @@ const pkFeature = {
 const fkFeature = {
   value: 'fk',
   label: '外键',
-  icon: ['iconfont', 'icon-key', 'color-primary'],
+  icon: 'key',
+  iconClassName: 'color-primary',
   hiddenAttrs: ['autoIncrement', 'dicType'],
   disabledAttrs: []
 }
@@ -108,42 +111,48 @@ const specialFieldFeatures = [
   {
     value: 'deleted',
     label: '逻辑删除',
-    icon: ['iconfont', 'icon-delete', 'color-danger'],
+    icon: 'delete',
+    iconClassName: 'color-danger',
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType', 'query', 'attributes'],
     disabledAttrs: ['notNull']
   },
   {
     value: 'createdTime',
     label: '创建时间',
-    icon: ['iconfont', 'icon-TIME', 'color-success'],
+    icon: 'time',
+    iconClassName: 'color-success',
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'createdBy',
     label: '创建人员',
-    icon: ['iconfont', 'icon-create-user', 'color-success'],
+    icon: 'create-user',
+    iconClassName: 'color-success',
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'operatedTime',
     label: '更新时间',
-    icon: ['iconfont', 'icon-TIME', 'color-primary'],
+    icon: 'time',
+    iconClassName: 'color-primary',
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'operatedBy',
     label: '更新人员',
-    icon: ['iconfont', 'icon-icons-edit-user', 'color-primary'],
+    icon: 'edit-user',
+    iconClassName: 'color-primary',
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
     value: 'version',
     label: '乐观锁版本号',
-    icon: ['iconfont', 'icon-version1', 'color-primary'],
+    icon: 'version',
+    iconClassName: 'color-primary',
     hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType', 'query', 'attributes'],
     disabledAttrs: ['notNull']
   }
