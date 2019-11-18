@@ -40,7 +40,7 @@ export default {
    * 移除索引字段
    */
   removeField (indexId, fieldIds) {
-    return request.put(`/${apiPath}/meta_index/${indexId}/removeField`, fieldIds)
+    return request.put(`/${apiPath}/meta_index/${indexId}/remove_field`, fieldIds)
       .then(response => checkResult(response))
   }
 

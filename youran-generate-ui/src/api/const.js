@@ -38,7 +38,7 @@ export default {
    * 批量删除枚举
    */
   deleteBatch (data) {
-    return request.put(`/${apiPath}/meta_const/deleteBatch`, data)
+    return request.put(`/${apiPath}/meta_const/delete_batch`, data)
       .then(response => checkResult(response))
   },
   /**
@@ -72,7 +72,7 @@ export default {
    * 批量删除枚举值
    */
   deleteDetailBatch (data) {
-    return request.put(`/${apiPath}/meta_const_detail/deleteBatch`, data)
+    return request.put(`/${apiPath}/meta_const_detail/delete_batch`, data)
       .then(response => checkResult(response))
   }
 

@@ -41,7 +41,7 @@ export default {
    * 批量删除项目
    */
   deleteBatch (data) {
-    return request.put(`/${apiPath}/meta_project/deleteBatch`, data)
+    return request.put(`/${apiPath}/meta_project/delete_batch`, data)
       .then(response => checkResult(response))
   },
   /**
@@ -99,7 +99,7 @@ export default {
    * 导出代码文件压缩包
    */
   exportCodeZipBySessionId (sessionId) {
-    const downloadUrl = `/${apiPath}/code_gen/downloadCode/${sessionId}`
+    const downloadUrl = `/${apiPath}/code_gen/download_code/${sessionId}`
     store.dispatch('downloadFile', downloadUrl)
   },
   /**

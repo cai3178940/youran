@@ -65,11 +65,11 @@ public class MetaCodeGenWsController extends AbstractController {
      * @param projectId     项目id
      * @param templateIndex 模板序号
      */
-    @MessageMapping(value = "/genCode/{sessionId}")
+    @MessageMapping(value = "/gen_code/{sessionId}")
     public void genCode(@DestinationVariable String sessionId,
                         @Header Integer projectId, @Header Integer templateIndex) {
         // 进度响应主题
-        String topic = "/code_gen/genCode_progress/" + sessionId;
+        String topic = "/code_gen/gen_code_progress/" + sessionId;
         try {
             // 初始化进度条
             ProgressVO.initProgress(sessionId);
@@ -94,11 +94,11 @@ public class MetaCodeGenWsController extends AbstractController {
      * @param projectId     项目id
      * @param templateIndex 模板序号
      */
-    @MessageMapping(value = "/genCodeAndZip/{sessionId}")
+    @MessageMapping(value = "/gen_code_and_zip/{sessionId}")
     public void genCodeAndZip(@DestinationVariable String sessionId,
                               @Header Integer projectId, @Header Integer templateIndex) {
         // 进度响应主题
-        String topic = "/code_gen/genCodeAndZip_progress/" + sessionId;
+        String topic = "/code_gen/gen_code_and_zip_progress/" + sessionId;
         try {
             // 初始化进度条
             ProgressVO.initProgress(sessionId);
@@ -125,7 +125,7 @@ public class MetaCodeGenWsController extends AbstractController {
      * @param sessionId
      * @param response
      */
-    @GetMapping(value = WebConst.API_PATH + "/code_gen/downloadCode/{sessionId}")
+    @GetMapping(value = WebConst.API_PATH + "/code_gen/download_code/{sessionId}")
     public void downloadCode(@PathVariable String sessionId, HttpServletResponse response) {
         File zipFile = null;
         Integer projectId = null;
@@ -152,11 +152,11 @@ public class MetaCodeGenWsController extends AbstractController {
      * @param projectId     项目id
      * @param templateIndex 模板序号
      */
-    @MessageMapping(value = "/gitCommit/{sessionId}")
+    @MessageMapping(value = "/git_commit/{sessionId}")
     public void gitCommit(@DestinationVariable String sessionId,
                           @Header Integer projectId, @Header Integer templateIndex) {
         // 进度响应主题
-        String topic = "/code_gen/gitCommit_progress/" + sessionId;
+        String topic = "/code_gen/git_commit_progress/" + sessionId;
         try {
             // 初始化进度条
             ProgressVO.initProgress(sessionId);

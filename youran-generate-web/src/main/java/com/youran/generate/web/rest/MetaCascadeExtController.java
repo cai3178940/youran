@@ -75,7 +75,7 @@ public class MetaCascadeExtController extends AbstractController implements Meta
     }
 
     @Override
-    @PutMapping(value = "deleteBatch")
+    @PutMapping(value = "delete_batch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] cascadeExtId) {
         if (ArrayUtils.isEmpty(cascadeExtId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);

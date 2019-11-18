@@ -77,7 +77,7 @@ public class MetaEntityController extends AbstractController implements MetaEnti
     }
 
     @Override
-    @PutMapping(value = "deleteBatch")
+    @PutMapping(value = "delete_batch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] entityId) {
         if (ArrayUtils.isEmpty(entityId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);

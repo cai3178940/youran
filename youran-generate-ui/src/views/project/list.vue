@@ -267,7 +267,7 @@ export default {
     handlePreView ([row, templateIndex]) {
       const projectId = row.projectId
       projectApi.callCodeGenWebSocketService(
-        'genCode',
+        'gen_code',
         { 'projectId': projectId, 'templateIndex': templateIndex },
         () => this.progressingProjectIds.push(projectId),
         progressVO => this.rowProgressChange(row, progressVO)
@@ -306,7 +306,7 @@ export default {
       const projectId = row.projectId
       this.$common.confirm('是否确认下载')
         .then(() => projectApi.callCodeGenWebSocketService(
-          'genCodeAndZip',
+          'gen_code_and_zip',
           { 'projectId': projectId, 'templateIndex': templateIndex },
           () => this.progressingProjectIds.push(projectId),
           progressVO => this.rowProgressChange(row, progressVO)
@@ -370,7 +370,7 @@ export default {
       const projectId = row.projectId
       this.$common.confirm('是否确认提交到远程git仓库')
         .then(() => projectApi.callCodeGenWebSocketService(
-          'gitCommit',
+          'git_commit',
           { 'projectId': projectId, 'templateIndex': templateIndex },
           () => this.progressingProjectIds.push(projectId),
           progressVO => this.rowProgressChange(row, progressVO)

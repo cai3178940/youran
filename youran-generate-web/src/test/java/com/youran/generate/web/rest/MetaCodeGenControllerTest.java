@@ -259,8 +259,9 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
 
     @Test
     public void genCode() throws Exception {
-        restMockMvc.perform(get(getApiPath() + "/code_gen/genCode")
-            .param("projectId", bbsProject.getProjectId() + ""))
+        restMockMvc.perform(get(getApiPath() + "/code_gen/gen_code")
+            .param("projectId", bbsProject.getProjectId() + "")
+            .param("templateIndex", "1"))
             .andExpect(status().isOk());
     }
 

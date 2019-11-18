@@ -50,7 +50,7 @@ export default {
    * 批量删除字段
    */
   deleteBatch (data) {
-    return request.put(`/${apiPath}/meta_field/deleteBatch`, data)
+    return request.put(`/${apiPath}/meta_field/delete_batch`, data)
       .then(response => checkResult(response))
   }
 

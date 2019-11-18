@@ -40,7 +40,7 @@ export default {
    * 批量删除多对多级联扩展
    */
   deleteBatch (data) {
-    return request.put(`/${apiPath}/meta_mtm_cascade_ext/deleteBatch`, data)
+    return request.put(`/${apiPath}/meta_mtm_cascade_ext/delete_batch`, data)
       .then(response => checkResult(response))
   }
 

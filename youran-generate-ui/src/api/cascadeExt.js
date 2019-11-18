@@ -38,7 +38,7 @@ export default {
    * 批量删除外键级联扩展
    */
   deleteBatch (data) {
-    return request.put(`/${apiPath}/meta_cascade_ext/deleteBatch`, data)
+    return request.put(`/${apiPath}/meta_cascade_ext/delete_batch`, data)
       .then(response => checkResult(response))
   }
 

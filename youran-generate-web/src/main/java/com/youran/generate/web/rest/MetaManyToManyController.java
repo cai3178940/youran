@@ -75,7 +75,7 @@ public class MetaManyToManyController extends AbstractController implements Meta
     }
 
     @Override
-    @PutMapping(value = "deleteBatch")
+    @PutMapping(value = "delete_batch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] mtmId) {
         if (ArrayUtils.isEmpty(mtmId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);

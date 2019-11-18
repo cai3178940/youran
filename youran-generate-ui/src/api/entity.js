@@ -38,7 +38,7 @@ export default {
    * 批量删除实体
    */
   deleteBatch (data) {
-    return request.put(`/${apiPath}/meta_entity/deleteBatch`, data)
+    return request.put(`/${apiPath}/meta_entity/delete_batch`, data)
       .then(response => checkResult(response))
   },
   /**

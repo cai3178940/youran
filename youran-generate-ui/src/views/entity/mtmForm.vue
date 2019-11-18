@@ -22,16 +22,6 @@
               </el-select>
             </help-popover>
           </el-form-item>
-          <el-form-item label="关联表名" prop="tableName">
-            <help-popover name="mtm.tableName">
-              <el-input v-model="form.tableName" placeholder="例如：r_user_role"></el-input>
-            </help-popover>
-          </el-form-item>
-          <el-form-item label="描述" prop="desc">
-            <help-popover name="mtm.desc">
-              <el-input v-model="form.desc" placeholder="例如：用户角色关联表" type="textarea" :rows="2"></el-input>
-            </help-popover>
-          </el-form-item>
           <el-form-item label="实体1" prop="entityId1">
             <help-popover name="mtm.entityId1">
               <el-col :span="12" style="padding-left: 0px;">
@@ -72,6 +62,18 @@
               </el-col>
             </help-popover>
           </el-form-item>
+          <el-form-item label="关联表名" prop="tableName">
+            <help-popover name="mtm.tableName">
+              <el-input v-model="form.tableName" placeholder="例如：r_user_role"
+                        tabindex="20"></el-input>
+            </help-popover>
+          </el-form-item>
+          <el-form-item label="描述" prop="desc">
+            <help-popover name="mtm.desc">
+              <el-input v-model="form.desc" placeholder="例如：用户角色关联表"
+                        type="textarea" :rows="2" tabindex="30"></el-input>
+            </help-popover>
+          </el-form-item>
           <el-form-item v-if="form.holdRefer1" label="实体1功能">
             <help-popover name="mtm.feature">
               <el-checkbox v-model="form.feature.f1.withinEntity" :true-label="true" :false-label="false">随实体一起维护</el-checkbox>
@@ -88,12 +90,14 @@
           </el-form-item>
           <el-form-item label="实体1外键字段" prop="entityIdField1">
             <help-popover name="mtm.entityIdField1">
-              <el-input v-model="form.entityIdField1" placeholder="默认自动生成"></el-input>
+              <el-input v-model="form.entityIdField1"
+                        placeholder="默认自动生成" tabindex="40"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="实体2外键字段" prop="entityIdField2">
             <help-popover name="mtm.entityIdField2">
-              <el-input v-model="form.entityIdField2" placeholder="默认自动生成"></el-input>
+              <el-input v-model="form.entityIdField2"
+                        placeholder="默认自动生成" tabindex="50"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="自增id" prop="needId">

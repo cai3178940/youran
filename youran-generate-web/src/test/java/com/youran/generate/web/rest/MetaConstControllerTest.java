@@ -61,7 +61,7 @@ public class MetaConstControllerTest extends AbstractWebTest {
         restMockMvc.perform(get(getApiPath() + "/meta_const/list")
             .param("projectId", metaProject.getProjectId() + ""))
             .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(jsonPath("$.list.length()").value(is(1)));
+            .andExpect(jsonPath("$.length()").value(is(1)));
     }
 
     @Test

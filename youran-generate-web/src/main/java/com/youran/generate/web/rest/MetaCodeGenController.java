@@ -37,7 +37,7 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
 
 
     @Override
-    @GetMapping(value = "/genCode")
+    @GetMapping(value = "/gen_code")
     public ResponseEntity<Void> genCode(@RequestParam Integer projectId,
                                         @RequestParam Integer templateIndex) {
         metaCodeGenService.genProjectCodeIfNotExists(projectId, templateIndex, null);
@@ -45,7 +45,7 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     }
 
     @Override
-    @GetMapping(value = "/genCodeAndDownload")
+    @GetMapping(value = "/gen_code_and_download")
     public void genCodeAndDownload(@RequestParam Integer projectId,
                                    @RequestParam Integer templateIndex,
                                    HttpServletResponse response) {
@@ -60,7 +60,7 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     }
 
     @Override
-    @GetMapping(value = "/gitCommit")
+    @GetMapping(value = "/git_commit")
     @ResponseBody
     public ResponseEntity<String> gitCommit(@RequestParam Integer projectId,
                                             @RequestParam Integer templateIndex) {
