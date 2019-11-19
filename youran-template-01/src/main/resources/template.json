@@ -247,12 +247,6 @@
       "abstracted": false
     },
     {
-      "fileName": "FieldErrorVO.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/vo",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
       "fileName": "PageVO.java.ftl",
       "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/vo",
       "contextType": 1,

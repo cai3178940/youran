@@ -10,6 +10,7 @@ import java.io.IOException;
 
 /**
  * jackson防XSS反序列化器
+ * 请使用该反序列化器替代默认的字符串反序列化器
  *
  * @author: cbb
  * @date: 2018/4/10

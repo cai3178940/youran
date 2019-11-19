@@ -2,7 +2,6 @@ package com.youran.generate.web.advice;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
-import com.youran.common.pojo.vo.FieldErrorVO;
 import com.youran.common.pojo.vo.ReplyVO;
 import com.youran.common.util.JsonUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -15,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -69,19 +68,17 @@ public class ExceptionTranslator {
      * @return
      */
     private ResponseEntity<ReplyVO> processBindingResult(BindingResult result) {
-        List<FieldError> fieldErrors = result.getFieldErrors();
-        LOGGER.warn("参数校验失败：{}", JsonUtil.toJSONString(fieldErrors));
+        List<ObjectError> errors = result.getAllErrors();
         String errorMsg = null;
-        if (CollectionUtils.isNotEmpty(fieldErrors)) {
-            errorMsg = fieldErrors.get(0).getDefaultMessage();
+        if (CollectionUtils.isNotEmpty(errors)) {
+            List<String> errorMsgs = errors.stream()
+                .map(error -> error.getDefaultMessage())
+                .collect(Collectors.toList());
+            LOGGER.warn(JsonUtil.toJSONString(errorMsgs));
+            errorMsg = errorMsgs.stream()
+                .collect(Collectors.joining(";"));
         }
-        return buildErrorResponse(ErrorCode.BAD_PARAMETER, errorMsg, this.mapFieldErrorVO(fieldErrors));
-    }
-
-    private List<FieldErrorVO> mapFieldErrorVO(List<FieldError> fieldErrors) {
-        return fieldErrors.stream()
-            .map(fieldError -> new FieldErrorVO(fieldError.getObjectName(), fieldError.getField(), fieldError.getDefaultMessage()))
-            .collect(Collectors.toList());
+        return buildErrorResponse(ErrorCode.BAD_PARAMETER, errorMsg);
     }
 
 
@@ -168,19 +165,16 @@ public class ExceptionTranslator {
 
 
     private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode) {
-        return buildErrorResponse(errorCode, null, null);
+        return buildErrorResponse(errorCode, null);
     }
+
 
     private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode, String message) {
-        return buildErrorResponse(errorCode, message, null);
-    }
-
-    private ResponseEntity<ReplyVO> buildErrorResponse(ErrorCode errorCode, String message, Object data) {
         if (StringUtils.isBlank(message)) {
             message = errorCode.getDesc();
         }
         return ResponseEntity.status(errorCode.getValue())
-            .body(ReplyVO.fail(message).data(data));
+            .body(ReplyVO.fail(message));
     }
 
 }

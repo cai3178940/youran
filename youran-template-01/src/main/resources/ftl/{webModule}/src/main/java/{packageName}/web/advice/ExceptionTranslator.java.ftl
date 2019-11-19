@@ -3,10 +3,10 @@
 <#assign code>
 <@call this.addImport("${this.commonPackage}.constant.ErrorCode")/>
 <@call this.addImport("${this.commonPackage}.exception.BusinessException")/>
-<@call this.addImport("${this.commonPackage}.pojo.vo.FieldErrorVO")/>
 <@call this.addImport("${this.commonPackage}.pojo.vo.ReplyVO")/>
 <@call this.addImport("${this.commonPackage}.util.JsonUtil")/>
 <@call this.addImport("${this.commonPackage}.util.MessageSourceUtil")/>
+<@call this.addImport("org.apache.commons.collections4.CollectionUtils")/>
 <@call this.addImport("org.slf4j.Logger")/>
 <@call this.addImport("org.slf4j.LoggerFactory")/>
 <@call this.addImport("org.springframework.core.annotation.AnnotationUtils")/>
@@ -17,15 +17,15 @@
 <@call this.addImport("org.springframework.http.converter.HttpMessageNotReadableException")/>
 <@call this.addImport("org.springframework.validation.BindException")/>
 <@call this.addImport("org.springframework.validation.BindingResult")/>
-<@call this.addImport("org.springframework.validation.FieldError")/>
+<@call this.addImport("org.springframework.validation.ObjectError")/>
 <@call this.addImport("org.springframework.web.HttpRequestMethodNotSupportedException")/>
 <@call this.addImport("org.springframework.web.bind.MethodArgumentNotValidException")/>
 <@call this.addImport("org.springframework.web.bind.annotation.ControllerAdvice")/>
 <@call this.addImport("org.springframework.web.bind.annotation.ExceptionHandler")/>
 <@call this.addImport("org.springframework.web.bind.annotation.ResponseBody")/>
 <@call this.addImport("org.springframework.web.bind.annotation.ResponseStatus")/>
-<@call this.addImport("java.util.ArrayList")/>
 <@call this.addImport("java.util.List")/>
+<@call this.addImport("java.util.stream.Collectors")/>
 
 <@call this.printClassCom("异常信息展示")/>
 @ControllerAdvice
@@ -62,19 +62,19 @@ public class ExceptionTranslator {
     }
 
     private ReplyVO processBindingResult(BindingResult result) {
-        List<FieldError> fieldErrors = result.getFieldErrors();
-        LOGGER.warn(JsonUtil.toJSONString(fieldErrors));
+        List<ObjectError> errors = result.getAllErrors();
         ReplyVO replyVO = new ReplyVO();
-        List<FieldErrorVO> errorVOList = new ArrayList<>();
-        for (FieldError fieldError : fieldErrors) {
-            errorVOList.add(new FieldErrorVO(fieldError.getObjectName(), fieldError.getField(), fieldError.getDefaultMessage()));
+        replyVO.setCode(ErrorCode.ERR_VALIDATION.getValue());
+        replyVO.setMessage(ErrorCode.ERR_VALIDATION.getDesc());
+        if(CollectionUtils.isNotEmpty(errors)){
+            List<String> errorMsgs = errors.stream()
+                .map(error -> error.getDefaultMessage())
+                .collect(Collectors.toList());
+            LOGGER.warn(JsonUtil.toJSONString(errorMsgs));
+            String message = errorMsgs.stream()
+                .collect(Collectors.joining(";"));
+            replyVO.setMessage(message);
         }
-        if (fieldErrors.size() > 0) {
-            replyVO.setCode(ErrorCode.ERR_VALIDATION.getValue());
-            replyVO.setMessage(fieldErrors.get(0).getDefaultMessage());
-            replyVO.setData(errorVOList);
-        }
-
         return replyVO;
     }
 
