@@ -1,7 +1,11 @@
 package com.youran.common.xss;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
@@ -15,10 +19,19 @@ import java.io.IOException;
  * @author: cbb
  * @date: 2018/4/10
  */
-public class JacksonXssDeserializer extends StdScalarDeserializer<String> {
+public class JacksonXssDeserializer extends StdScalarDeserializer<String> implements ContextualDeserializer {
 
     public JacksonXssDeserializer() {
         super(String.class);
+    }
+
+    @Override
+    public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
+        IgnoreXSS annotation = property.getAnnotation(IgnoreXSS.class);
+        if (annotation != null) {
+            return StringDeserializer.instance;
+        }
+        return this;
     }
 
     @Override

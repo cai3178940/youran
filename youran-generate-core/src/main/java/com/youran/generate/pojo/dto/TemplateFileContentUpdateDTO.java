@@ -1,6 +1,7 @@
 package com.youran.generate.pojo.dto;
 
 import com.youran.common.pojo.dto.AbstractDTO;
+import com.youran.common.xss.IgnoreXSS;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -25,6 +26,7 @@ public class TemplateFileContentUpdateDTO extends AbstractDTO {
     private Integer version;
 
     @ApiModelProperty(notes = N_CONTENT, example = E_CONTENT)
+    @IgnoreXSS
     private String content;
 
     public Integer getFileId() {
