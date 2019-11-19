@@ -217,7 +217,6 @@ export default {
         // 设置外键字段默认值
         entityApi.getDefaultFkFieldNameForSql(array[0])
           .then(data => {
-            console.info(data)
             this.form.entityIdField1 = data
             this.entityIdFieldPlaceholder1 = data
           })
