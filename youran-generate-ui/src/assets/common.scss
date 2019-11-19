@@ -25,5 +25,11 @@ $el-table-padding: 3px 0;
         padding-right: 0px!important;;
         line-height: normal;
     }
+    .red-font {
+        .el-input__inner {
+            font-weight: bold;
+            color: #fa5555;
+        }
+    }
 }
 

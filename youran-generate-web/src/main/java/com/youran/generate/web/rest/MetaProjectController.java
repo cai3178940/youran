@@ -75,7 +75,7 @@ public class MetaProjectController extends AbstractController implements MetaPro
     }
 
     @Override
-    @PutMapping(value = "delete_batch")
+    @PutMapping(value = "/delete_batch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] projectId) {
         if (ArrayUtils.isEmpty(projectId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);

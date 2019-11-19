@@ -15,7 +15,7 @@
                  label-width="120px" size="small">
           <el-form-item label="性质">
             <help-popover name="field.feature">
-              <el-input class="featureInput" :value="fieldFeature.label" readonly>
+              <el-input class="red-font" :value="fieldFeature.label" readonly>
                 <!-- 如果不是主键也不是特殊字段，则支持切换模板-->
                 <el-dropdown v-if="!form.specialField && !form.primaryKey" slot="append" trigger="click" @command="handleFieldFeatureChange">
                   <span class="el-dropdown-link">
@@ -590,12 +590,6 @@ export default {
       font-size: 14px;
       color: #606266;
       margin-right: 10px;
-    }
-    .featureInput {
-      .el-input__inner {
-        font-weight: bold;
-        color: #fa5555;
-      }
     }
   }
 

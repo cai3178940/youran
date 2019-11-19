@@ -56,6 +56,16 @@ export default {
       .then(response => checkResult(response))
   },
   /**
+   * 获取某实体作为外键关联时的默认外键名(mysql字段名)
+   */
+  getDefaultFkFieldNameForSql (entityId) {
+    return request.get(`/${apiPath}/meta_entity/${entityId}/default_fk_field_name_for_sql`,
+      {
+        responseType: 'text'
+      })
+      .then(response => checkResult(response))
+  },
+  /**
    * 查询ER图数据
    */
   getErDiagram (projectId, entityIds) {

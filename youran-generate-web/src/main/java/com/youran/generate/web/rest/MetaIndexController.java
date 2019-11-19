@@ -75,7 +75,7 @@ public class MetaIndexController extends AbstractController implements MetaIndex
     }
 
     @Override
-    @PutMapping(value = "delete_batch")
+    @PutMapping(value = "/delete_batch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] indexId) {
         if (ArrayUtils.isEmpty(indexId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);

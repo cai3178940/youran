@@ -14,7 +14,8 @@
                  label-width="90px" size="small" v-loading="formLoading">
           <el-form-item label="项目" prop="projectId">
             <help-popover name="entity.projectId">
-              <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
+              <el-select v-model="form.projectId" class="red-font"
+                         style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
                 <el-option
                   v-for="item in projectList"
                   :key="item.projectId"

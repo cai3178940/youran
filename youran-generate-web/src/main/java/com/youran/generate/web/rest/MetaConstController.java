@@ -2,7 +2,6 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
-import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.MetaConstAddDTO;
 import com.youran.generate.pojo.dto.MetaConstUpdateDTO;
@@ -76,7 +75,7 @@ public class MetaConstController extends AbstractController implements MetaConst
     }
 
     @Override
-    @PutMapping(value = "delete_batch")
+    @PutMapping(value = "/delete_batch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] constId) {
         if (ArrayUtils.isEmpty(constId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);

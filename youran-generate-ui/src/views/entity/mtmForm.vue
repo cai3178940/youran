@@ -12,7 +12,8 @@
         <el-form ref="mtmForm" class="mtmForm" :rules="rules" :model="form" label-width="140px" size="small">
           <el-form-item label="项目" prop="projectId">
             <help-popover name="mtm.projectId">
-              <el-select v-model="form.projectId" style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
+              <el-select v-model="form.projectId" class="red-font"
+                         style="width:100%;" filterable placeholder="请选择项目" :disabled="true">
                 <el-option
                   v-for="item in projectList"
                   :key="item.projectId"
@@ -25,7 +26,8 @@
           <el-form-item label="实体1" prop="entityId1">
             <help-popover name="mtm.entityId1">
               <el-col :span="12" style="padding-left: 0px;">
-                <el-select :disabled="!entityEditable" v-model="form.entityId1" style="width:100%;" filterable placeholder="请选择实体1">
+                <el-select v-model="form.entityId1" class="red-font"
+                           style="width:100%;" filterable placeholder="请选择实体1" :disabled="true">
                   <el-option
                     v-for="item in entityList"
                     :key="item.entityId"
@@ -45,7 +47,8 @@
           <el-form-item label="实体2" prop="entityId2">
             <help-popover name="mtm.entityId2">
               <el-col :span="12" style="padding-left: 0px;">
-                <el-select :disabled="!entityEditable" v-model="form.entityId2" style="width:100%;" filterable placeholder="请选择实体2">
+                <el-select v-model="form.entityId2" class="red-font"
+                           style="width:100%;" filterable placeholder="请选择实体2" :disabled="true">
                   <el-option
                     v-for="item in entityList"
                     :key="item.entityId"
@@ -91,13 +94,13 @@
           <el-form-item label="实体1外键字段" prop="entityIdField1">
             <help-popover name="mtm.entityIdField1">
               <el-input v-model="form.entityIdField1"
-                        placeholder="默认自动生成" tabindex="40"></el-input>
+                        :placeholder="'例如：' + entityIdFieldPlaceholder1" tabindex="40"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="实体2外键字段" prop="entityIdField2">
             <help-popover name="mtm.entityIdField2">
               <el-input v-model="form.entityIdField2"
-                        placeholder="默认自动生成" tabindex="50"></el-input>
+                        :placeholder="'例如：' + entityIdFieldPlaceholder2" tabindex="50"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="自增id" prop="needId">
@@ -145,8 +148,8 @@ export default {
       old: initMtmFormBean(edit),
       form: initMtmFormBean(edit),
       rules: getMtmRules(),
-      // 实体是否可修改
-      entityEditable: true
+      entityIdFieldPlaceholder1: 'id_1',
+      entityIdFieldPlaceholder2: 'id_2'
     }
   },
   methods: {
@@ -199,16 +202,30 @@ export default {
   },
   created () {
     if (this.edit) {
-      // 不允许编辑实体
-      this.entityEditable = false
       Promise.all([this.getMtm(), this.queryProject(), this.queryEntity(this.projectId)])
         .then(() => this.reset())
+        .then(() => {
+          this.entityIdFieldPlaceholder1 = this.old.entityIdField1
+          this.entityIdFieldPlaceholder2 = this.old.entityIdField2
+        })
     } else {
       this.form.projectId = parseInt(this.projectId)
       if (this.entityIds) {
         const array = this.entityIds.split('-').map(value => parseInt(value))
         this.form.entityId1 = array[0]
         this.form.entityId2 = array[1]
+        // 设置外键字段默认值
+        entityApi.getDefaultFkFieldNameForSql(array[0])
+          .then(data => {
+            console.info(data)
+            this.form.entityIdField1 = data
+            this.entityIdFieldPlaceholder1 = data
+          })
+        entityApi.getDefaultFkFieldNameForSql(array[1])
+          .then(data => {
+            this.form.entityIdField2 = data
+            this.entityIdFieldPlaceholder2 = data
+          })
       }
       this.queryProject()
         .then(() => this.queryEntity(this.form.projectId))
@@ -221,6 +238,7 @@ export default {
   @import '../../assets/common.scss';
   .mtmFormDiv .mtmForm {
     @include youran-form;
+
     .el-radio-button__inner {
       padding: 10px 10px;
     }

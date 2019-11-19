@@ -75,7 +75,7 @@ public class MetaConstDetailController extends AbstractController implements Met
     }
 
     @Override
-    @PutMapping(value = "delete_batch")
+    @PutMapping(value = "/delete_batch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] constDetailId) {
         if (ArrayUtils.isEmpty(constDetailId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);

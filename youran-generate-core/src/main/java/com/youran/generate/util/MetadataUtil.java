@@ -51,12 +51,13 @@ public class MetadataUtil {
 
     /**
      * 构建默认多对多外键别名
+     * TODO 判断主键字段如果不是直接叫id，则使用主键字段名
      *
      * @param className
      * @param forSql
      * @return
      */
-    private static String buildDefaultMtmFkAlias(String className, boolean forSql) {
+    public static String buildDefaultMtmFkAlias(String className, boolean forSql) {
         String alias = StringUtils.uncapitalize(className) + "Id";
         if (forSql) {
             String[] split = StringUtils.splitByCharacterTypeCamelCase(alias);

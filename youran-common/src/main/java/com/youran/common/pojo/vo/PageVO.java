@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +36,10 @@ public class PageVO<T> extends AbstractVO {
     }
 
     public PageVO(List<T> list, int currentPage, int pageSize, int total) {
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException(
+                "Illegal paging arguments. [pageSize=" + pageSize + "]");
+        }
         this.list = list;
         this.currentPage = currentPage;
         this.pageSize = pageSize;
@@ -48,76 +51,6 @@ public class PageVO<T> extends AbstractVO {
         } else {
             this.pageCount = total / pageSize;
         }
-    }
-
-    public PageVO(int pageSize, int currentPage, int total) {
-        if (currentPage > 1 && pageSize <= 0) {
-            throw new IllegalArgumentException(
-                "Illegal paging arguments. [pageSize=" + pageSize
-                    + ", currentPage=" + currentPage + "]");
-        }
-        if (pageSize < 0) {
-            pageSize = 0;
-        }
-        if (currentPage < 1) {
-            currentPage = 1;
-        }
-        this.list = new ArrayList<>();
-        this.pageSize = pageSize;
-        this.currentPage = currentPage;
-        this.total = total;
-        this.firstIndex = (currentPage - 1) * pageSize;
-        this.lastIndex = currentPage * pageSize;
-        if (total % pageSize > 0) {
-            this.pageCount = total / pageSize + 1;
-        } else {
-            this.pageCount = total / pageSize;
-        }
-    }
-
-    public PageVO(int pageSize, long firstIndex, int total) {
-        if (firstIndex > 1 && pageSize <= 0) {
-            throw new IllegalArgumentException(
-                "Illegal paging arguments. [pageSize=" + pageSize
-                    + ", firstIndex=" + firstIndex + "]");
-        }
-        if (pageSize < 0) {
-            pageSize = 0;
-        }
-        this.firstIndex = (int) firstIndex;
-        if (firstIndex < 0) {
-            this.firstIndex = 0;
-        }
-        this.pageSize = pageSize;
-        this.total = total;
-        this.lastIndex = pageSize + (int) firstIndex;
-        if (total % pageSize > 0) {
-            this.pageCount = total / pageSize + 1;
-        } else {
-            this.pageCount = total / pageSize;
-        }
-    }
-
-    /**
-     * @param pageSize    每页记录数
-     * @param currentPage 页号
-     */
-    public PageVO(int pageSize, int currentPage) {
-        if (currentPage > 1 && pageSize <= 0) {
-            throw new IllegalArgumentException(
-                "Illegal paging arguments. [pageSize=" + pageSize
-                    + ", currentPage=" + currentPage + "]");
-        }
-        if (pageSize < 0) {
-            pageSize = 0;
-        }
-        if (currentPage < 1) {
-            currentPage = 1;
-        }
-        this.pageSize = pageSize;
-        this.currentPage = currentPage;
-        this.firstIndex = (currentPage - 1) * pageSize;
-        this.lastIndex = currentPage * pageSize;
     }
 
 

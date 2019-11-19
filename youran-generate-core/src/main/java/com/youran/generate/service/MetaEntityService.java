@@ -17,6 +17,7 @@ import com.youran.generate.pojo.qo.MetaEntityQO;
 import com.youran.generate.pojo.vo.MetaEntityListVO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
 import com.youran.generate.pojo.vo.MetaMtmEntityListVO;
+import com.youran.generate.util.MetadataUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -202,5 +203,16 @@ public class MetaEntityService {
         return metaEntityDAO.findMtmEntityList(entityId, hold);
     }
 
+
+    /**
+     * 获取某实体作为外键关联时的默认外键名
+     *
+     * @param entityId 实体id
+     * @return 默认外键名
+     */
+    public String getDefaultFkFieldName(Integer entityId, boolean forSql) {
+        MetaEntityPO entity = this.getEntity(entityId, true);
+        return MetadataUtil.buildDefaultMtmFkAlias(entity.getClassName(), forSql);
+    }
 
 }

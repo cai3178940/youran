@@ -84,7 +84,7 @@ public class MetaFieldController extends AbstractController implements MetaField
 
 
     @Override
-    @PutMapping(value = "delete_batch")
+    @PutMapping(value = "/delete_batch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] fieldId) {
         if (ArrayUtils.isEmpty(fieldId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);

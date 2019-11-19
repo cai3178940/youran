@@ -86,4 +86,13 @@ public interface MetaEntityAPI {
     })
     ResponseEntity<MetaEntityListPairVO> mtmEntityListPair(Integer entityId);
 
+    /**
+     * 获取某实体作为外键关联时的默认外键名(mysql字段名)
+     */
+    @ApiOperation(value = "获取某实体作为外键关联时的默认外键名(mysql字段名)")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
+    })
+    ResponseEntity<String> getDefaultFkFieldNameForSql(Integer entityId);
+
 }

@@ -77,7 +77,7 @@ public class MetaEntityController extends AbstractController implements MetaEnti
     }
 
     @Override
-    @PutMapping(value = "delete_batch")
+    @PutMapping(value = "/delete_batch")
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] entityId) {
         if (ArrayUtils.isEmpty(entityId)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
@@ -94,5 +94,11 @@ public class MetaEntityController extends AbstractController implements MetaEnti
         return ResponseEntity.ok(new MetaEntityListPairVO(holds, unholds));
     }
 
+    @Override
+    @GetMapping(value = "/{entityId}/default_fk_field_name_for_sql")
+    public ResponseEntity<String> getDefaultFkFieldNameForSql(@PathVariable Integer entityId) {
+        String fkFieldName = metaEntityService.getDefaultFkFieldName(entityId, true);
+        return ResponseEntity.ok(fkFieldName);
+    }
 
 }

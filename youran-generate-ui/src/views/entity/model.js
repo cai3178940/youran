@@ -106,11 +106,11 @@ export function getMtmRules () {
       { max: 50, message: '长度不能超过50个字符', trigger: 'blur' }
     ],
     entityIdField1: [
-      { required: false, message: '请输入外键字段', trigger: 'blur' },
+      { required: true, message: '请输入外键字段', trigger: 'blur' },
       { max: 64, message: '长度不能超过64个字符', trigger: 'blur' }
     ],
     entityIdField2: [
-      { required: false, message: '请输入外键字段', trigger: 'blur' },
+      { required: true, message: '请输入外键字段', trigger: 'blur' },
       { max: 64, message: '长度不能超过64个字符', trigger: 'blur' }
     ],
     needId: [
