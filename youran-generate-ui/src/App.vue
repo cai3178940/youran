@@ -76,7 +76,7 @@
 <script>
 import avatar from '@/assets/avatar.jpg'
 import systemApi from '@/api/system'
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import importTemplate from './views/template/import.vue'
 
 export default {
@@ -96,15 +96,12 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'systemUserInfo',
-      'downloadUrl'
-    ])
+    ...mapState({
+      systemUserInfo: state => state.systemUserInfo,
+      downloadUrl: state => state.app.downloadUrl
+    })
   },
   methods: {
-    ...mapMutations([
-      'setSystemUserInfo'
-    ]),
     isRoutePath (path) {
       return this.$route.path === path
     },
@@ -121,7 +118,7 @@ export default {
           templateEnabled: this.form.templateEnabled
         })
         .then(data => {
-          this.setSystemUserInfo({
+          this.$store.commit('systemUserInfo/setSystemUserInfo', {
             templateEnabled: data.templateEnabled
           })
           // 处理菜单项（模板管理）的特效
@@ -147,7 +144,7 @@ export default {
   created () {
     systemApi.getSystemUserInfo()
       .then(data => {
-        this.setSystemUserInfo(data)
+        this.$store.commit('systemUserInfo/setSystemUserInfo', data)
         this.form.templateEnabled = data.templateEnabled
       })
       .then(() => {

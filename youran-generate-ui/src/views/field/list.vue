@@ -352,9 +352,10 @@ import fieldApi from '@/api/field'
 import indexApi from '@/api/index'
 import { flexibleTemplate, fixedTemplate, findSystemTemplate } from '@/utils/field-template'
 import Meteor from '@/components/Meteor'
-import { mapGetters, mapState, mapMutations } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 import shortid from 'shortid'
 
+const { mapGetters, mapState, mapMutations } = createNamespacedHelpers('fieldTemplate')
 /**
  * 初始化是否包含特殊属性字段
  */

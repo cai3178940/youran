@@ -41,7 +41,7 @@
           </el-form-item>
           <el-form-item v-if="!isAttrHide('autoIncrement')" label="主键策略">
             <help-popover name="field.autoIncrement">
-              <el-checkbox v-model="form.autoIncrement" :true-label="true" :false-label="false">自增</el-checkbox>
+              <el-checkbox v-model="form.autoIncrement">自增</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item v-if="!isAttrHide('foreignKey')" label="外键关联" prop="foreignKey">
@@ -158,7 +158,6 @@
           <el-form-item label="不能为空" prop="notNull">
             <help-popover name="field.notNull">
               <el-checkbox v-model="form.notNull" :disabled="isAttrDisable('notNull')"
-                           :true-label="true" :false-label="false"
                            tabindex="120">是</el-checkbox>
             </help-popover>
           </el-form-item>
@@ -166,7 +165,7 @@
             <help-popover name="field.query">
               <el-row type="flex" align="middle" :gutter="10">
                 <el-col :span="6">
-                  <el-checkbox v-model="form.query" :true-label="true" :false-label="false"
+                  <el-checkbox v-model="form.query"
                                tabindex="130">是</el-checkbox>
                 </el-col>
                 <el-col :span="18" class="col-right">
@@ -187,36 +186,26 @@
           <el-form-item v-if="!isAttrHide('attributes')" label="字段功能">
             <help-popover name="field.attributes">
               <el-checkbox v-model="form.insert"
-                           :true-label="true"
-                           :false-label="false"
                            :disabled="isAttrDisable('attr-insert')"
                            tabindex="150">
                 可插入
               </el-checkbox>
               <el-checkbox v-model="form.update"
-                           :true-label="true"
-                           :false-label="false"
                            :disabled="isAttrDisable('attr-update')"
                            tabindex="160">
                 可修改
               </el-checkbox>
               <el-checkbox v-model="form.list"
-                           :true-label="true"
-                           :false-label="false"
                            :disabled="isAttrDisable('attr-list')"
                            tabindex="170">
                 列表展示
               </el-checkbox>
               <el-checkbox v-model="form.show"
-                           :true-label="true"
-                           :false-label="false"
                            :disabled="isAttrDisable('attr-show')"
                            tabindex="180">
                 详情展示
               </el-checkbox>
               <el-checkbox v-model="form.listSort"
-                           :true-label="true"
-                           :false-label="false"
                            :disabled="isAttrDisable('attr-listSort')"
                            tabindex="190">
                 可排序

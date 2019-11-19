@@ -93,14 +93,14 @@ export default {
    */
   exportCodeZip (projectId) {
     const downloadUrl = `/${apiPath}/meta_export/${projectId}`
-    store.dispatch('downloadFile', downloadUrl)
+    store.dispatch('app/downloadFile', downloadUrl)
   },
   /**
    * 导出代码文件压缩包
    */
   exportCodeZipBySessionId (sessionId) {
     const downloadUrl = `/${apiPath}/code_gen/download_code/${sessionId}`
-    store.dispatch('downloadFile', downloadUrl)
+    store.dispatch('app/downloadFile', downloadUrl)
   },
   /**
    * 获取代码目录树

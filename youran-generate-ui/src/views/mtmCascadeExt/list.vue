@@ -33,8 +33,6 @@
         <template v-slot="scope">
           <template v-if="scope.row.editFlag">
             <el-checkbox v-model="scope.row.query"
-                         :true-label="true"
-                         :false-label="false"
                          :disabled="!scope.row.fieldQuery">
             </el-checkbox>
           </template>
@@ -55,10 +53,7 @@
       <el-table-column v-if="this.hold" label="列表展示" width="120px">
         <template v-slot="scope">
           <template v-if="scope.row.editFlag">
-            <el-checkbox v-model="scope.row.list"
-                         :true-label="true"
-                         :false-label="false">
-            </el-checkbox>
+            <el-checkbox v-model="scope.row.list"></el-checkbox>
           </template>
           <template v-else>
             <svg-icon v-if="scope.row.list" className="table-cell-icon color-success" iconClass="check"></svg-icon>
@@ -69,10 +64,7 @@
       <el-table-column v-if="this.hold" label="详情展示" width="120px">
         <template v-slot="scope">
           <template v-if="scope.row.editFlag">
-            <el-checkbox v-model="scope.row.show"
-                         :true-label="true"
-                         :false-label="false">
-            </el-checkbox>
+            <el-checkbox v-model="scope.row.show"></el-checkbox>
           </template>
           <template v-else>
             <svg-icon v-if="scope.row.show" className="table-cell-icon color-success" iconClass="check"></svg-icon>

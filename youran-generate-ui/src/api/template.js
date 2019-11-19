@@ -36,7 +36,7 @@ export default {
    */
   exportZip (templateId) {
     const downloadUrl = `/${apiPath}/code_template/${templateId}/export`
-    store.dispatch('downloadFile', downloadUrl)
+    store.dispatch('app/downloadFile', downloadUrl)
   },
   /**
    * 复制模板
