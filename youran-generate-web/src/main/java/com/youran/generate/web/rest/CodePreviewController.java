@@ -8,14 +8,12 @@ import com.youran.generate.pojo.qo.CodeContentQO;
 import com.youran.generate.pojo.vo.CodeTreeVO;
 import com.youran.generate.pojo.vo.FileNodeVO;
 import com.youran.generate.service.CodeTemplateService;
-import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.service.DataDirService;
+import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.util.FileNodeUtil;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.CodePreviewAPI;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +36,6 @@ import java.util.List;
 @RequestMapping(WebConst.API_PATH + "/code_preview")
 public class CodePreviewController extends AbstractController implements CodePreviewAPI {
 
-    public static final String[] EXTENSIONS_FILTER = new String[]{
-        "java", "xml", "md", "gitignore", "sql", "yml", "properties"};
     private static final Logger LOGGER = LoggerFactory.getLogger(CodePreviewController.class);
     @Autowired
     private MetaProjectService metaProjectService;
@@ -84,9 +80,8 @@ public class CodePreviewController extends AbstractController implements CodePre
         if (file.isDirectory()) {
             throw new BusinessException("文件不合法");
         }
-        String extension = FilenameUtils.getExtension(qo.getFilePath());
-        if (!ArrayUtils.contains(EXTENSIONS_FILTER, extension)) {
-            throw new BusinessException("文件类型不合法");
+        if (file.isHidden()) {
+            throw new BusinessException("隐藏文件不显示");
         }
         try {
             String content = FileUtils.readFileToString(file, "utf-8");
@@ -110,7 +105,7 @@ public class CodePreviewController extends AbstractController implements CodePre
         if (!dirFile.exists()) {
             throw new BusinessException("代码目录不存在，请返回重试");
         }
-        List<FileNodeVO> fileNodeList = FileNodeUtil.recurFileNodeTree(dirFile, dirFile, EXTENSIONS_FILTER);
+        List<FileNodeVO> fileNodeList = FileNodeUtil.recurFileNodeTree(dirFile, dirFile);
         CodeTreeVO treeVO = new CodeTreeVO();
         treeVO.setProjectId(projectId);
         treeVO.setProjectVersion(project.getProjectVersion());

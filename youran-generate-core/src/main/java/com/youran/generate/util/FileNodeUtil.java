@@ -1,6 +1,5 @@
 package com.youran.generate.util;
 
-import com.google.common.collect.Lists;
 import com.youran.common.util.TreeUtil;
 import com.youran.generate.pojo.vo.FileNodeVO;
 import com.youran.generate.pojo.vo.TemplateFileListVO;
@@ -8,10 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.comparator.CompositeFileComparator;
 import org.apache.commons.io.comparator.DirectoryFileComparator;
 import org.apache.commons.io.comparator.NameFileComparator;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.IOFileFilter;
-import org.apache.commons.io.filefilter.OrFileFilter;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -33,12 +29,10 @@ public class FileNodeUtil {
     /**
      * 获取文件过滤器
      *
-     * @param suffixes
      * @return
      */
-    public static FileFilter getFileFilter(String[] suffixes) {
-        IOFileFilter suffixFileFilter = new SuffixFileFilter(suffixes);
-        return new OrFileFilter(Lists.newArrayList(suffixFileFilter, DirectoryFileFilter.INSTANCE));
+    public static FileFilter getFileFilter() {
+        return HiddenFileFilter.VISIBLE;
     }
 
     /**
@@ -46,11 +40,10 @@ public class FileNodeUtil {
      *
      * @param dirFile
      * @param basePath
-     * @param suffixes
      * @return
      */
-    public static List<FileNodeVO> recurFileNodeTree(File dirFile, File basePath, String[] suffixes) {
-        File[] files = dirFile.listFiles(getFileFilter(suffixes));
+    public static List<FileNodeVO> recurFileNodeTree(File dirFile, File basePath) {
+        File[] files = dirFile.listFiles(getFileFilter());
         if (ArrayUtils.isEmpty(files)) {
             return Collections.emptyList();
         }
@@ -59,7 +52,7 @@ public class FileNodeUtil {
             .map(file -> {
                 FileNodeVO nodeVO = fileToNodeVO(file, basePath);
                 if (file.isDirectory()) {
-                    List<FileNodeVO> children = recurFileNodeTree(file, basePath, suffixes);
+                    List<FileNodeVO> children = recurFileNodeTree(file, basePath);
                     nodeVO.setChildren(children);
                 }
                 return nodeVO;
