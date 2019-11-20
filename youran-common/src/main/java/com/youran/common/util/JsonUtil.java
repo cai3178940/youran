@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.youran.common.constant.JsonFieldConst;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +25,10 @@ public class JsonUtil {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);
 
-    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-    public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final String DEFAULT_DATETIME_FORMAT2 = "yyyy-MM-dd HH:mm:ss.SSS";
-
     private static ObjectMapper mapper = new ObjectMapper();
 
     static {
-        mapper.setDateFormat(new SimpleDateFormat(DEFAULT_DATETIME_FORMAT));
+        mapper.setDateFormat(new SimpleDateFormat(JsonFieldConst.DEFAULT_DATETIME_FORMAT));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
@@ -39,7 +36,7 @@ public class JsonUtil {
 
     static {
         mapperExcludeNull.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapperExcludeNull.setDateFormat(new SimpleDateFormat(DEFAULT_DATETIME_FORMAT));
+        mapperExcludeNull.setDateFormat(new SimpleDateFormat(JsonFieldConst.DEFAULT_DATETIME_FORMAT));
         mapperExcludeNull.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 

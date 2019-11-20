@@ -1,8 +1,12 @@
 package com.youran.generate.pojo.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.youran.common.constant.JsonFieldConst;
 import com.youran.common.pojo.vo.AbstractVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.Date;
 
 import static com.youran.generate.pojo.example.CodeTemplateExample.*;
 
@@ -35,6 +39,10 @@ public class CodeTemplateListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_REMARK, example = E_REMARK)
     private String remark;
+
+    @ApiModelProperty(notes = N_OPERATEDTIME, example = E_OPERATEDTIME)
+    @JsonFormat(pattern= JsonFieldConst.DEFAULT_DATETIME_FORMAT,timezone="GMT+8")
+    private Date operatedTime;
 
     public Integer getTemplateId() {
         return this.templateId;
@@ -92,6 +100,12 @@ public class CodeTemplateListVO extends AbstractVO {
         this.remark = remark;
     }
 
+    public Date getOperatedTime() {
+        return operatedTime;
+    }
 
+    public void setOperatedTime(Date operatedTime) {
+        this.operatedTime = operatedTime;
+    }
 }
 
