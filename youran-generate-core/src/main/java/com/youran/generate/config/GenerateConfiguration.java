@@ -1,6 +1,7 @@
 package com.youran.generate.config;
 
 import com.youran.common.util.SpringUtil;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,5 +24,10 @@ public class GenerateConfiguration {
         return new SpringUtil();
     }
 
+    @Bean
+    @ConfigurationProperties(prefix = "youran")
+    public GenerateProperties generateProperties() {
+        return new GenerateProperties();
+    }
 
 }
