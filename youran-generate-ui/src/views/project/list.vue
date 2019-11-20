@@ -51,7 +51,7 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" >
-                <svg-icon className="dropdown-icon color-primary" iconClass="edit3"></svg-icon>
+                <svg-icon className="dropdown-icon color-primary" iconClass="edit"></svg-icon>
                 编辑
               </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleDel',arg:scope.row}" >

@@ -113,7 +113,7 @@
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleIndexEdit',arg:[index]}">
                   <svg-icon :className="'index-menu-icon '+(index.unique?'color-danger':'color-primary')"
-                            iconClass="edit3"></svg-icon>
+                            iconClass="edit"></svg-icon>
                   编辑索引
                 </el-dropdown-item>
               </el-dropdown-menu>

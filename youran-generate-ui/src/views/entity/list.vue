@@ -54,7 +54,7 @@
                 </el-dropdown-item>
                 <el-dropdown-item :command="{method:'handleMtmEdit',arg:[mtm]}">
                   <svg-icon className="index-menu-icon color-danger"
-                            iconClass="edit3"></svg-icon>
+                            iconClass="edit"></svg-icon>
                   编辑多对多
                 </el-dropdown-item>
               </el-dropdown-menu>
