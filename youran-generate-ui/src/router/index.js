@@ -1,28 +1,28 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import home from './views/Home.vue'
+import home from '@/views/home'
 
-import project from './views/project/index.vue'
-import projectList from './views/project/list.vue'
-import projectForm from './views/project/form.vue'
+import project from '@/views/project/index.vue'
+import projectList from '@/views/project/list.vue'
+import projectForm from '@/views/project/form.vue'
 
-import entity from './views/entity/index.vue'
-import entityList from './views/entity/list.vue'
-import entityForm from './views/entity/form.vue'
-import mtmForm from './views/entity/mtmForm.vue'
+import entity from '@/views/entity/index.vue'
+import entityList from '@/views/entity/list.vue'
+import entityForm from '@/views/entity/form.vue'
+import mtmForm from '@/views/entity/mtmForm.vue'
 
-import field from './views/field/index.vue'
-import fieldList from './views/field/list.vue'
-import fieldForm from './views/field/form.vue'
-import fieldIndexForm from './views/field/indexForm.vue'
+import field from '@/views/field/index.vue'
+import fieldList from '@/views/field/list.vue'
+import fieldForm from '@/views/field/form.vue'
+import fieldIndexForm from '@/views/field/indexForm.vue'
 
-import constIndex from './views/const/index.vue'
-import constList from './views/const/list.vue'
-import constForm from './views/const/form.vue'
+import constIndex from '@/views/const/index.vue'
+import constList from '@/views/const/list.vue'
+import constForm from '@/views/const/form.vue'
 
-import template from './views/template/index.vue'
-import templateList from './views/template/list.vue'
-import templateForm from './views/template/form.vue'
+import template from '@/views/template/index.vue'
+import templateList from '@/views/template/list.vue'
+import templateForm from '@/views/template/form.vue'
 
 Vue.use(Router)
 

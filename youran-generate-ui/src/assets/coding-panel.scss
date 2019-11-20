@@ -56,6 +56,9 @@ $back-color-2 : #3c3f41;
         min-width: 100%;
         display:inline-block !important;
     }
+    .el-tree-node.is-current>.el-tree-node__content{
+        background-color: #0d293e;
+    }
     .el-tree__empty-block {
         background: $back-color-2;
     }

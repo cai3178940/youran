@@ -10,7 +10,7 @@
 <script>
 import showdown from 'showdown'
 import 'github-markdown-css'
-import tutorial from './tutorial/tutorial.md'
+import tutorial from './tutorial.md'
 const converter = new showdown.Converter()
 const tutorialHtml = converter.makeHtml(tutorial)
 export default {
