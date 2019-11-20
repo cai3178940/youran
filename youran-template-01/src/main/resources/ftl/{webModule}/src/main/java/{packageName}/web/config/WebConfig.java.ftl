@@ -1,7 +1,7 @@
 <#include "/abstracted/common.ftl">
 <#--定义主体代码-->
 <#assign code>
-<@call this.addImport("${this.commonPackage}.xss.JacksonXssDeserializer")/>
+<@call this.addImport("${this.commonPackage}.xss.JacksonXSSDeserializer")/>
 <@call this.addImport("${this.commonPackage}.xss.WebXSSFilter")/>
 <@call this.addImport("org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer")/>
 <@call this.addImport("org.springframework.boot.web.servlet.FilterRegistrationBean")/>
@@ -39,9 +39,9 @@ public class WebConfig {
      * @return
      */
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jacksonXssCustomizer(){
+    public Jackson2ObjectMapperBuilderCustomizer jacksonXSSCustomizer(){
         return jacksonObjectMapperBuilder ->
-            jacksonObjectMapperBuilder.deserializerByType(String.class,new JacksonXssDeserializer());
+            jacksonObjectMapperBuilder.deserializerByType(String.class,new JacksonXSSDeserializer());
     }
 
 

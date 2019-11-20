@@ -319,7 +319,13 @@
       "abstracted": false
     },
     {
-      "fileName": "JacksonXssDeserializer.java.ftl",
+      "fileName": "IgnoreXSS.java.ftl",
+      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/xss",
+      "contextType": 1,
+      "abstracted": false
+    },
+    {
+      "fileName": "JacksonXSSDeserializer.java.ftl",
       "fileDir": "/{commonModule}/src/main/java/{commonPackage}/xss",
       "contextType": 1,
       "abstracted": false
