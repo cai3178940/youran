@@ -67,7 +67,7 @@
       </el-form>
     </el-dialog>
     <!-- 模板导入对话框 -->
-    <import-template ref="importTemplate"></import-template>
+    <import-template></import-template>
     <!-- 文件下载专用iframe -->
     <iframe style="display:none;" :src="downloadUrl"></iframe>
   </el-container>
@@ -78,6 +78,7 @@ import avatar from '@/assets/avatar.jpg'
 import systemApi from '@/api/system'
 import { mapState } from 'vuex'
 import importTemplate from './views/template/import.vue'
+import eventHub from '@/utils/event-hub'
 
 export default {
   name: 'app',
@@ -154,7 +155,7 @@ export default {
             cancelButtonText: '不需要导入，随便看看先',
             type: 'warning'
           }).then(() => {
-            this.$refs.importTemplate.show()
+            eventHub.$emit('import-template-show')
           })
         }
       })

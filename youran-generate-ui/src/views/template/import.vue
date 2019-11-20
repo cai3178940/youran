@@ -16,6 +16,7 @@
 </template>
 <script>
 import { apiPath } from '@/utils/request'
+import eventHub from '@/utils/event-hub'
 
 export default {
   name: 'import-template',
@@ -29,15 +30,18 @@ export default {
     onImportTemplateSuccess (response, file, fileList) {
       this.importTemplateFormVisible = false
       this.$common.showMsg('success', '导入成功')
-      this.$emit('success')
+      eventHub.$emit('import-template-success')
     },
     onImportTemplateError (error, file, fileList) {
       this.$common.showNotifyError(JSON.parse(error.message))
-      this.$emit('error')
+      eventHub.$emit('import-template-error', error)
     },
     show () {
       this.importTemplateFormVisible = true
     }
+  },
+  created: function () {
+    eventHub.$on('import-template-show', this.show)
   }
 }
 </script>

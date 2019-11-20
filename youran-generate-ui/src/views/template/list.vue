@@ -46,21 +46,18 @@
       </el-table-column>
     </el-table>
     <template-files ref="templateFiles"></template-files>
-    <!-- 模板导入对话框 -->
-    <import-template ref="importTemplate" @success="doQuery"></import-template>
   </div>
 </template>
 
 <script>
 import templateFiles from './templateFiles'
-import importTemplate from './import.vue'
 import templateApi from '@/api/template'
+import eventHub from '@/utils/event-hub'
 
 export default {
   name: 'templateList',
   components: {
-    templateFiles,
-    importTemplate
+    templateFiles
   },
   data () {
     return {
@@ -115,12 +112,16 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
     },
     handleImport () {
-      this.$refs.importTemplate.show()
+      eventHub.$emit('import-template-show')
     }
   },
   activated () {
     this.doQuery()
+  },
+  created: function () {
+    eventHub.$on('import-template-success', this.doQuery)
   }
+
 }
 </script>
 <style lang="scss">
