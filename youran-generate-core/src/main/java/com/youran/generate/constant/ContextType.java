@@ -14,6 +14,10 @@ import java.util.Map;
 public enum ContextType {
 
     /**
+     * 无
+     */
+    NONE(0, "无"),
+    /**
      * 全局
      */
     GLOBAL(1, "全局"),
@@ -30,7 +34,7 @@ public enum ContextType {
     /**
      * 枚举值罗列，给swagger接口文档展示用
      */
-    public static final String VALUES_STR = "1,2,3";
+    public static final String VALUES_STR = "0,1,2,3";
     private static final Map<Integer, ContextType> LOOKUP = new HashMap<>();
 
     static {

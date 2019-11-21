@@ -2,7 +2,7 @@
   "code": "youran-template-01",
   "name": "标准java后端模板",
   "templateVersion": "0.0.1",
-  "sysLowVersion": "2.2.0",
+  "sysLowVersion": "3.0.0",
   "sysDefault": true,
   "remark": "标准java后端模板",
   "templateFiles": [

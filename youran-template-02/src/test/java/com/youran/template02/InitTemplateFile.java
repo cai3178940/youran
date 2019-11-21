@@ -1,5 +1,9 @@
 package com.youran.template02;
 
+import com.youran.common.util.JsonUtil;
+import com.youran.generate.constant.ContextType;
+import com.youran.generate.pojo.po.CodeTemplatePO;
+import com.youran.generate.pojo.po.TemplateFilePO;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
@@ -11,6 +15,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
@@ -24,7 +29,9 @@ public class InitTemplateFile {
 
     public static final String REMOTE_URL = "https://github.com/PanJiaChen/vue-admin-template.git";
     public static final String BRANCH_TO_CLONE = "master";
-    public static final String FTL_DIR = "D:/workspace_cbb/youran/youran-template-02/src/main/resources/ftl";
+    public static final String RESOURCES_DIR = "D:/workspace_cbb/youran/youran-template-02/src/main/resources";
+    public static final String FTL_DIR = RESOURCES_DIR + "/ftl";
+    public static final String TEMPLATE_JSON_FILE_PATH = RESOURCES_DIR + "/template.json";
     public static final String[] ASSETS_EXTS = {
         "ico",
         "png",
@@ -37,17 +44,38 @@ public class InitTemplateFile {
         "/src/views/nested"
     };
 
+    private CodeTemplatePO templatePO;
+
+    /**
+     * 初始化模板对象
+     */
+    private void initTemplatePO() {
+        templatePO = new CodeTemplatePO();
+        templatePO.setCode("youran-template-01");
+        templatePO.setName("标准vue前端模板");
+        templatePO.setTemplateVersion("0.0.1");
+        templatePO.setSysLowVersion("3.0.0");
+        templatePO.setSysDefault(true);
+        templatePO.setRemark("标准vue前端模板");
+        templatePO.setTemplateFiles(new ArrayList<>(100));
+    }
+
 
     @Test
     public void initCode() throws Exception {
-        // 先从github下载vue-admin-template原始代码
+        // 从github下载vue-admin-template原始代码
         //File repoDir = this.checkOutVueAdminTemplate();
         File repoDir = new File("C:\\Users\\caibi\\AppData\\Local\\Temp\\vue-admin-template8463170824386821771");
         // 清空模板目录
         this.cleanFtlDir();
+        // 初始化模板对象
+        this.initTemplatePO();
         // 遍历原始代码，并拷贝模板文件
         this.onEachRepoFile(repoDir, repoFile -> this.copyRepoFile(repoDir, repoFile));
+        // 模板元数据写入template.json
+        JsonUtil.writeJsonToFile(templatePO, true, new File(TEMPLATE_JSON_FILE_PATH));
     }
+
 
     /**
      * 从github下载vue-admin-template原始代码
@@ -61,7 +89,7 @@ public class InitTemplateFile {
         Git.cloneRepository()
             .setURI(REMOTE_URL)
             .setCloneAllBranches(false)
-            .setBranchesToClone(Arrays.asList("master"))
+            .setBranchesToClone(Arrays.asList(BRANCH_TO_CLONE))
             .setDirectory(repoDir)
             .call();
         return repoDir;
@@ -127,8 +155,10 @@ public class InitTemplateFile {
             if (this.neetConvertFtl(repoFile)) {
                 String content = FileUtils.readFileToString(repoFile, "utf-8");
                 FileUtils.write(new File(target + ".ftl"), content, "utf-8");
+                this.buildAndSetTemplateFilePO(path, true);
             } else {
                 FileUtils.copyFile(repoFile, new File(target));
+                this.buildAndSetTemplateFilePO(path, false);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -164,6 +194,27 @@ public class InitTemplateFile {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 创建并设置模板文件对象
+     *
+     * @param path  文件路径
+     * @param isFtl 是否freemarker模板
+     */
+    private void buildAndSetTemplateFilePO(String path, boolean isFtl) {
+        String fileName = path.substring(path.lastIndexOf("/") + 1);
+        String dir = path.substring(0, path.lastIndexOf("/"));
+        if (StringUtils.isBlank(dir)) {
+            dir = "/";
+        }
+        TemplateFilePO filePO = new TemplateFilePO();
+        filePO.setFileName(fileName);
+        filePO.setFileDir(dir);
+        filePO.setContextType(isFtl ? ContextType.GLOBAL.getValue() : ContextType.NONE.getValue());
+        filePO.setAbstracted(false);
+
+        templatePO.getTemplateFiles().add(filePO);
     }
 
 
