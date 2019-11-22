@@ -6,599 +6,104 @@
   "sysDefault": true,
   "remark": "标准java后端模板",
   "templateFiles": [
-    {
-      "fileName": "checkFeatureForRest.ftl",
-      "fileDir": "/abstracted",
-      "contextType": 1,
-      "abstracted": true
-    },
-    {
-      "fileName": "common.ftl",
-      "fileDir": "/abstracted",
-      "contextType": 1,
-      "abstracted": true
-    },
-    {
-      "fileName": "guessDefaultJfieldValue.ftl",
-      "fileDir": "/abstracted",
-      "contextType": 1,
-      "abstracted": true
-    },
-    {
-      "fileName": "mtmCascadeExtsForList.ftl",
-      "fileDir": "/abstracted",
-      "contextType": 1,
-      "abstracted": true
-    },
-    {
-      "fileName": "mtmCascadeExtsForOppList.ftl",
-      "fileDir": "/abstracted",
-      "contextType": 1,
-      "abstracted": true
-    },
-    {
-      "fileName": "mtmCascadeExtsForOppShow.ftl",
-      "fileDir": "/abstracted",
-      "contextType": 1,
-      "abstracted": true
-    },
-    {
-      "fileName": "mtmCascadeExtsForQuery.ftl",
-      "fileDir": "/abstracted",
-      "contextType": 1,
-      "abstracted": true
-    },
-    {
-      "fileName": "mtmCascadeExtsForShow.ftl",
-      "fileDir": "/abstracted",
-      "contextType": 1,
-      "abstracted": true
-    },
-    {
-      "fileName": "mtmForOpp.ftl",
-      "fileDir": "/abstracted",
-      "contextType": 1,
-      "abstracted": true
-    },
-    {
-      "fileName": "mybatis.ftl",
-      "fileDir": "/abstracted",
-      "contextType": 1,
-      "abstracted": true
-    },
-    {
-      "fileName": "pom.xml.ftl",
-      "fileDir": "/",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "README.md.ftl",
-      "fileDir": "/",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": ".gitignore.ftl",
-      "fileDir": "/",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "pom.xml.ftl",
-      "fileDir": "/{commonModule}",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "ErrorCode.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/constant",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "JsonFieldConst.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/constant",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "LoginContext.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/context",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "MyCustomDateEditor.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/convert",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "DAO.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/dao",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "BusinessException.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/exception",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "EnableOptimisticLock.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/optimistic",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "OptimisticException.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/optimistic",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "OptimisticLock.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/optimistic",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "OptimisticLockAspect.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/optimistic",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "OptimisticLockConfiguration.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/optimistic",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "AbstractDTO.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/dto",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "AbstractQO.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/qo",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "PageQO.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/qo",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "AbstractPO.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "CreatedBy.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "Created.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "CreatedTime.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "CreatedOperatedDeleted.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "CreatedOperatedDeletedVersion.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "Deleted.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "OperatedBy.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "Operated.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "OperatedTime.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "Version.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/po",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "AbstractVO.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/vo",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "PageVO.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/vo",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "ReplyVO.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/pojo/vo",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "ConvertUtil.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/util",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "DateUtil.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/util",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "TempDirUtil.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/util",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "JsonUtil.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/util",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "MessageSourceUtil.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/util",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "SafeUtil.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/util",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "SpringUtil.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/util",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "UUIDUtil.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/util",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "Check.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/validator",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "Const.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/validator",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "IgnoreXSS.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/xss",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "JacksonXSSDeserializer.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/xss",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "WebXSSFilter.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/xss",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "XSSRequestWrapper.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/xss",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "XSSUtil.java.ftl",
-      "fileDir": "/{commonModule}/src/main/java/{commonPackage}/xss",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "pom.xml.ftl",
-      "fileDir": "/{coreModule}",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ProjectName}Configuration.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/config",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "{EnumName}.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/constant",
-      "contextType": 3,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}DAO.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/dao",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}AddDTO.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/pojo/dto",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}UpdateDTO.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/pojo/dto",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}QO.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/pojo/qo",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}Example.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/pojo/example",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}Mapper.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/pojo/mapper",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}PO.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/pojo/po",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}ListVO.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/pojo/vo",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}ShowVO.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/pojo/vo",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}Service.java.ftl",
-      "fileDir": "/{coreModule}/src/main/java/{packageName}/service",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "messages.properties.ftl",
-      "fileDir": "/{coreModule}/src/main/resources",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "messages_en_US.properties.ftl",
-      "fileDir": "/{coreModule}/src/main/resources",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "mybatis-config.xml.ftl",
-      "fileDir": "/{coreModule}/src/main/resources",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "{project-name}-default.properties.ftl",
-      "fileDir": "/{coreModule}/src/main/resources/config",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}DAO.xml.ftl",
-      "fileDir": "/{coreModule}/src/main/resources/{packageName}/dao",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "pom.xml.ftl",
-      "fileDir": "/{webModule}",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ProjectName}App.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "AbstractController.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}/web",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "ExceptionTranslator.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}/web/advice",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}API.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}/web/api",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "StartLogCommandLineRunner.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}/web/config",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "SwaggerConfig.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}/web/config",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "WebConfig.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}/web/config",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "WebConst.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}/web/constant",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "WebLoginContext.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}/web/context",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}Controller.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}/web/rest",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "IpUtil.java.ftl",
-      "fileDir": "/{webModule}/src/main/java/{packageName}/web/util",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "application.yml.ftl",
-      "fileDir": "/{webModule}/src/main/resources",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "application-local.yml.ftl",
-      "fileDir": "/{webModule}/src/main/resources",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "AbstractTest.java.ftl",
-      "fileDir": "/{webModule}/src/test/java/{packageName}",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "H2Flusher.java.ftl",
-      "fileDir": "/{webModule}/src/test/java/{packageName}",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "Main.java.ftl",
-      "fileDir": "/{webModule}/src/test/java/{packageName}",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "TestConfiguration.java.ftl",
-      "fileDir": "/{webModule}/src/test/java/{packageName}",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}Helper.java.ftl",
-      "fileDir": "/{webModule}/src/test/java/{packageName}/help",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "H2Util.java.ftl",
-      "fileDir": "/{webModule}/src/test/java/{packageName}/util",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "AbstractWebTest.java.ftl",
-      "fileDir": "/{webModule}/src/test/java/{packageName}/web",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "{ClassName}ControllerTest.java.ftl",
-      "fileDir": "/{webModule}/src/test/java/{packageName}/web/rest",
-      "contextType": 2,
-      "abstracted": false
-    },
-    {
-      "fileName": "application-local.yml.ftl",
-      "fileDir": "/{webModule}/src/test/resources",
-      "contextType": 1,
-      "abstracted": false
-    },
-    {
-      "fileName": "{projectName}.sql.ftl",
-      "fileDir": "/{webModule}/src/test/resources/DB",
-      "contextType": 1,
-      "abstracted": false
-    }
+    {"fileName":"checkFeatureForRest.ftl","fileDir":"/abstracted","contextType":1,"abstracted":true,"binary":false},
+    {"fileName":"common.ftl","fileDir":"/abstracted","contextType":1,"abstracted":true,"binary":false},
+    {"fileName":"guessDefaultJfieldValue.ftl","fileDir":"/abstracted","contextType":1,"abstracted":true,"binary":false},
+    {"fileName":"mtmCascadeExtsForList.ftl","fileDir":"/abstracted","contextType":1,"abstracted":true,"binary":false},
+    {"fileName":"mtmCascadeExtsForOppList.ftl","fileDir":"/abstracted","contextType":1,"abstracted":true,"binary":false},
+    {"fileName":"mtmCascadeExtsForOppShow.ftl","fileDir":"/abstracted","contextType":1,"abstracted":true,"binary":false},
+    {"fileName":"mtmCascadeExtsForQuery.ftl","fileDir":"/abstracted","contextType":1,"abstracted":true,"binary":false},
+    {"fileName":"mtmCascadeExtsForShow.ftl","fileDir":"/abstracted","contextType":1,"abstracted":true,"binary":false},
+    {"fileName":"mtmForOpp.ftl","fileDir":"/abstracted","contextType":1,"abstracted":true,"binary":false},
+    {"fileName":"mybatis.ftl","fileDir":"/abstracted","contextType":1,"abstracted":true,"binary":false},
+    {"fileName":"pom.xml.ftl","fileDir":"/","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"README.md.ftl","fileDir":"/","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":".gitignore.ftl","fileDir":"/","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"pom.xml.ftl","fileDir":"/{commonModule}","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"ErrorCode.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/constant","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"JsonFieldConst.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/constant","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"LoginContext.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/context","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"MyCustomDateEditor.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/convert","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"DAO.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/dao","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"BusinessException.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/exception","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"EnableOptimisticLock.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/optimistic","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"OptimisticException.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/optimistic","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"OptimisticLock.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/optimistic","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"OptimisticLockAspect.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/optimistic","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"OptimisticLockConfiguration.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/optimistic","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"AbstractDTO.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/dto","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"AbstractQO.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/qo","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"PageQO.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/qo","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"AbstractPO.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"CreatedBy.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"Created.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"CreatedTime.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"CreatedOperatedDeleted.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"CreatedOperatedDeletedVersion.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"Deleted.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"OperatedBy.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"Operated.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"OperatedTime.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"Version.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/po","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"AbstractVO.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/vo","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"PageVO.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/vo","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"ReplyVO.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/pojo/vo","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"ConvertUtil.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/util","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"DateUtil.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/util","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"TempDirUtil.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/util","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"JsonUtil.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/util","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"MessageSourceUtil.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/util","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"SafeUtil.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/util","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"SpringUtil.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/util","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"UUIDUtil.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/util","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"Check.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/validator","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"Const.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/validator","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"IgnoreXSS.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/xss","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"JacksonXSSDeserializer.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/xss","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"WebXSSFilter.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/xss","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"XSSRequestWrapper.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/xss","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"XSSUtil.java.ftl","fileDir":"/{commonModule}/src/main/java/{commonPackage}/xss","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"pom.xml.ftl","fileDir":"/{coreModule}","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"{ProjectName}Configuration.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/config","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"{EnumName}.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/constant","contextType":3,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}DAO.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/dao","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}AddDTO.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/pojo/dto","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}UpdateDTO.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/pojo/dto","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}QO.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/pojo/qo","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}Example.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/pojo/example","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}Mapper.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/pojo/mapper","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}PO.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/pojo/po","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}ListVO.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/pojo/vo","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}ShowVO.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/pojo/vo","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}Service.java.ftl","fileDir":"/{coreModule}/src/main/java/{packageName}/service","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"messages.properties.ftl","fileDir":"/{coreModule}/src/main/resources","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"messages_en_US.properties.ftl","fileDir":"/{coreModule}/src/main/resources","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"mybatis-config.xml.ftl","fileDir":"/{coreModule}/src/main/resources","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"{project-name}-default.properties.ftl","fileDir":"/{coreModule}/src/main/resources/config","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}DAO.xml.ftl","fileDir":"/{coreModule}/src/main/resources/{packageName}/dao","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"pom.xml.ftl","fileDir":"/{webModule}","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"{ProjectName}App.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"AbstractController.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}/web","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"ExceptionTranslator.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}/web/advice","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}API.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}/web/api","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"StartLogCommandLineRunner.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}/web/config","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"SwaggerConfig.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}/web/config","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"WebConfig.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}/web/config","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"WebConst.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}/web/constant","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"WebLoginContext.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}/web/context","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}Controller.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}/web/rest","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"IpUtil.java.ftl","fileDir":"/{webModule}/src/main/java/{packageName}/web/util","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"application.yml.ftl","fileDir":"/{webModule}/src/main/resources","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"application-local.yml.ftl","fileDir":"/{webModule}/src/main/resources","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"AbstractTest.java.ftl","fileDir":"/{webModule}/src/test/java/{packageName}","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"H2Flusher.java.ftl","fileDir":"/{webModule}/src/test/java/{packageName}","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"Main.java.ftl","fileDir":"/{webModule}/src/test/java/{packageName}","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"TestConfiguration.java.ftl","fileDir":"/{webModule}/src/test/java/{packageName}","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}Helper.java.ftl","fileDir":"/{webModule}/src/test/java/{packageName}/help","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"H2Util.java.ftl","fileDir":"/{webModule}/src/test/java/{packageName}/util","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"AbstractWebTest.java.ftl","fileDir":"/{webModule}/src/test/java/{packageName}/web","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"{ClassName}ControllerTest.java.ftl","fileDir":"/{webModule}/src/test/java/{packageName}/web/rest","contextType":2,"abstracted":false,"binary":false},
+    {"fileName":"application-local.yml.ftl","fileDir":"/{webModule}/src/test/resources","contextType":1,"abstracted":false,"binary":false},
+    {"fileName":"{projectName}.sql.ftl","fileDir":"/{webModule}/src/test/resources/DB","contextType":1,"abstracted":false,"binary":false}
   ]
 }

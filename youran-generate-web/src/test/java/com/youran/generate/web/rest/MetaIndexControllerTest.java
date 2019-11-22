@@ -45,7 +45,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         MetaFieldPO metaField2 = generateHelper.saveFieldExample(metaEntity.getEntityId());
         MetaIndexAddDTO addDTO = MetaIndexHelper.getAddDTO(metaField.getFieldId(), metaField2.getFieldId());
         restMockMvc.perform(post(getApiPath() + "/meta_index/save")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(MockMvcResultMatchers.status().isCreated());
 
@@ -57,7 +57,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
         MetaIndexPO metaIndex = generateHelper.saveIndexExample(metaField.getFieldId(), metaField2.getFieldId());
         MetaIndexUpdateDTO updateDTO = MetaIndexHelper.getUpdateDTO(metaIndex, metaField.getFieldId());
         restMockMvc.perform(put(getApiPath() + "/meta_index/update")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }

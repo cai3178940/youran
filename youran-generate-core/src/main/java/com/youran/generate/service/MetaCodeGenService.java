@@ -209,10 +209,11 @@ public class MetaCodeGenService {
                     ConstContext context = new ConstContext(project, metaConstPO);
                     this.renderTemplate(templateRenderer, context, templateFile, projectDir);
                 }
+            } else {
+                throw new BusinessException("未知上下文：" + templateFile.getContextType());
             }
         }
     }
-
 
     /**
      * 对比原目录下文件与目标目录，并覆盖
@@ -302,8 +303,7 @@ public class MetaCodeGenService {
             String relativePath = templateRenderer.renderPath(templateFile, context);
             String outFilePath = projectDir + relativePath;
             LOGGER.debug("输出代码文件：{}", outFilePath);
-            String content = templateRenderer.renderContent(templateFile, context);
-            LOGGER.trace(content);
+            Object content = templateRenderer.renderContent(templateFile, context);
             this.writeToFile(content, outFilePath);
         } catch (SkipCurrentException e) {
             return;
@@ -314,17 +314,21 @@ public class MetaCodeGenService {
     /**
      * 将文本写入文件
      *
-     * @param text        文本内容
+     * @param content     代码文件内容
      * @param outFilePath 文件路径
      */
-    private void writeToFile(String text, String outFilePath) {
+    private void writeToFile(Object content, String outFilePath) {
         File file = new File(outFilePath);
         File parentFile = file.getParentFile();
         if (!parentFile.exists()) {
             parentFile.mkdirs();
         }
         try {
-            FileUtils.write(file, text, "UTF-8");
+            if (content instanceof byte[]) {
+                FileUtils.writeByteArrayToFile(file, (byte[]) content);
+            } else if (content instanceof String) {
+                FileUtils.write(file, (String) content, "UTF-8");
+            }
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "写文件异常");

@@ -4,6 +4,7 @@ import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.template.renderer.TemplateRenderer;
 import com.youran.generate.template.renderer.TemplateRendererBuilder;
 import freemarker.template.Configuration;
+import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +23,8 @@ public class FreeMarkerTemplateRendererBuilder implements TemplateRendererBuilde
 
     @Override
     public TemplateRenderer buildRenderer(CodeTemplatePO templatePO) {
-        Configuration configuration = freeMarkerConfigFactory.getConfiguration(templatePO);
-        FreeMarkerRenderer renderer = new FreeMarkerRenderer(configuration);
+        Triple<Configuration, Integer, String> triple = freeMarkerConfigFactory.getConfigurationTriple(templatePO);
+        FreeMarkerRenderer renderer = new FreeMarkerRenderer(triple.getLeft(), triple.getRight());
         return renderer;
     }
 

@@ -43,6 +43,18 @@ public class TemplateFileAddDTO extends AbstractDTO {
     @NotNull
     private Boolean abstracted;
 
+    @ApiModelProperty(notes = N_BINARY, example = E_BINARY, required = true)
+    @NotNull
+    private Boolean binary;
+
+    public Boolean getBinary() {
+        return binary;
+    }
+
+    public void setBinary(Boolean binary) {
+        this.binary = binary;
+    }
+
     public String getFileName() {
         return this.fileName;
     }

@@ -12,6 +12,7 @@
         ${alias}.template_id as templateId,
         ${alias}.context_type as contextType,
         ${alias}.abstracted,
+        ${alias}.`binary`,
         ${alias}.content,
         ${alias}.created_time as createdTime,
         ${alias}.created_by as createdBy,
@@ -49,6 +50,7 @@
         template_id,
         context_type,
         abstracted,
+        `binary`,
         content,
         created_time,
         created_by,
@@ -63,6 +65,7 @@
         #{templateId,jdbcType=INTEGER},
         #{contextType,jdbcType=INTEGER},
         #{abstracted,jdbcType=BOOLEAN},
+        #{binary,jdbcType=BOOLEAN},
         #{content,jdbcType=VARCHAR},
         #{createdTime,jdbcType=TIMESTAMP},
         #{createdBy,jdbcType=VARCHAR},
@@ -81,6 +84,7 @@
             template_id=#{templateId,jdbcType=INTEGER},
             context_type=#{contextType,jdbcType=INTEGER},
             abstracted=#{abstracted,jdbcType=BOOLEAN},
+            `binary`=#{binary,jdbcType=BOOLEAN},
             content=#{content,jdbcType=VARCHAR},
             operated_time=#{operatedTime,jdbcType=TIMESTAMP},
             operated_by=#{operatedBy,jdbcType=VARCHAR},
@@ -111,6 +115,9 @@
         </if>
         <if test="abstracted != null ">
             and t.abstracted = #{abstracted}
+        </if>
+        <if test="binary != null ">
+            and t.`binary` = #{binary}
         </if>
     </sql>
 

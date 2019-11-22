@@ -1,6 +1,7 @@
 package com.youran.generate.service;
 
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.Base64Util;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.pojo.mapper.CodeTemplateMapper;
 import com.youran.generate.pojo.mapper.TemplateFileMapper;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 【代码模板】导入导出服务
@@ -31,6 +33,8 @@ public class TemplateImportExportService {
 
     public static final String TEMPLATE_JSON_FILE = "template.json";
     public static final String TEMPLATE_FILE_DIR = "ftl";
+    public static final long TEMPLATE_FILE_LENGTH_LIMIT = 10 * 1024 * 1024L;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TemplateImportExportService.class);
     @Autowired
     private TemplateFileService templateFileService;
@@ -142,9 +146,17 @@ public class TemplateImportExportService {
         if (!contentFile.exists() || contentFile.isDirectory()) {
             throw new BusinessException("模板文件缺失：" + po.getFileName());
         }
+        if (contentFile.length() > TEMPLATE_FILE_LENGTH_LIMIT) {
+            throw new BusinessException("模板文件(" + filePath + ")超过最大长度限制：" +
+                FileUtils.byteCountToDisplaySize(TEMPLATE_FILE_LENGTH_LIMIT));
+        }
         String content;
         try {
-            content = FileUtils.readFileToString(contentFile, StandardCharsets.UTF_8);
+            if (Objects.equals(po.getBinary(), true)) {
+                content = Base64Util.encodeFile(contentFile);
+            } else {
+                content = FileUtils.readFileToString(contentFile, StandardCharsets.UTF_8);
+            }
         } catch (IOException e) {
             LOGGER.error("读取文件内容异常", e);
             throw new BusinessException("读取模板文件内容异常");

@@ -28,6 +28,7 @@ public class TemplateFileHelper {
         dto.setTemplateId(templateId);
         dto.setContextType(SafeUtil.getInteger(E_CONTEXT_TYPE));
         dto.setAbstracted(SafeUtil.getBoolean(E_ABSTRACTED));
+        dto.setBinary(SafeUtil.getBoolean(E_BINARY));
         return dto;
     }
 
@@ -45,6 +46,7 @@ public class TemplateFileHelper {
         dto.setTemplateId(templateFile.getTemplateId());
         dto.setContextType(templateFile.getContextType());
         dto.setAbstracted(templateFile.getAbstracted());
+        dto.setBinary(templateFile.getBinary());
         return dto;
     }
 

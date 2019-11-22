@@ -35,9 +35,19 @@ public class TemplateFileListVO extends AbstractVO {
     @ApiModelProperty(notes = N_ABSTRACTED, example = E_ABSTRACTED)
     private Boolean abstracted;
 
+    @ApiModelProperty(notes = N_BINARY, example = E_BINARY, required = true)
+    private Boolean binary;
+
     @ApiModelProperty(notes = N_VERSION, example = E_VERSION)
     private Integer version;
 
+    public Boolean getBinary() {
+        return binary;
+    }
+
+    public void setBinary(Boolean binary) {
+        this.binary = binary;
+    }
 
     public Integer getFileId() {
         return this.fileId;

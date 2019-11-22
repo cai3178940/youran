@@ -38,7 +38,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
     public void save() throws Exception {
         MetaEntityAddDTO addDTO = MetaEntityHelper.getAddDTO(metaProject.getProjectId(), 0);
         restMockMvc.perform(post(getApiPath() + "/meta_entity/save")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(MockMvcResultMatchers.status().isCreated());
 
@@ -49,7 +49,7 @@ public class MetaEntityControllerTest extends AbstractWebTest {
         MetaEntityPO metaEntity = generateHelper.saveEntityExample(metaProject.getProjectId(), 0);
         MetaEntityUpdateDTO updateDTO = MetaEntityHelper.getUpdateDTO(metaEntity);
         restMockMvc.perform(put(getApiPath() + "/meta_entity/update")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }

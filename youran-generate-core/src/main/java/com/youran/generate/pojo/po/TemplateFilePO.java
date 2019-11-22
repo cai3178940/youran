@@ -46,6 +46,11 @@ public class TemplateFilePO extends BasePO {
     private Boolean abstracted;
 
     /**
+     * 是否二进制文件
+     */
+    private Boolean binary;
+
+    /**
      * 内容
      */
     @JsonIgnore
@@ -59,6 +64,14 @@ public class TemplateFilePO extends BasePO {
     public String fetchFilePath() {
         String filename = this.fileDir + "/" + fileName;
         return FilenameUtils.normalize(filename.replaceAll("\\/+", "/"), true);
+    }
+
+    public Boolean getBinary() {
+        return binary;
+    }
+
+    public void setBinary(Boolean binary) {
+        this.binary = binary;
     }
 
     public Integer getFileId() {

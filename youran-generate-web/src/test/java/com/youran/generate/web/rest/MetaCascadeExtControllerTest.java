@@ -49,7 +49,7 @@ public class MetaCascadeExtControllerTest extends AbstractWebTest {
         MetaCascadeExtAddDTO addDTO = MetaCascadeExtHelper.getAddDTO(metaField1.getFieldId(), metaEntity1.getEntityId(),
             metaField2.getFieldId(), metaEntity2.getEntityId());
         restMockMvc.perform(post(getApiPath() + "/meta_cascade_ext/save")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(MockMvcResultMatchers.status().isCreated());
 
@@ -61,7 +61,7 @@ public class MetaCascadeExtControllerTest extends AbstractWebTest {
             metaField2.getFieldId(), metaEntity2.getEntityId());
         MetaCascadeExtUpdateDTO updateDTO = MetaCascadeExtHelper.getUpdateDTO(metaCascadeExt);
         restMockMvc.perform(put(getApiPath() + "/meta_cascade_ext/update")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }

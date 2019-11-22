@@ -27,6 +27,6 @@ public interface TemplateRenderer {
      * @param context
      * @return
      */
-    String renderContent(TemplateFilePO templateFilePO, BaseContext context);
+    Object renderContent(TemplateFilePO templateFilePO, BaseContext context);
 
 }

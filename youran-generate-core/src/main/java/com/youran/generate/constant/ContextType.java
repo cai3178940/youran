@@ -14,10 +14,6 @@ import java.util.Map;
 public enum ContextType {
 
     /**
-     * 无
-     */
-    NONE(0, "无"),
-    /**
      * 全局
      */
     GLOBAL(1, "全局"),

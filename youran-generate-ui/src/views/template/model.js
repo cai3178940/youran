@@ -62,6 +62,8 @@ export function initTemplateFileFormBean (forEdit) {
     contextType: options.contextType[0].value,
     // 是否抽象文件
     abstracted: false,
+    // 是否二进制文件
+    binary: false,
     // 文件内容
     content: ''
   }

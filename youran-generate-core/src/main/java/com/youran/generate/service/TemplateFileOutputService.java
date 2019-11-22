@@ -1,6 +1,7 @@
 package com.youran.generate.service;
 
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.Base64Util;
 import com.youran.generate.pojo.po.TemplateFilePO;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -43,7 +44,11 @@ public class TemplateFileOutputService {
             for (TemplateFilePO templateFile : templateFiles) {
                 String contentFilePath = outputDir + templateFile.fetchFilePath();
                 File contentFile = new File(contentFilePath);
-                FileUtils.writeStringToFile(contentFile, templateFile.getContent(), StandardCharsets.UTF_8);
+                if (templateFile.getBinary()) {
+                    FileUtils.writeByteArrayToFile(contentFile, Base64Util.decode(templateFile.getContent()));
+                } else {
+                    FileUtils.writeStringToFile(contentFile, templateFile.getContent(), StandardCharsets.UTF_8);
+                }
             }
         } catch (IOException e) {
             LOGGER.error("模板文件导出异常", e);

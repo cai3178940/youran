@@ -45,7 +45,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
         MetaManyToManyAddDTO addDTO = MetaManyToManyHelper.getAddDTO(metaProject.getProjectId(),
             metaEntity1.getEntityId(), metaEntity2.getEntityId());
         restMockMvc.perform(post(getApiPath() + "/meta_mtm/save")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(MockMvcResultMatchers.status().isCreated());
 
@@ -57,7 +57,7 @@ public class MetaManyToManyControllerTest extends AbstractWebTest {
             metaEntity1.getEntityId(), metaEntity2.getEntityId());
         MetaManyToManyUpdateDTO updateDTO = MetaManyToManyHelper.getUpdateDTO(metaManyToMany);
         restMockMvc.perform(put(getApiPath() + "/meta_mtm/update")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }

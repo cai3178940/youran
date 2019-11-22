@@ -23,6 +23,8 @@ public class TemplateFileExample extends AbstractExample {
     public static final String E_CONTEXT_TYPE = "1";
     public static final String N_ABSTRACTED = "是否抽象文件";
     public static final String E_ABSTRACTED = "false";
+    public static final String N_BINARY = "是否二进制文件";
+    public static final String E_BINARY = "false";
     public static final String N_CONTENT = "内容";
     public static final String E_CONTENT = "xxxxx";
 }

@@ -41,7 +41,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
     public void save() throws Exception {
         MetaConstDetailAddDTO addDTO = MetaConstDetailHelper.getAddDTO(metaConst.getConstId());
         restMockMvc.perform(post(getApiPath() + "/meta_const_detail/save")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(MockMvcResultMatchers.status().isCreated());
 
@@ -52,7 +52,7 @@ public class MetaConstDetailControllerTest extends AbstractWebTest {
         MetaConstDetailPO metaConstDetail = generateHelper.saveConstDetailExample(metaConst.getConstId());
         MetaConstDetailUpdateDTO updateDTO = MetaConstDetailHelper.getUpdateDTO(metaConstDetail);
         restMockMvc.perform(put(getApiPath() + "/meta_const_detail/update")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }

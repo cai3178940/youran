@@ -41,7 +41,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
     public void save() throws Exception {
         MetaFieldAddDTO addDTO = MetaFieldHelper.getAddDTO(metaEntity.getEntityId());
         restMockMvc.perform(post(getApiPath() + "/meta_field/save")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(MockMvcResultMatchers.status().isCreated());
 
@@ -52,7 +52,7 @@ public class MetaFieldControllerTest extends AbstractWebTest {
         MetaFieldPO metaField = generateHelper.saveFieldExample(metaEntity.getEntityId());
         MetaFieldUpdateDTO updateDTO = MetaFieldHelper.getUpdateDTO(metaField);
         restMockMvc.perform(put(getApiPath() + "/meta_field/update")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }

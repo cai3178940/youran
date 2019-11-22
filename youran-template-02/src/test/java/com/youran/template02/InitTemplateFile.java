@@ -37,7 +37,7 @@ public class InitTemplateFile {
         "png",
         "svg"
     };
-    public static final String[] NOT_CONVERT_FTL_FILE = {
+    public static final String[] BINARY_FILE_NAME = {
         "LICENSE"
     };
     public static final String[] IGNORE_FILE_PATH_PREFIX = {
@@ -51,7 +51,7 @@ public class InitTemplateFile {
      */
     private void initTemplatePO() {
         templatePO = new CodeTemplatePO();
-        templatePO.setCode("youran-template-01");
+        templatePO.setCode("youran-template-02");
         templatePO.setName("标准vue前端模板");
         templatePO.setTemplateVersion("0.0.1");
         templatePO.setSysLowVersion("3.0.0");
@@ -152,13 +152,13 @@ public class InitTemplateFile {
         }
         String target = FTL_DIR + path;
         try {
-            if (this.neetConvertFtl(repoFile)) {
+            if (!this.isBinaryFile(repoFile)) {
                 String content = FileUtils.readFileToString(repoFile, "utf-8");
                 FileUtils.write(new File(target + ".ftl"), content, "utf-8");
-                this.buildAndSetTemplateFilePO(path, true);
+                this.buildAndSetTemplateFilePO(path + ".ftl", false);
             } else {
                 FileUtils.copyFile(repoFile, new File(target));
-                this.buildAndSetTemplateFilePO(path, false);
+                this.buildAndSetTemplateFilePO(path, true);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -179,31 +179,32 @@ public class InitTemplateFile {
     }
 
     /**
-     * 判断源码文件是否需要转换成ftl模板文件
+     * 判断源码文件是否二进制文件
      *
      * @param repoFile
      * @return
      */
-    private boolean neetConvertFtl(File repoFile) {
+    private boolean isBinaryFile(File repoFile) {
         String name = repoFile.getName();
-        if (ArrayUtils.contains(NOT_CONVERT_FTL_FILE, name)) {
-            return false;
+        if (ArrayUtils.contains(BINARY_FILE_NAME, name)) {
+            return true;
         }
         String extension = FilenameUtils.getExtension(name);
         if (ArrayUtils.contains(ASSETS_EXTS, StringUtils.lowerCase(extension))) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
      * 创建并设置模板文件对象
      *
-     * @param path  文件路径
-     * @param isFtl 是否freemarker模板
+     * @param path   文件路径
+     * @param binary 是否二进制文件
      */
-    private void buildAndSetTemplateFilePO(String path, boolean isFtl) {
+    private void buildAndSetTemplateFilePO(String path, boolean binary) {
         String fileName = path.substring(path.lastIndexOf("/") + 1);
+
         String dir = path.substring(0, path.lastIndexOf("/"));
         if (StringUtils.isBlank(dir)) {
             dir = "/";
@@ -211,8 +212,9 @@ public class InitTemplateFile {
         TemplateFilePO filePO = new TemplateFilePO();
         filePO.setFileName(fileName);
         filePO.setFileDir(dir);
-        filePO.setContextType(isFtl ? ContextType.GLOBAL.getValue() : ContextType.NONE.getValue());
+        filePO.setContextType(ContextType.GLOBAL.getValue());
         filePO.setAbstracted(false);
+        filePO.setBinary(binary);
 
         templatePO.getTemplateFiles().add(filePO);
     }

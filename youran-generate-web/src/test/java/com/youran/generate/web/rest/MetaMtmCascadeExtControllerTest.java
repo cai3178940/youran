@@ -52,7 +52,7 @@ public class MetaMtmCascadeExtControllerTest extends AbstractWebTest {
         MetaMtmCascadeExtAddDTO addDTO = MetaMtmCascadeExtHelper.getAddDTO(this.metaManyToMany.getMtmId(),
             metaEntity1.getEntityId(), metaEntity2.getEntityId(), metaField2.getFieldId());
         restMockMvc.perform(post(getApiPath() + "/meta_mtm_cascade_ext/save")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isCreated());
     }
@@ -63,7 +63,7 @@ public class MetaMtmCascadeExtControllerTest extends AbstractWebTest {
             metaEntity1.getEntityId(), metaEntity2.getEntityId(), metaField2.getFieldId());
         MetaMtmCascadeExtUpdateDTO updateDTO = MetaMtmCascadeExtHelper.getUpdateDTO(metaMtmCascadeExt);
         restMockMvc.perform(put(getApiPath() + "/meta_mtm_cascade_ext/update")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
     }
@@ -99,7 +99,7 @@ public class MetaMtmCascadeExtControllerTest extends AbstractWebTest {
         MetaMtmCascadeExtPO metaMtmCascadeExt = generateHelper.saveMtmCascadeExtExample(this.metaManyToMany.getMtmId(),
             metaEntity1.getEntityId(), metaEntity2.getEntityId(), metaField2.getFieldId());
         restMockMvc.perform(put(getApiPath() + "/meta_mtm_cascade_ext")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(Lists.newArrayList(metaMtmCascadeExt.getMtmCascadeExtId()))))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(is(1)));

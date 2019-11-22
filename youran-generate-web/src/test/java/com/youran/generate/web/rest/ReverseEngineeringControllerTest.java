@@ -59,12 +59,12 @@ public class ReverseEngineeringControllerTest extends AbstractWebTest {
         dto.setDbType("mysql");
 
         restMockMvc.perform(post(getApiPath() + "/reverse_engineering/check")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(dto)))
             .andExpect(MockMvcResultMatchers.status().isOk());
 
         restMockMvc.perform(post(getApiPath() + "/reverse_engineering/execute")
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(dto)))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }

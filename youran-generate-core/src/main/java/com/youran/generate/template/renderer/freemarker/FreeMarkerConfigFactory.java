@@ -16,7 +16,7 @@ import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class FreeMarkerConfigFactory {
     @Autowired
     private TemplateFileOutputService templateFileOutputService;
 
-    private Map<Integer, Pair<Configuration, Integer>> cache;
+    private Map<Integer, Triple<Configuration, Integer, String>> cache;
     private BeansWrapperBuilder beansWrapperBuilder;
     private TemplateModel metaConstTypeModel;
     private TemplateModel jFieldTypeModel;
@@ -73,13 +73,13 @@ public class FreeMarkerConfigFactory {
      * @param templatePO
      * @return
      */
-    public Configuration getConfiguration(CodeTemplatePO templatePO) {
+    public Triple<Configuration, Integer, String> getConfigurationTriple(CodeTemplatePO templatePO) {
         Integer templateId = templatePO.getTemplateId();
-        Pair<Configuration, Integer> pair = cache.get(templateId);
-        if (pair == null || !Objects.equals(pair.getRight(), templatePO.getInnerVersion())) {
-            pair = this.buildAndCache(templatePO);
+        Triple<Configuration, Integer, String> triple = cache.get(templateId);
+        if (triple == null || !Objects.equals(triple.getMiddle(), templatePO.getInnerVersion())) {
+            triple = this.buildAndCache(templatePO);
         }
-        return pair.getLeft();
+        return triple;
     }
 
     /**
@@ -88,23 +88,23 @@ public class FreeMarkerConfigFactory {
      * @param templatePO
      * @return
      */
-    private synchronized Pair<Configuration, Integer> buildAndCache(CodeTemplatePO templatePO) {
+    private synchronized Triple<Configuration, Integer, String> buildAndCache(CodeTemplatePO templatePO) {
         Integer templateId = templatePO.getTemplateId();
-        Pair<Configuration, Integer> pair = cache.get(templateId);
-        if (pair == null || !Objects.equals(pair.getRight(), templatePO.getInnerVersion())) {
-            pair = this.buildPair(templatePO);
-            cache.put(templateId, pair);
+        Triple<Configuration, Integer, String> triple = cache.get(templateId);
+        if (triple == null || !Objects.equals(triple.getMiddle(), templatePO.getInnerVersion())) {
+            triple = this.buildTriple(templatePO);
+            cache.put(templateId, triple);
         }
-        return pair;
+        return triple;
     }
 
     /**
      * 构建freemarker配置
      *
      * @param templatePO
-     * @return
+     * @return (freemarker配置 ， 模板内部版本号 ， 模板目录地址)
      */
-    private Pair<Configuration, Integer> buildPair(CodeTemplatePO templatePO) {
+    private Triple<Configuration, Integer, String> buildTriple(CodeTemplatePO templatePO) {
         String templateDir = dataDirService.getTemplateRecentDir(templatePO);
         LOGGER.info("开始构建FreeMarker Configuration,templateId={},innerVersion={},模板文件输出目录：{}",
             templatePO.getTemplateId(), templatePO.getInnerVersion(), templateDir);
@@ -127,7 +127,7 @@ public class FreeMarkerConfigFactory {
         cfg.setSharedVariable("CommonTemplateFunction", commonTemplateFunctionModel);
         cfg.setSharedVariable("JavaTemplateFunction", javaTemplateFunctionModel);
         cfg.setSharedVariable("SqlTemplateFunction", sqlTemplateFunctionModel);
-        return Pair.of(cfg, templatePO.getInnerVersion());
+        return Triple.of(cfg, templatePO.getInnerVersion(), templateDir);
     }
 
 
