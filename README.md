@@ -1,18 +1,31 @@
 # youran代码自动化平台
 
-通过维护元数据，一键生成java后端基础架构，同时还能生成增删改查代码和单元测试。
-生成的项目是基于[spring-boot](https://spring.io/projects/spring-boot/)+[mybatis](http://www.mybatis.org/mybatis-3/)架构；其他附属技术栈包括：
-- [hibernate-validator](http://hibernate.org/validator/releases/)
-- [swagger](https://swagger.io/)(API文档自动生成)
-- [mapstruct](http://mapstruct.org/)(属性映射)
-- 基于[H2](http://www.h2database.com)内存数据库的单元测试
+## 介绍
 
-## 创建本地数据库
-1. 先修改数据库配置：[youran-generate-web/src/main/resources/application-local.yml](./youran-generate-web/src/main/resources/application-local.yml)
-2. 建表语句参考：[youran-generate-web/src/test/resources/DB/generate.sql](./youran-generate-web/src/test/resources/DB/generate.sql)
+这是一款包含系统设计和代码生成功能的自动化web平台，使用本平台可以极大提升程序员的开发效率
+
+**包含如下特色功能：**
+1. ★★★基于git增量生成代码[点击查看原理](/doc/IncrementalGeneration.md)：支持将代码直接生成到远程git仓库，同时支持在元数据变动以后再次生成（只生成差异部分）。
+2. ★★★自定义模板：如果预置的代码模板不能满足您的需求，可基于您自己团队的技术框架开发属于您独有的代码模板。
+3. ★反向工程：如果您的应用已经完成了表结构设计，请使用'反向工程'功能将建表语句反向导入项目中，自动生成实体和字段。
+4. 多对多关系：支持在两个实体之间的建立多对多关联关系，会在mysql中生成一张关联表，可以设置两个实体之间是否持有对方引用，持有引用的一方会自动生成维护关联关系的rest服务。
+5. 外键关联：在添加字段的时候，可以设置该字段是否外键，外键字段需要关联某个实体的主键，从而可以实现‘一对一’或‘一对多’关联。
+6. 级联扩展：外键字段或多对多实体上可以配置级联字段，级联字段可以作为被关联实体的查询条件，也能作为查询结果展示。
+7. 实体ER图：可以在实体列表页选择多个存在关联关系的实体，点击'查看ER图'按钮，即可生成实体关系图。
+8. 代码预览：不需要下载就可以在线浏览生成的代码。
+
+> 代码增量生成功能是本系统最大亮点，现在各个公司的软件都流行敏捷迭代开发，
+> 一旦使用了此功能，您在整个软件迭代周期中都能用本系统生成新的功能模块。
+> 这也是“代码生成工具”和“`代码自动化平台`”的最大差别
 
 ## 安装部署
 
+#### 第一步、环境准备
+1. 系统依赖：mysql数据库、jdk8、maven
+2. 在mysql中提前建好表，建表语句参考：[youran-generate-web/src/test/resources/DB/generate.sql](./youran-generate-web/src/test/resources/DB/generate.sql)
+3. 根据本地环境修改配置文件：[youran-generate-web/src/main/resources/application-local.yml](./youran-generate-web/src/main/resources/application-local.yml)
+
+#### 第二步、编译打包及运行
 ``` bash
 # 安装前端项目npm依赖
 cd youran-generate-ui
@@ -34,31 +47,15 @@ java -jar youran-generate-web/target/youran-generate-web-3.0.0-SNAPSHOT.war
 
 ```
 
+#### 第三步、首次访问系统时，需要导入系统预置代码模板
 
-**安装完成以后首次访问系统，请导入代码模板**
+系统预置模板包括：
 
-模板文件路径：
+- 标准java后端模板： [源码地址](https://gitee.com/caixiaoge/youran-template-01) [zip压缩包](https://gitee.com/caixiaoge/youran-template-01/releases)
+- 标准vue前端模板： [源码地址](https://gitee.com/caixiaoge/youran-template-02) [zip压缩包](https://gitee.com/caixiaoge/youran-template-02/releases)
 
-- 标准java后端模板： youran-template-01/target/youran-template-01-3.0.0-SNAPSHOT-src.zip
+后续还会推出其他技术栈的模板，我也希望您给本项目贡献新的代码模板
 
-
-## 术语解析
-1. 项目：项目就是一个独立的应用系统，可以基于一个项目生成一整套JavaWeb后端服务系统。
-2. 实体：一个实体对应数据库里一张业务表，同时对应后端一整套增删改查服务，同时实体之间也可以有‘一对多’，‘多对多’等关联关系。
-3. 字段：这里的字段既是数据库业务表中的字段，也是java实体类中的字段，一个字段有非常多的属性可以配置。
-4. 枚举：建议将不常变化的一类常量数据创建成枚举，会在java代码中生成对应的enum类。
-5. 索引：就是mysql业务表中的索引。
-
-
-## 特色功能
-1. ★★★基于git增量生成代码[点击查看原理](/doc/IncrementalGeneration.md)：支持将代码直接生成到远程git仓库，同时支持在数据变动以后再次生成（只生成差异部分）。
-2. ★★★自定义模板：如果预置的代码模板不能满足您的需求，可基于您自己团队的技术框架开发属于您独有的代码模板。
-3. ★反向工程：如果您的应用已经完成了表结构设计，请使用'反向工程'功能将建表语句反向导入项目中，自动生成实体和字段。
-4. 多对多关系：支持在两个实体之间的建立多对多关联关系，会在mysql中生成一张关联表，可以设置两个实体之间是否持有对方引用，持有引用的一方会自动生成维护关联关系的rest服务。
-5. 外键关联：在添加字段的时候，可以设置该字段是否外键，外键字段需要关联某个实体的主键，从而可以实现‘一对一’或‘一对多’关联。
-6. 级联扩展：外键字段或多对多实体上可以配置级联字段，级联字段可以作为被关联实体的查询条件，也能作为查询结果展示。
-7. 实体ER图：可以在实体列表页选择多个存在关联关系的实体，点击'查看ER图'按钮，即可生成实体关系图。
-8. 代码预览：不需要下载就可以在线浏览生成的代码
 
 ## 使用说明
 
@@ -82,61 +79,9 @@ java -jar youran-generate-web/target/youran-generate-web-3.0.0-SNAPSHOT.war
 5. 创建多对多关联关系【可选】
 7. 生成代码
 
-
-## 升级日志
-
-#### 2019-09-28
-- 支持多对多级联扩展
-- 调整UI，优化用户体验
-
-#### 2019-09-09
-- 支持代码预览功能
-
-#### 2019-02-27
-- 新增java类型Boolean
-
-#### 2018-11-29
-- 支持spring-boot1和2两个版本的自由选择
-
-#### 2018-10-19
-- 增加项目中文名称字段
-
-#### 2018-07-17
-- 支持查看ER图
-
-#### 2018-07-12
-- 使用标准java doc风格的类注释
-- 删除索引管理页面，字段列表页中增加索引维护功能
-- 可以配置对索引字段增加唯一性校验
-
-#### 2018-06-19
-- 增加国际化支持
-
-#### 2018-06-14
-- 切换mybatis的使用姿势：用传统的Mapper注解模式替换SqlSession模式
-
-#### 2018-05-31
-- 增加反向工程功能
-
-#### 2018-05-30
-- 外键字段增加级联扩展功能
-- core模块中增加默认配置文件，并设置mybatis.config-location
-
-#### 2018-05-08
-- 多对多关联表中增加创建时间字段
-
-#### 2018-04-10
-- 项目实体中增加groupId字段
-
-#### 2018-03-17
-- 增加将代码生成到远程Git仓库的功能
-
-#### 2018-03-09
-- 增加前端编辑表单中每个字段的详细说明（markdown格式）
-
-#### 2018-03-08
-- 生成Maven模块化代码
-
-#### 2018-03-07
-- 移除fastjson依赖，统一换成jackson
-- 修改下载代码压缩包文件名（带上项目名称）
+## 术语解析
+1. 项目：项目就是一个独立的应用系统，可以基于一个项目生成一整套JavaWeb后端服务系统。
+2. 实体：一个实体对应数据库里一张业务表，同时对应后端一整套增删改查服务，同时实体之间也可以有‘一对多’，‘多对多’等关联关系。
+3. 字段：这里的字段既是数据库业务表中的字段，也是java实体类中的字段，一个字段有非常多的属性可以配置。
+4. 枚举：建议将不常变化的一类常量数据创建成枚举，会在java代码中生成对应的enum类。
+5. 索引：就是mysql业务表中的索引。
