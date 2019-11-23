@@ -200,7 +200,7 @@ public class MetaProjectService {
                 if (template != null) {
                     vo.setTemplateCode2(template.getCode());
                 } else {
-                    vo.setTemplateId(null);
+                    vo.setTemplateId2(null);
                 }
             }
             if (vo.getTemplateId3() != null) {
@@ -208,7 +208,7 @@ public class MetaProjectService {
                 if (template != null) {
                     vo.setTemplateCode3(template.getCode());
                 } else {
-                    vo.setTemplateId(null);
+                    vo.setTemplateId3(null);
                 }
             }
         });

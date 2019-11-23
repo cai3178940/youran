@@ -95,18 +95,9 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog title="元数据导入" :visible.sync="importFormVisible" width="400px">
-      <el-upload drag
-                 :action="importUrl"
-                 :on-success="onImportSuccess"
-                 :on-error="onImportError"
-                 :show-file-list="false"
-                 accept="application/zip">
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传zip格式的压缩包</div>
-      </el-upload>
-    </el-dialog>
+    <!-- 元数据导入对话框 -->
+    <import-project ref="importProject"
+                    @success="onImportProjectSuccess"></import-project>
 
     <el-dialog title="反向工程" :visible.sync="reverseEngineeringFormVisible" width="60%">
       <el-form ref="reverseEngineeringForm" :model="reverseEngineeringForm" :rules="reverseEngineeringFormRules" size="small">
@@ -131,13 +122,13 @@
 </template>
 
 <script>
-import { apiPath } from '@/utils/request'
 import projectApi from '@/api/project'
 import CodePreview from './codePreview'
+import ImportProject from './import'
 
 export default {
   name: 'projectList',
-  components: { CodePreview },
+  components: { CodePreview, ImportProject },
   data () {
     return {
       activeNum: 0,
@@ -158,9 +149,7 @@ export default {
         ]
       },
       iconColorClass: ['color-primary', 'color-warning', 'color-success'],
-      progressingProjectIds: [],
-      importFormVisible: false,
-      importUrl: `/${apiPath}/meta_import`
+      progressingProjectIds: []
     }
   },
   filters: {
@@ -239,15 +228,10 @@ export default {
       this.$router.push('/project/add')
     },
     handleImport () {
-      this.importFormVisible = true
+      this.$refs.importProject.show()
     },
-    onImportSuccess (response, file, fileList) {
-      this.importFormVisible = false
-      this.$common.showMsg('success', '导入成功')
+    onImportProjectSuccess () {
       this.doQuery()
-    },
-    onImportError (error, file, fileList) {
-      this.$common.showNotifyError(JSON.parse(error.message))
     },
     handleEntity (row) {
       this.$router.push(`/project/${row.projectId}/entity`)

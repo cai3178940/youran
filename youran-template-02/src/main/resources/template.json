@@ -5,5 +5,5 @@
   "sysLowVersion" : "3.0.0",
   "sysDefault" : true,
   "remark" : "标准vue前端模板",
-  "templateFiles" : []
+  "templateFiles" : [ ]
 }

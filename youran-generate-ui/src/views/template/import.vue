@@ -1,10 +1,12 @@
 <template>
   <el-dialog title="模板导入"
              :visible.sync="importTemplateFormVisible"
+             v-loading="importTemplateFormLoading"
              width="400px">
     <el-upload drag
                :action="importTemplateUrl"
                :on-success="onImportTemplateSuccess"
+               :on-progress="onImportTemplateProgress"
                :on-error="onImportTemplateError"
                :show-file-list="false"
                accept="application/zip">
@@ -22,17 +24,23 @@ export default {
   name: 'import-template',
   data () {
     return {
+      importTemplateFormLoading: false,
       importTemplateFormVisible: false,
       importTemplateUrl: `/${apiPath}/code_template/import`
     }
   },
   methods: {
+    onImportTemplateProgress (event, file, fileList) {
+      this.importTemplateFormLoading = true
+    },
     onImportTemplateSuccess (response, file, fileList) {
       this.importTemplateFormVisible = false
+      this.importTemplateFormLoading = false
       this.$common.showMsg('success', '导入成功')
       eventHub.$emit('import-template-success')
     },
     onImportTemplateError (error, file, fileList) {
+      this.importTemplateFormLoading = false
       this.$common.showNotifyError(JSON.parse(error.message))
       eventHub.$emit('import-template-error', error)
     },

@@ -10,6 +10,7 @@ import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.Git;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -21,6 +22,12 @@ import java.util.function.Consumer;
 
 /**
  * 初始化代码模板
+ * <p>
+ * 使用场景：
+ * <ul><li>1、首次构建vue前端脚手架模板时使用
+ * <li>2、vue-admin-template项目有更新时，拉取最新代码
+ * （需要在template-02-init分支上做该操作）
+ * </ul>
  *
  * @author cbb
  * @date 2019/11/20
@@ -38,7 +45,6 @@ public class InitTemplateFile {
         "svg"
     };
     public static final String[] BINARY_FILE_NAME = {
-        "LICENSE"
     };
     public static final String[] IGNORE_FILE_PATH_PREFIX = {
         "/src/views/nested"
@@ -49,7 +55,8 @@ public class InitTemplateFile {
     /**
      * 初始化模板对象
      */
-    private void initTemplatePO() {
+    @Before
+    public void initTemplatePO() {
         templatePO = new CodeTemplatePO();
         templatePO.setCode("youran-template-02");
         templatePO.setName("标准vue前端模板");
@@ -68,8 +75,6 @@ public class InitTemplateFile {
         File repoDir = new File("C:\\Users\\caibi\\AppData\\Local\\Temp\\vue-admin-template8463170824386821771");
         // 清空模板目录
         this.cleanFtlDir();
-        // 初始化模板对象
-        this.initTemplatePO();
         // 遍历原始代码，并拷贝模板文件
         this.onEachRepoFile(repoDir, repoFile -> this.copyRepoFile(repoDir, repoFile));
         // 模板元数据写入template.json
@@ -104,6 +109,8 @@ public class InitTemplateFile {
     public void cleanFtlDir() throws Exception {
         File ftlDir = new File(FTL_DIR);
         FileUtils.cleanDirectory(ftlDir);
+        // 模板元数据写入template.json
+        JsonUtil.writeJsonToFile(templatePO, true, new File(TEMPLATE_JSON_FILE_PATH));
     }
 
     /**
@@ -154,7 +161,8 @@ public class InitTemplateFile {
         try {
             if (!this.isBinaryFile(repoFile)) {
                 String content = FileUtils.readFileToString(repoFile, "utf-8");
-                FileUtils.write(new File(target + ".ftl"), content, "utf-8");
+                FileUtils.write(new File(target + ".ftl"),
+                    this.convertFtlContent(content), "utf-8");
                 this.buildAndSetTemplateFilePO(path + ".ftl", false);
             } else {
                 FileUtils.copyFile(repoFile, new File(target));
@@ -165,6 +173,16 @@ public class InitTemplateFile {
             throw new RuntimeException(e);
         }
 
+    }
+
+
+    /**
+     * 转换模板内容
+     * @param content
+     * @return
+     */
+    private String convertFtlContent(String content) {
+        return content.replaceAll("\\$\\{","\\${r'\\$'}{");
     }
 
     /**

@@ -50,9 +50,14 @@
         <div ref="splitLine" @mousedown="splitLineMousedown" class="splitLine"></div>
         <el-container ref="main">
           <el-main class="codeMain" v-loading="fileLoading">
-            <vue-codemirror v-model="currentFile.content"
+            <vue-codemirror v-if="!currentFile.binary"
+                            v-model="currentFile.content"
                             :options="cmOptions"
                             @input="fileContentChange"></vue-codemirror>
+            <div v-else class="binary-display color-warning">
+              <span class="binary-file-name color-primary" >{{currentFile.fileName}}</span>
+              是二进制文件，不支持预览
+            </div>
           </el-main>
         </el-container>
       </el-container>
@@ -64,7 +69,11 @@
       @option-clicked="contextMenuOptionClicked"
     />
     <el-dialog :title="editTemplateFile?'修改文件属性':'新建模板文件'" :visible.sync="templateFileFormVisible" width="550px">
-      <el-form ref="templateFileForm" :rules="templateFileRules" class="addTemplateForm" :model="templateFileForm" size="small">
+      <el-form ref="templateFileForm"
+               :rules="templateFileRules"
+               class="addTemplateForm"
+               v-loading="templateFileFormLoading"
+               :model="templateFileForm" size="small">
         <el-form-item prop="fileName" label="文件名：" label-width="120px">
           <el-input style="width:300px;" v-model="templateFileForm.fileName"
                     placeholder="例如：xxxx.ftl"
@@ -75,13 +84,14 @@
                     placeholder="例如：/aaa/bbb"
                     tabindex="20"></el-input>
         </el-form-item>
-        <el-form-item label="是否抽象文件：" label-width="120px">
+        <el-form-item v-if="!templateFileForm.binary"
+                      label="是否抽象文件：" label-width="120px">
           <el-radio-group v-model="templateFileForm.abstracted">
             <el-radio border :label="true">是</el-radio>
             <el-radio border :label="false">否</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="!templateFileForm.abstracted"
+        <el-form-item v-if="!templateFileForm.binary && !templateFileForm.abstracted"
                       label="上下文类型：" label-width="120px">
           <el-radio-group v-model="templateFileForm.contextType">
             <el-radio v-for="obj in contextType"
@@ -203,6 +213,8 @@ function initData () {
     contextMenuOptions: menuOptions1,
     // 是否显示添加模板文件表单
     templateFileFormVisible: false,
+    // 添加模板文件表单是否加载中
+    templateFileFormLoading: false,
     // 是否修改文件属性
     editTemplateFile: false,
     // 添加模板文件表单
@@ -272,6 +284,7 @@ export default {
     contextMenuOptionClicked ({ item, option }) {
       if (option.value === 'addTemplateFile') {
         this.templateFileFormVisible = true
+        this.templateFileFormLoading = false
         this.editTemplateFile = false
         this.templateFileForm = initTemplateFileFormBean()
         if (item) {
@@ -285,14 +298,19 @@ export default {
         }
       } else if (option.value === 'editTemplateFile') {
         this.templateFileFormVisible = true
+        this.templateFileFormLoading = true
         this.editTemplateFile = true
         this.templateFileForm = initTemplateFileFormBean(true)
         // 加载远程数据
-        this.queryFileInfo(item.info.fileId, file => {
-          for (const key in initTemplateFileFormBean(true)) {
-            this.templateFileForm[key] = file[key]
-          }
-        })
+        this.queryFileInfo(item.info.fileId,
+          file => {
+            for (const key in initTemplateFileFormBean(true)) {
+              this.templateFileForm[key] = file[key]
+            }
+          },
+          () => {
+            this.templateFileFormLoading = false
+          })
       } else if (option.value === 'deleteTemplateFile') {
         // 删除模板文件
         this.handleDeleteTemplateFile(item.info.fileId)
@@ -411,12 +429,15 @@ export default {
         this.paths.push(item)
       }
     },
-    queryFileInfo (fileId, callback) {
-      this.fileLoading = true
+    queryFileInfo (fileId, callback, onComplete) {
       return templateApi.getTemplateFile(fileId)
         .then(file => callback(file))
         .catch(error => this.$common.showNotifyError(error))
-        .finally(() => { this.fileLoading = false })
+        .finally(() => {
+          if (onComplete) {
+            onComplete()
+          }
+        })
     },
     nodeClick (data, node) {
       if (this.currentNode === data) {
@@ -431,10 +452,15 @@ export default {
     showNodeFile (data) {
       this.currentNode = data
       this.parsePath(data)
-      this.queryFileInfo(data.info.fileId, file => {
-        this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
-        this.setCurrentFile(file)
-      })
+      this.fileLoading = true
+      this.queryFileInfo(data.info.fileId,
+        file => {
+          this.cmOptions.mode = FileTypeUtil.getCmMode(data.type)
+          this.setCurrentFile(file)
+        },
+        () => {
+          this.fileLoading = false
+        })
     },
     /**
      * 设置当前文件
@@ -599,5 +625,14 @@ export default {
       font-size: 12px;
       margin-left: 10px;
     }
+
+    .binary-display {
+      font-size: 20px;
+      text-align:center;
+      .binary-file-name {
+        font-style:italic;
+      }
+    }
+
   }
 </style>
