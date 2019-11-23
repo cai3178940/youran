@@ -1,9 +1,0 @@
-{
-  "code" : "youran-template-02",
-  "name" : "标准vue前端模板",
-  "templateVersion" : "0.0.1",
-  "sysLowVersion" : "3.0.0",
-  "sysDefault" : true,
-  "remark" : "标准vue前端模板",
-  "templateFiles" : [ ]
-}
