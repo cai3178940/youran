@@ -2,8 +2,8 @@
 
 ### 首次生成代码时序图如下：
 
-![image](doc/gen_1.png)
+![image](gen_1.png)
 
 ### 增量生成代码时序图如下：
 
-![image](doc/gen_2.png)
+![image](gen_2.png)
