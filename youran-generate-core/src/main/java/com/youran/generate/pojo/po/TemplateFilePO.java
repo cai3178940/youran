@@ -13,6 +13,8 @@ import org.apache.commons.io.FilenameUtils;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TemplateFilePO extends BasePO {
 
+    public static final long TEMPLATE_FILE_LENGTH_LIMIT = 10 * 1024 * 1024L;
+
     /**
      * 主键ID
      */

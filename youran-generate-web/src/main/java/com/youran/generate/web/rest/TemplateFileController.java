@@ -14,11 +14,14 @@ import com.youran.generate.pojo.vo.TemplateFileShowVO;
 import com.youran.generate.service.TemplateFileService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.TemplateFileAPI;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -45,6 +48,36 @@ public class TemplateFileController extends AbstractController implements Templa
         return ResponseEntity.created(new URI(apiPath + "/template_file/" + templateFile.getFileId()))
             .body(TemplateFileMapper.INSTANCE.toShowVO(templateFile));
     }
+
+    @Override
+    @PostMapping(value = "/upload")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<TemplateFileShowVO> upload(@RequestParam Integer templateId,
+                                                     @RequestParam String fileDir,
+                                                     MultipartFile file) throws Exception {
+        if (file == null) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "文件为空");
+        }
+        String filename = file.getOriginalFilename();
+        if (StringUtils.isBlank(filename)) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "文件名为空");
+        }
+        if (filename.length() > 100) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "文件名长度不能超过100");
+        }
+        byte[] bytes = file.getBytes();
+        if (file.getSize() == 0 || ArrayUtils.isEmpty(bytes)) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "文件内容不能为空");
+        }
+        if (file.getSize() > TemplateFilePO.TEMPLATE_FILE_LENGTH_LIMIT) {
+            throw new BusinessException(ErrorCode.BAD_PARAMETER, "文件超过最大长度限制:" +
+                FileUtils.byteCountToDisplaySize(TemplateFilePO.TEMPLATE_FILE_LENGTH_LIMIT));
+        }
+        TemplateFilePO templateFile = templateFileService.saveBinary(templateId, fileDir, filename, bytes);
+        return ResponseEntity.created(new URI(apiPath + "/template_file/" + templateFile.getFileId()))
+            .body(TemplateFileMapper.INSTANCE.toShowVO(templateFile));
+    }
+
 
     @Override
     @PutMapping

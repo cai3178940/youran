@@ -3,6 +3,8 @@ package com.youran.generate.service;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
+import com.youran.common.util.Base64Util;
+import com.youran.generate.constant.ContextType;
 import com.youran.generate.dao.CodeTemplateDAO;
 import com.youran.generate.dao.TemplateFileDAO;
 import com.youran.generate.pojo.dto.TemplateFileAddDTO;
@@ -66,6 +68,36 @@ public class TemplateFileService {
         // 初始化文件内容为空
         templateFile.setContent("");
         templateFile.setFileDir(this.normalizeTemplateFileDir(templateFile.getFileDir()));
+        // 唯一性校验
+        this.checkUnique(templateFile, false);
+        this.doSave(templateFile);
+        // 更新模板内部版本号
+        codeTemplateService.updateInnerVersion(templateFile.getTemplateId());
+        return templateFile;
+    }
+
+    /**
+     * 新增二进制【模板文件】
+     *
+     * @param templateId 模板id
+     * @param fileDir    文件目录
+     * @param filename   文件名
+     * @param bytes      字节数组
+     * @return
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public TemplateFilePO saveBinary(Integer templateId, String fileDir, String filename, byte[] bytes) {
+        if (templateId != null) {
+            Assert.isTrue(codeTemplateDAO.exist(templateId), "模板id有误");
+        }
+        TemplateFilePO templateFile = new TemplateFilePO();
+        templateFile.setFileName(filename);
+        templateFile.setFileDir(this.normalizeTemplateFileDir(fileDir));
+        templateFile.setTemplateId(templateId);
+        templateFile.setContextType(ContextType.GLOBAL.getValue());
+        templateFile.setAbstracted(false);
+        templateFile.setBinary(true);
+        templateFile.setContent(Base64Util.encode(bytes));
         // 唯一性校验
         this.checkUnique(templateFile, false);
         this.doSave(templateFile);

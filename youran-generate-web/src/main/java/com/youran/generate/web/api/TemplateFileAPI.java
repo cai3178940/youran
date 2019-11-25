@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,6 +33,19 @@ public interface TemplateFileAPI {
         @ApiImplicitParam(name = "templateFileAddDTO", dataType = "TemplateFileAddDTO", value = "新增【模板文件】参数", paramType = "body"),
     })
     ResponseEntity<TemplateFileShowVO> save(TemplateFileAddDTO templateFileAddDTO) throws Exception;
+
+
+    /**
+     * 上传二进制【模板文件】
+     */
+    @ApiOperation(value = "上传二进制【模板文件】")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "query"),
+        @ApiImplicitParam(name = "fileDir", dataType = "string", value = "文件目录", paramType = "query"),
+    })
+    ResponseEntity<TemplateFileShowVO> upload(Integer templateId,
+                                              String fileDir,
+                                              MultipartFile file) throws Exception;
 
     /**
      * 修改【模板文件】

@@ -354,11 +354,11 @@ public class MetaCodeGenService {
         if (StringUtils.isBlank(remoteUrl)) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "仓库地址为空");
         }
+        CodeTemplatePO codeTemplate = codeTemplateService.getCodeTemplate(templateId, true);
         Date now = new Date();
         String oldBranchName = null;
         if (lastHistoryId != null) {
             GenHistoryPO genHistory = genHistoryService.getGenHistory(lastHistoryId, true);
-            CodeTemplatePO codeTemplate = codeTemplateService.getCodeTemplate(templateId, true);
             genHistoryService.checkVersion(project, codeTemplate, genHistory);
             oldBranchName = genHistory.getBranch();
         }
@@ -387,7 +387,8 @@ public class MetaCodeGenService {
             DateUtil.getDateStr(now, "yyyy-MM-dd HH:mm:ss") + "自动生成代码",
             credential);
         // 创建提交历史
-        GenHistoryPO history = genHistoryService.save(project, remoteUrl, commit, newBranchName);
+        GenHistoryPO history = genHistoryService.save(project, codeTemplate,
+            remoteUrl, commit, newBranchName);
         // 更新项目的最终提交历史
         metaProjectService.updateLastHistory(projectId, history.getHistoryId(), templateIndex);
         return history;

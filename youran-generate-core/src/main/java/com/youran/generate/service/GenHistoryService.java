@@ -37,7 +37,8 @@ public class GenHistoryService {
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public GenHistoryPO save(MetaProjectPO project, String remoteUrl, String commit, String branch) {
+    public GenHistoryPO save(MetaProjectPO project, CodeTemplatePO codeTemplate,
+                             String remoteUrl, String commit, String branch) {
         GenHistoryPO genHistory = new GenHistoryPO();
         genHistory.setProjectId(project.getProjectId());
         genHistory.setRemoteUrl(remoteUrl);
@@ -45,6 +46,8 @@ public class GenHistoryService {
         genHistory.setBranch(branch);
         genHistory.setSysVersion(generateProperties.getVersion());
         genHistory.setProjectVersion(project.getProjectVersion());
+        genHistory.setTemplateId(codeTemplate.getTemplateId());
+        genHistory.setTemplateInnerVersion(codeTemplate.getInnerVersion());
         genHistoryDAO.save(genHistory);
         return genHistory;
     }

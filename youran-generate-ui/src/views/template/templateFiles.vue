@@ -68,13 +68,14 @@
       ref="contextMenu"
       @option-clicked="contextMenuOptionClicked"
     />
-    <el-dialog :title="editTemplateFile?'修改文件属性':'新建模板文件'" :visible.sync="templateFileFormVisible" width="550px">
+    <el-dialog :title="formTitleDisplay" :visible.sync="templateFileFormVisible" width="550px">
       <el-form ref="templateFileForm"
                :rules="templateFileRules"
                class="addTemplateForm"
                v-loading="templateFileFormLoading"
                :model="templateFileForm" size="small">
-        <el-form-item prop="fileName" label="文件名：" label-width="120px">
+        <el-form-item v-if="templateFileFormMode !== 'upload'"
+                      prop="fileName" label="文件名：" label-width="120px">
           <el-input style="width:300px;" v-model="templateFileForm.fileName"
                     placeholder="例如：xxxx.ftl"
                     tabindex="10"></el-input>
@@ -101,8 +102,21 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="templateFileFormVisible = false">取 消</el-button>
-        <el-button type="success" @click="handleSaveTemplateFile">{{editTemplateFile?'确 认':'新 建'}}</el-button>
+        <template v-if="templateFileFormMode !== 'upload'">
+          <el-button @click="templateFileFormVisible = false">取 消</el-button>
+          <el-button type="success" @click="handleSaveTemplateFile">{{formButtonDisplay}}</el-button>
+        </template>
+        <el-upload
+          v-else
+          :action="templateFileUploadUrl"
+          :data="templateFileUploadParams"
+          :before-upload="beforeUpload"
+          :on-success="onUploadSuccess"
+          :on-progress="onUploadProgress"
+          :on-error="onUploadError"
+          :show-file-list="false">
+          <el-button size="small" type="primary">选择文件并上传</el-button>
+        </el-upload>
       </div>
     </el-dialog>
   </div>
@@ -127,6 +141,7 @@ import options from '@/utils/options'
 import { getExpandedNodes } from '@/utils/element-tree-util'
 import FileTypeUtil from '@/utils/file-type-util'
 import templateApi from '@/api/template'
+import { apiPath } from '@/utils/request'
 
 // 如果文件保存中，则等待多久以后再提交
 const savingWaitTime = 2000
@@ -138,6 +153,12 @@ const menuOptions1 = [
     value: 'addTemplateFile',
     svgIcon: 'add-file',
     svgClassName: 'color-success'
+  },
+  {
+    name: '上传二进制文件',
+    value: 'addBinaryFile',
+    svgIcon: 'upload',
+    svgClassName: 'color-warning'
   }
 ]
 const menuOptions2 = [
@@ -146,6 +167,12 @@ const menuOptions2 = [
     value: 'addTemplateFile',
     svgIcon: 'add-file',
     svgClassName: 'color-success'
+  },
+  {
+    name: '上传二进制文件',
+    value: 'addBinaryFile',
+    svgIcon: 'upload',
+    svgClassName: 'color-warning'
   },
   {
     name: '修改文件属性',
@@ -215,8 +242,14 @@ function initData () {
     templateFileFormVisible: false,
     // 添加模板文件表单是否加载中
     templateFileFormLoading: false,
-    // 是否修改文件属性
-    editTemplateFile: false,
+    // 模板文件表单模式
+    templateFileFormMode: 'add',
+    // 模板文件上传路径
+    templateFileUploadUrl: `/${apiPath}/template_file/upload`,
+    templateFileUploadParams: {
+      fileDir: '',
+      templateId: null
+    },
     // 添加模板文件表单
     templateFileForm: initTemplateFileFormBean(),
     // 上下文类型
@@ -274,6 +307,30 @@ export default {
         text: '',
         saveButton: false
       }
+    },
+    /**
+     * 表单标题
+     */
+    formTitleDisplay () {
+      if (this.templateFileFormMode === 'edit') {
+        return '修改文件属性'
+      } else if (this.templateFileFormMode === 'upload') {
+        return '上传二进制文件'
+      } else {
+        return '新建模板文件'
+      }
+    },
+    /**
+     * 表单按钮文字
+     */
+    formButtonDisplay () {
+      if (this.templateFileFormMode === 'edit') {
+        return '确 认'
+      } else if (this.templateFileFormMode === 'upload') {
+        return '上 传'
+      } else {
+        return '新 建'
+      }
     }
   },
   methods: {
@@ -285,8 +342,23 @@ export default {
       if (option.value === 'addTemplateFile') {
         this.templateFileFormVisible = true
         this.templateFileFormLoading = false
-        this.editTemplateFile = false
+        this.templateFileFormMode = 'add'
         this.templateFileForm = initTemplateFileFormBean()
+        if (item) {
+          // 如果在目录上右击新建，则自动填充该目录
+          if (item.dir) {
+            this.templateFileForm.fileDir = item.path
+          } else {
+            // 如果在文件上右击新建，则自动填充文件所在目录
+            this.templateFileForm.fileDir = item.info.fileDir
+          }
+        }
+      } else if (option.value === 'addBinaryFile') {
+        this.templateFileFormVisible = true
+        this.templateFileFormLoading = false
+        this.templateFileFormMode = 'upload'
+        this.templateFileForm = initTemplateFileFormBean()
+        this.templateFileForm.binary = true
         if (item) {
           // 如果在目录上右击新建，则自动填充该目录
           if (item.dir) {
@@ -299,7 +371,7 @@ export default {
       } else if (option.value === 'editTemplateFile') {
         this.templateFileFormVisible = true
         this.templateFileFormLoading = true
-        this.editTemplateFile = true
+        this.templateFileFormMode = 'edit'
         this.templateFileForm = initTemplateFileFormBean(true)
         // 加载远程数据
         this.queryFileInfo(item.info.fileId,
@@ -315,6 +387,26 @@ export default {
         // 删除模板文件
         this.handleDeleteTemplateFile(item.info.fileId)
       }
+    },
+    beforeUpload () {
+      this.templateFileUploadParams = {
+        templateId: this.templateId,
+        fileDir: this.templateFileForm.fileDir
+      }
+      return true
+    },
+    onUploadSuccess (response, file, fileList) {
+      this.templateFileFormVisible = false
+      this.templateFileFormLoading = false
+      this.$common.showMsg('success', '上传成功')
+      this.queryCodeTree(this.templateId)
+    },
+    onUploadProgress (event, file, fileList) {
+      this.templateFileFormLoading = true
+    },
+    onUploadError (error, file, fileList) {
+      this.templateFileFormLoading = false
+      this.$common.showNotifyError(JSON.parse(error.message))
     },
     /**
      * event: 右击事件
@@ -506,7 +598,7 @@ export default {
       this.$refs.templateFileForm.validate()
         .then(() => {
           const templateFileDTO = Object.assign({}, this.templateFileForm, { templateId: this.templateId })
-          return templateApi.saveOrUpdateTemplateFile(templateFileDTO, this.editTemplateFile)
+          return templateApi.saveOrUpdateTemplateFile(templateFileDTO, this.templateFileFormMode === 'edit')
         })
         .then(() => {
           this.templateFileFormVisible = false

@@ -33,7 +33,6 @@ public class TemplateImportExportService {
 
     public static final String TEMPLATE_JSON_FILE = "template.json";
     public static final String TEMPLATE_FILE_DIR = "ftl";
-    public static final long TEMPLATE_FILE_LENGTH_LIMIT = 10 * 1024 * 1024L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TemplateImportExportService.class);
     @Autowired
@@ -146,9 +145,9 @@ public class TemplateImportExportService {
         if (!contentFile.exists() || contentFile.isDirectory()) {
             throw new BusinessException("模板文件缺失：" + po.getFileName());
         }
-        if (contentFile.length() > TEMPLATE_FILE_LENGTH_LIMIT) {
+        if (contentFile.length() > TemplateFilePO.TEMPLATE_FILE_LENGTH_LIMIT) {
             throw new BusinessException("模板文件(" + filePath + ")超过最大长度限制：" +
-                FileUtils.byteCountToDisplaySize(TEMPLATE_FILE_LENGTH_LIMIT));
+                FileUtils.byteCountToDisplaySize(TemplateFilePO.TEMPLATE_FILE_LENGTH_LIMIT));
         }
         String content;
         try {
