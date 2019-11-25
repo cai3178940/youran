@@ -255,6 +255,8 @@ CREATE TABLE `gen_history` (
     `branch` varchar(32) NOT NULL COMMENT '分支名称',
     `sys_version` varchar(20) NOT NULL COMMENT '系统版本号',
     `project_version` int(11) NOT NULL COMMENT '项目版本号',
+    `template_id` int(11) DEFAULT NULL COMMENT '模板id',
+    `template_inner_version` int(11) DEFAULT NULL COMMENT '模板内部版本号',
     `created_time` datetime DEFAULT NULL COMMENT '创建时间',
     `created_by` varchar(32) DEFAULT NULL COMMENT '创建人',
     `operated_time` datetime DEFAULT NULL COMMENT '操作时间',

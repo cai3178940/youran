@@ -139,19 +139,74 @@ public class MetaProjectPO extends BasePO {
      * @return
      */
     public Integer forceGetTemplateIdByIndex(int index) {
-        Integer tid = null;
+        Integer id = null;
         if (index == 1) {
-            tid = templateId;
+            id = templateId;
         } else if (index == 2) {
-            tid = templateId2;
+            id = templateId2;
         } else if (index == 3) {
-            tid = templateId3;
+            id = templateId3;
         }
-        if (templateId == null) {
+        if (id == null) {
             throw new BusinessException(ErrorCode.BAD_PARAMETER, "模板未设置");
         }
-        return tid;
+        return id;
     }
+
+    /**
+     * 根据序号获取最后提交历史
+     *
+     * @param index
+     * @return
+     */
+    public Integer getLastHistoryIdByIndex(int index) {
+        Integer id = null;
+        if (index == 1) {
+            id = lastHistoryId;
+        } else if (index == 2) {
+            id = lastHistoryId2;
+        } else if (index == 3) {
+            id = lastHistoryId3;
+        }
+        return id;
+    }
+
+    /**
+     * 根据序号设置最后提交历史
+     *
+     * @param index
+     * @param lastHistoryId
+     */
+    public void setLastHistoryIdByIndex(int index, Integer lastHistoryId) {
+        if (index == 1) {
+            this.lastHistoryId = lastHistoryId;
+        } else if (index == 2) {
+            this.lastHistoryId2 = lastHistoryId;
+        } else if (index == 3) {
+            this.lastHistoryId3 = lastHistoryId;
+        } else {
+            throw new BusinessException("模板序号有误：" + index);
+        }
+    }
+
+    /**
+     * 根据序号获取远程git仓库地址
+     *
+     * @param index
+     * @return
+     */
+    public String getRemoteUrlByIndex(int index) {
+        String url = null;
+        if (index == 1) {
+            url = remoteUrl;
+        } else if (index == 2) {
+            url = remoteUrl2;
+        } else if (index == 3) {
+            url = remoteUrl3;
+        }
+        return url;
+    }
+
 
     public void addEntity(MetaEntityPO entity) {
         if (entities == null) {

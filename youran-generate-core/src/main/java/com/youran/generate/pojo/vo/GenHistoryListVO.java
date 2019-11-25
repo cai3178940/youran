@@ -38,8 +38,30 @@ public class GenHistoryListVO extends AbstractVO {
     @ApiModelProperty(notes = N_PROJECTVERSION, example = E_PROJECTVERSION)
     private Integer projectVersion;
 
+    @ApiModelProperty(notes = N_TEMPLATE_ID, example = E_TEMPLATE_ID)
+    private Integer templateId;
+
+    @ApiModelProperty(notes = N_TEMPLATE_INNER_VERSION, example = E_TEMPLATE_INNER_VERSION)
+    private Integer templateInnerVersion;
+
     @ApiModelProperty(notes = N_CREATEDTIME, example = E_CREATEDTIME)
     private Date createdTime;
+
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
+    }
+
+    public Integer getTemplateInnerVersion() {
+        return templateInnerVersion;
+    }
+
+    public void setTemplateInnerVersion(Integer templateInnerVersion) {
+        this.templateInnerVersion = templateInnerVersion;
+    }
 
     public Integer getHistoryId() {
         return historyId;

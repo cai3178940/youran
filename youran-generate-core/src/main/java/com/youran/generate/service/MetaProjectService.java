@@ -163,15 +163,7 @@ public class MetaProjectService {
      */
     public void updateLastHistory(Integer projectId, Integer historyId, Integer templateIndex) {
         MetaProjectPO project = this.getProject(projectId, true, false);
-        if (templateIndex == 1) {
-            project.setLastHistoryId(historyId);
-        } else if (templateIndex == 2) {
-            project.setLastHistoryId2(historyId);
-        } else if (templateIndex == 3) {
-            project.setLastHistoryId3(historyId);
-        } else {
-            throw new BusinessException("模板序号有误：" + templateIndex);
-        }
+        project.setLastHistoryIdByIndex(templateIndex, historyId);
         metaProjectDAO.update(project);
     }
 

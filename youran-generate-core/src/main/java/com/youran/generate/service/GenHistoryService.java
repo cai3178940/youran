@@ -5,6 +5,7 @@ import com.youran.common.exception.BusinessException;
 import com.youran.common.pojo.vo.PageVO;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.dao.GenHistoryDAO;
+import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.GenHistoryQO;
@@ -36,10 +37,10 @@ public class GenHistoryService {
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public GenHistoryPO save(MetaProjectPO project, String commit, String branch) {
+    public GenHistoryPO save(MetaProjectPO project, String remoteUrl, String commit, String branch) {
         GenHistoryPO genHistory = new GenHistoryPO();
         genHistory.setProjectId(project.getProjectId());
-        genHistory.setRemoteUrl(project.getRemoteUrl());
+        genHistory.setRemoteUrl(remoteUrl);
         genHistory.setCommit(commit);
         genHistory.setBranch(branch);
         genHistory.setSysVersion(generateProperties.getVersion());
@@ -95,12 +96,16 @@ public class GenHistoryService {
     /**
      * 校验提交版本
      *
-     * @param project
-     * @param genHistory
+     * @param project      项目
+     * @param codeTemplate 代码模板
+     * @param genHistory   上一次生成历史
      */
-    public void checkVersion(MetaProjectPO project, GenHistoryPO genHistory) {
+    public void checkVersion(MetaProjectPO project, CodeTemplatePO codeTemplate, GenHistoryPO genHistory) {
         if (Objects.equals(genHistory.getProjectVersion(), project.getProjectVersion())
-            && Objects.equals(genHistory.getSysVersion(), generateProperties.getVersion())) {
+            && Objects.equals(genHistory.getSysVersion(), generateProperties.getVersion())
+            && Objects.equals(codeTemplate.getTemplateId(), genHistory.getTemplateId())
+            && Objects.equals(codeTemplate.getInnerVersion(), genHistory.getTemplateInnerVersion())
+        ) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "远程仓库分支【" + genHistory.getBranch() + "】已经是最新版本");
         }
     }

@@ -24,5 +24,9 @@ public class GenHistoryExample extends AbstractExample {
     public static final String E_PROJECTVERSION = "1";
     public static final String N_REMOTEURL = "git远程仓库地址";
     public static final String E_REMOTEURL = "https://github.com/github/testrepo.git";
+    public static final String N_TEMPLATE_ID = "模板id";
+    public static final String E_TEMPLATE_ID = "1";
+    public static final String N_TEMPLATE_INNER_VERSION = "模板内部版本号";
+    public static final String E_TEMPLATE_INNER_VERSION = "1";
 
 }

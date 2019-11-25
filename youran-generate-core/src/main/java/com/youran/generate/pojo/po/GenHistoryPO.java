@@ -20,6 +20,26 @@ public class GenHistoryPO extends BasePO {
 
     private Integer projectVersion;
 
+    private Integer templateId;
+
+    private Integer templateInnerVersion;
+
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
+    }
+
+    public Integer getTemplateInnerVersion() {
+        return templateInnerVersion;
+    }
+
+    public void setTemplateInnerVersion(Integer templateInnerVersion) {
+        this.templateInnerVersion = templateInnerVersion;
+    }
+
     public Integer getHistoryId() {
         return historyId;
     }

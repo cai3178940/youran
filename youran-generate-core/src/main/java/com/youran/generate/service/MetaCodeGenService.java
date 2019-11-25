@@ -348,16 +348,18 @@ public class MetaCodeGenService {
         if (!project.getRemote()) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "当前项目未开启Git仓库");
         }
-        String remoteUrl = project.getRemoteUrl();
+        String remoteUrl = project.getRemoteUrlByIndex(templateIndex);
+        Integer lastHistoryId = project.getLastHistoryIdByIndex(templateIndex);
+        Integer templateId = project.forceGetTemplateIdByIndex(templateIndex);
         if (StringUtils.isBlank(remoteUrl)) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "仓库地址为空");
         }
         Date now = new Date();
-        Integer lastHistoryId = project.getLastHistoryId();
         String oldBranchName = null;
         if (lastHistoryId != null) {
             GenHistoryPO genHistory = genHistoryService.getGenHistory(lastHistoryId, true);
-            genHistoryService.checkVersion(project, genHistory);
+            CodeTemplatePO codeTemplate = codeTemplateService.getCodeTemplate(templateId, true);
+            genHistoryService.checkVersion(project, codeTemplate, genHistory);
             oldBranchName = genHistory.getBranch();
         }
         String newBranchName = "auto" + DateUtil.getDateStr(now, "yyyyMMddHHmmss");
@@ -385,7 +387,7 @@ public class MetaCodeGenService {
             DateUtil.getDateStr(now, "yyyy-MM-dd HH:mm:ss") + "自动生成代码",
             credential);
         // 创建提交历史
-        GenHistoryPO history = genHistoryService.save(project, commit, newBranchName);
+        GenHistoryPO history = genHistoryService.save(project, remoteUrl, commit, newBranchName);
         // 更新项目的最终提交历史
         metaProjectService.updateLastHistory(projectId, history.getHistoryId(), templateIndex);
         return history;
