@@ -131,4 +131,17 @@
         order by t.created_time desc
         limit #{startIndex},#{pageSize}
     </select>
+
+    <select id="findByProjectIdAndRemoteUrl" resultType="GenHistoryPO">
+        select
+        <include refid="genHistoryColumns"><property name="alias" value="t"/></include>
+        from gen_history t
+        <where>
+            and t.deleted=0
+            and t.project_id = #{projectId}
+            and t.remote_url = #{remoteUrl}
+        </where>
+        order by t.created_time desc
+        limit 1
+    </select>
 </mapper>

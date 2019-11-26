@@ -352,7 +352,15 @@ export default {
     },
     handleCommit ([row, templateIndex]) {
       const projectId = row.projectId
-      this.$common.confirm('是否确认提交到远程git仓库')
+      projectApi.checkCommit(projectId, templateIndex)
+        .then(checkCommitVO => {
+          let msg = `首次提交代码到【${checkCommitVO.remoteUrl}】,是否确认？`
+          if (!checkCommitVO.firstCommit) {
+            const lastGen = checkCommitVO.lastGenHistory
+            msg = `即将从【${checkCommitVO.remoteUrl}】拉取上次的分支【${lastGen.branch}】并在此基础上增量提交一个新分支,是否确认？`
+          }
+          return this.$common.confirm(msg)
+        })
         .then(() => projectApi.callCodeGenWebSocketService(
           'git_commit',
           { 'projectId': projectId, 'templateIndex': templateIndex },

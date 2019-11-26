@@ -2,7 +2,12 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.WebConst;
+import com.youran.generate.pojo.mapper.GenHistoryMapper;
 import com.youran.generate.pojo.po.GenHistoryPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.pojo.vo.CheckCommitVO;
+import com.youran.generate.pojo.vo.GenHistoryShowVO;
+import com.youran.generate.service.GenHistoryService;
 import com.youran.generate.service.MetaCodeGenService;
 import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.web.AbstractController;
@@ -10,10 +15,7 @@ import com.youran.generate.web.api.MetaCodeGenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -34,6 +36,8 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     private MetaCodeGenService metaCodeGenService;
     @Autowired
     private MetaProjectService metaProjectService;
+    @Autowired
+    private GenHistoryService genHistoryService;
 
 
     @Override
@@ -60,12 +64,29 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     }
 
     @Override
-    @GetMapping(value = "/git_commit")
+    @PostMapping(value = "/git_commit")
     @ResponseBody
     public ResponseEntity<String> gitCommit(@RequestParam Integer projectId,
                                             @RequestParam Integer templateIndex) {
         GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, templateIndex, null);
         return ResponseEntity.ok("已创建自动分支【" + genHistory.getBranch() + "】，并提交到远程");
+    }
+
+    @Override
+    @GetMapping(value = "/check_commit")
+    @ResponseBody
+    public ResponseEntity<CheckCommitVO> checkCommit(@RequestParam Integer projectId,
+                                                     @RequestParam Integer templateIndex) {
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
+        CheckCommitVO vo = new CheckCommitVO();
+        vo.setRemoteUrl(project.getRemoteUrlByIndex(templateIndex));
+        GenHistoryPO lastGenHistory = genHistoryService.findLastGenHistory(projectId, project.getRemoteUrlByIndex(templateIndex));
+        if (lastGenHistory != null) {
+            GenHistoryShowVO lastGenVO = GenHistoryMapper.INSTANCE.toShowVO(lastGenHistory);
+            vo.setFirstCommit(false);
+            vo.setLastGenHistory(lastGenVO);
+        }
+        return ResponseEntity.ok(vo);
     }
 
 }

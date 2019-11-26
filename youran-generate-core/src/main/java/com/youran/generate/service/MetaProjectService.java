@@ -155,20 +155,6 @@ public class MetaProjectService {
 
 
     /**
-     * 更新项目的最终提交历史
-     *
-     * @param projectId
-     * @param historyId
-     * @param templateIndex
-     */
-    public void updateLastHistory(Integer projectId, Integer historyId, Integer templateIndex) {
-        MetaProjectPO project = this.getProject(projectId, true, false);
-        project.setLastHistoryIdByIndex(templateIndex, historyId);
-        metaProjectDAO.update(project);
-    }
-
-
-    /**
      * 查询分页列表
      *
      * @param metaProjectQO

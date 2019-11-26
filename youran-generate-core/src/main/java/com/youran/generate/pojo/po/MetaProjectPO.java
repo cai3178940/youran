@@ -92,21 +92,6 @@ public class MetaProjectPO extends BasePO {
     @JsonIgnore
     private String password;
     /**
-     * 远程仓库地址1的最后提交历史id
-     */
-    @JsonIgnore
-    private Integer lastHistoryId;
-    /**
-     * 远程仓库地址2的最后提交历史id
-     */
-    @JsonIgnore
-    private Integer lastHistoryId2;
-    /**
-     * 远程仓库地址3的最后提交历史id
-     */
-    @JsonIgnore
-    private Integer lastHistoryId3;
-    /**
      * 项目内部版本号
      */
     @JsonIgnore
@@ -151,42 +136,6 @@ public class MetaProjectPO extends BasePO {
             throw new BusinessException(ErrorCode.BAD_PARAMETER, "模板未设置");
         }
         return id;
-    }
-
-    /**
-     * 根据序号获取最后提交历史
-     *
-     * @param index
-     * @return
-     */
-    public Integer getLastHistoryIdByIndex(int index) {
-        Integer id = null;
-        if (index == 1) {
-            id = lastHistoryId;
-        } else if (index == 2) {
-            id = lastHistoryId2;
-        } else if (index == 3) {
-            id = lastHistoryId3;
-        }
-        return id;
-    }
-
-    /**
-     * 根据序号设置最后提交历史
-     *
-     * @param index
-     * @param lastHistoryId
-     */
-    public void setLastHistoryIdByIndex(int index, Integer lastHistoryId) {
-        if (index == 1) {
-            this.lastHistoryId = lastHistoryId;
-        } else if (index == 2) {
-            this.lastHistoryId2 = lastHistoryId;
-        } else if (index == 3) {
-            this.lastHistoryId3 = lastHistoryId;
-        } else {
-            throw new BusinessException("模板序号有误：" + index);
-        }
     }
 
     /**
@@ -351,14 +300,6 @@ public class MetaProjectPO extends BasePO {
         this.password = password;
     }
 
-    public Integer getLastHistoryId() {
-        return lastHistoryId;
-    }
-
-    public void setLastHistoryId(Integer lastHistoryId) {
-        this.lastHistoryId = lastHistoryId;
-    }
-
     public Integer getProjectVersion() {
         return projectVersion;
     }
@@ -431,19 +372,4 @@ public class MetaProjectPO extends BasePO {
         this.remoteUrl3 = remoteUrl3;
     }
 
-    public Integer getLastHistoryId2() {
-        return lastHistoryId2;
-    }
-
-    public void setLastHistoryId2(Integer lastHistoryId2) {
-        this.lastHistoryId2 = lastHistoryId2;
-    }
-
-    public Integer getLastHistoryId3() {
-        return lastHistoryId3;
-    }
-
-    public void setLastHistoryId3(Integer lastHistoryId3) {
-        this.lastHistoryId3 = lastHistoryId3;
-    }
 }

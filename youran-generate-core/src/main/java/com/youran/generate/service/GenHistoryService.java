@@ -79,6 +79,16 @@ public class GenHistoryService {
         return genHistory;
     }
 
+    /**
+     * 查找最后一次提交记录
+     *
+     * @param projectId
+     * @param remoteUrl
+     * @return
+     */
+    public GenHistoryPO findLastGenHistory(Integer projectId, String remoteUrl) {
+        return genHistoryDAO.findByProjectIdAndRemoteUrl(projectId, remoteUrl);
+    }
 
     /**
      * 删除【生成历史】
@@ -112,6 +122,7 @@ public class GenHistoryService {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "远程仓库分支【" + genHistory.getBranch() + "】已经是最新版本");
         }
     }
+
 }
 
 

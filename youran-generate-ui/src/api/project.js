@@ -103,6 +103,19 @@ export default {
     store.dispatch('app/downloadFile', downloadUrl)
   },
   /**
+   * 校验git提交
+   */
+  checkCommit (projectId, templateIndex) {
+    return request.get(`/${apiPath}/code_gen/check_commit`,
+      {
+        params: {
+          'projectId': projectId,
+          'templateIndex': templateIndex
+        }
+      })
+      .then(response => checkResult(response))
+  },
+  /**
    * 获取代码目录树
    */
   getCodeTree (projectId, templateIndex) {

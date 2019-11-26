@@ -1,5 +1,6 @@
 package com.youran.generate.web.api;
 
+import com.youran.generate.pojo.vo.CheckCommitVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -46,4 +47,15 @@ public interface MetaCodeGenAPI {
         @ApiImplicitParam(name = "templateIndex", dataType = "int", value = "第几个模板", paramType = "query"),
     })
     ResponseEntity<String> gitCommit(Integer projectId, Integer templateIndex);
+
+    /**
+     * git提交前校验
+     */
+    @ApiOperation(value = "git提交前校验")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
+        @ApiImplicitParam(name = "templateIndex", dataType = "int", value = "第几个模板", paramType = "query"),
+    })
+    ResponseEntity<CheckCommitVO> checkCommit(Integer projectId,
+                                              Integer templateIndex);
 }
