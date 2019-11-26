@@ -356,7 +356,7 @@ public class MetaCodeGenService {
         CodeTemplatePO codeTemplate = codeTemplateService.getCodeTemplate(templateId, true);
         Date now = new Date();
         String oldBranchName = null;
-        GenHistoryPO genHistory = genHistoryService.findLastGenHistory(project.getProjectId(),remoteUrl);
+        GenHistoryPO genHistory = genHistoryService.findLastGenHistory(project.getProjectId(), remoteUrl);
         if (genHistory != null) {
             genHistoryService.checkVersion(project, codeTemplate, genHistory);
             oldBranchName = genHistory.getBranch();
@@ -383,7 +383,8 @@ public class MetaCodeGenService {
         }
         this.progressing(progressConsumer, 90, 99, 1, "提交到远程仓库");
         String commit = gitService.commitAll(repository,
-            DateUtil.getDateStr(now, "yyyy-MM-dd HH:mm:ss") + "自动生成代码",
+            DateUtil.getDateStr(now, "yyyy-MM-dd HH:mm:ss") +
+                (StringUtils.isBlank(oldBranchName) ? "首次生成代码" : "增量生成代码"),
             credential);
         // 创建提交历史
         GenHistoryPO history = genHistoryService.save(project, codeTemplate,
