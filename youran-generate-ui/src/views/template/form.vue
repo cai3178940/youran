@@ -7,7 +7,7 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
-      <el-col :span="12">
+      <el-col :span="18">
         <el-form ref="templateForm" class="templateForm"
                  :rules="rules" :model="form"
                  label-width="120px" size="small" v-loading="formLoading">
@@ -35,9 +35,11 @@
           </el-form-item>
           <el-form-item label="备注" prop="remark">
             <help-popover name="template.remark">
-              <el-input v-model="form.remark" type="textarea"
-                        :autosize="{ minRows: 2, maxRows: 10}"
-                        tabindex="50"></el-input>
+              <markdown-editor ref="markdownEditor"
+                               v-model="form.remark"
+                               :options="markdownOptions"
+                               language="zh_CN"
+                               height="400px" />
             </help-popover>
           </el-form-item>
           <el-form-item>
@@ -55,10 +57,12 @@
 import templateApi from '@/api/template'
 import { initFormBean, getRules } from './model'
 import { mapState } from 'vuex'
+import MarkdownEditor from '@/components/MarkdownEditor'
 
 export default {
   name: 'templateForm',
   props: ['templateId'],
+  components: { MarkdownEditor },
   data () {
     const edit = !!this.templateId
     return {
@@ -66,7 +70,11 @@ export default {
       formLoading: false,
       old: initFormBean(edit),
       form: initFormBean(edit),
-      rules: getRules()
+      rules: getRules(),
+      markdownOptions: {
+        hideModeSwitch: true,
+        previewStyle: 'tab'
+      }
     }
   },
   computed: {

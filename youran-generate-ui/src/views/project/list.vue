@@ -19,15 +19,30 @@
               v-loading="loading"
               :element-loading-text="loadingText">
       <el-table-column type="index" label="序号" width="50"></el-table-column>
-      <el-table-column property="groupId" label="groupId" width="160"></el-table-column>
       <el-table-column property="projectName" label="项目标识" width="200"></el-table-column>
       <el-table-column property="projectDesc" label="项目名称"></el-table-column>
       <el-table-column property="author" label="作者" width="120"></el-table-column>
-      <el-table-column property="packageName" label="包名" width="180"></el-table-column>
       <el-table-column label="Git仓库" width="90px">
         <template v-slot="scope">
           <svg-icon v-if="scope.row.remote" className="table-cell-icon color-success" iconClass="check"></svg-icon>
           <svg-icon v-else className="table-cell-icon color-danger" iconClass="times"></svg-icon>
+        </template>
+      </el-table-column>
+      <el-table-column label="代码模板" width="180">
+        <template v-slot="scope">
+          <template v-for="template in [getTemplate(scope.row.templateId),
+                                        getTemplate(scope.row.templateId2),
+                                        getTemplate(scope.row.templateId3)]">
+            <el-popover v-if="template"
+                        :key="template.templateId"
+                        placement="left"
+                        width="400"
+                        trigger="click">
+              <div v-html="convertMarkdown(template.remark)" class="markdown-body"></div>
+              <el-button slot="reference"
+                         type="text" size="medium">{{ template.name }}</el-button>
+            </el-popover>
+          </template>
         </template>
       </el-table-column>
       <!--代码下载进度条-->
@@ -123,8 +138,15 @@
 
 <script>
 import projectApi from '@/api/project'
+import templateApi from '@/api/template'
 import CodePreview from './codePreview'
 import ImportProject from './import'
+import showdown from 'showdown'
+
+const converter = new showdown.Converter({
+  emoji: 'true',
+  tables: 'true'
+})
 
 export default {
   name: 'projectList',
@@ -149,7 +171,8 @@ export default {
         ]
       },
       iconColorClass: ['color-primary', 'color-warning', 'color-success'],
-      progressingProjectIds: []
+      progressingProjectIds: [],
+      templateList: []
     }
   },
   filters: {
@@ -223,6 +246,16 @@ export default {
         indexs.push(3)
       }
       return indexs
+    },
+    getTemplateList () {
+      return templateApi.getList()
+        .then(data => {
+          this.templateList = data
+        })
+        .catch(error => this.$common.showNotifyError(error))
+    },
+    getTemplate (templateId) {
+      return this.templateList.find(t => t.templateId === templateId)
     },
     handleAdd () {
       this.$router.push('/project/add')
@@ -385,10 +418,14 @@ export default {
     },
     handleCommand: function (command) {
       this[command.method](command.arg)
+    },
+    convertMarkdown (remark) {
+      return converter.makeHtml(remark)
     }
   },
   activated () {
-    this.doQuery()
+    this.getTemplateList()
+      .then(() => this.doQuery())
   }
 }
 </script>

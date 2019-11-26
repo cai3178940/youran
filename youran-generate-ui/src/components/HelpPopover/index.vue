@@ -19,7 +19,10 @@
 <script>
 import content from './help-content'
 import showdown from 'showdown'
-const converter = new showdown.Converter({ emoji: 'true' })
+const converter = new showdown.Converter({
+  emoji: 'true',
+  tables: 'true'
+})
 export default {
   name: 'help-popover',
   props: ['name', 'pic'],
