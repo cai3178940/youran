@@ -48,4 +48,18 @@ public class CommonTemplateFunction {
             .replaceAll("\n", "");
     }
 
+    /**
+     * 移除最后一个逗号
+     *
+     * @param content
+     * @return
+     */
+    public static String removeLastComma(String content) {
+        int i = content.lastIndexOf(",");
+        if (i < 0) {
+            return content;
+        }
+        return content.substring(0, i) + content.substring(i + 1);
+    }
+
 }
