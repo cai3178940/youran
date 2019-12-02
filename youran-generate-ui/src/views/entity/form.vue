@@ -67,12 +67,13 @@
           </el-form-item>
           <el-form-item label="rest服务">
             <help-popover name="entity.feature">
-              <el-checkbox v-model="form.feature.save" tabindex="60">添加</el-checkbox>
-              <el-checkbox v-model="form.feature.update" tabindex="70">修改</el-checkbox>
-              <el-checkbox v-model="form.feature.delete" tabindex="80">单个删除</el-checkbox>
-              <el-checkbox v-model="form.feature.deleteBatch" tabindex="90">批量删除</el-checkbox>
-              <el-checkbox v-model="form.feature.show" tabindex="100">详情</el-checkbox>
-              <el-checkbox v-model="form.feature.list" tabindex="110">列表查询</el-checkbox>
+              <el-checkbox v-model="form.feature.list" tabindex="60">列表</el-checkbox>
+              <el-checkbox v-model="form.feature.show" tabindex="70"
+                           :disabled="form.feature.update">详情</el-checkbox>
+              <el-checkbox v-model="form.feature.update" tabindex="80">修改</el-checkbox>
+              <el-checkbox v-model="form.feature.save" tabindex="90">新建</el-checkbox>
+              <el-checkbox v-model="form.feature.delete" tabindex="100">单个删除</el-checkbox>
+              <el-checkbox v-model="form.feature.deleteBatch" tabindex="110">批量删除</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item>
@@ -105,6 +106,13 @@ export default {
       rules: getRules(this)
     }
   },
+  watch: {
+    'form.feature.update' (value) {
+      if (value) {
+        this.form.feature.show = true
+      }
+    }
+  },
   methods: {
     queryProject () {
       this.formLoading = true
@@ -120,9 +128,7 @@ export default {
         .finally(() => { this.formLoading = false })
     },
     reset () {
-      for (const key in initFormBean(true)) {
-        this.form[key] = this.old[key]
-      }
+      this.form = JSON.parse(JSON.stringify(this.old))
     },
     submit () {
       let loading = null
