@@ -86,14 +86,14 @@
                                 :command="{method:'handlePreView',arg: [ scope.row , templateIndex ]}"
                                 :divided="index===0">
                 <svg-icon :className="'dropdown-icon ' + iconColorClass[index]" iconClass="preview"></svg-icon>
-                代码预览({{scope.row | templateCode(templateIndex) }}）
+                代码预览({{ getTemplateName(scope.row, templateIndex) }}）
               </el-dropdown-item>
               <el-dropdown-item v-for="(templateIndex, index) in getProjectTemplateIndexs(scope.row)"
                                 :key="'gencode_button_' + scope.row.projectId + '_' + templateIndex"
                                 :command="{method:'handleGenCode',arg: [ scope.row , templateIndex ]}"
                                 :divided="index===0">
                 <svg-icon :className="'dropdown-icon ' + iconColorClass[index]" iconClass="code-download"></svg-icon>
-                下载代码({{scope.row | templateCode(templateIndex) }}）
+                下载代码({{ getTemplateName(scope.row, templateIndex) }}）
               </el-dropdown-item>
               <template v-if="scope.row.remote">
                 <el-dropdown-item v-for="(templateIndex, index) in getProjectRemoteUrlIndexs(scope.row)"
@@ -101,7 +101,7 @@
                                   :command="{method:'handleCommit',arg: [ scope.row , templateIndex ]}"
                                   :divided="index===0">
                   <svg-icon :className="'dropdown-icon ' + iconColorClass[index]" iconClass="git"></svg-icon>
-                  提交Git({{scope.row | templateCode(templateIndex) }}）
+                  提交Git({{ getTemplateName(scope.row, templateIndex) }}）
                 </el-dropdown-item>
               </template>
             </el-dropdown-menu>
@@ -175,18 +175,6 @@ export default {
       templateList: []
     }
   },
-  filters: {
-    templateCode (row, templateIndex) {
-      if (templateIndex === 1) {
-        return row.templateCode
-      } else if (templateIndex === 2) {
-        return row.templateCode2
-      } else if (templateIndex === 3) {
-        return row.templateCode3
-      }
-      return ''
-    }
-  },
   methods: {
     selectionChange (val) {
       this.selectItems = val
@@ -256,6 +244,21 @@ export default {
     },
     getTemplate (templateId) {
       return this.templateList.find(t => t.templateId === templateId)
+    },
+    getTemplateName (row, templateIndex) {
+      let tid = null
+      if (templateIndex === 1) {
+        tid = row.templateId
+      } else if (templateIndex === 2) {
+        tid = row.templateId2
+      } else if (templateIndex === 3) {
+        tid = row.templateId3
+      }
+      const template = this.getTemplate(tid)
+      if (template) {
+        return template.name
+      }
+      return ''
     },
     handleAdd () {
       this.$router.push('/project/add')

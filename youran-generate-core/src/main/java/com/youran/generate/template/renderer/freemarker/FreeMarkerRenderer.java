@@ -57,11 +57,15 @@ public class FreeMarkerRenderer implements TemplateRenderer {
             .replace("{project-name}", context.getProjectNameSplit());
         if (context instanceof EntityContext) {
             EntityContext entityContext = (EntityContext) context;
-            relativePath = relativePath.replace("{ClassName}", entityContext.getClassNameUpper());
+            relativePath = relativePath
+                .replace("{ClassName}", entityContext.getClassNameUpper())
+                .replace("{className}", entityContext.getClassName());
         }
         if (context instanceof ConstContext) {
             ConstContext constContext = (ConstContext) context;
-            relativePath = relativePath.replace("{EnumName}", constContext.getConstNameUpper());
+            relativePath = relativePath
+                .replace("{enumName}", constContext.getConstName())
+                .replace("{EnumName}", constContext.getConstNameUpper());
         }
         // 非二进制文件，去除最后的.ftl后缀
         if (!templateFilePO.getBinary()) {

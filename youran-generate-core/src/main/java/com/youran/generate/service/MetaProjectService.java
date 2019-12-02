@@ -167,25 +167,19 @@ public class MetaProjectService {
         list.forEach(vo -> {
             if (vo.getTemplateId() != null) {
                 CodeTemplateListVO template = templateMap.get(vo.getTemplateId());
-                if (template != null) {
-                    vo.setTemplateCode(template.getCode());
-                } else {
+                if (template == null) {
                     vo.setTemplateId(null);
                 }
             }
             if (vo.getTemplateId2() != null) {
                 CodeTemplateListVO template = templateMap.get(vo.getTemplateId2());
-                if (template != null) {
-                    vo.setTemplateCode2(template.getCode());
-                } else {
+                if (template == null) {
                     vo.setTemplateId2(null);
                 }
             }
             if (vo.getTemplateId3() != null) {
                 CodeTemplateListVO template = templateMap.get(vo.getTemplateId3());
-                if (template != null) {
-                    vo.setTemplateCode3(template.getCode());
-                } else {
+                if (template == null) {
                     vo.setTemplateId3(null);
                 }
             }
