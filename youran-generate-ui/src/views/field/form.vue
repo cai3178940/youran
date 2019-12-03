@@ -420,7 +420,7 @@ export default {
       } else {
         constApi.getList(this.projectId)
           .then(data => {
-            this.constList = data.list
+            this.constList = data
             action()
           })
       }
