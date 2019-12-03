@@ -51,8 +51,8 @@ java -jar youran-generate-web/target/youran-generate-web-3.0.0-SNAPSHOT.war
 
 系统预置模板包括：
 
-- 标准java后端模板： [源码地址](https://gitee.com/caixiaoge/youran-template-01) [zip压缩包](https://gitee.com/caixiaoge/youran-template-01/releases)
-- 标准vue前端模板： [源码地址](https://gitee.com/caixiaoge/youran-template-02) [zip压缩包](https://gitee.com/caixiaoge/youran-template-02/releases)
+- 标准java后端模板： [源码地址](../../../youran-template-01) [zip压缩包](../../../youran-template-01/releases)
+- 标准vue前端模板： [源码地址](../../../youran-template-02) [zip压缩包](../../../youran-template-02/releases)
 
 后续还会推出其他技术栈的模板，我也希望您给本项目贡献新的代码模板
 
