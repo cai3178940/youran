@@ -15,6 +15,6 @@ swagger:
 youran:
     dataDir: D:\\youran
     defaultUserInit: true
-    devMode: 1
+    devMode: 2
     dev-project-dir: D:\\workspace_cbb\\auto
     security-enabled: false

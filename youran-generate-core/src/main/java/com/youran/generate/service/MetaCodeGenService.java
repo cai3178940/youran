@@ -265,9 +265,6 @@ public class MetaCodeGenService {
         for (int i = 0; i < file1Content.size(); i++) {
             String l1 = file1Content.get(i);
             String l2 = file2Content.get(i);
-            if (l1.indexOf("* Create Time") >= 0) {
-                continue;
-            }
             if (!Objects.equals(l1, l2)) {
                 return false;
             }
