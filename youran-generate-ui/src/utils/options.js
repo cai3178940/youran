@@ -11,42 +11,49 @@ function getFieldTypeOptions () {
       value: 'varchar',
       label: 'VARCHAR',
       selectLabel: 'VARCHAR',
+      fieldLength: 32,
       disabled: false
     },
     {
       value: 'text',
       label: 'TEXT',
       selectLabel: 'TEXT',
+      fieldLength: 0,
       disabled: false
     },
     {
       value: 'date',
       label: 'DATE',
       selectLabel: 'DATE',
+      fieldLength: 0,
       disabled: false
     },
     {
       value: 'datetime',
       label: 'DATETIME',
       selectLabel: 'DATETIME',
+      fieldLength: 0,
       disabled: false
     },
     {
       value: 'float',
       label: 'FLOAT',
       selectLabel: 'FLOAT',
+      fieldLength: null,
       disabled: false
     },
     {
       value: 'double',
       label: 'DOUBLE',
       selectLabel: 'DOUBLE',
+      fieldLength: null,
       disabled: false
     },
     {
       value: 'decimal',
       label: 'DECIMAL',
       selectLabel: 'DECIMAL',
+      fieldLength: 20,
       disabled: false
     },
     {

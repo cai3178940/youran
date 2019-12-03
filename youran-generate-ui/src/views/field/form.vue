@@ -185,25 +185,25 @@
           </el-form-item>
           <el-form-item v-if="!isAttrHide('attributes')" label="字段功能">
             <help-popover name="field.attributes">
-              <el-checkbox v-model="form.insert"
-                           :disabled="isAttrDisable('attr-insert')"
-                           tabindex="150">
-                可插入
-              </el-checkbox>
-              <el-checkbox v-model="form.update"
-                           :disabled="isAttrDisable('attr-update')"
-                           tabindex="160">
-                可修改
-              </el-checkbox>
               <el-checkbox v-model="form.list"
                            :disabled="isAttrDisable('attr-list')"
-                           tabindex="170">
+                           tabindex="150">
                 列表展示
               </el-checkbox>
               <el-checkbox v-model="form.show"
-                           :disabled="isAttrDisable('attr-show')"
-                           tabindex="180">
+                           :disabled="isAttrDisable('attr-show') || form.update"
+                           tabindex="160">
                 详情展示
+              </el-checkbox>
+              <el-checkbox v-model="form.update"
+                           :disabled="isAttrDisable('attr-update')"
+                           tabindex="170">
+                可修改
+              </el-checkbox>
+              <el-checkbox v-model="form.insert"
+                           :disabled="isAttrDisable('attr-insert')"
+                           tabindex="180">
+                可插入
               </el-checkbox>
               <el-checkbox v-model="form.listSort"
                            :disabled="isAttrDisable('attr-listSort')"
@@ -290,6 +290,11 @@ export default {
       } else {
         this.queryTypeDisabled = true
         this.form.queryType = ''
+      }
+    },
+    'form.update' (value) {
+      if (value) {
+        this.form.show = true
       }
     },
     'dicTypeDisabled' (value) {
