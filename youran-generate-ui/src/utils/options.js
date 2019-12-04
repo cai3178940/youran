@@ -346,7 +346,25 @@ export default {
       label: '字符串'
     }
   ],
+  /**
+   * 识别允许设置的编辑框类型
+   * @param field
+   */
+  getAllowedEditTypes (field) {
+    // 外键： 只能下拉框
 
+    // 枚举： 下拉框 单选框
+
+    // Boolean: 单选框
+
+    // 日期类型： 日期框 日期时间框 文本框
+
+    // int short long double float BigDecimal : 数字框 文本框
+
+    // 字符串： 文本框 多行文本框
+
+    return null
+  },
   /**
    * 编辑框类型
    */
