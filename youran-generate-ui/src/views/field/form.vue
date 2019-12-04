@@ -220,6 +220,21 @@
                                tabindex="200"></el-input-number>
             </help-popover>
           </el-form-item>
+          <el-form-item label="编辑框">
+            <help-popover name="field.editType">
+              <el-select v-model="form.editType" filterable placeholder="编辑框"
+                         style="width:100%;" tabindex="210">
+                <el-option
+                  v-for="item in editTypeOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  :disabled="item.disabled">
+                  <span style="float: left">{{ item.label }}</span>
+                </el-option>
+              </el-select>
+            </help-popover>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()">提交</el-button>
             <el-button v-if="edit" type="warning" @click="reset()">重置</el-button>
@@ -257,6 +272,7 @@ export default {
       fieldTypeOptions: options.getFieldTypeOptions(),
       jfieldTypeOptions: options.jfieldTypeOptions,
       queryTypeOptions: options.queryTypeOptions,
+      editTypeOptions: options.editTypeOptions,
       specialFieldFeatures: options.specialFieldFeatures,
       entityFieldOptions: [],
       constList: null,
@@ -422,7 +438,6 @@ export default {
       // 定义回调操作
       const action = () => {
         const constList = this.constList.slice(0)
-        constList.push(...options.defaultConstList)
         const results = queryString ? constList.filter(
           c => c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
         ) : constList

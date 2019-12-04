@@ -125,7 +125,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setAutoIncrement(false);
         dto.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         dto.setDicType(null);
-        dto.setEditType(EditType.TEXT);
+        dto.setEditType(EditType.TEXT.getValue());
         dto.setFieldComment("用户名");
         dto.setFieldDesc("用户名");
         dto.setFieldExample("Lucy");
@@ -157,7 +157,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setAutoIncrement(false);
         dto.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         dto.setDicType("SexEnum");
-        dto.setEditType(EditType.SELECT);
+        dto.setEditType(EditType.SELECT.getValue());
         dto.setFieldComment("性别");
         dto.setFieldDesc("性别");
         dto.setFieldExample("1");
@@ -189,7 +189,7 @@ public class MetaCodeGenControllerTest extends AbstractWebTest {
         dto.setAutoIncrement(false);
         dto.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);
         dto.setDicType(null);
-        dto.setEditType(EditType.DATE);
+        dto.setEditType(EditType.DATE.getValue());
         dto.setFieldComment("生日");
         dto.setFieldDesc("生日");
         dto.setFieldExample("1987-08-27");

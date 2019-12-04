@@ -1,3 +1,5 @@
+import options from '@/utils/options'
+
 export function initFormBean (forEdit) {
   const formBean = {
     entityId: null,
@@ -53,8 +55,8 @@ export function initFormBean (forEdit) {
     listSort: false,
     // 是否详情字段
     show: true,
-    // 编辑方式(暂时不用)
-    editType: null,
+    // 编辑方式
+    editType: options.editTypeOptions['TEXT'].value,
     // 排序号
     orderNo: 1
   }

@@ -142,7 +142,7 @@ public class GenerateHelper {
         dto.setFieldDesc("创建日期");
         dto.setJfieldName("createdTime");
         dto.setJfieldType(JFieldType.DATE.getJavaType());
-        dto.setEditType(EditType.DATE);
+        dto.setEditType(EditType.DATE.getValue());
         dto.setOrderNo(1001);
         dto.setInsert(false);
         dto.setQuery(false);
@@ -168,7 +168,7 @@ public class GenerateHelper {
         dto.setFieldExample("admin");
         dto.setJfieldName("createdBy");
         dto.setJfieldType(JFieldType.STRING.getJavaType());
-        dto.setEditType(EditType.TEXT);
+        dto.setEditType(EditType.TEXT.getValue());
         dto.setOrderNo(1002);
         dto.setInsert(false);
         dto.setQuery(false);
@@ -194,7 +194,7 @@ public class GenerateHelper {
         dto.setFieldExample("2017-05-22 00:00:00");
         dto.setJfieldName("operatedTime");
         dto.setJfieldType(JFieldType.DATE.getJavaType());
-        dto.setEditType(EditType.DATE);
+        dto.setEditType(EditType.DATE.getValue());
         dto.setOrderNo(1003);
         dto.setInsert(false);
         dto.setQuery(false);
@@ -220,7 +220,7 @@ public class GenerateHelper {
         dto.setFieldExample("admin");
         dto.setJfieldName("operatedBy");
         dto.setJfieldType(JFieldType.STRING.getJavaType());
-        dto.setEditType(EditType.TEXT);
+        dto.setEditType(EditType.TEXT.getValue());
         dto.setOrderNo(1004);
         dto.setInsert(false);
         dto.setQuery(false);
@@ -335,7 +335,7 @@ public class GenerateHelper {
         dto.setAutoIncrement(false);//默认非自动递增
         dto.setDefaultValue(GenerateConst.METAFIELD_NULL_VALUE);//默认值为null
         dto.setNotNull(false);//默认可为空
-        dto.setEditType(EditType.TEXT);
+        dto.setEditType(EditType.TEXT.getValue());
         dto.setFieldScale(null);
         dto.setDicType(null);
         dto.setInsert(true);
@@ -462,7 +462,7 @@ public class GenerateHelper {
         dto.setFieldDesc(desc);
         dto.setJfieldName(fieldName);
         dto.setJfieldType(JFieldType.INTEGER.getJavaType());
-        dto.setEditType(EditType.SELECT);
+        dto.setEditType(EditType.SELECT.getValue());
         dto.setOrderNo(orderNo);
         MetaFieldPO metaField = metaFieldService.save(dto);
         entity.addField(metaField);
@@ -477,7 +477,7 @@ public class GenerateHelper {
             .get();
         MetaFieldAddDTO dto = newMetaFieldAddDTO(entity);
         dto.setDicType(enumConst.getConstName());
-        dto.setEditType(EditType.SELECT);
+        dto.setEditType(EditType.SELECT.getValue());
         dto.setFieldComment(desc + comment);
         dto.setFieldDesc(desc);
         dto.setFieldExample(enumConst.getDetailList().get(0).getDetailValue());

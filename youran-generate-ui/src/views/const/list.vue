@@ -45,7 +45,7 @@
               <template v-slot="detail">
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailName }}</span>
                 <span v-if="detail.row.editFlag">
-                  <el-input v-model="detail.row.detailName" @change="detailNameChange(detail.row)" placeholder="字段名，如：WOMAN"></el-input>
+                  <el-input v-model="detail.row.detailName" @input="detailNameChange(detail.row)" placeholder="字段名，如：WOMAN"></el-input>
                 </span>
               </template>
             </el-table-column>

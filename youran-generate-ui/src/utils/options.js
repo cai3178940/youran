@@ -347,12 +347,48 @@ export default {
     }
   ],
 
-  // 默认常量列表
-  defaultConstList: [
-    // {
-    //   constName: 'BoolConst'
-    // }
-  ],
+  /**
+   * 编辑框类型
+   */
+  editTypeOptions: {
+    'TEXT': {
+      label: '文本框',
+      value: 1
+    },
+    'SELECT': {
+      label: '单选下拉框',
+      value: 2
+    },
+    'DATE': {
+      label: '日期框',
+      value: 3
+    },
+    'NUMBER': {
+      label: '数字框',
+      value: 4
+    },
+    'RADIO': {
+      label: '单选按钮',
+      value: 5
+    },
+    'CHECKBOX': {
+      label: '复选框',
+      value: 6
+    },
+    'DATETIME': {
+      label: '日期时间框',
+      value: 7
+    },
+    'MULTI_SELECT': {
+      label: '多选下拉框',
+      value: 8
+    },
+    'TEXTAREA': {
+      label: '多行文本框',
+      value: 9
+    }
+  },
+
   /**
    * 模板文件上下文类型
    */

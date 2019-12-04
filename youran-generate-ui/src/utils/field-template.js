@@ -1,3 +1,5 @@
+import options from '@/utils/options'
+
 /**
  * 灵活可变的字段模板
  */
@@ -27,7 +29,7 @@ export const flexibleTemplate = {
     columnWidth: 0,
     listSort: false,
     show: true,
-    editType: null,
+    editType: options.editTypeOptions['TEXT'].value,
     orderNo: 1
   },
   '外键模板': {
@@ -55,7 +57,7 @@ export const flexibleTemplate = {
     columnWidth: 0,
     listSort: false,
     show: true,
-    editType: null,
+    editType: options.editTypeOptions['SELECT'].value,
     orderNo: 10
   }
 }
@@ -88,7 +90,7 @@ export const fixedTemplate = {
     columnWidth: 100,
     listSort: false,
     show: true,
-    editType: null,
+    editType: options.editTypeOptions['TEXT'].value,
     orderNo: 1
   },
   '主键ID(Integer)': {
@@ -116,7 +118,7 @@ export const fixedTemplate = {
     columnWidth: 100,
     listSort: false,
     show: true,
-    editType: null,
+    editType: options.editTypeOptions['TEXT'].value,
     orderNo: 1
   },
   '创建时间': {
@@ -144,7 +146,7 @@ export const fixedTemplate = {
     columnWidth: 200,
     listSort: true,
     show: false,
-    editType: null,
+    editType: options.editTypeOptions['DATETIME'].value,
     orderNo: 100
   },
   '创建人': {
@@ -172,7 +174,7 @@ export const fixedTemplate = {
     columnWidth: 0,
     listSort: false,
     show: false,
-    editType: null,
+    editType: options.editTypeOptions['TEXT'].value,
     orderNo: 101
   },
   '修改时间': {
@@ -200,7 +202,7 @@ export const fixedTemplate = {
     columnWidth: 200,
     listSort: true,
     show: false,
-    editType: null,
+    editType: options.editTypeOptions['DATETIME'].value,
     orderNo: 110
   },
   '修改人': {
@@ -228,7 +230,7 @@ export const fixedTemplate = {
     columnWidth: 0,
     listSort: false,
     show: false,
-    editType: null,
+    editType: options.editTypeOptions['TEXT'].value,
     orderNo: 111
   },
   '乐观锁版本号': {
@@ -256,7 +258,7 @@ export const fixedTemplate = {
     columnWidth: 0,
     listSort: false,
     show: false,
-    editType: null,
+    editType: options.editTypeOptions['NUMBER'].value,
     orderNo: 120
   },
   '逻辑删除标识': {
@@ -284,7 +286,7 @@ export const fixedTemplate = {
     columnWidth: 0,
     listSort: false,
     show: false,
-    editType: null,
+    editType: options.editTypeOptions['RADIO'].value,
     orderNo: 130
   },
   '排序号': {
@@ -312,7 +314,7 @@ export const fixedTemplate = {
     columnWidth: 100,
     listSort: true,
     show: true,
-    editType: null,
+    editType: options.editTypeOptions['NUMBER'].value,
     orderNo: 90
   }
 }
