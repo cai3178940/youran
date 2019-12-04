@@ -66,6 +66,9 @@ public class MetaFieldListVO extends AbstractVO {
     @ApiModelProperty(notes = N_LIST, example = E_LIST)
     private Boolean list;
 
+    @ApiModelProperty(notes = N_COLUMN_WIDTH, example = E_COLUMN_WIDTH)
+    private Integer columnWidth;
+
     @ApiModelProperty(notes = N_LIST_SORT, example = E_LIST_SORT)
     private Boolean listSort;
 
@@ -104,6 +107,14 @@ public class MetaFieldListVO extends AbstractVO {
 
     @ApiModelProperty(notes = "级联字段数量", example = "0")
     private Integer cascadeFieldNum;
+
+    public Integer getColumnWidth() {
+        return columnWidth;
+    }
+
+    public void setColumnWidth(Integer columnWidth) {
+        this.columnWidth = columnWidth;
+    }
 
     public Integer getCascadeFieldNum() {
         return cascadeFieldNum;

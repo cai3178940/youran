@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -95,6 +96,10 @@ public class MetaFieldAddDTO extends AbstractDTO {
     @NotNull
     private Boolean list;
 
+    @ApiModelProperty(notes = N_COLUMN_WIDTH, example = E_COLUMN_WIDTH)
+    @Max(1000)
+    private Integer columnWidth;
+
     @ApiModelProperty(notes = N_LIST_SORT, example = E_LIST_SORT)
     @NotNull
     private Boolean listSort;
@@ -141,6 +146,14 @@ public class MetaFieldAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_SPECIALFIELD, example = E_SPECIALFIELD)
     @Const(constClass = MetaSpecialField.class)
     private String specialField;
+
+    public Integer getColumnWidth() {
+        return columnWidth;
+    }
+
+    public void setColumnWidth(Integer columnWidth) {
+        this.columnWidth = columnWidth;
+    }
 
     public Integer getForeignEntityId() {
         return foreignEntityId;

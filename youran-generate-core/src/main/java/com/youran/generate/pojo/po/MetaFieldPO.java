@@ -109,6 +109,10 @@ public class MetaFieldPO extends BasePO {
      */
     private Boolean list;
     /**
+     * 列宽：多少个像素
+     */
+    private Integer columnWidth;
+    /**
      * 是否支持排序
      */
     private Boolean listSort;
@@ -443,5 +447,13 @@ public class MetaFieldPO extends BasePO {
 
     public void setQuery(Boolean query) {
         this.query = query;
+    }
+
+    public Integer getColumnWidth() {
+        return columnWidth;
+    }
+
+    public void setColumnWidth(Integer columnWidth) {
+        this.columnWidth = columnWidth;
     }
 }

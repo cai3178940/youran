@@ -44,6 +44,8 @@ public class MetaFieldExample extends AbstractExample {
     public static final String E_JFIELDTYPE = "Boolean";
     public static final String N_LIST = "是否列表字段";
     public static final String E_LIST = "true";
+    public static final String N_COLUMN_WIDTH = "列宽：多少个像素";
+    public static final String E_COLUMN_WIDTH = "200";
     public static final String N_LIST_SORT = "是否支持排序";
     public static final String E_LIST_SORT = "true";
     public static final String N_NOTNULL = "是否不能为空";

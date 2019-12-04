@@ -47,6 +47,8 @@ export function initFormBean (forEdit) {
     update: true,
     // 是否列表字段
     list: true,
+    // 列宽
+    columnWidth: 0,
     // 是否支持排序
     listSort: false,
     // 是否详情字段

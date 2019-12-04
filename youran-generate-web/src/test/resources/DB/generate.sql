@@ -78,6 +78,7 @@ CREATE TABLE `meta_field` (
   `insert` tinyint(1) NOT NULL COMMENT '是否手动插入字段',
   `update` tinyint(1) NOT NULL COMMENT '是否手动更新字段',
   `list` tinyint(1) NOT NULL COMMENT '是否列表展示字段',
+  `column_length` smallint(4) DEFAULT NULL COMMENT '列宽',
   `list_sort` tinyint(1) NOT NULL COMMENT '是否支持排序',
   `show` tinyint(1) NOT NULL COMMENT '是否详情展示字段',
   `query` tinyint(1) NOT NULL COMMENT '是否查询字段',

@@ -67,6 +67,7 @@ public interface MetaFieldMapper {
         @Mapping(target = "insert"),
         @Mapping(target = "update"),
         @Mapping(target = "list"),
+        @Mapping(target = "columnWidth"),
         @Mapping(target = "listSort"),
         @Mapping(target = "show"),
         @Mapping(target = "query"),

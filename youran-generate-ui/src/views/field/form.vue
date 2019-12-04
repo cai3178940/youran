@@ -186,7 +186,7 @@
           <el-form-item v-if="!isAttrHide('attributes')" label="字段功能">
             <help-popover name="field.attributes">
               <el-checkbox v-model="form.list"
-                           :disabled="isAttrDisable('attr-list')"
+                           :disabled="isAttrDisable('attr-list') || form.listSort"
                            tabindex="150">
                 列表展示
               </el-checkbox>
@@ -210,6 +210,14 @@
                            tabindex="190">
                 可排序
               </el-checkbox>
+            </help-popover>
+          </el-form-item>
+          <el-form-item v-if="form.list" label="列宽">
+            <help-popover name="field.columnWidth">
+              <el-input-number v-model="form.columnWidth" controls-position="right"
+                               style="width:100%;" placeholder="列宽"
+                               :step="10" :min="0" :max="1000"
+                               tabindex="200"></el-input-number>
             </help-popover>
           </el-form-item>
           <el-form-item>
@@ -295,6 +303,11 @@ export default {
     'form.update' (value) {
       if (value) {
         this.form.show = true
+      }
+    },
+    'form.listSort' (value) {
+      if (value) {
+        this.form.list = true
       }
     },
     'dicTypeDisabled' (value) {
