@@ -145,6 +145,9 @@ export function getRules (vm) {
         trigger: 'change'
       }
     ],
+    editType: [
+      { required: true, message: '请选择编辑框', trigger: 'change' }
+    ],
     orderNo: [
       { required: true, message: '请输入排序号', trigger: 'blur' }
     ]

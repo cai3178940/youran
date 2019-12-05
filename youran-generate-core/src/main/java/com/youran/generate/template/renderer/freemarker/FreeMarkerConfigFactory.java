@@ -1,10 +1,7 @@
 package com.youran.generate.template.renderer.freemarker;
 
 import com.youran.common.exception.BusinessException;
-import com.youran.generate.constant.JFieldType;
-import com.youran.generate.constant.MetaConstType;
-import com.youran.generate.constant.MetaSpecialField;
-import com.youran.generate.constant.QueryType;
+import com.youran.generate.constant.*;
 import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.service.DataDirService;
 import com.youran.generate.service.TemplateFileOutputService;
@@ -49,6 +46,7 @@ public class FreeMarkerConfigFactory {
     private TemplateModel metaConstTypeModel;
     private TemplateModel jFieldTypeModel;
     private TemplateModel queryTypeModel;
+    private TemplateModel editTypeModel;
     private TemplateModel metaSpecialFieldModel;
     private TemplateModel commonTemplateFunctionModel;
     private TemplateModel javaTemplateFunctionModel;
@@ -61,6 +59,7 @@ public class FreeMarkerConfigFactory {
         this.metaConstTypeModel = getStaticModel(MetaConstType.class);
         this.jFieldTypeModel = getStaticModel(JFieldType.class);
         this.queryTypeModel = getStaticModel(QueryType.class);
+        this.editTypeModel = getStaticModel(EditType.class);
         this.metaSpecialFieldModel = getStaticModel(MetaSpecialField.class);
         this.commonTemplateFunctionModel = getStaticModel(CommonTemplateFunction.class);
         this.javaTemplateFunctionModel = getStaticModel(JavaTemplateFunction.class);
@@ -123,6 +122,7 @@ public class FreeMarkerConfigFactory {
         cfg.setSharedVariable("MetaConstType", metaConstTypeModel);
         cfg.setSharedVariable("JFieldType", jFieldTypeModel);
         cfg.setSharedVariable("QueryType", queryTypeModel);
+        cfg.setSharedVariable("EditType", editTypeModel);
         cfg.setSharedVariable("MetaSpecialField", metaSpecialFieldModel);
         cfg.setSharedVariable("CommonTemplateFunction", commonTemplateFunctionModel);
         cfg.setSharedVariable("JavaTemplateFunction", javaTemplateFunctionModel);

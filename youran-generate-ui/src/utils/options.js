@@ -87,6 +87,63 @@ function getFieldTypeOptions () {
   ]
 }
 
+/**
+ * 获取所有编辑框选项，根据传入的数组，设置选项框是否可选
+ */
+function getEditTypeOptions (allowedItems) {
+  const options = {
+    'TEXT': {
+      label: '文本框',
+      value: 1,
+      disabled: true
+    },
+    'SELECT': {
+      label: '单选下拉框',
+      value: 2,
+      disabled: true
+    },
+    'DATE': {
+      label: '日期框',
+      value: 3,
+      disabled: true
+    },
+    'NUMBER': {
+      label: '数字框',
+      value: 4,
+      disabled: true
+    },
+    'RADIO': {
+      label: '单选按钮',
+      value: 5,
+      disabled: true
+    },
+    /* 'CHECKBOX': {
+      label: '复选框',
+      value: 6,
+      disabled: true
+    }, */
+    'DATETIME': {
+      label: '日期时间框',
+      value: 7,
+      disabled: true
+    },
+    /* 'MULTI_SELECT': {
+      label: '多选下拉框',
+      value: 8,
+      disabled: true
+    }, */
+    'TEXTAREA': {
+      label: '多行文本框',
+      value: 9,
+      disabled: true
+    }
+  }
+  for (const item of allowedItems) {
+    options[item].disabled = false
+  }
+  return options
+}
+
 const commonFeature = {
   value: 'default',
   label: '普通字段',
@@ -347,66 +404,37 @@ export default {
     }
   ],
   /**
+   * 所有编辑框选项
+   */
+  editTypeOptions: getEditTypeOptions([]),
+  /**
    * 识别允许设置的编辑框类型
    * @param field
    */
   getAllowedEditTypes (field) {
-    // 外键： 只能下拉框
-
-    // 枚举： 下拉框 单选框
-
-    // Boolean: 单选框
-
-    // 日期类型： 日期框 日期时间框 文本框
-
-    // int short long double float BigDecimal : 数字框 文本框
-
-    // 字符串： 文本框 多行文本框
-
-    return null
-  },
-  /**
-   * 编辑框类型
-   */
-  editTypeOptions: {
-    'TEXT': {
-      label: '文本框',
-      value: 1
-    },
-    'SELECT': {
-      label: '单选下拉框',
-      value: 2
-    },
-    'DATE': {
-      label: '日期框',
-      value: 3
-    },
-    'NUMBER': {
-      label: '数字框',
-      value: 4
-    },
-    'RADIO': {
-      label: '单选按钮',
-      value: 5
-    },
-    'CHECKBOX': {
-      label: '复选框',
-      value: 6
-    },
-    'DATETIME': {
-      label: '日期时间框',
-      value: 7
-    },
-    'MULTI_SELECT': {
-      label: '多选下拉框',
-      value: 8
-    },
-    'TEXTAREA': {
-      label: '多行文本框',
-      value: 9
+    let allowed = []
+    if (field.foreignKey) {
+      // 外键： 只能下拉框
+      allowed = ['SELECT']
+    } else if (field.dicType) {
+      // 枚举： 下拉框 单选按钮
+      allowed = ['SELECT', 'RADIO']
+    } else if (field.jfieldType === 'Boolean') {
+      // Boolean: 单选框
+      allowed = ['RADIO']
+    } else if (field.jfieldType === 'Date') {
+      // 日期类型： 日期框 日期时间框 文本框
+      allowed = ['TEXT', 'DATE', 'DATETIME']
+    } else if (['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal']
+      .find((item) => field.jfieldType === item)) {
+      // Integer Short Long Double Float BigDecimal : 数字框 文本框
+      allowed = ['TEXT', 'NUMBER']
+    } else {
+      // 字符串： 文本框 多行文本框
+      allowed = ['TEXT', 'TEXTAREA']
     }
+    return getEditTypeOptions(allowed)
   },
-
   /**
    * 模板文件上下文类型
    */

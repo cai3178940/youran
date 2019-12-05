@@ -3,6 +3,9 @@ package com.youran.generate.template.function;
 import com.youran.generate.util.SwitchCaseUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 通用模板函数
  * <p>作为内置函数用来辅助freemarker模板
@@ -11,6 +14,14 @@ import org.apache.commons.lang3.StringUtils;
  * @date 2019/11/11
  */
 public class CommonTemplateFunction {
+
+    /**
+     * 创建HashSet
+     * @return
+     */
+    public static Set createHashSet(){
+        return new HashSet<>();
+    }
 
     /**
      * 下划线转驼峰

@@ -36,7 +36,7 @@ public enum EditType {
     /**
      * 复选框
      */
-    CHECKBOX(6,"复选框"),
+    //CHECKBOX(6,"复选框"),
     /**
      * 日期时间框
      */
@@ -44,7 +44,7 @@ public enum EditType {
     /**
      * 多选下拉框
      */
-    MULTI_SELECT(8,"多选下拉框"),
+    //MULTI_SELECT(8,"多选下拉框"),
     /**
      * 多行文本框
      */

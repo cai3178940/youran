@@ -220,12 +220,12 @@
                                tabindex="200"></el-input-number>
             </help-popover>
           </el-form-item>
-          <el-form-item label="编辑框">
+          <el-form-item label="编辑框" prop="editType">
             <help-popover name="field.editType">
               <el-select v-model="form.editType" filterable placeholder="编辑框"
                          style="width:100%;" tabindex="210">
                 <el-option
-                  v-for="item in editTypeOptions"
+                  v-for="item in allowedEditTypes"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -272,7 +272,6 @@ export default {
       fieldTypeOptions: options.getFieldTypeOptions(),
       jfieldTypeOptions: options.jfieldTypeOptions,
       queryTypeOptions: options.queryTypeOptions,
-      editTypeOptions: options.editTypeOptions,
       specialFieldFeatures: options.specialFieldFeatures,
       entityFieldOptions: [],
       constList: null,
@@ -297,6 +296,9 @@ export default {
     },
     fieldScaleVisible () {
       return options.showFieldScale(this.form.fieldType)
+    },
+    allowedEditTypes () {
+      return options.getAllowedEditTypes(this.form)
     }
   },
   watch: {
