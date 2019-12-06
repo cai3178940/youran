@@ -43,7 +43,6 @@ public class CodeTemplateAddDTO extends AbstractDTO {
     private String sysLowVersion;
 
     @ApiModelProperty(notes = N_REMARK, example = E_REMARK)
-    @Length(max = 256)
     private String remark;
 
     public String getCode() {

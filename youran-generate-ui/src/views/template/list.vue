@@ -29,9 +29,12 @@
         <template v-slot="scope">
           <el-popover
             placement="right"
-            width="400"
+            width="550"
             trigger="click">
-            <div v-html="convertMarkdown(scope.row.remark)" class="markdown-body"></div>
+            <el-scrollbar style="height:100%">
+              <div v-html="convertMarkdown(scope.row.remark)"
+                   style="max-height:500px" class="markdown-body"></div>
+            </el-scrollbar>
             <el-button slot="reference"
                        type="text" size="medium">{{scope.row.name}}</el-button>
           </el-popover>

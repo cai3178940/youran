@@ -38,7 +38,10 @@
                         placement="left"
                         width="400"
                         trigger="click">
-              <div v-html="convertMarkdown(template.remark)" class="markdown-body"></div>
+              <el-scrollbar style="height:100%">
+                <div v-html="convertMarkdown(template.remark)"
+                     style="max-height:550px" class="markdown-body"></div>
+              </el-scrollbar>
               <el-button slot="reference"
                          type="text" size="medium">{{ template.name }}</el-button>
             </el-popover>

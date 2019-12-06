@@ -45,9 +45,6 @@ export function getRules () {
         callback()
       },
       trigger: 'blur' }
-    ],
-    remark: [
-      { max: 256, message: '长度不能超过256个字符', trigger: 'blur' }
     ]
   }
 }

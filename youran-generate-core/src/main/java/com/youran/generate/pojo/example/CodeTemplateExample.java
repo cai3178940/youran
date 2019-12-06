@@ -23,7 +23,7 @@ public class CodeTemplateExample extends AbstractExample {
     public static final String E_SYS_LOW_VERSION = "1.0.1";
     public static final String N_SYS_DEFAULT = "是否系统默认模板";
     public static final String E_SYS_DEFAULT = "true";
-    public static final String N_REMARK = "备注【最大长度256】";
+    public static final String N_REMARK = "markdown备注";
     public static final String E_REMARK = "这是备注";
     public static final String N_INNER_VERSION = "内部版本号，每次模板有变动都自动加一";
     public static final String E_INNER_VERSION = "1";
