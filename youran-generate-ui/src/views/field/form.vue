@@ -150,7 +150,7 @@
               <el-autocomplete :disabled="dicTypeDisabled" style="width:100%;"
                                v-model="form.dicType"
                                :fetch-suggestions="queryDicType"
-                               placeholder="请输入枚举字典"
+                               placeholder="请输入枚举字典，例如：Sex"
                                tabindex="110"
               ></el-autocomplete>
             </help-popover>
@@ -173,10 +173,11 @@
                   <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="" filterable
                              placeholder="请选择" tabindex="140">
                     <el-option
-                      v-for="item in queryTypeOptions"
+                      v-for="item in allowedQueryTypes"
                       :key="item.value"
                       :label="item.label"
-                      :value="item.value">
+                      :value="item.value"
+                      :disabled="item.disabled">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -186,37 +187,38 @@
           <el-form-item v-if="!isAttrHide('attributes')" label="字段功能">
             <help-popover name="field.attributes">
               <el-checkbox v-model="form.list"
-                           :disabled="isAttrDisable('attr-list') || form.listSort"
+                           :disabled="isAttrDisable('attr-list')"
                            tabindex="150">
                 列表展示
               </el-checkbox>
               <el-checkbox v-model="form.show"
-                           :disabled="isAttrDisable('attr-show') || form.update"
+                           :disabled="isAttrDisable('attr-show')"
                            tabindex="160">
                 详情展示
-              </el-checkbox>
-              <el-checkbox v-model="form.update"
-                           :disabled="isAttrDisable('attr-update')"
-                           tabindex="170">
-                可修改
               </el-checkbox>
               <el-checkbox v-model="form.insert"
                            :disabled="isAttrDisable('attr-insert')"
                            tabindex="180">
                 可插入
               </el-checkbox>
+              <el-checkbox v-model="form.update"
+                           :disabled="isAttrDisable('attr-update') || !form.show"
+                           tabindex="170">
+                可修改
+              </el-checkbox>
               <el-checkbox v-model="form.listSort"
-                           :disabled="isAttrDisable('attr-listSort')"
+                           :disabled="isAttrDisable('attr-listSort') || !form.list"
                            tabindex="190">
                 可排序
               </el-checkbox>
             </help-popover>
           </el-form-item>
-          <el-form-item v-if="form.list" label="列宽">
+          <el-form-item label="列宽">
             <help-popover name="field.columnWidth">
               <el-input-number v-model="form.columnWidth" controls-position="right"
                                style="width:100%;" placeholder="列宽"
                                :step="10" :min="0" :max="1000"
+                               :disabled="!form.list"
                                tabindex="200"></el-input-number>
             </help-popover>
           </el-form-item>
@@ -271,7 +273,6 @@ export default {
       edit: edit,
       fieldTypeOptions: options.getFieldTypeOptions(),
       jfieldTypeOptions: options.jfieldTypeOptions,
-      queryTypeOptions: options.queryTypeOptions,
       specialFieldFeatures: options.specialFieldFeatures,
       entityFieldOptions: [],
       constList: null,
@@ -299,6 +300,9 @@ export default {
     },
     allowedEditTypes () {
       return options.getAllowedEditTypes(this.form)
+    },
+    allowedQueryTypes () {
+      return options.getAllowedQueryTypes(this.form)
     }
   },
   watch: {
@@ -318,14 +322,14 @@ export default {
         this.form.queryType = ''
       }
     },
-    'form.update' (value) {
-      if (value) {
-        this.form.show = true
+    'form.show' (value) {
+      if (!value) {
+        this.form.update = false
       }
     },
-    'form.listSort' (value) {
-      if (value) {
-        this.form.list = true
+    'form.list' (value) {
+      if (!value) {
+        this.form.listSort = false
       }
     },
     'dicTypeDisabled' (value) {

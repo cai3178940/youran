@@ -88,7 +88,7 @@ function getFieldTypeOptions () {
 }
 
 /**
- * 获取所有编辑框选项，根据传入的数组，设置选项框是否可选
+ * 获取所有编辑框选项，根据传入的数组，设置选项是否可选
  */
 function getEditTypeOptions (allowedItems) {
   const options = {
@@ -135,6 +135,58 @@ function getEditTypeOptions (allowedItems) {
     'TEXTAREA': {
       label: '多行文本框',
       value: 9,
+      disabled: true
+    }
+  }
+  for (const item of allowedItems) {
+    options[item].disabled = false
+  }
+  return options
+}
+
+/**
+ * 获取所有搜索条件选项，根据传入的数组，设置选项是否可选
+ */
+function getQueryTypeOptions (allowedItems) {
+  const options = {
+    'EQ': {
+      value: 1,
+      label: '等于',
+      disabled: true
+    },
+    'LIKE': {
+      value: 2,
+      label: 'like',
+      disabled: true
+    },
+    'GT': {
+      value: 3,
+      label: '大于',
+      disabled: true
+    },
+    'GE': {
+      value: 4,
+      label: '大于等于',
+      disabled: true
+    },
+    'LT': {
+      value: 5,
+      label: '小于',
+      disabled: true
+    },
+    'LE': {
+      value: 6,
+      label: '小于等于',
+      disabled: true
+    },
+    'BETWEEN': {
+      value: 7,
+      label: 'between',
+      disabled: true
+    },
+    'IN': {
+      value: 8,
+      label: 'in',
       disabled: true
     }
   }
@@ -333,40 +385,34 @@ export default {
   /**
    * 查询方式列表
    */
-  queryTypeOptions: [
-    {
-      value: 1,
-      label: '等于'
-    },
-    {
-      value: 2,
-      label: 'like'
-    },
-    {
-      value: 3,
-      label: '大于'
-    },
-    {
-      value: 4,
-      label: '大于等于'
-    },
-    {
-      value: 5,
-      label: '小于'
-    },
-    {
-      value: 6,
-      label: '小于等于'
-    },
-    {
-      value: 7,
-      label: 'between'
-    },
-    {
-      value: 8,
-      label: 'in'
+  queryTypeOptions: getQueryTypeOptions([]),
+  /**
+   * 识别允许设置的查询条件
+   */
+  getAllowedQueryTypes (field) {
+    let allowed = []
+    if (field.foreignKey) {
+      // 外键： 只能等于、in
+      allowed = ['EQ', 'IN']
+    } else if (field.dicType) {
+      // 枚举： 只能等于、in
+      allowed = ['EQ', 'IN']
+    } else if (field.jfieldType === 'Boolean') {
+      // Boolean: 只能等于
+      allowed = ['EQ']
+    } else if (field.jfieldType === 'Date') {
+      // 日期类型： 除like、in以外
+      allowed = ['EQ', 'GT', 'GE', 'LT', 'LE', 'BETWEEN']
+    } else if (['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal']
+      .find((item) => field.jfieldType === item)) {
+      // Integer Short Long Double Float BigDecimal：除like、in以外
+      allowed = ['EQ', 'GT', 'GE', 'LT', 'LE', 'BETWEEN']
+    } else {
+      // 字符串： 等于、like
+      allowed = ['EQ', 'LIKE']
     }
-  ],
+    return getQueryTypeOptions(allowed)
+  },
   commonFeature: commonFeature,
   pkFeature: pkFeature,
   fkFeature: fkFeature,
@@ -409,7 +455,6 @@ export default {
   editTypeOptions: getEditTypeOptions([]),
   /**
    * 识别允许设置的编辑框类型
-   * @param field
    */
   getAllowedEditTypes (field) {
     let allowed = []
@@ -423,8 +468,8 @@ export default {
       // Boolean: 单选框
       allowed = ['RADIO']
     } else if (field.jfieldType === 'Date') {
-      // 日期类型： 日期框 日期时间框 文本框
-      allowed = ['TEXT', 'DATE', 'DATETIME']
+      // 日期类型： 日期框 日期时间框
+      allowed = ['DATE', 'DATETIME']
     } else if (['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal']
       .find((item) => field.jfieldType === item)) {
       // Integer Short Long Double Float BigDecimal : 数字框 文本框

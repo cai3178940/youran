@@ -75,8 +75,7 @@ public class MetaFieldAddDTO extends AbstractDTO {
     private Integer fieldScale;
 
     @ApiModelProperty(notes = N_FIELDTYPE, example = E_FIELDTYPE)
-    @Length(max = 10, message = "fieldType最大长度不能超过{max}")
-    @Pattern(regexp = PatternConst.ALPHA, message = PatternConst.ALPHA_MSG)
+    @Const(constClass = MySqlType.class)
     private String fieldType;
 
     @ApiModelProperty(notes = N_INSERT, example = E_INSERT)
