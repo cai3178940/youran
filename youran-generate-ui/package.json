@@ -4,7 +4,7 @@
   "author": "蔡斌冰 <caibinbing@foxmail.com>",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
