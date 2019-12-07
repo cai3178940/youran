@@ -603,6 +603,13 @@ public class EntityContext extends BaseContext {
         this.entityFeature = entityFeature;
     }
 
+    public MetaFieldPO getTitleField() {
+        return titleField;
+    }
+
+    public void setTitleField(MetaFieldPO titleField) {
+        this.titleField = titleField;
+    }
 
     @Override
     public String toString() {
