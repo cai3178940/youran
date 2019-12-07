@@ -143,6 +143,12 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     @JsonIgnore
     private MetaFieldPO versionField;
     /**
+     * 实体内的标题字段
+     * 用于在java模板内生成findOptions服务
+     */
+    @JsonIgnore
+    private MetaFieldPO titleField;
+    /**
      * 持有引用的多对多关系
      */
     @JsonIgnore
@@ -492,6 +498,14 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setEntityFeature(MetaEntityFeatureDTO entityFeature) {
         this.entityFeature = entityFeature;
+    }
+
+    public MetaFieldPO getTitleField() {
+        return titleField;
+    }
+
+    public void setTitleField(MetaFieldPO titleField) {
+        this.titleField = titleField;
     }
 
     @Override

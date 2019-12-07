@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 实体增删改查服务
@@ -100,6 +101,27 @@ public class MetaEntityService {
         return metaEntity;
     }
 
+    /**
+     * 修改实体特性值
+     *
+     * @param entityId
+     * @param attributes
+     * @return
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    @OptimisticLock
+    public MetaEntityPO updateFeatureAttr(Integer entityId, Map<String, Object> attributes) {
+        MetaEntityPO entity = this.getEntity(entityId, true);
+        // 获取项目并校验操作人
+        MetaProjectPO project = metaProjectService.getAndCheckProject(entity.getProjectId());
+        String feature = entity.getFeature();
+        Map<String, Object> featureAttrs = JsonUtil.parseObject(feature, Map.class);
+        attributes.forEach((key, value) -> featureAttrs.put(key, value));
+        entity.setFeature(JsonUtil.toJSONString(featureAttrs));
+        metaEntityDAO.update(entity);
+        metaProjectService.updateProject(project);
+        return entity;
+    }
 
     /**
      * 查询实体

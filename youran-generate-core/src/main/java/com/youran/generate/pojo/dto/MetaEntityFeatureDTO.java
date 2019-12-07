@@ -41,6 +41,12 @@ public class MetaEntityFeatureDTO extends AbstractDTO {
      */
     @ApiModelProperty(notes = "是否生成show方法", example = "true")
     private Boolean show = true;
+    /**
+     * 实体内的标题字段
+     * 用于在java模板内生成findOptions服务
+     */
+    @ApiModelProperty(notes = "实体内的标题字段", example = "1")
+    private Integer titleFieldId;
 
     public Boolean getSave() {
         return save;
@@ -88,5 +94,13 @@ public class MetaEntityFeatureDTO extends AbstractDTO {
 
     public void setShow(Boolean show) {
         this.show = show;
+    }
+
+    public Integer getTitleFieldId() {
+        return titleFieldId;
+    }
+
+    public void setTitleFieldId(Integer titleFieldId) {
+        this.titleFieldId = titleFieldId;
     }
 }

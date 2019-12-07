@@ -82,6 +82,10 @@ public class EntityContext extends BaseContext {
      */
     private MetaFieldPO delField;
     /**
+     * 标题字段
+     */
+    private MetaFieldPO titleField;
+    /**
      * 外键字段
      */
     private Map<Integer, MetaFieldPO> fkFields;
@@ -190,6 +194,7 @@ public class EntityContext extends BaseContext {
         this.foreignFields = entity.getForeignFields();
         this.foreignEntities = entity.getForeignEntities();
         this.entityFeature = entity.getEntityFeature();
+        this.titleField = entity.getTitleField();
     }
 
     /**

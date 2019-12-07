@@ -124,7 +124,6 @@ export function getRules (vm) {
       { max: 100, message: '长度不能超过100个字符', trigger: 'blur' }
     ],
     fieldComment: [
-      { required: true, message: '请输入字段备注', trigger: 'blur' },
       { max: 100, message: '长度不能超过100个字符', trigger: 'blur' }
     ],
     dicType: [

@@ -27,9 +27,11 @@ public class JacksonXSSDeserializer extends StdScalarDeserializer<String> implem
 
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
-        IgnoreXSS annotation = property.getAnnotation(IgnoreXSS.class);
-        if (annotation != null) {
-            return StringDeserializer.instance;
+        if (property != null) {
+            IgnoreXSS annotation = property.getAnnotation(IgnoreXSS.class);
+            if (annotation != null) {
+                return StringDeserializer.instance;
+            }
         }
         return this;
     }

@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 【实体】api
@@ -40,6 +41,17 @@ public interface MetaEntityAPI {
         @ApiImplicitParam(name = "metaEntityUpdateDTO", dataType = "MetaEntityUpdateDTO", value = "修改实体参数", paramType = "body"),
     })
     ResponseEntity<MetaEntityShowVO> update(MetaEntityUpdateDTO metaEntityUpdateDTO);
+
+    /**
+     * 修改实体特性
+     */
+    @ApiOperation(value = "修改实体特性")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "entityId", dataType = "int", value = "实体id", paramType = "path"),
+        @ApiImplicitParam(name = "attributes", dataType = "MetaEntityFeatureDTO", value = "特性参数", paramType = "body"),
+    })
+    ResponseEntity<MetaEntityShowVO> updateFeature(Integer entityId,
+                                                   Map<String, Object> attributes);
 
     /**
      * 查询实体列表

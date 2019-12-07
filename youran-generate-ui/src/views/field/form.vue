@@ -59,9 +59,6 @@
             <help-popover name="field.jfieldName">
               <el-col :span="11" class="col-left">
                 <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age" tabindex="10"></el-input>
-                <!--
-                <el-button size="mini" type="text" @click="form.jfieldName = $common.snakeCase(form.jfieldName)">转下划线</el-button>
-                -->
                 <el-button size="mini" type="text" @click="form.jfieldName = $common.camelCase(form.jfieldName)">转驼峰</el-button>
               </el-col>
               <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
@@ -75,9 +72,6 @@
               <el-col :span="11" class="col-right">
                 <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age" tabindex="20"></el-input>
                 <el-button size="mini" type="text" @click="form.fieldName = $common.snakeCase(form.fieldName)">转下划线</el-button>
-                <!--
-                <el-button size="mini" type="text" @click="form.fieldName = $common.camelCase(form.fieldName)">转驼峰</el-button>
-                -->
               </el-col>
             </help-popover>
           </el-form-item>
@@ -86,10 +80,10 @@
               <el-input v-model="form.fieldDesc" placeholder="字段标题，例如：年龄" tabindex="30"></el-input>
             </help-popover>
           </el-form-item>
-          <el-form-item label="字段备注" prop="fieldComment">
+          <el-form-item label="字段注释" prop="fieldComment">
             <help-popover name="field.fieldComment">
               <el-input v-model="form.fieldComment" type="textarea" :rows="2"
-                        placeholder="字段备注，例如：年龄【整型】" tabindex="40"></el-input>
+                        placeholder="字段注释，尽量写详细，例如：年龄（法定年龄、周岁）" tabindex="40"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段示例" prop="fieldExample">

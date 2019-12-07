@@ -17,9 +17,10 @@ public class CommonTemplateFunction {
 
     /**
      * 创建HashSet
+     *
      * @return
      */
-    public static Set createHashSet(){
+    public static Set createHashSet() {
         return new HashSet<>();
     }
 

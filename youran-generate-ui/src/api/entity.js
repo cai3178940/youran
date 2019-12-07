@@ -35,6 +35,13 @@ export default {
       .then(response => checkResult(response))
   },
   /**
+   * 修改实体特性
+   */
+  updateFeature (entityId, data) {
+    return request.put(`/${apiPath}/meta_entity/${entityId}/feature`, data)
+      .then(response => checkResult(response))
+  },
+  /**
    * 批量删除实体
    */
   deleteBatch (data) {

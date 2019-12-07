@@ -33,3 +33,15 @@ $el-table-padding: 3px 0;
     }
 }
 
+/**
+ * 表格内标签
+ */
+.table-column-tag {
+    font-size: 11px;
+    color: #FFFFFF;
+    padding: 2px;
+    border: 2px solid transparent;
+    border-radius:4px;
+    margin: 0px;
+    user-select: none;
+}

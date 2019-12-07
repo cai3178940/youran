@@ -20,7 +20,7 @@
       <el-table-column label="模板编码">
         <template v-slot="scope">
           {{scope.row.code}}
-          <span v-if="scope.row.sysDefault" class="sys-default-tag">
+          <span v-if="scope.row.sysDefault" class="table-column-tag sys-default-tag">
             预置模板
           </span>
         </template>
@@ -162,14 +162,7 @@ export default {
      * 预置标签
      */
     .sys-default-tag {
-      font-size: 11px;
       background-color: $color-warning;
-      color: #FFFFFF;
-      padding: 2px;
-      border: 2px solid transparent;
-      border-radius:4px;
-      margin: 0px;
-      user-select: none;
     }
 
     /**

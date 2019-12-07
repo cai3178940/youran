@@ -197,6 +197,9 @@ public class MetaQueryAssembleService {
             if (field.getForeignKey()) {
                 entity.addFkField(field);
             }
+            if (Objects.equals(field.getFieldId(), entity.getEntityFeature().getTitleFieldId())) {
+                entity.setTitleField(field);
+            }
         }
     }
 

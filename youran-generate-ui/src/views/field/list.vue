@@ -63,9 +63,14 @@
       </el-table-column>
       <el-table-column label="字段标题">
         <template v-slot="scope">
-          <template v-if="!scope.row.validate.success">
-            <svg-icon className="table-cell-icon color-warning" iconClass="mark-circle"></svg-icon>
-          </template>
+          <svg-icon v-if="!scope.row.validate.success"
+                    className="table-cell-icon color-warning"
+                    iconClass="mark-circle"></svg-icon>
+          <el-tooltip v-if="scope.row.fieldId === titleFieldId"
+                      class="item" effect="dark" placement="top">
+            <div slot="content" v-html="titleFieldTip(scope.row)"></div>
+            <span class="table-column-tag title-field-tag">标题</span>
+          </el-tooltip>
           <el-popover
             placement="top"
             trigger="click">
@@ -87,6 +92,14 @@
               <el-button @click="handleAddConst(scope.row)"
                          style="padding: 0px;" type="text">前往创建</el-button>
             </p>
+            <div style="min-width: 200px; text-align: right; margin-top: 10px;">
+              <el-button v-if="scope.row.fieldId === titleFieldId"
+                         size="mini" type="warning"
+                         @click="handleSetTitleField(null)">取消标题</el-button>
+              <el-button v-if="scope.row.fieldId !== titleFieldId"
+                         type="primary" size="mini"
+                         @click="handleSetTitleField(scope.row.fieldId)">设为标题</el-button>
+            </div>
             <el-button slot="reference" size="medium" type="text">{{ scope.row.fieldDesc }}</el-button>
           </el-popover>
           <template v-for="index in scope.row.indexes">
@@ -435,7 +448,11 @@ export default {
       mtmEntities: {
         holds: [],
         unholds: []
-      }
+      },
+      // 当前实体
+      entity: null,
+      // 标题字段id
+      titleFieldId: null
     }
   },
   computed: {
@@ -497,7 +514,10 @@ export default {
       'removeToCacheFieldTemplate'
     ]),
     getFieldFeature: options.getFieldFeature,
-
+    titleFieldTip (row) {
+      return `设置标题后，会生成findOptions服务，<br/>
+        该服务返回键值对列表：[{key:主键,value:${row.fieldDesc}}]`
+    },
     rowClassName ({ row }) {
       if (this.addImmFieldIds.includes(row.fieldId)) {
         return 'add-imm-field'
@@ -578,6 +598,7 @@ export default {
         this.$router.push(`/project/${this.query.projectId}/entity/${this.query.entityId}/field`)
       }
       this.doQuery()
+        .then(() => this.doQueryEntity())
         .then(() => this.doQueryIndex())
         .then(() => this.doQueryMtmEntities())
         .then(() => this.doValidateEntityInner())
@@ -631,6 +652,17 @@ export default {
       this.loading = true
       return indexApi.getList(this.query)
         .then(data => { this.indexes = data })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.loading = false })
+    },
+    // 实体查询
+    doQueryEntity () {
+      this.loading = true
+      return entityApi.get(this.query.entityId)
+        .then(data => {
+          this.entity = data
+          this.titleFieldId = data.feature.titleFieldId
+        })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
@@ -815,6 +847,17 @@ export default {
     handleIndexEdit (index) {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexEdit/${index.indexId}`)
     },
+    handleSetTitleField (fieldId) {
+      return entityApi.updateFeature(this.query.entityId,
+        {
+          titleFieldId: fieldId
+        })
+        .then(data => {
+          this.entity = data
+          this.titleFieldId = data.feature.titleFieldId
+        })
+        .catch(error => this.$common.showNotifyError(error))
+    },
     updateOrderNo (field) {
       if (field.oldOrderNo === field.orderNo) {
         field.orderNoEdit = false
@@ -903,6 +946,7 @@ export default {
     this.initProjectOptions()
       .then(() => this.handleProjectChange([projectId]))
       .then(() => this.doQuery())
+      .then(() => this.doQueryEntity())
       .then(() => this.doQueryIndex())
       .then(() => this.doQueryMtmEntities())
       .then(() => this.doValidateEntityInner())
@@ -933,6 +977,10 @@ export default {
   }
 
   .fieldList {
+    .title-field-tag {
+      background-color: $color-success;
+      margin-right: 5px;
+    }
     /**
      * 列表页“复制”按钮样式
      */

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 【实体】控制器
@@ -52,6 +53,14 @@ public class MetaEntityController extends AbstractController implements MetaEnti
     @PutMapping(value = "/update")
     public ResponseEntity<MetaEntityShowVO> update(@Valid @RequestBody MetaEntityUpdateDTO metaEntityUpdateDTO) {
         MetaEntityPO metaEntityPO = metaEntityService.update(metaEntityUpdateDTO);
+        return ResponseEntity.ok(MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO));
+    }
+
+    @Override
+    @PutMapping(value = "/{entityId}/feature")
+    public ResponseEntity<MetaEntityShowVO> updateFeature(@PathVariable Integer entityId,
+                                              @Valid @RequestBody Map<String,Object> attributes) {
+        MetaEntityPO metaEntityPO = metaEntityService.updateFeatureAttr(entityId, attributes);
         return ResponseEntity.ok(MetaEntityMapper.INSTANCE.toShowVO(metaEntityPO));
     }
 

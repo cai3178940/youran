@@ -1,6 +1,7 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -160,6 +161,16 @@ public class MetaFieldPO extends BasePO {
     @JsonIgnore
     private List<MetaCascadeExtPO> cascadeListExts;
 
+
+    /**
+     * 获取字段注释
+     *
+     * @return
+     */
+    public String fetchComment() {
+        return StringUtils.isBlank(this.fieldComment) ?
+            this.fieldDesc : this.fieldComment;
+    }
 
     public Integer getProjectId() {
         return projectId;
