@@ -63,7 +63,7 @@ CREATE TABLE `meta_field` (
   `field_type` varchar(10) NOT NULL COMMENT '表字段类型',
   `field_desc` varchar(40) NOT NULL COMMENT '字段描述（中文名）',
   `field_example` varchar(200) NOT NULL COMMENT '字段示例',
-  `field_comment` varchar(200) NOT NULL COMMENT '字段备注',
+  `field_comment` varchar(200) DEFAULT NULL COMMENT '字段备注',
   `field_length` int(11) NOT NULL COMMENT '表字段长度',
   `field_scale` int(11) DEFAULT NULL COMMENT '表字段精度',
   `primary_key` tinyint(1) NOT NULL COMMENT '是否主键',

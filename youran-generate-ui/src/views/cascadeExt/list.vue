@@ -22,7 +22,8 @@
                 v-for="item in cascadeFieldList"
                 :key="item.fieldId"
                 :label="item.fieldDesc+'('+item.jfieldName+')'"
-                :value="item.fieldId">
+                :value="item.fieldId"
+                :disabled="list.find(i => i.cascadeFieldId===item.fieldId)">
               </el-option>
             </el-select>
           </span>
@@ -135,7 +136,10 @@ export default {
     },
     initCascadeFieldOptions () {
       fieldApi.getList(this.cascadeEntityId)
-        .then(data => { this.cascadeFieldList = data })
+        .then(data => {
+          // 过滤掉特殊字段
+          this.cascadeFieldList = data.filter(field => !field.primaryKey && !field.specialField)
+        })
         .catch(error => this.$common.showNotifyError(error))
     },
     doQuery () {

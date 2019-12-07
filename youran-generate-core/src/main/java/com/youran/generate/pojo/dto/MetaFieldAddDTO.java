@@ -48,7 +48,6 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
 
     @ApiModelProperty(notes = N_FIELDCOMMENT, example = E_FIELDCOMMENT)
-    @NotNull
     @Length(max = 200, message = "fieldComment最大长度不能超过{max}")
     private String fieldComment;
 
