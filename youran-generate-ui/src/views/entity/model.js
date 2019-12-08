@@ -80,12 +80,12 @@ export function initMtmFormBean (forEdit) {
     feature: {
       f1: {
         addRemove: false,
-        set: true,
+        set: false,
         withinEntity: true
       },
       f2: {
         addRemove: false,
-        set: true,
+        set: false,
         withinEntity: true
       }
     }

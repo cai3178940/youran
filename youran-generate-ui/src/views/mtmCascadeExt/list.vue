@@ -23,7 +23,7 @@
                 :key="item.fieldId"
                 :label="item.fieldDesc+'('+item.jfieldName+')'"
                 :value="item.fieldId"
-                :disabled="!hold && !item.query">
+                :disabled="(!hold && !item.query) || list.findIndex(i => i.cascadeFieldId===item.fieldId) > -1">
               </el-option>
             </el-select>
           </span>
@@ -142,7 +142,10 @@ export default {
     },
     initCascadeFieldOptions () {
       fieldApi.getList(this.cascadeEntityId, false)
-        .then(data => { this.cascadeFieldList = data })
+        .then(data => {
+          this.cascadeFieldList = data.filter(field =>
+            !field.primaryKey && field.specialField !== 'version' && field.specialField !== 'deleted')
+        })
         .catch(error => this.$common.showNotifyError(error))
     },
     doQuery () {

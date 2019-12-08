@@ -205,8 +205,14 @@ export default {
       Promise.all([this.getMtm(), this.queryProject(), this.queryEntity(this.projectId)])
         .then(() => this.reset())
         .then(() => {
-          this.entityIdFieldPlaceholder1 = this.old.entityIdField1
-          this.entityIdFieldPlaceholder2 = this.old.entityIdField2
+          entityApi.getDefaultFkFieldNameForSql(this.old.entityId1)
+            .then(data => {
+              this.entityIdFieldPlaceholder1 = data
+            })
+          entityApi.getDefaultFkFieldNameForSql(this.old.entityId2)
+            .then(data => {
+              this.entityIdFieldPlaceholder2 = data
+            })
         })
     } else {
       this.form.projectId = parseInt(this.projectId)

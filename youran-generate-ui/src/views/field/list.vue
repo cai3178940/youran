@@ -39,7 +39,7 @@
     <el-table :data="list" style="width: 100%" :border="true" v-loading="loading"
               @selection-change="selectionChange" :row-class-name="rowClassName">
       <el-table-column type="selection" width="39px"></el-table-column>
-      <el-table-column property="orderNo" label="序号" width="65px">
+      <el-table-column property="orderNo" label="序号" width="68px">
         <template v-slot="scope">
           <el-button v-if="!scope.row.orderNoEdit"
                      type="primary" plain

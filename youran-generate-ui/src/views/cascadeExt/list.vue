@@ -23,7 +23,7 @@
                 :key="item.fieldId"
                 :label="item.fieldDesc+'('+item.jfieldName+')'"
                 :value="item.fieldId"
-                :disabled="list.find(i => i.cascadeFieldId===item.fieldId)">
+                :disabled="list.findIndex(i => i.cascadeFieldId===item.fieldId) > -1">
               </el-option>
             </el-select>
           </span>
@@ -138,7 +138,8 @@ export default {
       fieldApi.getList(this.cascadeEntityId)
         .then(data => {
           // 过滤掉特殊字段
-          this.cascadeFieldList = data.filter(field => !field.primaryKey && !field.specialField)
+          this.cascadeFieldList = data.filter(field =>
+            !field.primaryKey && field.specialField !== 'version' && field.specialField !== 'deleted')
         })
         .catch(error => this.$common.showNotifyError(error))
     },
