@@ -1,13 +1,20 @@
 package com.youran.generate.template.context;
 
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -19,6 +26,12 @@ import java.util.*;
  */
 public class BaseContext {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseContext.class);
+    /**
+     * 当前渲染文件目录
+     * 从外部只能赋值一次
+     */
+    private String currentDir;
     /**
      * 实体列表
      */
@@ -124,6 +137,36 @@ public class BaseContext {
         this.autowired = new TreeSet<>();
 
     }
+
+    /**
+     * 设置当前目录
+     * 只有第一次设置才有效
+     *
+     * @param currentDir 当前目录
+     */
+    public void setCurrentDirOnce(String currentDir) {
+        if (this.currentDir == null) {
+            this.currentDir = currentDir;
+        }
+    }
+
+    /**
+     * 往当前目录输出额外代码文件
+     *
+     * @param fileName 文件名
+     * @param content 文件内容
+     */
+    public void writeAdditionalFile(String fileName, String content) {
+        File target = new File(currentDir, fileName);
+        LOGGER.debug("输出额外代码文件：{}", target.getPath());
+        try {
+            FileUtils.write(target, content, "UTF-8");
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "写文件异常");
+        }
+    }
+
 
     /**
      * 跳过当前文件

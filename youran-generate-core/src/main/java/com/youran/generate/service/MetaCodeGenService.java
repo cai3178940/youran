@@ -299,9 +299,11 @@ public class MetaCodeGenService {
         try {
             String relativePath = templateRenderer.renderPath(templateFile, context);
             String outFilePath = projectDir + relativePath;
-            LOGGER.debug("输出代码文件：{}", outFilePath);
+            File outFile = new File(outFilePath);
+            // 设置当前打印文件所在目录，文件渲染过程中，模板内部有权限往当前目录生成额外文件
+            context.setCurrentDirOnce(outFile.getParentFile().getPath());
             Object content = templateRenderer.renderContent(templateFile, context);
-            this.writeToFile(content, outFilePath);
+            this.writeToFile(content, outFile);
         } catch (SkipCurrentException e) {
             return;
         }
@@ -311,20 +313,20 @@ public class MetaCodeGenService {
     /**
      * 将文本写入文件
      *
-     * @param content     代码文件内容
-     * @param outFilePath 文件路径
+     * @param content 代码文件内容
+     * @param outFile 目标文件
      */
-    private void writeToFile(Object content, String outFilePath) {
-        File file = new File(outFilePath);
-        File parentFile = file.getParentFile();
+    private void writeToFile(Object content, File outFile) {
+        File parentFile = outFile.getParentFile();
         if (!parentFile.exists()) {
             parentFile.mkdirs();
         }
+        LOGGER.debug("输出代码文件：{}", outFile.getPath());
         try {
             if (content instanceof byte[]) {
-                FileUtils.writeByteArrayToFile(file, (byte[]) content);
+                FileUtils.writeByteArrayToFile(outFile, (byte[]) content);
             } else if (content instanceof String) {
-                FileUtils.write(file, (String) content, "UTF-8");
+                FileUtils.write(outFile, (String) content, "UTF-8");
             }
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
