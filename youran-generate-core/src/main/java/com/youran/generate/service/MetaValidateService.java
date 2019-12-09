@@ -36,7 +36,7 @@ public class MetaValidateService {
      */
     public MetaEntityInnerValidateVO validateEntityInner(Integer entityId) {
         // 获取装配完成的实体
-        MetaEntityPO entity = metaQueryAssembleService.getAssembledEntity(entityId);
+        MetaEntityPO entity = metaQueryAssembleService.getAssembledEntity(entityId, false);
         // 获取装配完成的枚举
         List<MetaConstPO> consts = metaQueryAssembleService.getAllAssembledConsts(entity.getProjectId(),
             false, false);

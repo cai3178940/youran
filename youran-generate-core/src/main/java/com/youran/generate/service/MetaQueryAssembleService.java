@@ -52,13 +52,14 @@ public class MetaQueryAssembleService {
      * @param withForeign    是否需要装配外键关联
      * @param withFkCascade  是否装配外键级联扩展
      * @param withMtmCascade 是否装配多对多级联扩展
+     * @param withIndex      是否装配索引
      * @param check          是否校验完整性
      * @return
      */
     public MetaProjectPO getAssembledProject(Integer projectId, boolean withConst,
                                              boolean withMtm, boolean withForeign,
                                              boolean withFkCascade, boolean withMtmCascade,
-                                             boolean check) {
+                                             boolean withIndex, boolean check) {
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         // 查询实体id列表
         List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
@@ -68,7 +69,8 @@ public class MetaQueryAssembleService {
         // 获取组装后的实体列表
         List<MetaEntityPO> metaEntities = entityIds
             .stream()
-            .map(this::getAssembledEntity).collect(Collectors.toList());
+            .map(entityId -> getAssembledEntity(entityId, withIndex))
+            .collect(Collectors.toList());
         project.setEntities(metaEntities);
         if (withForeign) {
             // 装配外键实体和外键字段
@@ -134,10 +136,11 @@ public class MetaQueryAssembleService {
     /**
      * 装配实体元数据
      *
-     * @param entityId 实体id
+     * @param entityId  实体id
+     * @param withIndex 是否需要装配索引
      * @return
      */
-    public MetaEntityPO getAssembledEntity(Integer entityId) {
+    public MetaEntityPO getAssembledEntity(Integer entityId, boolean withIndex) {
         MetaEntityPO metaEntity = metaEntityService.getEntity(entityId, true);
         List<MetaFieldPO> fieldList = metaFieldService.findByEntityId(entityId);
         if (CollectionUtils.isEmpty(fieldList)) {
@@ -146,7 +149,9 @@ public class MetaQueryAssembleService {
         // 给实体装配字段
         this.assembleFieldForEntity(metaEntity, fieldList);
         // 给实体装配索引
-        this.assembleIndexForEntity(metaEntity, fieldList);
+        if (withIndex) {
+            this.assembleIndexForEntity(metaEntity, fieldList);
+        }
         return metaEntity;
     }
 
@@ -514,7 +519,7 @@ public class MetaQueryAssembleService {
             }
             // 校验被持有的多对多实体
             for (MetaEntityPO otherEntity : entity.getHolds().keySet()) {
-                if(otherEntity.getTitleField() == null){
+                if (otherEntity.getTitleField() == null) {
                     throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + otherEntity.getTitle() +
                         "】被【" + entity.getTitle() + "】多对多持有，需要设置标题字段");
                 }

@@ -56,7 +56,8 @@ public class ErDiagramController extends AbstractController implements ErDiagram
         // 获取组装完的实体列表
         List<MetaEntityPO> metaEntities = entityIds
             .stream()
-            .map(metaQueryAssembleService::getAssembledEntity).collect(Collectors.toList());
+            .map(entityId -> metaQueryAssembleService.getAssembledEntity(entityId, false))
+            .collect(Collectors.toList());
         // 组装外键实体和外键字段
         metaQueryAssembleService.assembleForeign(metaEntities, false);
         // 查询多对多列表
