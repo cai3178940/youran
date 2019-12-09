@@ -508,7 +508,17 @@ public class MetaQueryAssembleService {
             if (versionCount > 1) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + versionCount + "个乐观锁版本字段");
             }
-
+            if (CollectionUtils.isNotEmpty(entity.getForeignEntities())
+                && entity.getTitleField() == null) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】被外键关联，需要设置标题字段");
+            }
+            // 校验被持有的多对多实体
+            for (MetaEntityPO otherEntity : entity.getHolds().keySet()) {
+                if(otherEntity.getTitleField() == null){
+                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + otherEntity.getTitle() +
+                        "】被【" + entity.getTitle() + "】多对多持有，需要设置标题字段");
+                }
+            }
         }
 
 
