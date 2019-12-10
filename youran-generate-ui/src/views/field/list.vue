@@ -134,12 +134,12 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column label="字段名">
+      <el-table-column label="字段名 ( java / mysql )">
         <template v-slot="scope">
           {{ scope.row.jfieldName }} / {{ scope.row.fieldName }}
         </template>
       </el-table-column>
-      <el-table-column label="字段类型" width="200px">
+      <el-table-column label="字段类型 ( java / mysql )" width="200px">
         <template v-slot="scope">
           {{ scope.row.jfieldType | optionLabel('jfieldTypeOptions')}}
           / {{ scope.row.fieldType | optionLabel('fieldTypeOptions') }}{{scope.row | lengthAndScale}}
