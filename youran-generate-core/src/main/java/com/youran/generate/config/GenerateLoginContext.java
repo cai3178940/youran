@@ -14,7 +14,6 @@ public class GenerateLoginContext implements LoginContext {
 
     public static final String DEFAULT_LOGIN_USER = "admin";
 
-
     @Override
     public String getCurrentUser() {
         return DEFAULT_LOGIN_USER;

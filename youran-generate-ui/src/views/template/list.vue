@@ -8,7 +8,7 @@
         已选择{{ this.activeNum }}个模板
       </el-col>
       <el-col :span="18" style="text-align: right;">
-        <el-button @click.native="handleAdd" type="success">添加模板</el-button>
+        <!--<el-button @click.native="handleAdd" type="success">添加模板</el-button>-->
         <el-button @click.native="handleImport" type="warning">模板导入</el-button>
         <el-button @click.native="handleDel" type="danger">删除模板</el-button>
       </el-col>

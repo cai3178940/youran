@@ -13,7 +13,7 @@ public class DevMode {
      */
     public static final int NO_REPLACE = 0;
     /**
-     * 开发模式1：全量替换模
+     * 开发模式1：全量替换
      */
     public static final int ALL_REPLACE = 1;
     /**

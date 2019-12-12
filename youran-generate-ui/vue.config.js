@@ -15,14 +15,14 @@ module.exports = {
     port: 80,
     proxy: {
       '/ws_api': {
-        target: 'ws://localhost:8080',
+        target: 'ws://localhost:8088',
         ws: true
         // pathRewrite: {
         //   '^/ws_api': '/ws_api'
         // }
       },
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'http://localhost:8088',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'

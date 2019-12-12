@@ -20,7 +20,6 @@ import org.junit.runners.Suite;
     MetaConstDetailControllerTest.class,
     MetaManyToManyControllerTest.class,
     MetaCascadeExtControllerTest.class,
-    MetaCodeGenControllerTest.class,
     ReverseEngineeringControllerTest.class
 })
 public class Main {

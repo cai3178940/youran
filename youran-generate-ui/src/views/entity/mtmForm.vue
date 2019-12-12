@@ -71,13 +71,13 @@
                         tabindex="20"></el-input>
             </help-popover>
           </el-form-item>
-          <el-form-item label="描述" prop="desc">
+          <!--<el-form-item label="描述" prop="desc">
             <help-popover name="mtm.desc">
               <el-input v-model="form.desc" placeholder="例如：用户角色关联表"
                         type="textarea" :rows="2" tabindex="30"></el-input>
             </help-popover>
-          </el-form-item>
-          <el-form-item v-if="form.holdRefer1" label="实体1功能">
+          </el-form-item>-->
+          <!--<el-form-item v-if="form.holdRefer1" label="实体1功能">
             <help-popover name="mtm.feature">
               <el-checkbox v-model="form.feature.f1.withinEntity">随实体一起维护</el-checkbox>
               <el-checkbox v-model="form.feature.f1.set">设置关联</el-checkbox>
@@ -90,7 +90,7 @@
               <el-checkbox v-model="form.feature.f2.set">设置关联</el-checkbox>
               <el-checkbox v-model="form.feature.f2.addRemove">添加+移除</el-checkbox>
             </help-popover>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item label="实体1外键字段" prop="entityIdField1">
             <help-popover name="mtm.entityIdField1">
               <el-input v-model="form.entityIdField1"

@@ -1,7 +1,7 @@
 server:
     servlet:
         context-path: /
-    port: 8080
+    port: 8088
 spring:
     application:
         name: youran-generate
@@ -13,8 +13,8 @@ spring:
             force: true
     security:
         user:
-            name: root
-            password: root
+            name: admin
+            password: 123456
     servlet:
         multipart:
             max-request-size: 100MB
