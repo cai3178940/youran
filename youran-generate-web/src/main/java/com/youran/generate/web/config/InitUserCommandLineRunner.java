@@ -1,6 +1,7 @@
-package com.youran.generate.config;
+package com.youran.generate.web.config;
 
 import com.youran.common.util.JsonUtil;
+import com.youran.generate.web.context.GenerateLoginContext;
 import com.youran.generate.pojo.dto.UserSettingAddDTO;
 import com.youran.generate.pojo.po.UserSettingPO;
 import com.youran.generate.service.UserSettingService;

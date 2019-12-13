@@ -1,4 +1,4 @@
-package com.youran.generate.config;
+package com.youran.generate.web.context;
 
 import com.youran.common.context.LoginContext;
 import org.springframework.stereotype.Component;
