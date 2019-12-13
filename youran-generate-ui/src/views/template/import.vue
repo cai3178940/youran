@@ -2,18 +2,29 @@
   <el-dialog title="模板导入"
              :visible.sync="importTemplateFormVisible"
              v-loading="importTemplateFormLoading"
+             class="importTemplateForm"
              width="400px">
     <el-upload drag
                :action="importTemplateUrl"
                :on-success="onImportTemplateSuccess"
                :on-progress="onImportTemplateProgress"
                :on-error="onImportTemplateError"
-               :show-file-list="false"
-               accept="application/zip">
+               :show-file-list="false">
+               <!--accept="application/zip">-->
       <i class="el-icon-upload"></i>
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div class="el-upload__tip" slot="tip">只能上传zip格式的压缩包</div>
+      <div class="el-upload__text">将zip文件拖到此处，或<em>点击上传</em></div>
     </el-upload>
+    <div class="download-template">
+      <span>下载最新模板：</span>
+      <a class="download-url" target="_blank"
+         href="https://github.com/cai3178940/youran-template-01/releases">
+        java后端模板
+      </a>
+      <a class="download-url" target="_blank"
+         href="https://github.com/cai3178940/youran-template-02/releases">
+        vue前端模板
+      </a>
+    </div>
   </el-dialog>
 </template>
 <script>
@@ -54,5 +65,15 @@ export default {
 }
 </script>
 <style lang="scss">
-
+  .importTemplateForm {
+    .download-template {
+      margin: 10px;
+      font-weight: bold;
+      .download-url {
+        margin-left: 20px;
+        font-weight: normal;
+        color: #409EFF;
+      }
+    }
+  }
 </style>

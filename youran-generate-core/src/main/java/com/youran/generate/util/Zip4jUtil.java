@@ -1,5 +1,6 @@
 package com.youran.generate.util;
 
+import com.youran.common.exception.BusinessException;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
@@ -46,6 +47,7 @@ public class Zip4jUtil {
             zip.extractAll(destDir);
         } catch (ZipException e) {
             LOGGER.error("解压zip包异常", e);
+            throw new BusinessException("解压zip包异常");
         }
     }
 
