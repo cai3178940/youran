@@ -33,8 +33,8 @@
             <svg-icon className="menu-icon" iconClass="project"></svg-icon>
             <span slot="title">项目管理</span>
           </el-menu-item>
-          <el-menu-item v-if="this.systemUserInfo.templateEnabled"
-                        index="/template" :class="{
+          <!--<el-menu-item v-if="this.systemUserInfo.templateEnabled"-->
+          <el-menu-item index="/template" :class="{
                           'is-active': isRouteIndexOf('/template'),
                           'menu-template-show-sfx': menuTemplateShowSfx
                         }">
@@ -58,12 +58,12 @@
         <el-form-item label="系统版本：" label-width="100px">
           {{systemUserInfo.sysVersion}}
         </el-form-item>
-        <el-form-item label="自定义模板：" label-width="100px">
+        <!--<el-form-item label="自定义模板：" label-width="100px">
           <el-switch v-model="form.templateEnabled"
                      active-text="开启"
                      inactive-text="关闭" @change="formChange">
           </el-switch>
-        </el-form-item>
+        </el-form-item>-->
       </el-form>
     </el-dialog>
     <!-- 模板导入对话框 -->

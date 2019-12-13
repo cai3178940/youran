@@ -11,11 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>youran-generate-web</artifactId>
-    <packaging>war</packaging>
-    <properties>
-        <!-- The main class to start by executing java -jar -->
-        <start-class>com.youran.generate.GenerateApp</start-class>
-    </properties>
+    <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -74,10 +70,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
