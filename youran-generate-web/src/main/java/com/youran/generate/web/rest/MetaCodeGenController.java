@@ -83,8 +83,10 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
         GenHistoryPO lastGenHistory = genHistoryService.findLastGenHistory(projectId, project.getRemoteUrlByIndex(templateIndex));
         if (lastGenHistory != null) {
             GenHistoryShowVO lastGenVO = GenHistoryMapper.INSTANCE.toShowVO(lastGenHistory);
-            vo.setFirstCommit(false);
             vo.setLastGenHistory(lastGenVO);
+            vo.setFirstCommit(false);
+        } else {
+            vo.setFirstCommit(true);
         }
         return ResponseEntity.ok(vo);
     }
