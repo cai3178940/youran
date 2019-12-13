@@ -1,7 +1,9 @@
 package com.youran.generate.web.ws;
 
+import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.DateUtil;
+import com.youran.generate.config.GenerateAuthentication;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.po.GenHistoryPO;
 import com.youran.generate.pojo.vo.ProgressVO;
@@ -61,13 +63,17 @@ public class MetaCodeGenWsController extends AbstractController {
     /**
      * websocket服务:只生成代码
      *
-     * @param sessionId     websocket连接id
-     * @param projectId     项目id
-     * @param templateIndex 模板序号
+     * @param sessionId      websocket连接id
+     * @param projectId      项目id
+     * @param templateIndex  模板序号
+     * @param authentication 当前用户授权信息
      */
     @MessageMapping(value = "/gen_code/{sessionId}")
     public void genCode(@DestinationVariable String sessionId,
-                        @Header Integer projectId, @Header Integer templateIndex) {
+                        @Header Integer projectId,
+                        @Header Integer templateIndex,
+                        GenerateAuthentication authentication) {
+        this.checkAuthentication(authentication);
         // 进度响应主题
         String topic = "/code_gen/gen_code_progress/" + sessionId;
         try {
@@ -90,13 +96,17 @@ public class MetaCodeGenWsController extends AbstractController {
     /**
      * websocket服务:生成代码并打压缩包
      *
-     * @param sessionId     websocket连接id
-     * @param projectId     项目id
-     * @param templateIndex 模板序号
+     * @param sessionId      websocket连接id
+     * @param projectId      项目id
+     * @param templateIndex  模板序号
+     * @param authentication 当前用户授权信息
      */
     @MessageMapping(value = "/gen_code_and_zip/{sessionId}")
     public void genCodeAndZip(@DestinationVariable String sessionId,
-                              @Header Integer projectId, @Header Integer templateIndex) {
+                              @Header Integer projectId,
+                              @Header Integer templateIndex,
+                              GenerateAuthentication authentication) {
+        this.checkAuthentication(authentication);
         // 进度响应主题
         String topic = "/code_gen/gen_code_and_zip_progress/" + sessionId;
         try {
@@ -148,13 +158,17 @@ public class MetaCodeGenWsController extends AbstractController {
     /**
      * websocket服务:提交Git
      *
-     * @param sessionId     websocket连接id
-     * @param projectId     项目id
-     * @param templateIndex 模板序号
+     * @param sessionId      websocket连接id
+     * @param projectId      项目id
+     * @param templateIndex  模板序号
+     * @param authentication 当前用户授权信息
      */
     @MessageMapping(value = "/git_commit/{sessionId}")
     public void gitCommit(@DestinationVariable String sessionId,
-                          @Header Integer projectId, @Header Integer templateIndex) {
+                          @Header Integer projectId,
+                          @Header Integer templateIndex,
+                          GenerateAuthentication authentication) {
+        this.checkAuthentication(authentication);
         // 进度响应主题
         String topic = "/code_gen/git_commit_progress/" + sessionId;
         try {
@@ -185,6 +199,18 @@ public class MetaCodeGenWsController extends AbstractController {
     private void replyProgress(String topic, ProgressVO vo) {
         // 如果前端浏览器监听了topic主题，就能收到进度消息
         this.template.convertAndSend(topic, vo);
+    }
+
+    /**
+     * 校验用户权限
+     *
+     * @param authentication
+     */
+    private void checkAuthentication(GenerateAuthentication authentication) {
+        if (authentication == null) {
+            LOGGER.error("无操作权限");
+            throw new BusinessException(ErrorCode.UNAUTHORIZED);
+        }
     }
 
 }
