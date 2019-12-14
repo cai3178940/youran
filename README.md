@@ -5,7 +5,9 @@
 这是一款包含系统设计和代码生成功能的自动化web平台，使用本平台可以极大提升程序员的开发效率
 
 **包含如下特色功能：**
-1. ★★★基于git增量生成代码[点击查看原理](/doc/IncrementalGeneration.md)：支持将代码直接生成到远程git仓库，同时支持在元数据变动以后再次生成（只生成差异部分）。
+1. ★★★基于git增量生成代码
+<a href="doc/IncrementalGeneration.md" target="_blank">点击查看原理</a>：
+支持将代码直接生成到远程git仓库，同时支持在元数据变动以后再次生成（只生成差异部分）。
 2. ★★★自定义模板：如果预置的代码模板不能满足您的需求，可基于您自己团队的技术框架开发属于您独有的代码模板。
 3. ★反向工程：如果您的应用已经完成了表结构设计，请使用`反向工程`功能将建表语句反向导入项目中，自动生成实体和字段。
 4. 多对多关系：支持在两个实体之间的建立多对多关联关系，会在mysql中生成一张关联表，可以设置两个实体之间是否持有对方引用，持有引用的一方会自动生成维护关联关系的功能。
@@ -37,8 +39,10 @@
 
 #### 第一步、环境准备
 1. 系统依赖：mysql数据库、jdk8、maven
-2. 在mysql中提前建好表，建表语句参考：[youran-generate-web/src/test/resources/DB/generate.sql](./youran-generate-web/src/test/resources/DB/generate.sql)
-3. 根据本地环境修改配置文件：[youran-generate-web/src/main/resources/application-local.yml](./youran-generate-web/src/main/resources/application-local.yml)
+2. 在mysql中提前建好表，建表语句参考：
+<a href="youran-generate-web/src/test/resources/DB/generate.sql" target="_blank">youran-generate-web/src/test/resources/DB/generate.sql</a>
+3. 根据本地环境修改配置文件：
+<a href="youran-generate-web/src/main/resources/application-local.yml" target="_blank">youran-generate-web/src/main/resources/application-local.yml</a>
 
 #### 第二步、编译打包及运行
 ``` bash
@@ -66,8 +70,12 @@ java -jar youran-generate-release/target/youran-generate-release-X.X.X-SNAPSHOT.
 
 系统预置模板包括：
 
-- java后端模板： [源码地址](../../../youran-template-01) [zip压缩包](../../../youran-template-01/releases)
-- vue前端模板： [源码地址](../../../youran-template-02) [zip压缩包](../../../youran-template-02/releases)
+- java后端模板： 
+<a href="../../../youran-template-01" target="_blank">源码地址</a>
+<a href="../../../youran-template-01/releases" target="_blank">zip压缩包</a>
+- vue前端模板： 
+<a href="../../../youran-template-02" target="_blank">源码地址</a>
+<a href="../../../youran-template-02/releases" target="_blank">zip压缩包</a>
 
 后续还会推出其他技术栈的模板，我也希望您给本项目贡献新的代码模板
 
