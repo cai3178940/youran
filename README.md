@@ -33,7 +33,15 @@
 
 **该功能支持您在“修改元数据”和“生成代码”两个操作中反复执行，建议您在整个软件迭代周期中都使用本平台来执行增量生成。**
 
-![image](http://q2heisygm.bkt.clouddn.com/FsWO-VuiQr91l4xrUbRJjDWJrY3F)
+![项目管理](http://q2heisygm.bkt.clouddn.com/FsWO-VuiQr91l4xrUbRJjDWJrY3F)
+
+![字段管理](http://q2heisygm.bkt.clouddn.com/FrJENjqMQeNN9Ql4trb2g9706NKv)
+
+![ER图](http://q2heisygm.bkt.clouddn.com/FriqAJIuv-Qp64PzYCkOk04xMn1A)
+
+![代码预览](http://q2heisygm.bkt.clouddn.com/FhRTy0boAkIR5qBmv026Y-yDn-Y8)
+
+![模板列表](http://q2heisygm.bkt.clouddn.com/FvyI9pnW1j8cyIXxND4ChwkDYRv4)
 
 ## 安装部署
 
