@@ -2,8 +2,8 @@
 
 ### 首次生成代码时序图如下：
 
-![image](gen_1.png)
+![image](http://q2heisygm.bkt.clouddn.com/FiNKuP0GmmUuMbWPSMvuNmfy3yem)
 
 ### 增量生成代码时序图如下：
 
-![image](gen_2.png)
+![image](http://q2heisygm.bkt.clouddn.com/FrA15SoEcszBmx3FrUZnrmkDMLkr)

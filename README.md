@@ -31,7 +31,7 @@
 
 **该功能支持您在“修改元数据”和“生成代码”两个操作中反复执行，建议您在整个软件迭代周期中都使用本平台来执行增量生成。**
 
-![image](/doc/display.png)
+![image](http://q2heisygm.bkt.clouddn.com/FsWO-VuiQr91l4xrUbRJjDWJrY3F)
 
 ## 安装部署
 
@@ -99,3 +99,7 @@ java -jar youran-generate-release/target/youran-generate-release-X.X.X-SNAPSHOT.
 4. 枚举：建议将不常变化的一类常量数据创建成枚举，会在java代码中生成对应的enum类。
 5. 索引：就是mysql业务表中的索引。
 6. 多对多关系、外键级联扩展、多对多级联扩展：您用了就知道。
+
+## 生成效果展示
+
+![image](http://q2heisygm.bkt.clouddn.com/FowCy3cYMStF8P61bwbOdRsJ2RlO)
