@@ -42,8 +42,9 @@
                 <div v-html="convertMarkdown(template.remark)"
                      style="max-height:550px" class="markdown-body"></div>
               </el-scrollbar>
-              <el-button slot="reference"
-                         type="text" size="medium">{{ template.name }}</el-button>
+              <el-button slot="reference" type="text" size="medium">
+                {{ template.name }}<span class="template-version-tag">v{{ template.templateVersion }}</span>
+              </el-button>
             </el-popover>
           </template>
         </template>
@@ -259,7 +260,7 @@ export default {
       }
       const template = this.getTemplate(tid)
       if (template) {
-        return template.name
+        return template.name + 'v' + template.templateVersion
       }
       return ''
     },
@@ -475,7 +476,19 @@ export default {
     .button-font {
       font: 400 13.3333px Arial;
     }
-
+    /**
+     * 模板版本标签
+     */
+    .template-version-tag {
+      color: #FFFFFF;
+      border: 2px solid transparent;
+      border-radius:4px;
+      margin: 0px;
+      user-select: none;
+      font-size: 10px;
+      padding: 1px;
+      background-color: $color-warning;
+    }
   }
   /**
    * 下拉菜单图标

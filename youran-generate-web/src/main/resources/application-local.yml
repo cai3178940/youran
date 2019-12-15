@@ -16,7 +16,7 @@ youran:
     dataDir: D:\\youran
     defaultUserInit: true
     # 0:非开发模式 1:开发模式-全量替换 2:开发模式-增量替换
-    devMode: 2
+    devMode: 0
     # 开发模式下，自动生成代码到该路径
     dev-project-dir: D:\\workspace_cbb\\auto
     # 是否启用登录校验，一般不启用，除非部署到公开网络环境，不想让外人访问
