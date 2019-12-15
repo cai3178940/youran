@@ -119,3 +119,6 @@ java -jar youran-generate-release/target/youran-generate-release-X.X.X-SNAPSHOT.
 ## 生成效果展示
 
 ![image](http://q2heisygm.bkt.clouddn.com/FowCy3cYMStF8P61bwbOdRsJ2RlO)
+
+> <a href="https://github.com/cai3178940/youran" target="_blank">点击访问Github源码地址</a>
+> **如果好用的话，帮忙加一颗星，谢谢！**
