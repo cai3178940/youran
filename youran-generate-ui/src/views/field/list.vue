@@ -181,10 +181,10 @@
       <!-- 纯表头 -->
       <div class="mtmEntitiesHeader">
         <el-table :data="[]" style="width: 100%" :border="true">
-          <el-table-column width="200px" label="多对多级联"/>
-          <el-table-column width="200px" label="类名"/>
-          <el-table-column width="200px" label="表名"/>
-          <el-table-column label="描述"/>
+          <el-table-column label="多对多级联"/>
+          <el-table-column width="250px" label="类名"/>
+          <el-table-column width="250px" label="表名"/>
+          <!--<el-table-column label="描述"/>-->
           <el-table-column label="操作" width="130"/>
         </el-table>
       </div>
@@ -192,10 +192,10 @@
         <!-- 持有引用的实体 -->
         <el-table v-if="mtmEntities.holds.length" :data="mtmEntities.holds" :border="true"
                   style="width: 100%" :show-header="false" row-class-name="hold-mtm-row">
-          <el-table-column width="200px" property="title"/>
-          <el-table-column width="200px" property="className"/>
-          <el-table-column width="200px" property="tableName"/>
-          <el-table-column property="desc"/>
+          <el-table-column property="title"/>
+          <el-table-column width="250px" property="className"/>
+          <el-table-column width="250px" property="tableName"/>
+          <!--<el-table-column property="desc"/>-->
           <el-table-column width="130">
             <template v-slot="scope">
               <el-badge :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
@@ -207,10 +207,10 @@
         <!-- 未持有引用的实体 -->
         <el-table v-if="mtmEntities.unholds.length" :data="mtmEntities.unholds" :border="true"
                   style="width: 100%" :show-header="false" row-class-name="unhold-mtm-row">
-          <el-table-column width="200px" property="title"/>
-          <el-table-column width="200px" property="className"/>
-          <el-table-column width="200px" property="tableName"/>
-          <el-table-column property="desc"/>
+          <el-table-column property="title"/>
+          <el-table-column width="250px" property="className"/>
+          <el-table-column width="250px" property="tableName"/>
+          <!--<el-table-column property="desc"/>-->
           <el-table-column width="130">
             <template v-slot="scope">
               <el-badge :value="scope.row.cascadeFieldNum" :hidden="!scope.row.cascadeFieldNum" class="cascadeBadge">
