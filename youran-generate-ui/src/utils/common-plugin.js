@@ -117,5 +117,43 @@ export default {
         callback(value.arg)
       }
     })
+
+    // 注册只允许输入大写的指令
+    Vue.directive('upper-case', {
+      update: function (el, binding, vnode) {
+        const value = vnode.data.model.value
+        const lc = /[a-z]/i
+        if (lc.test(value)) {
+          vnode.data.model.callback(value.toUpperCase())
+        }
+      }
+    })
+
+    // 注册只允许输入小写的指令
+    Vue.directive('lower-case', {
+      update: function (el, binding, vnode) {
+        const value = vnode.data.model.value
+        const lc = /[A-Z]/i
+        if (lc.test(value)) {
+          vnode.data.model.callback(value.toLowerCase())
+        }
+      }
+    })
+
+    // 注册首字母大写指令
+    Vue.directive('upper-case-first', {
+      update: function (el, binding, vnode) {
+        const value = vnode.data.model.value
+        vnode.data.model.callback(upperCaseFirst(value))
+      }
+    })
+
+    // 注册首字母小写指令
+    Vue.directive('lower-case-first', {
+      update: function (el, binding, vnode) {
+        const value = vnode.data.model.value
+        vnode.data.model.callback(lowerCaseFirst(value))
+      }
+    })
   }
 }

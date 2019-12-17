@@ -32,7 +32,7 @@
           </el-form-item>
           <el-form-item label="枚举类名" prop="constName">
             <help-popover name="const.constName">
-              <el-input v-model="form.constName" placeholder="例如：Sex" tabindex="20"></el-input>
+              <el-input v-upper-case-first v-model="form.constName" placeholder="例如：Sex" tabindex="20"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="类型" prop="constType">

@@ -45,7 +45,7 @@
               <template v-slot="detail">
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailName }}</span>
                 <span v-if="detail.row.editFlag">
-                  <el-input v-model="detail.row.detailName" @input="detailNameChange(detail.row)" placeholder="字段名，如：WOMAN"></el-input>
+                  <el-input v-upper-case v-model="detail.row.detailName" placeholder="字段名，如：WOMAN"></el-input>
                 </span>
               </template>
             </el-table-column>
@@ -282,17 +282,6 @@ export default {
           .catch(error => this.$common.showNotifyError(error))
       } else {
         this.removeDetailAdd(detail)
-      }
-    },
-    /**
-     * 枚举字段名变更事件
-     * @param detail
-     * @returns {Function}
-     */
-    detailNameChange (detail) {
-      const lc = /[a-z]/i
-      if (lc.test(detail.detailName)) {
-        detail.detailName = detail.detailName.toUpperCase()
       }
     }
   },

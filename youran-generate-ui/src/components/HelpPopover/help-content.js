@@ -24,10 +24,18 @@ export default {
 > 注意：请使用新创建的空仓库，不要有任何内容。
     `,
     username: `
-**Git用户名/oauth2**：请填写一个有代码提交权限的用户名,如果使用access token则填入oauth2
+**Git用户名/oauth2**：请填写一个有代码提交权限的用户名，如果不想提供用户名密码，而是选择access_token则填入oauth2
     `,
     password: `
 **Git密码/token**：密码/token不会回显，如果不想修改请置空
+
+**access_token在以下三个站点的获取方式：**
+
+- **github**：Settings-->Developer settings-->
+<a href="https://github.com/settings/tokens" target="_blank">Personal access tokens</a>
+- **gitlab**：Settings-->User Settings-->Access Tokens
+- **码云**：设置-->安全设置-->
+<a href="https://gitee.com/profile/personal_access_tokens" target="_blank">私人令牌</a>
     `,
     feature: {
       bootVersion: `
@@ -36,9 +44,7 @@ export default {
     }
   },
   entity: {
-    projectId: `
-**项目**：本实体所属项目
-    `,
+
     title: `
 **实体名**：本实体的中文名称，会出现在多处代码及表结构的注释中
 > 注意：请尽量使用言简意赅的名称
@@ -219,9 +225,6 @@ private Integer publishSignSortSign;
     `
   },
   'const': {
-    projectId: `
-**项目**：当前枚举所属项目
-    `,
     constRemark: `
 **枚举名称**：枚举的中文名称
     `,

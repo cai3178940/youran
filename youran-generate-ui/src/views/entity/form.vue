@@ -33,7 +33,7 @@
           <el-form-item label="类名/表名" prop="classAndTableName">
             <help-popover name="entity.classAndTableName">
               <el-col :span="11" class="col-left">
-                <el-input v-model="form.className" placeholder="java类名，例如：User" tabindex="20"></el-input>
+                <el-input v-upper-case-first v-model="form.className" placeholder="java类名，例如：User" tabindex="20"></el-input>
                 <el-button size="mini" type="text" @click="form.className = $common.upperCaseFirst($common.camelCase(form.className))">转驼峰</el-button>
               </el-col>
               <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">

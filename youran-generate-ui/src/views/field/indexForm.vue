@@ -15,7 +15,7 @@
                  label-width="120px" size="small" v-loading="formLoading">
           <el-form-item label="索引名" prop="indexName">
             <help-popover name="index.indexName">
-              <el-input v-model="form.indexName" placeholder="索引名，例如：IDX_ORDER_1"></el-input>
+              <el-input v-upper-case v-model="form.indexName" placeholder="索引名，例如：IDX_ORDER_1"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段" prop="fieldIds">
@@ -80,12 +80,6 @@ export default {
     }
   },
   watch: {
-    'form.indexName' (value) {
-      const lc = /[a-z]/i
-      if (lc.test(value)) {
-        this.form.indexName = value.toUpperCase()
-      }
-    },
     'form.unique' (value) {
       if (value) {
         this.form.uniqueCheck = true

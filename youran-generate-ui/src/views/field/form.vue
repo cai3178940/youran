@@ -58,7 +58,7 @@
           <el-form-item label="字段名" prop="jieldNameCouple">
             <help-popover name="field.jfieldName">
               <el-col :span="11" class="col-left">
-                <el-input v-model="form.jfieldName" placeholder="java字段名，例如：age" tabindex="10"></el-input>
+                <el-input v-lower-case-first v-model="form.jfieldName" placeholder="java字段名，例如：age" tabindex="10"></el-input>
                 <el-button size="mini" type="text" @click="form.jfieldName = $common.camelCase(form.jfieldName)">转驼峰</el-button>
               </el-col>
               <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
