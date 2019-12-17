@@ -1,5 +1,6 @@
 package com.youran.generate.service;
 
+import com.youran.generate.constant.JFieldType;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
@@ -41,9 +42,19 @@ public class MetaValidateService {
         List<MetaConstPO> consts = metaQueryAssembleService.getAllAssembledConsts(entity.getProjectId(),
             false, false);
         Map<Integer, MetaFieldPO> fields = entity.getFields();
+        MetaFieldPO titleField = entity.getTitleField();
+        // 是否需要标记标题候选字段
+        boolean titleCandidate = false;
+        if (titleField == null) {
+            // 判断当前实体是否被外键级联
+
+            // 判断当前实体是否被多对多级联hold
+        }
+
+
         // 校验实体中的所有字段
         List<MetaFieldValidateVO> fieldValidateVOS = fields.values().stream()
-            .map(field -> this.doValidateField(field, fields, consts))
+            .map(field -> this.doValidateField(field, fields, consts, titleCandidate))
             .collect(Collectors.toList());
 
         MetaEntityInnerValidateVO vo = new MetaEntityInnerValidateVO();
@@ -54,14 +65,16 @@ public class MetaValidateService {
     /**
      * 字段校验
      *
-     * @param field  被校验的字段
-     * @param fields 实体中所有字段
-     * @param consts 项目内所有枚举
+     * @param field          被校验的字段
+     * @param fields         实体中所有字段
+     * @param consts         项目内所有枚举
+     * @param titleCandidate 是否需要标记候选标题字段
      * @return
      */
     private MetaFieldValidateVO doValidateField(MetaFieldPO field,
                                                 Map<Integer, MetaFieldPO> fields,
-                                                List<MetaConstPO> consts) {
+                                                List<MetaConstPO> consts,
+                                                boolean titleCandidate) {
         MetaFieldValidateVO vo = new MetaFieldValidateVO(field);
         // 校验枚举是否存在
         String dic = field.getDicType();
@@ -84,6 +97,15 @@ public class MetaValidateService {
             // 校验mysql字段名重复
             if (Objects.equals(field.getFieldName(), otherField.getFieldName())) {
                 vo.sameFieldNameError();
+            }
+        }
+        // 标记标题候选字段
+        if(titleCandidate){
+            // 前提条件是：非主键 && 非外键 && 非特殊字段 && 是字符串
+            if(!field.getPrimaryKey() && !field.getForeignKey()
+                && StringUtils.isBlank(field.getSpecialField())
+                && JFieldType.STRING.getJavaType().equals(field.getJfieldType())){
+                vo.setTitleCandidate(true);
             }
         }
         return vo;
