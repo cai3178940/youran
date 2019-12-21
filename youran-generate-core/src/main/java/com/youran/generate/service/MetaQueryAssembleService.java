@@ -1,5 +1,7 @@
 package com.youran.generate.service;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.Sets;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
@@ -8,10 +10,12 @@ import com.youran.generate.pojo.po.*;
 import com.youran.generate.util.MetadataUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -21,7 +25,7 @@ import java.util.stream.Collectors;
  * @date: 2017/5/14
  */
 @Service
-public class MetaQueryAssembleService {
+public class MetaQueryAssembleService implements InitializingBean {
 
     @Autowired
     private MetaProjectService metaProjectService;
@@ -41,25 +45,33 @@ public class MetaQueryAssembleService {
     private MetaMtmCascadeExtService metaMtmCascadeExtService;
     @Autowired
     private MetaManyToManyService metaManyToManyService;
-
+    /**
+     * 项目元数据缓存
+     */
+    private Cache<Integer, MetaProjectPO> projectCache;
 
     /**
-     * 装配整个项目的元数据
+     * 获取组装完的项目元数据
      *
      * @param projectId      项目id
-     * @param withConst      是否需要装配常量
-     * @param withMtm        是否需要装配多对多
-     * @param withForeign    是否需要装配外键关联
-     * @param withFkCascade  是否装配外键级联扩展
-     * @param withMtmCascade 是否装配多对多级联扩展
-     * @param withIndex      是否装配索引
      * @param check          是否校验完整性
      * @return
      */
-    public MetaProjectPO getAssembledProject(Integer projectId, boolean withConst,
-                                             boolean withMtm, boolean withForeign,
-                                             boolean withFkCascade, boolean withMtmCascade,
-                                             boolean withIndex, boolean check) {
+    public MetaProjectPO getAssembledProject(Integer projectId, boolean check) {
+        MetaProjectPO project = projectCache.get(projectId, this::doAssembleProject);
+        // 校验完整性
+        if (check) {
+            this.checkAssembledProject(project, true);
+        }
+        return project;
+    }
+
+    /**
+     * 装配整个项目的元数据
+     * @param projectId
+     * @return
+     */
+    private MetaProjectPO doAssembleProject(Integer projectId){
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         // 查询实体id列表
         List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
@@ -69,29 +81,19 @@ public class MetaQueryAssembleService {
         // 获取组装后的实体列表
         List<MetaEntityPO> metaEntities = entityIds
             .stream()
-            .map(entityId -> getAssembledEntity(entityId, withIndex))
+            .map(entityId -> getAssembledEntity(entityId, true))
             .collect(Collectors.toList());
         project.setEntities(metaEntities);
-        if (withForeign) {
-            // 装配外键实体和外键字段
-            this.assembleForeign(metaEntities, withFkCascade);
-        }
-        if (withConst) {
-            // 获取组装后的常量列表
-            List<MetaConstPO> metaConstPOS = this.getAllAssembledConsts(projectId, true, check);
-            project.setConsts(metaConstPOS);
-        }
-        if (withMtm) {
-            // 查询多对多列表
-            List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId, true);
-            // 装配多对多持有引用
-            manyToManies = this.assembleManyToManyWithEntities(metaEntities, manyToManies, withMtmCascade);
-            project.setMtms(manyToManies);
-        }
-        // 校验完整性
-        if (check) {
-            this.checkAssembledProject(project, withConst);
-        }
+        // 装配外键实体和外键字段
+        this.assembleForeign(metaEntities, true);
+        // 获取组装后的常量列表
+        List<MetaConstPO> metaConstPOS = this.getAllAssembledConsts(projectId, true);
+        project.setConsts(metaConstPOS);
+        // 查询多对多列表
+        List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId, true);
+        // 装配多对多持有引用
+        manyToManies = this.assembleManyToManyWithEntities(metaEntities, manyToManies, true);
+        project.setMtms(manyToManies);
         return project;
     }
 
@@ -100,16 +102,15 @@ public class MetaQueryAssembleService {
      *
      * @param projectId       项目id
      * @param withConstDetail 是否查询枚举值
-     * @param check           是否校验数据有效性
      * @return
      */
-    public List<MetaConstPO> getAllAssembledConsts(Integer projectId, boolean withConstDetail, boolean check) {
+    public List<MetaConstPO> getAllAssembledConsts(Integer projectId, boolean withConstDetail) {
         // 查询常量id列表
         List<Integer> constIds = metaConstService.findIdsByProject(projectId);
         // 返回组装后的常量列表
         return constIds
             .stream()
-            .map(constId -> this.getAssembledConst(constId, withConstDetail, check))
+            .map(constId -> this.getAssembledConst(constId, withConstDetail))
             .collect(Collectors.toList());
     }
 
@@ -118,16 +119,12 @@ public class MetaQueryAssembleService {
      *
      * @param constId         常量id
      * @param withConstDetail 是否查询枚举值
-     * @param check           是否校验数据有效性
      * @return
      */
-    public MetaConstPO getAssembledConst(Integer constId, boolean withConstDetail, boolean check) {
+    public MetaConstPO getAssembledConst(Integer constId, boolean withConstDetail) {
         MetaConstPO metaConst = metaConstService.getConst(constId, true);
         if (withConstDetail) {
             List<MetaConstDetailPO> detailList = metaConstDetailService.findByConstId(constId);
-            if (check && CollectionUtils.isEmpty(detailList)) {
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "枚举【" + metaConst.getConstName() + "】缺少枚举值");
-            }
             metaConst.setDetailList(detailList);
         }
         return metaConst;
@@ -274,15 +271,18 @@ public class MetaQueryAssembleService {
             if (entity1 == null || entity2 == null) {
                 continue;
             }
-            if (!mtm.getHoldRefer1()) {
-                entity1.addUnHold(entity2, mtm);
-            } else {
+            // 封装实体的3类多对多关系：持有引用、未持有引用、被对方持有引用
+            if (mtm.getHoldRefer1()) {
                 entity1.addHold(entity2, mtm);
-            }
-            if (!mtm.getHoldRefer2()) {
-                entity2.addUnHold(entity1, mtm);
+                entity2.addMtmForOpp(entity1, mtm);
             } else {
+                entity1.addUnHold(entity2, mtm);
+            }
+            if (mtm.getHoldRefer2()) {
                 entity2.addHold(entity1, mtm);
+                entity1.addMtmForOpp(entity2, mtm);
+            } else {
+                entity2.addUnHold(entity1, mtm);
             }
             mtm.setRefer1(entity1);
             mtm.setRefer2(entity2);
@@ -542,8 +542,28 @@ public class MetaQueryAssembleService {
             if (constMap.containsKey(constPO.getConstName())) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "枚举类名冲突：" + constPO.getConstName());
             }
+            if (CollectionUtils.isEmpty(constPO.getDetailList())) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "枚举【" + constPO.getConstName() + "】缺少枚举值");
+            }
             constMap.put(constPO.getConstName(), constPO);
         }
         return constMap;
     }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        projectCache = Caffeine.newBuilder()
+            .expireAfterWrite(15, TimeUnit.MINUTES)
+            .maximumSize(100)
+            .build();
+    }
+
+    /**
+     * 清除项目元数据缓存
+     * @param projectId
+     */
+    public void invalidate(Integer projectId){
+        projectCache.invalidate(projectId);
+    }
+
 }

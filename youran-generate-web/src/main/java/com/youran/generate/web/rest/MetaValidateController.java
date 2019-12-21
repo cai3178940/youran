@@ -26,9 +26,10 @@ public class MetaValidateController extends AbstractController implements MetaVa
     private MetaValidateService metaValidateService;
 
     @Override
-    @GetMapping(value = "/entity_inner/{entityId}")
-    public ResponseEntity<MetaEntityInnerValidateVO> validateEntityInner(@PathVariable Integer entityId) {
-        MetaEntityInnerValidateVO vo = metaValidateService.validateEntityInner(entityId);
+    @GetMapping(value = "/{projectId}/entity_inner/{entityId}")
+    public ResponseEntity<MetaEntityInnerValidateVO> validateEntityInner(@PathVariable Integer projectId,
+                                                                         @PathVariable Integer entityId) {
+        MetaEntityInnerValidateVO vo = metaValidateService.validateEntityInner(projectId, entityId);
         return ResponseEntity.ok(vo);
     }
 

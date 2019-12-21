@@ -17,6 +17,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>youran-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
         <!-- mybatis开箱即用 -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

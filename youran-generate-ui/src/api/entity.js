@@ -58,8 +58,8 @@ export default {
   /**
    * 校验实体内部数据
    */
-  validateEntityInner (entityId) {
-    return request.get(`/${apiPath}/meta_validate/entity_inner/${entityId}`)
+  validateEntityInner (projectId, entityId) {
+    return request.get(`/${apiPath}/meta_validate/${projectId}/entity_inner/${entityId}`)
       .then(response => checkResult(response))
   },
   /**

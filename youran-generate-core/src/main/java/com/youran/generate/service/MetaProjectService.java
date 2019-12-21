@@ -52,6 +52,8 @@ public class MetaProjectService {
     private GenerateProperties generateProperties;
     @Autowired
     private CodeTemplateService codeTemplateService;
+    @Autowired
+    private MetaQueryAssembleService metaQueryAssembleService;
 
     /**
      * 获取项目正规名称
@@ -224,6 +226,8 @@ public class MetaProjectService {
     public void updateProject(MetaProjectPO projectPO) {
         projectPO.setProjectVersion(projectPO.getProjectVersion() + 1);
         metaProjectDAO.update(projectPO);
+        // 清理缓存
+        metaQueryAssembleService.invalidate(projectPO.getProjectId());
     }
 
     /**

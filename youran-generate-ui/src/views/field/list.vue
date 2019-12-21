@@ -71,6 +71,12 @@
             <div slot="content" v-html="titleFieldTip(scope.row)"></div>
             <span class="table-column-tag title-field-tag">标题</span>
           </el-tooltip>
+          <el-tooltip v-if="!titleFieldId && scope.row.validate.titleCandidate===2"
+                      class="item" effect="dark" placement="top"
+                      content="请点我设置标题">
+            <span class="table-column-tag title-candidate-tag"
+                  @click="handleSetTitleField(scope.row.fieldId)">标题</span>
+          </el-tooltip>
           <el-popover
             placement="top"
             trigger="click">
@@ -96,7 +102,7 @@
               <el-button v-if="scope.row.fieldId === titleFieldId"
                          size="mini" type="warning"
                          @click="handleSetTitleField(null)">取消标题</el-button>
-              <el-button v-if="scope.row.fieldId !== titleFieldId"
+              <el-button v-if="scope.row.fieldId !== titleFieldId && scope.row.validate.titleCandidate > 0"
                          type="primary" size="mini"
                          @click="handleSetTitleField(scope.row.fieldId)">设为标题</el-button>
             </div>
@@ -616,7 +622,8 @@ export default {
             value.orderNoEdit = false
             value.oldOrderNo = value.orderNo
             value.validate = {
-              success: true
+              success: true,
+              titleCandidate: 0
             }
           })
           this.list = data
@@ -890,7 +897,7 @@ export default {
       if (!this.query.projectId || !this.query.entityId || !this.list.length) {
         return
       }
-      return entityApi.validateEntityInner(this.query.entityId)
+      return entityApi.validateEntityInner(this.query.projectId, this.query.entityId)
         .then(data => {
           const fieldValidates = data.fields
           this.list.forEach(field => {
@@ -980,6 +987,11 @@ export default {
     .title-field-tag {
       background-color: $color-success;
       margin-right: 5px;
+    }
+    .title-candidate-tag {
+      background-color: #d2f8d2;
+      margin-right: 5px;
+      cursor: pointer;
     }
     /**
      * 列表页“复制”按钮样式

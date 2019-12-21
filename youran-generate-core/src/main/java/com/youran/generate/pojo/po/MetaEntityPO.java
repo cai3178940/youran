@@ -158,6 +158,11 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      */
     @JsonIgnore
     private Map<MetaEntityPO, MetaManyToManyPO> unHolds = new TreeMap<>();
+    /**
+     * 被对方持有引用的多对多关系
+     */
+    @JsonIgnore
+    private Map<MetaEntityPO, MetaManyToManyPO> mtmsForOpp = new TreeMap<>();
 
     /**
      * 对应的外键列表(当前主键对应的其他实体外键字段)
@@ -177,7 +182,6 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      */
     @JsonIgnore
     private Set<MetaEntityPO> foreignEntities = new TreeSet<>();
-    ;
 
     /**
      * 实体特性
@@ -236,11 +240,6 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
         return this;
     }
 
-    public MetaEntityPO addIndex(MetaIndexPO metaIndexPO) {
-        indexes.add(metaIndexPO);
-        return this;
-    }
-
     public MetaEntityPO addHold(MetaEntityPO entity, MetaManyToManyPO mtm) {
         holds.put(entity, mtm);
         return this;
@@ -248,6 +247,11 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public MetaEntityPO addUnHold(MetaEntityPO entity, MetaManyToManyPO mtm) {
         unHolds.put(entity, mtm);
+        return this;
+    }
+
+    public MetaEntityPO addMtmForOpp(MetaEntityPO entity, MetaManyToManyPO mtm) {
+        mtmsForOpp.put(entity, mtm);
         return this;
     }
 
@@ -290,6 +294,14 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setUnHolds(Map<MetaEntityPO, MetaManyToManyPO> unHolds) {
         this.unHolds = unHolds;
+    }
+
+    public Map<MetaEntityPO, MetaManyToManyPO> getMtmsForOpp() {
+        return mtmsForOpp;
+    }
+
+    public void setMtmsForOpp(Map<MetaEntityPO, MetaManyToManyPO> mtmsForOpp) {
+        this.mtmsForOpp = mtmsForOpp;
     }
 
     public MetaFieldPO getVersionField() {

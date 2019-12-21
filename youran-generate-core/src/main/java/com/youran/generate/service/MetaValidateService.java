@@ -1,11 +1,15 @@
 package com.youran.generate.service;
 
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.pojo.po.MetaConstPO;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.vo.MetaEntityInnerValidateVO;
 import com.youran.generate.pojo.vo.MetaFieldValidateVO;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,33 +32,37 @@ public class MetaValidateService {
     @Autowired
     private MetaQueryAssembleService metaQueryAssembleService;
 
-
     /**
      * 校验实体内部数据
      *
      * @param entityId
      * @return
      */
-    public MetaEntityInnerValidateVO validateEntityInner(Integer entityId) {
-        // 获取装配完成的实体
-        MetaEntityPO entity = metaQueryAssembleService.getAssembledEntity(entityId, false);
+    public MetaEntityInnerValidateVO validateEntityInner(Integer projectId, Integer entityId) {
+        // 获取装配完成的项目
+        MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId, false);
         // 获取装配完成的枚举
-        List<MetaConstPO> consts = metaQueryAssembleService.getAllAssembledConsts(entity.getProjectId(),
-            false, false);
+        List<MetaConstPO> consts = project.getConsts();
+        List<MetaEntityPO> entities = project.getEntities();
+        MetaEntityPO entity = entities.stream()
+            .filter(e -> e.getEntityId().equals(entityId))
+            .findFirst()
+            .orElseThrow(() -> new BusinessException(ErrorCode.RECORD_NOT_FIND, "实体不存在"));
         Map<Integer, MetaFieldPO> fields = entity.getFields();
-        MetaFieldPO titleField = entity.getTitleField();
         // 是否需要标记标题候选字段
-        boolean titleCandidate = false;
-        if (titleField == null) {
-            // 判断当前实体是否被外键级联
-
-            // 判断当前实体是否被多对多级联hold
+        boolean mustSetTitle = false;
+        // 判断当前实体是否被外键级联
+        if(CollectionUtils.isNotEmpty(entity.getForeignEntities())){
+            mustSetTitle = true;
         }
-
-
+        // 判断当前实体是否被多对多级联hold
+        else if(!entity.getMtmsForOpp().isEmpty()){
+            mustSetTitle = true;
+        }
+        boolean finalMustSetTitle = mustSetTitle;
         // 校验实体中的所有字段
         List<MetaFieldValidateVO> fieldValidateVOS = fields.values().stream()
-            .map(field -> this.doValidateField(field, fields, consts, titleCandidate))
+            .map(field -> this.doValidateField(field, fields, consts, finalMustSetTitle))
             .collect(Collectors.toList());
 
         MetaEntityInnerValidateVO vo = new MetaEntityInnerValidateVO();
@@ -65,16 +73,16 @@ public class MetaValidateService {
     /**
      * 字段校验
      *
-     * @param field          被校验的字段
-     * @param fields         实体中所有字段
-     * @param consts         项目内所有枚举
-     * @param titleCandidate 是否需要标记候选标题字段
+     * @param field        被校验的字段
+     * @param fields       实体中所有字段
+     * @param consts       项目内所有枚举
+     * @param mustSetTitle 是否必须要标记标题字段
      * @return
      */
     private MetaFieldValidateVO doValidateField(MetaFieldPO field,
                                                 Map<Integer, MetaFieldPO> fields,
                                                 List<MetaConstPO> consts,
-                                                boolean titleCandidate) {
+                                                boolean mustSetTitle) {
         MetaFieldValidateVO vo = new MetaFieldValidateVO(field);
         // 校验枚举是否存在
         String dic = field.getDicType();
@@ -99,13 +107,16 @@ public class MetaValidateService {
                 vo.sameFieldNameError();
             }
         }
-        // 标记标题候选字段
-        if(titleCandidate){
-            // 前提条件是：非主键 && 非外键 && 非特殊字段 && 是字符串
-            if(!field.getPrimaryKey() && !field.getForeignKey()
-                && StringUtils.isBlank(field.getSpecialField())
-                && JFieldType.STRING.getJavaType().equals(field.getJfieldType())){
-                vo.setTitleCandidate(true);
+        // 标记标题候选字段，前提条件是：非主键 && 非外键 && 非特殊字段 && 是字符串
+        if (!field.getPrimaryKey() && !field.getForeignKey()
+            && StringUtils.isBlank(field.getSpecialField())
+            && JFieldType.STRING.getJavaType().equals(field.getJfieldType())) {
+            if (mustSetTitle) {
+                // 较高级别
+                vo.setTitleCandidate(2);
+            } else {
+                // 较低级别
+                vo.setTitleCandidate(1);
             }
         }
         return vo;

@@ -79,9 +79,7 @@ public class MetaImportExportService {
      * @return
      */
     public File metaExport(Integer projectId) {
-        MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
-            true, true, true, true,
-            true, true, false);
+        MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId, false);
         String exportDir = dataDirService.getProjectExportDir(project);
         String zipFilePath = exportDir + ".zip";
         File dir = new File(exportDir);

@@ -176,9 +176,7 @@ public class MetaCodeGenService {
         CodeTemplatePO templatePO = codeTemplateAssembleAndCopyService.getAssembledCodeTemplate(templateId);
         // 获取组装后的项目
         this.progressing(progressConsumer, 20, 80, 5, "获取并组装项目元数据");
-        MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId,
-            true, true, true, true,
-            true, true, true);
+        MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId, true);
         // 构建模板渲染器
         TemplateRenderer templateRenderer = templateRendererBuilder.buildRenderer(templatePO);
         LOGGER.debug("------代码生成临时路径：" + projectDir);
