@@ -521,7 +521,7 @@ export default {
     ]),
     getFieldFeature: options.getFieldFeature,
     titleFieldTip (row) {
-      return `设置标题后，会生成findOptions服务，<br/>
+      return `设置标题后，会生成findOptions服务，用于前端下拉框数据加载。<br/>
         该服务返回键值对列表：[{key:主键,value:${row.fieldDesc}}]`
     },
     rowClassName ({ row }) {

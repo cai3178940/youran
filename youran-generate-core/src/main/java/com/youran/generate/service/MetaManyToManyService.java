@@ -115,7 +115,7 @@ public class MetaManyToManyService {
             if (!f1.getAddRemove()
                 && !f1.getSet()
                 && !f1.getWithinEntity()) {
-                throw new BusinessException(ErrorCode.BAD_PARAMETER, "至少勾选一项\"实体1功能\"");
+                throw new BusinessException(ErrorCode.BAD_PARAMETER, "请选择\"实体1级联模式\"");
             }
         }
         if (mtm.getHoldRefer2()) {
@@ -123,7 +123,7 @@ public class MetaManyToManyService {
             if (!f2.getAddRemove()
                 && !f2.getSet()
                 && !f2.getWithinEntity()) {
-                throw new BusinessException(ErrorCode.BAD_PARAMETER, "至少勾选一项\"实体2功能\"");
+                throw new BusinessException(ErrorCode.BAD_PARAMETER, "请选择\"实体2级联模式\"");
             }
         }
     }
