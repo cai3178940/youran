@@ -58,7 +58,7 @@
 cd youran-generate-ui
 npm install
 
-# 如果想使用开发模式启动前端环境：npm run dev
+# 如果想使用开发模式启动前端环境：npm run serve
 # 如果想前后端一起部署，则需要将前端资源编译到release模块中
 # 编译目标路径：youran-generate-release/src/main/resources/ui
 npm run build
