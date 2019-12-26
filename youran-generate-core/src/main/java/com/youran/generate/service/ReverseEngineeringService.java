@@ -281,7 +281,7 @@ public class ReverseEngineeringService {
         JFieldType jFieldType = GuessUtil.guessJFieldType(fieldName, fieldType, fieldLength);
         String specialField = GuessUtil.guessSpecialField(fieldName, jFieldType);
         // 如果不存在字段描述，则使用字段名替代
-        if(StringUtils.isBlank(desc)){
+        if (StringUtils.isBlank(desc)) {
             desc = fieldName;
         }
         MetaFieldAddDTO metaFieldDTO = new MetaFieldAddDTO();
@@ -289,7 +289,7 @@ public class ReverseEngineeringService {
         metaFieldDTO.setAutoIncrement(autoIncrement);
         metaFieldDTO.setDefaultValue(defaultValue);
         metaFieldDTO.setDicType(null);
-        metaFieldDTO.setEditType(null);
+        metaFieldDTO.setEditType(GuessUtil.guessEditType(jFieldType, fieldType));
         metaFieldDTO.setFieldComment(StringUtils.abbreviate(desc, 200));
         metaFieldDTO.setFieldDesc(StringUtils.abbreviate(desc, 40));
         metaFieldDTO.setFieldExample(GuessUtil.guessFieldExample(fieldName, jFieldType, fieldLength));

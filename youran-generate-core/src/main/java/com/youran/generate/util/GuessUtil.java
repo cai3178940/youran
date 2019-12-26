@@ -2,6 +2,7 @@ package com.youran.generate.util;
 
 import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.*;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Date;
 
@@ -19,7 +20,7 @@ public class GuessUtil {
     public static final String[] OPERATE_PREFIX = {"operate", "operated", "update", "updated", "modify", "modified"};
     public static final String[] TIME_SUFFIX = {"time", "date", "at"};
     public static final String[] USER_SUFFIX = {"by", "user", "er", "or"};
-    public static final String DELETED_LABEL = "deleted";
+    public static final String[] DELETED_LABEL = {"deleted", "delete_status", "is_delete", "is_deleted"};
     public static final String VERSION_LABEL = "version";
     public static final String NAME_LABEL = "name";
 
@@ -152,7 +153,7 @@ public class GuessUtil {
         /**
          * 修正deleted字段的类型为boolean
          */
-        if (jFieldType == JFieldType.INTEGER && DELETED_LABEL.equals(fieldName.toLowerCase())) {
+        if (jFieldType == JFieldType.INTEGER && ArrayUtils.contains(DELETED_LABEL, fieldName.toLowerCase())) {
             jFieldType = JFieldType.BOOLEAN;
         }
         return jFieldType;
@@ -191,7 +192,7 @@ public class GuessUtil {
         if (VERSION_LABEL.equals(lowerCase) && jFieldType == JFieldType.INTEGER) {
             return MetaSpecialField.VERSION;
         }
-        if (DELETED_LABEL.equals(lowerCase) && jFieldType == JFieldType.BOOLEAN) {
+        if (ArrayUtils.contains(DELETED_LABEL, lowerCase) && jFieldType == JFieldType.BOOLEAN) {
             return MetaSpecialField.DELETED;
         }
         return null;
@@ -244,5 +245,31 @@ public class GuessUtil {
         return MetaConstType.STRING;
     }
 
-
+    /**
+     * 根据字段类型猜测编辑框类型
+     *
+     * @param jFieldType
+     * @param fieldType
+     * @return
+     */
+    public static Integer guessEditType(JFieldType jFieldType, String fieldType) {
+        if (jFieldType.equals(JFieldType.STRING)) {
+            if (MySqlType.TEXT.equals(fieldType)) {
+                return EditType.TEXTAREA.getValue();
+            } else {
+                return EditType.TEXT.getValue();
+            }
+        }
+        if (jFieldType.equals(JFieldType.BOOLEAN)) {
+            return EditType.RADIO.getValue();
+        }
+        if (jFieldType.equals(JFieldType.DATE)) {
+            if (MySqlType.DATE.equals(fieldType)) {
+                return EditType.DATE.getValue();
+            } else {
+                return EditType.DATETIME.getValue();
+            }
+        }
+        return EditType.NUMBER.getValue();
+    }
 }
