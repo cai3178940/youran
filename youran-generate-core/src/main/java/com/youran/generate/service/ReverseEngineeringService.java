@@ -85,7 +85,6 @@ public class ReverseEngineeringService {
      * @return
      */
     public List<SQLStatement> parse(ReverseEngineeringDTO dto) {
-
         List<SQLStatement> sqlStatements;
         try {
             sqlStatements = SQLUtils.parseStatements(dto.getDdl(), dto.getDbType());
@@ -114,71 +113,127 @@ public class ReverseEngineeringService {
         MetaProjectPO project = metaProjectService.getAndCheckProject(dto.getProjectId());
         List<SQLStatement> list = this.parse(dto);
         for (SQLStatement sqlStatement : list) {
-            SQLCreateTableStatement createTableStatement = (SQLCreateTableStatement) sqlStatement;
-            String tableName = cleanQuote(createTableStatement.getTableSource().getName().getSimpleName());
-            String comment = cleanQuote(SafeUtil.getString(createTableStatement.getComment()));
-            MetaEntityPO entity = createEntity(project, tableName, comment);
-            SQLPrimaryKey primaryKey = createTableStatement.findPrimaryKey();
-            if (primaryKey == null) {
-                throw new BusinessException(ErrorCode.BAD_PARAMETER, "表【" + tableName + "】不存在主键");
-            }
-            if (primaryKey.getColumns().size() > 1) {
-                throw new BusinessException(ErrorCode.BAD_PARAMETER, "表【" + tableName + "】存在联合主键，反向工程暂不支持联合主键");
-            }
-            String pkFieldName = cleanQuote(primaryKey.getColumns().get(0).getExpr().toString());
-            List<SQLTableElement> tableElementList = createTableStatement.getTableElementList();
-            int orderNo = 0;
-            // 缓存遍历到的字段
-            Map<String, MetaFieldPO> fieldMap = new HashMap<>(32);
-            for (SQLTableElement element : tableElementList) {
-                // 创建字段
-                if (element instanceof SQLColumnDefinition) {
-                    orderNo += 10;
-                    SQLColumnDefinition sqlColumnDefinition = (SQLColumnDefinition) element;
-                    String fieldName = cleanQuote(sqlColumnDefinition.getNameAsString());
-                    boolean pk = fieldName.equals(pkFieldName);
-                    String fieldType = sqlColumnDefinition.getDataType().getName();
-                    int fieldLength = 0;
-                    int fieldScale = 0;
-                    List<SQLExpr> arguments = sqlColumnDefinition.getDataType().getArguments();
-                    if (CollectionUtils.isNotEmpty(arguments)) {
-                        fieldLength = SafeUtil.getInteger(arguments.get(0));
-                        if (arguments.size() >= 2) {
-                            fieldScale = SafeUtil.getInteger(arguments.get(1));
-                        }
-                    }
-                    boolean autoIncrement = sqlColumnDefinition.isAutoIncrement();
-                    boolean notNull = sqlColumnDefinition.containsNotNullConstaint();
-                    if (pk) {
-                        notNull = true;
-                    }
-                    String defaultValue = sqlColumnDefinition.getDefaultExpr() == null ? "NULL" : sqlColumnDefinition.getDefaultExpr().toString();
-                    String desc = sqlColumnDefinition.getComment() == null ? "" : cleanQuote(sqlColumnDefinition.getComment().toString());
+            this.saveEntityFromSqlStatement(project, (SQLCreateTableStatement) sqlStatement);
+        }
+    }
 
-                    MetaFieldPO field = this.createField(entity, fieldName, fieldType,
-                        fieldLength, fieldScale, pk,
-                        autoIncrement, notNull, orderNo,
-                        defaultValue, desc);
-                    fieldMap.put(fieldName, field);
-                    continue;
-                }
-                if (element instanceof MySqlPrimaryKey) {
-                    continue;
-                }
-                // 创建索引
-                if (element instanceof MySqlKey) {
-                    boolean unique = (element instanceof MySqlUnique);
-                    MySqlKey sqlKey = (MySqlKey) element;
-                    String indexName = cleanQuote(sqlKey.getName().toString());
-                    List<MetaFieldPO> fields = new ArrayList<>();
-                    for (SQLSelectOrderByItem item : sqlKey.getColumns()) {
-                        String columnName = cleanQuote(item.getExpr().toString());
-                        fields.add(fieldMap.get(columnName));
+    /**
+     * 从单个建表语句中创建实体
+     *
+     * @param project
+     * @param sqlStatement
+     */
+    private void saveEntityFromSqlStatement(MetaProjectPO project, SQLCreateTableStatement sqlStatement) {
+        SQLCreateTableStatement createTableStatement = sqlStatement;
+        // 解析表名
+        String tableName = this.parseTableName(createTableStatement);
+        if (StringUtils.isBlank(tableName)) {
+            return;
+        }
+        String comment = cleanQuote(SafeUtil.getString(createTableStatement.getComment()));
+        MetaEntityPO entity = createEntity(project, tableName, comment);
+        // 获取单独声明的主键
+        String pkAlone = this.getPkAlone(createTableStatement);
+        List<SQLTableElement> tableElementList = createTableStatement.getTableElementList();
+        int orderNo = 0;
+        // 缓存遍历到的字段
+        Map<String, MetaFieldPO> fieldMap = new HashMap<>(32);
+        for (SQLTableElement element : tableElementList) {
+            // 创建字段
+            if (element instanceof SQLColumnDefinition) {
+                orderNo += 10;
+                SQLColumnDefinition sqlColumnDefinition = (SQLColumnDefinition) element;
+                String fieldName = cleanQuote(sqlColumnDefinition.getNameAsString());
+                boolean pk = this.isPkField(sqlColumnDefinition, pkAlone);
+                String fieldType = sqlColumnDefinition.getDataType().getName();
+                int fieldLength = 0;
+                int fieldScale = 0;
+                List<SQLExpr> arguments = sqlColumnDefinition.getDataType().getArguments();
+                if (CollectionUtils.isNotEmpty(arguments)) {
+                    fieldLength = SafeUtil.getInteger(arguments.get(0));
+                    if (arguments.size() >= 2) {
+                        fieldScale = SafeUtil.getInteger(arguments.get(1));
                     }
-                    this.createIndex(entity, indexName, unique, fields);
                 }
+                boolean autoIncrement = sqlColumnDefinition.isAutoIncrement();
+                boolean notNull = sqlColumnDefinition.containsNotNullConstaint();
+                if (pk) {
+                    notNull = true;
+                }
+                String defaultValue = sqlColumnDefinition.getDefaultExpr() == null ? "NULL" : sqlColumnDefinition.getDefaultExpr().toString();
+                String desc = sqlColumnDefinition.getComment() == null ? "" : cleanQuote(sqlColumnDefinition.getComment().toString());
+
+                MetaFieldPO field = this.createField(entity, fieldName, fieldType,
+                    fieldLength, fieldScale, pk,
+                    autoIncrement, notNull, orderNo,
+                    defaultValue, desc);
+                fieldMap.put(fieldName, field);
+                continue;
+            }
+            if (element instanceof MySqlPrimaryKey) {
+                continue;
+            }
+            // 创建索引
+            if (element instanceof MySqlKey) {
+                boolean unique = (element instanceof MySqlUnique);
+                MySqlKey sqlKey = (MySqlKey) element;
+                String indexName = cleanQuote(sqlKey.getName().toString());
+                List<MetaFieldPO> fields = new ArrayList<>();
+                for (SQLSelectOrderByItem item : sqlKey.getColumns()) {
+                    String columnName = cleanQuote(item.getExpr().toString());
+                    fields.add(fieldMap.get(columnName));
+                }
+                this.createIndex(entity, indexName, unique, fields);
             }
         }
+    }
+
+    /**
+     * 解析表名
+     *
+     * @param createTableStatement
+     * @return
+     */
+    private String parseTableName(SQLCreateTableStatement createTableStatement) {
+        return cleanQuote(createTableStatement.getTableSource().getName().getSimpleName());
+    }
+
+    /**
+     * 获取单独声明的主键名称
+     *
+     * @param createTableStatement
+     * @return
+     */
+    private String getPkAlone(SQLCreateTableStatement createTableStatement) {
+        SQLPrimaryKey primaryKey = createTableStatement.findPrimaryKey();
+        if (primaryKey != null) {
+            if (primaryKey.getColumns().size() > 1) {
+                throw new BusinessException(ErrorCode.BAD_PARAMETER,
+                    "表【" + this.parseTableName(createTableStatement) + "】存在联合主键，反向工程暂不支持联合主键");
+            }
+            return cleanQuote(primaryKey.getColumns().get(0).getExpr().toString());
+        }
+        return null;
+    }
+
+    /**
+     * 判断是否主键字段
+     *
+     * @param sqlColumnDefinition
+     * @param pkAlone
+     * @return
+     */
+    private boolean isPkField(SQLColumnDefinition sqlColumnDefinition, String pkAlone) {
+        if (sqlColumnDefinition.isPrimaryKey()) {
+            return true;
+        }
+        if (StringUtils.isNotBlank(pkAlone)) {
+            String fieldName = cleanQuote(sqlColumnDefinition.getNameAsString());
+            if (pkAlone.equals(fieldName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -225,16 +280,18 @@ public class ReverseEngineeringService {
                                     String defaultValue, String desc) {
         JFieldType jFieldType = GuessUtil.guessJFieldType(fieldName, fieldType, fieldLength);
         String specialField = GuessUtil.guessSpecialField(fieldName, jFieldType);
-
+        // 如果不存在字段描述，则使用字段名替代
+        if(StringUtils.isBlank(desc)){
+            desc = fieldName;
+        }
         MetaFieldAddDTO metaFieldDTO = new MetaFieldAddDTO();
-
         metaFieldDTO.setEntityId(entity.getEntityId());
         metaFieldDTO.setAutoIncrement(autoIncrement);
         metaFieldDTO.setDefaultValue(defaultValue);
         metaFieldDTO.setDicType(null);
         metaFieldDTO.setEditType(null);
-        metaFieldDTO.setFieldComment(StringUtils.abbreviate(desc, 40));
-        metaFieldDTO.setFieldDesc(StringUtils.abbreviate(desc, 200));
+        metaFieldDTO.setFieldComment(StringUtils.abbreviate(desc, 200));
+        metaFieldDTO.setFieldDesc(StringUtils.abbreviate(desc, 40));
         metaFieldDTO.setFieldExample(GuessUtil.guessFieldExample(fieldName, jFieldType, fieldLength));
         metaFieldDTO.setFieldLength(fieldLength);
         metaFieldDTO.setFieldName(fieldName);
