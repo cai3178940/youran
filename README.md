@@ -58,10 +58,8 @@
 cd youran-generate-ui
 npm install
 
-# 开发模式启动前端环境
-# npm run dev
-
-# 将前端资源编译到release模块中
+# 如果想使用开发模式启动前端环境：npm run serve
+# 如果想前后端一起部署，则需要将前端资源编译到release模块中
 # 编译目标路径：youran-generate-release/src/main/resources/ui
 npm run build
 
@@ -75,6 +73,10 @@ java -jar youran-generate-release/target/youran-generate-release-X.X.X-SNAPSHOT.
 ```
 
 #### 第三步、首次访问系统时，需要导入系统预置代码模板
+
+系统访问地址： 
+
+- http://localhost:8088
 
 系统预置模板包括：
 
