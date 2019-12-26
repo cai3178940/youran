@@ -20,7 +20,7 @@ public class GuessUtil {
     public static final String[] OPERATE_PREFIX = {"operate", "operated", "update", "updated", "modify", "modified"};
     public static final String[] TIME_SUFFIX = {"time", "date", "at"};
     public static final String[] USER_SUFFIX = {"by", "user", "er", "or"};
-    public static final String[] DELETED_LABEL = {"deleted", "delete_status", "is_delete", "is_deleted"};
+    public static final String[] DELETED_LABEL = {"deleted", "delete_status", "is_delete", "is_deleted", "is_del"};
     public static final String VERSION_LABEL = "version";
     public static final String NAME_LABEL = "name";
 
