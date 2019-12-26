@@ -301,7 +301,7 @@ public class ReverseEngineeringService {
         metaFieldDTO.setJfieldName(SwitchCaseUtil.underlineToCamelCase(fieldName, false));
         metaFieldDTO.setJfieldType(jFieldType.getJavaType());
         metaFieldDTO.setList(true);
-        metaFieldDTO.setListSort(true);
+        metaFieldDTO.setListSort(false);
         metaFieldDTO.setOrderNo(orderNo);
         metaFieldDTO.setPrimaryKey(pk);
         metaFieldDTO.setForeignKey(false);
