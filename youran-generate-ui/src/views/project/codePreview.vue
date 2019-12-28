@@ -1,5 +1,5 @@
 <template>
-  <div class="codePreview">
+  <div class="codePreview" @contextmenu.prevent="">
     <el-dialog :title="'代码预览: '+projectName" :visible.sync="visible" :fullscreen="true">
       <el-header class="codePath">
         <template v-for="(node,index) in paths">
@@ -37,11 +37,13 @@
               <el-tab-pane
                 v-for="tab in codeTabs"
                 :key="tab.name"
-                :label="tab.title"
                 :name="tab.name"
                 v-loading="tab.loading"
                 element-loading-text="加载中..."
                 element-loading-background="#313335">
+                <span slot="label"
+                      class="codeTabLabel"
+                      @contextmenu.prevent="showTabContextMenu($event,tab)">{{tab.title}}</span>
                 <vue-codemirror v-model="tab.content" :options="cmOptions"></vue-codemirror>
               </el-tab-pane>
             </el-tabs>
@@ -49,6 +51,12 @@
         </el-container>
       </el-container>
     </el-dialog>
+    <vue-simple-context-menu
+      :options="tabContextMenuOptions"
+      menuClassName="codeContextMenu"
+      ref="tabContextMenu"
+      @option-clicked="tabContextMenuOptionClicked"
+    />
   </div>
 </template>
 
@@ -68,11 +76,17 @@ import 'codemirror/mode/sql/sql.js'
 import 'codemirror/mode/markdown/markdown.js'
 import FileTypeUtil from '@/utils/file-type-util'
 import projectApi from '@/api/project'
+/**
+ * 右键菜单组件
+ * https://github.com/johndatserakis/vue-simple-context-menu
+ */
+import VueSimpleContextMenu from '@/components/VueSimpleContextMenu'
 
 export default {
   name: 'code-preview',
   components: {
-    'vue-codemirror': codemirror
+    'vue-codemirror': codemirror,
+    'vue-simple-context-menu': VueSimpleContextMenu
   },
   data () {
     return {
@@ -104,10 +118,78 @@ export default {
       fileLoading: false,
       codeTabs: [],
       currentTabName: '',
-      visible: false
+      visible: false,
+      tabContextMenuOptions: [
+        {
+          name: '关闭',
+          value: 'close'
+        },
+        {
+          name: '关闭其他',
+          value: 'closeOther'
+        },
+        {
+          name: '关闭全部',
+          value: 'closeAll'
+        },
+        {
+          name: '关闭左边',
+          value: 'closeLeft'
+        },
+        {
+          name: '关闭右边',
+          value: 'closeRight'
+        }
+      ]
     }
   },
   methods: {
+    /**
+     * event: 右击事件
+     * item: tab节点信息
+     */
+    showTabContextMenu (event, item) {
+      this.$refs.tabContextMenu.showMenu(event, item)
+    },
+    /**
+     * item: tab节点信息
+     * option: 菜单项
+     */
+    tabContextMenuOptionClicked ({ item, option }) {
+      const tabName = item.name
+      if (option.value === 'close') {
+        this.removeTab(tabName)
+      } else if (option.value === 'closeOther') {
+        const otherTabs = this.codeTabs.filter(tab => tab.name !== tabName)
+        otherTabs.forEach(tab => this.removeTab(tab.name))
+      } else if (option.value === 'closeAll') {
+        const tabNames = this.codeTabs.map(tab => tab.name)
+        tabNames.forEach(name => this.removeTab(name))
+      } else if (option.value === 'closeLeft') {
+        const leftTabNames = []
+        for (const tab of this.codeTabs) {
+          if (tab.name === tabName) {
+            break
+          }
+          leftTabNames.push(tab.name)
+        }
+        leftTabNames.forEach(name => this.removeTab(name))
+      } else if (option.value === 'closeRight') {
+        const rightTabNames = []
+        let find = false
+        for (const tab of this.codeTabs) {
+          if (tab.name === tabName) {
+            find = true
+            continue
+          }
+          if (!find) {
+            continue
+          }
+          rightTabNames.push(tab.name)
+        }
+        rightTabNames.forEach(name => this.removeTab(name))
+      }
+    },
     initData (projectId, projectName, templateIndex) {
       this.projectId = projectId
       this.projectName = projectName

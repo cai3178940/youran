@@ -63,9 +63,10 @@
       </el-container>
     </el-dialog>
     <vue-simple-context-menu
-      :elementId="'context-menu'"
       :options="contextMenuOptions"
+      :showIcon="true"
       ref="contextMenu"
+      menuClassName="codeContextMenu"
       @option-clicked="contextMenuOptionClicked"
     />
     <el-dialog :title="formTitleDisplay" :visible.sync="templateFileFormVisible" width="550px">

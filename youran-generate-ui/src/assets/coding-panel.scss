@@ -1,5 +1,6 @@
 // 代码面板颜色
 $white :  #FFFFFF;
+$font-color : #adadad;
 $border-color : #4a4e50;
 // 代码主区域背景色，跟codemirror base16-dark主题颜色一致
 $back-color-1 : rgb(21, 21, 21);
@@ -52,7 +53,7 @@ $back-color-2 : #3c3f41;
         padding: 0px;
     }
     .el-tree {
-        color: #adadad;
+        color: $font-color;
         min-width: 100%;
         display:inline-block !important;
     }
@@ -84,7 +85,7 @@ $back-color-2 : #3c3f41;
         border: 1px solid #5a5b5f;
         font-size: 16px;
         height: 25px !important;
-        color: #adadad;
+        color: $font-color;
         .codePathCell {
             line-height: 23px;
         }
@@ -92,6 +93,17 @@ $back-color-2 : #3c3f41;
     .codeTreeNode {
         width: 100%;
         user-select: none;
+    }
+    .codeTabLabel {
+        padding: 10px;
+    }
+    .codeContextMenu {
+        background-color: $back-color-2;
+        border-radius: 0px;
+        border: 1px solid $border-color;
+        .vue-simple-context-menu__item {
+            color: $font-color;
+        }
     }
     .el-tree-node__content{
         background-color: $back-color-2;
@@ -104,8 +116,8 @@ $back-color-2 : #3c3f41;
         border-left: 1px solid $border-color !important;
     }
     .el-tabs__item {
-        color: #adadad !important;
-
+        color: $font-color !important;
+        border-left-color: $border-color !important;
         border-right: 1px solid $border-color !important;
     }
     .el-tabs__item.is-active {
@@ -115,6 +127,9 @@ $back-color-2 : #3c3f41;
     .el-tabs__header {
         background-color: $back-color-2;
         border-bottom: 1px solid $back-color-1;
+        .el-tabs__item {
+            padding: 0 5px !important;
+        }
     }
     .el-tabs__content {
         padding: 0px;

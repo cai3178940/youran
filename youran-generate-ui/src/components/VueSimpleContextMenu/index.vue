@@ -1,16 +1,14 @@
 <template>
   <div>
-    <ul
-      :id="elementId"
-      class="vue-simple-context-menu"
-      v-click-outside="onClickOutside">
+    <ul :class="['vue-simple-context-menu',menuClassName]"
+        v-click-outside="onClickOutside">
       <li
         v-for="(option, index) in options"
         :key="index"
         @click="optionClicked(option)"
         class="vue-simple-context-menu__item"
         :class="option.class">
-        <span style="min-width: 20px;">
+        <span v-if="showIcon" style="min-width: 20px;">
           <svg-icon v-if="option.svgIcon" :className="option.svgClassName"
                     :iconClass="option.svgIcon"></svg-icon>
         </span>
@@ -27,9 +25,12 @@ Vue.use(vClickOutside)
 export default {
   name: 'VueSimpleContextMenu',
   props: {
-    elementId: {
-      type: String,
-      required: true
+    showIcon: {
+      type: Boolean,
+      default: false
+    },
+    menuClassName: {
+      type: String
     },
     options: {
       type: Array,
@@ -46,7 +47,7 @@ export default {
   methods: {
     showMenu (event, item) {
       this.item = item
-      var menu = document.getElementById(this.elementId)
+      const menu = this.$el.firstChild
       if (!menu) {
         return
       }
@@ -70,9 +71,9 @@ export default {
       menu.classList.add('vue-simple-context-menu--active')
     },
     hideContextMenu () {
-      let element = document.getElementById(this.elementId)
-      if (element) {
-        element.classList.remove('vue-simple-context-menu--active')
+      const menu = this.$el.firstChild
+      if (menu) {
+        menu.classList.remove('vue-simple-context-menu--active')
       }
     },
     onClickOutside () {
