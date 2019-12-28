@@ -9,6 +9,7 @@ import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.util.MetadataUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +54,8 @@ public class MetaQueryAssembleService implements InitializingBean {
     /**
      * 获取组装完的项目元数据
      *
-     * @param projectId      项目id
-     * @param check          是否校验完整性
+     * @param projectId 项目id
+     * @param check     是否校验完整性
      * @return
      */
     public MetaProjectPO getAssembledProject(Integer projectId, boolean check) {
@@ -68,32 +69,32 @@ public class MetaQueryAssembleService implements InitializingBean {
 
     /**
      * 装配整个项目的元数据
+     *
      * @param projectId
      * @return
      */
-    private MetaProjectPO doAssembleProject(Integer projectId){
+    private MetaProjectPO doAssembleProject(Integer projectId) {
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        // 查询实体id列表
-        List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
-        if (CollectionUtils.isEmpty(entityIds)) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "项目中没有实体");
-        }
-        // 获取组装后的实体列表
-        List<MetaEntityPO> metaEntities = entityIds
-            .stream()
-            .map(entityId -> getAssembledEntity(entityId, true))
-            .collect(Collectors.toList());
-        project.setEntities(metaEntities);
-        // 装配外键实体和外键字段
-        this.assembleForeign(metaEntities, true);
         // 获取组装后的常量列表
         List<MetaConstPO> metaConstPOS = this.getAllAssembledConsts(projectId, true);
         project.setConsts(metaConstPOS);
-        // 查询多对多列表
-        List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId, true);
-        // 装配多对多持有引用
-        manyToManies = this.assembleManyToManyWithEntities(metaEntities, manyToManies, true);
-        project.setMtms(manyToManies);
+        // 查询实体id列表
+        List<Integer> entityIds = metaEntityService.findIdsByProject(projectId);
+        if (CollectionUtils.isNotEmpty(entityIds)) {
+            // 获取组装后的实体列表
+            List<MetaEntityPO> metaEntities = entityIds
+                .stream()
+                .map(entityId -> getAssembledEntity(entityId, true))
+                .collect(Collectors.toList());
+            project.setEntities(metaEntities);
+            // 装配外键实体和外键字段
+            this.assembleForeign(metaEntities, true);
+            // 查询多对多列表
+            List<MetaManyToManyPO> manyToManies = metaManyToManyService.findByProjectId(projectId, true);
+            // 装配多对多持有引用
+            manyToManies = this.assembleManyToManyWithEntities(metaEntities, manyToManies, true);
+            project.setMtms(manyToManies);
+        }
         return project;
     }
 
@@ -140,14 +141,13 @@ public class MetaQueryAssembleService implements InitializingBean {
     public MetaEntityPO getAssembledEntity(Integer entityId, boolean withIndex) {
         MetaEntityPO metaEntity = metaEntityService.getEntity(entityId, true);
         List<MetaFieldPO> fieldList = metaFieldService.findByEntityId(entityId);
-        if (CollectionUtils.isEmpty(fieldList)) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体中无字段，entityId=" + entityId);
-        }
-        // 给实体装配字段
-        this.assembleFieldForEntity(metaEntity, fieldList);
-        // 给实体装配索引
-        if (withIndex) {
-            this.assembleIndexForEntity(metaEntity, fieldList);
+        if (CollectionUtils.isNotEmpty(fieldList)) {
+            // 给实体装配字段
+            this.assembleFieldForEntity(metaEntity, fieldList);
+            // 给实体装配索引
+            if (withIndex) {
+                this.assembleIndexForEntity(metaEntity, fieldList);
+            }
         }
         return metaEntity;
     }
@@ -442,7 +442,9 @@ public class MetaQueryAssembleService implements InitializingBean {
      */
     private void checkAssembledProject(MetaProjectPO project, boolean checkConst) {
         List<MetaEntityPO> entities = project.getEntities();
-
+        if (CollectionUtils.isEmpty(entities)) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "项目中没有实体");
+        }
         Map<String, MetaConstPO> constMap = null;
         if (checkConst) {
             // 校验并获取常量Map
@@ -452,6 +454,9 @@ public class MetaQueryAssembleService implements InitializingBean {
 
         for (MetaEntityPO entity : entities) {
             Map<Integer, MetaFieldPO> fields = entity.getFields();
+            if (MapUtils.isEmpty(fields)) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中无字段");
+            }
             int pkCount = 0;
             int deletedCount = 0;
             int createdByCount = 0;
@@ -560,9 +565,10 @@ public class MetaQueryAssembleService implements InitializingBean {
 
     /**
      * 清除项目元数据缓存
+     *
      * @param projectId
      */
-    public void invalidate(Integer projectId){
+    public void invalidate(Integer projectId) {
         projectCache.invalidate(projectId);
     }
 
