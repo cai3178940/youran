@@ -44,7 +44,7 @@
               </el-radio-group>
             </help-popover>
           </el-form-item>
-          <el-form-item label="模板" prop="templateId">
+          <el-form-item label="代码模板" prop="templateId">
             <help-popover name="project.templateId">
               <el-col :span="18" class="col-left">
                 <el-select style="width:100%;" v-model="form.templateId"

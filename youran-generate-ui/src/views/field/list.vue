@@ -297,7 +297,7 @@
           <el-badge :value="cacheFieldTemplateCount" :hidden="!cacheFieldTemplateCount" class="item">
             <el-select
               v-model="templateForm.templates"
-              multiple
+              multiple clearable
               collapse-tags>
               <el-option-group v-if="cacheFieldTemplateCount>0" label="复制字段">
                 <el-option v-for="value in cacheFieldTemplate"
