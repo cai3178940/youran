@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * Git操作业务类
@@ -41,10 +43,11 @@ public class GitService {
      * @param credential    认证信息
      * @param oldBranchName 旧分支
      * @param newBranchName 新分支
+     * @param lastCommit    上次commit
      * @return
      */
     public String cloneRemoteRepository(String projectName, String remoteUrl, GitCredentialDTO credential,
-                                        String oldBranchName, String newBranchName) {
+                                        String oldBranchName, String newBranchName, String lastCommit) {
 
         try {
             // 创建临时文件，并删除该文件，通过该方式防止文件夹已经被占用
@@ -89,6 +92,8 @@ public class GitService {
                         .setStartPoint("origin/" + oldBranchName).call();
                     // check到老分支
                     git.checkout().setName(oldBranchName).call();
+                    // 校验上一次commit是否匹配
+                    this.checkLastCommit(git, lastCommit, oldBranchName);
                 }
                 // 创建分支
                 git.branchCreate()
@@ -104,6 +109,29 @@ public class GitService {
         } catch (GitAPIException e) {
             LOGGER.error("clone仓库异常", e);
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "clone仓库异常");
+        }
+    }
+
+    /**
+     * 校验上一次commit是否匹配
+     *
+     * @param git
+     * @param lastCommit
+     * @param branchName
+     * @throws GitAPIException
+     */
+    private void checkLastCommit(Git git, String lastCommit, String branchName) throws GitAPIException {
+        // 如果不存在lastCommit，则直接返回
+        if (StringUtils.isBlank(lastCommit)) {
+            return;
+        }
+        Iterator<RevCommit> iterator = git.log().call().iterator();
+        if (iterator.hasNext()) {
+            RevCommit next = iterator.next();
+            if (!Objects.equals(next.getName(), lastCommit)) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                    "分支【" + branchName + "】被污染了，估计是您在该分支上手动提交了代码，请手动执行reset。友情提示：请不要对auto分支做任何修改");
+            }
         }
     }
 

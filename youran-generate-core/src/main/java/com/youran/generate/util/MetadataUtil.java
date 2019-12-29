@@ -38,20 +38,15 @@ public class MetadataUtil {
         } else {
             throw new IllegalStateException("特殊异常");
         }
-        if (StringUtils.isNotBlank(fkAlias)) {
-            if (forSql) {
-                return fkAlias;
-            } else {
-                return SwitchCaseUtil.underlineToCamelCase(fkAlias, false);
-            }
+        if (forSql) {
+            return fkAlias;
+        } else {
+            return SwitchCaseUtil.underlineToCamelCase(fkAlias, false);
         }
-        // 未指定外键字段名的情况下自动生成
-        return buildDefaultMtmFkAlias(refer.getClassName(), forSql);
     }
 
     /**
      * 构建默认多对多外键别名
-     * TODO 判断主键字段如果不是直接叫id，则使用主键字段名
      *
      * @param className
      * @param forSql

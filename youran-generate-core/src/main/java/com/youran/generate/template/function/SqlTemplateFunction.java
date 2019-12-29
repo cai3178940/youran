@@ -4,7 +4,6 @@ import com.youran.generate.constant.DefaultValue;
 import com.youran.generate.constant.MySqlType;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.util.GuessUtil;
-import com.youran.generate.util.MetadataUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -30,7 +29,7 @@ public class SqlTemplateFunction {
 
     static {
         try {
-            InputStream stream = MetadataUtil.class.getClassLoader().getResourceAsStream("mysql_keyword.txt");
+            InputStream stream = SqlTemplateFunction.class.getClassLoader().getResourceAsStream("mysql_keyword.txt");
             MYSQL_KEYWORD = IOUtils.readLines(stream, "utf-8");
         } catch (IOException e) {
             LOGGER.error("MetadataUtil初始化异常", e);

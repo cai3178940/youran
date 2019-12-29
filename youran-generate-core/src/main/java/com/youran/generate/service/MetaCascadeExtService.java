@@ -108,7 +108,6 @@ public class MetaCascadeExtService {
         if (exists) {
             throw new BusinessException(ErrorCode.BAD_PARAMETER, "字段重复");
         }
-        // TODO 校验当前实体下其他级联扩展字段
     }
 
 

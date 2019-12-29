@@ -354,16 +354,18 @@ public class MetaCodeGenService {
         CodeTemplatePO codeTemplate = codeTemplateService.getCodeTemplate(templateId, true);
         Date now = new Date();
         String oldBranchName = null;
+        String lastCommit = null;
         GenHistoryPO genHistory = genHistoryService.findLastGenHistory(project.getProjectId(), remoteUrl);
         if (genHistory != null) {
             genHistoryService.checkVersion(project, codeTemplate, genHistory);
             oldBranchName = genHistory.getBranch();
+            lastCommit = genHistory.getCommit();
         }
         String newBranchName = "auto" + DateUtil.getDateStr(now, "yyyyMMddHHmmss");
         GitCredentialDTO credential = this.getCredentialDTO(project);
         this.progressing(progressConsumer, 5, 10, 1, "克隆远程仓库");
         String repository = gitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
-            credential, oldBranchName, newBranchName);
+            credential, oldBranchName, newBranchName, lastCommit);
         File repoDir = new File(repository);
         File[] oldFiles = repoDir.listFiles((dir, name) -> !".git".equals(name));
         try {
