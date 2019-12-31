@@ -25,21 +25,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="模板名称">
-        <template v-slot="scope">
-          <el-popover
-            placement="right"
-            width="550"
-            trigger="click">
-            <el-scrollbar style="height:100%">
-              <div v-html="convertMarkdown(scope.row.remark)"
-                   style="max-height:500px" class="markdown-body"></div>
-            </el-scrollbar>
-            <el-button slot="reference"
-                       type="text" size="medium">{{scope.row.name}}</el-button>
-          </el-popover>
-        </template>
-      </el-table-column>
+      <el-table-column property="name" label="模板名称"></el-table-column>
       <el-table-column property="templateVersion" width="150" label="版本号"></el-table-column>
       <el-table-column property="sysLowVersion" width="150" label="最低系统兼容"></el-table-column>
       <el-table-column property="operatedTime" width="180" label="更新时间"></el-table-column>
@@ -68,12 +54,6 @@
 import templateFiles from './templateFiles'
 import templateApi from '@/api/template'
 import eventHub from '@/utils/event-hub'
-import showdown from 'showdown'
-
-const converter = new showdown.Converter({
-  emoji: 'true',
-  tables: 'true'
-})
 
 export default {
   name: 'templateList',
@@ -134,9 +114,6 @@ export default {
     },
     handleImport () {
       eventHub.$emit('import-template-show')
-    },
-    convertMarkdown (remark) {
-      return converter.makeHtml(remark)
     }
   },
   activated () {

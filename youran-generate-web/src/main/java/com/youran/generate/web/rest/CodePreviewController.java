@@ -96,9 +96,8 @@ public class CodePreviewController extends AbstractController implements CodePre
     @GetMapping(value = "/code_tree")
     @ResponseBody
     public ResponseEntity<CodeTreeVO> codeTree(@RequestParam Integer projectId,
-                                               @RequestParam Integer templateIndex) {
+                                               @RequestParam Integer templateId) {
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        Integer templateId = project.forceGetTemplateIdByIndex(templateIndex);
         CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
         String projectDir = dataDirService.getProjectRecentDir(project, templatePO);
         File dirFile = new File(projectDir);

@@ -28,24 +28,47 @@
           <svg-icon v-else className="table-cell-icon color-danger" iconClass="times"></svg-icon>
         </template>
       </el-table-column>
-      <el-table-column label="代码模板" width="180">
+      <el-table-column label="使用代码模板" width="260">
         <template v-slot="scope">
           <template v-for="template in [getTemplate(scope.row.templateId),
                                         getTemplate(scope.row.templateId2),
                                         getTemplate(scope.row.templateId3)]">
-            <el-popover v-if="template"
-                        :key="template.templateId"
-                        placement="left"
-                        width="400"
-                        trigger="click">
-              <el-scrollbar style="height:100%">
-                <div v-html="convertMarkdown(template.remark)"
-                     style="max-height:550px" class="markdown-body"></div>
-              </el-scrollbar>
-              <el-button slot="reference" type="text" size="medium">
-                {{ template.name }}<span class="template-version-tag">v{{ template.templateVersion }}</span>
-              </el-button>
-            </el-popover>
+            <el-dropdown v-if="template"
+                         :key="template.templateId"
+                         size="small" trigger="click"
+                         @command="handleCommand"
+                         style="margin:5px;">
+              <el-badge is-dot class="item" :hidden="true">
+                <el-button type="primary" size="mini">
+                  {{ template.name }}
+                </el-button>
+              </el-badge>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item :command="{method:'handleTemplateRemark',arg: [ scope.row , template.remark ]}">
+                  <svg-icon className="dropdown-icon color-primary" iconClass="info"></svg-icon>
+                  模板说明
+                </el-dropdown-item>
+                <el-dropdown-item :command="{method:'handlePreView',arg: [ scope.row , template.templateId ]}">
+                  <svg-icon className="dropdown-icon color-success" iconClass="preview"></svg-icon>
+                  代码预览
+                </el-dropdown-item>
+                <el-dropdown-item :command="{method:'handleGenCode',arg: [ scope.row , template.templateId ]}">
+                  <svg-icon className="dropdown-icon color-primary" iconClass="code-download"></svg-icon>
+                  下载代码
+                </el-dropdown-item>
+                <template v-if="scope.row.remote">
+                  <el-dropdown-item :command="{method:'handleGitDiff',arg: [ scope.row , template.templateId ]}"
+                                    divided>
+                    <svg-icon className="dropdown-icon color-warning" iconClass="diff"></svg-icon>
+                    增量预览<el-badge value="10+" class="mark"></el-badge>
+                  </el-dropdown-item>
+                  <el-dropdown-item :command="{method:'handleCommit',arg: [ scope.row , template.templateId ]}">
+                    <svg-icon className="dropdown-icon color-danger" iconClass="git"></svg-icon>
+                    提交Git
+                  </el-dropdown-item>
+                </template>
+              </el-dropdown-menu>
+            </el-dropdown>
           </template>
         </template>
       </el-table-column>
@@ -85,29 +108,6 @@
                 <svg-icon className="dropdown-icon color-purple" iconClass="download"></svg-icon>
                 导出元数据
               </el-dropdown-item>
-              <el-dropdown-item v-for="(templateIndex, index) in getProjectTemplateIndexs(scope.row)"
-                                :key="'preview_button_' + scope.row.projectId + '_' + templateIndex"
-                                :command="{method:'handlePreView',arg: [ scope.row , templateIndex ]}"
-                                :divided="index===0">
-                <svg-icon :className="'dropdown-icon ' + iconColorClass[index]" iconClass="preview"></svg-icon>
-                代码预览({{ getTemplateName(scope.row, templateIndex) }}）
-              </el-dropdown-item>
-              <el-dropdown-item v-for="(templateIndex, index) in getProjectTemplateIndexs(scope.row)"
-                                :key="'gencode_button_' + scope.row.projectId + '_' + templateIndex"
-                                :command="{method:'handleGenCode',arg: [ scope.row , templateIndex ]}"
-                                :divided="index===0">
-                <svg-icon :className="'dropdown-icon ' + iconColorClass[index]" iconClass="code-download"></svg-icon>
-                下载代码({{ getTemplateName(scope.row, templateIndex) }}）
-              </el-dropdown-item>
-              <template v-if="scope.row.remote">
-                <el-dropdown-item v-for="(templateIndex, index) in getProjectRemoteUrlIndexs(scope.row)"
-                                  :key="'gitcommit_button_' + scope.row.projectId + '_' + templateIndex"
-                                  :command="{method:'handleCommit',arg: [ scope.row , templateIndex ]}"
-                                  :divided="index===0">
-                  <svg-icon :className="'dropdown-icon ' + iconColorClass[index]" iconClass="git"></svg-icon>
-                  提交Git({{ getTemplateName(scope.row, templateIndex) }}）
-                </el-dropdown-item>
-              </template>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -136,6 +136,14 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="模板说明" :visible.sync="templateRemarkVisible" width="60%">
+      <div class="markdown-body" v-html="templateRemarkHtml"></div>
+    </el-dialog>
+
+    <el-dialog title="增量预览" :visible.sync="codeDiffVisible" :fullscreen="true">
+      <div v-html="codeDiffHtml"></div>
+    </el-dialog>
+
     <code-preview ref="codePreview"></code-preview>
   </div>
 </template>
@@ -146,6 +154,8 @@ import templateApi from '@/api/template'
 import CodePreview from './codePreview'
 import ImportProject from './import'
 import showdown from 'showdown'
+import { Diff2Html } from 'diff2html'
+import 'diff2html/dist/diff2html.css'
 
 const converter = new showdown.Converter({
   emoji: 'true',
@@ -174,9 +184,12 @@ export default {
           { max: 10000, message: '长度不能超过10000个字符', trigger: 'blur' }
         ]
       },
-      iconColorClass: ['color-primary', 'color-warning', 'color-success'],
       progressingProjectIds: [],
-      templateList: []
+      templateList: [],
+      templateRemarkVisible: false,
+      templateRemarkHtml: '',
+      codeDiffVisible: false,
+      codeDiffHtml: ''
     }
   },
   methods: {
@@ -207,38 +220,6 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    /**
-     * 获取当前项目的模板序号列表
-     */
-    getProjectTemplateIndexs (row) {
-      const indexs = []
-      if (row.templateId) {
-        indexs.push(1)
-      }
-      if (row.templateId2) {
-        indexs.push(2)
-      }
-      if (row.templateId3) {
-        indexs.push(3)
-      }
-      return indexs
-    },
-    /**
-     * 获取当前项目的远程git仓库序号列表
-     */
-    getProjectRemoteUrlIndexs (row) {
-      const indexs = []
-      if (row.templateId && row.remoteUrl) {
-        indexs.push(1)
-      }
-      if (row.templateId2 && row.remoteUrl2) {
-        indexs.push(2)
-      }
-      if (row.templateId3 && row.remoteUrl3) {
-        indexs.push(3)
-      }
-      return indexs
-    },
     getTemplateList () {
       return templateApi.getList()
         .then(data => {
@@ -248,21 +229,6 @@ export default {
     },
     getTemplate (templateId) {
       return this.templateList.find(t => t.templateId === templateId)
-    },
-    getTemplateName (row, templateIndex) {
-      let tid = null
-      if (templateIndex === 1) {
-        tid = row.templateId
-      } else if (templateIndex === 2) {
-        tid = row.templateId2
-      } else if (templateIndex === 3) {
-        tid = row.templateId3
-      }
-      const template = this.getTemplate(tid)
-      if (template) {
-        return template.name + 'v' + template.templateVersion
-      }
-      return ''
     },
     handleAdd () {
       this.$router.push('/project/add')
@@ -288,17 +254,17 @@ export default {
     handleExport (row) {
       projectApi.exportCodeZip(row.projectId)
     },
-    handlePreView ([row, templateIndex]) {
+    handlePreView ([row, templateId]) {
       const projectId = row.projectId
       projectApi.callCodeGenWebSocketService(
         'gen_code',
-        { 'projectId': projectId, 'templateIndex': templateIndex },
+        { 'projectId': projectId, 'templateId': templateId },
         () => this.progressingProjectIds.push(projectId),
         progressVO => this.rowProgressChange(row, progressVO)
       )
         .then(progressVO => {
           if (progressVO.status === 2) {
-            this.$refs.codePreview.show(row.projectId, row.projectName, templateIndex)
+            this.$refs.codePreview.show(row.projectId, row.projectName, templateId)
           } else {
             this.$common.showNotifyError(progressVO.msg)
           }
@@ -326,12 +292,12 @@ export default {
       }
       return done
     },
-    handleGenCode ([row, templateIndex]) {
+    handleGenCode ([row, templateId]) {
       const projectId = row.projectId
       this.$common.confirm('是否确认下载')
         .then(() => projectApi.callCodeGenWebSocketService(
           'gen_code_and_zip',
-          { 'projectId': projectId, 'templateIndex': templateIndex },
+          { 'projectId': projectId, 'templateId': templateId },
           () => this.progressingProjectIds.push(projectId),
           progressVO => this.rowProgressChange(row, progressVO)
         ))
@@ -390,9 +356,9 @@ export default {
           }
         })
     },
-    handleCommit ([row, templateIndex]) {
+    handleCommit ([row, templateId]) {
       const projectId = row.projectId
-      projectApi.checkCommit(projectId, templateIndex)
+      projectApi.checkCommit(projectId, templateId)
         .then(checkCommitVO => {
           let msg = `首次提交代码到【${checkCommitVO.remoteUrl}】,是否确认？`
           if (!checkCommitVO.firstCommit) {
@@ -403,7 +369,7 @@ export default {
         })
         .then(() => projectApi.callCodeGenWebSocketService(
           'git_commit',
-          { 'projectId': projectId, 'templateIndex': templateIndex },
+          { 'projectId': projectId, 'templateId': templateId },
           () => this.progressingProjectIds.push(projectId),
           progressVO => this.rowProgressChange(row, progressVO)
         ))
@@ -426,8 +392,25 @@ export default {
     handleCommand: function (command) {
       this[command.method](command.arg)
     },
-    convertMarkdown (remark) {
-      return converter.makeHtml(remark)
+    handleTemplateRemark ([row, remark]) {
+      this.templateRemarkVisible = true
+      this.templateRemarkHtml = converter.makeHtml(remark)
+    },
+    /**
+     * 显示git代码差异
+     */
+    handleGitDiff ([row, templateId]) {
+      const projectId = row.projectId
+      projectApi.getGitDiff(projectId, templateId)
+        .then(diffText => {
+          this.codeDiffHtml = Diff2Html.getPrettyHtml(diffText, {
+            inputFormat: 'diff',
+            drawFileList: true,
+            matching: 'lines',
+            outputFormat: 'side-by-side'
+          })
+          this.codeDiffVisible = true
+        })
     }
   },
   activated () {

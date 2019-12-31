@@ -19,6 +19,7 @@ import com.youran.generate.template.renderer.TemplateRendererBuilder;
 import com.youran.generate.util.Zip4jUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,12 +73,12 @@ public class MetaCodeGenService {
      * 生成代码压缩包
      *
      * @param projectId        项目id
-     * @param templateIndex    模板序号
+     * @param templateId       模板id
      * @param progressConsumer 实时反馈进度
      * @return
      */
-    public File genCodeZip(Integer projectId, Integer templateIndex, Consumer<ProgressVO> progressConsumer) {
-        String tmpDir = this.genProjectCodeIfNotExists(projectId, templateIndex, progressConsumer);
+    public File genCodeZip(Integer projectId, Integer templateId, Consumer<ProgressVO> progressConsumer) {
+        String tmpDir = this.genProjectCodeIfNotExists(projectId, templateId, progressConsumer);
         //压缩src目录到zip文件
         this.progressing(progressConsumer, 90, 99, 1, "将项目打包成zip格式");
         File zipFile = new File(tmpDir + ".zip");
@@ -117,16 +118,15 @@ public class MetaCodeGenService {
      * 总体进度20%-80%之间
      *
      * @param projectId        项目id
-     * @param templateIndex    模板序号
+     * @param templateId       模板id
      * @param progressConsumer 进度条
      * @return 代码目录
      */
-    public String genProjectCodeIfNotExists(Integer projectId, Integer templateIndex,
+    public String genProjectCodeIfNotExists(Integer projectId, Integer templateId,
                                             Consumer<ProgressVO> progressConsumer) {
         if (lock.tryLock()) {
             try {
                 MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-                Integer templateId = project.forceGetTemplateIdByIndex(templateIndex);
                 CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
                 // 获取最新代码目录
                 String projectDir = dataDirService.getProjectRecentDir(project, templatePO);
@@ -337,17 +337,16 @@ public class MetaCodeGenService {
      * 提交到仓库
      *
      * @param projectId        项目id
-     * @param templateIndex    模板序号
+     * @param templateId       模板id
      * @param progressConsumer 进度条
      * @return
      */
-    public GenHistoryPO gitCommit(Integer projectId, Integer templateIndex, Consumer<ProgressVO> progressConsumer) {
+    public GenHistoryPO gitCommit(Integer projectId, Integer templateId, Consumer<ProgressVO> progressConsumer) {
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         if (!project.getRemote()) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "当前项目未开启Git仓库");
         }
-        String remoteUrl = project.getRemoteUrlByIndex(templateIndex);
-        Integer templateId = project.forceGetTemplateIdByIndex(templateIndex);
+        String remoteUrl = project.getRemoteUrlByTemplateId(templateId);
         if (StringUtils.isBlank(remoteUrl)) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "仓库地址为空");
         }
@@ -364,24 +363,12 @@ public class MetaCodeGenService {
         String newBranchName = "auto" + DateUtil.getDateStr(now, "yyyyMMddHHmmss");
         GitCredentialDTO credential = this.getCredentialDTO(project);
         this.progressing(progressConsumer, 5, 10, 1, "克隆远程仓库");
-        String repository = gitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
+        Repository repository = gitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
             credential, oldBranchName, newBranchName, lastCommit);
-        File repoDir = new File(repository);
-        File[] oldFiles = repoDir.listFiles((dir, name) -> !".git".equals(name));
-        try {
-            this.progressing(progressConsumer, 6, 10, 1, "清空旧代码");
-            for (File oldFile : oldFiles) {
-                FileUtils.forceDelete(oldFile);
-            }
-            //生成代码20%-80%
-            String genDir = this.genProjectCodeIfNotExists(projectId, templateIndex, progressConsumer);
-            this.progressing(progressConsumer, 81, 85, 1, "拷贝新生成的代码");
-            FileUtils.copyDirectory(new File(genDir), repoDir);
-        } catch (IOException e) {
-            LOGGER.error("IO异常", e);
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "操作失败");
-        }
-        this.progressing(progressConsumer, 90, 99, 1, "提交到远程仓库");
+        // 将代码生成到本地repo目录
+        this.genProjectCodeIntoRepository(projectId, templateId, progressConsumer, repository);
+        // 提交并push到远程仓库
+        this.progressing(progressConsumer, 90, 99, 1, "提交并push到远程仓库");
         String commit = gitService.commitAll(repository,
             DateUtil.getDateStr(now, "yyyy-MM-dd HH:mm:ss") +
                 (StringUtils.isBlank(oldBranchName) ? "首次生成代码" : "增量生成代码"),
@@ -390,6 +377,70 @@ public class MetaCodeGenService {
         GenHistoryPO history = genHistoryService.save(project, codeTemplate,
             remoteUrl, commit, newBranchName);
         return history;
+    }
+
+    /**
+     * 显示git代码差异
+     *
+     * @param projectId        项目id
+     * @param templateId       模板id
+     * @param progressConsumer 进度条
+     * @return
+     */
+    public String showGitDiff(Integer projectId, Integer templateId, Consumer<ProgressVO> progressConsumer) {
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
+        if (!project.getRemote()) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "当前项目未开启Git仓库");
+        }
+        String remoteUrl = project.getRemoteUrlByTemplateId(templateId);
+        if (StringUtils.isBlank(remoteUrl)) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "仓库地址为空");
+        }
+        CodeTemplatePO codeTemplate = codeTemplateService.getCodeTemplate(templateId, true);
+        String oldBranchName = null;
+        String lastCommit = null;
+        GenHistoryPO genHistory = genHistoryService.findLastGenHistory(project.getProjectId(), remoteUrl);
+        if (genHistory != null) {
+            genHistoryService.checkVersion(project, codeTemplate, genHistory);
+            oldBranchName = genHistory.getBranch();
+            lastCommit = genHistory.getCommit();
+        }
+        GitCredentialDTO credential = this.getCredentialDTO(project);
+        this.progressing(progressConsumer, 5, 10, 1, "克隆远程仓库");
+        Repository repository = gitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
+            credential, oldBranchName, null, lastCommit);
+        // 将代码生成到本地repo目录
+        this.genProjectCodeIntoRepository(projectId, templateId, progressConsumer, repository);
+        // 显示差异代码
+        return gitService.getDiffText(repository);
+    }
+
+
+    /**
+     * 将代码生成到本地repo目录
+     *
+     * @param projectId        项目id
+     * @param templateId       模板id
+     * @param progressConsumer 进度条
+     * @param repository       本地仓库
+     */
+    private void genProjectCodeIntoRepository(Integer projectId, Integer templateId,
+                                              Consumer<ProgressVO> progressConsumer, Repository repository) {
+        File repoDir = repository.getDirectory().getParentFile();
+        File[] oldFiles = repoDir.listFiles((dir, name) -> !".git".equals(name));
+        try {
+            this.progressing(progressConsumer, 6, 10, 1, "清空旧代码");
+            for (File oldFile : oldFiles) {
+                FileUtils.forceDelete(oldFile);
+            }
+            //生成代码20%-80%
+            String genDir = this.genProjectCodeIfNotExists(projectId, templateId, progressConsumer);
+            this.progressing(progressConsumer, 81, 85, 1, "拷贝新生成的代码");
+            FileUtils.copyDirectory(new File(genDir), repoDir);
+        } catch (IOException e) {
+            LOGGER.error("IO异常", e);
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "操作失败");
+        }
     }
 
     /**

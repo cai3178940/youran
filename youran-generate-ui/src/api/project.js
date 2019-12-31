@@ -105,12 +105,26 @@ export default {
   /**
    * 校验git提交
    */
-  checkCommit (projectId, templateIndex) {
+  checkCommit (projectId, templateId) {
     return request.get(`/${apiPath}/code_gen/check_commit`,
       {
         params: {
           'projectId': projectId,
-          'templateIndex': templateIndex
+          'templateId': templateId
+        }
+      })
+      .then(response => checkResult(response))
+  },
+  /**
+   * 获取git代码差异
+   */
+  getGitDiff (projectId, templateId) {
+    return request.get(`/${apiPath}/code_gen/git_diff`,
+      {
+        responseType: 'text',
+        params: {
+          'projectId': projectId,
+          'templateId': templateId
         }
       })
       .then(response => checkResult(response))
@@ -118,12 +132,12 @@ export default {
   /**
    * 获取代码目录树
    */
-  getCodeTree (projectId, templateIndex) {
+  getCodeTree (projectId, templateId) {
     return request.get(`/${apiPath}/code_preview/code_tree`,
       {
         params: {
           'projectId': projectId,
-          'templateIndex': templateIndex
+          'templateId': templateId
         }
       })
       .then(response => checkResult(response))

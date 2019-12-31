@@ -91,7 +91,7 @@ export default {
   data () {
     return {
       projectId: null,
-      templateIndex: null,
+      templateId: null,
       projectName: '',
       treeProps: {
         children: 'children',
@@ -190,18 +190,18 @@ export default {
         rightTabNames.forEach(name => this.removeTab(name))
       }
     },
-    initData (projectId, projectName, templateIndex) {
+    initData (projectId, projectName, templateId) {
       this.projectId = projectId
       this.projectName = projectName
-      this.templateIndex = templateIndex
+      this.templateId = templateId
       this.codeTree.tree = []
       this.paths = []
       this.codeTabs = []
     },
-    show (projectId, projectName, templateIndex) {
+    show (projectId, projectName, templateId) {
       this.visible = true
-      this.initData(projectId, projectName, templateIndex)
-      this.queryCodeTree(projectId, templateIndex)
+      this.initData(projectId, projectName, templateId)
+      this.queryCodeTree(projectId, templateId)
     },
     /**
      * 菜单自由伸缩
@@ -231,9 +231,9 @@ export default {
       splitLine.setCapture && splitLine.setCapture()
       return false
     },
-    queryCodeTree (projectId, templateIndex) {
+    queryCodeTree (projectId, templateId) {
       this.codeTreeLoading = true
-      return projectApi.getCodeTree(projectId, templateIndex)
+      return projectApi.getCodeTree(projectId, templateId)
         .then(data => { this.codeTree = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.codeTreeLoading = false })

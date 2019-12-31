@@ -33,9 +33,9 @@ public interface CodePreviewAPI {
     @ApiOperation(value = "查看代码目录结构")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
-        @ApiImplicitParam(name = "templateIndex", dataType = "int", value = "模板序号", paramType = "query")
+        @ApiImplicitParam(name = "templateId", dataType = "int", value = "模板id", paramType = "query")
     })
-    ResponseEntity<CodeTreeVO> codeTree(Integer projectId, Integer templateIndex);
+    ResponseEntity<CodeTreeVO> codeTree(Integer projectId, Integer templateId);
 
 
 }

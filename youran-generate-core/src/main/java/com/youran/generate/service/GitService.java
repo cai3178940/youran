@@ -8,20 +8,29 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.diff.RawTextComparator;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -46,8 +55,8 @@ public class GitService {
      * @param lastCommit    上次commit
      * @return
      */
-    public String cloneRemoteRepository(String projectName, String remoteUrl, GitCredentialDTO credential,
-                                        String oldBranchName, String newBranchName, String lastCommit) {
+    public Repository cloneRemoteRepository(String projectName, String remoteUrl, GitCredentialDTO credential,
+                                            String oldBranchName, String newBranchName, String lastCommit) {
 
         try {
             // 创建临时文件，并删除该文件，通过该方式防止文件夹已经被占用
@@ -95,13 +104,15 @@ public class GitService {
                     // 校验上一次commit是否匹配
                     this.checkLastCommit(git, lastCommit, oldBranchName);
                 }
-                // 创建分支
-                git.branchCreate()
-                    .setName(newBranchName)
-                    .call();
-                // checkout分支
-                git.checkout().setName(newBranchName).call();
-                return git.getRepository().getDirectory().getParent();
+                if (StringUtils.isNotBlank(newBranchName)) {
+                    // 创建分支
+                    git.branchCreate()
+                        .setName(newBranchName)
+                        .call();
+                    // checkout分支
+                    git.checkout().setName(newBranchName).call();
+                }
+                return git.getRepository();
             }
         } catch (IOException e) {
             LOGGER.error("clone仓库异常", e);
@@ -138,17 +149,14 @@ public class GitService {
     /**
      * 将整个仓库提交+推送远程
      *
-     * @param repoDir 仓库目录
+     * @param repository 本地仓库
      * @return
      */
-    public String commitAll(String repoDir, String message, GitCredentialDTO credential) {
+    public String commitAll(Repository repository, String message, GitCredentialDTO credential) {
+        Assert.notNull(repository, "本地仓库为空");
         CredentialsProvider credentialsProvider = null;
         if (credential != null) {
             credentialsProvider = new UsernamePasswordCredentialsProvider(credential.getUsername(), credential.getPassword());
-        }
-        Repository repository = this.openRepository(repoDir);
-        if (repository == null) {
-            return null;
         }
         try (Git git = new Git(repository)) {
             // add所有文件
@@ -191,6 +199,41 @@ public class GitService {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "打开仓库异常");
         }
         return repository;
+    }
+
+    /**
+     * 获取仓库的代码差异
+     *
+     * @param repository
+     * @return
+     */
+    public String getDiffText(Repository repository) {
+        try (Git git = new Git(repository)) {
+            ObjectId head = repository.resolve("HEAD^{tree}");
+            ObjectId old = repository.resolve("HEAD~1^{tree}");
+            ObjectReader reader = repository.newObjectReader();
+            CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+            oldTreeIter.reset(reader, old);
+            CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+            newTreeIter.reset(reader, head);
+            List<DiffEntry> diffs = git.diff()
+                .setNewTree(newTreeIter)
+                .setOldTree(oldTreeIter)
+                .call();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            DiffFormatter df = new DiffFormatter(out);
+            df.setRepository(repository);
+            df.setDiffComparator(RawTextComparator.DEFAULT);
+            df.setDetectRenames(true);
+            df.format(diffs);
+            return out.toString("UTF-8");
+        } catch (GitAPIException e) {
+            LOGGER.error("显示代码差异异常", e);
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "显示代码差异异常");
+        } catch (IOException e) {
+            LOGGER.error("显示代码差异异常", e);
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "显示代码差异异常");
+        }
     }
 
 

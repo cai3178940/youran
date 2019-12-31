@@ -1,12 +1,11 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.youran.common.constant.ErrorCode;
-import com.youran.common.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Arrays.stream;
 
@@ -117,40 +116,18 @@ public class MetaProjectPO extends BasePO {
     private List<MetaManyToManyPO> mtms;
 
     /**
-     * 根据序号获取模板id
-     * <p>获取不到则抛出异常
-     *
-     * @param index
-     * @return
-     */
-    public Integer forceGetTemplateIdByIndex(int index) {
-        Integer id = null;
-        if (index == 1) {
-            id = templateId;
-        } else if (index == 2) {
-            id = templateId2;
-        } else if (index == 3) {
-            id = templateId3;
-        }
-        if (id == null) {
-            throw new BusinessException(ErrorCode.BAD_PARAMETER, "模板未设置");
-        }
-        return id;
-    }
-
-    /**
      * 根据序号获取远程git仓库地址
      *
-     * @param index
+     * @param templateId
      * @return
      */
-    public String getRemoteUrlByIndex(int index) {
+    public String getRemoteUrlByTemplateId(Integer templateId) {
         String url = null;
-        if (index == 1) {
+        if (Objects.equals(templateId, this.templateId)) {
             url = remoteUrl;
-        } else if (index == 2) {
+        } else if (Objects.equals(templateId, this.templateId2)) {
             url = remoteUrl2;
-        } else if (index == 3) {
+        } else if (Objects.equals(templateId, this.templateId3)) {
             url = remoteUrl3;
         }
         return url;
