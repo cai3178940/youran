@@ -357,7 +357,7 @@ public class MetaCodeGenService {
         Integer lastVersion = 0;
         GenHistoryPO genHistory = genHistoryService.findLastGenHistory(project.getProjectId(), remoteUrl);
         if (genHistory != null) {
-            if(!genHistoryService.checkVersion(project, codeTemplate, genHistory)){
+            if (!genHistoryService.checkVersion(project, codeTemplate, genHistory)) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "远程仓库分支【" + genHistory.getBranch() + "】已经是最新版本");
             }
             oldBranchName = genHistory.getBranch();
@@ -410,7 +410,7 @@ public class MetaCodeGenService {
         Integer lastVersion = 0;
         GenHistoryPO genHistory = genHistoryService.findLastGenHistory(project.getProjectId(), remoteUrl);
         if (genHistory != null) {
-            if(!genHistoryService.checkVersion(project, codeTemplate, genHistory)){
+            if (!genHistoryService.checkVersion(project, codeTemplate, genHistory)) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "上次提交以来，元数据无变动");
             }
             oldBranchName = genHistory.getBranch();
@@ -427,6 +427,10 @@ public class MetaCodeGenService {
         this.progressing(progressConsumer, 90, 99, 1, "提交到暂存区");
         // 提交到暂存区
         String stash = gitService.createStash(repository);
+        // 如果代码无变化，则直接返回空字符串
+        if (stash == null) {
+            return "";
+        }
         this.progressing(progressConsumer, 90, 99, 1, "获取差异代码");
         // 获取差异代码
         return gitService.getStashDiff(repository, stash);

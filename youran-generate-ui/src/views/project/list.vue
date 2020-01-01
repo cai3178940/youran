@@ -407,13 +407,17 @@ export default {
       )
         .then(progressVO => {
           if (progressVO.status === 2) {
-            this.codeDiffHtml = Diff2Html.getPrettyHtml(progressVO.data, {
-              inputFormat: 'diff',
-              showFiles: true,
-              matching: 'lines',
-              outputFormat: 'line-by-line'
-            })
-            this.codeDiffVisible = true
+            if (!progressVO.data) {
+              this.$common.showNotifyError('代码无变动')
+            } else {
+              this.codeDiffHtml = Diff2Html.getPrettyHtml(progressVO.data, {
+                inputFormat: 'diff',
+                showFiles: true,
+                matching: 'lines',
+                outputFormat: 'line-by-line'
+              })
+              this.codeDiffVisible = true
+            }
           } else {
             this.$common.showNotifyError(progressVO.msg)
           }

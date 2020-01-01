@@ -212,6 +212,9 @@ public class GitService {
             git.add().addFilepattern(".").call();
             // 全部提交
             RevCommit commit = git.stashCreate().call();
+            if (commit == null) {
+                return null;
+            }
             return commit.getName();
         } catch (GitAPIException e) {
             LOGGER.error("提交到暂存区异常", e);
