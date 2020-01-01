@@ -38,11 +38,9 @@
                          size="small" trigger="click"
                          @command="handleCommand"
                          style="margin:5px;">
-              <el-badge is-dot class="item" :hidden="true">
-                <el-button type="primary" size="mini">
-                  {{ template.name }}
-                </el-button>
-              </el-badge>
+              <el-button type="primary" size="mini">
+                {{ template.name }}
+              </el-button>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{method:'handleTemplateRemark',arg: [ scope.row , template.remark ]}">
                   <svg-icon className="dropdown-icon color-primary" iconClass="info"></svg-icon>
@@ -60,7 +58,7 @@
                   <el-dropdown-item :command="{method:'handleGitDiff',arg: [ scope.row , template.templateId ]}"
                                     divided>
                     <svg-icon className="dropdown-icon color-warning" iconClass="diff"></svg-icon>
-                    增量预览<el-badge value="10+" class="mark"></el-badge>
+                    增量预览
                   </el-dropdown-item>
                   <el-dropdown-item :command="{method:'handleCommit',arg: [ scope.row , template.templateId ]}">
                     <svg-icon className="dropdown-icon color-danger" iconClass="git"></svg-icon>
@@ -360,10 +358,10 @@ export default {
       const projectId = row.projectId
       projectApi.checkCommit(projectId, templateId)
         .then(checkCommitVO => {
-          let msg = `首次提交代码到【${checkCommitVO.remoteUrl}】,是否确认？`
+          let msg = `首次提交代码到【${checkCommitVO.remoteUrl}】,是否继续？`
           if (!checkCommitVO.firstCommit) {
             const lastGen = checkCommitVO.lastGenHistory
-            msg = `即将从【${checkCommitVO.remoteUrl}】拉取上次的分支【${lastGen.branch}】并在此基础上增量提交一个新分支,是否确认？`
+            msg = `即将从【${checkCommitVO.remoteUrl}】拉取分支【${lastGen.branch}】并在此基础上执行增量提交,是否继续？`
           }
           return this.$common.confirm(msg)
         })
@@ -401,16 +399,26 @@ export default {
      */
     handleGitDiff ([row, templateId]) {
       const projectId = row.projectId
-      projectApi.getGitDiff(projectId, templateId)
-        .then(diffText => {
-          this.codeDiffHtml = Diff2Html.getPrettyHtml(diffText, {
-            inputFormat: 'diff',
-            drawFileList: true,
-            matching: 'lines',
-            outputFormat: 'side-by-side'
-          })
-          this.codeDiffVisible = true
+      projectApi.callCodeGenWebSocketService(
+        'git_diff',
+        { 'projectId': projectId, 'templateId': templateId },
+        () => this.progressingProjectIds.push(projectId),
+        progressVO => this.rowProgressChange(row, progressVO)
+      )
+        .then(progressVO => {
+          if (progressVO.status === 2) {
+            this.codeDiffHtml = Diff2Html.getPrettyHtml(progressVO.data, {
+              inputFormat: 'diff',
+              showFiles: true,
+              matching: 'lines',
+              outputFormat: 'line-by-line'
+            })
+            this.codeDiffVisible = true
+          } else {
+            this.$common.showNotifyError(progressVO.msg)
+          }
         })
+        .finally(() => this.removeProgress(row))
     }
   },
   activated () {

@@ -27,6 +27,11 @@ public class GenerateProperties {
     private String dataDir;
 
     /**
+     * 自动分支名称
+     */
+    private String autoBranchName;
+
+    /**
      * 本地开发工程路径
      */
     private String devProjectDir;
@@ -101,5 +106,11 @@ public class GenerateProperties {
         this.devProjectDir = devProjectDir;
     }
 
+    public String getAutoBranchName() {
+        return autoBranchName;
+    }
 
+    public void setAutoBranchName(String autoBranchName) {
+        this.autoBranchName = autoBranchName;
+    }
 }

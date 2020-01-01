@@ -72,7 +72,7 @@ public class MetaCodeGenController extends AbstractController implements MetaCod
     public ResponseEntity<String> gitCommit(@RequestParam Integer projectId,
                                             @RequestParam Integer templateId) {
         GenHistoryPO genHistory = metaCodeGenService.gitCommit(projectId, templateId, null);
-        return ResponseEntity.ok("已创建自动分支【" + genHistory.getBranch() + "】，并提交到远程");
+        return ResponseEntity.ok("已在【" + genHistory.getBranch() + "】分支提交最新代码，并push到远程");
     }
 
     @Override

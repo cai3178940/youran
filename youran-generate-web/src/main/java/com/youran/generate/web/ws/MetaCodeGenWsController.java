@@ -177,7 +177,41 @@ public class MetaCodeGenWsController extends AbstractController {
             // 提交到仓库
             GenHistoryPO history = metaCodeGenService.gitCommit(projectId, templateId,
                 progressVO -> this.replyProgress(topic, progressVO));
-            this.replyProgress(topic, ProgressVO.success("已创建自动分支【" + history.getBranch() + "】，并提交到远程"));
+            this.replyProgress(topic, ProgressVO.success("已在【" + history.getBranch() + "】分支提交最新代码，并push到远程"));
+        } catch (BusinessException e) {
+            // 如果捕获到异常，则将异常也通知给前端浏览器
+            this.replyProgress(topic, ProgressVO.error(e.getMessage()));
+        } catch (Exception e) {
+            // 如果捕获到异常，则将异常也通知给前端浏览器
+            this.replyProgress(topic, ProgressVO.error("系统内部错误"));
+            LOGGER.error("提交Git异常", e);
+        }
+    }
+
+
+    /**
+     * websocket服务:显示git代码差异
+     *
+     * @param sessionId      websocket连接id
+     * @param projectId      项目id
+     * @param templateId     模板id
+     * @param authentication 当前用户授权信息
+     */
+    @MessageMapping(value = "/git_diff/{sessionId}")
+    public void gitDiff(@DestinationVariable String sessionId,
+                          @Header Integer projectId,
+                          @Header Integer templateId,
+                          GenerateAuthentication authentication) {
+        this.checkAuthentication(authentication);
+        // 进度响应主题
+        String topic = "/code_gen/git_diff_progress/" + sessionId;
+        try {
+            // 初始化进度条
+            ProgressVO.initProgress(sessionId);
+            // 提交到仓库
+            String diffText = metaCodeGenService.showGitDiff(projectId, templateId,
+                progressVO -> this.replyProgress(topic, progressVO));
+            this.replyProgress(topic, ProgressVO.success("成功获取代码差异", diffText));
         } catch (BusinessException e) {
             // 如果捕获到异常，则将异常也通知给前端浏览器
             this.replyProgress(topic, ProgressVO.error(e.getMessage()));

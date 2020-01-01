@@ -26,6 +26,7 @@ mybatis:
     config-location: classpath:mybatis-config.xml
 
 youran:
+    autoBranchName: auto
     aesKey: orpNB6YGbiiDcrrubk2rFQ==
     version: 3.0.0
     apiPath: /api

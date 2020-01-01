@@ -47,13 +47,12 @@
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit</artifactId>
-            <version>4.11.0.201803080745-r</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit.archive</artifactId>
-            <version>4.11.0.201803080745-r</version>
         </dependency>
+
         <!-- 数据库连接池，这里主要用来解析sql -->
         <dependency>
             <groupId>com.alibaba</groupId>

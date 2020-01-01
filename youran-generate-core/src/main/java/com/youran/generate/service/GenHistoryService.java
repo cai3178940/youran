@@ -113,14 +113,15 @@ public class GenHistoryService {
      * @param codeTemplate 代码模板
      * @param genHistory   上一次生成历史
      */
-    public void checkVersion(MetaProjectPO project, CodeTemplatePO codeTemplate, GenHistoryPO genHistory) {
+    public boolean checkVersion(MetaProjectPO project, CodeTemplatePO codeTemplate, GenHistoryPO genHistory) {
         if (Objects.equals(genHistory.getProjectVersion(), project.getProjectVersion())
             && Objects.equals(genHistory.getSysVersion(), generateProperties.getVersion())
             && Objects.equals(codeTemplate.getTemplateId(), genHistory.getTemplateId())
             && Objects.equals(codeTemplate.getInnerVersion(), genHistory.getTemplateInnerVersion())
         ) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "远程仓库分支【" + genHistory.getBranch() + "】已经是最新版本");
+            return false;
         }
+        return true;
     }
 
 }

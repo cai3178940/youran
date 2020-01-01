@@ -354,25 +354,33 @@ public class MetaCodeGenService {
         Date now = new Date();
         String oldBranchName = null;
         String lastCommit = null;
+        Integer lastVersion = 0;
         GenHistoryPO genHistory = genHistoryService.findLastGenHistory(project.getProjectId(), remoteUrl);
         if (genHistory != null) {
-            genHistoryService.checkVersion(project, codeTemplate, genHistory);
+            if(!genHistoryService.checkVersion(project, codeTemplate, genHistory)){
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "远程仓库分支【" + genHistory.getBranch() + "】已经是最新版本");
+            }
             oldBranchName = genHistory.getBranch();
             lastCommit = genHistory.getCommit();
+            lastVersion = genHistory.getProjectVersion();
         }
-        String newBranchName = "auto" + DateUtil.getDateStr(now, "yyyyMMddHHmmss");
+        // 3.1.0之后使用auto分支作为新分支
+        String newBranchName = generateProperties.getAutoBranchName();
+        String repoDir = dataDirService.getProjectRepoDir(projectId, templateId, lastVersion);
         GitCredentialDTO credential = this.getCredentialDTO(project);
         this.progressing(progressConsumer, 5, 10, 1, "克隆远程仓库");
-        Repository repository = gitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
+        Repository repository = gitService.getClonedRemoteRepository(repoDir, remoteUrl,
             credential, oldBranchName, newBranchName, lastCommit);
         // 将代码生成到本地repo目录
         this.genProjectCodeIntoRepository(projectId, templateId, progressConsumer, repository);
-        // 提交并push到远程仓库
-        this.progressing(progressConsumer, 90, 99, 1, "提交并push到远程仓库");
+        // 提交到本地仓库
+        this.progressing(progressConsumer, 90, 99, 1, "提交到本地仓库");
         String commit = gitService.commitAll(repository,
             DateUtil.getDateStr(now, "yyyy-MM-dd HH:mm:ss") +
-                (StringUtils.isBlank(oldBranchName) ? "首次生成代码" : "增量生成代码"),
-            credential);
+                (StringUtils.isBlank(oldBranchName) ? "首次生成代码" : "增量生成代码"));
+        // 推送远程仓库
+        this.progressing(progressConsumer, 90, 99, 1, "推送远程仓库");
+        gitService.push(repository, credential);
         // 创建提交历史
         GenHistoryPO history = genHistoryService.save(project, codeTemplate,
             remoteUrl, commit, newBranchName);
@@ -399,20 +407,29 @@ public class MetaCodeGenService {
         CodeTemplatePO codeTemplate = codeTemplateService.getCodeTemplate(templateId, true);
         String oldBranchName = null;
         String lastCommit = null;
+        Integer lastVersion = 0;
         GenHistoryPO genHistory = genHistoryService.findLastGenHistory(project.getProjectId(), remoteUrl);
         if (genHistory != null) {
-            genHistoryService.checkVersion(project, codeTemplate, genHistory);
+            if(!genHistoryService.checkVersion(project, codeTemplate, genHistory)){
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "上次提交以来，元数据无变动");
+            }
             oldBranchName = genHistory.getBranch();
             lastCommit = genHistory.getCommit();
+            lastVersion = genHistory.getProjectVersion();
         }
+        String repoDir = dataDirService.getProjectRepoDir(projectId, templateId, lastVersion);
         GitCredentialDTO credential = this.getCredentialDTO(project);
         this.progressing(progressConsumer, 5, 10, 1, "克隆远程仓库");
-        Repository repository = gitService.cloneRemoteRepository(project.getProjectName(), remoteUrl,
-            credential, oldBranchName, null, lastCommit);
+        Repository repository = gitService.getClonedRemoteRepository(repoDir, remoteUrl,
+            credential, oldBranchName, generateProperties.getAutoBranchName(), lastCommit);
         // 将代码生成到本地repo目录
         this.genProjectCodeIntoRepository(projectId, templateId, progressConsumer, repository);
-        // 显示差异代码
-        return gitService.getDiffText(repository);
+        this.progressing(progressConsumer, 90, 99, 1, "提交到暂存区");
+        // 提交到暂存区
+        String stash = gitService.createStash(repository);
+        this.progressing(progressConsumer, 90, 99, 1, "获取差异代码");
+        // 获取差异代码
+        return gitService.getStashDiff(repository, stash);
     }
 
 

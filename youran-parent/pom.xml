@@ -40,6 +40,7 @@
         <zip4j.version>2.2.4</zip4j.version>
         <mysql2h2.version>0.2.1</mysql2h2.version>
         <druid.version>1.1.21</druid.version>
+        <jgit.version>5.6.0.201912101111-r</jgit.version>
     </properties>
 
     <dependencyManagement>
@@ -166,6 +167,19 @@
                 <artifactId>druid</artifactId>
                 <version>${druid.version}</version>
             </dependency>
+
+            <!-- java操作git工具 https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit -->
+            <dependency>
+                <groupId>org.eclipse.jgit</groupId>
+                <artifactId>org.eclipse.jgit</artifactId>
+                <version>${jgit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jgit</groupId>
+                <artifactId>org.eclipse.jgit.archive</artifactId>
+                <version>${jgit.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

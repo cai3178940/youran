@@ -45,36 +45,54 @@ public class GitService {
     private final static Logger LOGGER = LoggerFactory.getLogger(GitService.class);
 
     /**
-     * clone远程仓库+checkout旧分支+创建新分支
+     * 获取从远程克隆下来的git仓库
      *
-     * @param projectName   项目名
+     * @param repoDir       仓库地址
      * @param remoteUrl     远程地址
      * @param credential    认证信息
-     * @param oldBranchName 旧分支
-     * @param newBranchName 新分支
+     * @param oldBranchName 旧分支，3.1.0之后都是auto分支
+     * @param newBranchName 新分支，3.1.0之后都是auto分支
      * @param lastCommit    上次commit
      * @return
      */
-    public Repository cloneRemoteRepository(String projectName, String remoteUrl, GitCredentialDTO credential,
+    public Repository getClonedRemoteRepository(String repoDir, String remoteUrl, GitCredentialDTO credential,
+                                                String oldBranchName, String newBranchName, String lastCommit) {
+        File repoDirFile = new File(repoDir);
+
+        File repoGitFile = new File(repoDirFile, ".git");
+        // 如果之前已经clone过了，直接返回
+        if (repoGitFile.exists()) {
+            return this.openRepository(repoDir);
+        }
+        File parentFile = repoDirFile.getParentFile();
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        return this.cloneRemoteRepository(repoDirFile, remoteUrl, credential,
+            oldBranchName, newBranchName, lastCommit);
+    }
+
+    /**
+     * clone远程仓库+checkout旧分支+创建新分支
+     *
+     * @param repoDirFile   仓库地址
+     * @param remoteUrl     远程地址
+     * @param credential    认证信息
+     * @param oldBranchName 旧分支，3.1.0之后都是auto分支
+     * @param newBranchName 新分支，3.1.0之后都是auto分支
+     * @param lastCommit    上次commit
+     * @return
+     */
+    public Repository cloneRemoteRepository(File repoDirFile, String remoteUrl, GitCredentialDTO credential,
                                             String oldBranchName, String newBranchName, String lastCommit) {
-
         try {
-            // 创建临时文件，并删除该文件，通过该方式防止文件夹已经被占用
-            File repoDir = File.createTempFile(projectName, "");
-            if (!repoDir.delete()) {
-                throw new IOException("Could not delete temporary file " + repoDir);
-            }
-            LOGGER.info("从远程仓库clone,仓库地址=" + remoteUrl + " , 目录=" + repoDir +
-                "老分支=" + oldBranchName + "新分支=" + newBranchName);
-
+            LOGGER.info("从远程仓库clone,远程仓库地址=" + remoteUrl +
+                " , 目录=" + repoDirFile.getPath() +
+                " , 老分支=" + oldBranchName + " , 新分支=" + newBranchName);
             CloneCommand cloneCommand = Git.cloneRepository()
                 .setURI(remoteUrl)
                 .setCloneAllBranches(true)
-                .setDirectory(repoDir);
-            // 如果指定了旧分支，则只clone该分支
-            /*if(StringUtils.isNotBlank(oldBranchName)){
-                cloneCommand.setBranchesToClone(Arrays.asList(oldBranchName));
-            }*/
+                .setDirectory(repoDirFile);
             // 认证
             CredentialsProvider credentialsProvider = null;
             if (credential != null) {
@@ -93,6 +111,8 @@ public class GitService {
                         .setAll(true)
                         .setMessage("首次提交")
                         .call();
+                    // 以后都在auto分支上提交代码
+                    this.checkoutNewBranch(git, newBranchName);
                 } else {
                     // 创建本地老分支
                     git.branchCreate()
@@ -102,21 +122,14 @@ public class GitService {
                     // check到老分支
                     git.checkout().setName(oldBranchName).call();
                     // 校验上一次commit是否匹配
-                    this.checkLastCommit(git, lastCommit, oldBranchName);
-                }
-                if (StringUtils.isNotBlank(newBranchName)) {
-                    // 创建分支
-                    git.branchCreate()
-                        .setName(newBranchName)
-                        .call();
-                    // checkout分支
-                    git.checkout().setName(newBranchName).call();
+                    this.checkLastCommit(git, lastCommit);
+                    // 兼容3.1.0之前的版本，需要checkout新分支
+                    if (!Objects.equals(oldBranchName, newBranchName)) {
+                        this.checkoutNewBranch(git, newBranchName);
+                    }
                 }
                 return git.getRepository();
             }
-        } catch (IOException e) {
-            LOGGER.error("clone仓库异常", e);
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "clone仓库异常");
         } catch (GitAPIException e) {
             LOGGER.error("clone仓库异常", e);
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "clone仓库异常");
@@ -124,14 +137,29 @@ public class GitService {
     }
 
     /**
+     * checkout新分支
+     *
+     * @param git
+     * @param newBranchName 新分支名称，3.1.0之后都是auto分支
+     * @throws GitAPIException
+     */
+    private void checkoutNewBranch(Git git, String newBranchName) throws GitAPIException {
+        // 创建分支
+        git.branchCreate()
+            .setName(newBranchName)
+            .call();
+        // checkout分支
+        git.checkout().setName(newBranchName).call();
+    }
+
+    /**
      * 校验上一次commit是否匹配
      *
      * @param git
      * @param lastCommit
-     * @param branchName
      * @throws GitAPIException
      */
-    private void checkLastCommit(Git git, String lastCommit, String branchName) throws GitAPIException {
+    private void checkLastCommit(Git git, String lastCommit) throws GitAPIException {
         // 如果不存在lastCommit，则直接返回
         if (StringUtils.isBlank(lastCommit)) {
             return;
@@ -141,23 +169,20 @@ public class GitService {
             RevCommit next = iterator.next();
             if (!Objects.equals(next.getName(), lastCommit)) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
-                    "分支【" + branchName + "】被污染了，估计是您在该分支上手动提交了代码，请手动执行reset。友情提示：请不要对auto分支做任何修改");
+                    "auto分支被污染了，估计是您在该分支上手动提交了代码，请手动执行reset。友情提示：请不要对auto分支做任何修改");
             }
         }
     }
 
+
     /**
-     * 将整个仓库提交+推送远程
+     * 提交到本地仓库
      *
      * @param repository 本地仓库
      * @return
      */
-    public String commitAll(Repository repository, String message, GitCredentialDTO credential) {
+    public String commitAll(Repository repository, String message) {
         Assert.notNull(repository, "本地仓库为空");
-        CredentialsProvider credentialsProvider = null;
-        if (credential != null) {
-            credentialsProvider = new UsernamePasswordCredentialsProvider(credential.getUsername(), credential.getPassword());
-        }
         try (Git git = new Git(repository)) {
             // add所有文件
             git.add().addFilepattern(".").call();
@@ -166,15 +191,53 @@ public class GitService {
                 .setAll(true)
                 .setMessage(message)
                 .call();
-
-            git.push()
-                .setCredentialsProvider(credentialsProvider)
-                .call();
-
             return commit.getName();
         } catch (GitAPIException e) {
             LOGGER.error("提交仓库异常", e);
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "提交仓库异常");
+        }
+    }
+
+
+    /**
+     * 提交到暂存区
+     *
+     * @param repository 本地仓库
+     * @return
+     */
+    public String createStash(Repository repository) {
+        Assert.notNull(repository, "本地仓库为空");
+        try (Git git = new Git(repository)) {
+            // add所有文件
+            git.add().addFilepattern(".").call();
+            // 全部提交
+            RevCommit commit = git.stashCreate().call();
+            return commit.getName();
+        } catch (GitAPIException e) {
+            LOGGER.error("提交到暂存区异常", e);
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "提交到暂存区异常");
+        }
+    }
+
+    /**
+     * 推送远程仓库
+     *
+     * @param repository 本地仓库
+     * @return
+     */
+    public void push(Repository repository, GitCredentialDTO credential) {
+        Assert.notNull(repository, "本地仓库为空");
+        CredentialsProvider credentialsProvider = null;
+        if (credential != null) {
+            credentialsProvider = new UsernamePasswordCredentialsProvider(credential.getUsername(), credential.getPassword());
+        }
+        try (Git git = new Git(repository)) {
+            git.push()
+                .setCredentialsProvider(credentialsProvider)
+                .call();
+        } catch (GitAPIException e) {
+            LOGGER.error("推送远程仓库异常", e);
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "推送远程仓库异常");
         }
     }
 
@@ -202,20 +265,20 @@ public class GitService {
     }
 
     /**
-     * 获取仓库的代码差异
+     * 获取暂存区和HEAD的差异
      *
      * @param repository
      * @return
      */
-    public String getDiffText(Repository repository) {
+    public String getStashDiff(Repository repository, String stash) {
         try (Git git = new Git(repository)) {
-            ObjectId head = repository.resolve("HEAD^{tree}");
-            ObjectId old = repository.resolve("HEAD~1^{tree}");
+            ObjectId newTreeId = repository.resolve(stash + "^{tree}");
+            ObjectId oldTreeId = repository.resolve("HEAD^{tree}");
             ObjectReader reader = repository.newObjectReader();
             CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-            oldTreeIter.reset(reader, old);
+            oldTreeIter.reset(reader, oldTreeId);
             CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-            newTreeIter.reset(reader, head);
+            newTreeIter.reset(reader, newTreeId);
             List<DiffEntry> diffs = git.diff()
                 .setNewTree(newTreeIter)
                 .setOldTree(oldTreeIter)

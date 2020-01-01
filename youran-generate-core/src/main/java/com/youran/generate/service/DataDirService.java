@@ -47,12 +47,12 @@ public class DataDirService implements InitializingBean {
         // 获取数据目录
         String dataDir = this.getDataDir();
         File dataDirFile = new File(dataDir);
-        if(dataDirFile.exists()) {
+        if (dataDirFile.exists()) {
             FileUtils.deleteDirectory(dataDirFile);
-        }else{
+        } else {
             dataDirFile.mkdirs();
         }
-        LOGGER.info("初始化数据目录：{}",dataDirFile.getPath());
+        LOGGER.info("初始化数据目录：{}", dataDirFile.getPath());
     }
 
     /**
@@ -86,6 +86,22 @@ public class DataDirService implements InitializingBean {
             + "_" + project.getProjectVersion()
             + "_" + templatePO.getTemplateId()
             + "_" + templatePO.getInnerVersion();
+    }
+
+    /**
+     * 获取最新仓库目录
+     *
+     * @param projectId
+     * @param templateId
+     * @return /[dataDir]/repo/[projectId]_[templateId]_[lastVersion]
+     * @see #getDataDir()
+     */
+    public String getProjectRepoDir(Integer projectId, Integer templateId, Integer lastVersion) {
+        return this.getDataDir()
+            + File.separator + "repo"
+            + File.separator + projectId
+            + "_" + templateId
+            + "_" + lastVersion;
     }
 
     /**

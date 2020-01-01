@@ -14,7 +14,7 @@ import java.util.Objects;
  * @author cbb
  * @date 2019/1/28
  */
-public class ProgressVO extends AbstractVO {
+public class ProgressVO<T> extends AbstractVO {
 
     /**
      * 进行中
@@ -51,6 +51,10 @@ public class ProgressVO extends AbstractVO {
      * 进度消息
      */
     private String msg;
+    /**
+     * 成功之后的数据信息
+     */
+    private Object data;
 
     /**
      * 初始化进度条
@@ -122,6 +126,18 @@ public class ProgressVO extends AbstractVO {
     }
 
     /**
+     * 返回成功和结果数据
+     *
+     * @param msg
+     * @return
+     */
+    public static <T> ProgressVO<T> success(String msg,T data) {
+        ProgressVO<T> done = done(msg, SUCCESS, 100);
+        done.setData(data);
+        return done;
+    }
+
+    /**
      * 返回异常
      *
      * @param msg
@@ -181,6 +197,14 @@ public class ProgressVO extends AbstractVO {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 
     @Override
