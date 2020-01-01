@@ -2,10 +2,12 @@ package com.youran.generate.pojo.dto;
 
 import com.youran.common.pojo.dto.AbstractDTO;
 import com.youran.generate.constant.PatternConst;
+import com.youran.generate.constant.WordBlacklist;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -57,6 +59,11 @@ public class MetaEntityAddDTO extends AbstractDTO {
      * 实体特性
      */
     private MetaEntityFeatureDTO feature;
+
+    @AssertTrue(message = "类名不合法")
+    public boolean isClassNameValid(){
+        return !WordBlacklist.isClassNameBlacklist(this.className);
+    }
 
     public MetaEntityFeatureDTO getFeature() {
         return feature;

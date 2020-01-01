@@ -4,7 +4,7 @@ import com.google.common.base.Joiner;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.JFieldType;
-import com.youran.generate.constant.JavaKeyword;
+import com.youran.generate.constant.WordBlacklist;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
@@ -69,7 +69,7 @@ public class MetadataUtil {
      * @param value
      */
     public static void jfieldNameCheck(String value) {
-        if (JavaKeyword.isKeyword(value)) {
+        if (WordBlacklist.isJavaKeyword(value)) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "字段名“" + value + "”是java关键字");
         }
     }
