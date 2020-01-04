@@ -3,7 +3,7 @@ package com.youran.generate.template.function;
 import com.youran.generate.util.SwitchCaseUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -21,7 +21,7 @@ public class CommonTemplateFunction {
      * @return
      */
     public static Set createHashSet() {
-        return new HashSet<>();
+        return new LinkedHashSet();
     }
 
     /**

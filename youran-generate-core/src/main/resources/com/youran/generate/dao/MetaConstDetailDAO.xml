@@ -76,8 +76,9 @@
     </select>
 
     <select id="findByConstId" resultType="MetaConstDetailPO">
-        select * from meta_const_detail
-        where deleted=0
-        and const_id = #{constId,jdbcType=INTEGER}
+        select * from meta_const_detail t
+        where t.deleted=0
+        and t.const_id = #{constId,jdbcType=INTEGER}
+        order by t.detail_value
     </select>
 </mapper>
