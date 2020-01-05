@@ -33,17 +33,24 @@
 
 **该功能支持您在“修改元数据”和“生成代码”两个操作中反复执行，建议您在整个软件迭代周期中都使用本平台来执行增量生成。**
 
+## 页面截图
+
+**项目管理**
 ![项目管理](http://q2heisygm.bkt.clouddn.com/Fm0g8hzCooGC17c-jv0sItUSWSU7)
 
+**增量预览**
 ![增量预览](http://q2heisygm.bkt.clouddn.com/FnqSCXBjP4nTKi7WJXiuTxTzsQkC)
 
+**字段管理**
 ![字段管理](http://q2heisygm.bkt.clouddn.com/FrJENjqMQeNN9Ql4trb2g9706NKv)
 
+**ER图**
 ![ER图](http://q2heisygm.bkt.clouddn.com/FriqAJIuv-Qp64PzYCkOk04xMn1A)
 
+**代码预览**
 ![代码预览](http://q2heisygm.bkt.clouddn.com/FhRTy0boAkIR5qBmv026Y-yDn-Y8)
 
-
+**模板列表**
 ![模板列表](http://q2heisygm.bkt.clouddn.com/FvyI9pnW1j8cyIXxND4ChwkDYRv4)
 
 ## 安装部署
@@ -131,6 +138,10 @@ java -jar youran-generate-release/target/youran-generate-release-X.X.X-SNAPSHOT.
 4. 枚举：建议将不常变化的一类常量数据创建成枚举，会在java代码中生成对应的enum类。
 5. 索引：就是mysql业务表中的索引。
 6. 多对多关系、外键级联扩展、多对多级联扩展：您用了就知道。
+
+## 更新日志
+
+[ChangeLog](/doc/ChangeLog.md)
 
 ## 生成效果展示
 
