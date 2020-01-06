@@ -36,22 +36,22 @@
 ## 页面截图
 
 **项目管理**
-![项目管理](http://q2heisygm.bkt.clouddn.com/Fm0g8hzCooGC17c-jv0sItUSWSU7)
+![项目管理](https://github.com/cai3178940/image/raw/master/youran/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86.png)
 
 **增量预览**
-![增量预览](http://q2heisygm.bkt.clouddn.com/FnqSCXBjP4nTKi7WJXiuTxTzsQkC)
+![增量预览](https://github.com/cai3178940/image/raw/master/youran/%E5%A2%9E%E9%87%8F%E9%A2%84%E8%A7%88.png)
 
 **字段管理**
-![字段管理](http://q2heisygm.bkt.clouddn.com/FrJENjqMQeNN9Ql4trb2g9706NKv)
+![字段管理](https://github.com/cai3178940/image/raw/master/youran/%E5%AD%97%E6%AE%B5%E7%AE%A1%E7%90%86.png)
 
 **ER图**
-![ER图](http://q2heisygm.bkt.clouddn.com/FriqAJIuv-Qp64PzYCkOk04xMn1A)
+![ER图](https://github.com/cai3178940/image/raw/master/youran/ER%E5%9B%BE.png)
 
 **代码预览**
-![代码预览](http://q2heisygm.bkt.clouddn.com/FhRTy0boAkIR5qBmv026Y-yDn-Y8)
+![代码预览](https://github.com/cai3178940/image/raw/master/youran/%E4%BB%A3%E7%A0%81%E9%A2%84%E8%A7%88.png)
 
 **模板列表**
-![模板列表](http://q2heisygm.bkt.clouddn.com/FvyI9pnW1j8cyIXxND4ChwkDYRv4)
+![模板列表](https://github.com/cai3178940/image/raw/master/youran/%E6%A8%A1%E6%9D%BF%E5%88%97%E8%A1%A8.png)
 
 ## 安装部署
 
@@ -145,6 +145,6 @@ java -jar youran-generate-release/target/youran-generate-release-X.X.X-SNAPSHOT.
 
 ## 生成效果展示
 
-![image](http://q2heisygm.bkt.clouddn.com/FowCy3cYMStF8P61bwbOdRsJ2RlO)
+![image](https://github.com/cai3178940/image/raw/master/youran/%E7%94%9F%E6%88%90%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA.png)
 
 > <a href="https://github.com/cai3178940/youran" target="_blank">点击访问Github源码地址</a>
