@@ -1,8 +1,10 @@
 package com.youran.generate.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.config.GenerateProperties;
+import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.dto.SystemDTO;
 import com.youran.generate.pojo.mapper.*;
 import com.youran.generate.pojo.po.*;
@@ -240,7 +242,25 @@ public class MetaImportExportService {
             .forEach(mtmCascadeExtFromJson -> this.saveMtmCascadeExt(mtmCascadeExtFromJson, mtmIdMap,
                 entityIdMap, fieldIdMap, projectId));
 
+        // 更新title字段id
+        entityList.stream().forEach(metaEntityPO -> this.updateEntityFeature(metaEntityPO, fieldIdMap));
+
         return project;
+    }
+
+    /**
+     * 更新实体特性
+     *
+     * @param metaEntityPO
+     * @param fieldIdMap
+     */
+    private void updateEntityFeature(MetaEntityPO metaEntityPO, Map<Integer, Integer> fieldIdMap) {
+        MetaEntityFeatureDTO feature = metaEntityPO.initEntityFeature();
+        if (feature.getTitleFieldId() != null) {
+            // 替换为新的字段id
+            metaEntityService.doUpdateFeature(metaEntityPO,
+                ImmutableMap.of("titleFieldId", fieldIdMap.get(feature.getTitleFieldId())));
+        }
     }
 
     /**

@@ -7,9 +7,7 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.dao.MetaEntityDAO;
 import com.youran.generate.dao.MetaManyToManyDAO;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
-import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.dto.MetaEntityUpdateDTO;
-import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.MetaEntityMapper;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
@@ -18,7 +16,6 @@ import com.youran.generate.pojo.vo.MetaEntityListVO;
 import com.youran.generate.pojo.vo.MetaEntityShowVO;
 import com.youran.generate.pojo.vo.MetaMtmEntityListVO;
 import com.youran.generate.util.MetadataUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,13 +111,23 @@ public class MetaEntityService {
         MetaEntityPO entity = this.getEntity(entityId, true);
         // 获取项目并校验操作人
         MetaProjectPO project = metaProjectService.getAndCheckProject(entity.getProjectId());
+        this.doUpdateFeature(entity, attributes);
+        metaProjectService.updateProject(project);
+        return entity;
+    }
+
+    /**
+     * 执行修改实体特性
+     *
+     * @param entity
+     * @param attributes
+     */
+    public void doUpdateFeature(MetaEntityPO entity, Map<String, Object> attributes) {
         String feature = entity.getFeature();
         Map<String, Object> featureAttrs = JsonUtil.parseObject(feature, Map.class);
         attributes.forEach((key, value) -> featureAttrs.put(key, value));
         entity.setFeature(JsonUtil.toJSONString(featureAttrs));
         metaEntityDAO.update(entity);
-        metaProjectService.updateProject(project);
-        return entity;
     }
 
     /**
@@ -135,11 +142,7 @@ public class MetaEntityService {
         if (force && metaEntity == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND, "实体不存在");
         }
-        // 兼容旧数据，如果feature字段为空，则设置默认值
-        if (StringUtils.isBlank(metaEntity.getFeature())) {
-            metaEntity.setFeature(JsonUtil.toJSONString(new MetaEntityFeatureDTO()));
-        }
-        metaEntity.setEntityFeature(FeatureMapper.asEntityFeatureDTO(metaEntity.getFeature()));
+        metaEntity.initEntityFeature();
         return metaEntity;
     }
 

@@ -1,7 +1,10 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
+import com.youran.generate.pojo.mapper.FeatureMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -188,6 +191,19 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      */
     @JsonIgnore
     private MetaEntityFeatureDTO entityFeature;
+
+    /**
+     * 初始化实体特性对象
+     */
+    public MetaEntityFeatureDTO initEntityFeature() {
+        // 兼容旧数据，如果feature字段为空，则设置默认值
+        if (StringUtils.isBlank(this.feature)) {
+            this.feature = JsonUtil.toJSONString(new MetaEntityFeatureDTO());
+        }
+        this.entityFeature = FeatureMapper.asEntityFeatureDTO(this.feature);
+        return this.entityFeature;
+    }
+
 
     public MetaEntityPO addField(MetaFieldPO field) {
         fields.put(field.getFieldId(), field);
