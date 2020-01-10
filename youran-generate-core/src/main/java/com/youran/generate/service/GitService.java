@@ -289,7 +289,7 @@ public class GitService {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             DiffFormatter df = new DiffFormatter(out);
             df.setRepository(repository);
-            df.setDiffComparator(RawTextComparator.DEFAULT);
+            df.setDiffComparator(RawTextComparator.WS_IGNORE_ALL);
             df.setDetectRenames(true);
             df.format(diffs);
             return out.toString("UTF-8");
