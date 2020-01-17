@@ -40,6 +40,11 @@ export default {
     feature: {
       bootVersion: `
 **spring-boot版本**：生成的基本框架所依赖的spring-boot版本
+      `,
+      other: `
+**启用Lombok**：Lombok是一个Java库，可以通过简单的注解的形式来帮助我们简化和消除一些必须有但显得很臃肿的Java代码，
+比如常见的Getter&Setter、toString()、构造函数等等。
+<a href="https://projectlombok.org" target="_blank">点击访问Lombok官网</a>
       `
     }
   },

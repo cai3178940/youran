@@ -47,6 +47,16 @@ public class MetaEntityFeatureDTO extends AbstractDTO {
      */
     @ApiModelProperty(notes = "实体内的标题字段", example = "1")
     private Integer titleFieldId;
+    /**
+     * 是否生成excel导出方法
+     */
+    @ApiModelProperty(notes = "是否生成excel导出方法", example = "false")
+    private Boolean excelExport = false;
+    /**
+     * 是否生成excel导入方法
+     */
+    @ApiModelProperty(notes = "是否生成excel导入方法", example = "false")
+    private Boolean excelImport = false;
 
     public Boolean getSave() {
         return save;
@@ -102,5 +112,21 @@ public class MetaEntityFeatureDTO extends AbstractDTO {
 
     public void setTitleFieldId(Integer titleFieldId) {
         this.titleFieldId = titleFieldId;
+    }
+
+    public Boolean getExcelExport() {
+        return excelExport;
+    }
+
+    public void setExcelExport(Boolean excelExport) {
+        this.excelExport = excelExport;
+    }
+
+    public Boolean getExcelImport() {
+        return excelImport;
+    }
+
+    public void setExcelImport(Boolean excelImport) {
+        this.excelImport = excelImport;
     }
 }

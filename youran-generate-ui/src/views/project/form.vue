@@ -44,6 +44,11 @@
               </el-radio-group>
             </help-popover>
           </el-form-item>
+          <el-form-item label="其他功能">
+            <help-popover name="project.feature.other">
+              <el-checkbox v-model="form.feature.lombokEnabled" tabindex="62">启用Lombok</el-checkbox>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="代码模板" prop="templateId">
             <help-popover name="project.templateId">
               <el-col :span="18" class="col-left">

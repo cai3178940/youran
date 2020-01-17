@@ -74,6 +74,8 @@
               <el-checkbox v-model="form.feature.save" tabindex="90">新建</el-checkbox>
               <el-checkbox v-model="form.feature.delete" tabindex="100">单个删除</el-checkbox>
               <el-checkbox v-model="form.feature.deleteBatch" tabindex="110">批量删除</el-checkbox>
+              <el-checkbox v-model="form.feature.excelExport" tabindex="120">excel导出</el-checkbox>
+              <el-checkbox v-model="form.feature.excelImport" tabindex="130">excel导入</el-checkbox>
             </help-popover>
           </el-form-item>
           <el-form-item>
