@@ -30,7 +30,7 @@ public class WordBlacklist {
      */
     public static final String[] classNameBlacklist = {
         "Class","Long","Integer","String","Short","Double","Float",
-        "BigDecimal","Char","Byte","Boolean","Date","Index"
+        "BigDecimal","Char","Byte","Boolean","LocalDate","LocalDateTime","Date","Index"
     };
 
     public static boolean isJavaKeyword(String value) {

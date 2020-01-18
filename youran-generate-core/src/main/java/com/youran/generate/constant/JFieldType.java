@@ -34,6 +34,14 @@ public enum JFieldType {
     /**
      * 日期
      */
+    LOCALDATE("LocalDate", MySqlType.DATE, "TIMESTAMP"),
+    /**
+     * 日期
+     */
+    LOCALDATETIME("LocalDateTime", MySqlType.DATETIME, "TIMESTAMP"),
+    /**
+     * 日期
+     */
     DATE("Date", MySqlType.DATETIME, "TIMESTAMP"),
     /**
      * 双浮点型

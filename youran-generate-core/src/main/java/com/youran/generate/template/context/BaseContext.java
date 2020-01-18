@@ -190,7 +190,11 @@ public class BaseContext {
      * @param field
      */
     public void addFieldTypeImport(MetaFieldPO field) {
-        if (Objects.equals(field.getJfieldType(), JFieldType.DATE.getJavaType())) {
+        if (Objects.equals(field.getJfieldType(), JFieldType.LOCALDATE.getJavaType())) {
+            this.addImport("java.time.LocalDate");
+        } else if (Objects.equals(field.getJfieldType(), JFieldType.LOCALDATETIME.getJavaType())) {
+            this.addImport("java.time.LocalDateTime");
+        } else if (Objects.equals(field.getJfieldType(), JFieldType.DATE.getJavaType())) {
             this.addImport("java.util.Date");
         } else if (Objects.equals(field.getJfieldType(), JFieldType.BIGDECIMAL.getJavaType())) {
             this.addImport("java.math.BigDecimal");

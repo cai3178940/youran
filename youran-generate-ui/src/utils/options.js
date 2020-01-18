@@ -352,6 +352,18 @@ export default {
       allowFieldTypes: ['bigint']
     },
     {
+      value: 'LocalDate',
+      label: 'LocalDate',
+      defaultFieldType: 'date',
+      allowFieldTypes: ['date']
+    },
+    {
+      value: 'LocalDateTime',
+      label: 'LocalDateTime',
+      defaultFieldType: 'datetime',
+      allowFieldTypes: ['datetime']
+    },
+    {
       value: 'Date',
       label: 'Date',
       defaultFieldType: 'datetime',
