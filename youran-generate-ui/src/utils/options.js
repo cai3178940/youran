@@ -225,6 +225,14 @@ const fkFeature = {
 
 const specialFieldFeatures = [
   {
+    value: 'status',
+    label: '状态字段',
+    icon: 'common',
+    iconClassName: '',
+    hiddenAttrs: ['autoIncrement', 'foreignKey'],
+    disabledAttrs: []
+  },
+  {
     value: 'deleted',
     label: '逻辑删除',
     icon: 'delete',
