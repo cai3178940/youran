@@ -35,7 +35,6 @@
               <el-autocomplete
                 v-model="form.module"
                 :fetch-suggestions="findModulesByProject"
-                value-key="module"
                 placeholder="例如：system"
               ></el-autocomplete>
             </help-popover>
@@ -173,23 +172,22 @@ export default {
       this.form.tableName = this.$common.snakeCase(this.form.className)
       this.$refs.entityForm.validateField('classAndTableName')
     },
-    moduleNameFilter (queryString) {
-      return state => {
-        return (
-          state.module.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-        )
-      }
-    },
     findModulesByProject (queryString, cb) {
-      let that = this
-      if (that.entityModules) {
-        cb(that.entityModules.filter(that.moduleNameFilter(queryString)))
+      const action = () => {
+        const entityModules = this.entityModules.slice(0)
+        const results = queryString ? entityModules.filter(
+          c => c.module.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        ) : entityModules
+        cb(results.map(c => ({ value: c.module })))
+      }
+      if (this.entityModules) {
+        action()
       } else {
-        return entityApi.findModulesByProject(that.projectId).then(data => {
-          let result = data || []
-          that.entityModules = result
-          cb(that.entityModules.filter(that.moduleNameFilter(queryString)))
-        })
+        entityApi.findModulesByProject(this.projectId)
+          .then(data => {
+            this.entityModules = data
+            action()
+          })
       }
     }
   },
