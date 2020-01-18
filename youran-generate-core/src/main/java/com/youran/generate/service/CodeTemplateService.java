@@ -3,6 +3,7 @@ package com.youran.generate.service;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
+import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.dao.CodeTemplateDAO;
 import com.youran.generate.pojo.dto.CodeTemplateAddDTO;
 import com.youran.generate.pojo.dto.CodeTemplateUpdateDTO;
@@ -11,6 +12,7 @@ import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.pojo.qo.CodeTemplateQO;
 import com.youran.generate.pojo.vo.CodeTemplateListVO;
 import com.youran.generate.pojo.vo.CodeTemplateShowVO;
+import com.youran.generate.util.VersionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,8 @@ public class CodeTemplateService {
 
     @Autowired
     private CodeTemplateDAO codeTemplateDAO;
+    @Autowired
+    private GenerateProperties generateProperties;
 
     /**
      * 校验数据唯一性
@@ -161,6 +165,25 @@ public class CodeTemplateService {
      */
     public boolean exists() {
         return codeTemplateDAO.exists();
+    }
+
+    /**
+     * 校验模板版本
+     *
+     * @param codeTemplate
+     */
+    public void checkTemplateVersion(CodeTemplatePO codeTemplate) {
+        String sysLowVersion = codeTemplate.getSysLowVersion();
+        String sysVersion = generateProperties.getVersion();
+        int[] sysLowVersionArray = VersionUtil.parseVersion(sysLowVersion);
+        int[] sysVersionArray = VersionUtil.parseVersion(sysVersion);
+        if (sysLowVersionArray.length != sysVersionArray.length) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "模板兼容最低版本号有误");
+        }
+        // 如果模板兼容最低版本高于当前系统版本，则抛异常
+        if (VersionUtil.compareVersion(sysLowVersionArray, sysVersionArray) > 0) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "该模板支持最低系统版本为" + sysLowVersion + "，请升级系统");
+        }
     }
 
 
