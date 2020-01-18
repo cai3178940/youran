@@ -48,6 +48,10 @@ public class MetaEntityAddDTO extends AbstractDTO {
     @Length(max = 25, message = "title最大长度不能超过{max}")
     private String title;
 
+    @ApiModelProperty(notes = N_MODULE, example = E_MODULE)
+    @Length(max = 25, message = "module最大长度不能超过{max}")
+    private String module;
+
     @ApiModelProperty(notes = N_DESC, example = E_DESC)
     @Length(max = 250, message = "desc最大长度不能超过{max}")
     private String desc;
@@ -95,6 +99,14 @@ public class MetaEntityAddDTO extends AbstractDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 
     public String getSchemaName() {

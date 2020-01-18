@@ -37,6 +37,7 @@ CREATE TABLE `meta_entity` (
   `class_name` varchar(50) NOT NULL COMMENT '类名',
   `table_name` varchar(50) NOT NULL COMMENT '表名',
   `title` varchar(25) NOT NULL COMMENT '标题',
+  `module` varchar(50) DEFAULT NULL COMMENT '模块',
   `desc` varchar(250) DEFAULT NULL COMMENT '实体描述',
   `page_sign` tinyint(1) DEFAULT NULL COMMENT '是否支持分页查询',
   `feature` text DEFAULT NULL COMMENT '特性json',

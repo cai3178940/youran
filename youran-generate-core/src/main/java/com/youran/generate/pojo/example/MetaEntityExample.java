@@ -22,6 +22,8 @@ public class MetaEntityExample extends AbstractExample {
     public static final String E_TABLENAME = "model_animal";
     public static final String N_TITLE = "标题";
     public static final String E_TITLE = "动物";
+    public static final String N_MODULE = "模块";
+    public static final String E_MODULE = "system";
     public static final String N_DESC = "实体描述";
     public static final String E_DESC = "动物";
     public static final String N_PAGESIGN = "是否支持分页查询";

@@ -44,6 +44,10 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      */
     private String title;
     /**
+     * 模块
+     */
+    private String module;
+    /**
      * 实体描述
      */
     private String desc;
@@ -406,6 +410,14 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 
     public List<MetaIndexPO> getIndexes() {

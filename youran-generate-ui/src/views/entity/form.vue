@@ -30,6 +30,16 @@
               <el-input v-model="form.title" placeholder="例如：用户" tabindex="10"></el-input>
             </help-popover>
           </el-form-item>
+          <el-form-item label="模块名" prop="module">
+            <help-popover name="entity.module">
+              <el-autocomplete
+                v-model="form.module"
+                :fetch-suggestions="findModulesByProject"
+                value-key="module"
+                placeholder="例如：system"
+              ></el-autocomplete>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="类名/表名" prop="classAndTableName">
             <help-popover name="entity.classAndTableName">
               <el-col :span="11" class="col-left">
@@ -100,6 +110,7 @@ export default {
     return {
       edit: edit,
       projectList: [],
+      entityModules: null,
       formLoading: false,
       old: initFormBean(edit),
       form: initFormBean(edit),
@@ -161,6 +172,25 @@ export default {
     copyClassNameToTableName () {
       this.form.tableName = this.$common.snakeCase(this.form.className)
       this.$refs.entityForm.validateField('classAndTableName')
+    },
+    moduleNameFilter (queryString) {
+      return state => {
+        return (
+          state.module.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        )
+      }
+    },
+    findModulesByProject (queryString, cb) {
+      let that = this
+      if (that.entityModules) {
+        cb(that.entityModules.filter(that.moduleNameFilter(queryString)))
+      } else {
+        return entityApi.findModulesByProject(that.projectId).then(data => {
+          let result = data || []
+          that.entityModules = result
+          cb(that.entityModules.filter(that.moduleNameFilter(queryString)))
+        })
+      }
     }
   },
   created () {

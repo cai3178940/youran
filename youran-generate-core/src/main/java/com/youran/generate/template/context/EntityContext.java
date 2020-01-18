@@ -46,6 +46,10 @@ public class EntityContext extends BaseContext {
      */
     private String title;
     /**
+     * 标题
+     */
+    private String module;
+    /**
      * 描述
      */
     private String desc;
@@ -169,6 +173,7 @@ public class EntityContext extends BaseContext {
         this.classNameUpper = StringUtils.capitalize(entity.getClassName());
         this.tableName = entity.getTableName();
         this.title = entity.getTitle();
+        this.module = entity.getModule();
         this.desc = entity.getDesc();
         this.pk = entity.getPkField();
         this.id = this.pk.getJfieldName();
@@ -401,6 +406,14 @@ public class EntityContext extends BaseContext {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 
     public String getDesc() {

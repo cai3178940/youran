@@ -49,6 +49,10 @@ export default {
 **实体名**：本实体的中文名称，会出现在多处代码及表结构的注释中
 > 注意：请尽量使用言简意赅的名称
     `,
+    module: `
+**模块名**：本实体的模块名称，生成实体代码时，使用模块名称划分目录， 如：system
+> 注意：请尽量使用业务模块相应的名称
+    `,
     classAndTableName: `
 **类名**：生成的java bean名称，比如输入类名User,会生成的bean有:UserPO、UserAddDTO、UserDAO等
 > 注意：第一个字母请大写

@@ -24,6 +24,7 @@
           class_name,
           `table_name`,
           title,
+          `module`,
           `desc`,
           page_sign,
           feature,
@@ -40,6 +41,7 @@
           #{className,jdbcType=VARCHAR},
           #{tableName,jdbcType=VARCHAR},
           #{title,jdbcType=VARCHAR},
+          #{module,jdbcType=VARCHAR},
           #{desc,jdbcType=VARCHAR},
           #{pageSign,jdbcType=BOOLEAN},
           #{feature,jdbcType=VARCHAR},
@@ -58,6 +60,7 @@
           class_name = #{className,jdbcType=VARCHAR},
           `table_name` = #{tableName,jdbcType=VARCHAR},
           title = #{title,jdbcType=VARCHAR},
+          `module` = #{module,jdbcType=VARCHAR},
           `desc` = #{desc,jdbcType=VARCHAR},
           page_sign = #{pageSign,jdbcType=BOOLEAN},
           feature = #{feature,jdbcType=VARCHAR},
@@ -167,5 +170,13 @@
             and t2.deleted = 0
             and t.entity_id = #{entityId,jdbcType=INTEGER}
             and m.hold_refer2 = #{hold,jdbcType=BOOLEAN}
+    </select>
+
+    <select id="findModulesByProject" resultType="map">
+        select distinct `module` from meta_entity
+        where deleted=0
+        and project_id = #{projectId,jdbcType=INTEGER}
+        and module is not null
+        order by module
     </select>
 </mapper>

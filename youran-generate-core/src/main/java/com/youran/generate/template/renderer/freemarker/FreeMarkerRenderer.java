@@ -58,6 +58,7 @@ public class FreeMarkerRenderer implements TemplateRenderer {
         if (context instanceof EntityContext) {
             EntityContext entityContext = (EntityContext) context;
             relativePath = relativePath
+                .replace("{module}", entityContext.getModule())
                 .replace("{ClassName}", entityContext.getClassNameUpper())
                 .replace("{className}", entityContext.getClassName());
         }
