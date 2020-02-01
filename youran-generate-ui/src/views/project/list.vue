@@ -73,7 +73,7 @@
       <!--代码下载进度条-->
       <el-table-column label="代码生成进度" width="110">
         <template v-slot="scope">
-          <el-progress v-if="progressingProjectIds.find(id => id===scope.row.projectId)"
+          <el-progress v-if="progressingProjectIds.includes(scope.row.projectId)"
                        :text-inside="true" :stroke-width="20"
                        :percentage="scope.row.genCodePercent"
                        :status="scope.row.genCodeStatus"></el-progress>
@@ -254,6 +254,9 @@ export default {
     },
     handlePreView ([row, templateId]) {
       const projectId = row.projectId
+      if (!this.validateProgressing(projectId)) {
+        return
+      }
       projectApi.callCodeGenWebSocketService(
         'gen_code',
         { 'projectId': projectId, 'templateId': templateId },
@@ -292,6 +295,9 @@ export default {
     },
     handleGenCode ([row, templateId]) {
       const projectId = row.projectId
+      if (!this.validateProgressing(projectId)) {
+        return
+      }
       this.$common.confirm('是否确认下载')
         .then(() => projectApi.callCodeGenWebSocketService(
           'gen_code_and_zip',
@@ -356,6 +362,9 @@ export default {
     },
     handleCommit ([row, templateId]) {
       const projectId = row.projectId
+      if (!this.validateProgressing(projectId)) {
+        return
+      }
       projectApi.checkCommit(projectId, templateId)
         .then(checkCommitVO => {
           let msg = `首次提交代码到【${checkCommitVO.remoteUrl}】,是否继续？`
@@ -395,10 +404,23 @@ export default {
       this.templateRemarkHtml = converter.makeHtml(remark)
     },
     /**
+     * 校验项目是否正在生成代码
+     */
+    validateProgressing (projectId) {
+      if (this.progressingProjectIds.includes(projectId)) {
+        this.$common.showNotifyError('代码生成中，请稍后再试')
+        return false
+      }
+      return true
+    },
+    /**
      * 显示git代码差异
      */
     handleGitDiff ([row, templateId]) {
       const projectId = row.projectId
+      if (!this.validateProgressing(projectId)) {
+        return
+      }
       projectApi.callCodeGenWebSocketService(
         'git_diff',
         { 'projectId': projectId, 'templateId': templateId },

@@ -12,13 +12,18 @@ import org.jsoup.safety.Whitelist;
  */
 public class XSSUtil {
 
+    private static Whitelist whitelist = Whitelist.basicWithImages()
+        .addProtocols("img", "src", "data")
+        .addAttributes("a", "target")
+        .removeEnforcedAttribute("a", "rel");
+
+
     public static String clean(String value) {
         if (value == null) {
             return null;
         }
         //允许base64格式的图片,字符串不进行美化
-        return Jsoup.clean(value, "",
-            Whitelist.basicWithImages().addProtocols("img", "src", "data"),
+        return Jsoup.clean(value, "", whitelist,
             new Document.OutputSettings().prettyPrint(false));
     }
 
