@@ -249,20 +249,26 @@ public class BaseContext {
         StringBuilder sb1 = new StringBuilder();
         // 打印java内建依赖
         StringBuilder sb2 = new StringBuilder();
+        StringBuilder sb3 = new StringBuilder();
         for (String imp : imports) {
-            if (!imp.startsWith("java.") && !imp.startsWith("javax.")) {
-                sb1.append("import ").append(imp).append(";\n");
-            } else {
+            if (imp.startsWith("javax.")) {
                 sb2.append("import ").append(imp).append(";\n");
+            } else if (imp.startsWith("java.")) {
+                sb3.append("import ").append(imp).append(";\n");
+            } else {
+                sb1.append("import ").append(imp).append(";\n");
             }
         }
         // 打印静态外部依赖
-        StringBuilder sb3 = new StringBuilder();
-        // 打印静态java内建依赖
         StringBuilder sb4 = new StringBuilder();
+        // 打印静态java内建依赖
+        StringBuilder sb5 = new StringBuilder();
+        StringBuilder sb6 = new StringBuilder();
         for (String imp : staticImports) {
-            if (!imp.startsWith("java.") && !imp.startsWith("javax.")) {
-                sb3.append("import static ").append(imp).append(";\n");
+            if (imp.startsWith("javax.")) {
+                sb5.append("import static ").append(imp).append(";\n");
+            } else if (imp.startsWith("java.")) {
+                sb6.append("import static ").append(imp).append(";\n");
             } else {
                 sb4.append("import static ").append(imp).append(";\n");
             }
@@ -271,14 +277,26 @@ public class BaseContext {
         if (sb1.length() > 0) {
             sb.append("\n").append(sb1);
         }
-        if (sb2.length() > 0) {
-            sb.append("\n").append(sb2);
-        }
-        if (sb3.length() > 0) {
-            sb.append("\n").append(sb3);
+        if (sb2.length() > 0 || sb3.length() > 0) {
+            sb.append("\n");
+            if (sb2.length() > 0) {
+                sb.append(sb2);
+            }
+            if (sb3.length() > 0) {
+                sb.append(sb3);
+            }
         }
         if (sb4.length() > 0) {
             sb.append("\n").append(sb4);
+        }
+        if (sb5.length() > 0 || sb6.length() > 0) {
+            sb.append("\n");
+            if (sb5.length() > 0) {
+                sb.append(sb5);
+            }
+            if (sb6.length() > 0) {
+                sb.append(sb6);
+            }
         }
 
         if (sb.length() > 0) {
