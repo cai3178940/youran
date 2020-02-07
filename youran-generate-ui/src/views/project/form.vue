@@ -58,7 +58,7 @@
                     v-for="item in templateList"
                     :key="item.templateId"
                     :disabled="item.templateId===form.templateId2 || item.templateId===form.templateId3"
-                    :label="item.name"
+                    :label="item.name+'v'+item.templateVersion"
                     :value="item.templateId">
                   </el-option>
                 </el-select>
@@ -78,7 +78,7 @@
                     v-for="item in templateList"
                     :key="item.templateId"
                     :disabled="item.templateId===form.templateId || item.templateId===form.templateId3"
-                    :label="item.name"
+                    :label="item.name+'v'+item.templateVersion"
                     :value="item.templateId">
                   </el-option>
                 </el-select>
@@ -97,7 +97,7 @@
                     v-for="item in templateList"
                     :key="item.templateId"
                     :disabled="item.templateId===form.templateId || item.templateId===form.templateId2"
-                    :label="item.name"
+                    :label="item.name+'v'+item.templateVersion"
                     :value="item.templateId">
                   </el-option>
                 </el-select>

@@ -28,7 +28,7 @@
           <svg-icon v-else className="table-cell-icon color-danger" iconClass="times"></svg-icon>
         </template>
       </el-table-column>
-      <el-table-column label="使用代码模板" width="260">
+      <el-table-column label="使用代码模板" width="200">
         <template v-slot="scope">
           <template v-for="template in [getTemplate(scope.row.templateId),
                                         getTemplate(scope.row.templateId2),
@@ -39,7 +39,7 @@
                          @command="handleCommand"
                          style="margin:5px;">
               <el-button type="primary" size="mini">
-                {{ template.name }}
+                {{ template.name }}v{{ template.templateVersion }}
               </el-button>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="{method:'handleTemplateRemark',arg: [ scope.row , template.remark ]}">

@@ -53,7 +53,7 @@ export const flexibleTemplate = {
     queryType: 1,
     insert: true,
     update: true,
-    list: true,
+    list: false,
     columnWidth: 0,
     listSort: false,
     show: true,
