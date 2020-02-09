@@ -53,42 +53,25 @@
 **模板列表**
 ![模板列表](https://github.com/cai3178940/image/raw/master/youran/%E6%A8%A1%E6%9D%BF%E5%88%97%E8%A1%A8.png)
 
-## 安装部署
+## 安装步骤
 
-#### 第一步、环境准备
-1. 系统依赖：mysql数据库、jdk8、maven
-2. 在mysql中提前建好表，建表语句参考：
-<a href="youran-generate-web/src/test/resources/DB/generate.sql" target="_blank">youran-generate-web/src/test/resources/DB/generate.sql</a>
-3. 根据本地环境修改配置文件：
-<a href="youran-generate-web/src/main/resources/application-local.yml" target="_blank">youran-generate-web/src/main/resources/application-local.yml</a>
+### 第一步、环境及配置
 
-#### 第二步、编译打包及运行
-``` bash
-# 安装前端项目npm依赖
-cd youran-generate-ui
-npm install
+1. 自行安装依赖软件：mysql数据库、jdk8
+2. 下载<a href="./releases" target="_blank">zip安装包</a>并解压
+3. 在mysql中提前建好表，建表语句见安装包：/schema/init.sql
+4. 修改配置文件中的数据库配置：/conf/application-local.yml
 
-# 如果想使用开发模式启动前端环境：npm run serve
-# 如果想前后端一起部署，则需要将前端资源编译到release模块中
-# 编译目标路径：youran-generate-release/src/main/resources/ui
-npm run build
 
-# 后端代码编译打包
-cd ../
-mvn clean package
+### 第二步、启动
 
-# 运行spring-boot项目
-java -jar youran-generate-release/target/youran-generate-release-X.X.X-SNAPSHOT.war
-
-```
-
-#### 第三步、首次访问系统时，需要导入系统预置代码模板
+启动脚本：/bin/startup.cmd
 
 系统访问地址： 
 
 - http://localhost:8088
 
-系统预置模板包括：
+首次访问系统时，需要导入系统预置代码模板：
 
 - java后端模板： 
 <a href="../../../youran-template-01" target="_blank">源码地址</a>
@@ -96,9 +79,6 @@ java -jar youran-generate-release/target/youran-generate-release-X.X.X-SNAPSHOT.
 - vue前端模板： 
 <a href="../../../youran-template-02" target="_blank">源码地址</a>
 <a href="../../../youran-template-02/releases" target="_blank">zip压缩包</a>
-
-后续还会推出其他技术栈的模板，我也希望您给本项目贡献新的代码模板
-
 
 ## 使用说明
 

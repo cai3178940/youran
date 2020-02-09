@@ -6,7 +6,7 @@ function resolve (dir) {
 
 module.exports = {
   // 编译到java-web工程目录中
-  outputDir: path.resolve(__dirname, '../youran-generate-release/src/main/resources/ui'),
+  outputDir: path.resolve(__dirname, '../youran-generate-release/assembly/resource/ui'),
   // 指定静态资源目录
   assetsDir: 'static',
   // 前端项目基本路径

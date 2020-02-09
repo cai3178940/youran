@@ -41,9 +41,8 @@ Thumbs.db
 .settings
 /build/*
 src/main/webapp/WEB-INF/classes/
-bin
+#bin
 .rules
 
 #ui编译目录
-#/youran-generate/src/main/resources/ui
-#/youran-generate/src/main/resources/ui/*
+/youran-generate-release/assembly/resource/ui
