@@ -77,11 +77,11 @@
 首次访问系统时，需要导入系统预置代码模板：
 
 - java后端模板： 
-<a href="../../../youran-template-01" target="_blank">源码地址</a>
-<a href="../../../youran-template-01/releases" target="_blank">zip压缩包</a>
+<a href="https://github.com/cai3178940/youran-template-01" target="_blank">源码地址</a>
+<a href="https://github.com/cai3178940/youran-template-01/releases" target="_blank">zip压缩包</a>
 - vue前端模板： 
-<a href="../../../youran-template-02" target="_blank">源码地址</a>
-<a href="../../../youran-template-02/releases" target="_blank">zip压缩包</a>
+<a href="https://github.com/cai3178940/youran-template-02" target="_blank">源码地址</a>
+<a href="https://github.com/cai3178940/youran-template-02/releases" target="_blank">zip压缩包</a>
 
 ## 使用说明
 
