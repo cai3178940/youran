@@ -9,10 +9,10 @@ logging:
         java:
             sql: debug
         com:
-            youran: trace
-swagger:
-    enabled: true
+            youran: debug
+
 youran:
+    # 缓存数据目录，用来临时存储模板文件、生成的代码文件，每次启动都会清空该目录
     data-dir: D:\\youran
+    # 启动时初始化用户表
     default-user-init: true
-    security-enabled: false

@@ -31,5 +31,5 @@ youran:
     version: 3.2.0
     api-path: /api
     ws-api-path: /ws_api
-    security-enabled: true
+    security-enabled: false
 

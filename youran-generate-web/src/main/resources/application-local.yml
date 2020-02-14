@@ -13,7 +13,9 @@ logging:
 swagger:
     enabled: true
 youran:
+    # 缓存数据目录，用来临时存储模板文件、生成的代码文件，每次启动都会清空该目录
     data-dir: D:\\youran
+    # 启动时初始化用户表
     default-user-init: true
     # 0:非开发模式 1:开发模式-全量替换 2:开发模式-增量替换
     dev-mode: 0
