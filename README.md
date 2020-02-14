@@ -61,7 +61,7 @@
 ### 第一步、环境及配置
 
 1. 自行安装依赖软件：mysql数据库、jdk8
-2. 下载<a href="./releases" target="_blank">zip安装包</a>并解压
+2. 下载<a href="https://github.com/cai3178940/youran/releases" target="_blank">zip安装包</a>并解压
 3. 在mysql中提前建好表，建表语句见安装包：/schema/init.sql
 4. 修改配置文件中的数据库配置：/conf/application-local.yml
 
