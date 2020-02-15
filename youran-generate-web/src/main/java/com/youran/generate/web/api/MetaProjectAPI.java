@@ -90,5 +90,4 @@ public interface MetaProjectAPI {
     })
     ResponseEntity<Integer> deleteBatch(Integer[] projectId);
 
-
 }

@@ -83,4 +83,5 @@ public class MetaProjectController extends AbstractController implements MetaPro
         int count = metaProjectService.delete(projectId);
         return ResponseEntity.ok(count);
     }
+
 }

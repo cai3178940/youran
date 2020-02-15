@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @date: 11/8/2019 22:13
  */
 @Component
-@ConditionalOnProperty(value = "youran.defaultUserInit")
+@ConditionalOnProperty(value = "youran.default-user-init")
 public class InitUserCommandLineRunner implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitUserCommandLineRunner.class);

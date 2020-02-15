@@ -128,6 +128,8 @@ public class MetaCodeGenService {
             try {
                 MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
                 CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
+                // 校验模板的版本
+                codeTemplateService.checkTemplateVersion(templatePO);
                 // 获取最新代码目录
                 String projectDir = dataDirService.getProjectRecentDir(project, templatePO);
                 File dir = new File(projectDir);

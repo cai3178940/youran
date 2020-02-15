@@ -23,6 +23,13 @@ public class MetaProjectFeatureDTO extends AbstractDTO {
     @Const(constClass = FeatureConst.Boot.class)
     private Integer bootVersion = FeatureConst.Boot.BOOT_2;
 
+    /**
+     * 启用lombok
+     */
+    @ApiModelProperty(notes = "启用lombok", example = "false")
+    @NotNull
+    private Boolean lombokEnabled = false;
+
     public Integer getBootVersion() {
         return bootVersion;
     }
@@ -31,4 +38,11 @@ public class MetaProjectFeatureDTO extends AbstractDTO {
         this.bootVersion = bootVersion;
     }
 
+    public Boolean getLombokEnabled() {
+        return lombokEnabled;
+    }
+
+    public void setLombokEnabled(Boolean lombokEnabled) {
+        this.lombokEnabled = lombokEnabled;
+    }
 }

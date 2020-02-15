@@ -153,5 +153,4 @@ export default {
       })
       .then(response => checkResult(response))
   }
-
 }

@@ -12,7 +12,9 @@ export function initFormBean (forEdit) {
       delete: true,
       deleteBatch: true,
       list: true,
-      show: true
+      show: true,
+      excelExport: false,
+      excelImport: false
     }
   }
   if (forEdit) {

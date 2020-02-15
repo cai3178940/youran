@@ -10,10 +10,10 @@ public class WebConst {
     /**
      * rest-api接口地址前缀
      */
-    public static final String API_PATH = "${youran.apiPath:/}";
+    public static final String API_PATH = "${youran.api-path:/}";
     /**
      * websocket接口地址前缀
      */
-    public static final String WS_API_PATH = "${youran.wsApiPath:/}";
+    public static final String WS_API_PATH = "${youran.ws-api-path:/}";
 
 }

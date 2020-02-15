@@ -40,6 +40,11 @@ export default {
     feature: {
       bootVersion: `
 **spring-boot版本**：生成的基本框架所依赖的spring-boot版本
+      `,
+      other: `
+**启用Lombok**：Lombok是一个Java库，可以通过简单的注解的形式来帮助我们简化和消除一些必须有但显得很臃肿的Java代码，
+比如常见的Getter&Setter、toString()、构造函数等等。
+<a href="https://projectlombok.org" target="_blank">点击访问Lombok官网</a>
       `
     }
   },
@@ -120,7 +125,7 @@ export default {
 **字段精度**：只会影响表结构中的字段精度
     `,
     autoIncrement: `
-**自增**：一种主键的生成策略
+**主键策略**：“自增”是最常用的主键策略，若不选“自增”，请在代码中手动给主键赋值，比如随机UUID。
     `,
     notNull: `
 **不能为空**：是否非空字段

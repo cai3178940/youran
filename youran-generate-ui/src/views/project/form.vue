@@ -44,6 +44,11 @@
               </el-radio-group>
             </help-popover>
           </el-form-item>
+          <el-form-item label="其他功能">
+            <help-popover name="project.feature.other">
+              <el-checkbox v-model="form.feature.lombokEnabled" tabindex="62">启用Lombok</el-checkbox>
+            </help-popover>
+          </el-form-item>
           <el-form-item label="代码模板" prop="templateId">
             <help-popover name="project.templateId">
               <el-col :span="18" class="col-left">
@@ -53,7 +58,7 @@
                     v-for="item in templateList"
                     :key="item.templateId"
                     :disabled="item.templateId===form.templateId2 || item.templateId===form.templateId3"
-                    :label="item.name"
+                    :label="item.name+'v'+item.templateVersion"
                     :value="item.templateId">
                   </el-option>
                 </el-select>
@@ -73,7 +78,7 @@
                     v-for="item in templateList"
                     :key="item.templateId"
                     :disabled="item.templateId===form.templateId || item.templateId===form.templateId3"
-                    :label="item.name"
+                    :label="item.name+'v'+item.templateVersion"
                     :value="item.templateId">
                   </el-option>
                 </el-select>
@@ -92,7 +97,7 @@
                     v-for="item in templateList"
                     :key="item.templateId"
                     :disabled="item.templateId===form.templateId || item.templateId===form.templateId2"
-                    :label="item.name"
+                    :label="item.name+'v'+item.templateVersion"
                     :value="item.templateId">
                   </el-option>
                 </el-select>
