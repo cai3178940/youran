@@ -27,8 +27,7 @@ public class MetaSpecialField {
     public static final boolean check(String value) {
         return DELETED.equals(value) || CREATED_TIME.equals(value)
             || CREATED_BY.equals(value) || OPERATED_TIME.equals(value)
-            || OPERATED_BY.equals(value) || VERSION.equals(value)
-            || STATUS.equals(value);
+            || OPERATED_BY.equals(value) || VERSION.equals(value);
     }
 
     public static final boolean isCreatedBy(String value) {

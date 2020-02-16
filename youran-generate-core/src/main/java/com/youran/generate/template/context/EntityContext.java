@@ -287,9 +287,9 @@ public class EntityContext extends BaseContext {
             String foreignCName = StringUtils.capitalize(entity.getClassName());
             StringBuilder line = new StringBuilder();
             // 增加依赖
-            this.addImport(this.packageName + ".pojo.po." + foreignCName + "PO");
+            this.addImport(this.packageName +"." + entity.getModule() + ".pojo.po." + foreignCName + "PO");
             // 增加注入
-            this.addAutowired(this.packageName + ".help", foreignCName + "Helper");
+            this.addAutowired(this.packageName + "." + entity.getModule() + ".help", foreignCName + "Helper");
             line.append(foreignCName).append("PO ").append(foreigncName).append(" = ")
                 .append(foreigncName).append("Helper.save").append(foreignCName).append("Example(")
                 .append(printSaveExampleArg(entity)).append(");");

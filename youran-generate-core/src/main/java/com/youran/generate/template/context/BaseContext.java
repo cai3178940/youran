@@ -181,7 +181,7 @@ public class BaseContext {
      * @param classPath 类全路径
      */
     public void addImport(String classPath) {
-        this.imports.add(classPath);
+        this.imports.add(StringUtils.replace(classPath, "..", "."));
     }
 
     /**
@@ -207,7 +207,7 @@ public class BaseContext {
      * @param classPath 类全路径
      */
     public void addStaticImport(String classPath) {
-        this.staticImports.add(classPath);
+        this.staticImports.add(StringUtils.replace(classPath, "..", "."));
     }
 
     /**
@@ -354,6 +354,15 @@ public class BaseContext {
         return sb.toString();
     }
 
+    /**
+     * 替换为空的模块变量生成的..为.
+     *
+     * @param packageName
+     * @return
+     */
+    public String printPackage(String packageName){
+        return StringUtils.replace(packageName, "..", ".");
+    }
 
     public List<MetaEntityPO> getMetaEntities() {
         return metaEntities;
