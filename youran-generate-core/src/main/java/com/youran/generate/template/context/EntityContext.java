@@ -46,7 +46,7 @@ public class EntityContext extends BaseContext {
      */
     private String title;
     /**
-     * 标题
+     * 模块名称
      */
     private String module;
     /**
