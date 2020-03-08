@@ -86,7 +86,7 @@
                     placeholder="例如：/aaa/bbb"
                     tabindex="20"></el-input>
         </el-form-item>
-        <el-form-item v-if="templateFileFormMode !== 'upload'"
+        <el-form-item v-if="templateFileFormMode === 'add'"
                       label="文件类型：" label-width="120px">
           <el-select style="width:300px;" v-model="templateFileForm.fileType"
                      placeholder="请选择文件类型" tabindex="30">
@@ -116,7 +116,6 @@
           v-else
           :action="templateFileUploadUrl"
           :data="templateFileUploadParams"
-          :before-upload="beforeUpload"
           :on-success="onUploadSuccess"
           :on-progress="onUploadProgress"
           :on-error="onUploadError"
@@ -252,10 +251,6 @@ function initData () {
     templateFileFormMode: 'add',
     // 模板文件上传路径
     templateFileUploadUrl: `/${apiPath}/template_file/upload`,
-    templateFileUploadParams: {
-      fileDir: '',
-      templateId: null
-    },
     // 添加模板文件表单
     templateFileForm: initTemplateFileFormBean(),
     // 上下文类型
@@ -277,6 +272,12 @@ export default {
     return initData()
   },
   computed: {
+    templateFileUploadParams () {
+      return {
+        templateId: this.templateId,
+        fileDir: this.templateFileForm.fileDir
+      }
+    },
     /**
      * 文件状态
      */
@@ -395,13 +396,6 @@ export default {
         // 删除模板文件
         this.handleDeleteTemplateFile(item.info.fileId)
       }
-    },
-    beforeUpload () {
-      this.templateFileUploadParams = {
-        templateId: this.templateId,
-        fileDir: this.templateFileForm.fileDir
-      }
-      return true
     },
     onUploadSuccess (response, file, fileList) {
       this.templateFileFormVisible = false

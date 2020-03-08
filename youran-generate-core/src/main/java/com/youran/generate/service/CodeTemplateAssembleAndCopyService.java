@@ -49,30 +49,28 @@ public class CodeTemplateAssembleAndCopyService {
             Map<TemplateFileType, List<TemplateFilePO>> map = templateFiles.stream()
                 .collect(Collectors.groupingBy(e -> TemplateFileType.find(e.getFileType())));
 
-            List<TemplateFilePO> generalFiles = map.get(TemplateFileType.GENERAL);
-            List<TemplateFilePO> binaryFiles = map.get(TemplateFileType.BINARY);
-            if (CollectionUtils.isEmpty(generalFiles)
-                && CollectionUtils.isEmpty(binaryFiles)) {
+            if (CollectionUtils.isEmpty(map.get(TemplateFileType.GENERAL))
+                && CollectionUtils.isEmpty(map.get(TemplateFileType.BINARY))) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "模板中不存在有效的模板文件");
             }
             List<TemplateFilePO> parentPathFiles = map.get(TemplateFileType.PARENT_PATH);
-            if (CollectionUtils.isEmpty(parentPathFiles)) {
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "模板中不存在有效的父路径渲染文件");
+            Map<String, TemplateFilePO> parentPathFilesMap = new HashMap<>();
+            if (CollectionUtils.isNotEmpty(parentPathFiles)) {
+                parentPathFilesMap = parentPathFiles.stream()
+                    .collect(Collectors.toMap(
+                        e -> e.getFileDir(),
+                        e -> e,
+                        (e1, e2) -> {
+                            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                                String.format("该目录下存在多个父路径渲染文件：%s", e1.getFileDir()));
+                        }));
             }
-            Map<String, TemplateFilePO> parentPathFilesMap = parentPathFiles.stream()
-                .collect(Collectors.toMap(
-                    e -> e.getFileDir(),
-                    e -> e,
-                    (e1, e2) -> {
-                        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
-                            String.format("该目录下存在多个父路径渲染文件：%s", e1.getFileDir()));
-                    }));
 
 
             List<TemplateFilePO> filenameFiles = map.get(TemplateFileType.FILENAME);
 
             Map<String, TemplateFilePO> filenameFilesMap = new HashMap<>();
-            if(CollectionUtils.isNotEmpty(filenameFiles)) {
+            if (CollectionUtils.isNotEmpty(filenameFiles)) {
                 filenameFilesMap = filenameFiles.stream()
                     .collect(Collectors.toMap(e -> e.fetchContentPathForFilenameFile(), e -> e));
             }
@@ -101,10 +99,6 @@ public class CodeTemplateAssembleAndCopyService {
             return;
         }
         TemplateFilePO parentPathFile = parentPathFilesMap.get(filePO.getFileDir());
-        if (parentPathFile == null) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
-                String.format("该模板目录下缺失父路径渲染文件：%s", filePO.getFileDir()));
-        }
         filePO.setParentPathTemplateFile(parentPathFile);
         TemplateFilePO filenameFile = filenameFilesMap.get(filePO.fetchFilePath());
         filePO.setFilenameTemplateFile(filenameFile);

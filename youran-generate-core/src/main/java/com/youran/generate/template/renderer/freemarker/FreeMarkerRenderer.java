@@ -45,14 +45,16 @@ public class FreeMarkerRenderer implements TemplateRenderer {
                 "非模板内容文件，不需要渲染:" + filePO.fetchFilePath());
         }
         TemplateFilePO parentPathFilePO = filePO.getParentPathTemplateFile();
-        if (parentPathFilePO == null) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
-                String.format("该模板目录下缺失父路径渲染文件：%s", filePO.getFileDir()));
-        }
         // 渲染父路径文件
-        String parentPath = this.renderFreemarkerFile(parentPathFilePO, context);
+        String parentPath;
+        if (parentPathFilePO == null) {
+            parentPath = filePO.getFileDir();
+        }else{
+            parentPath = this.renderFreemarkerFile(parentPathFilePO, context);
+        }
 
         TemplateFilePO filenameFile = filePO.getFilenameTemplateFile();
+        // 渲染文件名
         String filename;
         if (filenameFile != null) {
             filename = this.renderFreemarkerFile(filenameFile, context);
@@ -68,38 +70,6 @@ public class FreeMarkerRenderer implements TemplateRenderer {
             .replaceAll("\r|\n","");
 
         return FilenameUtils.normalize(StringUtils.trim(filePath), true);
-        /*
-        String packageName = context.getPackageName();
-        if (StringUtils.isBlank(packageName)) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "包名未设置");
-        }
-        String relativePath = templateFilePO.fetchFilePath();
-        relativePath = relativePath
-            .replace("{commonModule}", context.getProjectNameSplit() + "-common")
-            .replace("{coreModule}", context.getProjectNameSplit() + "-core")
-            .replace("{webModule}", context.getProjectNameSplit() + "-web")
-            .replace("{packageName}", packageName.replaceAll("\\.", "/"))
-            .replace("{commonPackage}", context.getCommonPackage().replaceAll("\\.", "/"))
-            .replace("{ProjectName}", context.getProjectNameUpper())
-            .replace("{projectName}", context.getProjectName())
-            .replace("{project-name}", context.getProjectNameSplit());
-        if (context instanceof EntityContext) {
-            EntityContext entityContext = (EntityContext) context;
-            relativePath = relativePath
-                .replace("{ClassName}", entityContext.getClassNameUpper())
-                .replace("{className}", entityContext.getClassName());
-        }
-        if (context instanceof ConstContext) {
-            ConstContext constContext = (ConstContext) context;
-            relativePath = relativePath
-                .replace("{enumName}", constContext.getConstName())
-                .replace("{EnumName}", constContext.getConstNameUpper());
-        }
-        // 非二进制文件，去除最后的.ftl后缀
-        if (!templateFilePO.getBinary()) {
-            relativePath = relativePath.substring(0, relativePath.lastIndexOf("."));
-        }
-        return relativePath;*/
     }
 
     @Override
