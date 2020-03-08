@@ -69,6 +69,10 @@ public class TemplateFileService {
         // 初始化文件内容为空
         templateFile.setContent("");
         templateFile.setFileDir(this.normalizeTemplateFileDir(templateFile.getFileDir()));
+        // 非普通文件，则上下文类型一律都是GLOBAL全局
+        if(!templateFile.isGeneralFile()){
+            templateFile.setContextType(ContextType.GLOBAL.getValue());
+        }
         // 唯一性校验
         this.checkUnique(templateFile, false);
         this.doSave(templateFile);

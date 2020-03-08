@@ -478,9 +478,12 @@ export default {
         svgIcon.icon = FileTypeUtil.getIcon('folder')
       } else {
         svgIcon.icon = FileTypeUtil.getIcon(data.type)
-        if (data.info.abstracted) {
+        if (data.info.fileType === 2) {
           // 抽象文件-红色图标
           svgIcon.className += 'color-danger'
+        } else if (data.info.fileType === 3) {
+          // 二进制文件-紫色图标
+          svgIcon.className += 'color-purple'
         } else {
           if (data.info.contextType === 2) {
             // 实体上下文-蓝色图标
