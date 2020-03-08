@@ -5,6 +5,7 @@ import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.Base64Util;
 import com.youran.generate.constant.ContextType;
+import com.youran.generate.constant.TemplateFileType;
 import com.youran.generate.dao.CodeTemplateDAO;
 import com.youran.generate.dao.TemplateFileDAO;
 import com.youran.generate.pojo.dto.TemplateFileAddDTO;
@@ -95,8 +96,7 @@ public class TemplateFileService {
         templateFile.setFileDir(this.normalizeTemplateFileDir(fileDir));
         templateFile.setTemplateId(templateId);
         templateFile.setContextType(ContextType.GLOBAL.getValue());
-        templateFile.setAbstracted(false);
-        templateFile.setBinary(true);
+        templateFile.setFileType(TemplateFileType.BINARY.getValue());
         templateFile.setContent(Base64Util.encode(bytes));
         // 唯一性校验
         this.checkUnique(templateFile, false);

@@ -21,10 +21,8 @@ public class TemplateFileExample extends AbstractExample {
     public static final String E_TEMPLATE_ID = "1";
     public static final String N_CONTEXT_TYPE = "上下文类型【1全局、2实体、3常量】";
     public static final String E_CONTEXT_TYPE = "1";
-    public static final String N_ABSTRACTED = "是否抽象文件";
-    public static final String E_ABSTRACTED = "false";
-    public static final String N_BINARY = "是否二进制文件";
-    public static final String E_BINARY = "false";
+    public static final String N_FILE_TYPE = "文件类型";
+    public static final String E_FILE_TYPE = "1";
     public static final String N_CONTENT = "内容";
     public static final String E_CONTENT = "xxxxx";
 }

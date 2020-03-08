@@ -47,8 +47,7 @@ public interface TemplateFileMapper {
         @Mapping(target = "fileName"),
         @Mapping(target = "fileDir"),
         @Mapping(target = "contextType"),
-        @Mapping(target = "abstracted"),
-        @Mapping(target = "binary"),
+        @Mapping(target = "fileType"),
         @Mapping(target = "content"),
     })
     TemplateFilePO copy(TemplateFilePO po);

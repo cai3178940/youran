@@ -5,13 +5,12 @@ import com.youran.common.exception.BusinessException;
 import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.po.TemplateFilePO;
 import com.youran.generate.template.context.BaseContext;
-import com.youran.generate.template.context.ConstContext;
-import com.youran.generate.template.context.EntityContext;
 import com.youran.generate.template.renderer.TemplateRenderer;
 import freemarker.core._TemplateModelException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +39,36 @@ public class FreeMarkerRenderer implements TemplateRenderer {
     }
 
     @Override
-    public String renderPath(TemplateFilePO templateFilePO, BaseContext context) {
+    public String renderPath(TemplateFilePO filePO, BaseContext context) {
+        if (!filePO.isContentFile()) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,
+                "非模板内容文件，不需要渲染:" + filePO.fetchFilePath());
+        }
+        TemplateFilePO parentPathFilePO = filePO.getParentPathTemplateFile();
+        if (parentPathFilePO == null) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                String.format("该模板目录下缺失父路径渲染文件：%s", filePO.getFileDir()));
+        }
+        // 渲染父路径文件
+        String parentPath = this.renderFreemarkerFile(parentPathFilePO, context);
+
+        TemplateFilePO filenameFile = filePO.getFilenameTemplateFile();
+        String filename;
+        if (filenameFile != null) {
+            filename = this.renderFreemarkerFile(filenameFile, context);
+        }else{
+            filename = filePO.getFileName();
+            // 普通模板文件，去除最后的.ftl后缀
+            if(filePO.isGeneralFile()){
+                filename = filename.substring(0, filename.lastIndexOf("."));
+            }
+        }
+        String filePath = parentPath + "/" + filename;
+        filePath = filePath.replaceAll("\\/+", "/")
+            .replaceAll("\r|\n","");
+
+        return FilenameUtils.normalize(StringUtils.trim(filePath), true);
+        /*
         String packageName = context.getPackageName();
         if (StringUtils.isBlank(packageName)) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "包名未设置");
@@ -71,19 +99,20 @@ public class FreeMarkerRenderer implements TemplateRenderer {
         if (!templateFilePO.getBinary()) {
             relativePath = relativePath.substring(0, relativePath.lastIndexOf("."));
         }
-        return relativePath;
+        return relativePath;*/
     }
 
     @Override
-    public Object renderContent(TemplateFilePO templateFilePO, BaseContext context) {
-        if (templateFilePO.getBinary()) {
+    public Object renderContent(TemplateFilePO filePO, BaseContext context) {
+        if (filePO.isBinaryFile()) {
             // 渲染二进制文件
-            return this.renderBinaryFile(templateFilePO);
-        } else {
+            return this.renderBinaryFile(filePO);
+        } else if (filePO.isGeneralFile()) {
             // 渲染freemarker模板内容
-            return this.renderFreemarkerFile(templateFilePO, context);
+            return this.renderFreemarkerFile(filePO, context);
         }
-
+        throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,
+            "非模板内容文件，不需要渲染:" + filePO.fetchFilePath());
     }
 
     /**

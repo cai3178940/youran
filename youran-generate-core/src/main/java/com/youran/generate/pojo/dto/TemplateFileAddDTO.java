@@ -39,21 +39,9 @@ public class TemplateFileAddDTO extends AbstractDTO {
     @Const(constClass = ContextType.class)
     private Integer contextType;
 
-    @ApiModelProperty(notes = N_ABSTRACTED, example = E_ABSTRACTED, required = true)
+    @ApiModelProperty(notes = N_FILE_TYPE, example = E_FILE_TYPE, required = true)
     @NotNull
-    private Boolean abstracted;
-
-    @ApiModelProperty(notes = N_BINARY, example = E_BINARY, required = true)
-    @NotNull
-    private Boolean binary;
-
-    public Boolean getBinary() {
-        return binary;
-    }
-
-    public void setBinary(Boolean binary) {
-        this.binary = binary;
-    }
+    private Integer fileType;
 
     public String getFileName() {
         return this.fileName;
@@ -87,14 +75,13 @@ public class TemplateFileAddDTO extends AbstractDTO {
         this.contextType = contextType;
     }
 
-    public Boolean getAbstracted() {
-        return this.abstracted;
+    public Integer getFileType() {
+        return fileType;
     }
 
-    public void setAbstracted(Boolean abstracted) {
-        this.abstracted = abstracted;
+    public void setFileType(Integer fileType) {
+        this.fileType = fileType;
     }
-
 }
 
 

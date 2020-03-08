@@ -175,7 +175,7 @@ public class MetaCodeGenService {
                            Integer templateId, Consumer<ProgressVO> progressConsumer) {
         // 获取组装后的模板
         this.progressing(progressConsumer, 10, 80, 2, "获取并组装代码模板");
-        CodeTemplatePO templatePO = codeTemplateAssembleAndCopyService.getAssembledCodeTemplate(templateId);
+        CodeTemplatePO templatePO = codeTemplateAssembleAndCopyService.getAssembledCodeTemplate(templateId, true);
         // 获取组装后的项目
         this.progressing(progressConsumer, 20, 80, 5, "获取并组装项目元数据");
         MetaProjectPO project = metaQueryAssembleService.getAssembledProject(projectId, true);
@@ -184,8 +184,8 @@ public class MetaCodeGenService {
         LOGGER.debug("------代码生成临时路径：" + projectDir);
         this.progressing(progressConsumer, 20, 80, 1, "开始渲染代码");
         for (TemplateFilePO templateFile : templatePO.getTemplateFiles()) {
-            // 跳过抽象文件
-            if (templateFile.getAbstracted()) {
+            // 跳过非内容文件
+            if (!templateFile.isContentFile()) {
                 continue;
             }
             try {

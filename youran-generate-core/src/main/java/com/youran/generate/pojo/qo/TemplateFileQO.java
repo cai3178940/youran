@@ -24,11 +24,8 @@ public class TemplateFileQO extends AbstractQO {
     @ApiParam(value = N_CONTEXT_TYPE, example = E_CONTEXT_TYPE)
     private Integer contextType;
 
-    @ApiParam(value = N_ABSTRACTED, example = E_ABSTRACTED)
-    private Boolean abstracted;
-
-    @ApiParam(value = N_BINARY, example = E_BINARY)
-    private Boolean binary;
+    @ApiParam(value = N_FILE_TYPE, example = E_FILE_TYPE)
+    private Integer fileType;
 
     @ApiParam(value = "文件名排序标识【1升序,-1降序,0不排序】", example = "1")
     private Integer fileNameSortSign;
@@ -42,14 +39,6 @@ public class TemplateFileQO extends AbstractQO {
     @ApiParam(value = "修改时间排序标识【1升序,-1降序,0不排序】", example = "1")
     private Integer operatedTimeSortSign;
 
-
-    public Boolean getBinary() {
-        return binary;
-    }
-
-    public void setBinary(Boolean binary) {
-        this.binary = binary;
-    }
 
     public String getFileName() {
         return this.fileName;
@@ -75,14 +64,13 @@ public class TemplateFileQO extends AbstractQO {
         this.contextType = contextType;
     }
 
-    public Boolean getAbstracted() {
-        return this.abstracted;
+    public Integer getFileType() {
+        return fileType;
     }
 
-    public void setAbstracted(Boolean abstracted) {
-        this.abstracted = abstracted;
+    public void setFileType(Integer fileType) {
+        this.fileType = fileType;
     }
-
 
     public Integer getFileNameSortSign() {
         return this.fileNameSortSign;

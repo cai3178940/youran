@@ -57,10 +57,8 @@ export function initTemplateFileFormBean (forEdit) {
     fileDir: '',
     // 上下文类型
     contextType: options.contextType[0].value,
-    // 是否抽象文件
-    abstracted: false,
-    // 是否二进制文件
-    binary: false,
+    // 文件类型
+    fileType: 1,
     // 文件内容
     content: ''
   }

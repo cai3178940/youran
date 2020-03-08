@@ -32,22 +32,11 @@ public class TemplateFileListVO extends AbstractVO {
     @ApiModelProperty(notes = N_CONTEXT_TYPE, example = E_CONTEXT_TYPE, allowableValues = ContextType.VALUES_STR)
     private Integer contextType;
 
-    @ApiModelProperty(notes = N_ABSTRACTED, example = E_ABSTRACTED)
-    private Boolean abstracted;
-
-    @ApiModelProperty(notes = N_BINARY, example = E_BINARY, required = true)
-    private Boolean binary;
+    @ApiModelProperty(notes = N_FILE_TYPE, example = E_FILE_TYPE)
+    private Integer fileType;
 
     @ApiModelProperty(notes = N_VERSION, example = E_VERSION)
     private Integer version;
-
-    public Boolean getBinary() {
-        return binary;
-    }
-
-    public void setBinary(Boolean binary) {
-        this.binary = binary;
-    }
 
     public Integer getFileId() {
         return this.fileId;
@@ -89,12 +78,12 @@ public class TemplateFileListVO extends AbstractVO {
         this.contextType = contextType;
     }
 
-    public Boolean getAbstracted() {
-        return this.abstracted;
+    public Integer getFileType() {
+        return fileType;
     }
 
-    public void setAbstracted(Boolean abstracted) {
-        this.abstracted = abstracted;
+    public void setFileType(Integer fileType) {
+        this.fileType = fileType;
     }
 
     public Integer getVersion() {

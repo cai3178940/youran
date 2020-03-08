@@ -11,8 +11,7 @@
         ${alias}.file_dir as fileDir,
         ${alias}.template_id as templateId,
         ${alias}.context_type as contextType,
-        ${alias}.abstracted,
-        ${alias}.`binary`,
+        ${alias}.file_type as fileType,
         ${alias}.content,
         ${alias}.created_time as createdTime,
         ${alias}.created_by as createdBy,
@@ -49,8 +48,7 @@
         file_dir,
         template_id,
         context_type,
-        abstracted,
-        `binary`,
+        file_type,
         content,
         created_time,
         created_by,
@@ -64,8 +62,7 @@
         #{fileDir,jdbcType=VARCHAR},
         #{templateId,jdbcType=INTEGER},
         #{contextType,jdbcType=INTEGER},
-        #{abstracted,jdbcType=BOOLEAN},
-        #{binary,jdbcType=BOOLEAN},
+        #{fileType,jdbcType=INTEGER},
         #{content,jdbcType=VARCHAR},
         #{createdTime,jdbcType=TIMESTAMP},
         #{createdBy,jdbcType=VARCHAR},
@@ -83,8 +80,7 @@
             file_dir=#{fileDir,jdbcType=VARCHAR},
             template_id=#{templateId,jdbcType=INTEGER},
             context_type=#{contextType,jdbcType=INTEGER},
-            abstracted=#{abstracted,jdbcType=BOOLEAN},
-            `binary`=#{binary,jdbcType=BOOLEAN},
+            file_type=#{fileType,jdbcType=INTEGER},
             content=#{content,jdbcType=VARCHAR},
             operated_time=#{operatedTime,jdbcType=TIMESTAMP},
             operated_by=#{operatedBy,jdbcType=VARCHAR},
@@ -113,11 +109,8 @@
         <if test="contextType != null ">
             and t.context_type = #{contextType}
         </if>
-        <if test="abstracted != null ">
-            and t.abstracted = #{abstracted}
-        </if>
-        <if test="binary != null ">
-            and t.`binary` = #{binary}
+        <if test="fileType != null ">
+            and t.file_type = #{fileType}
         </if>
     </sql>
 

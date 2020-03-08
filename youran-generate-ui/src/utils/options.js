@@ -496,6 +496,31 @@ export default {
       value: 3,
       label: '枚举'
     }
+  ],
+  /**
+   * 模板文件类型
+   */
+  templateFileType: [
+    {
+      value: 1,
+      label: '普通模板文件'
+    },
+    {
+      value: 2,
+      label: '抽象模板文件'
+    },
+    {
+      value: 3,
+      label: '二进制模板文件'
+    },
+    {
+      value: 4,
+      label: '父路径渲染文件'
+    },
+    {
+      value: 5,
+      label: '文件名渲染文件'
+    }
   ]
 
 }

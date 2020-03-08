@@ -3,6 +3,7 @@ package com.youran.generate.service;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.Base64Util;
 import com.youran.common.util.JsonUtil;
+import com.youran.generate.constant.TemplateFileType;
 import com.youran.generate.pojo.mapper.CodeTemplateMapper;
 import com.youran.generate.pojo.mapper.TemplateFileMapper;
 import com.youran.generate.pojo.po.CodeTemplatePO;
@@ -20,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 【代码模板】导入导出服务
@@ -53,7 +53,7 @@ public class TemplateImportExportService {
      * @return
      */
     public File exportTemplate(Integer templateId) {
-        CodeTemplatePO templatePO = codeTemplateAssembleAndCopyService.getAssembledCodeTemplate(templateId);
+        CodeTemplatePO templatePO = codeTemplateAssembleAndCopyService.getAssembledCodeTemplate(templateId, false);
         String exportDir = dataDirService.getTemplateExportDir(templatePO);
         String zipFilePath = exportDir + ".zip";
         File dir = new File(exportDir);
@@ -151,7 +151,7 @@ public class TemplateImportExportService {
         }
         String content;
         try {
-            if (Objects.equals(po.getBinary(), true)) {
+            if (TemplateFileType.BINARY.getValue().equals(po.getFileType())) {
                 content = Base64Util.encodeFile(contentFile);
             } else {
                 content = FileUtils.readFileToString(contentFile, StandardCharsets.UTF_8);

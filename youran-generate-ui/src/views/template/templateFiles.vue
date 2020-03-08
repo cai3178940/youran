@@ -50,7 +50,7 @@
         <div ref="splitLine" @mousedown="splitLineMousedown" class="splitLine"></div>
         <el-container ref="main">
           <el-main class="codeMain" v-loading="fileLoading">
-            <vue-codemirror v-if="!currentFile.binary"
+            <vue-codemirror v-if="currentFile.fileType!==3"
                             v-model="currentFile.content"
                             :options="cmOptions"
                             @input="fileContentChange"></vue-codemirror>
@@ -86,14 +86,19 @@
                     placeholder="例如：/aaa/bbb"
                     tabindex="20"></el-input>
         </el-form-item>
-        <el-form-item v-if="!templateFileForm.binary"
-                      label="是否抽象文件：" label-width="120px">
-          <el-radio-group v-model="templateFileForm.abstracted">
-            <el-radio border :label="true">是</el-radio>
-            <el-radio border :label="false">否</el-radio>
-          </el-radio-group>
+        <el-form-item v-if="templateFileFormMode !== 'upload'"
+                      label="文件类型：" label-width="120px">
+          <el-select style="width:300px;" v-model="templateFileForm.fileType"
+                     placeholder="请选择文件类型" tabindex="30">
+            <el-option
+              v-for="item in templateFileType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item v-if="!templateFileForm.binary && !templateFileForm.abstracted"
+        <el-form-item v-if="templateFileForm.fileType===1"
                       label="上下文类型：" label-width="120px">
           <el-radio-group v-model="templateFileForm.contextType">
             <el-radio v-for="obj in contextType"
@@ -255,6 +260,8 @@ function initData () {
     templateFileForm: initTemplateFileFormBean(),
     // 上下文类型
     contextType: options.contextType,
+    // 上下文类型
+    templateFileType: options.templateFileType.filter(e => e.value !== 3),
     // 模板文件校验规则
     templateFileRules: getTemplateFileRulesRules()
   }))
@@ -359,7 +366,7 @@ export default {
         this.templateFileFormLoading = false
         this.templateFileFormMode = 'upload'
         this.templateFileForm = initTemplateFileFormBean()
-        this.templateFileForm.binary = true
+        this.templateFileForm.fileType = 3
         if (item) {
           // 如果在目录上右击新建，则自动填充该目录
           if (item.dir) {

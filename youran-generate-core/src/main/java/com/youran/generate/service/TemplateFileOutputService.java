@@ -44,7 +44,7 @@ public class TemplateFileOutputService {
             for (TemplateFilePO templateFile : templateFiles) {
                 String contentFilePath = outputDir + templateFile.fetchFilePath();
                 File contentFile = new File(contentFilePath);
-                if (templateFile.getBinary()) {
+                if (templateFile.isBinaryFile()) {
                     FileUtils.writeByteArrayToFile(contentFile, Base64Util.decode(templateFile.getContent()));
                 } else {
                     FileUtils.writeStringToFile(contentFile, templateFile.getContent(), StandardCharsets.UTF_8);

@@ -2,6 +2,7 @@ package com.youran.generate.service;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.generate.constant.TemplateFileType;
 import com.youran.generate.pojo.mapper.CodeTemplateMapper;
 import com.youran.generate.pojo.mapper.TemplateFileMapper;
 import com.youran.generate.pojo.po.CodeTemplatePO;
@@ -11,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 模板组装及复制服务类
@@ -30,23 +34,82 @@ public class CodeTemplateAssembleAndCopyService {
     /**
      * 获取组装后的模板
      *
-     * @param templateId 模板id
+     * @param templateId           模板id
+     * @param checkAndAssembleFile 是否校验并组装每个文件
      * @return
      */
-    public CodeTemplatePO getAssembledCodeTemplate(Integer templateId) {
+    public CodeTemplatePO getAssembledCodeTemplate(Integer templateId, boolean checkAndAssembleFile) {
         CodeTemplatePO templatePO = codeTemplateService.getCodeTemplate(templateId, true);
         List<TemplateFilePO> templateFiles = templateFileService.getAllTemplateFiles(templateId);
         if (CollectionUtils.isEmpty(templateFiles)) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "模板中不存在有效的模板文件");
         }
-        boolean existEffectiveFile = templateFiles.stream()
-            .anyMatch(templateFilePO -> !templateFilePO.getAbstracted());
-        if (!existEffectiveFile) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "模板中不存在有效的模板文件");
+        // 校验并组装每个模板文件
+        if (checkAndAssembleFile) {
+            Map<TemplateFileType, List<TemplateFilePO>> map = templateFiles.stream()
+                .collect(Collectors.groupingBy(e -> TemplateFileType.find(e.getFileType())));
+
+            List<TemplateFilePO> generalFiles = map.get(TemplateFileType.GENERAL);
+            List<TemplateFilePO> binaryFiles = map.get(TemplateFileType.BINARY);
+            if (CollectionUtils.isEmpty(generalFiles)
+                && CollectionUtils.isEmpty(binaryFiles)) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "模板中不存在有效的模板文件");
+            }
+            List<TemplateFilePO> parentPathFiles = map.get(TemplateFileType.PARENT_PATH);
+            if (CollectionUtils.isEmpty(parentPathFiles)) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "模板中不存在有效的父路径渲染文件");
+            }
+            Map<String, TemplateFilePO> parentPathFilesMap = parentPathFiles.stream()
+                .collect(Collectors.toMap(
+                    e -> e.getFileDir(),
+                    e -> e,
+                    (e1, e2) -> {
+                        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                            String.format("该目录下存在多个父路径渲染文件：%s", e1.getFileDir()));
+                    }));
+
+
+            List<TemplateFilePO> filenameFiles = map.get(TemplateFileType.FILENAME);
+
+            Map<String, TemplateFilePO> filenameFilesMap = new HashMap<>();
+            if(CollectionUtils.isNotEmpty(filenameFiles)) {
+                filenameFilesMap = filenameFiles.stream()
+                    .collect(Collectors.toMap(e -> e.fetchContentPathForFilenameFile(), e -> e));
+            }
+
+            // 组装每个模板文件
+            for (TemplateFilePO filePO : templateFiles) {
+                this.assembleTemplateFilePO(filePO, parentPathFilesMap, filenameFilesMap);
+            }
         }
         templatePO.setTemplateFiles(templateFiles);
         return templatePO;
     }
+
+    /**
+     * 组装模板文件
+     *
+     * @param filePO
+     * @param parentPathFilesMap 所有父路径渲染文件
+     * @param filenameFilesMap   所有文件名渲染文件
+     */
+    private void assembleTemplateFilePO(TemplateFilePO filePO,
+                                        Map<String, TemplateFilePO> parentPathFilesMap,
+                                        Map<String, TemplateFilePO> filenameFilesMap) {
+        // 非内容文件不需要组装
+        if (!filePO.isContentFile()) {
+            return;
+        }
+        TemplateFilePO parentPathFile = parentPathFilesMap.get(filePO.getFileDir());
+        if (parentPathFile == null) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                String.format("该模板目录下缺失父路径渲染文件：%s", filePO.getFileDir()));
+        }
+        filePO.setParentPathTemplateFile(parentPathFile);
+        TemplateFilePO filenameFile = filenameFilesMap.get(filePO.fetchFilePath());
+        filePO.setFilenameTemplateFile(filenameFile);
+    }
+
 
     /**
      * 模板复制
@@ -56,7 +119,7 @@ public class CodeTemplateAssembleAndCopyService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public CodeTemplatePO copyCodeTemplate(Integer templateId) {
-        CodeTemplatePO old = this.getAssembledCodeTemplate(templateId);
+        CodeTemplatePO old = this.getAssembledCodeTemplate(templateId, false);
         CodeTemplatePO template = CodeTemplateMapper.INSTANCE.copy(old);
         template.setSysDefault(false);
         template.setCode("copy_" + System.currentTimeMillis());
