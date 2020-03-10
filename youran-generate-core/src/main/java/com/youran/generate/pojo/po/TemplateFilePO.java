@@ -7,6 +7,8 @@ import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.TemplateFileType;
 import org.apache.commons.io.FilenameUtils;
 
+import java.util.List;
+
 /**
  * 模板文件
  *
@@ -46,7 +48,7 @@ public class TemplateFilePO extends BasePO {
     private Integer contextType;
 
     /**
-     * 文件类型【1普通模板文件、2抽象模板文件、3二进制模板文件、4父路径渲染文件、5文件名渲染文件】
+     * 文件类型【1普通模板文件、2抽象模板文件、3二进制模板文件、4目录渲染文件、5文件名渲染文件】
      *
      * @see com.youran.generate.constant.TemplateFileType
      */
@@ -59,10 +61,10 @@ public class TemplateFilePO extends BasePO {
     private String content;
 
     /**
-     * 父路径渲染文件
+     * 文件路径上的目录渲染文件
      */
     @JsonIgnore
-    private transient TemplateFilePO parentPathTemplateFile;
+    private transient List<TemplateFilePO> dirTemplateFiles;
     /**
      * 文件名渲染文件
      */
@@ -181,12 +183,12 @@ public class TemplateFilePO extends BasePO {
         this.content = content;
     }
 
-    public TemplateFilePO getParentPathTemplateFile() {
-        return parentPathTemplateFile;
+    public List<TemplateFilePO> getDirTemplateFiles() {
+        return dirTemplateFiles;
     }
 
-    public void setParentPathTemplateFile(TemplateFilePO parentPathTemplateFile) {
-        this.parentPathTemplateFile = parentPathTemplateFile;
+    public void setDirTemplateFiles(List<TemplateFilePO> dirTemplateFiles) {
+        this.dirTemplateFiles = dirTemplateFiles;
     }
 
     public TemplateFilePO getFilenameTemplateFile() {

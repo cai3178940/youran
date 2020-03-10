@@ -43,6 +43,18 @@ public class TemplateFileService {
     private CodeTemplateService codeTemplateService;
 
     /**
+     * 校验目录渲染文件是否存在
+     *
+     * @param templateId
+     * @param fileDir
+     */
+    public void checkDirPathExists(Integer templateId, String fileDir) {
+        if (templateFileDAO.dirPathExists(templateId, TemplateFileType.PARENT_PATH.getValue(), fileDir)) {
+            throw new BusinessException(ErrorCode.DUPLICATE_KEY,"当前目录下已经存在目录渲染文件");
+        }
+    }
+
+    /**
      * 校验数据唯一性
      *
      * @param templateFile

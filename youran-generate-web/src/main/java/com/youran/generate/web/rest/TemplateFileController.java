@@ -2,6 +2,7 @@ package com.youran.generate.web.rest;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.generate.constant.TemplateFileType;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.TemplateFileAddDTO;
 import com.youran.generate.pojo.dto.TemplateFileContentUpdateDTO;
@@ -44,6 +45,9 @@ public class TemplateFileController extends AbstractController implements Templa
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TemplateFileShowVO> save(@Valid @RequestBody TemplateFileAddDTO templateFileAddDTO) throws Exception {
+        if (TemplateFileType.PARENT_PATH.getValue().equals(templateFileAddDTO.getFileType())) {
+            templateFileService.checkDirPathExists(templateFileAddDTO.getTemplateId(), templateFileAddDTO.getFileDir());
+        }
         TemplateFilePO templateFile = templateFileService.save(templateFileAddDTO);
         return ResponseEntity.created(new URI(apiPath + "/template_file/" + templateFile.getFileId()))
             .body(TemplateFileMapper.INSTANCE.toShowVO(templateFile));

@@ -19,6 +19,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 
 /**
  * freeMarker模板渲染器
@@ -44,32 +45,71 @@ public class FreeMarkerRenderer implements TemplateRenderer {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR,
                 "非模板内容文件，不需要渲染:" + filePO.fetchFilePath());
         }
-        TemplateFilePO parentPathFilePO = filePO.getParentPathTemplateFile();
-        // 渲染父路径文件
-        String parentPath;
-        if (parentPathFilePO == null) {
-            parentPath = filePO.getFileDir();
-        }else{
-            parentPath = this.renderFreemarkerFile(parentPathFilePO, context);
-        }
+        // 渲染父路径
+        String parentPath = this.renderParentPath(filePO, context);
+        // 渲染文件名
+        String filename = this.renderFilename(filePO, context);
 
+        String filePath = parentPath + "/" + filename;
+        filePath = filePath.replaceAll("\\/+", "/")
+            .replaceAll("\r|\n", "");
+
+        return FilenameUtils.normalize(StringUtils.trim(filePath), true);
+    }
+
+    /**
+     * 渲染父路径
+     *
+     * @param filePO
+     * @param context
+     * @return
+     */
+    protected String renderParentPath(TemplateFilePO filePO, BaseContext context) {
+        List<TemplateFilePO> dirTemplateFiles = filePO.getDirTemplateFiles();
+        // 初始指定父路径为模板文件的父路径
+        String parentPath = filePO.getFileDir();
+        // 从后往前迭代
+        for (int i = dirTemplateFiles.size() - 1; i >= 0; i--) {
+            TemplateFilePO dirFile = dirTemplateFiles.get(i);
+            String fileDir = dirFile.getFileDir();
+            // 截取已经固定下来的路径
+            String fixed = parentPath.substring(fileDir.length());
+            // 渲染动态的路径
+            String renderDir = this.renderFreemarkerFile(dirFile, context);
+            // 前缀路径
+            String prefix = this.getParentPath(fileDir);
+            // 拼接渲染后的路径
+            parentPath = prefix + "/" + renderDir + "/" + fixed;
+        }
+        return parentPath;
+    }
+
+    private String getParentPath(String file) {
+        File f = new File(file);
+        return f.getParent();
+    }
+
+    /**
+     * 渲染文件名
+     *
+     * @param filePO
+     * @param context
+     * @return
+     */
+    protected String renderFilename(TemplateFilePO filePO, BaseContext context) {
         TemplateFilePO filenameFile = filePO.getFilenameTemplateFile();
         // 渲染文件名
         String filename;
         if (filenameFile != null) {
             filename = this.renderFreemarkerFile(filenameFile, context);
-        }else{
+        } else {
             filename = filePO.getFileName();
             // 普通模板文件，去除最后的.ftl后缀
-            if(filePO.isGeneralFile()){
+            if (filePO.isGeneralFile()) {
                 filename = filename.substring(0, filename.lastIndexOf("."));
             }
         }
-        String filePath = parentPath + "/" + filename;
-        filePath = filePath.replaceAll("\\/+", "/")
-            .replaceAll("\r|\n","");
-
-        return FilenameUtils.normalize(StringUtils.trim(filePath), true);
+        return filename;
     }
 
     @Override

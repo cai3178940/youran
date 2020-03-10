@@ -26,9 +26,9 @@ public enum TemplateFileType {
      */
     BINARY(3, "二进制模板文件"),
     /**
-     * 父路径渲染文件
+     * 目录渲染文件
      */
-    PARENT_PATH(4, "父路径渲染文件"),
+    PARENT_PATH(4, "目录渲染文件"),
     /**
      * 文件名渲染文件
      */

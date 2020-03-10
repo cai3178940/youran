@@ -143,7 +143,7 @@ public class TemplateImportExportService {
         String filePath = po.getFileDir() + File.separator + po.getFileName();
         File contentFile = new File(tplDir, filePath);
         if (!contentFile.exists() || contentFile.isDirectory()) {
-            throw new BusinessException("模板文件缺失：" + po.getFileName());
+            throw new BusinessException("模板文件缺失：" + po.fetchFilePath());
         }
         if (contentFile.length() > TemplateFilePO.TEMPLATE_FILE_LENGTH_LIMIT) {
             throw new BusinessException("模板文件(" + filePath + ")超过最大长度限制：" +

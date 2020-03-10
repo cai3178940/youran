@@ -515,7 +515,7 @@ export default {
     },
     {
       value: 4,
-      label: '父路径渲染文件'
+      label: '目录渲染文件'
     },
     {
       value: 5,

@@ -182,5 +182,15 @@
         </where>
     </select>
 
+    <select id="dirPathExists" resultType="boolean">
+        select count(1) from template_file
+        <where>
+            and deleted=0
+            and template_id = #{templateId}
+            and file_type = #{fileType}
+            and file_dir = #{fileDir}
+        </where>
+    </select>
+
 
 </mapper>

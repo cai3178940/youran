@@ -38,6 +38,9 @@ public interface TemplateFileDAO extends DAO<TemplateFilePO> {
     List<TemplateFilePO> findAll(Integer templateId);
 
 
+    boolean dirPathExists(@Param("templateId") Integer templateId,
+                          @Param("fileType") Integer fileType,
+                          @Param("fileDir") String fileDir);
 }
 
 

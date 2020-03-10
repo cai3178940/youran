@@ -8,13 +8,12 @@ import com.youran.generate.pojo.mapper.TemplateFileMapper;
 import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.pojo.po.TemplateFilePO;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -53,19 +52,19 @@ public class CodeTemplateAssembleAndCopyService {
                 && CollectionUtils.isEmpty(map.get(TemplateFileType.BINARY))) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "模板中不存在有效的模板文件");
             }
-            List<TemplateFilePO> parentPathFiles = map.get(TemplateFileType.PARENT_PATH);
-            Map<String, TemplateFilePO> parentPathFilesMap = new HashMap<>();
-            if (CollectionUtils.isNotEmpty(parentPathFiles)) {
-                parentPathFilesMap = parentPathFiles.stream()
-                    .collect(Collectors.toMap(
-                        e -> e.getFileDir(),
-                        e -> e,
-                        (e1, e2) -> {
-                            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
-                                String.format("该目录下存在多个父路径渲染文件：%s", e1.getFileDir()));
-                        }));
+            List<TemplateFilePO> dirFiles = map.get(TemplateFileType.PARENT_PATH);
+            if (CollectionUtils.isNotEmpty(dirFiles)) {
+                dirFiles.sort(Comparator.comparing(filePO -> StringUtils.length(filePO.getFileDir())));
+                // 校验同一个目录多个目录渲染文件的情况
+                TemplateFilePO lastDirFile = null;
+                for (TemplateFilePO dirFile : dirFiles) {
+                    if(lastDirFile!=null && Objects.equals(lastDirFile.getFileDir(),dirFile.getFileDir())){
+                        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                            String.format("该目录下存在多个目录渲染文件：%s", dirFile.getFileDir()));
+                    }
+                    lastDirFile = dirFile;
+                }
             }
-
 
             List<TemplateFilePO> filenameFiles = map.get(TemplateFileType.FILENAME);
 
@@ -77,7 +76,7 @@ public class CodeTemplateAssembleAndCopyService {
 
             // 组装每个模板文件
             for (TemplateFilePO filePO : templateFiles) {
-                this.assembleTemplateFilePO(filePO, parentPathFilesMap, filenameFilesMap);
+                this.assembleTemplateFilePO(filePO, dirFiles, filenameFilesMap);
             }
         }
         templatePO.setTemplateFiles(templateFiles);
@@ -88,18 +87,22 @@ public class CodeTemplateAssembleAndCopyService {
      * 组装模板文件
      *
      * @param filePO
-     * @param parentPathFilesMap 所有父路径渲染文件
-     * @param filenameFilesMap   所有文件名渲染文件
+     * @param dirFiles      所有目录渲染文件
+     * @param filenameFilesMap 所有文件名渲染文件
      */
     private void assembleTemplateFilePO(TemplateFilePO filePO,
-                                        Map<String, TemplateFilePO> parentPathFilesMap,
+                                        List<TemplateFilePO> dirFiles,
                                         Map<String, TemplateFilePO> filenameFilesMap) {
         // 非内容文件不需要组装
         if (!filePO.isContentFile()) {
             return;
         }
-        TemplateFilePO parentPathFile = parentPathFilesMap.get(filePO.getFileDir());
-        filePO.setParentPathTemplateFile(parentPathFile);
+        if (CollectionUtils.isNotEmpty(dirFiles)){
+            List<TemplateFilePO> collect = dirFiles.stream()
+                .filter(dirFile -> filePO.getFileDir().startsWith(dirFile.getFileDir()))
+                .collect(Collectors.toList());
+            filePO.setDirTemplateFiles(collect);
+        }
         TemplateFilePO filenameFile = filenameFilesMap.get(filePO.fetchFilePath());
         filePO.setFilenameTemplateFile(filenameFile);
     }
