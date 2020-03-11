@@ -202,15 +202,18 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     private MetaEntityFeatureDTO entityFeature;
 
     /**
-     * 初始化实体特性对象
+     * 规范化实体属性
      */
-    public MetaEntityFeatureDTO initEntityFeature() {
+    public void normalize() {
         // 兼容旧数据，如果feature字段为空，则设置默认值
         if (StringUtils.isBlank(this.feature)) {
             this.feature = JsonUtil.toJSONString(new MetaEntityFeatureDTO());
         }
         this.entityFeature = FeatureMapper.asEntityFeatureDTO(this.feature);
-        return this.entityFeature;
+        // 兼容旧数据，模块不存在则设置为空串
+        if (StringUtils.isBlank(this.module)){
+            this.module = "";
+        }
     }
 
 

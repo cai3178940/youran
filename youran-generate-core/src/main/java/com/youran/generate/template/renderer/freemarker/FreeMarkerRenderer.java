@@ -186,7 +186,7 @@ public class FreeMarkerRenderer implements TemplateRenderer {
             Template template = configuration.getTemplate(name, "utf-8");
             return template;
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.error("获取freemarker模版异常", e);
             throw new BusinessException("获取freemarker模版异常");
         }
     }

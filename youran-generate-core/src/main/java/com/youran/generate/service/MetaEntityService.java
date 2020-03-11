@@ -142,7 +142,7 @@ public class MetaEntityService {
         if (force && metaEntity == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND, "实体不存在");
         }
-        metaEntity.initEntityFeature();
+        metaEntity.normalize();
         return metaEntity;
     }
 

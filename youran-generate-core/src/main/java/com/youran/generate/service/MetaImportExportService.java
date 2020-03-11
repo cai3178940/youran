@@ -255,7 +255,8 @@ public class MetaImportExportService {
      * @param fieldIdMap
      */
     private void updateEntityFeature(MetaEntityPO metaEntityPO, Map<Integer, Integer> fieldIdMap) {
-        MetaEntityFeatureDTO feature = metaEntityPO.initEntityFeature();
+        metaEntityPO.normalize();
+        MetaEntityFeatureDTO feature = metaEntityPO.getEntityFeature();
         if (feature.getTitleFieldId() != null) {
             // 替换为新的字段id
             metaEntityService.doUpdateFeature(metaEntityPO,

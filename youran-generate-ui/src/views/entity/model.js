@@ -2,6 +2,7 @@ export function initFormBean (forEdit) {
   const formBean = {
     projectId: null,
     title: '',
+    module: '',
     className: '',
     tableName: '',
     desc: '',
@@ -49,6 +50,9 @@ export function getRules (vm) {
         },
         trigger: 'blur'
       }
+    ],
+    module: [
+      { max: 50, message: '长度不能超过50个字符', trigger: 'blur' }
     ],
     className: [
       { required: true, message: '请输入类名', trigger: 'blur' },

@@ -64,6 +64,7 @@
       </el-table-column>
       <el-table-column property="className" label="类名"></el-table-column>
       <el-table-column property="tableName" label="表名"></el-table-column>
+      <el-table-column property="module" label="模块名"></el-table-column>
       <el-table-column label="分页" width="60px">
         <template v-slot="scope">
           <svg-icon v-if="scope.row.pageSign" className="table-cell-icon color-success" iconClass="check"></svg-icon>
