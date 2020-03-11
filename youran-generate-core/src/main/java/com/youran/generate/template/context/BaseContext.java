@@ -8,8 +8,6 @@ import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.*;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -183,7 +181,7 @@ public class BaseContext {
      * @param classPath 类全路径
      */
     public void addImport(String classPath) {
-        this.imports.add(StringUtils.replace(classPath, "..", "."));
+        this.imports.add(classPath);
     }
 
     /**
@@ -209,7 +207,7 @@ public class BaseContext {
      * @param classPath 类全路径
      */
     public void addStaticImport(String classPath) {
-        this.staticImports.add(StringUtils.replace(classPath, "..", "."));
+        this.staticImports.add(classPath);
     }
 
     /**
@@ -356,29 +354,6 @@ public class BaseContext {
         return sb.toString();
     }
 
-    public boolean isNotEmpty(Object value) {
-        if(value instanceof String) {
-            return StringUtils.isNotEmpty((CharSequence) value);
-        }else if(value instanceof Collections) {
-            return CollectionUtils.isNotEmpty((Collection<?>) value);
-        } else if(value instanceof Map) {
-            return MapUtils.isNotEmpty((Map<?, ?>) value);
-        }
-        return null != value;
-    }
-
-    /**
-     * 用于拼接带模块的路径
-     * @param str 模块名称
-     * @param split .或则/
-     * @return
-     */
-    public String append(String str, String split) {
-        if(StringUtils.isNotBlank(str)) {
-            return str + split;
-        }
-        return "";
-    }
 
     public List<MetaEntityPO> getMetaEntities() {
         return metaEntities;

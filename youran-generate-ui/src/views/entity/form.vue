@@ -178,9 +178,9 @@ export default {
       const action = () => {
         const entityModules = this.entityModules.slice(0)
         const results = queryString ? entityModules.filter(
-          c => c.module.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+          c => c.toLowerCase().indexOf(queryString.toLowerCase()) === 0
         ) : entityModules
-        cb(results.map(c => ({ value: c.module })))
+        cb(results.map(c => ({ value: c })))
       }
       if (this.entityModules) {
         action()

@@ -109,7 +109,7 @@ public interface MetaEntityAPI {
 
     @ApiOperation(value = "查询某项目的模块列表")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "path"),
+        @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
     })
-    ResponseEntity<List<Map>> findModulesByProject(Integer projectId);
+    ResponseEntity<List<String>> findModules(Integer projectId);
 }

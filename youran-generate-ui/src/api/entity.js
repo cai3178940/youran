@@ -90,7 +90,12 @@ export default {
    * 查询实体详情
    */
   findModulesByProject (projectId) {
-    return request.get(`/${apiPath}/meta_entity/${projectId}/findModulesByProject`)
+    return request.get(`/${apiPath}/meta_entity/modules`,
+      {
+        params: {
+          projectId
+        }
+      })
       .then(response => checkResult(response))
   }
 

@@ -233,6 +233,7 @@ public class EntityContext extends BaseContext {
     /**
      * 打印单元测试中保存Example的代码
      *
+     * TODO 需要重构，下沉到模板中
      * @return
      */
     public List<String> getPrintingSaveExample() {
@@ -250,6 +251,7 @@ public class EntityContext extends BaseContext {
     /**
      * 打印单元测试中保存多对多两个实体示例的代码
      *
+     * TODO 需要重构，下沉到模板中
      * @param otherEntity 多对多中另一个实体
      * @return
      */
@@ -287,9 +289,14 @@ public class EntityContext extends BaseContext {
             String foreignCName = StringUtils.capitalize(entity.getClassName());
             StringBuilder line = new StringBuilder();
             // 增加依赖
-            this.addImport(this.packageName +"." + entity.getModule() + ".pojo.po." + foreignCName + "PO");
+            if(StringUtils.isNotBlank(entity.getModule())) {
+                this.addImport(this.packageName + ".pojo.po."+ entity.getModule()+ "." + foreignCName + "PO");
+                this.addAutowired(this.packageName + ".help." + entity.getModule(), foreignCName + "Helper");
+            }else{
+                this.addImport(this.packageName + ".pojo.po." + foreignCName + "PO");
+                this.addAutowired(this.packageName + ".help", foreignCName + "Helper");
+            }
             // 增加注入
-            this.addAutowired(this.packageName + "." + entity.getModule() + ".help", foreignCName + "Helper");
             line.append(foreignCName).append("PO ").append(foreigncName).append(" = ")
                 .append(foreigncName).append("Helper.save").append(foreignCName).append("Example(")
                 .append(printSaveExampleArg(entity)).append(");");

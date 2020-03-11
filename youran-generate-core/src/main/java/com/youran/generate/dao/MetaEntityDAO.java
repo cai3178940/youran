@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 【实体】数据库操作
@@ -62,7 +61,7 @@ public interface MetaEntityDAO extends DAO<MetaEntityPO> {
      * @param projectId 项目id
      * @return
      */
-    List<Map> findModulesByProject(@Param("projectId") Integer projectId);
+    List<String> findModulesByProject(@Param("projectId") Integer projectId);
 
 
 }

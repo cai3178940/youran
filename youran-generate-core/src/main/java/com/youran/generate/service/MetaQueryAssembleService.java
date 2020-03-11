@@ -202,9 +202,6 @@ public class MetaQueryAssembleService implements InitializingBean {
             if (Objects.equals(field.getFieldId(), entity.getEntityFeature().getTitleFieldId())) {
                 entity.setTitleField(field);
             }
-            if (MetaSpecialField.isStatus(specialField)) {
-                entity.addStatusField(field);
-            }
         }
     }
 
