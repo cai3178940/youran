@@ -44,6 +44,10 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      */
     private String title;
     /**
+     * 模块
+     */
+    private String module;
+    /**
      * 实体描述
      */
     private String desc;
@@ -100,6 +104,11 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      */
     @JsonIgnore
     private Map<Integer, MetaFieldPO> showFields = new LinkedHashMap<>(16);
+    /**
+     * 状态字段列表
+     */
+    @JsonIgnore
+    private Map<Integer, MetaFieldPO> statusFields = new LinkedHashMap<>(16);
     /**
      * 索引列表
      */
@@ -392,6 +401,10 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
         this.showFields = showFields;
     }
 
+    public void addStatusField(MetaFieldPO field) {
+        this.statusFields.put(field.getFieldId(), field);
+    }
+
     public Integer getProjectId() {
         return projectId;
     }
@@ -406,6 +419,14 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 
     public List<MetaIndexPO> getIndexes() {
@@ -563,4 +584,5 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
             .append(this.entityId, o.entityId)
             .toComparison();
     }
+
 }

@@ -46,6 +46,10 @@ public class EntityContext extends BaseContext {
      */
     private String title;
     /**
+     * 模块名称
+     */
+    private String module;
+    /**
      * 描述
      */
     private String desc;
@@ -169,6 +173,7 @@ public class EntityContext extends BaseContext {
         this.classNameUpper = StringUtils.capitalize(entity.getClassName());
         this.tableName = entity.getTableName();
         this.title = entity.getTitle();
+        this.module = entity.getModule();
         this.desc = entity.getDesc();
         this.pk = entity.getPkField();
         this.id = this.pk.getJfieldName();
@@ -282,9 +287,9 @@ public class EntityContext extends BaseContext {
             String foreignCName = StringUtils.capitalize(entity.getClassName());
             StringBuilder line = new StringBuilder();
             // 增加依赖
-            this.addImport(this.packageName + ".pojo.po." + foreignCName + "PO");
+            this.addImport(this.packageName +"." + entity.getModule() + ".pojo.po." + foreignCName + "PO");
             // 增加注入
-            this.addAutowired(this.packageName + ".help", foreignCName + "Helper");
+            this.addAutowired(this.packageName + "." + entity.getModule() + ".help", foreignCName + "Helper");
             line.append(foreignCName).append("PO ").append(foreigncName).append(" = ")
                 .append(foreigncName).append("Helper.save").append(foreignCName).append("Example(")
                 .append(printSaveExampleArg(entity)).append(");");
@@ -401,6 +406,14 @@ public class EntityContext extends BaseContext {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 
     public String getDesc() {

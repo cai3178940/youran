@@ -240,4 +240,15 @@ public class MetaEntityService {
         return MetadataUtil.buildDefaultMtmFkAlias(entity.getClassName(), forSql);
     }
 
+
+    /**
+     * 查询某项目的模块列表
+     *
+     * @param projectId 项目id
+     * @return 模块列表
+     */
+    public List<Map> findModulesByProject(Integer projectId) {
+        return metaEntityDAO.findModulesByProject(projectId);
+    }
+
 }

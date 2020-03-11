@@ -110,4 +110,11 @@ public class MetaEntityController extends AbstractController implements MetaEnti
         return ResponseEntity.ok(fkFieldName);
     }
 
+    @Override
+    @GetMapping(value = "/{projectId}/findModulesByProject")
+    public ResponseEntity<List<Map>> findModulesByProject(@PathVariable Integer projectId) {
+        List<Map> groupNames = metaEntityService.findModulesByProject(projectId);
+        return ResponseEntity.ok(groupNames);
+    }
+
 }

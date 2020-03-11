@@ -33,6 +33,9 @@ public class MetaEntityListVO extends AbstractVO {
     @ApiModelProperty(notes = N_TITLE, example = E_TITLE)
     private String title;
 
+    @ApiModelProperty(notes = N_MODULE, example = E_MODULE)
+    private String module;
+
     @ApiModelProperty(notes = N_DESC, example = E_DESC)
     private String desc;
 
@@ -61,6 +64,14 @@ public class MetaEntityListVO extends AbstractVO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 
     public Integer getEntityId() {

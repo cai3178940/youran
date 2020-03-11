@@ -226,6 +226,12 @@ public class GuessUtil {
         if (jFieldType == JFieldType.BOOLEAN) {
             return "true";
         }
+        if (jFieldType == JFieldType.LOCALDATE) {
+            return DateUtil.getDateStr(new Date(), DateUtil.DATE_FORMAT_1);
+        }
+        if (jFieldType == JFieldType.LOCALDATETIME) {
+            return DateUtil.getDateStr(new Date(), DateUtil.DATE_FORMAT_2);
+        }
         if (jFieldType == JFieldType.DATE) {
             return DateUtil.getDateStr(new Date(), DateUtil.DATE_FORMAT_2);
         }

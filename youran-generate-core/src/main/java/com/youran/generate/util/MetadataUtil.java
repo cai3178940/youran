@@ -102,13 +102,15 @@ public class MetadataUtil {
             }
         }
         if (MetaSpecialField.isCreatedTime(specialField)) {
-            if (!Objects.equals(metaField.getJfieldType(), JFieldType.DATE.getJavaType())) {
-                throw new BusinessException(ErrorCode.BAD_PARAMETER, "创建时间字段必须是Date类型");
+            if (!Objects.equals(metaField.getJfieldType(), JFieldType.DATE.getJavaType())
+                && !Objects.equals(metaField.getJfieldType(), JFieldType.LOCALDATETIME.getJavaType())) {
+                throw new BusinessException(ErrorCode.BAD_PARAMETER, "创建时间字段必须是LocalDateTime或则Date类型");
             }
         }
         if (MetaSpecialField.isOperatedTime(specialField)) {
-            if (!Objects.equals(metaField.getJfieldType(), JFieldType.DATE.getJavaType())) {
-                throw new BusinessException(ErrorCode.BAD_PARAMETER, "更新时间字段必须是Date类型");
+            if (!Objects.equals(metaField.getJfieldType(), JFieldType.DATE.getJavaType())
+                && !Objects.equals(metaField.getJfieldType(), JFieldType.LOCALDATETIME.getJavaType())) {
+                throw new BusinessException(ErrorCode.BAD_PARAMETER, "更新时间字段必须是LocalDateTime或则Date类型");
             }
         }
     }

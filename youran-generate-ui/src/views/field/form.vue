@@ -282,6 +282,9 @@ export default {
   computed: {
     dicTypeDisabled () {
       if (this.form.primaryKey || this.form.specialField) {
+        if (this.form.specialField === 'status') {
+          return false
+        }
         return true
       }
       return false

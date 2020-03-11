@@ -15,6 +15,7 @@ public class MetaSpecialField {
     public static final String OPERATED_TIME = "operatedTime";
     public static final String OPERATED_BY = "operatedBy";
     public static final String VERSION = "version";
+    public static final String STATUS = "status";
 
     /**
      * 校验是否特殊字段
@@ -53,5 +54,8 @@ public class MetaSpecialField {
         return DELETED.equals(value);
     }
 
+    public static final boolean isStatus(String value) {
+        return STATUS.equals(value);
+    }
 
 }

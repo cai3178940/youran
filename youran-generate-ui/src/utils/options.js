@@ -225,6 +225,14 @@ const fkFeature = {
 
 const specialFieldFeatures = [
   {
+    value: 'status',
+    label: '状态字段',
+    icon: 'common',
+    iconClassName: '',
+    hiddenAttrs: ['autoIncrement', 'foreignKey'],
+    disabledAttrs: []
+  },
+  {
     value: 'deleted',
     label: '逻辑删除',
     icon: 'delete',
@@ -350,6 +358,18 @@ export default {
       label: 'Long',
       defaultFieldType: 'bigint',
       allowFieldTypes: ['bigint']
+    },
+    {
+      value: 'LocalDate',
+      label: 'LocalDate',
+      defaultFieldType: 'date',
+      allowFieldTypes: ['date']
+    },
+    {
+      value: 'LocalDateTime',
+      label: 'LocalDateTime',
+      defaultFieldType: 'datetime',
+      allowFieldTypes: ['datetime']
     },
     {
       value: 'Date',
