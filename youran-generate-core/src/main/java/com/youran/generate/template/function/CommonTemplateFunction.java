@@ -47,6 +47,16 @@ public class CommonTemplateFunction {
     }
 
     /**
+     * 首个单词转小写
+     *
+     * @param name
+     * @return
+     */
+    public static String lowerFirstWord(String name) {
+        return SwitchCaseUtil.lowerFirstWord(name);
+    }
+
+    /**
      * 转换【备注】展示
      *
      * @param comment

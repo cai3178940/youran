@@ -50,6 +50,7 @@ public class MetaEntityAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_MODULE, example = E_MODULE)
     @Length(max = 25, message = "module最大长度不能超过{max}")
+    @Pattern(regexp = PatternConst.MODULE, message = PatternConst.MODULE_MSG)
     private String module;
 
     @ApiModelProperty(notes = N_DESC, example = E_DESC)

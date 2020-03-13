@@ -1,11 +1,13 @@
 package com.youran.generate.pojo.dto;
 
 import com.youran.common.pojo.dto.AbstractDTO;
+import com.youran.generate.constant.PatternConst;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
@@ -21,6 +23,7 @@ public class MetaProjectAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_PACKAGENAME, example = E_PACKAGENAME)
     @NotNull
     @Length(min = 1, max = 100, message = "packageName最大长度不能超过{max}")
+    @Pattern(regexp = PatternConst.PACKAGE_NAME, message = PatternConst.PACKAGE_NAME_MSG)
     private String packageName;
 
     @ApiModelProperty(notes = N_PROJECTNAME, example = E_PROJECTNAME)

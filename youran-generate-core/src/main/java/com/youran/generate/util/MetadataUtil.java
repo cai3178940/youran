@@ -53,7 +53,7 @@ public class MetadataUtil {
      * @return
      */
     public static String buildDefaultMtmFkAlias(String className, boolean forSql) {
-        String alias = StringUtils.uncapitalize(className) + "Id";
+        String alias = SwitchCaseUtil.lowerFirstWord(className) + "Id";
         if (forSql) {
             String[] split = StringUtils.splitByCharacterTypeCamelCase(alias);
             String join = Joiner.on("_").join(split);

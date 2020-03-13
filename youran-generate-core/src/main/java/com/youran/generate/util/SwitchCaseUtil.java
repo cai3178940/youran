@@ -1,5 +1,6 @@
 package com.youran.generate.util;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -51,6 +52,22 @@ public class SwitchCaseUtil {
     }
 
 
+
+    /**
+     * 首个单词转小写
+     *
+     * @param name
+     * @return
+     */
+    public static String lowerFirstWord(String name) {
+        String[] split = StringUtils.splitByCharacterTypeCamelCase(name);
+        if(ArrayUtils.isEmpty(split)){
+            return name;
+        }
+        split[0] = split[0].toLowerCase();
+        return Arrays.stream(split)
+            .collect(Collectors.joining(""));
+    }
 
 
 }

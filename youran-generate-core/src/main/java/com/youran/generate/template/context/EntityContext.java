@@ -7,6 +7,7 @@ import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
+import com.youran.generate.util.SwitchCaseUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,13 +31,13 @@ public class EntityContext extends BaseContext {
      */
     private Integer entityId;
     /**
-     * 类名-首字母小写
+     * 类名
      */
     private String className;
     /**
-     * 类名-首字母大写
+     * 类名-首个单词转小写
      */
-    private String classNameUpper;
+    private String classNameLower;
     /**
      * 表名
      */
@@ -169,8 +170,8 @@ public class EntityContext extends BaseContext {
         super(project);
         this.metaEntity = entity;
         this.entityId = entity.getEntityId();
-        this.className = StringUtils.uncapitalize(entity.getClassName());
-        this.classNameUpper = StringUtils.capitalize(entity.getClassName());
+        this.className = entity.getClassName();
+        this.classNameLower = SwitchCaseUtil.lowerFirstWord(entity.getClassName());
         this.tableName = entity.getTableName();
         this.title = entity.getTitle();
         this.module = entity.getModule();
@@ -215,7 +216,7 @@ public class EntityContext extends BaseContext {
                 continue;
             }
             if (field.getNotNull()) {
-                sb.append(StringUtils.uncapitalize(field.getForeignEntity().getClassName()))
+                sb.append(SwitchCaseUtil.lowerFirstWord(field.getForeignEntity().getClassName()))
                     .append(".get")
                     .append(StringUtils.capitalize(field.getForeignEntity().getPkField().getJfieldName()))
                     .append("(), ");
@@ -285,8 +286,8 @@ public class EntityContext extends BaseContext {
         // 遍历有序树节点集合，进行代码打印
         for (ForeignEntityTreeNode node : dealtSet) {
             MetaEntityPO entity = node.getMetaEntity();
-            String foreigncName = StringUtils.uncapitalize(entity.getClassName());
-            String foreignCName = StringUtils.capitalize(entity.getClassName());
+            String foreigncName = SwitchCaseUtil.lowerFirstWord(entity.getClassName());
+            String foreignCName = entity.getClassName();
             StringBuilder line = new StringBuilder();
             // 增加依赖
             if(StringUtils.isNotBlank(entity.getModule())) {
@@ -391,12 +392,12 @@ public class EntityContext extends BaseContext {
         this.className = className;
     }
 
-    public String getClassNameUpper() {
-        return classNameUpper;
+    public String getClassNameLower() {
+        return classNameLower;
     }
 
-    public void setClassNameUpper(String classNameUpper) {
-        this.classNameUpper = classNameUpper;
+    public void setClassNameLower(String classNameLower) {
+        this.classNameLower = classNameLower;
     }
 
     public String getTableName() {

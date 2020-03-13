@@ -32,7 +32,7 @@ public class PatternConst {
     public static final String J_FIELD_NAME = "^[a-z](\\w*(_|\\$)*\\w*)*$";
     public static final String J_FIELD_NAME_MSG = "不符合java字段命名规范";
 
-    public static final String PACKAGE_NAME = "^([a-z]+[.][a-z]+)[.]*.*";
+    public static final String PACKAGE_NAME = "^[a-zA-Z]+[0-9a-zA-Z_]*(\\.[a-zA-Z]+[0-9a-zA-Z_]*)*$";
     public static final String PACKAGE_NAME_MSG = "不符合包名规范";
 
     public static final String FIELD_IDS = "^(([0-9]+,)*[0-9]+)$";
@@ -40,6 +40,9 @@ public class PatternConst {
 
     public static final String VERSION = "^([1-9]\\d|[0-9])(\\.([1-9]\\d|\\d)){2}$";
     public static final String VERSION_MSG = "不符合版本号格式";
+
+    public static final String MODULE = "^(\\w|_|-)*$";
+    public static final String MODULE_MSG = "不符合模块命名格式";
 
 
 }

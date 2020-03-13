@@ -8,6 +8,7 @@ import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.*;
+import com.youran.generate.util.SwitchCaseUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -320,7 +321,8 @@ public class BaseContext {
         StringBuilder sb = new StringBuilder();
         for (String aw : autowired) {
             sb.append("    @Autowired\n")
-                .append("    private ").append(aw).append(" ").append(StringUtils.uncapitalize(aw)).append(";\n");
+                .append("    private ").append(aw).append(" ")
+                .append(SwitchCaseUtil.lowerFirstWord(aw)).append(";\n");
         }
         return sb.toString();
     }
