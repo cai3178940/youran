@@ -35,6 +35,7 @@
               <el-autocomplete
                 v-model="form.module"
                 :fetch-suggestions="findModulesByProject"
+                style="width:100%;"
                 placeholder="例如：system"
               ></el-autocomplete>
             </help-popover>
