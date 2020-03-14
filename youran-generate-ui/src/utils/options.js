@@ -490,6 +490,12 @@ export default {
     } else if (field.jfieldType === 'Date') {
       // 日期类型： 日期框 日期时间框
       allowed = ['DATE', 'DATETIME']
+    } else if (field.jfieldType === 'LocalDate') {
+      // LocalDate类型： 日期框
+      allowed = ['DATE']
+    } else if (field.jfieldType === 'LocalDateTime') {
+      // LocalDateTime类型： 日期时间框
+      allowed = ['DATETIME']
     } else if (['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal']
       .find((item) => field.jfieldType === item)) {
       // Integer Short Long Double Float BigDecimal : 数字框 文本框
