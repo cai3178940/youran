@@ -420,11 +420,11 @@ export default {
     } else if (field.jfieldType === 'Boolean') {
       // Boolean: 只能等于
       allowed = ['EQ']
-    } else if (field.jfieldType === 'Date') {
+    } else if (['Date', 'LocalDate', 'LocalDateTime'].indexOf(field.jfieldType) > -1) {
       // 日期类型： 除like、in以外
       allowed = ['EQ', 'GT', 'GE', 'LT', 'LE', 'BETWEEN']
     } else if (['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal']
-      .find((item) => field.jfieldType === item)) {
+      .indexOf(field.jfieldType) > -1) {
       // Integer Short Long Double Float BigDecimal：除like、in以外
       allowed = ['EQ', 'GT', 'GE', 'LT', 'LE', 'BETWEEN']
     } else {
