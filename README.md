@@ -1,5 +1,8 @@
 # youran代码自动化平台
 
+![version](https://img.shields.io/badge/youran-v3.3.0-orange)
+![license](https://img.shields.io/github/license/cai3178940/youran)
+
 ## 介绍
 
 这是一款包含系统设计和代码生成功能的自动化web平台，使用本平台可以极大提升程序员的开发效率
