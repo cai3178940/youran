@@ -2,6 +2,7 @@ package com.youran.generate.template.function;
 
 import com.youran.generate.constant.DefaultValue;
 import com.youran.generate.constant.MySqlType;
+import com.youran.generate.constant.PrimaryKeyStrategy;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.util.GuessUtil;
 import org.apache.commons.io.IOUtils;
@@ -198,7 +199,7 @@ public class SqlTemplateFunction {
      */
     public static String getAutoIncrementDisplay(MetaFieldPO field) {
         if (field.getPrimaryKey()
-            && field.getAutoIncrement()) {
+            && PrimaryKeyStrategy.AUTO_INCREMENT.getValue().equals(field.getPkStrategy())) {
             return " AUTO_INCREMENT";
         }
         return "";

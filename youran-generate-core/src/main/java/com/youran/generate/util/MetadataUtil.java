@@ -4,8 +4,9 @@ import com.google.common.base.Joiner;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.JFieldType;
-import com.youran.generate.constant.WordBlacklist;
 import com.youran.generate.constant.MetaSpecialField;
+import com.youran.generate.constant.PrimaryKeyStrategy;
+import com.youran.generate.constant.WordBlacklist;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
@@ -75,11 +76,28 @@ public class MetadataUtil {
     }
 
     /**
-     * 校验字段PO
+     * 校验及修复字段PO
      *
      * @param metaField
      */
-    public static void checkFieldPO(MetaFieldPO metaField) {
+    public static void checkAndRepairFieldPO(MetaFieldPO metaField) {
+        // 兼容老版本升级上来的异常数据
+        Integer pkStrategy = metaField.getPkStrategy();
+        if (pkStrategy != null) {
+            PrimaryKeyStrategy primaryKeyStrategy = PrimaryKeyStrategy.find(pkStrategy);
+            if (PrimaryKeyStrategy.AUTO_INCREMENT.equals(primaryKeyStrategy)) {
+                metaField.setAutoIncrement(true);
+            } else {
+                metaField.setAutoIncrement(false);
+            }
+        } else {
+            if (Objects.equals(metaField.getAutoIncrement(), true)) {
+                metaField.setPkStrategy(PrimaryKeyStrategy.AUTO_INCREMENT.getValue());
+            } else {
+                metaField.setPkStrategy(PrimaryKeyStrategy.NONE.getValue());
+            }
+        }
+        // 校验特殊字段类型
         String specialField = metaField.getSpecialField();
         if (MetaSpecialField.isDeleted(specialField)) {
             if (!Objects.equals(metaField.getJfieldType(), JFieldType.BOOLEAN.getJavaType())) {

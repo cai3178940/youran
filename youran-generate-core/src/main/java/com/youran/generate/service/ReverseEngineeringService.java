@@ -12,6 +12,7 @@ import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.SafeUtil;
 import com.youran.generate.constant.JFieldType;
+import com.youran.generate.constant.PrimaryKeyStrategy;
 import com.youran.generate.pojo.dto.MetaEntityAddDTO;
 import com.youran.generate.pojo.dto.MetaFieldAddDTO;
 import com.youran.generate.pojo.dto.MetaIndexAddDTO;
@@ -30,10 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -280,13 +278,14 @@ public class ReverseEngineeringService {
                                     String defaultValue, String desc) {
         JFieldType jFieldType = GuessUtil.guessJFieldType(fieldName, fieldType, fieldLength);
         String specialField = GuessUtil.guessSpecialField(fieldName, jFieldType);
+        PrimaryKeyStrategy primaryKeyStrategy = GuessUtil.guessPkStrategy(fieldType, fieldLength, autoIncrement);
         // 如果不存在字段描述，则使用字段名替代
         if (StringUtils.isBlank(desc)) {
             desc = fieldName;
         }
         MetaFieldAddDTO metaFieldDTO = new MetaFieldAddDTO();
         metaFieldDTO.setEntityId(entity.getEntityId());
-        metaFieldDTO.setAutoIncrement(autoIncrement);
+        metaFieldDTO.setPkStrategy(primaryKeyStrategy.getValue());
         metaFieldDTO.setDefaultValue(defaultValue);
         metaFieldDTO.setDicType(null);
         metaFieldDTO.setEditType(GuessUtil.guessEditType(jFieldType, fieldType));
@@ -297,7 +296,7 @@ public class ReverseEngineeringService {
         metaFieldDTO.setFieldName(fieldName);
         metaFieldDTO.setFieldScale(fieldScale);
         metaFieldDTO.setFieldType(fieldType);
-        metaFieldDTO.setInsert(!autoIncrement);
+        metaFieldDTO.setInsert(!pk);
         metaFieldDTO.setJfieldName(SwitchCaseUtil.underlineToCamelCase(fieldName, false));
         metaFieldDTO.setJfieldType(jFieldType.getJavaType());
         metaFieldDTO.setList(true);

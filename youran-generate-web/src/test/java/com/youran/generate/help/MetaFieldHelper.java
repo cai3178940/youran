@@ -23,7 +23,7 @@ public class MetaFieldHelper {
     public static MetaFieldAddDTO getAddDTO(Integer entityId) {
         MetaFieldAddDTO dto = new MetaFieldAddDTO();
         dto.setEntityId(entityId);
-        dto.setAutoIncrement(SafeUtil.getBoolean(E_AUTOINCREMENT));
+        dto.setPkStrategy(SafeUtil.getInteger(E_PK_STRATEGY));
         dto.setDefaultValue(E_DEFAULTVALUE);
         dto.setDicType(E_DICTYPE);
         dto.setEditType(SafeUtil.getInteger(E_EDITTYPE));
@@ -60,7 +60,7 @@ public class MetaFieldHelper {
     public static MetaFieldUpdateDTO getUpdateDTO(MetaFieldPO metaField) {
         MetaFieldUpdateDTO metaFieldUpdateDTO = new MetaFieldUpdateDTO();
         metaFieldUpdateDTO.setFieldId(metaField.getFieldId());
-        metaFieldUpdateDTO.setAutoIncrement(metaField.getAutoIncrement());
+        metaFieldUpdateDTO.setPkStrategy(metaField.getPkStrategy());
         metaFieldUpdateDTO.setDefaultValue(metaField.getDefaultValue());
         metaFieldUpdateDTO.setDicType(metaField.getDicType());
         metaFieldUpdateDTO.setEditType(metaField.getEditType());

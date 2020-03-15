@@ -1,6 +1,7 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.generate.constant.PrimaryKeyStrategy;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -67,8 +68,15 @@ public class MetaFieldPO extends BasePO {
     private Boolean primaryKey;
     /**
      * 是否自动递增
+     * @deprecated 使用pkStrategy字段替代
      */
+    @Deprecated
     private Boolean autoIncrement;
+    /**
+     * 主键策略
+     * @see PrimaryKeyStrategy
+     */
+    private Integer pkStrategy;
     /**
      * 是否不能为空
      */
@@ -466,5 +474,13 @@ public class MetaFieldPO extends BasePO {
 
     public void setColumnWidth(Integer columnWidth) {
         this.columnWidth = columnWidth;
+    }
+
+    public Integer getPkStrategy() {
+        return pkStrategy;
+    }
+
+    public void setPkStrategy(Integer pkStrategy) {
+        this.pkStrategy = pkStrategy;
     }
 }

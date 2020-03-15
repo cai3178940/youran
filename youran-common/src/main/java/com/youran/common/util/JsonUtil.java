@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -96,10 +97,14 @@ public class JsonUtil {
     public static <T> List<T> parseArrayFromFile(File file, Class<T> clazz) {
         if (!file.exists()) {
             LOGGER.warn("json文件不存在：{}", file.getPath());
-            return null;
+            return Collections.emptyList();
         }
         JavaType javaType = getCollectionType(ArrayList.class, clazz);
-        return doConvertRuntimeException(() -> mapper.readValue(file, javaType));
+        List<T> ts = doConvertRuntimeException(() -> mapper.readValue(file, javaType));
+        if(ts == null){
+            return Collections.emptyList();
+        }
+        return ts;
     }
 
     /**

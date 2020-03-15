@@ -22,6 +22,8 @@ public class MetaFieldExample extends AbstractExample {
     public static final String E_EDITTYPE = "1";
     public static final String N_ENTITYID = "所属实体id";
     public static final String E_ENTITYID = "1";
+    public static final String N_PK_STRATEGY = "主键策略";
+    public static final String E_PK_STRATEGY = "1";
     public static final String N_FIELDCOMMENT = "字段备注";
     public static final String E_FIELDCOMMENT = "这是备注";
     public static final String N_FIELDDESC = "字段描述（中文名）";

@@ -27,15 +27,13 @@ public class MetaFieldAddDTO extends AbstractDTO {
     @NotNull
     private Integer entityId;
 
-    @ApiModelProperty(notes = N_AUTOINCREMENT, example = E_AUTOINCREMENT)
-    @NotNull
-    private Boolean autoIncrement;
-
+    @ApiModelProperty(notes = N_PK_STRATEGY, example = E_PK_STRATEGY)
+    @Const(constClass = PrimaryKeyStrategy.class)
+    private Integer pkStrategy;
 
     @ApiModelProperty(notes = N_DEFAULTVALUE, example = E_DEFAULTVALUE)
     @Length(max = 40, message = "defaultValue最大长度不能超过{max}")
     private String defaultValue;
-
 
     @ApiModelProperty(notes = N_DICTYPE, example = E_DICTYPE)
     @Length(max = 40, message = "dicType最大长度不能超过{max}")
@@ -297,14 +295,6 @@ public class MetaFieldAddDTO extends AbstractDTO {
         this.queryType = queryType;
     }
 
-    public Boolean getAutoIncrement() {
-        return autoIncrement;
-    }
-
-    public void setAutoIncrement(Boolean autoIncrement) {
-        this.autoIncrement = autoIncrement;
-    }
-
     public Boolean getInsert() {
         return insert;
     }
@@ -375,5 +365,13 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     public void setUpdate(Boolean update) {
         this.update = update;
+    }
+
+    public Integer getPkStrategy() {
+        return pkStrategy;
+    }
+
+    public void setPkStrategy(Integer pkStrategy) {
+        this.pkStrategy = pkStrategy;
     }
 }

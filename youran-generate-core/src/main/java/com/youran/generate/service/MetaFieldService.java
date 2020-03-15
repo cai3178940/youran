@@ -54,14 +54,16 @@ public class MetaFieldService {
         MetaProjectPO project = metaProjectService.getProjectByEntityId(entityId, true);
         MetaFieldPO field = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
         field.setProjectId(project.getProjectId());
+
         this.doSave(field);
         metaProjectService.updateProject(project);
         return field;
     }
 
+
     public void doSave(MetaFieldPO field) {
         // 校验字段属性
-        MetadataUtil.checkFieldPO(field);
+        MetadataUtil.checkAndRepairFieldPO(field);
         metaFieldDAO.save(field);
     }
 
@@ -83,7 +85,7 @@ public class MetaFieldService {
         MetaProjectPO project = metaProjectService.getAndCheckProject(metaField.getProjectId());
         MetaFieldMapper.INSTANCE.setPO(metaField, updateDTO);
         // 校验字段属性
-        MetadataUtil.checkFieldPO(metaField);
+        MetadataUtil.checkAndRepairFieldPO(metaField);
         metaFieldDAO.update(metaField);
         metaProjectService.updateProject(project);
         return metaField;

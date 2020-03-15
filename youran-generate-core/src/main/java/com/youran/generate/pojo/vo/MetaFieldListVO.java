@@ -21,8 +21,8 @@ public class MetaFieldListVO extends AbstractVO {
     @ApiModelProperty(notes = N_ENTITYID, example = E_ENTITYID)
     private Integer entityId;
 
-    @ApiModelProperty(notes = N_AUTOINCREMENT, example = E_AUTOINCREMENT)
-    private Boolean autoIncrement;
+    @ApiModelProperty(notes = N_PK_STRATEGY, example = E_PK_STRATEGY)
+    private Integer pkStrategy;
 
     @ApiModelProperty(notes = N_DEFAULTVALUE, example = E_DEFAULTVALUE)
     private String defaultValue;
@@ -276,12 +276,12 @@ public class MetaFieldListVO extends AbstractVO {
         this.queryType = queryType;
     }
 
-    public Boolean getAutoIncrement() {
-        return autoIncrement;
+    public Integer getPkStrategy() {
+        return pkStrategy;
     }
 
-    public void setAutoIncrement(Boolean autoIncrement) {
-        this.autoIncrement = autoIncrement;
+    public void setPkStrategy(Integer pkStrategy) {
+        this.pkStrategy = pkStrategy;
     }
 
     public Boolean getInsert() {
@@ -361,7 +361,7 @@ public class MetaFieldListVO extends AbstractVO {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
             .append("fieldId", fieldId)
             .append("entityId", entityId)
-            .append("autoIncrement", autoIncrement)
+            .append("pkStrategy", pkStrategy)
             .append("defaultValue", defaultValue)
             .append("dicType", dicType)
             .append("editType", editType)

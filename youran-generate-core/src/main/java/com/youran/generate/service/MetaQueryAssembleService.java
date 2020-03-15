@@ -161,6 +161,7 @@ public class MetaQueryAssembleService implements InitializingBean {
      */
     private void assembleFieldForEntity(MetaEntityPO entity, List<MetaFieldPO> fieldList) {
         for (MetaFieldPO field : fieldList) {
+            MetadataUtil.checkAndRepairFieldPO(field);
             entity.addField(field);
             String specialField = field.getSpecialField();
             if (field.getPrimaryKey()) {

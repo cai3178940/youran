@@ -278,4 +278,31 @@ public class GuessUtil {
         }
         return EditType.NUMBER.getValue();
     }
+
+    /**
+     * 猜测主键策略
+     *
+     * @param fieldType
+     * @param fieldLength
+     * @param autoIncrement
+     * @return
+     */
+    public static PrimaryKeyStrategy guessPkStrategy(String fieldType,
+                                                     int fieldLength,
+                                                     boolean autoIncrement) {
+        if (autoIncrement) {
+            return PrimaryKeyStrategy.AUTO_INCREMENT;
+        }
+        if (MySqlType.VARCHAR.equals(fieldType)) {
+            if (fieldLength == 32) {
+                return PrimaryKeyStrategy.UUID_32;
+            } else if (fieldLength == 16) {
+                return PrimaryKeyStrategy.UUID_16;
+            }
+        }
+        return PrimaryKeyStrategy.NONE;
+    }
+
+
+
 }

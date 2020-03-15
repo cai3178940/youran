@@ -48,6 +48,7 @@ public class FreeMarkerConfigFactory {
     private TemplateModel queryTypeModel;
     private TemplateModel editTypeModel;
     private TemplateModel metaSpecialFieldModel;
+    private TemplateModel primaryKeyStrategyModel;
     private TemplateModel commonTemplateFunctionModel;
     private TemplateModel javaTemplateFunctionModel;
     private TemplateModel sqlTemplateFunctionModel;
@@ -61,6 +62,7 @@ public class FreeMarkerConfigFactory {
         this.queryTypeModel = getStaticModel(QueryType.class);
         this.editTypeModel = getStaticModel(EditType.class);
         this.metaSpecialFieldModel = getStaticModel(MetaSpecialField.class);
+        this.primaryKeyStrategyModel = getStaticModel(PrimaryKeyStrategy.class);
         this.commonTemplateFunctionModel = getStaticModel(CommonTemplateFunction.class);
         this.javaTemplateFunctionModel = getStaticModel(JavaTemplateFunction.class);
         this.sqlTemplateFunctionModel = getStaticModel(SqlTemplateFunction.class);
@@ -124,6 +126,7 @@ public class FreeMarkerConfigFactory {
         cfg.setSharedVariable("QueryType", queryTypeModel);
         cfg.setSharedVariable("EditType", editTypeModel);
         cfg.setSharedVariable("MetaSpecialField", metaSpecialFieldModel);
+        cfg.setSharedVariable("PrimaryKeyStrategy", primaryKeyStrategyModel);
         cfg.setSharedVariable("CommonTemplateFunction", commonTemplateFunctionModel);
         cfg.setSharedVariable("JavaTemplateFunction", javaTemplateFunctionModel);
         cfg.setSharedVariable("SqlTemplateFunction", sqlTemplateFunctionModel);

@@ -201,7 +201,7 @@ const commonFeature = {
   label: '普通字段',
   icon: 'common',
   iconClassName: '',
-  hiddenAttrs: ['autoIncrement', 'foreignKey'],
+  hiddenAttrs: ['pkStrategy', 'foreignKey'],
   disabledAttrs: []
 }
 
@@ -219,7 +219,7 @@ const fkFeature = {
   label: '外键',
   icon: 'key',
   iconClassName: 'color-primary',
-  hiddenAttrs: ['autoIncrement', 'dicType'],
+  hiddenAttrs: ['pkStrategy', 'dicType'],
   disabledAttrs: []
 }
 
@@ -229,7 +229,7 @@ const specialFieldFeatures = [
     label: '状态字段',
     icon: 'common',
     iconClassName: '',
-    hiddenAttrs: ['autoIncrement', 'foreignKey'],
+    hiddenAttrs: ['pkStrategy', 'foreignKey'],
     disabledAttrs: []
   },
   {
@@ -237,7 +237,7 @@ const specialFieldFeatures = [
     label: '逻辑删除',
     icon: 'delete',
     iconClassName: 'color-danger',
-    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType', 'query', 'attributes'],
+    hiddenAttrs: ['pkStrategy', 'foreignKey', 'dicType', 'query', 'attributes'],
     disabledAttrs: ['notNull']
   },
   {
@@ -245,7 +245,7 @@ const specialFieldFeatures = [
     label: '创建时间',
     icon: 'time',
     iconClassName: 'color-success',
-    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
+    hiddenAttrs: ['pkStrategy', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
@@ -253,7 +253,7 @@ const specialFieldFeatures = [
     label: '创建人员',
     icon: 'create-user',
     iconClassName: 'color-success',
-    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
+    hiddenAttrs: ['pkStrategy', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
@@ -261,7 +261,7 @@ const specialFieldFeatures = [
     label: '更新时间',
     icon: 'time',
     iconClassName: 'color-primary',
-    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
+    hiddenAttrs: ['pkStrategy', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
@@ -269,7 +269,7 @@ const specialFieldFeatures = [
     label: '更新人员',
     icon: 'edit-user',
     iconClassName: 'color-primary',
-    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType'],
+    hiddenAttrs: ['pkStrategy', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
@@ -277,7 +277,7 @@ const specialFieldFeatures = [
     label: '乐观锁版本号',
     icon: 'version',
     iconClassName: 'color-primary',
-    hiddenAttrs: ['autoIncrement', 'foreignKey', 'dicType', 'query', 'attributes'],
+    hiddenAttrs: ['pkStrategy', 'foreignKey', 'dicType', 'query', 'attributes'],
     disabledAttrs: ['notNull']
   }
 ]
@@ -521,6 +521,27 @@ export default {
     {
       value: 3,
       label: '枚举'
+    }
+  ],
+  /**
+   * 主键策略
+   */
+  primaryKeyStrategy: [
+    {
+      value: 0,
+      label: '无'
+    },
+    {
+      value: 1,
+      label: '数据库自增'
+    },
+    {
+      value: 2,
+      label: '32位UUID'
+    },
+    {
+      value: 3,
+      label: '16位UUID'
     }
   ],
   /**

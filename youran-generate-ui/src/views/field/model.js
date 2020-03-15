@@ -19,8 +19,8 @@ export function initFormBean (forEdit) {
     fieldScale: 0,
     // 是否主键
     primaryKey: false,
-    // 是否自增
-    autoIncrement: false,
+    // 主键策略
+    pkStrategy: 0,
     // 默认值(暂时不用)
     defaultValue: '',
     // 不能为空

@@ -58,6 +58,7 @@ public interface MetaFieldMapper {
         @Mapping(target = "fieldScale"),
         @Mapping(target = "primaryKey"),
         @Mapping(target = "autoIncrement"),
+        @Mapping(target = "pkStrategy"),
         @Mapping(target = "notNull"),
         @Mapping(target = "defaultValue"),
         @Mapping(target = "foreignKey"),

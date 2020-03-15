@@ -39,9 +39,16 @@
               </el-input>
             </help-popover>
           </el-form-item>
-          <el-form-item v-if="!isAttrHide('autoIncrement')" label="主键策略">
-            <help-popover name="field.autoIncrement">
-              <el-checkbox v-model="form.autoIncrement">自增</el-checkbox>
+          <el-form-item v-if="!isAttrHide('pkStrategy')" label="主键策略">
+            <help-popover name="field.pkStrategy">
+              <el-select v-model="form.pkStrategy" style="width:100%;">
+                <el-option
+                  v-for="item in primaryKeyStrategy"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </help-popover>
           </el-form-item>
           <el-form-item v-if="!isAttrHide('foreignKey')" label="外键关联" prop="foreignKey">
@@ -268,6 +275,7 @@ export default {
       fieldTypeOptions: options.getFieldTypeOptions(),
       jfieldTypeOptions: options.jfieldTypeOptions,
       specialFieldFeatures: options.specialFieldFeatures,
+      primaryKeyStrategy: options.primaryKeyStrategy,
       entityFieldOptions: [],
       constList: null,
       queryTypeDisabled: true,
@@ -308,7 +316,7 @@ export default {
         this.form.notNull = true
         this.form.specialField = ''
       } else {
-        this.form.autoIncrement = false
+        this.form.pkStrategy = 0
       }
     },
     'form.query' (value) {
