@@ -81,6 +81,10 @@ public class MetadataUtil {
      * @param metaField
      */
     public static void checkAndRepairFieldPO(MetaFieldPO metaField) {
+        // 兼容尚未删除的弃用字段
+        if (metaField.getAutoIncrement() == null) {
+            metaField.setAutoIncrement(false);
+        }
         // 兼容老版本升级上来的异常数据
         Integer pkStrategy = metaField.getPkStrategy();
         if (pkStrategy != null) {
