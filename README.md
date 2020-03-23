@@ -108,7 +108,7 @@
 ## 入门案例
 
 这是一个简单的
-<a href="https://github.com/cai3178940/youran/releases/tag/v.3.0.0" target="_blank">项目示例</a>，
+<a href="https://github.com/cai3178940/youran/releases/tag/example" target="_blank">项目示例</a>，
 您只需要下载项目的元数据文件，然后按照下面的流程，简单地点几下，即可预览生成的代码
 
 1. 项目管理 -> 元数据导入
