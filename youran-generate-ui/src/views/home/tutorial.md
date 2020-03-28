@@ -1,4 +1,6 @@
-# youran代码自动化平台
+# youran代码自动化平台 
+👉<a style="font-size: 18px;" href="https://github.com/cai3178940/youran" target="_blank">访问Github源码地址</a>👈
+
 
 这是一款包含系统设计和代码生成功能的自动化web平台，使用本平台可以极大提升程序员的开发效率
 
@@ -74,7 +76,3 @@
 ## 生成效果展示
 
 ![image](https://github.com/cai3178940/image/raw/master/youran/%E7%94%9F%E6%88%90%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA.png)
-
-> <a href="https://github.com/cai3178940/youran" target="_blank">点击访问Github源码地址</a>
-> **如果好用的话，帮忙加一颗星，谢谢！**
-

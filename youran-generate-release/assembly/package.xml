@@ -23,6 +23,7 @@
             <directory>assembly/bin</directory>
             <outputDirectory>bin</outputDirectory>
             <fileMode>777</fileMode>
+            <lineEnding>unix</lineEnding>
         </fileSet>
         <fileSet>
             <directory>assembly/conf</directory>
