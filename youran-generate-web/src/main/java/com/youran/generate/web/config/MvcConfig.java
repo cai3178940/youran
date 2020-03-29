@@ -31,7 +31,10 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 将所有前端资源 /ui/** 访问都映射到classpath:/ui/ 目录下
-        registry.addResourceHandler("/ui/**").addResourceLocations("classpath:/ui/");
+        registry.addResourceHandler("/ui/**")
+            .addResourceLocations("classpath:/ui/")
+            // 缓存30天
+            .setCachePeriod(2592000);
     }
 
     /**
