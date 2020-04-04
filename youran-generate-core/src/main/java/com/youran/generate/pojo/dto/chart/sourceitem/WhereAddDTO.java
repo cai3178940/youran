@@ -1,0 +1,88 @@
+package com.youran.generate.pojo.dto.chart.sourceitem;
+
+import com.youran.common.validator.Const;
+import com.youran.generate.constant.FilterOperator;
+import com.youran.generate.constant.SourceItemSubType;
+import com.youran.generate.constant.SourceItemType;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotNull;
+
+/**
+ * 新增【where条件】入参
+ *
+ * @author: cbb
+ * @date: 2020-04-04
+ */
+@ApiModel(description = "新增【where条件】入参")
+public class WhereAddDTO extends AbstractSourceItemDTO {
+
+    @ApiModelProperty(notes = "字段id", example = "1")
+    private Integer fieldId;
+
+    @ApiModelProperty(notes = "过滤运算符", example = "1", allowableValues = FilterOperator.VALUES_STR)
+    @Const(constClass = FilterOperator.class)
+    private Integer filterOperator;
+
+    @ApiModelProperty(notes = "过滤值")
+    private String[] filterValue;
+
+    @ApiModelProperty(notes = "是否自定义", example = "true", required = true)
+    @NotNull
+    private Boolean custom;
+
+    @ApiModelProperty(notes = "自定义内容")
+    private String customContent;
+
+
+    @Override
+    public Integer getType() {
+        return SourceItemType.WHERE.getValue();
+    }
+
+    @Override
+    public Integer getSubType() {
+        return SourceItemSubType.NONE.getValue();
+    }
+
+    public Integer getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(Integer fieldId) {
+        this.fieldId = fieldId;
+    }
+
+    public Integer getFilterOperator() {
+        return filterOperator;
+    }
+
+    public void setFilterOperator(Integer filterOperator) {
+        this.filterOperator = filterOperator;
+    }
+
+    public String[] getFilterValue() {
+        return filterValue;
+    }
+
+    public void setFilterValue(String[] filterValue) {
+        this.filterValue = filterValue;
+    }
+
+    public Boolean getCustom() {
+        return custom;
+    }
+
+    public void setCustom(Boolean custom) {
+        this.custom = custom;
+    }
+
+    public String getCustomContent() {
+        return customContent;
+    }
+
+    public void setCustomContent(String customContent) {
+        this.customContent = customContent;
+    }
+}
