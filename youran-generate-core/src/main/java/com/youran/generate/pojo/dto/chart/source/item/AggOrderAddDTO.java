@@ -1,4 +1,4 @@
-package com.youran.generate.pojo.dto.chart.sourceitem;
+package com.youran.generate.pojo.dto.chart.source.item;
 
 import com.youran.common.validator.Const;
 import com.youran.generate.constant.SortType;
@@ -10,15 +10,15 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotNull;
 
 /**
- * 新增【明细排序】入参
+ * 新增【聚合排序】入参
  *
  * @author: cbb
  * @date: 2020-04-04
  */
-@ApiModel(description = "新增【明细排序】入参")
-public class DetailOrderAddDTO extends AbstractSourceItemDTO {
+@ApiModel(description = "新增【聚合排序】入参")
+public class AggOrderAddDTO extends AbstractSourceItemDTO {
 
-    @ApiModelProperty(notes = "父明细列id", example = "1", required = true)
+    @ApiModelProperty(notes = "父聚合列id", example = "1", required = true)
     @NotNull
     private Integer parentId;
 
@@ -29,7 +29,7 @@ public class DetailOrderAddDTO extends AbstractSourceItemDTO {
 
     @Override
     public Integer getType() {
-        return SourceItemType.DETAIL_ORDER.getValue();
+        return SourceItemType.AGG_ORDER.getValue();
     }
 
     @Override

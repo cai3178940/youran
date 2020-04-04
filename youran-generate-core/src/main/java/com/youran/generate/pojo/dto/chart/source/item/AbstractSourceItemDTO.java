@@ -1,4 +1,4 @@
-package com.youran.generate.pojo.dto.chart.sourceitem;
+package com.youran.generate.pojo.dto.chart.source.item;
 
 import com.youran.common.pojo.dto.AbstractDTO;
 import io.swagger.annotations.ApiModelProperty;

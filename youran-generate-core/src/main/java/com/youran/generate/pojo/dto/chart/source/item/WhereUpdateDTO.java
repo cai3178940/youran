@@ -1,4 +1,4 @@
-package com.youran.generate.pojo.dto.chart.sourceitem;
+package com.youran.generate.pojo.dto.chart.source.item;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,13 +6,13 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotNull;
 
 /**
- * 修改【having条件】入参
+ * 修改【where条件】入参
  *
  * @author: cbb
  * @date: 2020-04-04
  */
-@ApiModel(description = "修改【having条件】入参")
-public class HavingUpdateDTO extends HavingAddDTO {
+@ApiModel(description = "修改【where条件】入参")
+public class WhereUpdateDTO extends WhereAddDTO {
 
     @ApiModelProperty(notes = "主键ID",example = "1",required = true)
     @NotNull
