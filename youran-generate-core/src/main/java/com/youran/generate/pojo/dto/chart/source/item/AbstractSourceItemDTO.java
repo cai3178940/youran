@@ -1,6 +1,8 @@
 package com.youran.generate.pojo.dto.chart.source.item;
 
 import com.youran.common.pojo.dto.AbstractDTO;
+import com.youran.generate.constant.SourceItemSubType;
+import com.youran.generate.constant.SourceItemType;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -21,6 +23,7 @@ public abstract class AbstractSourceItemDTO extends AbstractDTO {
      * 获取数据项类型
      *
      * @return
+     * @see SourceItemType
      */
     public abstract Integer getType();
 
@@ -28,6 +31,7 @@ public abstract class AbstractSourceItemDTO extends AbstractDTO {
      * 获取数据项子类型
      *
      * @return
+     * @see SourceItemSubType
      */
     public abstract Integer getSubType();
 
