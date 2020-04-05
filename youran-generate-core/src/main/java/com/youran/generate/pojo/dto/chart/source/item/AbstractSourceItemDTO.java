@@ -1,7 +1,6 @@
 package com.youran.generate.pojo.dto.chart.source.item;
 
 import com.youran.common.pojo.dto.AbstractDTO;
-import com.youran.generate.constant.SourceItemSubType;
 import com.youran.generate.constant.SourceItemType;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -26,14 +25,6 @@ public abstract class AbstractSourceItemDTO extends AbstractDTO {
      * @see SourceItemType
      */
     public abstract Integer getType();
-
-    /**
-     * 获取数据项子类型
-     *
-     * @return
-     * @see SourceItemSubType
-     */
-    public abstract Integer getSubType();
 
     public Integer getSourceId() {
         return sourceId;

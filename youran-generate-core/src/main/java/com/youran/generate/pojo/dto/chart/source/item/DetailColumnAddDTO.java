@@ -2,7 +2,6 @@ package com.youran.generate.pojo.dto.chart.source.item;
 
 import com.youran.common.validator.Const;
 import com.youran.generate.constant.CustomFieldType;
-import com.youran.generate.constant.SourceItemSubType;
 import com.youran.generate.constant.SourceItemType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,11 +37,6 @@ public class DetailColumnAddDTO extends AbstractSourceItemDTO {
     @Override
     public Integer getType() {
         return SourceItemType.DETAIL_COLUMN.getValue();
-    }
-
-    @Override
-    public Integer getSubType() {
-        return SourceItemSubType.NONE.getValue();
     }
 
     public Integer getFieldId() {

@@ -3,7 +3,6 @@ package com.youran.generate.pojo.dto.chart.source.item;
 import com.youran.common.validator.Const;
 import com.youran.generate.constant.AggFunction;
 import com.youran.generate.constant.CustomFieldType;
-import com.youran.generate.constant.SourceItemSubType;
 import com.youran.generate.constant.SourceItemType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,11 +18,6 @@ import javax.validation.constraints.NotNull;
 @ApiModel(description = "新增【指标】入参")
 public class MetricsAddDTO extends AbstractSourceItemDTO {
 
-    @ApiModelProperty(notes = "数据项子类型", example = "31", required = true, allowableValues = "31,32")
-    @NotNull
-    @Const(constClass = SourceItemSubType.class)
-    private Integer subType;
-
     @ApiModelProperty(notes = "字段id", example = "1")
     private Integer fieldId;
 
@@ -33,6 +27,10 @@ public class MetricsAddDTO extends AbstractSourceItemDTO {
     @ApiModelProperty(notes = "聚合函数", example = "1", allowableValues = AggFunction.VALUES_STR)
     @Const(constClass = AggFunction.class)
     private Integer aggFunction;
+
+    @ApiModelProperty(notes = "是否百分比", example = "true", required = true)
+    @NotNull
+    private Boolean percent;
 
     @ApiModelProperty(notes = "是否自定义", example = "true", required = true)
     @NotNull
@@ -49,15 +47,6 @@ public class MetricsAddDTO extends AbstractSourceItemDTO {
     @Override
     public Integer getType() {
         return SourceItemType.METRICS.getValue();
-    }
-
-    @Override
-    public Integer getSubType() {
-        return this.subType;
-    }
-
-    public void setSubType(Integer subType) {
-        this.subType = subType;
     }
 
     public Integer getFieldId() {
@@ -82,6 +71,14 @@ public class MetricsAddDTO extends AbstractSourceItemDTO {
 
     public void setAggFunction(Integer aggFunction) {
         this.aggFunction = aggFunction;
+    }
+
+    public Boolean getPercent() {
+        return percent;
+    }
+
+    public void setPercent(Boolean percent) {
+        this.percent = percent;
     }
 
     public Boolean getCustom() {

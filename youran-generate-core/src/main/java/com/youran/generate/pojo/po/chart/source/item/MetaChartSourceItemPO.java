@@ -27,12 +27,6 @@ public class MetaChartSourceItemPO extends BasePO {
     private Integer type;
 
     /**
-     * 数据项子类型
-     * @see com.youran.generate.constant.SourceItemSubType
-     */
-    private Integer subType;
-
-    /**
      * 父数据项id
      */
     private Integer parentId;
@@ -80,14 +74,6 @@ public class MetaChartSourceItemPO extends BasePO {
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    public Integer getSubType() {
-        return this.subType;
-    }
-
-    public void setSubType(Integer subType) {
-        this.subType = subType;
     }
 
     public Integer getParentId() {

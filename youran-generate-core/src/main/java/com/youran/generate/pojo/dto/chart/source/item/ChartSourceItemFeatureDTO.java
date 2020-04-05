@@ -37,12 +37,6 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
      */
     private Integer customFieldType;
 
-
-    /**
-     * 数据项子类型
-     */
-    private Integer subType;
-
     /**
      * 维度粒度
      */
@@ -73,6 +67,10 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
      * 聚合函数
      */
     private Integer aggFunction;
+    /**
+     * 是否百分比
+     */
+    private Boolean percent;
 
 
     public Integer getFieldId() {
@@ -113,14 +111,6 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
 
     public void setCustomFieldType(Integer customFieldType) {
         this.customFieldType = customFieldType;
-    }
-
-    public Integer getSubType() {
-        return subType;
-    }
-
-    public void setSubType(Integer subType) {
-        this.subType = subType;
     }
 
     public String getGranularity() {
@@ -169,5 +159,13 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
 
     public void setAggFunction(Integer aggFunction) {
         this.aggFunction = aggFunction;
+    }
+
+    public Boolean getPercent() {
+        return percent;
+    }
+
+    public void setPercent(Boolean percent) {
+        this.percent = percent;
     }
 }

@@ -1,6 +1,5 @@
 package com.youran.generate.pojo.po.chart.source.item;
 
-import com.youran.generate.constant.SourceItemSubType;
 import com.youran.generate.constant.SourceItemType;
 import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
@@ -29,7 +28,6 @@ public class DimensionPO extends MetaChartSourceItemPO {
 
     public DimensionPO() {
         this.setType(SourceItemType.DIMENSION.getValue());
-        this.setSubType(SourceItemSubType.NONE.getValue());
     }
 
     @Override

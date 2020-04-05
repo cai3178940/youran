@@ -2,7 +2,6 @@ package com.youran.generate.pojo.dto.chart.source.item;
 
 import com.youran.common.validator.Const;
 import com.youran.generate.constant.Granularity;
-import com.youran.generate.constant.SourceItemSubType;
 import com.youran.generate.constant.SourceItemType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,11 +17,6 @@ import javax.validation.constraints.NotNull;
 @ApiModel(description = "新增【维度】入参")
 public class DimensionAddDTO extends AbstractSourceItemDTO {
 
-    @ApiModelProperty(notes = "数据项子类型", example = "21", required = true, allowableValues = "21,22")
-    @NotNull
-    @Const(constClass = SourceItemSubType.class)
-    private Integer subType;
-
     @ApiModelProperty(notes = "字段id", example = "1", required = true)
     @NotNull
     private Integer fieldId;
@@ -35,20 +29,9 @@ public class DimensionAddDTO extends AbstractSourceItemDTO {
     @Const(constClass = Granularity.class)
     private String granularity;
 
-
-
     @Override
     public Integer getType() {
         return SourceItemType.DIMENSION.getValue();
-    }
-
-    @Override
-    public Integer getSubType() {
-        return this.subType;
-    }
-
-    public void setSubType(Integer subType) {
-        this.subType = subType;
     }
 
     public Integer getFieldId() {
