@@ -4,6 +4,9 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.dto.MetaMtmFeatureDTO;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
+import com.youran.generate.pojo.dto.chart.ChartFeatureDTO;
+import com.youran.generate.pojo.dto.chart.source.ChartSourceFeatureDTO;
+import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
 
 /**
  * 特性DTO转json
@@ -25,6 +28,18 @@ public class FeatureMapper {
         return dto != null ? JsonUtil.toJSONString(dto) : null;
     }
 
+    public static String asString(ChartFeatureDTO dto) {
+        return dto != null ? JsonUtil.toJSONString(dto) : null;
+    }
+
+    public static String asString(ChartSourceItemFeatureDTO dto) {
+        return dto != null ? JsonUtil.toJSONString(dto) : null;
+    }
+
+    public static String asString(ChartSourceFeatureDTO dto) {
+        return dto != null ? JsonUtil.toJSONString(dto) : null;
+    }
+
     public static MetaProjectFeatureDTO asProjectFeatureDTO(String str) {
         return JsonUtil.parseObject(str, MetaProjectFeatureDTO.class);
     }
@@ -37,5 +52,15 @@ public class FeatureMapper {
         return JsonUtil.parseObject(str, MetaMtmFeatureDTO.class);
     }
 
+    public static ChartFeatureDTO asChartFeatureDTO(String str) {
+        return JsonUtil.parseObject(str, ChartFeatureDTO.class);
+    }
 
+    public static ChartSourceItemFeatureDTO asChartSourceItemFeatureDTO(String str) {
+        return JsonUtil.parseObject(str, ChartSourceItemFeatureDTO.class);
+    }
+
+    public static ChartSourceFeatureDTO asChartSourceFeatureDTO(String str) {
+        return JsonUtil.parseObject(str, ChartSourceFeatureDTO.class);
+    }
 }

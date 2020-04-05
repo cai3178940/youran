@@ -7,23 +7,21 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotNull;
 
 /**
- * 聚合列入参
+ * 图表项入参
  *
  * @author: cbb
- * @date: 2020-04-05
+ * @date: 2020-04-04
  */
-@ApiModel(description = "聚合列入参")
-public class AggTableColumnDTO extends AbstractDTO {
+@ApiModel(description = "图表项入参")
+public class ChartItemDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = "数据项ID",example = "1",required = true)
     @NotNull
     private Integer sourceItemId;
 
-    @ApiModelProperty(notes = "列标题别名",example = "新的列名")
+    @ApiModelProperty(notes = "标题别名",example = "新的列名")
     private String titleAlias;
 
-    @ApiModelProperty(notes = "列格式",example = "yyyy-MM-dd")
-    private String format;
 
     public Integer getSourceItemId() {
         return sourceItemId;
@@ -41,11 +39,4 @@ public class AggTableColumnDTO extends AbstractDTO {
         this.titleAlias = titleAlias;
     }
 
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
 }

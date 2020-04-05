@@ -16,10 +16,10 @@ import java.util.List;
 public class AggTableAddDTO extends AbstractChartDTO {
 
     @ApiModelProperty(notes = "维度列")
-    private List<AggTableColumnDTO> dimensions;
+    private List<ChartItemDTO> dimensionList;
 
     @ApiModelProperty(notes = "指标列")
-    private List<AggTableColumnDTO> metrics;
+    private List<ChartItemDTO> metricsList;
 
     // TODO 以后再扩展其他样式
 
@@ -28,19 +28,19 @@ public class AggTableAddDTO extends AbstractChartDTO {
         return ChartType.AGG_TABLE.getValue();
     }
 
-    public List<AggTableColumnDTO> getDimensions() {
-        return dimensions;
+    public List<ChartItemDTO> getDimensionList() {
+        return dimensionList;
     }
 
-    public void setDimensions(List<AggTableColumnDTO> dimensions) {
-        this.dimensions = dimensions;
+    public void setDimensionList(List<ChartItemDTO> dimensionList) {
+        this.dimensionList = dimensionList;
     }
 
-    public List<AggTableColumnDTO> getMetrics() {
-        return metrics;
+    public List<ChartItemDTO> getMetricsList() {
+        return metricsList;
     }
 
-    public void setMetrics(List<AggTableColumnDTO> metrics) {
-        this.metrics = metrics;
+    public void setMetricsList(List<ChartItemDTO> metricsList) {
+        this.metricsList = metricsList;
     }
 }

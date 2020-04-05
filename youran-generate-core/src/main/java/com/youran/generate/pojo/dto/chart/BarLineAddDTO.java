@@ -1,0 +1,56 @@
+package com.youran.generate.pojo.dto.chart;
+
+import com.youran.generate.constant.ChartType;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.util.List;
+
+/**
+ * 新增【柱线图】入参
+ *
+ * @author: cbb
+ * @date: 2020-04-05
+ */
+@ApiModel(description = "新增【柱线图】入参")
+public class BarLineAddDTO extends AbstractChartDTO {
+
+    @ApiModelProperty(notes = "主X轴")
+    private ChartItemDTO axisX;
+
+    @ApiModelProperty(notes = "附加X轴")
+    private ChartItemDTO axisX2;
+
+    @ApiModelProperty(notes = "Y轴")
+    private List<ChartItemDTO> axisYList;
+
+
+    @Override
+    public Integer getChartType() {
+        return ChartType.BAR_LINE.getValue();
+    }
+
+    public ChartItemDTO getAxisX() {
+        return axisX;
+    }
+
+    public void setAxisX(ChartItemDTO axisX) {
+        this.axisX = axisX;
+    }
+
+    public ChartItemDTO getAxisX2() {
+        return axisX2;
+    }
+
+    public void setAxisX2(ChartItemDTO axisX2) {
+        this.axisX2 = axisX2;
+    }
+
+    public List<ChartItemDTO> getAxisYList() {
+        return axisYList;
+    }
+
+    public void setAxisYList(List<ChartItemDTO> axisYList) {
+        this.axisYList = axisYList;
+    }
+}

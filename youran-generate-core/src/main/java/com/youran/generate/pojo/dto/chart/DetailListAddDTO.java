@@ -16,7 +16,7 @@ import java.util.List;
 public class DetailListAddDTO extends AbstractChartDTO {
 
     @ApiModelProperty(notes = "明细列")
-    private List<DetailListColumnDTO> columns;
+    private List<ChartItemDTO> columnList;
 
     // TODO 以后再扩展其他样式
 
@@ -25,11 +25,11 @@ public class DetailListAddDTO extends AbstractChartDTO {
         return ChartType.DETAIL_LIST.getValue();
     }
 
-    public List<DetailListColumnDTO> getColumns() {
-        return columns;
+    public List<ChartItemDTO> getColumnList() {
+        return columnList;
     }
 
-    public void setColumns(List<DetailListColumnDTO> columns) {
-        this.columns = columns;
+    public void setColumnList(List<ChartItemDTO> columnList) {
+        this.columnList = columnList;
     }
 }
