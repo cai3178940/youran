@@ -1,8 +1,11 @@
 package com.youran.generate.pojo.po.chart.source.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.generate.constant.SourceItemType;
 import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
+import com.youran.generate.pojo.po.MetaEntityPO;
+import com.youran.generate.pojo.po.MetaFieldPO;
 
 /**
  * 指标
@@ -47,6 +50,18 @@ public class MetricsPO extends MetaChartSourceItemPO {
      * 自定义字段类型
      */
     private Integer customFieldType;
+
+    /**
+     * 对应实体
+     */
+    @JsonIgnore
+    private MetaEntityPO entity;
+    /**
+     * 对应字段
+     */
+    @JsonIgnore
+    private MetaFieldPO field;
+
 
     public MetricsPO() {
         this.setType(SourceItemType.METRICS.getValue());
@@ -131,5 +146,21 @@ public class MetricsPO extends MetaChartSourceItemPO {
 
     public void setCustomFieldType(Integer customFieldType) {
         this.customFieldType = customFieldType;
+    }
+
+    public MetaEntityPO getEntity() {
+        return entity;
+    }
+
+    public void setEntity(MetaEntityPO entity) {
+        this.entity = entity;
+    }
+
+    public MetaFieldPO getField() {
+        return field;
+    }
+
+    public void setField(MetaFieldPO field) {
+        this.field = field;
     }
 }

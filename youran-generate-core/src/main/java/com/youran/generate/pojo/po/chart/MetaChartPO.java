@@ -1,6 +1,8 @@
 package com.youran.generate.pojo.po.chart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.generate.pojo.po.BasePO;
+import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 
 /**
  * 图表
@@ -15,7 +17,10 @@ public class MetaChartPO extends BasePO {
      * 主键ID
      */
     private Integer chartId;
-
+    /**
+     * 项目id
+     */
+    private Integer projectId;
     /**
      * 数据源id
      */
@@ -47,6 +52,12 @@ public class MetaChartPO extends BasePO {
      * 特性json
      */
     private String feature;
+
+    /**
+     * 图表数据源
+     */
+    @JsonIgnore
+    private MetaChartSourcePO chartSource;
 
     /**
      * 反序列化特性json
@@ -120,5 +131,20 @@ public class MetaChartPO extends BasePO {
         this.feature = feature;
     }
 
+    public MetaChartSourcePO getChartSource() {
+        return chartSource;
+    }
+
+    public void setChartSource(MetaChartSourcePO chartSource) {
+        this.chartSource = chartSource;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
 }
 

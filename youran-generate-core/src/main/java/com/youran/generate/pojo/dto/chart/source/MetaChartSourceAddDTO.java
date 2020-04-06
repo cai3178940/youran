@@ -16,6 +16,10 @@ import java.util.List;
 @ApiModel(description = "新增【图表数据源】的参数")
 public class MetaChartSourceAddDTO extends AbstractDTO {
 
+    @ApiModelProperty(notes = "项目id", example = "1", required = true)
+    @NotNull
+    private Integer projectId;
+
     @ApiModelProperty(notes = "是否聚合", example = "true", required = true)
     @NotNull
     private Boolean aggregation;
@@ -62,6 +66,14 @@ public class MetaChartSourceAddDTO extends AbstractDTO {
 
     public void setLimit(Integer limit) {
         this.limit = limit;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 }
 

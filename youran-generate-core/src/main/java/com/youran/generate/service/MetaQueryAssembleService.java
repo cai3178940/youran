@@ -7,6 +7,9 @@ import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.pojo.po.*;
+import com.youran.generate.pojo.po.chart.MetaChartPO;
+import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
+import com.youran.generate.pojo.po.chart.source.item.MetaChartSourceItemPO;
 import com.youran.generate.util.MetadataUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -70,7 +73,7 @@ public class MetaQueryAssembleService implements InitializingBean {
     /**
      * 装配整个项目的元数据
      *
-     * @param projectId
+     * @param projectId 项目id
      * @return
      */
     private MetaProjectPO doAssembleProject(Integer projectId) {
@@ -94,8 +97,54 @@ public class MetaQueryAssembleService implements InitializingBean {
             // 装配多对多持有引用
             manyToManies = this.assembleManyToManyWithEntities(metaEntities, manyToManies, true);
             project.setMtms(manyToManies);
+            // 装配图表列表
+            List<MetaChartPO> charts = this.getAllAssembledCharts(projectId, metaEntities);
+            project.setCharts(charts);
         }
         return project;
+    }
+
+    /**
+     * 装配所有图表元数据
+     *
+     * @param projectId    项目id
+     * @param metaEntities 实体列表
+     * @return 装配完成的图表元数据
+     */
+    private List<MetaChartPO> getAllAssembledCharts(Integer projectId, List<MetaEntityPO> metaEntities) {
+        // 查询图表列表
+        List<MetaChartPO> charts = metaChartService.findByProjectId(projectId, true);
+        if (CollectionUtils.isEmpty(charts)) {
+            return Collections.emptyList();
+        }
+        //将实体列表转成map
+        Map<Integer, MetaEntityPO> entityMap = metaEntities.stream()
+            .collect(Collectors.toMap(MetaEntityPO::getEntityId, e -> e));
+
+        // 查询图表数据源列表
+        List<MetaChartSourcePO> chartSources = metaChartSourceService.findByProjectId(projectId, true);
+
+        //将图表数据源列表转成map
+        Map<Integer, MetaChartSourcePO> sourceMap = chartSources.stream()
+            .collect(Collectors.toMap(MetaChartSourcePO::getSourceId, e -> e));
+
+        // 查询图表数据项列表
+        List<MetaChartSourceItemPO> sourceItems = metaChartSourceItemService.findByProjectId(projectId, true);
+        //将图表数据项列表转成map
+        Map<Integer, List<MetaChartSourceItemPO>> sourceItemMap = sourceItems.stream()
+            .collect(Collectors.groupingBy(MetaChartSourceItemPO::getSourceId));
+
+        for (MetaChartPO chart : charts) {
+            MetaChartSourcePO chartSource = sourceMap.get(chart.getSourceId());
+            if (chartSource == null) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源不存在，chart=" + chart.getName());
+            }
+            List<MetaChartSourceItemPO> items = sourceItemMap.get(chartSource.getSourceId());
+            chartSource.assembleItems(items);
+            chart.setChartSource(chartSource);
+        }
+
+        return charts;
     }
 
     /**

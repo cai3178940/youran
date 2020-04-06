@@ -1,9 +1,9 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.generate.pojo.po.chart.MetaChartPO;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -114,6 +114,11 @@ public class MetaProjectPO extends BasePO {
      */
     @JsonIgnore
     private List<MetaManyToManyPO> mtms;
+    /**
+     * 项目下的所有图表
+     */
+    @JsonIgnore
+    private List<MetaChartPO> charts;
 
     /**
      * 根据序号获取远程git仓库地址
@@ -132,29 +137,6 @@ public class MetaProjectPO extends BasePO {
         }
         return url;
     }
-
-
-    public void addEntity(MetaEntityPO entity) {
-        if (entities == null) {
-            entities = new ArrayList<>();
-        }
-        entities.add(entity);
-    }
-
-    public void addConst(MetaConstPO metaConstPO) {
-        if (consts == null) {
-            consts = new ArrayList<>();
-        }
-        consts.add(metaConstPO);
-    }
-
-    public void addManyToMany(MetaManyToManyPO manyToMany) {
-        if (mtms == null) {
-            mtms = new ArrayList<>();
-        }
-        mtms.add(manyToMany);
-    }
-
 
     /**
      * 将横线分割的字符串去横线化
@@ -211,6 +193,14 @@ public class MetaProjectPO extends BasePO {
 
     public void setEntities(List<MetaEntityPO> entities) {
         this.entities = entities;
+    }
+
+    public List<MetaChartPO> getCharts() {
+        return charts;
+    }
+
+    public void setCharts(List<MetaChartPO> charts) {
+        this.charts = charts;
     }
 
     public String getAuthor() {

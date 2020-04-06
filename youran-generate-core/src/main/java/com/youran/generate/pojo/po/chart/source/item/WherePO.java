@@ -1,8 +1,11 @@
 package com.youran.generate.pojo.po.chart.source.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.generate.constant.SourceItemType;
 import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
+import com.youran.generate.pojo.po.MetaEntityPO;
+import com.youran.generate.pojo.po.MetaFieldPO;
 
 /**
  * where条件
@@ -36,6 +39,17 @@ public class WherePO extends MetaChartSourceItemPO {
      * 自定义内容
      */
     private String customContent;
+
+    /**
+     * 对应实体
+     */
+    @JsonIgnore
+    private MetaEntityPO entity;
+    /**
+     * 对应字段
+     */
+    @JsonIgnore
+    private MetaFieldPO field;
 
     public WherePO() {
         this.setType(SourceItemType.WHERE.getValue());
@@ -100,5 +114,21 @@ public class WherePO extends MetaChartSourceItemPO {
 
     public void setCustomContent(String customContent) {
         this.customContent = customContent;
+    }
+
+    public MetaEntityPO getEntity() {
+        return entity;
+    }
+
+    public void setEntity(MetaEntityPO entity) {
+        this.entity = entity;
+    }
+
+    public MetaFieldPO getField() {
+        return field;
+    }
+
+    public void setField(MetaFieldPO field) {
+        this.field = field;
     }
 }

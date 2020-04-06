@@ -18,6 +18,13 @@ public abstract class AbstractSourceItemDTO extends AbstractDTO {
     @NotNull
     private Integer sourceId;
 
+    @ApiModelProperty(notes = "项目id", example = "1", required = true)
+    @NotNull
+    private Integer projectId;
+
+    @ApiModelProperty(notes = "关联实体序号", example = "1", required = true)
+    @NotNull
+    private Integer joinIndex;
     /**
      * 获取数据项类型
      *
@@ -32,5 +39,21 @@ public abstract class AbstractSourceItemDTO extends AbstractDTO {
 
     public void setSourceId(Integer sourceId) {
         this.sourceId = sourceId;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
+
+    public Integer getJoinIndex() {
+        return joinIndex;
+    }
+
+    public void setJoinIndex(Integer joinIndex) {
+        this.joinIndex = joinIndex;
     }
 }

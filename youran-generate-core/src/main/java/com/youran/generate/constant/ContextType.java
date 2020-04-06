@@ -24,13 +24,17 @@ public enum ContextType {
     /**
      * 枚举
      */
-    CONST(3, "枚举");
+    CONST(3, "枚举"),
+    /**
+     * 图表
+     */
+    CHART(4, "图表");
 
 
     /**
      * 枚举值罗列，给swagger接口文档展示用
      */
-    public static final String VALUES_STR = "0,1,2,3";
+    public static final String VALUES_STR = "0,1,2,3,4";
     private static final Map<Integer, ContextType> LOOKUP = new HashMap<>();
 
     static {

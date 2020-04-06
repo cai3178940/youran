@@ -210,6 +210,12 @@ public class MetaCodeGenService {
                     ConstContext context = new ConstContext(project, metaConstPO);
                     this.renderTemplate(templateRenderer, context, templateFile, projectDir);
                 }
+            } else if (Objects.equals(templateFile.getContextType(), ContextType.CHART.getValue())) {
+                // 生成图表模版文件
+                for (MetaConstPO metaConstPO : project.getConsts()) {
+                    ConstContext context = new ConstContext(project, metaConstPO);
+                    this.renderTemplate(templateRenderer, context, templateFile, projectDir);
+                }
             } else {
                 throw new BusinessException("未知上下文：" + templateFile.getContextType());
             }

@@ -15,6 +15,10 @@ import javax.validation.constraints.NotNull;
  */
 public abstract class AbstractChartDTO extends AbstractDTO {
 
+    @ApiModelProperty(notes = "项目id", example = "1", required = true)
+    @NotNull
+    private Integer projectId;
+
     @ApiModelProperty(notes = "数据源id", example = "1", required = true)
     @NotNull
     private Integer sourceId;
@@ -71,5 +75,13 @@ public abstract class AbstractChartDTO extends AbstractDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 }

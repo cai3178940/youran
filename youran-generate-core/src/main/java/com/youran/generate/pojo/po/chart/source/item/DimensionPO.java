@@ -1,8 +1,11 @@
 package com.youran.generate.pojo.po.chart.source.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.generate.constant.SourceItemType;
 import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
+import com.youran.generate.pojo.po.MetaEntityPO;
+import com.youran.generate.pojo.po.MetaFieldPO;
 
 /**
  * 维度
@@ -25,6 +28,17 @@ public class DimensionPO extends MetaChartSourceItemPO {
      * 维度粒度
      */
     private String granularity;
+
+    /**
+     * 对应实体
+     */
+    @JsonIgnore
+    private MetaEntityPO entity;
+    /**
+     * 对应字段
+     */
+    @JsonIgnore
+    private MetaFieldPO field;
 
     public DimensionPO() {
         this.setType(SourceItemType.DIMENSION.getValue());
@@ -70,5 +84,21 @@ public class DimensionPO extends MetaChartSourceItemPO {
 
     public void setGranularity(String granularity) {
         this.granularity = granularity;
+    }
+
+    public MetaEntityPO getEntity() {
+        return entity;
+    }
+
+    public void setEntity(MetaEntityPO entity) {
+        this.entity = entity;
+    }
+
+    public MetaFieldPO getField() {
+        return field;
+    }
+
+    public void setField(MetaFieldPO field) {
+        this.field = field;
     }
 }
