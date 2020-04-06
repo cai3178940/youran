@@ -50,6 +50,19 @@ public class ChartFeatureDTO extends AbstractDTO {
      */
     private ChartItemDTO metrics;
 
+    /**
+     * 默认每页记录数
+     */
+    private Integer defaultPageSize;
+
+    public Integer getDefaultPageSize() {
+        return defaultPageSize;
+    }
+
+    public void setDefaultPageSize(Integer defaultPageSize) {
+        this.defaultPageSize = defaultPageSize;
+    }
+
     public List<ChartItemDTO> getColumnList() {
         return columnList;
     }

@@ -19,6 +19,10 @@ public class DetailListPO extends MetaChartPO {
      * 明细列
      */
     private List<ChartItemDTO> columnList;
+    /**
+     * 默认每页记录数
+     */
+    private Integer defaultPageSize;
 
     public DetailListPO() {
         this.setChartType(ChartType.DETAIL_LIST.getValue());
@@ -28,12 +32,14 @@ public class DetailListPO extends MetaChartPO {
     public void featureDeserialize() {
         ChartFeatureDTO featureDTO = FeatureMapper.asChartFeatureDTO(this.getFeature());
         this.columnList = featureDTO.getColumnList();
+        this.defaultPageSize = featureDTO.getDefaultPageSize();
     }
 
     @Override
     public void featureSerialize() {
         ChartFeatureDTO featureDTO = new ChartFeatureDTO();
         featureDTO.setColumnList(this.columnList);
+        featureDTO.setDefaultPageSize(this.defaultPageSize);
         this.setFeature(FeatureMapper.asString(featureDTO));
     }
 
@@ -43,5 +49,13 @@ public class DetailListPO extends MetaChartPO {
 
     public void setColumnList(List<ChartItemDTO> columnList) {
         this.columnList = columnList;
+    }
+
+    public Integer getDefaultPageSize() {
+        return defaultPageSize;
+    }
+
+    public void setDefaultPageSize(Integer defaultPageSize) {
+        this.defaultPageSize = defaultPageSize;
     }
 }

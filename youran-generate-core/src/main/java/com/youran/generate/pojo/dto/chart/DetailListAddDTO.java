@@ -18,7 +18,8 @@ public class DetailListAddDTO extends AbstractChartDTO {
     @ApiModelProperty(notes = "明细列")
     private List<ChartItemDTO> columnList;
 
-    // TODO 以后再扩展其他样式
+    @ApiModelProperty(notes = "默认每页记录数")
+    private Integer defaultPageSize;
 
     @Override
     public Integer getChartType() {
@@ -31,5 +32,13 @@ public class DetailListAddDTO extends AbstractChartDTO {
 
     public void setColumnList(List<ChartItemDTO> columnList) {
         this.columnList = columnList;
+    }
+
+    public Integer getDefaultPageSize() {
+        return defaultPageSize;
+    }
+
+    public void setDefaultPageSize(Integer defaultPageSize) {
+        this.defaultPageSize = defaultPageSize;
     }
 }

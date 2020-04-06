@@ -10,8 +10,10 @@ import com.youran.generate.constant.DevMode;
 import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import com.youran.generate.pojo.po.*;
+import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.template.context.BaseContext;
+import com.youran.generate.template.context.ChartContext;
 import com.youran.generate.template.context.ConstContext;
 import com.youran.generate.template.context.EntityContext;
 import com.youran.generate.template.renderer.TemplateRenderer;
@@ -212,8 +214,8 @@ public class MetaCodeGenService {
                 }
             } else if (Objects.equals(templateFile.getContextType(), ContextType.CHART.getValue())) {
                 // 生成图表模版文件
-                for (MetaConstPO metaConstPO : project.getConsts()) {
-                    ConstContext context = new ConstContext(project, metaConstPO);
+                for (MetaChartPO metaChartPO : project.getCharts()) {
+                    ChartContext context = new ChartContext(project, metaChartPO);
                     this.renderTemplate(templateRenderer, context, templateFile, projectDir);
                 }
             } else {
