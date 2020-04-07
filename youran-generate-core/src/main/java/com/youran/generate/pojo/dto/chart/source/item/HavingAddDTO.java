@@ -29,7 +29,6 @@ public class HavingAddDTO extends AbstractSourceItemDTO {
     @ApiModelProperty(notes = "过滤值")
     private String[] filterValue;
 
-
     @Override
     public Integer getType() {
         return SourceItemType.HAVING.getValue();
@@ -58,6 +57,5 @@ public class HavingAddDTO extends AbstractSourceItemDTO {
     public void setFilterValue(String[] filterValue) {
         this.filterValue = filterValue;
     }
-
 
 }

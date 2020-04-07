@@ -38,6 +38,18 @@ public enum FilterOperator {
      */
     NOT_EQUAL(2,"不等于"),
     /**
+     * 是当前
+     */
+    IS_NOW(21,"是当前"),
+    /**
+     * 前段时间
+     */
+    BEFORE_TIME(22,"前段时间"),
+    /**
+     * 后段时间
+     */
+    AFTER_TIME(23,"后段时间"),
+    /**
      * 包含
      */
     CONTAIN(3,"包含"),
@@ -73,7 +85,7 @@ public enum FilterOperator {
     /**
      * 枚举值罗列，给swagger接口文档展示用
      */
-    public static final String VALUES_STR = "1,10,11,12,13,2,3,4,5,6,7,8,9";
+    public static final String VALUES_STR = "1,10,11,12,13,2,21,22,23,3,4,5,6,7,8,9";
 
     private static final Map<Integer, FilterOperator> LOOKUP = new HashMap<>();
 

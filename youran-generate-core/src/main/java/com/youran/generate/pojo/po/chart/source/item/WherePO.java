@@ -31,6 +31,11 @@ public class WherePO extends MetaChartSourceItemPO {
     private String[] filterValue;
 
     /**
+     * 时间粒度
+     */
+    private Integer timeGranularity;
+
+    /**
      * 是否自定义
      */
     private Boolean custom;
@@ -61,6 +66,7 @@ public class WherePO extends MetaChartSourceItemPO {
         this.fieldId = featureDTO.getFieldId();
         this.filterOperator = featureDTO.getFilterOperator();
         this.filterValue = featureDTO.getFilterValue();
+        this.timeGranularity = featureDTO.getTimeGranularity();
         this.custom = featureDTO.getCustom();
         this.customContent = featureDTO.getCustomContent();
     }
@@ -71,6 +77,7 @@ public class WherePO extends MetaChartSourceItemPO {
         featureDTO.setFieldId(this.fieldId);
         featureDTO.setFilterOperator(this.filterOperator);
         featureDTO.setFilterValue(this.filterValue);
+        featureDTO.setTimeGranularity(this.timeGranularity);
         featureDTO.setCustom(this.custom);
         featureDTO.setCustomContent(this.customContent);
         this.setFeature(FeatureMapper.asString(featureDTO));
@@ -130,5 +137,13 @@ public class WherePO extends MetaChartSourceItemPO {
 
     public void setField(MetaFieldPO field) {
         this.field = field;
+    }
+
+    public Integer getTimeGranularity() {
+        return timeGranularity;
+    }
+
+    public void setTimeGranularity(Integer timeGranularity) {
+        this.timeGranularity = timeGranularity;
     }
 }

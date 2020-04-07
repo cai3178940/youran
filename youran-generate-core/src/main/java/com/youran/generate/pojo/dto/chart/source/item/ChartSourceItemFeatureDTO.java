@@ -64,6 +64,11 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
     private String[] filterValue;
 
     /**
+     * 时间粒度
+     */
+    private Integer timeGranularity;
+
+    /**
      * 聚合函数
      */
     private Integer aggFunction;
@@ -167,5 +172,13 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
 
     public void setPercent(Boolean percent) {
         this.percent = percent;
+    }
+
+    public Integer getTimeGranularity() {
+        return timeGranularity;
+    }
+
+    public void setTimeGranularity(Integer timeGranularity) {
+        this.timeGranularity = timeGranularity;
     }
 }

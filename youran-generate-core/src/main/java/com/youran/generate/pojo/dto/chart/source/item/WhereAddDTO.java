@@ -27,6 +27,9 @@ public class WhereAddDTO extends AbstractSourceItemDTO {
     @ApiModelProperty(notes = "过滤值")
     private String[] filterValue;
 
+    @ApiModelProperty(notes = "时间粒度")
+    private Integer timeGranularity;
+
     @ApiModelProperty(notes = "是否自定义", example = "true", required = true)
     @NotNull
     private Boolean custom;
@@ -62,6 +65,14 @@ public class WhereAddDTO extends AbstractSourceItemDTO {
 
     public void setFilterValue(String[] filterValue) {
         this.filterValue = filterValue;
+    }
+
+    public Integer getTimeGranularity() {
+        return timeGranularity;
+    }
+
+    public void setTimeGranularity(Integer timeGranularity) {
+        this.timeGranularity = timeGranularity;
     }
 
     public Boolean getCustom() {

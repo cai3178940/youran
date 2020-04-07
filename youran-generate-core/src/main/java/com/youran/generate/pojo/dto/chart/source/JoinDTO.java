@@ -1,7 +1,11 @@
 package com.youran.generate.pojo.dto.chart.source;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.youran.common.validator.Const;
 import com.youran.generate.constant.JoinType;
+import com.youran.generate.pojo.po.MetaEntityPO;
+import com.youran.generate.pojo.po.MetaFieldPO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -12,6 +16,7 @@ import javax.validation.constraints.NotNull;
  * @author: cbb
  * @date: 2020-04-04
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JoinDTO {
 
     @ApiModelProperty(notes = "关联类型", example = "1", required = true, allowableValues = JoinType.VALUES_STR)
@@ -19,22 +24,64 @@ public class JoinDTO {
     @Const(constClass = JoinType.class)
     private Integer joinType;
 
-    @ApiModelProperty(notes = "左实体id", example = "1", required = true)
-    @NotNull
+    @ApiModelProperty(notes = "左实体id", example = "1")
     private Integer leftEntityId;
 
-
-    @ApiModelProperty(notes = "右实体id", example = "1", required = true)
-    @NotNull
+    @ApiModelProperty(notes = "右实体id", example = "1")
     private Integer rightEntityId;
 
-    @ApiModelProperty(notes = "左字段id", example = "1", required = true)
-    @NotNull
+    @ApiModelProperty(notes = "左字段id", example = "1")
     private Integer leftFieldId;
 
-    @ApiModelProperty(notes = "右字段id", example = "1", required = true)
-    @NotNull
+    @ApiModelProperty(notes = "右字段id", example = "1")
     private Integer rightFieldId;
+
+    @ApiModelProperty(notes = "左多对多id", example = "1")
+    private Integer leftMtmId;
+
+    @ApiModelProperty(notes = "右多对多id", example = "1")
+    private Integer rightMtmId;
+
+    @ApiModelProperty(notes = "左多对多字段", example = "1")
+    private String leftMtmField;
+
+    @ApiModelProperty(notes = "右多对多字段", example = "1")
+    private String rightMtmField;
+
+
+    /**
+     * 左实体
+     */
+    @JsonIgnore
+    private MetaEntityPO leftEntity;
+    /**
+     * 右实体
+     */
+    @JsonIgnore
+    private MetaEntityPO rightEntity;
+    /**
+     * 左字段
+     */
+    @JsonIgnore
+    private MetaFieldPO leftField;
+    /**
+     * 右字段
+     */
+    @JsonIgnore
+    private MetaFieldPO rightField;
+    /**
+     * 左多对多
+     */
+    @JsonIgnore
+    private MetaEntityPO leftMtm;
+    /**
+     * 右多对多
+     */
+    @JsonIgnore
+    private MetaEntityPO rightMtm;
+
+
+
 
     public Integer getJoinType() {
         return joinType;
@@ -74,5 +121,85 @@ public class JoinDTO {
 
     public void setRightFieldId(Integer rightFieldId) {
         this.rightFieldId = rightFieldId;
+    }
+
+    public Integer getLeftMtmId() {
+        return leftMtmId;
+    }
+
+    public void setLeftMtmId(Integer leftMtmId) {
+        this.leftMtmId = leftMtmId;
+    }
+
+    public Integer getRightMtmId() {
+        return rightMtmId;
+    }
+
+    public void setRightMtmId(Integer rightMtmId) {
+        this.rightMtmId = rightMtmId;
+    }
+
+    public String getLeftMtmField() {
+        return leftMtmField;
+    }
+
+    public void setLeftMtmField(String leftMtmField) {
+        this.leftMtmField = leftMtmField;
+    }
+
+    public String getRightMtmField() {
+        return rightMtmField;
+    }
+
+    public void setRightMtmField(String rightMtmField) {
+        this.rightMtmField = rightMtmField;
+    }
+
+    public MetaEntityPO getLeftEntity() {
+        return leftEntity;
+    }
+
+    public void setLeftEntity(MetaEntityPO leftEntity) {
+        this.leftEntity = leftEntity;
+    }
+
+    public MetaEntityPO getRightEntity() {
+        return rightEntity;
+    }
+
+    public void setRightEntity(MetaEntityPO rightEntity) {
+        this.rightEntity = rightEntity;
+    }
+
+    public MetaFieldPO getLeftField() {
+        return leftField;
+    }
+
+    public void setLeftField(MetaFieldPO leftField) {
+        this.leftField = leftField;
+    }
+
+    public MetaFieldPO getRightField() {
+        return rightField;
+    }
+
+    public void setRightField(MetaFieldPO rightField) {
+        this.rightField = rightField;
+    }
+
+    public MetaEntityPO getLeftMtm() {
+        return leftMtm;
+    }
+
+    public void setLeftMtm(MetaEntityPO leftMtm) {
+        this.leftMtm = leftMtm;
+    }
+
+    public MetaEntityPO getRightMtm() {
+        return rightMtm;
+    }
+
+    public void setRightMtm(MetaEntityPO rightMtm) {
+        this.rightMtm = rightMtm;
     }
 }

@@ -226,59 +226,59 @@ public class MetaChartSourcePO extends BasePO {
         this.projectId = projectId;
     }
 
-    public List<MetaChartSourceItemPO> getDetailColumnList() {
+    public List<DetailColumnPO> getDetailColumnList() {
         return detailColumnList;
     }
 
-    public void setDetailColumnList(List<MetaChartSourceItemPO> detailColumnList) {
+    public void setDetailColumnList(List<DetailColumnPO> detailColumnList) {
         this.detailColumnList = detailColumnList;
     }
 
-    public List<MetaChartSourceItemPO> getDimensionList() {
+    public List<DimensionPO> getDimensionList() {
         return dimensionList;
     }
 
-    public void setDimensionList(List<MetaChartSourceItemPO> dimensionList) {
+    public void setDimensionList(List<DimensionPO> dimensionList) {
         this.dimensionList = dimensionList;
     }
 
-    public List<MetaChartSourceItemPO> getMetricsList() {
+    public List<MetricsPO> getMetricsList() {
         return metricsList;
     }
 
-    public void setMetricsList(List<MetaChartSourceItemPO> metricsList) {
+    public void setMetricsList(List<MetricsPO> metricsList) {
         this.metricsList = metricsList;
     }
 
-    public List<MetaChartSourceItemPO> getWhereList() {
+    public List<WherePO> getWhereList() {
         return whereList;
     }
 
-    public void setWhereList(List<MetaChartSourceItemPO> whereList) {
+    public void setWhereList(List<WherePO> whereList) {
         this.whereList = whereList;
     }
 
-    public List<MetaChartSourceItemPO> getHavingList() {
+    public List<HavingPO> getHavingList() {
         return havingList;
     }
 
-    public void setHavingList(List<MetaChartSourceItemPO> havingList) {
+    public void setHavingList(List<HavingPO> havingList) {
         this.havingList = havingList;
     }
 
-    public List<MetaChartSourceItemPO> getDetailOrderList() {
+    public List<DetailOrderPO> getDetailOrderList() {
         return detailOrderList;
     }
 
-    public void setDetailOrderList(List<MetaChartSourceItemPO> detailOrderList) {
+    public void setDetailOrderList(List<DetailOrderPO> detailOrderList) {
         this.detailOrderList = detailOrderList;
     }
 
-    public List<MetaChartSourceItemPO> getAggOrderList() {
+    public List<AggOrderPO> getAggOrderList() {
         return aggOrderList;
     }
 
-    public void setAggOrderList(List<MetaChartSourceItemPO> aggOrderList) {
+    public void setAggOrderList(List<AggOrderPO> aggOrderList) {
         this.aggOrderList = aggOrderList;
     }
 }
