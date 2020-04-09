@@ -150,24 +150,24 @@ public class MetaFieldPO extends BasePO {
      * 外键对应实体
      */
     @JsonIgnore
-    private MetaEntityPO foreignEntity;
+    private transient MetaEntityPO foreignEntity;
     /**
      * 外键对应字段
      */
     @JsonIgnore
-    private MetaFieldPO foreignField;
+    private transient MetaFieldPO foreignField;
 
     /**
      * 外键对应级联扩展
      */
     @JsonIgnore
-    private List<MetaCascadeExtPO> cascadeExts;
+    private transient List<MetaCascadeExtPO> cascadeExts;
     @JsonIgnore
-    private List<MetaCascadeExtPO> cascadeQueryExts;
+    private transient List<MetaCascadeExtPO> cascadeQueryExts;
     @JsonIgnore
-    private List<MetaCascadeExtPO> cascadeShowExts;
+    private transient List<MetaCascadeExtPO> cascadeShowExts;
     @JsonIgnore
-    private List<MetaCascadeExtPO> cascadeListExts;
+    private transient List<MetaCascadeExtPO> cascadeListExts;
 
 
     /**

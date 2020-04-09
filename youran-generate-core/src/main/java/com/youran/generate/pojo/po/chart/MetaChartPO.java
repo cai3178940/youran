@@ -57,7 +57,7 @@ public class MetaChartPO extends BasePO {
      * 图表数据源
      */
     @JsonIgnore
-    private MetaChartSourcePO chartSource;
+    private transient MetaChartSourcePO chartSource;
 
     /**
      * 反序列化特性json

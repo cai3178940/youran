@@ -13,11 +13,6 @@ import com.youran.generate.pojo.mapper.FeatureMapper;
 public class HavingPO extends MetaChartSourceItemPO {
 
     /**
-     * 父指标id
-     */
-    private Integer parentId;
-
-    /**
      * 过滤运算符
      */
     private Integer filterOperator;
@@ -34,7 +29,6 @@ public class HavingPO extends MetaChartSourceItemPO {
     @Override
     public void featureDeserialize() {
         ChartSourceItemFeatureDTO featureDTO = FeatureMapper.asChartSourceItemFeatureDTO(this.getFeature());
-        this.parentId = featureDTO.getParentId();
         this.filterOperator = featureDTO.getFilterOperator();
         this.filterValue = featureDTO.getFilterValue();
     }
@@ -42,20 +36,9 @@ public class HavingPO extends MetaChartSourceItemPO {
     @Override
     public void featureSerialize() {
         ChartSourceItemFeatureDTO featureDTO = new ChartSourceItemFeatureDTO();
-        featureDTO.setParentId(this.parentId);
         featureDTO.setFilterOperator(this.filterOperator);
         featureDTO.setFilterValue(this.filterValue);
         this.setFeature(FeatureMapper.asString(featureDTO));
-    }
-
-    @Override
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    @Override
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
     }
 
     public Integer getFilterOperator() {

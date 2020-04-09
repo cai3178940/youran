@@ -49,12 +49,12 @@ public class WherePO extends MetaChartSourceItemPO {
      * 对应实体
      */
     @JsonIgnore
-    private MetaEntityPO entity;
+    private transient MetaEntityPO entity;
     /**
      * 对应字段
      */
     @JsonIgnore
-    private MetaFieldPO field;
+    private transient MetaFieldPO field;
 
     public WherePO() {
         this.setType(SourceItemType.WHERE.getValue());

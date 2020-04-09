@@ -25,6 +25,10 @@ public abstract class AbstractSourceItemDTO extends AbstractDTO {
     @ApiModelProperty(notes = "关联实体序号", example = "1", required = true)
     @NotNull
     private Integer joinIndex;
+
+    @ApiModelProperty(notes = "父id", example = "1")
+    private Integer parentId;
+
     /**
      * 获取数据项类型
      *
@@ -55,5 +59,13 @@ public abstract class AbstractSourceItemDTO extends AbstractDTO {
 
     public void setJoinIndex(Integer joinIndex) {
         this.joinIndex = joinIndex;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 }

@@ -98,7 +98,7 @@ public class MetaQueryAssembleService implements InitializingBean {
             manyToManies = this.assembleManyToManyWithEntities(metaEntities, manyToManies, true);
             project.setMtms(manyToManies);
             // 装配图表列表
-            List<MetaChartPO> charts = this.getAllAssembledCharts(projectId, metaEntities);
+            List<MetaChartPO> charts = this.getAllAssembledCharts(projectId, metaEntities, manyToManies);
             project.setCharts(charts);
         }
         return project;
@@ -109,9 +109,12 @@ public class MetaQueryAssembleService implements InitializingBean {
      *
      * @param projectId    项目id
      * @param metaEntities 实体列表
+     * @param manyToManies
      * @return 装配完成的图表元数据
      */
-    private List<MetaChartPO> getAllAssembledCharts(Integer projectId, List<MetaEntityPO> metaEntities) {
+    private List<MetaChartPO> getAllAssembledCharts(Integer projectId,
+                                                    List<MetaEntityPO> metaEntities,
+                                                    List<MetaManyToManyPO> manyToManies) {
         // 查询图表列表
         List<MetaChartPO> charts = metaChartService.findByProjectId(projectId, true);
         if (CollectionUtils.isEmpty(charts)) {
@@ -120,6 +123,10 @@ public class MetaQueryAssembleService implements InitializingBean {
         //将实体列表转成map
         Map<Integer, MetaEntityPO> entityMap = metaEntities.stream()
             .collect(Collectors.toMap(MetaEntityPO::getEntityId, e -> e));
+
+        //将多对多列表转成map
+        Map<Integer, MetaManyToManyPO> mtmMap = manyToManies.stream()
+            .collect(Collectors.toMap(MetaManyToManyPO::getMtmId, e -> e));
 
         // 查询图表数据源列表
         List<MetaChartSourcePO> chartSources = metaChartSourceService.findByProjectId(projectId, true);
@@ -140,7 +147,7 @@ public class MetaQueryAssembleService implements InitializingBean {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源不存在，chart=" + chart.getName());
             }
             List<MetaChartSourceItemPO> items = sourceItemMap.get(chartSource.getSourceId());
-            chartSource.assembleItems(items);
+            chartSource.assemble(items, entityMap, mtmMap);
             chart.setChartSource(chartSource);
         }
 

@@ -48,7 +48,7 @@ public class MetaIndexPO extends BasePO {
      * 索引字段列表
      */
     @JsonIgnore
-    private List<MetaFieldPO> fields;
+    private transient List<MetaFieldPO> fields;
 
 
     public void resetFieldIds() {

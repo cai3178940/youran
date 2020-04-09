@@ -6,6 +6,7 @@ import com.youran.generate.constant.SourceItemType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -17,10 +18,6 @@ import javax.validation.constraints.NotNull;
 @ApiModel(description = "新增【having条件】入参")
 public class HavingAddDTO extends AbstractSourceItemDTO {
 
-    @ApiModelProperty(notes = "父指标id", example = "1", required = true)
-    @NotNull
-    private Integer parentId;
-
     @ApiModelProperty(notes = "过滤运算符", example = "1", required = true, allowableValues = FilterOperator.VALUES_STR)
     @NotNull
     @Const(constClass = FilterOperator.class)
@@ -29,17 +26,14 @@ public class HavingAddDTO extends AbstractSourceItemDTO {
     @ApiModelProperty(notes = "过滤值")
     private String[] filterValue;
 
+    @AssertTrue
+    public boolean validate() {
+        return this.getParentId() != null;
+    }
+
     @Override
     public Integer getType() {
         return SourceItemType.HAVING.getValue();
-    }
-
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
     }
 
     public Integer getFilterOperator() {

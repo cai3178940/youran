@@ -1,18 +1,22 @@
 package com.youran.generate.pojo.dto.chart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.youran.common.pojo.dto.AbstractDTO;
+import com.youran.generate.pojo.po.chart.source.item.MetaChartSourceItemPO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
 /**
- * 图表项入参
+ * 图表项DTO
  *
  * @author: cbb
  * @date: 2020-04-04
  */
-@ApiModel(description = "图表项入参")
+@ApiModel(description = "图表项DTO")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ChartItemDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = "数据项ID",example = "1",required = true)
@@ -22,6 +26,21 @@ public class ChartItemDTO extends AbstractDTO {
     @ApiModelProperty(notes = "标题别名",example = "新的列名")
     private String titleAlias;
 
+    @ApiModelProperty(notes = "外键是否用title替换id展示",example = "false")
+    private boolean showFkTitle;
+
+    @ApiModelProperty(notes = "内容前置",example = "前缀_")
+    private String valuePrefix;
+    @ApiModelProperty(notes = "内容后缀",example = "_后缀")
+    private String valueSuffix;
+
+    // TODO 数据格式化设置-数字、百分比、日期
+
+    /**
+     * 数据项
+     */
+    @JsonIgnore
+    private transient MetaChartSourceItemPO sourceItem;
 
     public Integer getSourceItemId() {
         return sourceItemId;
@@ -39,4 +58,35 @@ public class ChartItemDTO extends AbstractDTO {
         this.titleAlias = titleAlias;
     }
 
+    public boolean isShowFkTitle() {
+        return showFkTitle;
+    }
+
+    public void setShowFkTitle(boolean showFkTitle) {
+        this.showFkTitle = showFkTitle;
+    }
+
+    public String getValuePrefix() {
+        return valuePrefix;
+    }
+
+    public void setValuePrefix(String valuePrefix) {
+        this.valuePrefix = valuePrefix;
+    }
+
+    public String getValueSuffix() {
+        return valueSuffix;
+    }
+
+    public void setValueSuffix(String valueSuffix) {
+        this.valueSuffix = valueSuffix;
+    }
+
+    public MetaChartSourceItemPO getSourceItem() {
+        return sourceItem;
+    }
+
+    public void setSourceItem(MetaChartSourceItemPO sourceItem) {
+        this.sourceItem = sourceItem;
+    }
 }

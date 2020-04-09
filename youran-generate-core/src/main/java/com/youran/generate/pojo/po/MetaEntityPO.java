@@ -65,111 +65,111 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      * 字段列表
      */
     @JsonIgnore
-    private Map<Integer, MetaFieldPO> fields = new LinkedHashMap<>(16);
+    private transient Map<Integer, MetaFieldPO> fields = new LinkedHashMap<>(16);
 
     /**
      * 外键字段列表
      */
     @JsonIgnore
-    private Map<Integer, MetaFieldPO> fkFields = new LinkedHashMap<>(16);
+    private transient Map<Integer, MetaFieldPO> fkFields = new LinkedHashMap<>(16);
 
     /**
      * 查询字段列表
      */
     @JsonIgnore
-    private Map<Integer, MetaFieldPO> queryFields = new LinkedHashMap<>(16);
+    private transient Map<Integer, MetaFieldPO> queryFields = new LinkedHashMap<>(16);
 
     /**
      * 插入字段列表
      */
     @JsonIgnore
-    private Map<Integer, MetaFieldPO> insertFields = new LinkedHashMap<>(16);
+    private transient Map<Integer, MetaFieldPO> insertFields = new LinkedHashMap<>(16);
     /**
      * 修改字段列表
      */
     @JsonIgnore
-    private Map<Integer, MetaFieldPO> updateFields = new LinkedHashMap<>(16);
+    private transient Map<Integer, MetaFieldPO> updateFields = new LinkedHashMap<>(16);
     /**
      * 列表字段列表
      */
     @JsonIgnore
-    private Map<Integer, MetaFieldPO> listFields = new LinkedHashMap<>(16);
+    private transient Map<Integer, MetaFieldPO> listFields = new LinkedHashMap<>(16);
     /**
      * 排序字段列表
      */
     @JsonIgnore
-    private Map<Integer, MetaFieldPO> listSortFields = new LinkedHashMap<>(16);
+    private transient Map<Integer, MetaFieldPO> listSortFields = new LinkedHashMap<>(16);
     /**
      * 详情字段列表
      */
     @JsonIgnore
-    private Map<Integer, MetaFieldPO> showFields = new LinkedHashMap<>(16);
+    private transient Map<Integer, MetaFieldPO> showFields = new LinkedHashMap<>(16);
     /**
      * 索引列表
      */
     @JsonIgnore
-    private List<MetaIndexPO> indexes = new ArrayList<>();
+    private transient List<MetaIndexPO> indexes = new ArrayList<>();
     /**
      * 需要校验唯一性的索引列表
      */
     @JsonIgnore
-    private List<MetaIndexPO> checkUniqueIndexes;
+    private transient List<MetaIndexPO> checkUniqueIndexes;
     /**
      * 主键字段
      */
     @JsonIgnore
-    private MetaFieldPO pkField;
+    private transient MetaFieldPO pkField;
     /**
      * 逻辑删除标识字段
      */
     @JsonIgnore
-    private MetaFieldPO delField;
+    private transient MetaFieldPO delField;
     /**
      * 创建人字段
      */
     @JsonIgnore
-    private MetaFieldPO createdByField;
+    private transient MetaFieldPO createdByField;
     /**
      * 创建时间字段
      */
     @JsonIgnore
-    private MetaFieldPO createdTimeField;
+    private transient MetaFieldPO createdTimeField;
     /**
      * 操作人字段
      */
     @JsonIgnore
-    private MetaFieldPO operatedByField;
+    private transient MetaFieldPO operatedByField;
     /**
      * 操作时间字段
      */
     @JsonIgnore
-    private MetaFieldPO operatedTimeField;
+    private transient MetaFieldPO operatedTimeField;
     /**
      * 乐观锁版本字段
      */
     @JsonIgnore
-    private MetaFieldPO versionField;
+    private transient MetaFieldPO versionField;
     /**
      * 实体内的标题字段
      * 用于在java模板内生成findOptions服务
      */
     @JsonIgnore
-    private MetaFieldPO titleField;
+    private transient MetaFieldPO titleField;
     /**
      * 持有引用的多对多关系
      */
     @JsonIgnore
-    private Map<MetaEntityPO, MetaManyToManyPO> holds = new TreeMap<>();
+    private transient Map<MetaEntityPO, MetaManyToManyPO> holds = new TreeMap<>();
     /**
      * 未持有引用的多对多关系
      */
     @JsonIgnore
-    private Map<MetaEntityPO, MetaManyToManyPO> unHolds = new TreeMap<>();
+    private transient Map<MetaEntityPO, MetaManyToManyPO> unHolds = new TreeMap<>();
     /**
      * 被对方持有引用的多对多关系
      */
     @JsonIgnore
-    private Map<MetaEntityPO, MetaManyToManyPO> mtmsForOpp = new TreeMap<>();
+    private transient Map<MetaEntityPO, MetaManyToManyPO> mtmsForOpp = new TreeMap<>();
 
     /**
      * 对应的外键列表(当前主键对应的其他实体外键字段)
@@ -179,7 +179,7 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      * 3、则此处存放的是用户表中的部门id
      */
     @JsonIgnore
-    private List<MetaFieldPO> foreignFields = new ArrayList<>();
+    private transient List<MetaFieldPO> foreignFields = new ArrayList<>();
     /**
      * 对应的外键实体集合(当前主键对应的其他实体)
      * 比如：
@@ -188,13 +188,13 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      * 3、则此处存放的是用户实体
      */
     @JsonIgnore
-    private Set<MetaEntityPO> foreignEntities = new TreeSet<>();
+    private transient Set<MetaEntityPO> foreignEntities = new TreeSet<>();
 
     /**
      * 实体特性
      */
     @JsonIgnore
-    private MetaEntityFeatureDTO entityFeature;
+    private transient MetaEntityFeatureDTO entityFeature;
 
     /**
      * 规范化实体属性

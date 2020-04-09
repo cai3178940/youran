@@ -42,12 +42,6 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
      */
     private String granularity;
 
-
-    /**
-     * 父id
-     */
-    private Integer parentId;
-
     /**
      * 排序方式
      */
@@ -124,14 +118,6 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
 
     public void setGranularity(String granularity) {
         this.granularity = granularity;
-    }
-
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
     }
 
     public Integer getSortType() {

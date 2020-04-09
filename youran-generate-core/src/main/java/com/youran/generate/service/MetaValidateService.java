@@ -83,14 +83,14 @@ public class MetaValidateService {
                                                 Map<Integer, MetaFieldPO> fields,
                                                 List<MetaConstPO> consts,
                                                 boolean mustSetTitle) {
-        MetaFieldValidateVO vo = new MetaFieldValidateVO(field);
+        MetaFieldValidateVO vo = new MetaFieldValidateVO(field.getFieldId());
         // 校验枚举是否存在
         String dic = field.getDicType();
         if (StringUtils.isNotBlank(dic)) {
             Optional<MetaConstPO> optional = consts.stream().filter(metaConstPO -> dic.equals(metaConstPO.getConstName()))
                 .findAny();
             if (!optional.isPresent()) {
-                vo.dicNotExistError();
+                vo.dicNotExistError(field);
             }
         }
         for (Map.Entry<Integer, MetaFieldPO> entry : fields.entrySet()) {

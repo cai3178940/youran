@@ -6,6 +6,8 @@ import com.youran.common.validator.Const;
 import com.youran.generate.constant.JoinType;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
+import com.youran.generate.pojo.po.MetaManyToManyPO;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -16,6 +18,7 @@ import javax.validation.constraints.NotNull;
  * @author: cbb
  * @date: 2020-04-04
  */
+@ApiModel(description = "关联DTO")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JoinDTO {
 
@@ -53,32 +56,32 @@ public class JoinDTO {
      * 左实体
      */
     @JsonIgnore
-    private MetaEntityPO leftEntity;
+    private transient MetaEntityPO leftEntity;
     /**
      * 右实体
      */
     @JsonIgnore
-    private MetaEntityPO rightEntity;
+    private transient MetaEntityPO rightEntity;
     /**
      * 左字段
      */
     @JsonIgnore
-    private MetaFieldPO leftField;
+    private transient MetaFieldPO leftField;
     /**
      * 右字段
      */
     @JsonIgnore
-    private MetaFieldPO rightField;
+    private transient MetaFieldPO rightField;
     /**
      * 左多对多
      */
     @JsonIgnore
-    private MetaEntityPO leftMtm;
+    private transient MetaManyToManyPO leftMtm;
     /**
      * 右多对多
      */
     @JsonIgnore
-    private MetaEntityPO rightMtm;
+    private transient MetaManyToManyPO rightMtm;
 
 
 
@@ -187,19 +190,19 @@ public class JoinDTO {
         this.rightField = rightField;
     }
 
-    public MetaEntityPO getLeftMtm() {
+    public MetaManyToManyPO getLeftMtm() {
         return leftMtm;
     }
 
-    public void setLeftMtm(MetaEntityPO leftMtm) {
+    public void setLeftMtm(MetaManyToManyPO leftMtm) {
         this.leftMtm = leftMtm;
     }
 
-    public MetaEntityPO getRightMtm() {
+    public MetaManyToManyPO getRightMtm() {
         return rightMtm;
     }
 
-    public void setRightMtm(MetaEntityPO rightMtm) {
+    public void setRightMtm(MetaManyToManyPO rightMtm) {
         this.rightMtm = rightMtm;
     }
 }

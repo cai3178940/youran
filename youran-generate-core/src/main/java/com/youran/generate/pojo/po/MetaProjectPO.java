@@ -103,22 +103,22 @@ public class MetaProjectPO extends BasePO {
      * 项目下的所有实体
      */
     @JsonIgnore
-    private List<MetaEntityPO> entities;
+    private transient List<MetaEntityPO> entities;
     /**
      * 项目下的所有常量
      */
     @JsonIgnore
-    private List<MetaConstPO> consts;
+    private transient List<MetaConstPO> consts;
     /**
      * 项目下的所有多对多
      */
     @JsonIgnore
-    private List<MetaManyToManyPO> mtms;
+    private transient List<MetaManyToManyPO> mtms;
     /**
      * 项目下的所有图表
      */
     @JsonIgnore
-    private List<MetaChartPO> charts;
+    private transient List<MetaChartPO> charts;
 
     /**
      * 根据序号获取远程git仓库地址

@@ -50,7 +50,7 @@ public class MetaChartSourceItemPO extends BasePO {
      * 父数据项
      */
     @JsonIgnore
-    private MetaChartSourceItemPO parent;
+    private transient MetaChartSourceItemPO parent;
 
     /**
      * 反序列化特性json

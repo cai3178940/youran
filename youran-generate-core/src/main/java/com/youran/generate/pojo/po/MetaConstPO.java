@@ -42,7 +42,7 @@ public class MetaConstPO extends BasePO {
      * 常量值列表
      */
     @JsonIgnore
-    private List<MetaConstDetailPO> detailList;
+    private transient List<MetaConstDetailPO> detailList;
 
     public void addDetail(MetaConstDetailPO metaConstDetailPO) {
         if (detailList == null) {

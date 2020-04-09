@@ -55,7 +55,7 @@ public class MetaCascadeExtPO extends BasePO {
      * 级联字段
      */
     @JsonIgnore
-    private MetaFieldPO cascadeField;
+    private transient MetaFieldPO cascadeField;
 
     public Integer getProjectId() {
         return projectId;

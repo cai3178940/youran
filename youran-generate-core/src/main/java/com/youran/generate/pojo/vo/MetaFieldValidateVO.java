@@ -1,6 +1,5 @@
 package com.youran.generate.pojo.vo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.util.GuessUtil;
@@ -16,13 +15,6 @@ import static com.youran.generate.pojo.example.MetaFieldExample.N_FIELDID;
  * @date: 2019/10/10
  */
 public class MetaFieldValidateVO extends MetaAbstractValidateVO {
-
-    /**
-     * 当前字段
-     */
-    @JsonIgnore
-    @ApiModelProperty(hidden = true)
-    private MetaFieldPO field;
 
     /**
      * 字段id
@@ -66,9 +58,8 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
     private Integer titleCandidate;
 
 
-    public MetaFieldValidateVO(MetaFieldPO field) {
-        this.field = field;
-        this.fieldId = field.getFieldId();
+    public MetaFieldValidateVO(Integer fieldId) {
+        this.fieldId = fieldId;
         this.dicExistSuccess = true;
         this.sameJfieldNameSuccess = true;
         this.sameFieldNameSuccess = true;
@@ -78,14 +69,14 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
     /**
      * 设置枚举不存在错误
      */
-    public void dicNotExistError() {
-        String dic = this.field.getDicType();
-        Integer constType = GuessUtil.guessConstType(JFieldType.find(this.field.getJfieldType()));
+    public void dicNotExistError(MetaFieldPO field) {
+        String dic = field.getDicType();
+        Integer constType = GuessUtil.guessConstType(JFieldType.find(field.getJfieldType()));
         this.error();
         this.dicExistSuccess = false;
         this.dicNotExist = dic;
         this.suggestConstType = constType;
-        this.suggestConstRemark = this.field.getFieldDesc();
+        this.suggestConstRemark = field.getFieldDesc();
     }
 
 
@@ -103,14 +94,6 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
     public void sameFieldNameError() {
         this.error();
         this.sameFieldNameSuccess = false;
-    }
-
-    public MetaFieldPO getField() {
-        return field;
-    }
-
-    public void setField(MetaFieldPO field) {
-        this.field = field;
     }
 
     public Integer getFieldId() {
