@@ -117,71 +117,156 @@ public class MetaChartSourcePO extends BasePO {
         // 装配实体和joins
         this.assembleEntityAndJoins(entityMap, mtmMap);
 
-        // 装配数据项
-        this.assembleItems(items);
-    }
-
-    /**
-     * 装配数据项
-     *
-     * @param items
-     */
-    private void assembleItems(List<? extends MetaChartSourceItemPO> items) {
         if (CollectionUtils.isEmpty(items)) {
             return;
         }
+        // 对图表数据项按类型分组
         Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map = items.stream()
             .collect(Collectors.groupingBy(e -> e.getType()));
+        // 装配明细列
+        this.assembleDetailColumnList(map);
+        // 装配维度
+        this.assembleDimensionList(map);
+        // 装配指标
+        this.assembleMetricsList(map);
+        // 装配where条件
+        this.assembleWhereList(map);
+        // 装配having条件
+        this.assembleHavingList(map);
+        // 装配明细排序
+        this.assembleDetailOrderList(map);
+        // 装配聚合排序
+        this.assembleAggOrderList(map);
+    }
+
+    /**
+     * 装配明细列
+     *
+     * @param map
+     */
+    private void assembleDetailColumnList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<DetailColumnPO> detailColumnList = (List<DetailColumnPO>) map.get(SourceItemType.DETAIL_COLUMN.getValue());
         if (detailColumnList != null) {
             this.detailColumnList = detailColumnList;
+            for (DetailColumnPO item : this.detailColumnList) {
+                item.assembleItem(this);
+            }
         } else {
             this.detailColumnList = new ArrayList<>();
         }
+    }
+
+    /**
+     * 装配维度
+     *
+     * @param map
+     */
+    private void assembleDimensionList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<DimensionPO> dimensionList = (List<DimensionPO>) map.get(SourceItemType.DIMENSION.getValue());
         if (dimensionList != null) {
             this.dimensionList = dimensionList;
+            for (DimensionPO item : this.dimensionList) {
+                item.assembleItem(this);
+            }
         } else {
             this.dimensionList = new ArrayList<>();
         }
+    }
+
+    /**
+     * 装配指标
+     *
+     * @param map
+     */
+    private void assembleMetricsList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<MetricsPO> metricsList = (List<MetricsPO>) map.get(SourceItemType.METRICS.getValue());
         if (metricsList != null) {
             this.metricsList = metricsList;
+            for (MetricsPO item : this.metricsList) {
+                item.assembleItem(this);
+            }
         } else {
             this.metricsList = new ArrayList<>();
         }
+    }
+
+    /**
+     * 装配where条件
+     *
+     * @param map
+     */
+    private void assembleWhereList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<WherePO> whereList = (List<WherePO>) map.get(SourceItemType.WHERE.getValue());
         if (whereList != null) {
             this.whereList = whereList;
+            for (WherePO item : this.whereList) {
+                item.assembleItem(this);
+            }
         } else {
             this.whereList = new ArrayList<>();
         }
+    }
+
+    /**
+     * 装配having条件
+     *
+     * @param map
+     */
+    private void assembleHavingList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<HavingPO> havingList = (List<HavingPO>) map.get(SourceItemType.HAVING.getValue());
         if (havingList != null) {
             this.havingList = havingList;
+            for (HavingPO item : this.havingList) {
+                item.assembleItem(this);
+            }
         } else {
             this.havingList = new ArrayList<>();
         }
+    }
+
+    /**
+     * 装配明细排序
+     *
+     * @param map
+     */
+    private void assembleDetailOrderList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<DetailOrderPO> detailOrderList = (List<DetailOrderPO>) map.get(SourceItemType.DETAIL_ORDER.getValue());
         if (detailOrderList != null) {
             this.detailOrderList = detailOrderList;
+            for (DetailOrderPO item : this.detailOrderList) {
+                item.assembleItem(this);
+            }
         } else {
             this.detailOrderList = new ArrayList<>();
         }
+    }
+
+    /**
+     * 装配聚合排序
+     *
+     * @param map
+     */
+    private void assembleAggOrderList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<AggOrderPO> aggOrderList = (List<AggOrderPO>) map.get(SourceItemType.AGG_ORDER.getValue());
         if (aggOrderList != null) {
             this.aggOrderList = aggOrderList;
+            for (AggOrderPO item : this.aggOrderList) {
+                item.assembleItem(this);
+            }
         } else {
             this.aggOrderList = new ArrayList<>();
         }
     }
 
-
+    /**
+     * 装配实体和joins
+     *
+     * @param entityMap
+     * @param mtmMap
+     */
     private void assembleEntityAndJoins(Map<Integer, MetaEntityPO> entityMap,
                                         Map<Integer, MetaManyToManyPO> mtmMap) {
-
         this.entity = this.forceGetEntityFromMap(entityMap, this.entityId);
-
         if (CollectionUtils.isEmpty(this.joins)) {
             return;
         }
