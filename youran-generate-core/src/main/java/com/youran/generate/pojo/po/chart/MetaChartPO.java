@@ -36,7 +36,7 @@ public class MetaChartPO extends BasePO {
     /**
      * 图表名称
      */
-    private String name;
+    private String chartName;
 
     /**
      * 模块名
@@ -99,12 +99,12 @@ public class MetaChartPO extends BasePO {
         this.chartType = chartType;
     }
 
-    public String getName() {
-        return this.name;
+    public String getChartName() {
+        return chartName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setChartName(String chartName) {
+        this.chartName = chartName;
     }
 
     public String getModule() {

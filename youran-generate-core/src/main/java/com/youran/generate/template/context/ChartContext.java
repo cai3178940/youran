@@ -3,6 +3,7 @@ package com.youran.generate.template.context;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
+import com.youran.generate.util.SwitchCaseUtil;
 
 /**
  * 图表上下文对象
@@ -31,7 +32,12 @@ public class ChartContext<ChartPO extends MetaChartPO> extends BaseContext {
     /**
      * 图表名称
      */
-    private String name;
+    private String chartName;
+
+    /**
+     * 图表名称-首个单词转小写
+     */
+    private String chartNameLower;
 
     /**
      * 模块名
@@ -53,7 +59,8 @@ public class ChartContext<ChartPO extends MetaChartPO> extends BaseContext {
         this.chart = chart;
         this.chartId = chart.getChartId();
         this.chartType = chart.getChartType();
-        this.name = chart.getName();
+        this.chartName = chart.getChartName();
+        this.chartNameLower = SwitchCaseUtil.lowerFirstWord(chart.getChartName());
         this.module = chart.getModule();
         this.title = chart.getTitle();
         this.chartSource = chart.getChartSource();
@@ -91,12 +98,20 @@ public class ChartContext<ChartPO extends MetaChartPO> extends BaseContext {
         this.chartType = chartType;
     }
 
-    public String getName() {
-        return name;
+    public String getChartName() {
+        return chartName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setChartName(String chartName) {
+        this.chartName = chartName;
+    }
+
+    public String getChartNameLower() {
+        return chartNameLower;
+    }
+
+    public void setChartNameLower(String chartNameLower) {
+        this.chartNameLower = chartNameLower;
     }
 
     public String getModule() {

@@ -13,7 +13,7 @@
     <groupId>com.youran</groupId>
     <artifactId>youran</artifactId>
     <!-- 如果需要修改版本号，请同时修改配置文件中的版本号 -->
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>

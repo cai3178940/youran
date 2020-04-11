@@ -2,10 +2,12 @@ package com.youran.generate.pojo.dto.chart;
 
 import com.youran.common.pojo.dto.AbstractDTO;
 import com.youran.generate.constant.ChartType;
+import com.youran.generate.constant.PatternConst;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * 抽象图表DTO
@@ -26,7 +28,8 @@ public abstract class AbstractChartDTO extends AbstractDTO {
     @ApiModelProperty(notes = "图表名称", example = "chart_1", required = true)
     @NotNull
     @Length(max = 64)
-    private String name;
+    @Pattern(regexp = PatternConst.CLASS_NAME, message = PatternConst.CLASS_NAME_MSG)
+    private String chartName;
 
     @ApiModelProperty(notes = "模块名", example = "system")
     @Length(max = 50)
@@ -53,12 +56,12 @@ public abstract class AbstractChartDTO extends AbstractDTO {
         this.sourceId = sourceId;
     }
 
-    public String getName() {
-        return name;
+    public String getChartName() {
+        return chartName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setChartName(String chartName) {
+        this.chartName = chartName;
     }
 
     public String getModule() {

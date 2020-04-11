@@ -100,8 +100,38 @@ public class MetaQueryAssembleService implements InitializingBean {
             // 装配图表列表
             List<MetaChartPO> charts = this.getAllAssembledCharts(projectId, metaEntities, manyToManies);
             project.setCharts(charts);
+            // 校验命名重复的问题
+            this.checkNameDuplicate(metaEntities, charts);
         }
         return project;
+    }
+
+    /**
+     * 校验命名重复的问题
+     *
+     * @param metaEntities
+     * @param charts
+     */
+    private void checkNameDuplicate(List<MetaEntityPO> metaEntities, List<MetaChartPO> charts) {
+        Set<String> names = new HashSet<>();
+        if (metaEntities != null) {
+            for (MetaEntityPO metaEntity : metaEntities) {
+                String name = metaEntity.getClassName().toUpperCase();
+                if (names.contains(name)) {
+                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体类名冲突【" + metaEntity.getClassName() + "】");
+                }
+                names.add(name);
+            }
+        }
+        if (charts != null) {
+            for (MetaChartPO metaChart : charts) {
+                String name = metaChart.getChartName().toUpperCase();
+                if (names.contains(name)) {
+                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表命名冲突【" + metaChart.getChartName() + "】");
+                }
+                names.add(name);
+            }
+        }
     }
 
     /**
@@ -116,7 +146,8 @@ public class MetaQueryAssembleService implements InitializingBean {
                                                     List<MetaEntityPO> metaEntities,
                                                     List<MetaManyToManyPO> manyToManies) {
         // 查询图表列表
-        List<MetaChartPO> charts = metaChartService.findByProjectId(projectId, true);
+        //List<MetaChartPO> charts = metaChartService.findByProjectId(projectId, true);
+        List<MetaChartPO> charts = null;
         if (CollectionUtils.isEmpty(charts)) {
             return Collections.emptyList();
         }
@@ -129,14 +160,16 @@ public class MetaQueryAssembleService implements InitializingBean {
             .collect(Collectors.toMap(MetaManyToManyPO::getMtmId, e -> e));
 
         // 查询图表数据源列表
-        List<MetaChartSourcePO> chartSources = metaChartSourceService.findByProjectId(projectId, true);
+        // List<MetaChartSourcePO> chartSources = metaChartSourceService.findByProjectId(projectId, true);
+        List<MetaChartSourcePO> chartSources = null;
 
         //将图表数据源列表转成map
         Map<Integer, MetaChartSourcePO> sourceMap = chartSources.stream()
             .collect(Collectors.toMap(MetaChartSourcePO::getSourceId, e -> e));
 
         // 查询图表数据项列表
-        List<MetaChartSourceItemPO> sourceItems = metaChartSourceItemService.findByProjectId(projectId, true);
+        //List<MetaChartSourceItemPO> sourceItems = metaChartSourceItemService.findByProjectId(projectId, true);
+        List<MetaChartSourceItemPO> sourceItems = null;
         //将图表数据项列表转成map
         Map<Integer, List<MetaChartSourceItemPO>> sourceItemMap = sourceItems.stream()
             .collect(Collectors.groupingBy(MetaChartSourceItemPO::getSourceId));
@@ -144,7 +177,7 @@ public class MetaQueryAssembleService implements InitializingBean {
         for (MetaChartPO chart : charts) {
             MetaChartSourcePO chartSource = sourceMap.get(chart.getSourceId());
             if (chartSource == null) {
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源不存在，chart=" + chart.getName());
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源不存在，chart=" + chart.getChartName());
             }
             List<MetaChartSourceItemPO> items = sourceItemMap.get(chartSource.getSourceId());
             chartSource.assemble(items, entityMap, mtmMap);
