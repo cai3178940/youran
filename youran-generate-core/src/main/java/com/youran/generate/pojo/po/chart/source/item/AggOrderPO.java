@@ -5,7 +5,7 @@ import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * 聚合排序
@@ -28,11 +28,11 @@ public class AggOrderPO extends MetaChartSourceItemPO {
     @Override
     public void assembleItem(MetaChartSourcePO chartSource) {
         super.assembleItem(chartSource);
-        List<MetricsPO> metricsList = chartSource.getMetricsList();
-        metricsList.stream()
-            .filter(metricsPO -> metricsPO.getSourceItemId().equals(this.getParentId()))
+        Map<Integer, MetricsPO> metricsMap = chartSource.getMetricsMap();
+        metricsMap.entrySet().stream()
+            .filter(entry -> entry.getKey().equals(this.getParentId()))
             .findFirst()
-            .ifPresent(metricsPO -> this.setParent(metricsPO));
+            .ifPresent(entry -> this.setParent(entry.getValue()));
     }
 
     @Override
