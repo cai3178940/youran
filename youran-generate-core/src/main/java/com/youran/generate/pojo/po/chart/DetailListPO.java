@@ -1,9 +1,13 @@
 package com.youran.generate.pojo.po.chart;
 
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.ChartType;
 import com.youran.generate.pojo.dto.chart.ChartFeatureDTO;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
+import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
+import com.youran.generate.pojo.po.chart.source.item.DetailColumnPO;
 
 import java.util.List;
 
@@ -26,6 +30,22 @@ public class DetailListPO extends MetaChartPO {
 
     public DetailListPO() {
         this.setChartType(ChartType.DETAIL_LIST.getValue());
+    }
+
+
+    @Override
+    public void assemble(MetaChartSourcePO chartSource) {
+        super.assemble(chartSource);
+        for (ChartItemDTO chartItem : columnList) {
+            Integer sourceItemId = chartItem.getSourceItemId();
+            DetailColumnPO detailColumn = chartSource.getDetailColumnMap().get(sourceItemId);
+            if (detailColumn != null) {
+                chartItem.setSourceItem(detailColumn);
+            } else {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                    "图表【" + this.getTitle() + "】明细列不存在，sourceItemId=" + sourceItemId);
+            }
+        }
     }
 
     @Override

@@ -1,9 +1,14 @@
 package com.youran.generate.pojo.po.chart;
 
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.ChartType;
 import com.youran.generate.pojo.dto.chart.ChartFeatureDTO;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
+import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
+import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
+import com.youran.generate.pojo.po.chart.source.item.MetricsPO;
 
 /**
  * 饼图
@@ -25,6 +30,28 @@ public class PiePO extends MetaChartPO {
 
     public PiePO() {
         this.setChartType(ChartType.PIE.getValue());
+    }
+
+
+    @Override
+    public void assemble(MetaChartSourcePO chartSource) {
+        super.assemble(chartSource);
+        Integer dimensionSourceItemId = dimension.getSourceItemId();
+        DimensionPO dimension = chartSource.getDimensionMap().get(dimensionSourceItemId);
+        if (dimension != null) {
+            this.dimension.setSourceItem(dimension);
+        } else {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                "图表【" + this.getTitle() + "】维度项不存在，sourceItemId=" + dimensionSourceItemId);
+        }
+        Integer metricsSourceItemId = metrics.getSourceItemId();
+        MetricsPO metrics = chartSource.getMetricsMap().get(metricsSourceItemId);
+        if (metrics != null) {
+            this.metrics.setSourceItem(metrics);
+        } else {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                "图表【" + this.getTitle() + "】指标项不存在，sourceItemId=" + metricsSourceItemId);
+        }
     }
 
     @Override

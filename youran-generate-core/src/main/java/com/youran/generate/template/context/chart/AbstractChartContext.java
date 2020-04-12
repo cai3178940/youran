@@ -1,17 +1,18 @@
-package com.youran.generate.template.context;
+package com.youran.generate.template.context.chart;
 
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
+import com.youran.generate.template.context.BaseContext;
 import com.youran.generate.util.SwitchCaseUtil;
 
 /**
- * 图表上下文对象
+ * 抽象图表上下文对象
  *
  * @author: cbb
  * @date: 2020-04-06
  */
-public class ChartContext<ChartPO extends MetaChartPO> extends BaseContext {
+public abstract class AbstractChartContext<ChartPO extends MetaChartPO> extends BaseContext {
 
     /**
      * 图表对象
@@ -54,7 +55,7 @@ public class ChartContext<ChartPO extends MetaChartPO> extends BaseContext {
     private MetaChartSourcePO chartSource;
 
 
-    public ChartContext(MetaProjectPO project, ChartPO chart) {
+    public AbstractChartContext(MetaProjectPO project, ChartPO chart) {
         super(project);
         this.chart = chart;
         this.chartId = chart.getChartId();

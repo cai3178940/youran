@@ -60,6 +60,15 @@ public class MetaChartPO extends BasePO {
     private transient MetaChartSourcePO chartSource;
 
     /**
+     * 装配数据
+     *
+     * @param chartSource
+     */
+    public void assemble(MetaChartSourcePO chartSource) {
+        this.chartSource = chartSource;
+    }
+
+    /**
      * 反序列化特性json
      * 从json字符串中解析出dto信息
      */
@@ -146,5 +155,6 @@ public class MetaChartPO extends BasePO {
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
+
 }
 

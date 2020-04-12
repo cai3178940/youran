@@ -180,8 +180,10 @@ public class MetaQueryAssembleService implements InitializingBean {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源不存在，chart=" + chart.getChartName());
             }
             List<MetaChartSourceItemPO> items = sourceItemMap.get(chartSource.getSourceId());
+            // 数据源装配数据
             chartSource.assemble(items, entityMap, mtmMap);
-            chart.setChartSource(chartSource);
+            // 图表装配数据
+            chart.assemble(chartSource);
         }
 
         return charts;

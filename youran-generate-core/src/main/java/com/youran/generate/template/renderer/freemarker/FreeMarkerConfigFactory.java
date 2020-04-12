@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,29 +44,28 @@ public class FreeMarkerConfigFactory {
 
     private Map<Integer, Triple<Configuration, Integer, String>> cache;
     private BeansWrapperBuilder beansWrapperBuilder;
-    private TemplateModel metaConstTypeModel;
-    private TemplateModel jFieldTypeModel;
-    private TemplateModel queryTypeModel;
-    private TemplateModel editTypeModel;
-    private TemplateModel metaSpecialFieldModel;
-    private TemplateModel primaryKeyStrategyModel;
-    private TemplateModel commonTemplateFunctionModel;
-    private TemplateModel javaTemplateFunctionModel;
-    private TemplateModel sqlTemplateFunctionModel;
+    private Map<String,TemplateModel> staticModels;
 
     public FreeMarkerConfigFactory() {
         this.cache = new ConcurrentHashMap<>();
         this.beansWrapperBuilder = new BeansWrapperBuilder(Configuration.VERSION_2_3_21);
         this.beansWrapperBuilder.setExposeFields(true);
-        this.metaConstTypeModel = getStaticModel(MetaConstType.class);
-        this.jFieldTypeModel = getStaticModel(JFieldType.class);
-        this.queryTypeModel = getStaticModel(QueryType.class);
-        this.editTypeModel = getStaticModel(EditType.class);
-        this.metaSpecialFieldModel = getStaticModel(MetaSpecialField.class);
-        this.primaryKeyStrategyModel = getStaticModel(PrimaryKeyStrategy.class);
-        this.commonTemplateFunctionModel = getStaticModel(CommonTemplateFunction.class);
-        this.javaTemplateFunctionModel = getStaticModel(JavaTemplateFunction.class);
-        this.sqlTemplateFunctionModel = getStaticModel(SqlTemplateFunction.class);
+        Class[] staticModelClass = new Class[]{
+            MetaConstType.class,
+            JFieldType.class,
+            QueryType.class,
+            EditType.class,
+            ChartType.class,
+            MetaSpecialField.class,
+            PrimaryKeyStrategy.class,
+            CommonTemplateFunction.class,
+            JavaTemplateFunction.class,
+            SqlTemplateFunction.class,
+        };
+        this.staticModels = new HashMap<>(staticModelClass.length);
+        for (Class modelClass : staticModelClass) {
+            this.staticModels.put(modelClass.getSimpleName(),getStaticModel(modelClass));
+        }
     }
 
     /**
@@ -121,15 +121,9 @@ public class FreeMarkerConfigFactory {
         }
         cfg.setNumberFormat("#");
         // 设置可访问的静态工具类
-        cfg.setSharedVariable("MetaConstType", metaConstTypeModel);
-        cfg.setSharedVariable("JFieldType", jFieldTypeModel);
-        cfg.setSharedVariable("QueryType", queryTypeModel);
-        cfg.setSharedVariable("EditType", editTypeModel);
-        cfg.setSharedVariable("MetaSpecialField", metaSpecialFieldModel);
-        cfg.setSharedVariable("PrimaryKeyStrategy", primaryKeyStrategyModel);
-        cfg.setSharedVariable("CommonTemplateFunction", commonTemplateFunctionModel);
-        cfg.setSharedVariable("JavaTemplateFunction", javaTemplateFunctionModel);
-        cfg.setSharedVariable("SqlTemplateFunction", sqlTemplateFunctionModel);
+        for (Map.Entry<String, TemplateModel> entry : staticModels.entrySet()) {
+            cfg.setSharedVariable(entry.getKey(), entry.getValue());
+        }
         return Triple.of(cfg, templatePO.getInnerVersion(), templateDir);
     }
 

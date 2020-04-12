@@ -14,10 +14,8 @@ import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.po.chart.source.item.*;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -72,37 +70,37 @@ public class MetaChartSourcePO extends BasePO {
      * 明细列
      */
     @JsonIgnore
-    private transient List<DetailColumnPO> detailColumnList;
+    private transient Map<Integer, DetailColumnPO> detailColumnMap;
     /**
      * 维度
      */
     @JsonIgnore
-    private transient List<DimensionPO> dimensionList;
+    private transient Map<Integer, DimensionPO> dimensionMap;
     /**
      * 指标
      */
     @JsonIgnore
-    private transient List<MetricsPO> metricsList;
+    private transient Map<Integer, MetricsPO> metricsMap;
     /**
      * where条件
      */
     @JsonIgnore
-    private transient List<WherePO> whereList;
+    private transient Map<Integer, WherePO> whereMap;
     /**
      * having条件
      */
     @JsonIgnore
-    private transient List<HavingPO> havingList;
+    private transient Map<Integer, HavingPO> havingMap;
     /**
      * 明细排序
      */
     @JsonIgnore
-    private transient List<DetailOrderPO> detailOrderList;
+    private transient Map<Integer, DetailOrderPO> detailOrderMap;
     /**
      * 聚合排序
      */
     @JsonIgnore
-    private transient List<AggOrderPO> aggOrderList;
+    private transient Map<Integer, AggOrderPO> aggOrderMap;
 
     /**
      * 装配数据
@@ -147,12 +145,11 @@ public class MetaChartSourcePO extends BasePO {
     private void assembleDetailColumnList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<DetailColumnPO> detailColumnList = (List<DetailColumnPO>) map.get(SourceItemType.DETAIL_COLUMN.getValue());
         if (detailColumnList != null) {
-            this.detailColumnList = detailColumnList;
-            for (DetailColumnPO item : this.detailColumnList) {
-                item.assembleItem(this);
-            }
+            this.detailColumnMap = detailColumnList.stream()
+                .peek(item -> item.assembleItem(this))
+                .collect(Collectors.toMap(MetaChartSourceItemPO::getSourceItemId, Function.identity()));
         } else {
-            this.detailColumnList = new ArrayList<>();
+            this.detailColumnMap = new HashMap<>();
         }
     }
 
@@ -164,12 +161,11 @@ public class MetaChartSourcePO extends BasePO {
     private void assembleDimensionList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<DimensionPO> dimensionList = (List<DimensionPO>) map.get(SourceItemType.DIMENSION.getValue());
         if (dimensionList != null) {
-            this.dimensionList = dimensionList;
-            for (DimensionPO item : this.dimensionList) {
-                item.assembleItem(this);
-            }
+            this.dimensionMap = dimensionList.stream()
+                .peek(item -> item.assembleItem(this))
+                .collect(Collectors.toMap(MetaChartSourceItemPO::getSourceItemId, Function.identity()));
         } else {
-            this.dimensionList = new ArrayList<>();
+            this.dimensionMap = new HashMap<>();
         }
     }
 
@@ -181,12 +177,11 @@ public class MetaChartSourcePO extends BasePO {
     private void assembleMetricsList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<MetricsPO> metricsList = (List<MetricsPO>) map.get(SourceItemType.METRICS.getValue());
         if (metricsList != null) {
-            this.metricsList = metricsList;
-            for (MetricsPO item : this.metricsList) {
-                item.assembleItem(this);
-            }
+            this.metricsMap = metricsList.stream()
+                .peek(item -> item.assembleItem(this))
+                .collect(Collectors.toMap(MetaChartSourceItemPO::getSourceItemId, Function.identity()));
         } else {
-            this.metricsList = new ArrayList<>();
+            this.metricsMap = new HashMap<>();
         }
     }
 
@@ -198,12 +193,11 @@ public class MetaChartSourcePO extends BasePO {
     private void assembleWhereList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<WherePO> whereList = (List<WherePO>) map.get(SourceItemType.WHERE.getValue());
         if (whereList != null) {
-            this.whereList = whereList;
-            for (WherePO item : this.whereList) {
-                item.assembleItem(this);
-            }
+            this.whereMap = whereList.stream()
+                .peek(item -> item.assembleItem(this))
+                .collect(Collectors.toMap(MetaChartSourceItemPO::getSourceItemId, Function.identity()));
         } else {
-            this.whereList = new ArrayList<>();
+            this.whereMap = new HashMap<>();
         }
     }
 
@@ -215,12 +209,11 @@ public class MetaChartSourcePO extends BasePO {
     private void assembleHavingList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<HavingPO> havingList = (List<HavingPO>) map.get(SourceItemType.HAVING.getValue());
         if (havingList != null) {
-            this.havingList = havingList;
-            for (HavingPO item : this.havingList) {
-                item.assembleItem(this);
-            }
+            this.havingMap = havingList.stream()
+                .peek(item -> item.assembleItem(this))
+                .collect(Collectors.toMap(MetaChartSourceItemPO::getSourceItemId, Function.identity()));
         } else {
-            this.havingList = new ArrayList<>();
+            this.havingMap = new HashMap<>();
         }
     }
 
@@ -232,12 +225,11 @@ public class MetaChartSourcePO extends BasePO {
     private void assembleDetailOrderList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<DetailOrderPO> detailOrderList = (List<DetailOrderPO>) map.get(SourceItemType.DETAIL_ORDER.getValue());
         if (detailOrderList != null) {
-            this.detailOrderList = detailOrderList;
-            for (DetailOrderPO item : this.detailOrderList) {
-                item.assembleItem(this);
-            }
+            this.detailOrderMap = detailOrderList.stream()
+                .peek(item -> item.assembleItem(this))
+                .collect(Collectors.toMap(MetaChartSourceItemPO::getSourceItemId, Function.identity()));
         } else {
-            this.detailOrderList = new ArrayList<>();
+            this.detailOrderMap = new HashMap<>();
         }
     }
 
@@ -249,12 +241,11 @@ public class MetaChartSourcePO extends BasePO {
     private void assembleAggOrderList(Map<Integer, ? extends List<? extends MetaChartSourceItemPO>> map) {
         List<AggOrderPO> aggOrderList = (List<AggOrderPO>) map.get(SourceItemType.AGG_ORDER.getValue());
         if (aggOrderList != null) {
-            this.aggOrderList = aggOrderList;
-            for (AggOrderPO item : this.aggOrderList) {
-                item.assembleItem(this);
-            }
+            this.aggOrderMap = aggOrderList.stream()
+                .peek(item -> item.assembleItem(this))
+                .collect(Collectors.toMap(MetaChartSourceItemPO::getSourceItemId, Function.identity()));
         } else {
-            this.aggOrderList = new ArrayList<>();
+            this.aggOrderMap = new HashMap<>();
         }
     }
 
@@ -424,60 +415,60 @@ public class MetaChartSourcePO extends BasePO {
         this.projectId = projectId;
     }
 
-    public List<DetailColumnPO> getDetailColumnList() {
-        return detailColumnList;
+    public Map<Integer, DetailColumnPO> getDetailColumnMap() {
+        return detailColumnMap;
     }
 
-    public void setDetailColumnList(List<DetailColumnPO> detailColumnList) {
-        this.detailColumnList = detailColumnList;
+    public void setDetailColumnMap(Map<Integer, DetailColumnPO> detailColumnMap) {
+        this.detailColumnMap = detailColumnMap;
     }
 
-    public List<DimensionPO> getDimensionList() {
-        return dimensionList;
+    public Map<Integer, DimensionPO> getDimensionMap() {
+        return dimensionMap;
     }
 
-    public void setDimensionList(List<DimensionPO> dimensionList) {
-        this.dimensionList = dimensionList;
+    public void setDimensionMap(Map<Integer, DimensionPO> dimensionMap) {
+        this.dimensionMap = dimensionMap;
     }
 
-    public List<MetricsPO> getMetricsList() {
-        return metricsList;
+    public Map<Integer, MetricsPO> getMetricsMap() {
+        return metricsMap;
     }
 
-    public void setMetricsList(List<MetricsPO> metricsList) {
-        this.metricsList = metricsList;
+    public void setMetricsMap(Map<Integer, MetricsPO> metricsMap) {
+        this.metricsMap = metricsMap;
     }
 
-    public List<WherePO> getWhereList() {
-        return whereList;
+    public Map<Integer, WherePO> getWhereMap() {
+        return whereMap;
     }
 
-    public void setWhereList(List<WherePO> whereList) {
-        this.whereList = whereList;
+    public void setWhereMap(Map<Integer, WherePO> whereMap) {
+        this.whereMap = whereMap;
     }
 
-    public List<HavingPO> getHavingList() {
-        return havingList;
+    public Map<Integer, HavingPO> getHavingMap() {
+        return havingMap;
     }
 
-    public void setHavingList(List<HavingPO> havingList) {
-        this.havingList = havingList;
+    public void setHavingMap(Map<Integer, HavingPO> havingMap) {
+        this.havingMap = havingMap;
     }
 
-    public List<DetailOrderPO> getDetailOrderList() {
-        return detailOrderList;
+    public Map<Integer, DetailOrderPO> getDetailOrderMap() {
+        return detailOrderMap;
     }
 
-    public void setDetailOrderList(List<DetailOrderPO> detailOrderList) {
-        this.detailOrderList = detailOrderList;
+    public void setDetailOrderMap(Map<Integer, DetailOrderPO> detailOrderMap) {
+        this.detailOrderMap = detailOrderMap;
     }
 
-    public List<AggOrderPO> getAggOrderList() {
-        return aggOrderList;
+    public Map<Integer, AggOrderPO> getAggOrderMap() {
+        return aggOrderMap;
     }
 
-    public void setAggOrderList(List<AggOrderPO> aggOrderList) {
-        this.aggOrderList = aggOrderList;
+    public void setAggOrderMap(Map<Integer, AggOrderPO> aggOrderMap) {
+        this.aggOrderMap = aggOrderMap;
     }
 
     public MetaEntityPO getEntity() {

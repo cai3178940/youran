@@ -13,9 +13,10 @@ import com.youran.generate.pojo.po.*;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.vo.ProgressVO;
 import com.youran.generate.template.context.BaseContext;
-import com.youran.generate.template.context.ChartContext;
 import com.youran.generate.template.context.ConstContext;
 import com.youran.generate.template.context.EntityContext;
+import com.youran.generate.template.context.chart.AbstractChartContext;
+import com.youran.generate.template.context.chart.ChartContextBuilder;
 import com.youran.generate.template.renderer.TemplateRenderer;
 import com.youran.generate.template.renderer.TemplateRendererBuilder;
 import com.youran.generate.util.Zip4jUtil;
@@ -215,7 +216,7 @@ public class MetaCodeGenService {
             } else if (Objects.equals(templateFile.getContextType(), ContextType.CHART.getValue())) {
                 // 生成图表模版文件
                 for (MetaChartPO metaChartPO : project.getCharts()) {
-                    ChartContext context = new ChartContext(project, metaChartPO);
+                    AbstractChartContext context = ChartContextBuilder.build(project, metaChartPO);
                     this.renderTemplate(templateRenderer, context, templateFile, projectDir);
                 }
             } else {
