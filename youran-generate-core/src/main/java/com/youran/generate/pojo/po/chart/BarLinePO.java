@@ -23,17 +23,17 @@ public class BarLinePO extends MetaChartPO {
     /**
      * 主X轴
      */
-    private ChartItemDTO axisX;
+    private ChartItemDTO<DimensionPO> axisX;
 
     /**
      * 副X轴
      */
-    private ChartItemDTO axisX2;
+    private ChartItemDTO<DimensionPO> axisX2;
 
     /**
      * Y轴
      */
-    private List<ChartItemDTO> axisYList;
+    private List<ChartItemDTO<MetricsPO>> axisYList;
 
     public BarLinePO() {
         this.setChartType(ChartType.BAR_LINE.getValue());
@@ -81,7 +81,7 @@ public class BarLinePO extends MetaChartPO {
         ChartFeatureDTO featureDTO = FeatureMapper.asChartFeatureDTO(this.getFeature());
         this.axisX = featureDTO.getAxisX();
         this.axisX2 = featureDTO.getAxisX2();
-        this.axisYList = featureDTO.getAxisYList();
+        this.axisYList = (List<ChartItemDTO<MetricsPO>>) featureDTO.getAxisYList();
     }
 
     @Override
@@ -93,27 +93,27 @@ public class BarLinePO extends MetaChartPO {
         this.setFeature(FeatureMapper.asString(featureDTO));
     }
 
-    public ChartItemDTO getAxisX() {
+    public ChartItemDTO<DimensionPO> getAxisX() {
         return axisX;
     }
 
-    public void setAxisX(ChartItemDTO axisX) {
+    public void setAxisX(ChartItemDTO<DimensionPO> axisX) {
         this.axisX = axisX;
     }
 
-    public ChartItemDTO getAxisX2() {
+    public ChartItemDTO<DimensionPO> getAxisX2() {
         return axisX2;
     }
 
-    public void setAxisX2(ChartItemDTO axisX2) {
+    public void setAxisX2(ChartItemDTO<DimensionPO> axisX2) {
         this.axisX2 = axisX2;
     }
 
-    public List<ChartItemDTO> getAxisYList() {
+    public List<ChartItemDTO<MetricsPO>> getAxisYList() {
         return axisYList;
     }
 
-    public void setAxisYList(List<ChartItemDTO> axisYList) {
+    public void setAxisYList(List<ChartItemDTO<MetricsPO>> axisYList) {
         this.axisYList = axisYList;
     }
 }

@@ -3,6 +3,8 @@ package com.youran.generate.template.context.chart;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.BarLinePO;
+import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
+import com.youran.generate.pojo.po.chart.source.item.MetricsPO;
 
 import java.util.List;
 
@@ -17,17 +19,17 @@ public class BarLineContext extends AbstractChartContext<BarLinePO> {
     /**
      * 主X轴
      */
-    private ChartItemDTO axisX;
+    private ChartItemDTO<DimensionPO> axisX;
 
     /**
      * 副X轴
      */
-    private ChartItemDTO axisX2;
+    private ChartItemDTO<DimensionPO> axisX2;
 
     /**
      * Y轴
      */
-    private List<ChartItemDTO> axisYList;
+    private List<ChartItemDTO<MetricsPO>> axisYList;
 
     public BarLineContext(MetaProjectPO project, BarLinePO barLine) {
         super(project, barLine);
@@ -36,27 +38,27 @@ public class BarLineContext extends AbstractChartContext<BarLinePO> {
         this.axisYList = barLine.getAxisYList();
     }
 
-    public ChartItemDTO getAxisX() {
+    public ChartItemDTO<DimensionPO> getAxisX() {
         return axisX;
     }
 
-    public void setAxisX(ChartItemDTO axisX) {
+    public void setAxisX(ChartItemDTO<DimensionPO> axisX) {
         this.axisX = axisX;
     }
 
-    public ChartItemDTO getAxisX2() {
+    public ChartItemDTO<DimensionPO> getAxisX2() {
         return axisX2;
     }
 
-    public void setAxisX2(ChartItemDTO axisX2) {
+    public void setAxisX2(ChartItemDTO<DimensionPO> axisX2) {
         this.axisX2 = axisX2;
     }
 
-    public List<ChartItemDTO> getAxisYList() {
+    public List<ChartItemDTO<MetricsPO>> getAxisYList() {
         return axisYList;
     }
 
-    public void setAxisYList(List<ChartItemDTO> axisYList) {
+    public void setAxisYList(List<ChartItemDTO<MetricsPO>> axisYList) {
         this.axisYList = axisYList;
     }
 }

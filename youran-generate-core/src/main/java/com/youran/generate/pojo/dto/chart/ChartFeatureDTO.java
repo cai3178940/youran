@@ -17,16 +17,16 @@ public class ChartFeatureDTO extends AbstractDTO {
     /**
      * 明细列
      */
-    private List<ChartItemDTO> columnList;
+    private List<?> columnList;
 
     /**
      * 维度列
      */
-    private List<ChartItemDTO> dimensionList;
+    private List<?> dimensionList;
     /**
      * 指标列
      */
-    private List<ChartItemDTO> metricsList;
+    private List<?> metricsList;
 
     /**
      * 主X轴
@@ -39,7 +39,7 @@ public class ChartFeatureDTO extends AbstractDTO {
     /**
      * Y轴
      */
-    private List<ChartItemDTO> axisYList;
+    private List<?> axisYList;
 
     /**
      * 维度项
@@ -55,35 +55,27 @@ public class ChartFeatureDTO extends AbstractDTO {
      */
     private Integer defaultPageSize;
 
-    public Integer getDefaultPageSize() {
-        return defaultPageSize;
-    }
-
-    public void setDefaultPageSize(Integer defaultPageSize) {
-        this.defaultPageSize = defaultPageSize;
-    }
-
-    public List<ChartItemDTO> getColumnList() {
+    public List<?> getColumnList() {
         return columnList;
     }
 
-    public void setColumnList(List<ChartItemDTO> columnList) {
+    public void setColumnList(List<?> columnList) {
         this.columnList = columnList;
     }
 
-    public List<ChartItemDTO> getDimensionList() {
+    public List<?> getDimensionList() {
         return dimensionList;
     }
 
-    public void setDimensionList(List<ChartItemDTO> dimensionList) {
+    public void setDimensionList(List<?> dimensionList) {
         this.dimensionList = dimensionList;
     }
 
-    public List<ChartItemDTO> getMetricsList() {
+    public List<?> getMetricsList() {
         return metricsList;
     }
 
-    public void setMetricsList(List<ChartItemDTO> metricsList) {
+    public void setMetricsList(List<?> metricsList) {
         this.metricsList = metricsList;
     }
 
@@ -103,11 +95,11 @@ public class ChartFeatureDTO extends AbstractDTO {
         this.axisX2 = axisX2;
     }
 
-    public List<ChartItemDTO> getAxisYList() {
+    public List<?> getAxisYList() {
         return axisYList;
     }
 
-    public void setAxisYList(List<ChartItemDTO> axisYList) {
+    public void setAxisYList(List<?> axisYList) {
         this.axisYList = axisYList;
     }
 
@@ -125,5 +117,13 @@ public class ChartFeatureDTO extends AbstractDTO {
 
     public void setMetrics(ChartItemDTO metrics) {
         this.metrics = metrics;
+    }
+
+    public Integer getDefaultPageSize() {
+        return defaultPageSize;
+    }
+
+    public void setDefaultPageSize(Integer defaultPageSize) {
+        this.defaultPageSize = defaultPageSize;
     }
 }

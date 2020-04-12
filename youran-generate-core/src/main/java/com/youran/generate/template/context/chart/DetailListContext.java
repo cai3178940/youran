@@ -3,6 +3,7 @@ package com.youran.generate.template.context.chart;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.DetailListPO;
+import com.youran.generate.pojo.po.chart.source.item.DetailColumnPO;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class DetailListContext extends AbstractChartContext<DetailListPO> {
     /**
      * 明细列
      */
-    private List<ChartItemDTO> columnList;
+    private List<ChartItemDTO<DetailColumnPO>> columnList;
     /**
      * 默认每页记录数
      */
@@ -29,11 +30,11 @@ public class DetailListContext extends AbstractChartContext<DetailListPO> {
         this.defaultPageSize = detailList.getDefaultPageSize();
     }
 
-    public List<ChartItemDTO> getColumnList() {
+    public List<ChartItemDTO<DetailColumnPO>> getColumnList() {
         return columnList;
     }
 
-    public void setColumnList(List<ChartItemDTO> columnList) {
+    public void setColumnList(List<ChartItemDTO<DetailColumnPO>> columnList) {
         this.columnList = columnList;
     }
 

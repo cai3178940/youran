@@ -5,7 +5,9 @@ import com.youran.generate.constant.CustomFieldType;
 import com.youran.generate.constant.SourceItemType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -37,6 +39,17 @@ public class DetailColumnAddDTO extends AbstractSourceItemDTO {
     @Override
     public Integer getType() {
         return SourceItemType.DETAIL_COLUMN.getValue();
+    }
+
+
+    @AssertTrue(message = "自定义列必须输入别名")
+    public boolean validateAlias() {
+        if(custom){
+            if(StringUtils.isBlank(alias)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public Integer getFieldId() {

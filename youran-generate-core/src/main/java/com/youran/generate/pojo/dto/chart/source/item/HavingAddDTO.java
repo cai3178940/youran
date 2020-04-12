@@ -26,8 +26,8 @@ public class HavingAddDTO extends AbstractSourceItemDTO {
     @ApiModelProperty(notes = "过滤值")
     private String[] filterValue;
 
-    @AssertTrue
-    public boolean validate() {
+    @AssertTrue(message = "parentId不能为空")
+    public boolean validateParentId() {
         return this.getParentId() != null;
     }
 

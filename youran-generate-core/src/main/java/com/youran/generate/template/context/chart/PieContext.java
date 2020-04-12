@@ -3,6 +3,8 @@ package com.youran.generate.template.context.chart;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.PiePO;
+import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
+import com.youran.generate.pojo.po.chart.source.item.MetricsPO;
 
 /**
  * 饼图上下文对象
@@ -15,12 +17,12 @@ public class PieContext extends AbstractChartContext<PiePO> {
     /**
      * 维度项
      */
-    private ChartItemDTO dimension;
+    private ChartItemDTO<DimensionPO> dimension;
 
     /**
      * 指标项
      */
-    private ChartItemDTO metrics;
+    private ChartItemDTO<MetricsPO> metrics;
 
     public PieContext(MetaProjectPO project, PiePO pie) {
         super(project, pie);
@@ -28,19 +30,19 @@ public class PieContext extends AbstractChartContext<PiePO> {
         this.metrics = pie.getMetrics();
     }
 
-    public ChartItemDTO getDimension() {
+    public ChartItemDTO<DimensionPO> getDimension() {
         return dimension;
     }
 
-    public void setDimension(ChartItemDTO dimension) {
+    public void setDimension(ChartItemDTO<DimensionPO> dimension) {
         this.dimension = dimension;
     }
 
-    public ChartItemDTO getMetrics() {
+    public ChartItemDTO<MetricsPO> getMetrics() {
         return metrics;
     }
 
-    public void setMetrics(ChartItemDTO metrics) {
+    public void setMetrics(ChartItemDTO<MetricsPO> metrics) {
         this.metrics = metrics;
     }
 }

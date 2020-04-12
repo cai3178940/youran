@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  */
 @ApiModel(description = "图表项DTO")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ChartItemDTO extends AbstractDTO {
+public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
 
     @ApiModelProperty(notes = "数据项ID",example = "1",required = true)
     @NotNull
@@ -40,7 +40,7 @@ public class ChartItemDTO extends AbstractDTO {
      * 数据项
      */
     @JsonIgnore
-    private transient MetaChartSourceItemPO sourceItem;
+    private transient T sourceItem;
 
     public Integer getSourceItemId() {
         return sourceItemId;
@@ -82,11 +82,11 @@ public class ChartItemDTO extends AbstractDTO {
         this.valueSuffix = valueSuffix;
     }
 
-    public MetaChartSourceItemPO getSourceItem() {
+    public T getSourceItem() {
         return sourceItem;
     }
 
-    public void setSourceItem(MetaChartSourceItemPO sourceItem) {
+    public void setSourceItem(T sourceItem) {
         this.sourceItem = sourceItem;
     }
 }

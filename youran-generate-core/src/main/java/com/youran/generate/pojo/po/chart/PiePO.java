@@ -21,12 +21,12 @@ public class PiePO extends MetaChartPO {
     /**
      * 维度项
      */
-    private ChartItemDTO dimension;
+    private ChartItemDTO<DimensionPO> dimension;
 
     /**
      * 指标项
      */
-    private ChartItemDTO metrics;
+    private ChartItemDTO<MetricsPO> metrics;
 
     public PiePO() {
         this.setChartType(ChartType.PIE.getValue());
@@ -69,19 +69,19 @@ public class PiePO extends MetaChartPO {
         this.setFeature(FeatureMapper.asString(featureDTO));
     }
 
-    public ChartItemDTO getDimension() {
+    public ChartItemDTO<DimensionPO> getDimension() {
         return dimension;
     }
 
-    public void setDimension(ChartItemDTO dimension) {
+    public void setDimension(ChartItemDTO<DimensionPO> dimension) {
         this.dimension = dimension;
     }
 
-    public ChartItemDTO getMetrics() {
+    public ChartItemDTO<MetricsPO> getMetrics() {
         return metrics;
     }
 
-    public void setMetrics(ChartItemDTO metrics) {
+    public void setMetrics(ChartItemDTO<MetricsPO> metrics) {
         this.metrics = metrics;
     }
 }

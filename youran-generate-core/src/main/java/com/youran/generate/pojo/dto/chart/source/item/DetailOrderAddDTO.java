@@ -24,8 +24,8 @@ public class DetailOrderAddDTO extends AbstractSourceItemDTO {
     @Const(constClass = SortType.class)
     private Integer sortType;
 
-    @AssertTrue
-    public boolean validate() {
+    @AssertTrue(message = "parentId不能为空")
+    public boolean validateParentId() {
         return this.getParentId() != null;
     }
 
