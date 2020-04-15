@@ -344,6 +344,9 @@ public class MetaChartSourcePO extends BasePO {
         ChartSourceFeatureDTO featureDTO = FeatureMapper.asChartSourceFeatureDTO(this.getFeature());
         this.entityId = featureDTO.getEntityId();
         this.joins = featureDTO.getJoins();
+        if (this.joins == null) {
+            this.joins = new ArrayList<>();
+        }
         this.limit = featureDTO.getLimit();
     }
 

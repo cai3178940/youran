@@ -27,6 +27,12 @@ public class JoinDTO {
     @Const(constClass = JoinType.class)
     private Integer joinType;
 
+    @ApiModelProperty(notes = "左序号", example = "1")
+    private Integer leftIndex;
+
+    @ApiModelProperty(notes = "右序号", example = "1")
+    private Integer rightIndex;
+
     @ApiModelProperty(notes = "左实体id", example = "1")
     private Integer leftEntityId;
 
@@ -84,7 +90,21 @@ public class JoinDTO {
     private transient MetaManyToManyPO rightMtm;
 
 
+    public Integer getLeftIndex() {
+        return leftIndex;
+    }
 
+    public void setLeftIndex(Integer leftIndex) {
+        this.leftIndex = leftIndex;
+    }
+
+    public Integer getRightIndex() {
+        return rightIndex;
+    }
+
+    public void setRightIndex(Integer rightIndex) {
+        this.rightIndex = rightIndex;
+    }
 
     public Integer getJoinType() {
         return joinType;
