@@ -56,6 +56,7 @@ public class FreeMarkerConfigFactory {
             QueryType.class,
             EditType.class,
             ChartType.class,
+            FilterOperator.class,
             MetaSpecialField.class,
             PrimaryKeyStrategy.class,
             CommonTemplateFunction.class,

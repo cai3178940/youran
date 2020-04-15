@@ -66,13 +66,9 @@ public enum FilterOperator {
      */
     NOT_NULL(6,"不为空"),
     /**
-     * 以...开始
+     * like
      */
-    START_WITH(7,"以...开始"),
-    /**
-     * 以...结束
-     */
-    END_WITH(8,"以...结束"),
+    LIKE(7,"like"),
     /**
      * 大于
      */
@@ -85,7 +81,7 @@ public enum FilterOperator {
     /**
      * 枚举值罗列，给swagger接口文档展示用
      */
-    public static final String VALUES_STR = "1,10,11,12,13,2,21,22,23,3,4,5,6,7,8,9";
+    public static final String VALUES_STR = "1,10,11,12,13,2,21,22,23,3,4,5,6,7,9";
 
     private static final Map<Integer, FilterOperator> LOOKUP = new HashMap<>();
 
