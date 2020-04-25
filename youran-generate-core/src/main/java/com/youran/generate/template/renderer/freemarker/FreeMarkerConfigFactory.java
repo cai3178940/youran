@@ -55,6 +55,7 @@ public class FreeMarkerConfigFactory {
             JFieldType.class,
             QueryType.class,
             EditType.class,
+            CustomFieldType.class,
             ChartType.class,
             FilterOperator.class,
             SortType.class,

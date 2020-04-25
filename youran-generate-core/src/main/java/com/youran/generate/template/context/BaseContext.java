@@ -8,6 +8,7 @@ import com.youran.generate.exception.SkipCurrentException;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.*;
+import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.util.SwitchCaseUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +46,10 @@ public class BaseContext {
      * 多对多列表
      */
     protected List<MetaManyToManyPO> mtms;
+    /**
+     * 所有图表
+     */
+    protected List<MetaChartPO> charts;
     /**
      * 包名
      */
@@ -130,6 +135,8 @@ public class BaseContext {
         this.createdTime = project.getCreatedTime();
         //多对多关联
         this.mtms = project.getMtms();
+        //所有图表
+        this.charts = project.getCharts();
         //项目特性
         this.projectFeature = FeatureMapper.asProjectFeatureDTO(project.getFeature());
         //初始化java依赖
@@ -379,6 +386,14 @@ public class BaseContext {
 
     public void setMtms(List<MetaManyToManyPO> mtms) {
         this.mtms = mtms;
+    }
+
+    public List<MetaChartPO> getCharts() {
+        return charts;
+    }
+
+    public void setCharts(List<MetaChartPO> charts) {
+        this.charts = charts;
     }
 
     public String getPackageName() {
