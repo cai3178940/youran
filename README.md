@@ -59,6 +59,12 @@
 **模板列表**
 ![模板列表](https://github.com/cai3178940/image/raw/master/youran/%E6%A8%A1%E6%9D%BF%E5%88%97%E8%A1%A8.png)
 
+
+## 试用地址 
+<a href="http://129.211.183.46/ui" target="_blank">
+http://129.211.183.46/ui
+</a>
+
 ## 安装步骤
 
 ### 第一步、环境及配置
