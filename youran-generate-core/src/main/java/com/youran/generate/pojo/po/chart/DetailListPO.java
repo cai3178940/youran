@@ -6,6 +6,7 @@ import com.youran.generate.constant.ChartType;
 import com.youran.generate.pojo.dto.chart.ChartFeatureDTO;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
+import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DetailColumnPO;
 
@@ -30,6 +31,27 @@ public class DetailListPO extends MetaChartPO {
 
     public DetailListPO() {
         this.setChartType(ChartType.DETAIL_LIST.getValue());
+    }
+
+
+    /**
+     * 将超类转成当前类型
+     *
+     * @param superPO
+     * @param featureDeserialize
+     * @return
+     */
+    public static DetailListPO fromSuperType(MetaChartPO superPO,
+                                             boolean featureDeserialize) {
+        if (!ChartType.DETAIL_LIST.getValue().equals(superPO.getChartType())) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "类型转换异常");
+        }
+        DetailListPO po = new DetailListPO();
+        MetaChartMapper.INSTANCE.copyProperties(po, superPO);
+        if (featureDeserialize) {
+            po.featureDeserialize();
+        }
+        return po;
     }
 
 

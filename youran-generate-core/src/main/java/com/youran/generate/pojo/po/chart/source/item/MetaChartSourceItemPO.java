@@ -1,6 +1,9 @@
 package com.youran.generate.pojo.po.chart.source.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
+import com.youran.generate.constant.SourceItemType;
 import com.youran.generate.pojo.dto.chart.source.JoinDTO;
 import com.youran.generate.pojo.po.BasePO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
@@ -76,6 +79,33 @@ public class MetaChartSourceItemPO extends BasePO {
         if(this.joinIndex > 0){
             this.join = this.chartSource.getJoins().get(this.joinIndex - 1);
         }
+    }
+
+
+    /**
+     * 转换成子类
+     *
+     * @param featureDeserialize
+     * @param <T>
+     * @return
+     */
+    public <T extends MetaChartSourceItemPO> T castSubType(boolean featureDeserialize) {
+        if (SourceItemType.AGG_ORDER.getValue().equals(this.type)) {
+            return (T) AggOrderPO.fromSuperType(this, featureDeserialize);
+        } else if (SourceItemType.DETAIL_COLUMN.getValue().equals(this.type)) {
+            return (T) DetailColumnPO.fromSuperType(this, featureDeserialize);
+        } else if (SourceItemType.DETAIL_ORDER.getValue().equals(this.type)) {
+            return (T) DetailOrderPO.fromSuperType(this, featureDeserialize);
+        } else if (SourceItemType.HAVING.getValue().equals(this.type)) {
+            return (T) HavingPO.fromSuperType(this, featureDeserialize);
+        } else if (SourceItemType.DIMENSION.getValue().equals(this.type)) {
+            return (T) DimensionPO.fromSuperType(this, featureDeserialize);
+        } else if (SourceItemType.METRICS.getValue().equals(this.type)) {
+            return (T) MetricsPO.fromSuperType(this, featureDeserialize);
+        } else if (SourceItemType.WHERE.getValue().equals(this.type)) {
+            return (T) WherePO.fromSuperType(this, featureDeserialize);
+        }
+        throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "类型转换异常");
     }
 
     /**
@@ -173,5 +203,6 @@ public class MetaChartSourceItemPO extends BasePO {
     public void setChartSource(MetaChartSourcePO chartSource) {
         this.chartSource = chartSource;
     }
+
 }
 

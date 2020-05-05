@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.dao.chart.MetaChartDAO">
+
+
+    <sql id="metaChartColumns">
+        ${alias}.chart_id as chartId,
+        ${alias}.project_id as projectId,
+        ${alias}.source_id as sourceId,
+        ${alias}.chart_type as chartType,
+        ${alias}.chart_name as chartName,
+        ${alias}.module,
+        ${alias}.title,
+        ${alias}.feature,
+        ${alias}.created_time as createdTime,
+        ${alias}.created_by as createdBy,
+        ${alias}.operated_time as operatedTime,
+        ${alias}.operated_by as operatedBy,
+        ${alias}.version,
+        ${alias}.deleted
+    </sql>
+
+
+    <select id="findById" resultType="MetaChartPO">
+        select
+            <include refid="metaChartColumns"><property name="alias" value="t"/></include>
+        from meta_chart t
+        <where>
+            and t.deleted=0
+            and t.chart_id = #{arg0}
+        </where>
+        limit 1
+    </select>
+
+    <select id="exist" resultType="boolean">
+        select count(1) from meta_chart
+        <where>
+            and deleted=0
+            and chart_id = #{arg0}
+        </where>
+    </select>
+
+    <insert id="_save" useGeneratedKeys="true" keyProperty="chartId" parameterType="MetaChartPO">
+        insert into meta_chart(
+        chart_id,
+        project_id,
+        source_id,
+        chart_type,
+        chart_name,
+        module,
+        title,
+        feature,
+        created_time,
+        created_by,
+        operated_time,
+        operated_by,
+        version,
+        deleted
+        ) VALUES (
+        #{chartId,jdbcType=INTEGER},
+        #{projectId,jdbcType=INTEGER},
+        #{sourceId,jdbcType=INTEGER},
+        #{chartType,jdbcType=INTEGER},
+        #{chartName,jdbcType=VARCHAR},
+        #{module,jdbcType=VARCHAR},
+        #{title,jdbcType=VARCHAR},
+        #{feature,jdbcType=VARCHAR},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{createdBy,jdbcType=VARCHAR},
+        #{operatedTime,jdbcType=TIMESTAMP},
+        #{operatedBy,jdbcType=VARCHAR},
+        #{version,jdbcType=INTEGER},
+        #{deleted,jdbcType=BOOLEAN}
+        )
+    </insert>
+
+
+    <update id="_update" parameterType="MetaChartPO">
+        update meta_chart set
+            project_id=#{projectId,jdbcType=INTEGER},
+            source_id=#{sourceId,jdbcType=INTEGER},
+            chart_type=#{chartType,jdbcType=INTEGER},
+            chart_name=#{chartName,jdbcType=VARCHAR},
+            module=#{module,jdbcType=VARCHAR},
+            title=#{title,jdbcType=VARCHAR},
+            feature=#{feature,jdbcType=VARCHAR},
+            operated_time=#{operatedTime,jdbcType=TIMESTAMP},
+            operated_by=#{operatedBy,jdbcType=VARCHAR},
+            version = version+1,
+            deleted=#{deleted,jdbcType=BOOLEAN}
+        where chart_id=#{chartId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and deleted=0
+    </update>
+
+    <delete id="delete">
+        update meta_chart set deleted=1
+        where chart_id=#{arg0,jdbcType=INTEGER}
+        and deleted=0
+    </delete>
+
+
+    <sql id="queryCondition">
+        <if test="projectId != null ">
+            and t.project_id = #{projectId}
+        </if>
+        <if test="sourceId != null ">
+            and t.source_id = #{sourceId}
+        </if>
+        <if test="chartType != null ">
+            and t.chart_type = #{chartType}
+        </if>
+        <if test="chartName != null and chartName !='' ">
+            <bind name="chartName_pattern" value="'%' + chartName + '%'" />
+            and t.chart_name like #{chartName_pattern}
+        </if>
+    </sql>
+
+    <sql id="orderCondition">
+        order by
+        <if test="createdTimeSortSign != null and createdTimeSortSign!=0">
+            t.created_time <if test="createdTimeSortSign > 0">asc</if><if test="createdTimeSortSign &lt; 0">desc</if>,
+        </if>
+        <if test="operatedTimeSortSign != null and operatedTimeSortSign!=0">
+            t.operated_time <if test="operatedTimeSortSign > 0">asc</if><if test="operatedTimeSortSign &lt; 0">desc</if>,
+        </if>
+            t.operated_time desc
+    </sql>
+
+    <select id="findCountByQuery" parameterType="MetaChartQO" resultType="int">
+        select count(1) from meta_chart t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+    </select>
+
+    <select id="findListByQuery" parameterType="MetaChartQO" resultType="MetaChartListVO">
+        select
+            <include refid="metaChartColumns"><property name="alias" value="t"/></include>
+        from meta_chart t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+        <include refid="orderCondition"/>
+    </select>
+
+
+    <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
+
+
+</mapper>

@@ -41,7 +41,7 @@ public class TemplateFilePO extends BasePO {
     private Integer templateId;
 
     /**
-     * 上下文类型【1全局、2实体、3常量】
+     * 上下文类型【1全局、2实体、3常量、4图表】
      *
      * @see com.youran.generate.constant.ContextType
      */

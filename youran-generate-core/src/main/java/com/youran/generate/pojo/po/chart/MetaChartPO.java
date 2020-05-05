@@ -1,6 +1,9 @@
 package com.youran.generate.pojo.po.chart;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
+import com.youran.generate.constant.ChartType;
 import com.youran.generate.pojo.po.BasePO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 
@@ -59,6 +62,9 @@ public class MetaChartPO extends BasePO {
     @JsonIgnore
     private transient MetaChartSourcePO chartSource;
 
+
+    public MetaChartPO() {}
+
     /**
      * 装配数据
      *
@@ -69,10 +75,30 @@ public class MetaChartPO extends BasePO {
     }
 
     /**
+     * 转换成子类
+     *
+     * @param featureDeserialize
+     * @param <T>
+     * @return
+     */
+    public <T extends MetaChartPO> T castSubType(boolean featureDeserialize) {
+        if (ChartType.AGG_TABLE.getValue().equals(this.chartType)) {
+            return (T) AggTablePO.fromSuperType(this, featureDeserialize);
+        } else if (ChartType.DETAIL_LIST.getValue().equals(this.chartType)) {
+            return (T) DetailListPO.fromSuperType(this, featureDeserialize);
+        } else if (ChartType.BAR_LINE.getValue().equals(this.chartType)) {
+            return (T) BarLinePO.fromSuperType(this, featureDeserialize);
+        } else if (ChartType.PIE.getValue().equals(this.chartType)) {
+            return (T) PiePO.fromSuperType(this, featureDeserialize);
+        }
+        throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "类型转换异常");
+    }
+
+    /**
      * 反序列化特性json
      * 从json字符串中解析出dto信息
      */
-    public void featureDeserialize(){
+    public void featureDeserialize() {
         throw new RuntimeException("未实现");
     }
 
@@ -80,7 +106,7 @@ public class MetaChartPO extends BasePO {
      * 序列化特性json
      * 将dto信息序列化成json字符串
      */
-    public void featureSerialize(){
+    public void featureSerialize() {
         throw new RuntimeException("未实现");
     }
 

@@ -63,7 +63,7 @@ export function getRules (vm) {
       { max: 50, message: '长度不能超过50个字符', trigger: 'blur' }
     ],
     pageSign: [
-      { required: true, type: 'boolean', message: '请选择是否支持分页', trigger: 'change' }
+      { type: 'boolean', message: '请选择是否支持分页', trigger: 'change' }
     ],
     desc: [
       { max: 250, message: '长度不能超过250个字符', trigger: 'blur' }

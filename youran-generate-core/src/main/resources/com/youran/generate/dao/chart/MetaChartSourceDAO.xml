@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.dao.chart.MetaChartSourceDAO">
+
+
+    <sql id="metaChartSourceColumns">
+        ${alias}.source_id as sourceId,
+        ${alias}.project_id as projectId,
+        ${alias}.feature,
+        ${alias}.aggregation,
+        ${alias}.created_time as createdTime,
+        ${alias}.created_by as createdBy,
+        ${alias}.operated_time as operatedTime,
+        ${alias}.operated_by as operatedBy,
+        ${alias}.version,
+        ${alias}.deleted
+    </sql>
+
+
+    <select id="findById" resultType="MetaChartSourcePO">
+        select
+            <include refid="metaChartSourceColumns"><property name="alias" value="t"/></include>
+        from meta_chart_source t
+        <where>
+            and t.deleted=0
+            and t.source_id = #{arg0}
+        </where>
+        limit 1
+    </select>
+
+    <select id="exist" resultType="boolean">
+        select count(1) from meta_chart_source
+        <where>
+            and deleted=0
+            and source_id = #{arg0}
+        </where>
+    </select>
+
+    <insert id="_save" useGeneratedKeys="true" keyProperty="sourceId" parameterType="MetaChartSourcePO">
+        insert into meta_chart_source(
+        source_id,
+        project_id,
+        feature,
+        aggregation,
+        created_time,
+        created_by,
+        operated_time,
+        operated_by,
+        version,
+        deleted
+        ) VALUES (
+        #{sourceId,jdbcType=INTEGER},
+        #{projectId,jdbcType=INTEGER},
+        #{feature,jdbcType=VARCHAR},
+        #{aggregation,jdbcType=BOOLEAN},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{createdBy,jdbcType=VARCHAR},
+        #{operatedTime,jdbcType=TIMESTAMP},
+        #{operatedBy,jdbcType=VARCHAR},
+        #{version,jdbcType=INTEGER},
+        #{deleted,jdbcType=BOOLEAN}
+        )
+    </insert>
+
+
+    <update id="_update" parameterType="MetaChartSourcePO">
+        update meta_chart_source set
+            project_id=#{projectId,jdbcType=INTEGER},
+            feature=#{feature,jdbcType=VARCHAR},
+            aggregation=#{aggregation,jdbcType=BOOLEAN},
+            operated_time=#{operatedTime,jdbcType=TIMESTAMP},
+            operated_by=#{operatedBy,jdbcType=VARCHAR},
+            version = version+1,
+            deleted=#{deleted,jdbcType=BOOLEAN}
+        where source_id=#{sourceId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and deleted=0
+    </update>
+
+    <delete id="delete">
+        update meta_chart_source set deleted=1
+        where source_id=#{arg0,jdbcType=INTEGER}
+        and deleted=0
+    </delete>
+
+
+    <sql id="queryCondition">
+        <if test="projectId != null ">
+            and t.project_id = #{projectId}
+        </if>
+        <if test="aggregation != null ">
+            and t.aggregation = #{aggregation}
+        </if>
+    </sql>
+
+    <sql id="orderCondition">
+        order by
+            t.operated_time desc
+    </sql>
+
+    <select id="findCountByQuery" parameterType="MetaChartSourceQO" resultType="int">
+        select count(1) from meta_chart_source t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+    </select>
+
+    <select id="findListByQuery" parameterType="MetaChartSourceQO" resultType="MetaChartSourceListVO">
+        select
+            <include refid="metaChartSourceColumns"><property name="alias" value="t"/></include>
+        from meta_chart_source t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+        <include refid="orderCondition"/>
+    </select>
+
+
+
+    <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
+
+
+</mapper>

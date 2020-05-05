@@ -6,6 +6,7 @@ import com.youran.generate.constant.ChartType;
 import com.youran.generate.pojo.dto.chart.ChartFeatureDTO;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
+import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
 import com.youran.generate.pojo.po.chart.source.item.MetricsPO;
@@ -32,6 +33,26 @@ public class PiePO extends MetaChartPO {
         this.setChartType(ChartType.PIE.getValue());
     }
 
+
+    /**
+     * 将超类转成当前类型
+     *
+     * @param superPO
+     * @param featureDeserialize
+     * @return
+     */
+    public static PiePO fromSuperType(MetaChartPO superPO,
+                                          boolean featureDeserialize) {
+        if (!ChartType.PIE.getValue().equals(superPO.getChartType())) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "类型转换异常");
+        }
+        PiePO po = new PiePO();
+        MetaChartMapper.INSTANCE.copyProperties(po, superPO);
+        if (featureDeserialize) {
+            po.featureDeserialize();
+        }
+        return po;
+    }
 
     @Override
     public void assemble(MetaChartSourcePO chartSource) {

@@ -6,6 +6,7 @@ import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.SourceItemType;
 import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
+import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
@@ -90,6 +91,27 @@ public class MetricsPO extends MetaChartSourceItemPO {
             }
         }
 
+    }
+
+
+    /**
+     * 将超类转成当前类型
+     *
+     * @param superPO
+     * @param featureDeserialize
+     * @return
+     */
+    public static MetricsPO fromSuperType(MetaChartSourceItemPO superPO,
+                                          boolean featureDeserialize) {
+        if (!SourceItemType.METRICS.getValue().equals(superPO.getType())) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "类型转换异常");
+        }
+        MetricsPO po = new MetricsPO();
+        MetaChartSourceItemMapper.INSTANCE.copyProperties(po, superPO);
+        if (featureDeserialize) {
+            po.featureDeserialize();
+        }
+        return po;
     }
 
     @Override
