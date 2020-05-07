@@ -47,21 +47,21 @@ public interface MetaChartSourceItemMapper {
                            WhereUpdateDTO updateDTO);
 
 
-    default MetaChartSourceItemVO poToVO(MetaChartSourceItemPO po){
+    default <T extends MetaChartSourceItemVO> T poToVO(MetaChartSourceItemPO po){
         if (po instanceof HavingPO) {
-            return this.toHavingVO((HavingPO) po);
+            return (T)this.toHavingVO((HavingPO) po);
         } else if (po instanceof DetailColumnPO) {
-            return this.toDetailColumnVO((DetailColumnPO) po);
+            return (T)this.toDetailColumnVO((DetailColumnPO) po);
         } else if (po instanceof MetricsPO) {
-            return this.toMetricsVO((MetricsPO) po);
+            return (T)this.toMetricsVO((MetricsPO) po);
         } else if (po instanceof DetailOrderPO) {
-            return this.toDetailOrderVO((DetailOrderPO) po);
+            return (T)this.toDetailOrderVO((DetailOrderPO) po);
         } else if (po instanceof WherePO) {
-            return this.toWhereVO((WherePO) po);
+            return (T)this.toWhereVO((WherePO) po);
         } else if (po instanceof DimensionPO) {
-            return this.toDimensionVO((DimensionPO) po);
+            return (T)this.toDimensionVO((DimensionPO) po);
         } else if (po instanceof AggOrderPO) {
-            return this.toAggOrderVO((AggOrderPO) po);
+            return (T)this.toAggOrderVO((AggOrderPO) po);
         }
         return null;
     }

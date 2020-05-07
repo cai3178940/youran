@@ -33,11 +33,14 @@ public class MetaChartSourceItemService {
      * @param metaChartSourceItemQO
      * @return
      */
-    public List<MetaChartSourceItemVO> list(MetaChartSourceItemQO metaChartSourceItemQO) {
+    public <T extends MetaChartSourceItemVO> List<T> list(MetaChartSourceItemQO metaChartSourceItemQO) {
+        if (metaChartSourceItemQO.getType() == null) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "type参数不能为空");
+        }
         List<MetaChartSourceItemPO> list = metaChartSourceItemDAO.findListByQuery(metaChartSourceItemQO);
         return list.stream()
             .map(po -> po.castSubType(true))
-            .map(po -> MetaChartSourceItemMapper.INSTANCE.poToVO((MetaChartSourceItemPO) po))
+            .map(po -> (T) MetaChartSourceItemMapper.INSTANCE.poToVO((MetaChartSourceItemPO) po))
             .collect(Collectors.toList());
     }
 
@@ -45,10 +48,10 @@ public class MetaChartSourceItemService {
      * 根据主键获取【图表数据源项】
      *
      * @param sourceItemId 主键
-     * @param force 是否强制获取
+     * @param force        是否强制获取
      * @return
      */
-    public <T extends MetaChartSourceItemPO> T getMetaChartSourceItem(Integer sourceItemId, boolean force){
+    public <T extends MetaChartSourceItemPO> T getMetaChartSourceItem(Integer sourceItemId, boolean force) {
         MetaChartSourceItemPO po = metaChartSourceItemDAO.findById(sourceItemId);
         if (force && po == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);

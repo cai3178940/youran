@@ -22,7 +22,7 @@ public class MetaChartSourceItemQO extends AbstractQO {
     @ApiParam(value = N_JOIN_INDEX,example = E_JOIN_INDEX)
     private Integer joinIndex;
 
-    @ApiParam(value = N_TYPE,example = E_TYPE)
+    @ApiParam(hidden = true)
     private Integer type;
 
 
