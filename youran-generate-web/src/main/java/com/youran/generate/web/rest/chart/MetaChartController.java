@@ -52,7 +52,7 @@ public class MetaChartController extends AbstractController implements MetaChart
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AggTableVO> saveAggTable(@Valid @RequestBody AggTableAddDTO addDTO) throws Exception {
         AggTablePO po = aggTableService.save(addDTO);
-        return ResponseEntity.created(new URI(WebConst.API_PATH + "/metaChart/aggTable/" + po.getChartId()))
+        return ResponseEntity.created(new URI(apiPath + "/metaChart/aggTable/" + po.getChartId()))
             .body(MetaChartMapper.INSTANCE.toAggTableVO(po));
     }
 

@@ -39,7 +39,7 @@ public class MetaChartSourceController extends AbstractController implements Met
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaChartSourceShowVO> save(@Valid @RequestBody MetaChartSourceAddDTO metaChartSourceAddDTO) throws Exception {
         MetaChartSourcePO metaChartSource = metaChartSourceService.save(metaChartSourceAddDTO);
-        return ResponseEntity.created(new URI(WebConst.API_PATH + "/metaChartSource/" + metaChartSource.getSourceId()))
+        return ResponseEntity.created(new URI(apiPath + "/metaChartSource/" + metaChartSource.getSourceId()))
             .body(MetaChartSourceMapper.INSTANCE.toShowVO(metaChartSource));
     }
 

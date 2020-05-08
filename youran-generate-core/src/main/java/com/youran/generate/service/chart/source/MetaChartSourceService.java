@@ -7,15 +7,18 @@ import com.youran.generate.dao.chart.MetaChartSourceDAO;
 import com.youran.generate.pojo.dto.chart.source.MetaChartSourceAddDTO;
 import com.youran.generate.pojo.dto.chart.source.MetaChartSourceUpdateDTO;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceMapper;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.qo.chart.MetaChartSourceQO;
 import com.youran.generate.pojo.vo.chart.source.MetaChartSourceListVO;
 import com.youran.generate.pojo.vo.chart.source.MetaChartSourceShowVO;
+import com.youran.generate.service.MetaProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 【图表数据源】增删改查服务
@@ -28,34 +31,51 @@ public class MetaChartSourceService {
 
     @Autowired
     private MetaChartSourceDAO metaChartSourceDAO;
+    @Autowired
+    private MetaProjectService metaProjectService;
 
+    private void checkProjectId(MetaProjectPO project, Integer projectId) {
+        if (!Objects.equals(project.getProjectId(), projectId)) {
+            throw new BusinessException(ErrorCode.RECORD_NOT_FIND, "禁止跨项目操作");
+        }
+    }
 
     /**
      * 新增【图表数据源】
      *
-     * @param metaChartSourceDTO
+     * @param addDTO
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public MetaChartSourcePO save(MetaChartSourceAddDTO metaChartSourceDTO) {
-        MetaChartSourcePO metaChartSource = MetaChartSourceMapper.INSTANCE.fromAddDTO(metaChartSourceDTO);
+    public MetaChartSourcePO save(MetaChartSourceAddDTO addDTO) {
+        Integer entityId = addDTO.getEntityId();
+        // 获取项目，并校验操作人
+        MetaProjectPO project = metaProjectService.getProjectByEntityId(entityId, true);
+        this.checkProjectId(project, addDTO.getProjectId());
+        MetaChartSourcePO metaChartSource = MetaChartSourceMapper.INSTANCE.fromAddDTO(addDTO);
         metaChartSourceDAO.save(metaChartSource);
+        metaProjectService.updateProject(project);
         return metaChartSource;
     }
 
     /**
      * 修改【图表数据源】
      *
-     * @param metaChartSourceUpdateDTO
+     * @param updateDTO
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
-    public MetaChartSourcePO update(MetaChartSourceUpdateDTO metaChartSourceUpdateDTO) {
-        Integer sourceId = metaChartSourceUpdateDTO.getSourceId();
+    public MetaChartSourcePO update(MetaChartSourceUpdateDTO updateDTO) {
+        Integer sourceId = updateDTO.getSourceId();
+        Integer entityId = updateDTO.getEntityId();
+        // 获取项目，并校验操作人
+        MetaProjectPO project = metaProjectService.getProjectByEntityId(entityId, true);
+        this.checkProjectId(project, updateDTO.getProjectId());
         MetaChartSourcePO metaChartSource = this.getMetaChartSource(sourceId, true);
-        MetaChartSourceMapper.INSTANCE.setUpdateDTO(metaChartSource, metaChartSourceUpdateDTO);
+        MetaChartSourceMapper.INSTANCE.setUpdateDTO(metaChartSource, updateDTO);
         metaChartSourceDAO.update(metaChartSource);
+        metaProjectService.updateProject(project);
         return metaChartSource;
     }
 
@@ -108,7 +128,15 @@ public class MetaChartSourceService {
     public int delete(Integer... sourceIds) {
         int count = 0;
         for (Integer sourceId : sourceIds) {
+            MetaChartSourcePO po = this.getMetaChartSource(sourceId, true);
+            if (po == null) {
+                continue;
+            }
+            Integer projectId = po.getProjectId();
+            //校验操作人
+            MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
             count += metaChartSourceDAO.delete(sourceId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }
