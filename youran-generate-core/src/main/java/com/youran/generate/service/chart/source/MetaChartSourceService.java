@@ -94,14 +94,16 @@ public class MetaChartSourceService {
      * 根据主键获取【图表数据源】
      *
      * @param sourceId 主键
-     * @param force 是否强制获取
+     * @param force    是否强制获取
      * @return
      */
-    public MetaChartSourcePO getMetaChartSource(Integer sourceId, boolean force){
+    public MetaChartSourcePO getMetaChartSource(Integer sourceId,
+                                                boolean force) {
         MetaChartSourcePO metaChartSource = metaChartSourceDAO.findById(sourceId);
         if (force && metaChartSource == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
         }
+        metaChartSource.featureDeserialize();
         return metaChartSource;
     }
 

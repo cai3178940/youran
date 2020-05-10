@@ -4,9 +4,12 @@ import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.dao.chart.MetaChartSourceItemDAO;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
+import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.MetaChartSourceItemPO;
 import com.youran.generate.pojo.qo.chart.MetaChartSourceItemQO;
 import com.youran.generate.pojo.vo.chart.source.item.MetaChartSourceItemVO;
+import com.youran.generate.service.MetaProjectService;
+import com.youran.generate.service.chart.source.MetaChartSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +28,24 @@ public class MetaChartSourceItemService {
 
     @Autowired
     private MetaChartSourceItemDAO metaChartSourceItemDAO;
-
+    @Autowired
+    private MetaProjectService metaProjectService;
+    @Autowired
+    private MetaChartSourceService metaChartSourceService;
+    /**
+     * 【图表数据源项】数据预处理
+     *
+     * @param po
+     */
+    public void preparePO(MetaChartSourceItemPO po){
+        metaProjectService.getAndCheckProject(po.getProjectId());
+        MetaChartSourcePO chartSource = metaChartSourceService.getMetaChartSource(po.getSourceId(), true);
+        po.setChartSource(chartSource);
+        if(po.getSourceItemId()!=null){
+            MetaChartSourceItemPO parent = this.getMetaChartSourceItem(po.getParentId(), true);
+            po.setParent(parent);
+        }
+    }
 
     /**
      * 查询列表

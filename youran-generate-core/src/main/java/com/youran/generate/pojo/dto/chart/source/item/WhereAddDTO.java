@@ -3,6 +3,7 @@ package com.youran.generate.pojo.dto.chart.source.item;
 import com.youran.common.validator.Const;
 import com.youran.generate.constant.FilterOperator;
 import com.youran.generate.constant.SourceItemType;
+import com.youran.generate.constant.TimeGranularity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -27,7 +28,8 @@ public class WhereAddDTO extends AbstractSourceItemDTO {
     @ApiModelProperty(notes = "过滤值")
     private String[] filterValue;
 
-    @ApiModelProperty(notes = "时间粒度")
+    @ApiModelProperty(notes = "时间粒度", example = "1", allowableValues = TimeGranularity.VALUES_STR)
+    @Const(constClass = TimeGranularity.class)
     private Integer timeGranularity;
 
     @ApiModelProperty(notes = "是否自定义", example = "true", required = true)

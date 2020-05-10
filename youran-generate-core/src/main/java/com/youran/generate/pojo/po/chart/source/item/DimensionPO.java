@@ -31,7 +31,7 @@ public class DimensionPO extends MetaChartSourceItemPO {
     /**
      * 维度粒度
      */
-    private String granularity;
+    private Integer granularity;
 
     /**
      * 对应实体
@@ -120,11 +120,11 @@ public class DimensionPO extends MetaChartSourceItemPO {
         this.alias = alias;
     }
 
-    public String getGranularity() {
+    public Integer getGranularity() {
         return granularity;
     }
 
-    public void setGranularity(String granularity) {
+    public void setGranularity(Integer granularity) {
         this.granularity = granularity;
     }
 

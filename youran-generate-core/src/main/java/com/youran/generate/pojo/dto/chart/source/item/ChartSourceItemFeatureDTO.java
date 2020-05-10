@@ -40,7 +40,7 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
     /**
      * 维度粒度
      */
-    private String granularity;
+    private Integer granularity;
 
     /**
      * 排序方式
@@ -112,11 +112,11 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
         this.customFieldType = customFieldType;
     }
 
-    public String getGranularity() {
+    public Integer getGranularity() {
         return granularity;
     }
 
-    public void setGranularity(String granularity) {
+    public void setGranularity(Integer granularity) {
         this.granularity = granularity;
     }
 

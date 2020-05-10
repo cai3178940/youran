@@ -27,7 +27,7 @@ public class DimensionAddDTO extends AbstractSourceItemDTO {
     @ApiModelProperty(notes = "维度粒度", example = "1", required = true, allowableValues = Granularity.VALUES_STR)
     @NotNull
     @Const(constClass = Granularity.class)
-    private String granularity;
+    private Integer granularity;
 
     @Override
     public Integer getType() {
@@ -50,11 +50,11 @@ public class DimensionAddDTO extends AbstractSourceItemDTO {
         this.alias = alias;
     }
 
-    public String getGranularity() {
+    public Integer getGranularity() {
         return granularity;
     }
 
-    public void setGranularity(String granularity) {
+    public void setGranularity(Integer granularity) {
         this.granularity = granularity;
     }
 }

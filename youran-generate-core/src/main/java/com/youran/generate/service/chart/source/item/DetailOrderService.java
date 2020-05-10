@@ -2,22 +2,22 @@ package com.youran.generate.service.chart.source.item;
 
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.chart.MetaChartSourceItemDAO;
-import com.youran.generate.pojo.dto.chart.source.item.AggOrderAddDTO;
-import com.youran.generate.pojo.dto.chart.source.item.AggOrderUpdateDTO;
+import com.youran.generate.pojo.dto.chart.source.item.DetailOrderAddDTO;
+import com.youran.generate.pojo.dto.chart.source.item.DetailOrderUpdateDTO;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
-import com.youran.generate.pojo.po.chart.source.item.AggOrderPO;
+import com.youran.generate.pojo.po.chart.source.item.DetailOrderPO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 【聚合排序】服务类
+ * 【明细排序】服务类
  *
  * @author: cbb
- * @date: 2020-05-05
+ * @date: 2020-05-10
  */
 @Service
-public class AggOrderService {
+public class DetailOrderService {
 
     @Autowired
     private MetaChartSourceItemDAO metaChartSourceItemDAO;
@@ -25,25 +25,25 @@ public class AggOrderService {
     private MetaChartSourceItemService metaChartSourceItemService;
 
     /**
-     * 【聚合排序】数据预处理
+     * 【明细排序】数据预处理
      *
      * @param po
      */
-    public void preparePO(AggOrderPO po) {
+    public void preparePO(DetailOrderPO po) {
         po.featureSerialize();
         metaChartSourceItemService.preparePO(po);
     }
 
     /**
-     * 新增【聚合排序】
+     * 新增【明细排序】
      *
      * @param addDTO
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public AggOrderPO save(AggOrderAddDTO addDTO) {
-        AggOrderPO po = MetaChartSourceItemMapper.INSTANCE
-            .fromAggOrderAddDTO(addDTO);
+    public DetailOrderPO save(DetailOrderAddDTO addDTO) {
+        DetailOrderPO po = MetaChartSourceItemMapper.INSTANCE
+            .fromDetailOrderAddDTO(addDTO);
         this.preparePO(po);
         metaChartSourceItemDAO.save(po);
         return po;
@@ -58,10 +58,10 @@ public class AggOrderService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
-    public AggOrderPO update(AggOrderUpdateDTO updateDTO) {
+    public DetailOrderPO update(DetailOrderUpdateDTO updateDTO) {
         Integer sourceItemId = updateDTO.getSourceItemId();
-        AggOrderPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
-        MetaChartSourceItemMapper.INSTANCE.setAggOrderUpdateDTO(po, updateDTO);
+        DetailOrderPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
+        MetaChartSourceItemMapper.INSTANCE.setDetailOrderUpdateDTO(po, updateDTO);
         this.preparePO(po);
         metaChartSourceItemDAO.update(po);
         return po;
