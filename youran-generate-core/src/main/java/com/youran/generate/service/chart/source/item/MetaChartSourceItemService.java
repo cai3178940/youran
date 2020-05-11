@@ -41,7 +41,7 @@ public class MetaChartSourceItemService {
         metaProjectService.getAndCheckProject(po.getProjectId());
         MetaChartSourcePO chartSource = metaChartSourceService.getMetaChartSource(po.getSourceId(), true);
         po.setChartSource(chartSource);
-        if(po.getSourceItemId()!=null){
+        if(po.getParentId()!=null){
             MetaChartSourceItemPO parent = this.getMetaChartSourceItem(po.getParentId(), true);
             po.setParent(parent);
         }

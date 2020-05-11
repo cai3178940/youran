@@ -10,9 +10,7 @@ import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
-import com.youran.generate.pojo.po.chart.source.item.AggOrderPO;
-import com.youran.generate.pojo.po.chart.source.item.DetailColumnPO;
-import com.youran.generate.pojo.po.chart.source.item.MetricsPO;
+import com.youran.generate.pojo.po.chart.source.item.*;
 import com.youran.generate.web.AbstractWebTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,6 +51,9 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaProject.getProjectId(), this.metaEntity.getEntityId());
     }
 
+    /**
+     * 聚合排序
+     */
     @Test
     public void saveAggOrder() throws Exception {
         AggOrderAddDTO addDTO = metaChartSourceItemHelper.getAggOrderAddDTO(
@@ -61,94 +62,6 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             null
         );
         restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/aggOrder")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(JsonUtil.toJSONString(addDTO)))
-            .andExpect(status().isOk());
-    }
-
-    @Test
-    public void saveDetailColumn() throws Exception {
-        DetailColumnAddDTO addDTO = metaChartSourceItemHelper.getDetailColumnAddDTO(
-            this.metaProject.getProjectId(),
-            this.metaChartSource.getSourceId(),
-            this.metaField.getFieldId()
-        );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/detailColumn")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(JsonUtil.toJSONString(addDTO)))
-            .andExpect(status().isOk());
-    }
-
-    @Test
-    public void saveDetailOrder() throws Exception {
-        DetailColumnPO detailColumnPO = metaChartSourceItemHelper.saveDetailColumnExample(
-            this.metaProject.getProjectId(),
-            this.metaChartSource.getSourceId(),
-            this.metaField.getFieldId()
-        );
-        DetailOrderAddDTO addDTO = metaChartSourceItemHelper.getDetailOrderAddDTO(
-            this.metaProject.getProjectId(),
-            this.metaChartSource.getSourceId(),
-            detailColumnPO.getSourceItemId()
-        );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/detailOrder")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(JsonUtil.toJSONString(addDTO)))
-            .andExpect(status().isOk());
-    }
-
-    @Test
-    public void saveDimension() throws Exception {
-        DimensionAddDTO addDTO = metaChartSourceItemHelper.getDimensionAddDTO(
-            this.metaProject.getProjectId(),
-            this.metaChartSource.getSourceId(),
-            this.metaField.getFieldId()
-        );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/dimension")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(JsonUtil.toJSONString(addDTO)))
-            .andExpect(status().isOk());
-    }
-
-    @Test
-    public void saveHaving() throws Exception {
-        MetricsPO metricsPO = metaChartSourceItemHelper.saveMetricsExample(
-            this.metaProject.getProjectId(),
-            this.metaChartSource.getSourceId(),
-            this.metaField.getFieldId()
-        );
-        HavingAddDTO addDTO = metaChartSourceItemHelper.getHavingAddDTO(
-            this.metaProject.getProjectId(),
-            this.metaChartSource.getSourceId(),
-            metricsPO.getSourceItemId()
-        );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/having")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(JsonUtil.toJSONString(addDTO)))
-            .andExpect(status().isOk());
-    }
-
-    @Test
-    public void saveMetrics() throws Exception {
-        MetricsAddDTO addDTO = metaChartSourceItemHelper.getMetricsAddDTO(
-            this.metaProject.getProjectId(),
-            this.metaChartSource.getSourceId(),
-            this.metaField.getFieldId()
-        );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/metrics")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(JsonUtil.toJSONString(addDTO)))
-            .andExpect(status().isOk());
-    }
-
-    @Test
-    public void saveWhere() throws Exception {
-        WhereAddDTO addDTO = metaChartSourceItemHelper.getWhereAddDTO(
-            this.metaProject.getProjectId(),
-            this.metaChartSource.getSourceId(),
-            this.metaField.getFieldId()
-        );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/where")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isOk());
@@ -175,7 +88,304 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             null
         );
-        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/aggOrder"))
+        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/aggOrder")
+            .param("projectId",this.metaProject.getProjectId().toString())
+            .param("sourceId",this.metaChartSource.getSourceId().toString()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(is(1)));
+    }
+
+    /**
+     * 明细列
+     */
+    @Test
+    public void saveDetailColumn() throws Exception {
+        DetailColumnAddDTO addDTO = metaChartSourceItemHelper.getDetailColumnAddDTO(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/detailColumn")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(addDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateDetailColumn() throws Exception {
+        DetailColumnPO po = metaChartSourceItemHelper.saveDetailColumnExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        DetailColumnUpdateDTO updateDTO = metaChartSourceItemHelper.getDetailColumnUpdateDTO(po);
+        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/detailColumn")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(updateDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void listDetailColumn() throws Exception {
+        DetailColumnPO po = metaChartSourceItemHelper.saveDetailColumnExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/detailColumn")
+            .param("projectId",this.metaProject.getProjectId().toString())
+            .param("sourceId",this.metaChartSource.getSourceId().toString()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(is(1)));
+    }
+
+    /**
+     * 明细排序
+     */
+    @Test
+    public void saveDetailOrder() throws Exception {
+        DetailColumnPO detailColumnPO = metaChartSourceItemHelper.saveDetailColumnExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        DetailOrderAddDTO addDTO = metaChartSourceItemHelper.getDetailOrderAddDTO(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            detailColumnPO.getSourceItemId()
+        );
+        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/detailOrder")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(addDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateDetailOrder() throws Exception {
+        DetailColumnPO detailColumnPO = metaChartSourceItemHelper.saveDetailColumnExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        DetailOrderPO po = metaChartSourceItemHelper.saveDetailOrderExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            detailColumnPO.getSourceItemId()
+        );
+        DetailOrderUpdateDTO updateDTO = metaChartSourceItemHelper.getDetailOrderUpdateDTO(po);
+        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/detailOrder")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(updateDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void listDetailOrder() throws Exception {
+        DetailColumnPO detailColumnPO = metaChartSourceItemHelper.saveDetailColumnExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        DetailOrderPO po = metaChartSourceItemHelper.saveDetailOrderExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            detailColumnPO.getSourceItemId()
+        );
+        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/detailOrder")
+            .param("projectId",this.metaProject.getProjectId().toString())
+            .param("sourceId",this.metaChartSource.getSourceId().toString()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(is(1)));
+    }
+
+    /**
+     * 维度
+     */
+    @Test
+    public void saveDimension() throws Exception {
+        DimensionAddDTO addDTO = metaChartSourceItemHelper.getDimensionAddDTO(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/dimension")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(addDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateDimension() throws Exception {
+        DimensionPO po = metaChartSourceItemHelper.saveDimensionExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        DimensionUpdateDTO updateDTO = metaChartSourceItemHelper.getDimensionUpdateDTO(po);
+        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/dimension")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(updateDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void listDimension() throws Exception {
+        DimensionPO po = metaChartSourceItemHelper.saveDimensionExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/dimension")
+            .param("projectId",this.metaProject.getProjectId().toString())
+            .param("sourceId",this.metaChartSource.getSourceId().toString()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(is(1)));
+    }
+
+    /**
+     * having条件
+     */
+    @Test
+    public void saveHaving() throws Exception {
+        MetricsPO metricsPO = metaChartSourceItemHelper.saveMetricsExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        HavingAddDTO addDTO = metaChartSourceItemHelper.getHavingAddDTO(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            metricsPO.getSourceItemId()
+        );
+        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/having")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(addDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateHaving() throws Exception {
+        MetricsPO metricsPO = metaChartSourceItemHelper.saveMetricsExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        HavingPO po = metaChartSourceItemHelper.saveHavingExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            metricsPO.getSourceItemId()
+        );
+        HavingUpdateDTO updateDTO = metaChartSourceItemHelper.getHavingUpdateDTO(po);
+        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/having")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(updateDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void listHaving() throws Exception {
+        MetricsPO metricsPO = metaChartSourceItemHelper.saveMetricsExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        HavingPO po = metaChartSourceItemHelper.saveHavingExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            metricsPO.getSourceItemId()
+        );
+        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/having")
+            .param("projectId",this.metaProject.getProjectId().toString())
+            .param("sourceId",this.metaChartSource.getSourceId().toString()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(is(1)));
+    }
+
+    /**
+     * 指标
+     */
+    @Test
+    public void saveMetrics() throws Exception {
+        MetricsAddDTO addDTO = metaChartSourceItemHelper.getMetricsAddDTO(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/metrics")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(addDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateMetrics() throws Exception {
+        MetricsPO po = metaChartSourceItemHelper.saveMetricsExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        MetricsUpdateDTO updateDTO = metaChartSourceItemHelper.getMetricsUpdateDTO(po);
+        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/metrics")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(updateDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void listMetrics() throws Exception {
+        MetricsPO po = metaChartSourceItemHelper.saveMetricsExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/metrics")
+            .param("projectId",this.metaProject.getProjectId().toString())
+            .param("sourceId",this.metaChartSource.getSourceId().toString()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(is(1)));
+    }
+
+    /**
+     * where条件
+     */
+    @Test
+    public void saveWhere() throws Exception {
+        WhereAddDTO addDTO = metaChartSourceItemHelper.getWhereAddDTO(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/where")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(addDTO)))
+            .andExpect(status().isOk());
+    }
+
+
+    @Test
+    public void updateWhere() throws Exception {
+        WherePO po = metaChartSourceItemHelper.saveWhereExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        WhereUpdateDTO updateDTO = metaChartSourceItemHelper.getWhereUpdateDTO(po);
+        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/where")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(JsonUtil.toJSONString(updateDTO)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void listWhere() throws Exception {
+        WherePO po = metaChartSourceItemHelper.saveWhereExample(
+            this.metaProject.getProjectId(),
+            this.metaChartSource.getSourceId(),
+            this.metaField.getFieldId()
+        );
+        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/where")
+            .param("projectId",this.metaProject.getProjectId().toString())
+            .param("sourceId",this.metaChartSource.getSourceId().toString()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(is(1)));
     }

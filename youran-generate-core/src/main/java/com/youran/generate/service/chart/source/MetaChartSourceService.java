@@ -53,6 +53,7 @@ public class MetaChartSourceService {
         MetaProjectPO project = metaProjectService.getProjectByEntityId(entityId, true);
         this.checkProjectId(project, addDTO.getProjectId());
         MetaChartSourcePO metaChartSource = MetaChartSourceMapper.INSTANCE.fromAddDTO(addDTO);
+        metaChartSource.featureSerialize();
         metaChartSourceDAO.save(metaChartSource);
         metaProjectService.updateProject(project);
         return metaChartSource;
@@ -74,6 +75,7 @@ public class MetaChartSourceService {
         this.checkProjectId(project, updateDTO.getProjectId());
         MetaChartSourcePO metaChartSource = this.getMetaChartSource(sourceId, true);
         MetaChartSourceMapper.INSTANCE.setUpdateDTO(metaChartSource, updateDTO);
+        metaChartSource.featureSerialize();
         metaChartSourceDAO.update(metaChartSource);
         metaProjectService.updateProject(project);
         return metaChartSource;

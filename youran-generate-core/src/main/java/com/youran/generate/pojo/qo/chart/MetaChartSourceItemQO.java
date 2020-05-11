@@ -3,6 +3,8 @@ package com.youran.generate.pojo.qo.chart;
 import com.youran.common.pojo.qo.AbstractQO;
 import io.swagger.annotations.ApiParam;
 
+import javax.validation.constraints.NotNull;
+
 import static com.youran.generate.pojo.example.chart.MetaChartSourceItemExample.*;
 
 /**
@@ -14,9 +16,11 @@ import static com.youran.generate.pojo.example.chart.MetaChartSourceItemExample.
 public class MetaChartSourceItemQO extends AbstractQO {
 
     @ApiParam(value = N_PROJECT_ID,example = E_PROJECT_ID)
+    @NotNull
     private Integer projectId;
 
     @ApiParam(value = N_SOURCE_ID,example = E_SOURCE_ID)
+    @NotNull
     private Integer sourceId;
 
     @ApiParam(value = N_JOIN_INDEX,example = E_JOIN_INDEX)
