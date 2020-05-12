@@ -75,7 +75,7 @@ public class MetaChartController extends AbstractController implements MetaChart
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<DetailListVO> saveDetailList(@Valid @RequestBody DetailListAddDTO addDTO) throws Exception {
         DetailListPO po = detailListService.save(addDTO);
-        return ResponseEntity.created(new URI(WebConst.API_PATH + "/metaChart/detailList/" + po.getChartId()))
+        return ResponseEntity.created(new URI(apiPath + "/metaChart/detailList/" + po.getChartId()))
             .body(MetaChartMapper.INSTANCE.toDetailListVO(po));
     }
 

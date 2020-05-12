@@ -2,10 +2,9 @@ package com.youran.generate.pojo.po.chart;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.ChartType;
-import com.youran.generate.pojo.dto.chart.ChartFeatureDTO;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
-import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DetailColumnPO;
@@ -72,17 +71,17 @@ public class DetailListPO extends MetaChartPO {
 
     @Override
     public void featureDeserialize() {
-        ChartFeatureDTO featureDTO = FeatureMapper.asChartFeatureDTO(this.getFeature());
-        this.columnList = (List<ChartItemDTO<DetailColumnPO>>) featureDTO.getColumnList();
+        FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
+        this.columnList = featureDTO.getColumnList();
         this.defaultPageSize = featureDTO.getDefaultPageSize();
     }
 
     @Override
     public void featureSerialize() {
-        ChartFeatureDTO featureDTO = new ChartFeatureDTO();
+        FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setColumnList(this.columnList);
         featureDTO.setDefaultPageSize(this.defaultPageSize);
-        this.setFeature(FeatureMapper.asString(featureDTO));
+        this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
     public List<ChartItemDTO<DetailColumnPO>> getColumnList() {
@@ -100,4 +99,27 @@ public class DetailListPO extends MetaChartPO {
     public void setDefaultPageSize(Integer defaultPageSize) {
         this.defaultPageSize = defaultPageSize;
     }
+
+
+    static class FeatureDTO{
+        private List<ChartItemDTO<DetailColumnPO>> columnList;
+        private Integer defaultPageSize;
+
+        public List<ChartItemDTO<DetailColumnPO>> getColumnList() {
+            return columnList;
+        }
+
+        public void setColumnList(List<ChartItemDTO<DetailColumnPO>> columnList) {
+            this.columnList = columnList;
+        }
+
+        public Integer getDefaultPageSize() {
+            return defaultPageSize;
+        }
+
+        public void setDefaultPageSize(Integer defaultPageSize) {
+            this.defaultPageSize = defaultPageSize;
+        }
+    }
+
 }

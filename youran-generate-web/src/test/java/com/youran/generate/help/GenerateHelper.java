@@ -66,6 +66,18 @@ public class GenerateHelper {
     }
 
     /**
+     * 保存字段示例
+     *
+     * @return
+     */
+    public MetaFieldPO saveFieldExample(Integer entityId, String fieldName) {
+        MetaFieldAddDTO addDTO = MetaFieldHelper.getAddDTO(entityId);
+        addDTO.setFieldName(fieldName);
+        addDTO.setJfieldName(fieldName);
+        return metaFieldService.save(addDTO);
+    }
+
+    /**
      * 保存级联扩展示例
      *
      * @return

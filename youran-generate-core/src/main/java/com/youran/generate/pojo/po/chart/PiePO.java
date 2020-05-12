@@ -2,10 +2,9 @@ package com.youran.generate.pojo.po.chart;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.ChartType;
-import com.youran.generate.pojo.dto.chart.ChartFeatureDTO;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
-import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
@@ -77,17 +76,17 @@ public class PiePO extends MetaChartPO {
 
     @Override
     public void featureDeserialize() {
-        ChartFeatureDTO featureDTO = FeatureMapper.asChartFeatureDTO(this.getFeature());
+        FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
         this.dimension = featureDTO.getDimension();
         this.metrics = featureDTO.getMetrics();
     }
 
     @Override
     public void featureSerialize() {
-        ChartFeatureDTO featureDTO = new ChartFeatureDTO();
+        FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setDimension(this.dimension);
         featureDTO.setMetrics(this.metrics);
-        this.setFeature(FeatureMapper.asString(featureDTO));
+        this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
     public ChartItemDTO<DimensionPO> getDimension() {
@@ -104,5 +103,26 @@ public class PiePO extends MetaChartPO {
 
     public void setMetrics(ChartItemDTO<MetricsPO> metrics) {
         this.metrics = metrics;
+    }
+
+    static class FeatureDTO{
+        private ChartItemDTO<DimensionPO> dimension;
+        private ChartItemDTO<MetricsPO> metrics;
+
+        public ChartItemDTO<DimensionPO> getDimension() {
+            return dimension;
+        }
+
+        public void setDimension(ChartItemDTO<DimensionPO> dimension) {
+            this.dimension = dimension;
+        }
+
+        public ChartItemDTO<MetricsPO> getMetrics() {
+            return metrics;
+        }
+
+        public void setMetrics(ChartItemDTO<MetricsPO> metrics) {
+            this.metrics = metrics;
+        }
     }
 }

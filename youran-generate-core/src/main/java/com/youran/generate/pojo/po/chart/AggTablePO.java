@@ -2,10 +2,9 @@ package com.youran.generate.pojo.po.chart;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.ChartType;
-import com.youran.generate.pojo.dto.chart.ChartFeatureDTO;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
-import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
@@ -84,17 +83,17 @@ public class AggTablePO extends MetaChartPO {
 
     @Override
     public void featureDeserialize() {
-        ChartFeatureDTO featureDTO = FeatureMapper.asChartFeatureDTO(this.getFeature());
-        this.dimensionList = (List<ChartItemDTO<DimensionPO>>) featureDTO.getDimensionList();
-        this.metricsList = (List<ChartItemDTO<MetricsPO>>) featureDTO.getMetricsList();
+        FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
+        this.dimensionList = featureDTO.getDimensionList();
+        this.metricsList = featureDTO.getMetricsList();
     }
 
     @Override
     public void featureSerialize() {
-        ChartFeatureDTO featureDTO = new ChartFeatureDTO();
+        FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setDimensionList(this.dimensionList);
         featureDTO.setMetricsList(this.metricsList);
-        this.setFeature(FeatureMapper.asString(featureDTO));
+        this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
     public List<ChartItemDTO<DimensionPO>> getDimensionList() {
@@ -112,4 +111,25 @@ public class AggTablePO extends MetaChartPO {
     public void setMetricsList(List<ChartItemDTO<MetricsPO>> metricsList) {
         this.metricsList = metricsList;
     }
+
+    static class FeatureDTO{
+        private List<ChartItemDTO<DimensionPO>> dimensionList;
+        private List<ChartItemDTO<MetricsPO>> metricsList;
+        public List<ChartItemDTO<DimensionPO>> getDimensionList() {
+            return dimensionList;
+        }
+
+        public void setDimensionList(List<ChartItemDTO<DimensionPO>> dimensionList) {
+            this.dimensionList = dimensionList;
+        }
+
+        public List<ChartItemDTO<MetricsPO>> getMetricsList() {
+            return metricsList;
+        }
+
+        public void setMetricsList(List<ChartItemDTO<MetricsPO>> metricsList) {
+            this.metricsList = metricsList;
+        }
+    }
+
 }

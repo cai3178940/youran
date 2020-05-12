@@ -2,10 +2,9 @@ package com.youran.generate.pojo.po.chart;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.ChartType;
-import com.youran.generate.pojo.dto.chart.ChartFeatureDTO;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
-import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
@@ -98,19 +97,19 @@ public class BarLinePO extends MetaChartPO {
 
     @Override
     public void featureDeserialize() {
-        ChartFeatureDTO featureDTO = FeatureMapper.asChartFeatureDTO(this.getFeature());
+        FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
         this.axisX = featureDTO.getAxisX();
         this.axisX2 = featureDTO.getAxisX2();
-        this.axisYList = (List<ChartItemDTO<MetricsPO>>) featureDTO.getAxisYList();
+        this.axisYList = featureDTO.getAxisYList();
     }
 
     @Override
     public void featureSerialize() {
-        ChartFeatureDTO featureDTO = new ChartFeatureDTO();
+        FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setAxisX(this.axisX);
         featureDTO.setAxisX2(this.axisX2);
         featureDTO.setAxisYList(this.axisYList);
-        this.setFeature(FeatureMapper.asString(featureDTO));
+        this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
     public ChartItemDTO<DimensionPO> getAxisX() {
@@ -136,4 +135,35 @@ public class BarLinePO extends MetaChartPO {
     public void setAxisYList(List<ChartItemDTO<MetricsPO>> axisYList) {
         this.axisYList = axisYList;
     }
+
+    static class FeatureDTO{
+        private ChartItemDTO<DimensionPO> axisX;
+        private ChartItemDTO<DimensionPO> axisX2;
+        private List<ChartItemDTO<MetricsPO>> axisYList;
+
+        public ChartItemDTO<DimensionPO> getAxisX() {
+            return axisX;
+        }
+
+        public void setAxisX(ChartItemDTO<DimensionPO> axisX) {
+            this.axisX = axisX;
+        }
+
+        public ChartItemDTO<DimensionPO> getAxisX2() {
+            return axisX2;
+        }
+
+        public void setAxisX2(ChartItemDTO<DimensionPO> axisX2) {
+            this.axisX2 = axisX2;
+        }
+
+        public List<ChartItemDTO<MetricsPO>> getAxisYList() {
+            return axisYList;
+        }
+
+        public void setAxisYList(List<ChartItemDTO<MetricsPO>> axisYList) {
+            this.axisYList = axisYList;
+        }
+    }
+
 }

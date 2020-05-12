@@ -18,7 +18,7 @@ public class MetaChartExample {
     public static final String N_CHART_TYPE = "图表类型";
     public static final String E_CHART_TYPE = "1";
     public static final String N_CHART_NAME = "图表名称";
-    public static final String E_CHART_NAME = "chart_1";
+    public static final String E_CHART_NAME = "MyChart";
     public static final String N_MODULE = "模块名";
     public static final String E_MODULE = "system";
     public static final String N_TITLE = "图表标题";

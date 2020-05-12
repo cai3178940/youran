@@ -106,9 +106,6 @@
         <if test="projectId != null ">
             and t.project_id = #{projectId}
         </if>
-        <if test="sourceId != null ">
-            and t.source_id = #{sourceId}
-        </if>
         <if test="chartType != null ">
             and t.chart_type = #{chartType}
         </if>
@@ -120,12 +117,6 @@
 
     <sql id="orderCondition">
         order by
-        <if test="createdTimeSortSign != null and createdTimeSortSign!=0">
-            t.created_time <if test="createdTimeSortSign > 0">asc</if><if test="createdTimeSortSign &lt; 0">desc</if>,
-        </if>
-        <if test="operatedTimeSortSign != null and operatedTimeSortSign!=0">
-            t.operated_time <if test="operatedTimeSortSign > 0">asc</if><if test="operatedTimeSortSign &lt; 0">desc</if>,
-        </if>
             t.operated_time desc
     </sql>
 
