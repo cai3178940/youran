@@ -18,6 +18,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Git操作业务类
@@ -235,9 +237,15 @@ public class GitService {
             credentialsProvider = new UsernamePasswordCredentialsProvider(credential.getUsername(), credential.getPassword());
         }
         try (Git git = new Git(repository)) {
-            git.push()
+            Iterable<PushResult> pushResults = git.push()
                 .setCredentialsProvider(credentialsProvider)
                 .call();
+            pushResults.forEach(pushResult -> {
+                if (StringUtils.isNotBlank(pushResult.getMessages())){
+                    // 不一定是错误信息，但是大概率是；error级别醒目些。
+                    LOGGER.error("远程仓库信息反馈:"+pushResult.getMessages());
+                }
+            });
         } catch (GitAPIException e) {
             LOGGER.error("推送远程仓库异常", e);
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "推送远程仓库异常");
