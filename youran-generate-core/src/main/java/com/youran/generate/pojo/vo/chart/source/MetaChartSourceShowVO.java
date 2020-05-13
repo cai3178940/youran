@@ -1,8 +1,12 @@
 package com.youran.generate.pojo.vo.chart.source;
 
 import com.youran.common.pojo.vo.AbstractVO;
+import com.youran.generate.pojo.dto.chart.source.JoinDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 import static com.youran.generate.pojo.example.chart.MetaChartSourceExample.*;
 
@@ -21,11 +25,18 @@ public class MetaChartSourceShowVO extends AbstractVO {
     @ApiModelProperty(notes = N_PROJECT_ID,example = E_PROJECT_ID)
     private Integer projectId;
 
-    @ApiModelProperty(notes = N_FEATURE,example = E_FEATURE)
-    private String feature;
-
     @ApiModelProperty(notes = N_AGGREGATION,example = E_AGGREGATION)
     private Boolean aggregation;
+
+    @ApiModelProperty(notes = "主实体id", example = "1", required = true)
+    @NotNull
+    private Integer entityId;
+
+    @ApiModelProperty(notes = "关联")
+    private List<JoinDTO> joins;
+
+    @ApiModelProperty(notes = "数量限制", example = "1000")
+    private Integer limit;
 
 
     public Integer getSourceId() {
@@ -44,12 +55,28 @@ public class MetaChartSourceShowVO extends AbstractVO {
         this.projectId = projectId;
     }
 
-    public String getFeature() {
-        return this.feature;
+    public Integer getEntityId() {
+        return entityId;
     }
 
-    public void setFeature(String feature) {
-        this.feature = feature;
+    public void setEntityId(Integer entityId) {
+        this.entityId = entityId;
+    }
+
+    public List<JoinDTO> getJoins() {
+        return joins;
+    }
+
+    public void setJoins(List<JoinDTO> joins) {
+        this.joins = joins;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 
     public Boolean getAggregation() {

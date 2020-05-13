@@ -9,8 +9,6 @@ import com.youran.generate.pojo.dto.chart.source.MetaChartSourceUpdateDTO;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceMapper;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
-import com.youran.generate.pojo.qo.chart.MetaChartSourceQO;
-import com.youran.generate.pojo.vo.chart.source.MetaChartSourceListVO;
 import com.youran.generate.pojo.vo.chart.source.MetaChartSourceShowVO;
 import com.youran.generate.service.MetaProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,16 +79,6 @@ public class MetaChartSourceService {
         return metaChartSource;
     }
 
-    /**
-     * 查询列表
-     *
-     * @param metaChartSourceQO
-     * @return
-     */
-    public List<MetaChartSourceListVO> list(MetaChartSourceQO metaChartSourceQO) {
-        List<MetaChartSourceListVO> list = metaChartSourceDAO.findListByQuery(metaChartSourceQO);
-        return list;
-    }
 
     /**
      * 根据主键获取【图表数据源】
@@ -146,6 +134,17 @@ public class MetaChartSourceService {
     }
 
 
+    /**
+     * 根据项目id,查询所有图表数据源
+     *
+     * @param projectId
+     * @return
+     */
+    public List<MetaChartSourcePO> findByProjectId(Integer projectId) {
+        List<MetaChartSourcePO> list = metaChartSourceDAO.findByProjectId(projectId);
+        list.forEach(po -> po.featureDeserialize());
+        return list;
+    }
 }
 
 

@@ -27,6 +27,9 @@ public interface MetaChartSourceDAO extends DAO<MetaChartSourcePO> {
     List<MetaChartSourceListVO> findListByQuery(MetaChartSourceQO metaChartSourceQO);
 
 
+    List<MetaChartSourcePO> findByProjectId(Integer projectId);
+
+
 }
 
 

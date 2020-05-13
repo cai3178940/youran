@@ -5,7 +5,9 @@ import com.youran.generate.dao.chart.MetaChartSourceItemDAO;
 import com.youran.generate.pojo.dto.chart.source.item.AggOrderAddDTO;
 import com.youran.generate.pojo.dto.chart.source.item.AggOrderUpdateDTO;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.source.item.AggOrderPO;
+import com.youran.generate.service.MetaProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,8 @@ public class AggOrderService {
     private MetaChartSourceItemDAO metaChartSourceItemDAO;
     @Autowired
     private MetaChartSourceItemService metaChartSourceItemService;
-
+    @Autowired
+    private MetaProjectService metaProjectService;
     /**
      * 【聚合排序】数据预处理
      *
@@ -42,10 +45,13 @@ public class AggOrderService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public AggOrderPO save(AggOrderAddDTO addDTO) {
+        Integer projectId = addDTO.getProjectId();
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         AggOrderPO po = MetaChartSourceItemMapper.INSTANCE
             .fromAggOrderAddDTO(addDTO);
         this.preparePO(po);
         metaChartSourceItemDAO.save(po);
+        metaProjectService.updateProject(project);
         return po;
     }
 
@@ -61,9 +67,12 @@ public class AggOrderService {
     public AggOrderPO update(AggOrderUpdateDTO updateDTO) {
         Integer sourceItemId = updateDTO.getSourceItemId();
         AggOrderPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
+        Integer projectId = po.getProjectId();
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         MetaChartSourceItemMapper.INSTANCE.setAggOrderUpdateDTO(po, updateDTO);
         this.preparePO(po);
         metaChartSourceItemDAO.update(po);
+        metaProjectService.updateProject(project);
         return po;
     }
 

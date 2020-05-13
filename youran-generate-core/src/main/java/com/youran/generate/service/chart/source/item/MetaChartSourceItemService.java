@@ -4,6 +4,7 @@ import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.dao.chart.MetaChartSourceItemDAO;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.MetaChartSourceItemPO;
 import com.youran.generate.pojo.qo.chart.MetaChartSourceItemQO;
@@ -32,16 +33,17 @@ public class MetaChartSourceItemService {
     private MetaProjectService metaProjectService;
     @Autowired
     private MetaChartSourceService metaChartSourceService;
+
     /**
      * 【图表数据源项】数据预处理
      *
      * @param po
      */
-    public void preparePO(MetaChartSourceItemPO po){
+    public void preparePO(MetaChartSourceItemPO po) {
         metaProjectService.getAndCheckProject(po.getProjectId());
         MetaChartSourcePO chartSource = metaChartSourceService.getMetaChartSource(po.getSourceId(), true);
         po.setChartSource(chartSource);
-        if(po.getParentId()!=null){
+        if (po.getParentId() != null) {
             MetaChartSourceItemPO parent = this.getMetaChartSourceItem(po.getParentId(), true);
             po.setParent(parent);
         }
@@ -90,12 +92,36 @@ public class MetaChartSourceItemService {
     public int delete(Integer... sourceItemIds) {
         int count = 0;
         for (Integer sourceItemId : sourceItemIds) {
+            MetaChartSourceItemPO po = metaChartSourceItemDAO.findById(sourceItemId);
+            if (po == null) {
+                continue;
+            }
+            Integer projectId = po.getProjectId();
+            //校验操作人
+            MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
             count += metaChartSourceItemDAO.delete(sourceItemId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }
 
 
+    /**
+     * 根据项目id查询所有数据项
+     *
+     * @param projectId
+     * @param cast
+     * @return
+     */
+    public List<MetaChartSourceItemPO> findByProjectId(Integer projectId, boolean cast) {
+        List<MetaChartSourceItemPO> list = metaChartSourceItemDAO.findByProjectId(projectId);
+        if (!cast) {
+            return list;
+        }
+        return list.stream()
+            .<MetaChartSourceItemPO>map(po -> po.castSubType(true))
+            .collect(Collectors.toList());
+    }
 }
 
 

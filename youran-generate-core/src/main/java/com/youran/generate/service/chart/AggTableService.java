@@ -5,8 +5,10 @@ import com.youran.generate.dao.chart.MetaChartDAO;
 import com.youran.generate.pojo.dto.chart.AggTableAddDTO;
 import com.youran.generate.pojo.dto.chart.AggTableUpdateDTO;
 import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.AggTablePO;
 import com.youran.generate.pojo.vo.chart.AggTableVO;
+import com.youran.generate.service.MetaProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,8 @@ public class AggTableService {
     private MetaChartDAO metaChartDAO;
     @Autowired
     private MetaChartService metaChartService;
-
+    @Autowired
+    private MetaProjectService metaProjectService;
 
     /**
      * 校验【聚合表】数据合法性
@@ -43,10 +46,13 @@ public class AggTableService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public AggTablePO save(AggTableAddDTO addDTO) {
+        Integer projectId = addDTO.getProjectId();
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         AggTablePO po = MetaChartMapper.INSTANCE.fromAggTableAddDTO(addDTO);
         po.featureSerialize();
         this.check(po);
         metaChartDAO.save(po);
+        metaProjectService.updateProject(project);
         return po;
     }
 
@@ -62,10 +68,13 @@ public class AggTableService {
     public AggTablePO update(AggTableUpdateDTO updateDTO) {
         Integer chartId = updateDTO.getChartId();
         AggTablePO po = metaChartService.getMetaChart(chartId, true);
+        Integer projectId = po.getProjectId();
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         MetaChartMapper.INSTANCE.setAggTableUpdateDTO(po, updateDTO);
         po.featureSerialize();
         this.check(po);
         metaChartDAO.update(po);
+        metaProjectService.updateProject(project);
         return po;
     }
 

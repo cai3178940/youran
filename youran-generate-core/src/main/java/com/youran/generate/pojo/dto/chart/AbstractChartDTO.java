@@ -25,7 +25,7 @@ public abstract class AbstractChartDTO extends AbstractDTO {
     @NotNull
     private Integer sourceId;
 
-    @ApiModelProperty(notes = "图表名称", example = "chart_1", required = true)
+    @ApiModelProperty(notes = "图表名称", example = "MyChart", required = true)
     @NotNull
     @Length(max = 64)
     @Pattern(regexp = PatternConst.CLASS_NAME, message = PatternConst.CLASS_NAME_MSG)
