@@ -491,6 +491,9 @@ export default {
           } else if (data.info.contextType === 3) {
             // 枚举上下文-黄色图标
             svgIcon.className += 'color-warning'
+          } else if (data.info.contextType === 4) {
+            // 图表上下文-绿色图标
+            svgIcon.className += 'color-success'
           }
         }
       }

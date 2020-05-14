@@ -30,8 +30,8 @@ public class DetailOrderPO extends MetaChartSourceItemPO {
     @Override
     public void assembleItem(MetaChartSourcePO chartSource) {
         super.assembleItem(chartSource);
-        Map<Integer, MetricsPO> metricsMap = chartSource.getMetricsMap();
-        metricsMap.entrySet().stream()
+        Map<Integer, DetailColumnPO> detailColumnMap = chartSource.getDetailColumnMap();
+        detailColumnMap.entrySet().stream()
             .filter(entry -> entry.getKey().equals(this.getParentId()))
             .findFirst()
             .ifPresent(entry -> this.setParent(entry.getValue()));
