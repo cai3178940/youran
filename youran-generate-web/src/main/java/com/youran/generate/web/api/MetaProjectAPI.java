@@ -90,4 +90,11 @@ public interface MetaProjectAPI {
     })
     ResponseEntity<Integer> deleteBatch(Integer[] projectId);
 
+
+    @ApiOperation(value = "查询模块列表")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "path"),
+    })
+    ResponseEntity<List<String>> findModules(Integer projectId);
+
 }

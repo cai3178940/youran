@@ -75,7 +75,7 @@ public class DetailListControllerTest extends AbstractWebTest {
         DetailListAddDTO addDTO = detailListHelper.getAddDTO(
             metaProject.getProjectId(),metaChartSource.getSourceId(),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(detailColumnPO.getSourceItemId())));
-        restMockMvc.perform(post(getApiPath() + "/metaChart/detailList")
+        restMockMvc.perform(post(getApiPath() + "/meta_chart/detail_list")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isCreated());
@@ -90,7 +90,7 @@ public class DetailListControllerTest extends AbstractWebTest {
             metaProject.getProjectId(),metaChartSource.getSourceId(),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(detailColumnPO.getSourceItemId())));
         DetailListUpdateDTO updateDTO = detailListHelper.getUpdateDTO(metaChart);
-        restMockMvc.perform(put(getApiPath() + "/metaChart/detailList")
+        restMockMvc.perform(put(getApiPath() + "/meta_chart/detail_list")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -104,7 +104,7 @@ public class DetailListControllerTest extends AbstractWebTest {
         DetailListPO metaChart = detailListHelper.saveExample(
             metaProject.getProjectId(),metaChartSource.getSourceId(),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(detailColumnPO.getSourceItemId())));
-        restMockMvc.perform(get(getApiPath() + "/metaChart"))
+        restMockMvc.perform(get(getApiPath() + "/meta_chart"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(is(1)));
     }
@@ -117,7 +117,7 @@ public class DetailListControllerTest extends AbstractWebTest {
         DetailListPO metaChart = detailListHelper.saveExample(
             metaProject.getProjectId(),metaChartSource.getSourceId(),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(detailColumnPO.getSourceItemId())));
-        restMockMvc.perform(get(getApiPath() + "/metaChart/detailList/{chartId}", metaChart.getChartId()))
+        restMockMvc.perform(get(getApiPath() + "/meta_chart/detail_list/{chartId}", metaChart.getChartId()))
             .andExpect(status().isOk());
     }
 
@@ -129,7 +129,7 @@ public class DetailListControllerTest extends AbstractWebTest {
         DetailListPO metaChart = detailListHelper.saveExample(
             metaProject.getProjectId(),metaChartSource.getSourceId(),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(detailColumnPO.getSourceItemId())));
-        restMockMvc.perform(delete(getApiPath() + "/metaChart")
+        restMockMvc.perform(delete(getApiPath() + "/meta_chart")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(Lists.newArrayList(metaChart.getChartId()))))
             .andExpect(status().isOk())

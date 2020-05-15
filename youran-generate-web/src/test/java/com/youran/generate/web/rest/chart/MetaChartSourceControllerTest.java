@@ -48,7 +48,7 @@ public class MetaChartSourceControllerTest extends AbstractWebTest {
     public void save() throws Exception {
         MetaChartSourceAddDTO addDTO = metaChartSourceHelper.getMetaChartSourceAddDTO(
             this.metaProject.getProjectId(), this.metaEntity.getEntityId());
-        restMockMvc.perform(post(getApiPath() + "/metaChartSource")
+        restMockMvc.perform(post(getApiPath() + "/meta_chart_source")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isCreated());
@@ -62,7 +62,7 @@ public class MetaChartSourceControllerTest extends AbstractWebTest {
         MetaChartSourcePO metaChartSource = metaChartSourceHelper.saveMetaChartSourceExample(
             this.metaProject.getProjectId(), this.metaEntity.getEntityId());
         MetaChartSourceUpdateDTO updateDTO = metaChartSourceHelper.getMetaChartSourceUpdateDTO(metaChartSource);
-        restMockMvc.perform(put(getApiPath() + "/metaChartSource")
+        restMockMvc.perform(put(getApiPath() + "/meta_chart_source")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -75,7 +75,7 @@ public class MetaChartSourceControllerTest extends AbstractWebTest {
     public void show() throws Exception {
         MetaChartSourcePO metaChartSource = metaChartSourceHelper.saveMetaChartSourceExample(
             this.metaProject.getProjectId(), this.metaEntity.getEntityId());
-        restMockMvc.perform(get(getApiPath() + "/metaChartSource/{sourceId}", metaChartSource.getSourceId()))
+        restMockMvc.perform(get(getApiPath() + "/meta_chart_source/{sourceId}", metaChartSource.getSourceId()))
             .andExpect(status().isOk());
     }
 
@@ -86,7 +86,7 @@ public class MetaChartSourceControllerTest extends AbstractWebTest {
     public void deleteBatch() throws Exception {
         MetaChartSourcePO metaChartSource = metaChartSourceHelper.saveMetaChartSourceExample(
             this.metaProject.getProjectId(), this.metaEntity.getEntityId());
-        restMockMvc.perform(delete(getApiPath() + "/metaChartSource")
+        restMockMvc.perform(delete(getApiPath() + "/meta_chart_source")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(Lists.newArrayList(metaChartSource.getSourceId()))))
             .andExpect(status().isOk())

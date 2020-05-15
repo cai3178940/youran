@@ -172,11 +172,4 @@
             and m.hold_refer2 = #{hold,jdbcType=BOOLEAN}
     </select>
 
-    <select id="findModulesByProject" resultType="string">
-        select distinct `module` from meta_entity
-        where deleted=0
-        and project_id = #{projectId,jdbcType=INTEGER}
-        and module is not null
-        order by module
-    </select>
 </mapper>

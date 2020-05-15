@@ -90,11 +90,15 @@
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" >
+              <el-dropdown-item :command="{method:'handleChart',arg:scope.row}">
+                <svg-icon className="dropdown-icon color-success" iconClass="chart"></svg-icon>
+                图表管理
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" divided>
                 <svg-icon className="dropdown-icon color-primary" iconClass="edit"></svg-icon>
                 编辑
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleDel',arg:scope.row}" >
+              <el-dropdown-item :command="{method:'handleDel',arg:scope.row}">
                 <svg-icon className="dropdown-icon color-danger" iconClass="trash"></svg-icon>
                 删除
               </el-dropdown-item>
@@ -102,7 +106,7 @@
                 <svg-icon className="dropdown-icon color-warning" iconClass="reverse-engineering"></svg-icon>
                 反向工程
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleExport',arg:scope.row}" >
+              <el-dropdown-item :command="{method:'handleExport',arg:scope.row}">
                 <svg-icon className="dropdown-icon color-purple" iconClass="download"></svg-icon>
                 导出元数据
               </el-dropdown-item>
@@ -242,6 +246,9 @@ export default {
     },
     handleConst (row) {
       this.$router.push(`/project/${row.projectId}/const`)
+    },
+    handleChart (row) {
+      this.$router.push(`/project/${row.projectId}/chart`)
     },
     handleEdit (row) {
       this.$router.push(`/project/edit/${row.projectId}`)

@@ -28,7 +28,7 @@ import java.net.URI;
  * @date 2020/04/04
  */
 @RestController
-@RequestMapping(WebConst.API_PATH + "/metaChartSource")
+@RequestMapping(WebConst.API_PATH + "/meta_chart_source")
 public class MetaChartSourceController extends AbstractController implements MetaChartSourceAPI {
 
     @Autowired
@@ -39,7 +39,7 @@ public class MetaChartSourceController extends AbstractController implements Met
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MetaChartSourceShowVO> save(@Valid @RequestBody MetaChartSourceAddDTO metaChartSourceAddDTO) throws Exception {
         MetaChartSourcePO metaChartSource = metaChartSourceService.save(metaChartSourceAddDTO);
-        return ResponseEntity.created(new URI(apiPath + "/metaChartSource/" + metaChartSource.getSourceId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_chart_source/" + metaChartSource.getSourceId()))
             .body(MetaChartSourceMapper.INSTANCE.toShowVO(metaChartSource));
     }
 

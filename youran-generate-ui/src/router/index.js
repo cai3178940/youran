@@ -24,6 +24,10 @@ import template from '@/views/template/index.vue'
 import templateList from '@/views/template/list.vue'
 import templateForm from '@/views/template/form.vue'
 
+import chart from '@/views/chart/index.vue'
+import chartList from '@/views/chart/list.vue'
+import chartForm from '@/views/chart/form.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -79,6 +83,28 @@ export default new Router({
         {
           path: 'mtmAdd/:entityIds?',
           component: mtmForm,
+          props: true
+        }
+      ]
+    },
+    {
+      path: '/project/:projectId/chart',
+      component: chart,
+      props: true,
+      children: [
+        {
+          path: '',
+          component: chartList,
+          props: true
+        },
+        {
+          path: 'add',
+          component: chartForm,
+          props: true
+        },
+        {
+          path: 'edit/:chartId',
+          component: chartForm,
           props: true
         }
       ]

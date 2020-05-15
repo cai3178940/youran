@@ -34,7 +34,7 @@
             <help-popover name="entity.module">
               <el-autocomplete
                 v-model="form.module"
-                :fetch-suggestions="findModulesByProject"
+                :fetch-suggestions="findModules"
                 style="width:100%;"
                 placeholder="例如：system"
               ></el-autocomplete>
@@ -175,7 +175,7 @@ export default {
       this.form.tableName = this.$common.snakeCase(this.form.className)
       this.$refs.entityForm.validateField('classAndTableName')
     },
-    findModulesByProject (queryString, cb) {
+    findModules (queryString, cb) {
       const action = () => {
         const entityModules = this.entityModules.slice(0)
         const results = queryString ? entityModules.filter(
@@ -186,7 +186,7 @@ export default {
       if (this.entityModules) {
         action()
       } else {
-        entityApi.findModulesByProject(this.projectId)
+        projectApi.findModules(this.projectId)
           .then(data => {
             this.entityModules = data
             action()

@@ -61,7 +61,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             null
         );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/aggOrder")
+        restMockMvc.perform(post(getApiPath() + "/meta_chart_source_item/agg_order")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isOk());
@@ -75,7 +75,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             null
         );
         AggOrderUpdateDTO updateDTO = metaChartSourceItemHelper.getAggOrderUpdateDTO(po);
-        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/aggOrder")
+        restMockMvc.perform(put(getApiPath() + "/meta_chart_source_item/agg_order")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -88,7 +88,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             null
         );
-        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/aggOrder")
+        restMockMvc.perform(get(getApiPath() + "/meta_chart_source_item/agg_order")
             .param("projectId",this.metaProject.getProjectId().toString())
             .param("sourceId",this.metaChartSource.getSourceId().toString()))
             .andExpect(status().isOk())
@@ -105,7 +105,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             this.metaField.getFieldId()
         );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/detailColumn")
+        restMockMvc.perform(post(getApiPath() + "/meta_chart_source_item/detail_column")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isOk());
@@ -119,7 +119,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaField.getFieldId()
         );
         DetailColumnUpdateDTO updateDTO = metaChartSourceItemHelper.getDetailColumnUpdateDTO(po);
-        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/detailColumn")
+        restMockMvc.perform(put(getApiPath() + "/meta_chart_source_item/detail_column")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -132,7 +132,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             this.metaField.getFieldId()
         );
-        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/detailColumn")
+        restMockMvc.perform(get(getApiPath() + "/meta_chart_source_item/detail_column")
             .param("projectId",this.metaProject.getProjectId().toString())
             .param("sourceId",this.metaChartSource.getSourceId().toString()))
             .andExpect(status().isOk())
@@ -154,7 +154,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             detailColumnPO.getSourceItemId()
         );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/detailOrder")
+        restMockMvc.perform(post(getApiPath() + "/meta_chart_source_item/detail_order")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isOk());
@@ -173,7 +173,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             detailColumnPO.getSourceItemId()
         );
         DetailOrderUpdateDTO updateDTO = metaChartSourceItemHelper.getDetailOrderUpdateDTO(po);
-        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/detailOrder")
+        restMockMvc.perform(put(getApiPath() + "/meta_chart_source_item/detail_order")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -191,7 +191,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             detailColumnPO.getSourceItemId()
         );
-        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/detailOrder")
+        restMockMvc.perform(get(getApiPath() + "/meta_chart_source_item/detail_order")
             .param("projectId",this.metaProject.getProjectId().toString())
             .param("sourceId",this.metaChartSource.getSourceId().toString()))
             .andExpect(status().isOk())
@@ -208,7 +208,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             this.metaField.getFieldId()
         );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/dimension")
+        restMockMvc.perform(post(getApiPath() + "/meta_chart_source_item/dimension")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isOk());
@@ -222,7 +222,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaField.getFieldId()
         );
         DimensionUpdateDTO updateDTO = metaChartSourceItemHelper.getDimensionUpdateDTO(po);
-        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/dimension")
+        restMockMvc.perform(put(getApiPath() + "/meta_chart_source_item/dimension")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -235,7 +235,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             this.metaField.getFieldId()
         );
-        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/dimension")
+        restMockMvc.perform(get(getApiPath() + "/meta_chart_source_item/dimension")
             .param("projectId",this.metaProject.getProjectId().toString())
             .param("sourceId",this.metaChartSource.getSourceId().toString()))
             .andExpect(status().isOk())
@@ -257,7 +257,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             metricsPO.getSourceItemId()
         );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/having")
+        restMockMvc.perform(post(getApiPath() + "/meta_chart_source_item/having")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isOk());
@@ -276,7 +276,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             metricsPO.getSourceItemId()
         );
         HavingUpdateDTO updateDTO = metaChartSourceItemHelper.getHavingUpdateDTO(po);
-        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/having")
+        restMockMvc.perform(put(getApiPath() + "/meta_chart_source_item/having")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -294,7 +294,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             metricsPO.getSourceItemId()
         );
-        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/having")
+        restMockMvc.perform(get(getApiPath() + "/meta_chart_source_item/having")
             .param("projectId",this.metaProject.getProjectId().toString())
             .param("sourceId",this.metaChartSource.getSourceId().toString()))
             .andExpect(status().isOk())
@@ -311,7 +311,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             this.metaField.getFieldId()
         );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/metrics")
+        restMockMvc.perform(post(getApiPath() + "/meta_chart_source_item/metrics")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isOk());
@@ -325,7 +325,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaField.getFieldId()
         );
         MetricsUpdateDTO updateDTO = metaChartSourceItemHelper.getMetricsUpdateDTO(po);
-        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/metrics")
+        restMockMvc.perform(put(getApiPath() + "/meta_chart_source_item/metrics")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -338,7 +338,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             this.metaField.getFieldId()
         );
-        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/metrics")
+        restMockMvc.perform(get(getApiPath() + "/meta_chart_source_item/metrics")
             .param("projectId",this.metaProject.getProjectId().toString())
             .param("sourceId",this.metaChartSource.getSourceId().toString()))
             .andExpect(status().isOk())
@@ -355,7 +355,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             this.metaField.getFieldId()
         );
-        restMockMvc.perform(post(getApiPath() + "/metaChartSourceItem/where")
+        restMockMvc.perform(post(getApiPath() + "/meta_chart_source_item/where")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isOk());
@@ -370,7 +370,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaField.getFieldId()
         );
         WhereUpdateDTO updateDTO = metaChartSourceItemHelper.getWhereUpdateDTO(po);
-        restMockMvc.perform(put(getApiPath() + "/metaChartSourceItem/where")
+        restMockMvc.perform(put(getApiPath() + "/meta_chart_source_item/where")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -383,7 +383,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             this.metaField.getFieldId()
         );
-        restMockMvc.perform(get(getApiPath() + "/metaChartSourceItem/where")
+        restMockMvc.perform(get(getApiPath() + "/meta_chart_source_item/where")
             .param("projectId",this.metaProject.getProjectId().toString())
             .param("sourceId",this.metaChartSource.getSourceId().toString()))
             .andExpect(status().isOk())
@@ -400,7 +400,7 @@ public class MetaChartSourceItemControllerTest extends AbstractWebTest {
             this.metaChartSource.getSourceId(),
             null
         );
-        restMockMvc.perform(delete(getApiPath() + "/metaChartSourceItem")
+        restMockMvc.perform(delete(getApiPath() + "/meta_chart_source_item")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(Lists.newArrayList(po.getSourceItemId()))))
             .andExpect(status().isOk())

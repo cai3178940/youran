@@ -47,7 +47,6 @@ public class MetaProjectService {
     private MetaConstService metaConstService;
     @Autowired
     private MetaProjectDAO metaProjectDAO;
-
     @Autowired
     private GenerateProperties generateProperties;
     @Autowired
@@ -256,6 +255,16 @@ public class MetaProjectService {
         return projectPO;
     }
 
+
+    /**
+     * 查询某项目的模块列表
+     *
+     * @param projectId 项目id
+     * @return 模块列表
+     */
+    public List<String> findModules(Integer projectId) {
+        return metaProjectDAO.findModules(projectId);
+    }
 
     /**
      * 根据项目校验操作人

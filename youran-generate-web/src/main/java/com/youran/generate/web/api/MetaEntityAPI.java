@@ -107,9 +107,4 @@ public interface MetaEntityAPI {
     })
     ResponseEntity<String> getDefaultFkFieldNameForSql(Integer entityId);
 
-    @ApiOperation(value = "查询某项目的模块列表")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "projectId", dataType = "int", value = "项目id", paramType = "query"),
-    })
-    ResponseEntity<List<String>> findModules(Integer projectId);
 }

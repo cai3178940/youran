@@ -55,13 +55,4 @@ public interface MetaEntityDAO extends DAO<MetaEntityPO> {
                                                 @Param("hold") boolean hold);
 
 
-    /**
-     * 查询某项目的模块列表
-     *
-     * @param projectId 项目id
-     * @return
-     */
-    List<String> findModulesByProject(@Param("projectId") Integer projectId);
-
-
 }

@@ -84,19 +84,6 @@ export default {
         }
       })
       .then(response => checkResult(response))
-  },
-
-  /**
-   * 查询实体详情
-   */
-  findModulesByProject (projectId) {
-    return request.get(`/${apiPath}/meta_entity/modules`,
-      {
-        params: {
-          projectId
-        }
-      })
-      .then(response => checkResult(response))
   }
 
 }

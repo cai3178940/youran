@@ -241,14 +241,4 @@ public class MetaEntityService {
     }
 
 
-    /**
-     * 查询某项目的模块列表
-     *
-     * @param projectId 项目id
-     * @return 模块列表
-     */
-    public List<String> findModulesByProject(Integer projectId) {
-        return metaEntityDAO.findModulesByProject(projectId);
-    }
-
 }

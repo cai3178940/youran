@@ -105,4 +105,22 @@
         where t.deleted = 0
         order by t.created_time
     </select>
+
+    <select id="findModules" resultType="string">
+        select distinct `module`
+        from (
+            select `module` from meta_entity
+            where deleted=0
+                and project_id = #{projectId,jdbcType=INTEGER}
+                and module is not null
+
+            union all
+
+            select `module` from meta_chart
+            where deleted=0
+                and project_id = #{projectId,jdbcType=INTEGER}
+                and module is not null
+        ) as t
+    </select>
+
 </mapper>

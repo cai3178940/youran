@@ -28,7 +28,7 @@ import java.util.List;
  * @date 2020/04/04
  */
 @RestController
-@RequestMapping(WebConst.API_PATH + "/metaChartSourceItem")
+@RequestMapping(WebConst.API_PATH + "/meta_chart_source_item")
 public class MetaChartSourceItemController extends AbstractController implements MetaChartSourceItemAPI {
 
     @Autowired
@@ -52,7 +52,7 @@ public class MetaChartSourceItemController extends AbstractController implements
      * 保存
      */
     @Override
-    @PostMapping("/aggOrder")
+    @PostMapping("/agg_order")
     public ResponseEntity<AggOrderVO> saveAggOrder(@Valid @RequestBody AggOrderAddDTO addDTO) throws Exception {
         AggOrderPO po = aggOrderService.save(addDTO);
         return ResponseEntity.ok(MetaChartSourceItemMapper.INSTANCE.toAggOrderVO(po));
@@ -98,19 +98,19 @@ public class MetaChartSourceItemController extends AbstractController implements
      * 修改
      */
     @Override
-    @PutMapping("/aggOrder")
+    @PutMapping("/agg_order")
     public ResponseEntity<AggOrderVO> updateAggOrder(@Valid @RequestBody AggOrderUpdateDTO updateDTO) {
         AggOrderPO po = aggOrderService.update(updateDTO);
         return ResponseEntity.ok(MetaChartSourceItemMapper.INSTANCE.toAggOrderVO(po));
     }
     @Override
-    @PutMapping("/detailColumn")
+    @PutMapping("/detail_column")
     public ResponseEntity<DetailColumnVO> updateDetailColumn(@Valid @RequestBody DetailColumnUpdateDTO updateDTO) {
         DetailColumnPO po = detailColumnService.update(updateDTO);
         return ResponseEntity.ok(MetaChartSourceItemMapper.INSTANCE.toDetailColumnVO(po));
     }
     @Override
-    @PutMapping("/detailOrder")
+    @PutMapping("/detail_order")
     public ResponseEntity<DetailOrderVO> updateDetailOrder(@Valid @RequestBody DetailOrderUpdateDTO updateDTO) {
         DetailOrderPO po = detailOrderService.update(updateDTO);
         return ResponseEntity.ok(MetaChartSourceItemMapper.INSTANCE.toDetailOrderVO(po));
@@ -144,21 +144,21 @@ public class MetaChartSourceItemController extends AbstractController implements
      * 列表查询
      */
     @Override
-    @GetMapping("/aggOrder")
+    @GetMapping("/agg_order")
     public ResponseEntity<List<AggOrderVO>> listAggOrder(@Valid MetaChartSourceItemQO qo) {
         qo.setType(SourceItemType.AGG_ORDER.getValue());
         List<AggOrderVO> list = metaChartSourceItemService.list(qo);
         return ResponseEntity.ok(list);
     }
     @Override
-    @GetMapping("/detailColumn")
+    @GetMapping("/detail_column")
     public ResponseEntity<List<DetailColumnVO>> listDetailColumn(@Valid MetaChartSourceItemQO qo) {
         qo.setType(SourceItemType.DETAIL_COLUMN.getValue());
         List<DetailColumnVO> list = metaChartSourceItemService.list(qo);
         return ResponseEntity.ok(list);
     }
     @Override
-    @GetMapping("/detailOrder")
+    @GetMapping("/detail_order")
     public ResponseEntity<List<DetailOrderVO>> listDetailOrder(@Valid MetaChartSourceItemQO qo) {
         qo.setType(SourceItemType.DETAIL_ORDER.getValue());
         List<DetailOrderVO> list = metaChartSourceItemService.list(qo);

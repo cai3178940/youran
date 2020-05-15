@@ -152,5 +152,12 @@ export default {
         params: params
       })
       .then(response => checkResult(response))
+  },
+  /**
+   * 查询模块列表
+   */
+  findModules (projectId) {
+    return request.get(`/${apiPath}/meta_project/${projectId}/modules`)
+      .then(response => checkResult(response))
   }
 }

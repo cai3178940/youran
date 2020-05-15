@@ -36,7 +36,7 @@ import java.util.List;
  * @date 2020/04/04
  */
 @RestController
-@RequestMapping(WebConst.API_PATH + "/metaChart")
+@RequestMapping(WebConst.API_PATH + "/meta_chart")
 public class MetaChartController extends AbstractController implements MetaChartAPI {
 
 
@@ -48,46 +48,46 @@ public class MetaChartController extends AbstractController implements MetaChart
     private DetailListService detailListService;
 
     @Override
-    @PostMapping("/aggTable")
+    @PostMapping("/agg_table")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AggTableVO> saveAggTable(@Valid @RequestBody AggTableAddDTO addDTO) throws Exception {
         AggTablePO po = aggTableService.save(addDTO);
-        return ResponseEntity.created(new URI(apiPath + "/metaChart/aggTable/" + po.getChartId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_chart/agg_table/" + po.getChartId()))
             .body(MetaChartMapper.INSTANCE.toAggTableVO(po));
     }
 
     @Override
-    @PutMapping("/aggTable")
+    @PutMapping("/agg_table")
     public ResponseEntity<AggTableVO> updateAggTable(@Valid @RequestBody AggTableUpdateDTO updateDTO) {
         AggTablePO po = aggTableService.update(updateDTO);
         return ResponseEntity.ok(MetaChartMapper.INSTANCE.toAggTableVO(po));
     }
 
     @Override
-    @GetMapping("/aggTable/{chartId}")
+    @GetMapping("/agg_table/{chartId}")
     public ResponseEntity<AggTableVO> showAggTable(@PathVariable Integer chartId) {
         AggTableVO vo = aggTableService.show(chartId);
         return ResponseEntity.ok(vo);
     }
 
     @Override
-    @PostMapping("/detailList")
+    @PostMapping("/detail_list")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<DetailListVO> saveDetailList(@Valid @RequestBody DetailListAddDTO addDTO) throws Exception {
         DetailListPO po = detailListService.save(addDTO);
-        return ResponseEntity.created(new URI(apiPath + "/metaChart/detailList/" + po.getChartId()))
+        return ResponseEntity.created(new URI(apiPath + "/meta_chart/detail_list/" + po.getChartId()))
             .body(MetaChartMapper.INSTANCE.toDetailListVO(po));
     }
 
     @Override
-    @PutMapping("/detailList")
+    @PutMapping("/detail_list")
     public ResponseEntity<DetailListVO> updateDetailList(@Valid @RequestBody DetailListUpdateDTO updateDTO) {
         DetailListPO po = detailListService.update(updateDTO);
         return ResponseEntity.ok(MetaChartMapper.INSTANCE.toDetailListVO(po));
     }
 
     @Override
-    @GetMapping("/detailList/{chartId}")
+    @GetMapping("/detail_list/{chartId}")
     public ResponseEntity<DetailListVO> showDetailList(@PathVariable Integer chartId) {
         DetailListVO vo = detailListService.show(chartId);
         return ResponseEntity.ok(vo);

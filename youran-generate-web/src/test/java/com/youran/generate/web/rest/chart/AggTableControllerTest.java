@@ -85,7 +85,7 @@ public class AggTableControllerTest extends AbstractWebTest {
             metaProject.getProjectId(),metaChartSource.getSourceId(),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(dimensionPO.getSourceItemId())),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(metricsPO.getSourceItemId())));
-        restMockMvc.perform(post(getApiPath() + "/metaChart/aggTable")
+        restMockMvc.perform(post(getApiPath() + "/meta_chart/agg_table")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
             .andExpect(status().isCreated());
@@ -101,7 +101,7 @@ public class AggTableControllerTest extends AbstractWebTest {
             Arrays.asList(metaChartHelper.getChartItemDTOExample(dimensionPO.getSourceItemId())),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(metricsPO.getSourceItemId())));
         AggTableUpdateDTO updateDTO = aggTableHelper.getUpdateDTO(metaChart);
-        restMockMvc.perform(put(getApiPath() + "/metaChart/aggTable")
+        restMockMvc.perform(put(getApiPath() + "/meta_chart/agg_table")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(updateDTO)))
             .andExpect(status().isOk());
@@ -116,7 +116,7 @@ public class AggTableControllerTest extends AbstractWebTest {
             metaProject.getProjectId(),metaChartSource.getSourceId(),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(dimensionPO.getSourceItemId())),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(metricsPO.getSourceItemId())));
-        restMockMvc.perform(get(getApiPath() + "/metaChart"))
+        restMockMvc.perform(get(getApiPath() + "/meta_chart"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(is(1)));
     }
@@ -130,7 +130,7 @@ public class AggTableControllerTest extends AbstractWebTest {
             metaProject.getProjectId(),metaChartSource.getSourceId(),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(dimensionPO.getSourceItemId())),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(metricsPO.getSourceItemId())));
-        restMockMvc.perform(get(getApiPath() + "/metaChart/aggTable/{chartId}", metaChart.getChartId()))
+        restMockMvc.perform(get(getApiPath() + "/meta_chart/agg_table/{chartId}", metaChart.getChartId()))
             .andExpect(status().isOk());
     }
 
@@ -143,7 +143,7 @@ public class AggTableControllerTest extends AbstractWebTest {
             metaProject.getProjectId(),metaChartSource.getSourceId(),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(dimensionPO.getSourceItemId())),
             Arrays.asList(metaChartHelper.getChartItemDTOExample(metricsPO.getSourceItemId())));
-        restMockMvc.perform(delete(getApiPath() + "/metaChart")
+        restMockMvc.perform(delete(getApiPath() + "/meta_chart")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(Lists.newArrayList(metaChart.getChartId()))))
             .andExpect(status().isOk())
