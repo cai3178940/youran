@@ -15,18 +15,18 @@
           <el-form-item label="实体" prop="entityId">
             <help-popover name="chartSource.entityId">
               <el-col :span="18" class="col-left">
-                <el-select v-model="form.entityId" placeholder="请选择实体"
-                           style="width:100%;" filterable>
+                <el-select v-model="form.entity" placeholder="请选择实体"
+                           style="width:100%;" @change="handleEntityChange" filterable>
                   <el-option
                     v-for="entity in entityOptions"
                     :key="entity.entityId"
                     :label="entity.title+'('+entity.tableName+')'"
-                    :value="entity.entityId">
+                    :value="entity">
                   </el-option>
                 </el-select>
               </el-col>
               <el-col :span="1" class="col-inner" style="text-align: center;">
-                <span style="display:inline-block;font-size: 16px;color: #FA8072;padding: 7px 0px;">t0</span>
+                <span class="text-in-form">t0</span>
               </el-col>
               <el-col :span="5" class="col-right">
                 <el-button size="small" type="text" @click="addJoin">+ 添加关联</el-button>
@@ -34,7 +34,7 @@
             </help-popover>
           </el-form-item>
           <template v-for="(join,index) in form.joins">
-            <el-form-item :key="index">
+            <el-form-item :key="'a'+index">
               <help-popover name="chartSource.joins">
                 <el-col :span="6" class="col-left">
                   <el-select v-model="join.joinType" placeholder="关联方式"
@@ -48,7 +48,7 @@
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="col-left">
-                  <el-select v-model="form.entityId" placeholder="请选择"
+                  <el-select v-model="join.entityId" placeholder="请选择"
                              style="width:100%;" filterable>
                     <el-option
                       v-for="entity in entityOptions"
@@ -59,10 +59,47 @@
                   </el-select>
                 </el-col>
                 <el-col :span="1" class="col-inner" style="text-align: center;">
-                  <span style="display:inline-block;font-size: 16px;color: #FA8072;padding: 7px 0px;">t{{index+1}}</span>
+                  <span class="text-in-form">t{{index+1}}</span>
                 </el-col>
                 <el-col :span="5" class="col-right">
-                  <el-button size="small" type="text" @click="removeJoin">- 移除关联</el-button>
+                  <el-button size="small" type="text" @click="removeJoin(index)">- 移除关联</el-button>
+                </el-col>
+              </help-popover>
+            </el-form-item>
+            <el-form-item :key="'b'+index">
+              <help-popover name="chartSource.joins">
+                <el-col :span="2" class="col-left" style="text-align: center;">
+                  <span class="text-in-form" style="color:blueviolet;">on</span>
+                </el-col>
+                <el-col :span="8" class="col-inner">
+                  <el-select v-model="join.entityId" placeholder="请选择字段"
+                             style="width:100%;" filterable>
+                    <span class="text-in-form" slot="prefix">t0</span>
+                    <!--所有上面的实体-->
+                    <el-option-group
+                      v-for="group in options"
+                      :key="group.label"
+                      :label="group.label">
+                      <el-option
+                        v-for="item in group.options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-option-group>
+                    <!--所有上面的多对多-->
+                    <el-option-group
+                      v-for="group in options"
+                      :key="group.label"
+                      :label="group.label">
+                      <el-option
+                        v-for="item in group.options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-option-group>
+                  </el-select>
                 </el-col>
               </help-popover>
             </el-form-item>
@@ -81,6 +118,7 @@
 // import projectApi from '@/api/project'
 // import chartApi from '@/api/chart'
 import entityApi from '@/api/entity'
+import fieldApi from '@/api/field'
 import options from '@/utils/options'
 import { initSourceFormBean, initJoinDTO, getRules } from './model'
 
@@ -117,12 +155,41 @@ export default {
           this.entityOptions = data.map(entity => ({
             entityId: entity.entityId,
             title: entity.title,
-            tableName: entity.tableName
+            tableName: entity.tableName,
+            fieldList: []
           }))
         })
     },
+    handleEntityChange (entity) {
+      this.form.entityId = entity.entityId
+      this.loadEntityFields(entity)
+    },
+    loadEntityFields (entity) {
+      if (entity.fieldList.length) {
+        return
+      }
+      return fieldApi.getList(entity.entityId, false)
+        .then(data => {
+          entity.fieldList = data
+        })
+    },
+    /**
+     * 获取某个关联之前的关联实体
+     */
+    getJoinEntitiesAbove (index) {
+
+    },
+    /**
+     * 获取某个关联之前的关联多对多
+     */
+    getJoinMtmsAbove (index) {
+
+    },
     addJoin () {
       this.form.joins.push(initJoinDTO(this.form.joins.length))
+    },
+    removeJoin (index) {
+      this.form.joins.splice(index, 1)
     },
     submit () {
       let loading = null
@@ -162,6 +229,12 @@ export default {
   .chartFormDiv .chartForm {
     @include youran-form;
 
+    .text-in-form {
+      display:inline-block;
+      font-size: 16px;
+      color: #FA8072;
+      padding: 7px 0px;
+    }
   }
 
 </style>

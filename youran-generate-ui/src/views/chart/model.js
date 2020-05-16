@@ -24,7 +24,12 @@ export function initJoinDTO (rightIndex) {
     leftMtmId: null,
     rightMtmId: null,
     leftMtmField: null,
-    rightMtmField: null
+    rightMtmField: null,
+    // 后面的属性是缓存对象，表单提交时需要过滤掉
+    leftEntity: null,
+    leftMtm: null,
+    rightEntity: null,
+    rightMtm: null
   }
   return join
 }
