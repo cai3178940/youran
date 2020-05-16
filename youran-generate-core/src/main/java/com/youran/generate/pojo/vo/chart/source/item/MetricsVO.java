@@ -24,11 +24,6 @@ public class MetricsVO extends MetaChartSourceItemVO {
     private Integer aggFunction;
 
     /**
-     * 是否百分比
-     */
-    private Boolean percent;
-
-    /**
      * 是否自定义
      */
     private Boolean custom;
@@ -65,14 +60,6 @@ public class MetricsVO extends MetaChartSourceItemVO {
 
     public void setAggFunction(Integer aggFunction) {
         this.aggFunction = aggFunction;
-    }
-
-    public Boolean getPercent() {
-        return percent;
-    }
-
-    public void setPercent(Boolean percent) {
-        this.percent = percent;
     }
 
     public Boolean getCustom() {

@@ -52,6 +52,7 @@
 <script>
 import projectApi from '@/api/project'
 import chartApi from '@/api/chart'
+import options from '@/utils/options'
 
 export default {
   name: 'chartList',
@@ -71,6 +72,17 @@ export default {
       selectItems: [],
       list: [],
       loading: false
+    }
+  },
+  filters: {
+    optionLabel (value, optionType) {
+      const ops = options[optionType]
+      for (const op of ops) {
+        if (op.value === value) {
+          return op.label
+        }
+      }
+      return null
     }
   },
   methods: {

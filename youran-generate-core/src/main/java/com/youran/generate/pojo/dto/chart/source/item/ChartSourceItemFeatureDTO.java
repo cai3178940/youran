@@ -66,10 +66,6 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
      * 聚合函数
      */
     private Integer aggFunction;
-    /**
-     * 是否百分比
-     */
-    private Boolean percent;
 
 
     public Integer getFieldId() {
@@ -150,14 +146,6 @@ public class ChartSourceItemFeatureDTO extends AbstractDTO {
 
     public void setAggFunction(Integer aggFunction) {
         this.aggFunction = aggFunction;
-    }
-
-    public Boolean getPercent() {
-        return percent;
-    }
-
-    public void setPercent(Boolean percent) {
-        this.percent = percent;
     }
 
     public Integer getTimeGranularity() {

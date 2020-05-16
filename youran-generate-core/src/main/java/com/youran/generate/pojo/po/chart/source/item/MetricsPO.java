@@ -36,11 +36,6 @@ public class MetricsPO extends MetaChartSourceItemPO {
     private Integer aggFunction;
 
     /**
-     * 是否百分比
-     */
-    private Boolean percent;
-
-    /**
      * 是否自定义
      */
     private Boolean custom;
@@ -120,7 +115,6 @@ public class MetricsPO extends MetaChartSourceItemPO {
         this.fieldId = featureDTO.getFieldId();
         this.alias = featureDTO.getAlias();
         this.aggFunction = featureDTO.getAggFunction();
-        this.percent = featureDTO.getPercent();
         this.custom = featureDTO.getCustom();
         this.customContent = featureDTO.getCustomContent();
         this.customFieldType = featureDTO.getCustomFieldType();
@@ -132,7 +126,6 @@ public class MetricsPO extends MetaChartSourceItemPO {
         featureDTO.setFieldId(this.fieldId);
         featureDTO.setAlias(this.alias);
         featureDTO.setAggFunction(this.aggFunction);
-        featureDTO.setPercent(this.percent);
         featureDTO.setCustom(this.custom);
         featureDTO.setCustomContent(this.customContent);
         featureDTO.setCustomFieldType(this.customFieldType);
@@ -161,14 +154,6 @@ public class MetricsPO extends MetaChartSourceItemPO {
 
     public void setAggFunction(Integer aggFunction) {
         this.aggFunction = aggFunction;
-    }
-
-    public Boolean getPercent() {
-        return percent;
-    }
-
-    public void setPercent(Boolean percent) {
-        this.percent = percent;
     }
 
     public Boolean getCustom() {

@@ -568,6 +568,24 @@ export default {
       value: 5,
       label: '文件名渲染文件'
     }
-  ]
+  ],
 
+  chartTypeOptions: [
+    {
+      value: 1,
+      label: '明细表'
+    },
+    {
+      value: 2,
+      label: '聚合表'
+    },
+    {
+      value: 3,
+      label: '柱线图'
+    },
+    {
+      value: 4,
+      label: '饼图'
+    }
+  ]
 }

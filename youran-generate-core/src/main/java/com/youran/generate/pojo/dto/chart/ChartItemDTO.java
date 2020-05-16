@@ -34,6 +34,9 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
     @ApiModelProperty(notes = "内容后缀",example = "_后缀")
     private String valueSuffix;
 
+    @ApiModelProperty(notes = "是否百分比",example = "false")
+    private Boolean percent;
+
     // TODO 数据格式化设置-数字、百分比、日期
 
     /**
@@ -88,5 +91,13 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
 
     public void setSourceItem(T sourceItem) {
         this.sourceItem = sourceItem;
+    }
+
+    public Boolean getPercent() {
+        return percent;
+    }
+
+    public void setPercent(Boolean percent) {
+        this.percent = percent;
     }
 }

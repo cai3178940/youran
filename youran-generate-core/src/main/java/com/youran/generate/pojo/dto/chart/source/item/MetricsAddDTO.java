@@ -28,10 +28,6 @@ public class MetricsAddDTO extends AbstractSourceItemDTO {
     @Const(constClass = AggFunction.class)
     private Integer aggFunction;
 
-    @ApiModelProperty(notes = "是否百分比", example = "true", required = true)
-    @NotNull
-    private Boolean percent;
-
     @ApiModelProperty(notes = "是否自定义", example = "true", required = true)
     @NotNull
     private Boolean custom;
@@ -71,14 +67,6 @@ public class MetricsAddDTO extends AbstractSourceItemDTO {
 
     public void setAggFunction(Integer aggFunction) {
         this.aggFunction = aggFunction;
-    }
-
-    public Boolean getPercent() {
-        return percent;
-    }
-
-    public void setPercent(Boolean percent) {
-        this.percent = percent;
     }
 
     public Boolean getCustom() {
