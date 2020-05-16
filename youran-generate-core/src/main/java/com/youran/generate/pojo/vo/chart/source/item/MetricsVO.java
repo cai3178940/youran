@@ -14,11 +14,6 @@ public class MetricsVO extends MetaChartSourceItemVO {
     private Integer fieldId;
 
     /**
-     * 别名
-     */
-    private String alias;
-
-    /**
      * 聚合函数
      */
     private Integer aggFunction;
@@ -44,14 +39,6 @@ public class MetricsVO extends MetaChartSourceItemVO {
 
     public void setFieldId(Integer fieldId) {
         this.fieldId = fieldId;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public Integer getAggFunction() {

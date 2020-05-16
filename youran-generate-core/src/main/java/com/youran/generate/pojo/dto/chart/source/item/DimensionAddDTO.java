@@ -21,9 +21,6 @@ public class DimensionAddDTO extends AbstractSourceItemDTO {
     @NotNull
     private Integer fieldId;
 
-    @ApiModelProperty(notes = "别名", example = "alias1")
-    private String alias;
-
     @ApiModelProperty(notes = "维度粒度", example = "1", required = true, allowableValues = Granularity.VALUES_STR)
     @NotNull
     @Const(constClass = Granularity.class)
@@ -40,14 +37,6 @@ public class DimensionAddDTO extends AbstractSourceItemDTO {
 
     public void setFieldId(Integer fieldId) {
         this.fieldId = fieldId;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public Integer getGranularity() {

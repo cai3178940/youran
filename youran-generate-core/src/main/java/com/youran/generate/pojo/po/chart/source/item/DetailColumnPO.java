@@ -3,9 +3,8 @@ package com.youran.generate.pojo.po.chart.source.item;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.SourceItemType;
-import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
-import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
@@ -23,11 +22,6 @@ public class DetailColumnPO extends MetaChartSourceItemPO {
      * 字段id
      */
     private Integer fieldId;
-
-    /**
-     * 别名
-     */
-    private String alias;
 
     /**
      * 是否自定义
@@ -104,9 +98,8 @@ public class DetailColumnPO extends MetaChartSourceItemPO {
 
     @Override
     public void featureDeserialize() {
-        ChartSourceItemFeatureDTO featureDTO = FeatureMapper.asChartSourceItemFeatureDTO(this.getFeature());
+        FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
         this.fieldId = featureDTO.getFieldId();
-        this.alias = featureDTO.getAlias();
         this.custom = featureDTO.getCustom();
         this.customContent = featureDTO.getCustomContent();
         this.customFieldType = featureDTO.getCustomFieldType();
@@ -114,13 +107,12 @@ public class DetailColumnPO extends MetaChartSourceItemPO {
 
     @Override
     public void featureSerialize() {
-        ChartSourceItemFeatureDTO featureDTO = new ChartSourceItemFeatureDTO();
+        FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setFieldId(this.fieldId);
-        featureDTO.setAlias(this.alias);
         featureDTO.setCustom(this.custom);
         featureDTO.setCustomContent(this.customContent);
         featureDTO.setCustomFieldType(this.customFieldType);
-        this.setFeature(FeatureMapper.asString(featureDTO));
+        this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
     public Integer getFieldId() {
@@ -129,14 +121,6 @@ public class DetailColumnPO extends MetaChartSourceItemPO {
 
     public void setFieldId(Integer fieldId) {
         this.fieldId = fieldId;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public Boolean getCustom() {
@@ -177,5 +161,45 @@ public class DetailColumnPO extends MetaChartSourceItemPO {
 
     public void setField(MetaFieldPO field) {
         this.field = field;
+    }
+
+
+    static class FeatureDTO{
+        private Integer fieldId;
+        private Boolean custom;
+        private String customContent;
+        private Integer customFieldType;
+
+        public Integer getFieldId() {
+            return fieldId;
+        }
+
+        public void setFieldId(Integer fieldId) {
+            this.fieldId = fieldId;
+        }
+
+        public Boolean getCustom() {
+            return custom;
+        }
+
+        public void setCustom(Boolean custom) {
+            this.custom = custom;
+        }
+
+        public String getCustomContent() {
+            return customContent;
+        }
+
+        public void setCustomContent(String customContent) {
+            this.customContent = customContent;
+        }
+
+        public Integer getCustomFieldType() {
+            return customFieldType;
+        }
+
+        public void setCustomFieldType(Integer customFieldType) {
+            this.customFieldType = customFieldType;
+        }
     }
 }

@@ -14,11 +14,6 @@ public class DetailColumnVO extends MetaChartSourceItemVO {
     private Integer fieldId;
 
     /**
-     * 别名
-     */
-    private String alias;
-
-    /**
      * 是否自定义
      */
     private Boolean custom;
@@ -39,14 +34,6 @@ public class DetailColumnVO extends MetaChartSourceItemVO {
 
     public void setFieldId(Integer fieldId) {
         this.fieldId = fieldId;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public Boolean getCustom() {

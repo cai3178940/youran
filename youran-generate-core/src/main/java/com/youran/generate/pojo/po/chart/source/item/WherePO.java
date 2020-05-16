@@ -3,9 +3,8 @@ package com.youran.generate.pojo.po.chart.source.item;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.SourceItemType;
-import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
-import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
@@ -108,7 +107,7 @@ public class WherePO extends MetaChartSourceItemPO {
 
     @Override
     public void featureDeserialize() {
-        ChartSourceItemFeatureDTO featureDTO = FeatureMapper.asChartSourceItemFeatureDTO(this.getFeature());
+        FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
         this.fieldId = featureDTO.getFieldId();
         this.filterOperator = featureDTO.getFilterOperator();
         this.filterValue = featureDTO.getFilterValue();
@@ -119,14 +118,14 @@ public class WherePO extends MetaChartSourceItemPO {
 
     @Override
     public void featureSerialize() {
-        ChartSourceItemFeatureDTO featureDTO = new ChartSourceItemFeatureDTO();
+        FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setFieldId(this.fieldId);
         featureDTO.setFilterOperator(this.filterOperator);
         featureDTO.setFilterValue(this.filterValue);
         featureDTO.setTimeGranularity(this.timeGranularity);
         featureDTO.setCustom(this.custom);
         featureDTO.setCustomContent(this.customContent);
-        this.setFeature(FeatureMapper.asString(featureDTO));
+        this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
     public Integer getFieldId() {
@@ -191,5 +190,62 @@ public class WherePO extends MetaChartSourceItemPO {
 
     public void setTimeGranularity(Integer timeGranularity) {
         this.timeGranularity = timeGranularity;
+    }
+
+    static class FeatureDTO{
+        private Integer fieldId;
+        private Integer filterOperator;
+        private String[] filterValue;
+        private Integer timeGranularity;
+        private Boolean custom;
+        private String customContent;
+
+        public Integer getFieldId() {
+            return fieldId;
+        }
+
+        public void setFieldId(Integer fieldId) {
+            this.fieldId = fieldId;
+        }
+
+        public Integer getFilterOperator() {
+            return filterOperator;
+        }
+
+        public void setFilterOperator(Integer filterOperator) {
+            this.filterOperator = filterOperator;
+        }
+
+        public String[] getFilterValue() {
+            return filterValue;
+        }
+
+        public void setFilterValue(String[] filterValue) {
+            this.filterValue = filterValue;
+        }
+
+        public Integer getTimeGranularity() {
+            return timeGranularity;
+        }
+
+        public void setTimeGranularity(Integer timeGranularity) {
+            this.timeGranularity = timeGranularity;
+        }
+
+        public Boolean getCustom() {
+            return custom;
+        }
+
+        public void setCustom(Boolean custom) {
+            this.custom = custom;
+        }
+
+        public String getCustomContent() {
+            return customContent;
+        }
+
+        public void setCustomContent(String customContent) {
+            this.customContent = customContent;
+        }
     }
 }

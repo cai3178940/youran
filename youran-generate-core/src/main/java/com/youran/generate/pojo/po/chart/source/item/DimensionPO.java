@@ -3,9 +3,8 @@ package com.youran.generate.pojo.po.chart.source.item;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.SourceItemType;
-import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
-import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
 import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
@@ -24,10 +23,6 @@ public class DimensionPO extends MetaChartSourceItemPO {
      */
     private Integer fieldId;
 
-    /**
-     * 别名
-     */
-    private String alias;
     /**
      * 维度粒度
      */
@@ -88,19 +83,17 @@ public class DimensionPO extends MetaChartSourceItemPO {
 
     @Override
     public void featureDeserialize() {
-        ChartSourceItemFeatureDTO featureDTO = FeatureMapper.asChartSourceItemFeatureDTO(this.getFeature());
+        FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
         this.fieldId = featureDTO.getFieldId();
-        this.alias = featureDTO.getAlias();
         this.granularity = featureDTO.getGranularity();
     }
 
     @Override
     public void featureSerialize() {
-        ChartSourceItemFeatureDTO featureDTO = new ChartSourceItemFeatureDTO();
+        FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setFieldId(this.fieldId);
-        featureDTO.setAlias(this.alias);
         featureDTO.setGranularity(this.granularity);
-        this.setFeature(FeatureMapper.asString(featureDTO));
+        this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
 
@@ -110,14 +103,6 @@ public class DimensionPO extends MetaChartSourceItemPO {
 
     public void setFieldId(Integer fieldId) {
         this.fieldId = fieldId;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public Integer getGranularity() {
@@ -142,5 +127,26 @@ public class DimensionPO extends MetaChartSourceItemPO {
 
     public void setField(MetaFieldPO field) {
         this.field = field;
+    }
+
+    static class FeatureDTO{
+        private Integer fieldId;
+        private Integer granularity;
+
+        public Integer getFieldId() {
+            return fieldId;
+        }
+
+        public void setFieldId(Integer fieldId) {
+            this.fieldId = fieldId;
+        }
+
+        public Integer getGranularity() {
+            return granularity;
+        }
+
+        public void setGranularity(Integer granularity) {
+            this.granularity = granularity;
+        }
     }
 }

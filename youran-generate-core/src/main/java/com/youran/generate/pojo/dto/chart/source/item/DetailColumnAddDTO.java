@@ -5,9 +5,7 @@ import com.youran.generate.constant.CustomFieldType;
 import com.youran.generate.constant.SourceItemType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.StringUtils;
 
-import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -21,9 +19,6 @@ public class DetailColumnAddDTO extends AbstractSourceItemDTO {
 
     @ApiModelProperty(notes = "字段id", example = "1")
     private Integer fieldId;
-
-    @ApiModelProperty(notes = "别名", example = "alias1")
-    private String alias;
 
     @ApiModelProperty(notes = "是否自定义", example = "true", required = true)
     @NotNull
@@ -42,30 +37,12 @@ public class DetailColumnAddDTO extends AbstractSourceItemDTO {
     }
 
 
-    @AssertTrue(message = "自定义列必须输入别名")
-    public boolean validateAlias() {
-        if(custom){
-            if(StringUtils.isBlank(alias)){
-                return false;
-            }
-        }
-        return true;
-    }
-
     public Integer getFieldId() {
         return fieldId;
     }
 
     public void setFieldId(Integer fieldId) {
         this.fieldId = fieldId;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public Boolean getCustom() {

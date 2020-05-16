@@ -21,9 +21,6 @@ public class MetricsAddDTO extends AbstractSourceItemDTO {
     @ApiModelProperty(notes = "字段id", example = "1")
     private Integer fieldId;
 
-    @ApiModelProperty(notes = "别名", example = "alias1")
-    private String alias;
-
     @ApiModelProperty(notes = "聚合函数", example = "1", allowableValues = AggFunction.VALUES_STR)
     @Const(constClass = AggFunction.class)
     private Integer aggFunction;
@@ -51,14 +48,6 @@ public class MetricsAddDTO extends AbstractSourceItemDTO {
 
     public void setFieldId(Integer fieldId) {
         this.fieldId = fieldId;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public Integer getAggFunction() {

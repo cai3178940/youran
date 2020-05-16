@@ -23,6 +23,9 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
     @NotNull
     private Integer sourceItemId;
 
+    @ApiModelProperty(notes = "字段别名", example = "alias1")
+    private String alias;
+
     @ApiModelProperty(notes = "标题别名",example = "新的列名")
     private String titleAlias;
 
@@ -44,6 +47,14 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
      */
     @JsonIgnore
     private transient T sourceItem;
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
     public Integer getSourceItemId() {
         return sourceItemId;

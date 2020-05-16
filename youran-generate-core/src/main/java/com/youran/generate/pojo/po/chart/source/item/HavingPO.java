@@ -2,9 +2,8 @@ package com.youran.generate.pojo.po.chart.source.item;
 
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.SourceItemType;
-import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
-import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 
@@ -65,17 +64,17 @@ public class HavingPO extends MetaChartSourceItemPO {
 
     @Override
     public void featureDeserialize() {
-        ChartSourceItemFeatureDTO featureDTO = FeatureMapper.asChartSourceItemFeatureDTO(this.getFeature());
+        FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
         this.filterOperator = featureDTO.getFilterOperator();
         this.filterValue = featureDTO.getFilterValue();
     }
 
     @Override
     public void featureSerialize() {
-        ChartSourceItemFeatureDTO featureDTO = new ChartSourceItemFeatureDTO();
+        FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setFilterOperator(this.filterOperator);
         featureDTO.setFilterValue(this.filterValue);
-        this.setFeature(FeatureMapper.asString(featureDTO));
+        this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
     public Integer getFilterOperator() {
@@ -92,5 +91,26 @@ public class HavingPO extends MetaChartSourceItemPO {
 
     public void setFilterValue(String[] filterValue) {
         this.filterValue = filterValue;
+    }
+
+    static class FeatureDTO{
+        private Integer filterOperator;
+        private String[] filterValue;
+
+        public Integer getFilterOperator() {
+            return filterOperator;
+        }
+
+        public void setFilterOperator(Integer filterOperator) {
+            this.filterOperator = filterOperator;
+        }
+
+        public String[] getFilterValue() {
+            return filterValue;
+        }
+
+        public void setFilterValue(String[] filterValue) {
+            this.filterValue = filterValue;
+        }
     }
 }

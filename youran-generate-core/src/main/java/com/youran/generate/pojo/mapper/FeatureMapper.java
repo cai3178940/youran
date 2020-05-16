@@ -5,7 +5,6 @@ import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.dto.MetaMtmFeatureDTO;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.dto.chart.source.ChartSourceFeatureDTO;
-import com.youran.generate.pojo.dto.chart.source.item.ChartSourceItemFeatureDTO;
 
 /**
  * 特性DTO转json
@@ -27,10 +26,6 @@ public class FeatureMapper {
         return dto != null ? JsonUtil.toJSONString(dto) : null;
     }
 
-    public static String asString(ChartSourceItemFeatureDTO dto) {
-        return dto != null ? JsonUtil.toJSONString(dto) : null;
-    }
-
     public static String asString(ChartSourceFeatureDTO dto) {
         return dto != null ? JsonUtil.toJSONString(dto) : null;
     }
@@ -45,10 +40,6 @@ public class FeatureMapper {
 
     public static MetaMtmFeatureDTO asMtmFeatureDTO(String str) {
         return JsonUtil.parseObject(str, MetaMtmFeatureDTO.class);
-    }
-
-    public static ChartSourceItemFeatureDTO asChartSourceItemFeatureDTO(String str) {
-        return JsonUtil.parseObject(str, ChartSourceItemFeatureDTO.class);
     }
 
     public static ChartSourceFeatureDTO asChartSourceFeatureDTO(String str) {

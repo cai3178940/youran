@@ -14,10 +14,6 @@ public class DimensionVO extends MetaChartSourceItemVO {
     private Integer fieldId;
 
     /**
-     * 别名
-     */
-    private String alias;
-    /**
      * 维度粒度
      */
     private String granularity;
@@ -28,14 +24,6 @@ public class DimensionVO extends MetaChartSourceItemVO {
 
     public void setFieldId(Integer fieldId) {
         this.fieldId = fieldId;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public String getGranularity() {
