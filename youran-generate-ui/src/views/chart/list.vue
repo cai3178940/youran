@@ -21,7 +21,29 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button @click.native="handleAdd" type="success">创建图表</el-button>
+            <el-dropdown size="small" trigger="click" @command="handleAdd" style="margin-left:10px;">
+              <el-button type="success" style="margin: 0 10px 0 0;">
+                创建图表<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="detail_list">
+                  <svg-icon className="dropdown-icon color-warning" iconClass="detail-list"></svg-icon>
+                  明细表
+                </el-dropdown-item>
+                <el-dropdown-item command="agg_table">
+                  <svg-icon className="dropdown-icon color-primary" iconClass="agg-table"></svg-icon>
+                  聚合表
+                </el-dropdown-item>
+                <el-dropdown-item command="bar_line">
+                  <svg-icon className="dropdown-icon color-success" iconClass="chart"></svg-icon>
+                  柱线图
+                </el-dropdown-item>
+                <el-dropdown-item command="pie">
+                  <svg-icon className="dropdown-icon color-danger" iconClass="pie-chart"></svg-icon>
+                  饼图
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
             <el-button @click.native="handleDel" type="danger">删除</el-button>
           </el-form-item>
         </el-form>
@@ -98,7 +120,6 @@ export default {
       this.$common.confirm('是否确认删除')
         .then(() => chartApi.deleteBatch(this.selectItems.map(chart => chart.chartId)))
         .then(() => this.doQuery())
-        .then(() => this.doQueryMtm())
         .catch(error => this.$common.showNotifyError(error))
     },
     queryProject () {
@@ -130,11 +151,12 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
-    handleAdd () {
-      this.$router.push(`/project/${this.projectId}/chart/add`)
+    handleAdd (chartTypeName) {
+      this.$router.push(`/project/${this.projectId}/chart/${chartTypeName}/add`)
     },
     handleEdit (row) {
-      this.$router.push(`/project/${this.projectId}/chart/edit/${row.chartId}`)
+      const chartType = options.chartTypeOptions.find(op => op.value === row.chartType)
+      this.$router.push(`/project/${this.projectId}/chart/${chartType.name}/edit/${row.chartId}`)
     }
   },
   activated () {

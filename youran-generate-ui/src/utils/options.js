@@ -573,19 +573,23 @@ export default {
   chartTypeOptions: [
     {
       value: 1,
-      label: '明细表'
+      label: '明细表',
+      name: 'detail_list'
     },
     {
       value: 2,
-      label: '聚合表'
+      label: '聚合表',
+      name: 'agg_table'
     },
     {
       value: 3,
-      label: '柱线图'
+      label: '柱线图',
+      name: 'bar_line'
     },
     {
       value: 4,
-      label: '饼图'
+      label: '饼图',
+      name: 'pie'
     }
   ]
 }

@@ -15,13 +15,13 @@ import java.util.List;
 @ApiModel(description = "新增【柱线图】入参")
 public class BarLineAddDTO extends AbstractChartDTO {
 
-    @ApiModelProperty(notes = "主X轴")
+    @ApiModelProperty(notes = "主X轴(维度)")
     private ChartItemDTO axisX;
 
-    @ApiModelProperty(notes = "附加X轴")
+    @ApiModelProperty(notes = "附加维度")
     private ChartItemDTO axisX2;
 
-    @ApiModelProperty(notes = "Y轴")
+    @ApiModelProperty(notes = "Y轴(指标)")
     private List<ChartItemDTO> axisYList;
 
 
