@@ -351,6 +351,11 @@ public enum DevType {
 **备注**：请详细描述模板所用的技术框架
     `
 
+  },
+  chartSource: {
+    entityId: `
+**实体**：主表
+    `
   }
 
 }

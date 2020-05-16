@@ -569,27 +569,50 @@ export default {
       label: '文件名渲染文件'
     }
   ],
-
+  /**
+   * 图表类型
+   */
   chartTypeOptions: [
     {
       value: 1,
       label: '明细表',
-      name: 'detail_list'
+      name: 'detail_list',
+      aggregation: false
     },
     {
       value: 2,
       label: '聚合表',
-      name: 'agg_table'
+      name: 'agg_table',
+      aggregation: true
     },
     {
       value: 3,
       label: '柱线图',
-      name: 'bar_line'
+      name: 'bar_line',
+      aggregation: true
     },
     {
       value: 4,
       label: '饼图',
-      name: 'pie'
+      name: 'pie',
+      aggregation: true
+    }
+  ],
+  /**
+   * 关联类型
+   */
+  joinTypeOptions: [
+    {
+      value: 1,
+      label: 'inner join'
+    },
+    {
+      value: 2,
+      label: 'left join'
+    },
+    {
+      value: 3,
+      label: 'right join'
     }
   ]
 }

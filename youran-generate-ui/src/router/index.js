@@ -26,10 +26,7 @@ import templateForm from '@/views/template/form.vue'
 
 import chart from '@/views/chart/index.vue'
 import chartList from '@/views/chart/list.vue'
-import aggTableForm from '@/views/chart/aggTableForm.vue'
-import barLineForm from '@/views/chart/barLineForm.vue'
-import detailListForm from '@/views/chart/detailListForm.vue'
-import pieForm from '@/views/chart/pieForm.vue'
+import sourceForm from '@/views/chart/sourceForm.vue'
 
 Vue.use(Router)
 
@@ -101,43 +98,13 @@ export default new Router({
           props: true
         },
         {
-          path: 'agg_table/add',
-          component: aggTableForm,
+          path: ':chartTypeName/add',
+          component: sourceForm,
           props: true
         },
         {
-          path: 'agg_table/edit/:chartId',
-          component: aggTableForm,
-          props: true
-        },
-        {
-          path: 'bar_line/add',
-          component: barLineForm,
-          props: true
-        },
-        {
-          path: 'bar_line/edit/:chartId',
-          component: barLineForm,
-          props: true
-        },
-        {
-          path: 'detail_list/add',
-          component: detailListForm,
-          props: true
-        },
-        {
-          path: 'detail_list/edit/:chartId',
-          component: detailListForm,
-          props: true
-        },
-        {
-          path: 'pie/add',
-          component: pieForm,
-          props: true
-        },
-        {
-          path: 'pie/edit/:chartId',
-          component: pieForm,
+          path: ':chartTypeName/edit/:chartId',
+          component: sourceForm,
           props: true
         }
       ]

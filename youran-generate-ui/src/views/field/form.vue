@@ -68,7 +68,7 @@
                 <el-input v-lower-case-first v-model="form.jfieldName" placeholder="java字段名，例如：age" tabindex="10"></el-input>
                 <el-button size="mini" type="text" @click="form.jfieldName = $common.camelCase(form.jfieldName)">转驼峰</el-button>
               </el-col>
-              <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
+              <el-col :span="2" class="col-inner" style="text-align: center;">
                 <el-tooltip class="item" effect="dark" content="粘贴到右边并转下划线" placement="top">
                   <el-button type="text" @click="copyJfieldNameToFieldName()" tabindex="11">
                     <svg-icon className="table-cell-icon color-primary"
@@ -608,15 +608,6 @@ export default {
 
     .el-button--mini {
       padding: 1px 5px;
-    }
-
-    .col-left {
-      padding-left: 0px!important;
-      line-height: normal;
-    }
-    .col-right {
-      padding-right: 0px!important;;
-      line-height: normal;
     }
 
     .inline-label {

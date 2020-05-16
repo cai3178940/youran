@@ -83,17 +83,14 @@
         label="操作"
         width="205">
         <template v-slot="scope">
-          <el-button @click="handleEntity(scope.row)" type="text" size="medium">实体管理</el-button>
-          <el-button @click="handleConst(scope.row)" type="text" size="medium">枚举管理</el-button>
+          <el-button @click="handleEntity(scope.row)" type="text" size="medium">实体</el-button>
+          <el-button @click="handleConst(scope.row)" type="text" size="medium">枚举</el-button>
+          <el-button @click="handleChart(scope.row)" type="text" size="medium">图表</el-button>
           <el-dropdown size="small" trigger="click" @command="handleCommand" style="margin-left:10px;">
             <span class="el-dropdown-link button-font">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item :command="{method:'handleChart',arg:scope.row}">
-                <svg-icon className="dropdown-icon color-success" iconClass="chart"></svg-icon>
-                图表管理
-              </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleEdit',arg:scope.row}" divided>
                 <svg-icon className="dropdown-icon color-primary" iconClass="edit"></svg-icon>
                 编辑
