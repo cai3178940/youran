@@ -1,20 +1,22 @@
 package com.youran.generate.pojo.po.chart.source;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.youran.common.constant.ErrorCode;
-import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.SourceItemType;
 import com.youran.generate.pojo.dto.chart.source.ChartSourceFeatureDTO;
 import com.youran.generate.pojo.dto.chart.source.JoinDTO;
+import com.youran.generate.pojo.dto.chart.source.JoinPartDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.BasePO;
 import com.youran.generate.pojo.po.MetaEntityPO;
-import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.po.chart.source.item.*;
+import com.youran.generate.util.AssembleUtil;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -112,8 +114,8 @@ public class MetaChartSourcePO extends BasePO {
     public void assemble(List<? extends MetaChartSourceItemPO> items,
                          Map<Integer, MetaEntityPO> entityMap,
                          Map<Integer, MetaManyToManyPO> mtmMap) {
-        // 装配实体和joins
-        this.assembleEntityAndJoins(entityMap, mtmMap);
+        // 装配joins
+        this.assembleJoins(entityMap, mtmMap);
 
         if (CollectionUtils.isEmpty(items)) {
             return;
@@ -250,90 +252,24 @@ public class MetaChartSourcePO extends BasePO {
     }
 
     /**
-     * 装配实体和joins
+     * 装配joins
      *
      * @param entityMap
      * @param mtmMap
      */
-    private void assembleEntityAndJoins(Map<Integer, MetaEntityPO> entityMap,
-                                        Map<Integer, MetaManyToManyPO> mtmMap) {
-        this.entity = this.forceGetEntityFromMap(entityMap, this.entityId);
+    private void assembleJoins(Map<Integer, MetaEntityPO> entityMap,
+                               Map<Integer, MetaManyToManyPO> mtmMap) {
+        this.entity = AssembleUtil.forceGetEntityFromMap(entityMap, this.entityId);
         if (CollectionUtils.isEmpty(this.joins)) {
             return;
         }
         for (JoinDTO join : this.joins) {
-            if (join.getLeftEntityId() != null) {
-                MetaEntityPO entity = this.forceGetEntityFromMap(entityMap, join.getLeftEntityId());
-                join.setLeftEntity(entity);
-                Integer fieldId = join.getLeftFieldId();
-                MetaFieldPO field = entity.getFields().get(fieldId);
-                if (field == null) {
-                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源异常，字段不存在，fieldId=" + fieldId);
-                }
-                join.setLeftField(field);
-            } else if (join.getLeftMtmId() != null) {
-                MetaManyToManyPO mtm = this.forceGetMtmFromMap(mtmMap, join.getLeftMtmId());
-                join.setLeftMtm(mtm);
-                String mtmField = join.getLeftMtmField();
-                if (Objects.equals(mtmField, mtm.getEntityIdField1())
-                    && Objects.equals(mtmField, mtm.getEntityIdField2())) {
-                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源异常，leftMtmField=" + mtmField + "不存在");
-                }
-            } else {
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源异常，leftEntityId和leftMtmId都为空");
-            }
-            if (join.getRightEntityId() != null) {
-                MetaEntityPO entity = this.forceGetEntityFromMap(entityMap, join.getRightEntityId());
-                join.setRightEntity(entity);
-                Integer fieldId = join.getRightFieldId();
-                MetaFieldPO field = entity.getFields().get(fieldId);
-                if (field == null) {
-                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源异常，字段不存在，fieldId=" + fieldId);
-                }
-                join.setRightField(field);
-            } else if (join.getRightMtmId() != null) {
-                MetaManyToManyPO mtm = this.forceGetMtmFromMap(mtmMap, join.getRightMtmId());
-                join.setRightMtm(mtm);
-                String mtmField = join.getRightMtmField();
-                if (Objects.equals(mtmField, mtm.getEntityIdField1())
-                    && Objects.equals(mtmField, mtm.getEntityIdField2())) {
-                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源异常，rightMtmField=" + mtmField + "不存在");
-                }
-            } else {
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源异常，rightEntityId和rightMtmId都为空");
-            }
+            JoinPartDTO left = join.getLeft();
+            left.assemble(entityMap, mtmMap);
+            JoinPartDTO right = join.getRight();
+            right.assemble(entityMap, mtmMap);
         }
 
-    }
-
-    /**
-     * 从map里面强制获取实体，不存在则抛异常
-     *
-     * @param entityMap
-     * @param entityId
-     * @return
-     */
-    private MetaEntityPO forceGetEntityFromMap(Map<Integer, MetaEntityPO> entityMap, Integer entityId) {
-        MetaEntityPO entityPO = entityMap.get(entityId);
-        if (entityPO == null) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源异常，实体不存在，entityId=" + entityId);
-        }
-        return entityPO;
-    }
-
-    /**
-     * 从map里面强制获取多对多，不存在则抛异常
-     *
-     * @param mtmMap
-     * @param mtmId
-     * @return
-     */
-    private MetaManyToManyPO forceGetMtmFromMap(Map<Integer, MetaManyToManyPO> mtmMap, Integer mtmId) {
-        MetaManyToManyPO mtmPO = mtmMap.get(mtmId);
-        if (mtmPO == null) {
-            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表数据源异常，多对多不存在，mtmId=" + mtmId);
-        }
-        return mtmPO;
     }
 
     /**

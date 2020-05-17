@@ -12,32 +12,38 @@
         <el-form ref="chartForm" class="chartForm"
                  :rules="rules" :model="form" label-width="120px"
                  size="small" v-loading="formLoading">
+          <!-- 实体： entity_0 t0 添加关联 -->
           <el-form-item label="实体" prop="entityId">
             <help-popover name="chartSource.entityId">
+              <!-- 实体： entity_0 -->
               <el-col :span="18" class="col-left">
-                <el-select v-model="form.entity" placeholder="请选择实体"
+                <el-select v-model="form.entityId" placeholder="请选择实体"
                            style="width:100%;" @change="handleEntityChange" filterable>
                   <el-option
                     v-for="entity in entityOptions"
                     :key="entity.entityId"
                     :label="entity.title+'('+entity.tableName+')'"
-                    :value="entity">
+                    :value="entity.entityId">
                   </el-option>
                 </el-select>
               </el-col>
+              <!-- 实体： t0 -->
               <el-col :span="1" class="col-inner" style="text-align: center;">
                 <span class="text-in-form">t0</span>
               </el-col>
+              <!-- 实体： 添加关联 -->
               <el-col :span="5" class="col-right">
                 <el-button size="small" type="text" @click="addJoin">+ 添加关联</el-button>
               </el-col>
             </help-popover>
           </el-form-item>
           <template v-for="(join,index) in form.joins">
+            <!-- 关联(表)： inner join entity_1 t1 移除关联 -->
             <el-form-item :key="'a'+index">
               <help-popover name="chartSource.joins">
+                <!-- 关联(join方式)： inner join -->
                 <el-col :span="6" class="col-left">
-                  <el-select v-model="join.joinType" placeholder="关联方式"
+                  <el-select v-model="form.joins[index].joinType" placeholder="关联方式"
                              style="width:100%;">
                     <el-option
                       v-for="option in joinTypeOptions"
@@ -47,58 +53,111 @@
                     </el-option>
                   </el-select>
                 </el-col>
+                <!-- 关联(右边实体/多对多)： entity_1 -->
                 <el-col :span="12" class="col-left">
-                  <el-select v-model="join.entityId" placeholder="请选择"
-                             style="width:100%;" filterable>
-                    <el-option
-                      v-for="entity in entityOptions"
-                      :key="entity.entityId"
-                      :label="entity.title+'('+entity.tableName+')'"
-                      :value="entity.entityId">
-                    </el-option>
+                  <el-select v-model="form.joins[index].right.tmp1" placeholder="请选择"
+                             style="width:100%;" @change="fillTmp1ToPart(form.joins[index].right)" filterable>
+                    <el-option-group label="实体">
+                      <el-option
+                        v-for="entity in entityOptions"
+                        :key="entity.entityId"
+                        :label="entity.title+'('+entity.tableName+')'"
+                        :value="['entity',entity,index+1]">
+                      </el-option>
+                    </el-option-group>
+                    <el-option-group label="多对多">
+                      <el-option
+                        v-for="mtm in mtmOptions"
+                        :key="mtm.mtmId"
+                        :label="mtm.tableName"
+                        :value="['mtm',mtm,index+1]">
+                      </el-option>
+                    </el-option-group>
                   </el-select>
                 </el-col>
+                <!-- 关联(右边别名)： t1 -->
                 <el-col :span="1" class="col-inner" style="text-align: center;">
                   <span class="text-in-form">t{{index+1}}</span>
                 </el-col>
+                <!-- 关联(操作按钮)： 移除关联 -->
                 <el-col :span="5" class="col-right">
                   <el-button size="small" type="text" @click="removeJoin(index)">- 移除关联</el-button>
                 </el-col>
               </help-popover>
             </el-form-item>
+            <!-- 关联： on t0.xx_id = t1.xx_id -->
             <el-form-item :key="'b'+index">
               <help-popover name="chartSource.joins">
+                <!-- 关联： on  -->
                 <el-col :span="2" class="col-left" style="text-align: center;">
                   <span class="text-in-form" style="color:blueviolet;">on</span>
                 </el-col>
+                <!-- 关联(左边字段)： t0.xx_id  -->
                 <el-col :span="8" class="col-inner">
-                  <el-select v-model="join.entityId" placeholder="请选择字段"
-                             style="width:100%;" filterable>
-                    <span class="text-in-form" slot="prefix">t0</span>
+                  <el-select v-model="form.joins[index].left.tmp2" placeholder="请选择字段" style="width:100%;"
+                             @change="fillTmp2ToPart(form.joins[index].left)" filterable>
+                    <span class="text-in-form" slot="prefix">
+                      t{{form.joins[index].left.joinIndex}}
+                    </span>
                     <!--所有上面的实体-->
                     <el-option-group
-                      v-for="group in options"
-                      :key="group.label"
-                      :label="group.label">
+                      v-for="([joinIndex,entity]) in getJoinEntitiesAbove(index)"
+                      :key="entity.entityId"
+                      :label="entity.title+'('+entity.tableName+')'">
                       <el-option
-                        v-for="item in group.options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        v-for="field in entity.fieldList"
+                        :key="field.fieldId"
+                        :label="field.fieldDesc+'('+field.fieldName+')'"
+                        :value="['entity',entity,joinIndex,field]">
                       </el-option>
                     </el-option-group>
                     <!--所有上面的多对多-->
                     <el-option-group
-                      v-for="group in options"
-                      :key="group.label"
-                      :label="group.label">
+                      v-for="([joinIndex,mtm]) in getJoinMtmsAbove(index)"
+                      :key="mtm.mtmId"
+                      :label="'多对多('+mtm.tableName+')'">
                       <el-option
-                        v-for="item in group.options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        :label="mtm.entityIdField1"
+                        :value="['mtm',mtm,joinIndex,mtm.entityIdField1]">
+                      </el-option>
+                      <el-option
+                        :label="mtm.entityIdField2"
+                        :value="['mtm',mtm,joinIndex,mtm.entityIdField2]">
                       </el-option>
                     </el-option-group>
+                  </el-select>
+                </el-col>
+                <!-- 关联(中间符号)： =  -->
+                <el-col :span="2" class="col-inner" style="text-align: center;">
+                  <span class="text-in-form" style="color:blueviolet;">=</span>
+                </el-col>
+                <!-- 关联(右边字段)： t1.xx_id  -->
+                <el-col :span="8" class="col-inner">
+                  <el-select v-model="form.joins[index].right.tmp2" placeholder="请选择字段" style="width:100%;"
+                             @change="fillTmp2ToPart(form.joins[index].right)" filterable>
+                    <span class="text-in-form" slot="prefix">
+                      t{{form.joins[index].right.joinIndex}}
+                    </span>
+                    <!--如果右边是实体-->
+                    <template v-if="form.joins[index].right.joinPartType==='entity'">
+                      <el-option
+                        v-for="field in form.joins[index].right.entity.fieldList"
+                        :key="field.fieldId"
+                        :label="field.fieldDesc+'('+field.fieldName+')'"
+                        :value="['entity',form.joins[index].right.entity,index+1,field]">
+                      </el-option>
+                    </template>
+                    <!--如果右边是多对多-->
+                    <template v-if="form.joins[index].right.joinPartType==='mtm'">
+                      <el-option
+                        :label="form.joins[index].right.mtm.entityIdField1"
+                        :value="['mtm',form.joins[index].right.mtm,index+1,form.joins[index].right.mtm.entityIdField1]">
+                      </el-option>
+                      <el-option
+                        :label="form.joins[index].right.mtm.entityIdField2"
+                        :value="['mtm',form.joins[index].right.mtm,index+1,form.joins[index].right.mtm.entityIdField2]">
+                      </el-option>
+                    </template>
                   </el-select>
                 </el-col>
               </help-popover>
@@ -118,9 +177,15 @@
 // import projectApi from '@/api/project'
 // import chartApi from '@/api/chart'
 import entityApi from '@/api/entity'
+import mtmApi from '@/api/mtm'
 import fieldApi from '@/api/field'
 import options from '@/utils/options'
-import { initSourceFormBean, initJoinDTO, getRules } from './model'
+import {
+  initSourceFormBean,
+  initJoinDTO,
+  repairFormBean,
+  getRules
+} from './model'
 
 export default {
   name: 'chartForm',
@@ -148,6 +213,14 @@ export default {
       rules: getRules()
     }
   },
+  watch: {
+    'form.entity' () {
+      repairFormBean(this.form)
+    },
+    'form.joins' () {
+      repairFormBean(this.form)
+    }
+  },
   methods: {
     initEntityOptions () {
       return entityApi.getList(this.projectId)
@@ -160,9 +233,15 @@ export default {
           }))
         })
     },
-    handleEntityChange (entity) {
-      this.form.entityId = entity.entityId
-      this.loadEntityFields(entity)
+    initMtmOptions () {
+      return mtmApi.getList(this.projectId)
+        .then(data => {
+          this.mtmOptions = data
+        })
+    },
+    handleEntityChange (entityId) {
+      this.form.entity = this.entityOptions.find(value => value.entityId === entityId)
+      this.loadEntityFields(this.form.entity)
     },
     loadEntityFields (entity) {
       if (entity.fieldList.length) {
@@ -177,16 +256,69 @@ export default {
      * 获取某个关联之前的关联实体
      */
     getJoinEntitiesAbove (index) {
-
+      const pairs = []
+      if (this.form.entity) {
+        pairs.push([0, this.form.entity])
+      }
+      for (let i = 0; i < index; i++) {
+        if (this.form.joins.length > i) {
+          const joinEntity = this.form.joins[i].right.entity
+          if (joinEntity) {
+            pairs.push([i + 1, joinEntity])
+          }
+        }
+      }
+      return pairs
     },
     /**
      * 获取某个关联之前的关联多对多
      */
     getJoinMtmsAbove (index) {
-
+      const pairs = []
+      for (let i = 0; i < index; i++) {
+        if (this.form.joins.length > i) {
+          const joinMtm = this.form.joins[i].right.mtm
+          if (joinMtm) {
+            pairs.push([i + 1, joinMtm])
+          }
+        }
+      }
+      return pairs
+    },
+    fillTmp1ToPart (part) {
+      // tmp1的格式A：['entity',entity,joinIndex]
+      // tmp1的格式B：['mtm',mtm,joinIndex]
+      part.joinPartType = part.tmp1[0]
+      part.joinIndex = part.tmp1[2]
+      if (part.joinPartType === 'entity') {
+        this.loadEntityFields(part.tmp1[1])
+        part.entity = part.tmp1[1]
+        part.entityId = part.tmp1[1].entityId
+      } else if (part.joinPartType === 'mtm') {
+        part.mtm = part.tmp1[1]
+        part.mtmId = part.tmp1[1].mtmId
+      }
+      repairFormBean(this.form)
+    },
+    fillTmp2ToPart (part) {
+      // tmp2的格式A：['entity',entity,joinIndex,field]
+      // tmp2的格式B：['mtm',mtm,joinIndex,mtm.entityIdField1]
+      part.joinPartType = part.tmp2[0]
+      part.joinIndex = part.tmp2[2]
+      if (part.joinPartType === 'entity') {
+        this.loadEntityFields(part.tmp2[1])
+        part.entity = part.tmp2[1]
+        part.entityId = part.tmp2[1].entityId
+        part.field = part.tmp2[3]
+        part.fieldId = part.tmp2[3].fieldId
+      } else if (part.joinPartType === 'mtm') {
+        part.mtm = part.tmp2[1]
+        part.mtmId = part.tmp2[1].mtmId
+        part.mtmField = part.tmp2[3]
+      }
     },
     addJoin () {
-      this.form.joins.push(initJoinDTO(this.form.joins.length))
+      this.form.joins.push(initJoinDTO(0, this.form.joins.length))
     },
     removeJoin (index) {
       this.form.joins.splice(index, 1)
@@ -220,6 +352,7 @@ export default {
     this.chartType = options.chartTypeOptions.find(op => op.name === this.chartTypeName)
     this.form.aggregation = this.chartType.aggregation
     this.initEntityOptions()
+      .then(() => this.initMtmOptions())
   }
 }
 </script>
