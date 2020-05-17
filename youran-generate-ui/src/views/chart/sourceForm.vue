@@ -114,7 +114,7 @@
                     <!--所有上面的实体-->
                     <el-option-group
                       v-for="([joinIndex,entity]) in getJoinEntitiesAbove(index)"
-                      :key="entity.entityId"
+                      :key="'entity_'+entity.entityId"
                       :label="entity.title+'('+entity.tableName+')'">
                       <el-option
                         v-for="field in entity.fieldList"
@@ -132,7 +132,7 @@
                     <!--所有上面的多对多-->
                     <el-option-group
                       v-for="([joinIndex,mtm]) in getJoinMtmsAbove(index)"
-                      :key="mtm.mtmId"
+                      :key="'mtm_'+mtm.mtmId"
                       :label="'多对多('+mtm.tableName+')'">
                       <el-option
                         :label="mtm.entityIdField1"
@@ -212,8 +212,33 @@
               </help-popover>
             </el-form-item>
           </template>
+          <!-- 明细列：多选下拉框 -->
+          <el-form-item label="明细列" prop="detailColumnList">
+            <help-popover name="chartSource.detailColumnList">
+              <el-select v-model="form.detailColumnList" value-key="key"
+                         style="width:100%;" placeholder="请选择明细列"
+                         multiple filterable>
+                <el-option-group
+                  v-for="([joinIndex,entity]) in detailColumnOptions"
+                  :key="joinIndex"
+                  :label="entity.title+'('+entity.tableName+')'">
+                  <el-option
+                    v-for="field in entity.fieldList"
+                    :key="field.fieldId"
+                    :label="field.fieldDesc+'('+field.fieldName+')'"
+                    :value="{
+                          key: 'common_'+joinIndex+'_'+field.fieldId,
+                          fieldId: field.fieldId,
+                          custom: false,
+                          joinIndex: joinIndex
+                        }">
+                  </el-option>
+                </el-option-group>
+              </el-select>
+            </help-popover>
+          </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit()" tabindex="160">提交</el-button>
+            <el-button type="primary" @click="submit()" tabindex="160">保存并下一步</el-button>
             <el-button @click="goBack()" tabindex="180">返回</el-button>
           </el-form-item>
         </el-form>
@@ -232,7 +257,8 @@ import options from '@/utils/options'
 import {
   initSourceFormBean,
   initJoinDTO,
-  repairFormBean,
+  repairAtJoinChange,
+  repairAtJoinRemove,
   getRules
 } from './model'
 
@@ -262,6 +288,23 @@ export default {
       rules: getRules()
     }
   },
+  computed: {
+    /**
+     * 明细列选项
+     */
+    detailColumnOptions () {
+      const options = []
+      if (this.form.entity) {
+        options.push([0, this.form.entity])
+      }
+      this.form.joins.forEach(join => {
+        if (join.right.entity) {
+          options.push([join.right.joinIndex, join.right.entity])
+        }
+      })
+      return options
+    }
+  },
   methods: {
     initEntityOptions () {
       return entityApi.getList(this.projectId)
@@ -283,7 +326,7 @@ export default {
     handleEntityChange (entityId) {
       this.form.entity = this.entityOptions.find(value => value.entityId === entityId)
       this.loadEntityFields(this.form.entity)
-      repairFormBean(this.form, null)
+      repairAtJoinChange(this.form)
     },
     loadEntityFields (entity) {
       if (entity.fieldList.length) {
@@ -338,7 +381,7 @@ export default {
         part.mtm = part.tmp1.obj
         part.mtmId = part.tmp1.obj.mtmId
       }
-      repairFormBean(this.form, null)
+      repairAtJoinChange(this.form)
     },
     fillTmp2ToPart (part) {
       part.joinPartType = part.tmp2.joinPartType
@@ -360,7 +403,7 @@ export default {
     },
     removeJoin (index) {
       this.form.joins.splice(index, 1)
-      repairFormBean(this.form, index + 1)
+      repairAtJoinRemove(this.form, index + 1)
     },
     submit () {
       let loading = null

@@ -354,7 +354,10 @@ public enum DevType {
   },
   chartSource: {
     entityId: `
-**实体**：主表
+**实体**：待填写
+    `,
+    detailColumnList: `
+**明细列**：待填写
     `
   }
 
