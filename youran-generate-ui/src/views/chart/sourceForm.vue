@@ -56,13 +56,19 @@
                 <!-- 关联(右边实体/多对多)： entity_1 -->
                 <el-col :span="12" class="col-left">
                   <el-select v-model="form.joins[index].right.tmp1" placeholder="请选择"
-                             style="width:100%;" @change="fillTmp1ToPart(form.joins[index].right)" filterable>
+                             style="width:100%;" @change="fillTmp1ToPart(form.joins[index].right)"
+                             value-key="key" filterable>
                     <el-option-group label="实体">
                       <el-option
                         v-for="entity in entityOptions"
                         :key="entity.entityId"
                         :label="entity.title+'('+entity.tableName+')'"
-                        :value="['entity',entity,index+1]">
+                        :value="{
+                          key: 'entity_'+entity.entityId,
+                          joinPartType: 'entity',
+                          joinIndex: index+1,
+                          obj: entity
+                        }">
                       </el-option>
                     </el-option-group>
                     <el-option-group label="多对多">
@@ -70,7 +76,12 @@
                         v-for="mtm in mtmOptions"
                         :key="mtm.mtmId"
                         :label="mtm.tableName"
-                        :value="['mtm',mtm,index+1]">
+                        :value="{
+                          key: 'mtm_'+mtm.mtmId,
+                          joinPartType: 'mtm',
+                          joinIndex: index+1,
+                          obj: mtm
+                        }">
                       </el-option>
                     </el-option-group>
                   </el-select>
@@ -94,7 +105,8 @@
                 </el-col>
                 <!-- 关联(左边字段)： t0.xx_id  -->
                 <el-col :span="8" class="col-inner">
-                  <el-select v-model="form.joins[index].left.tmp2" placeholder="请选择字段" style="width:100%;"
+                  <el-select v-model="form.joins[index].left.tmp2" placeholder="请选择字段"
+                             style="width:100%;" value-key="key"
                              @change="fillTmp2ToPart(form.joins[index].left)" filterable>
                     <span class="text-in-form" slot="prefix">
                       t{{form.joins[index].left.joinIndex}}
@@ -108,7 +120,13 @@
                         v-for="field in entity.fieldList"
                         :key="field.fieldId"
                         :label="field.fieldDesc+'('+field.fieldName+')'"
-                        :value="['entity',entity,joinIndex,field]">
+                        :value="{
+                          key: 'entity_'+entity.entityId+'_'+field.fieldId,
+                          joinPartType: 'entity',
+                          joinIndex: joinIndex,
+                          obj: entity,
+                          field: field
+                        }">
                       </el-option>
                     </el-option-group>
                     <!--所有上面的多对多-->
@@ -118,11 +136,23 @@
                       :label="'多对多('+mtm.tableName+')'">
                       <el-option
                         :label="mtm.entityIdField1"
-                        :value="['mtm',mtm,joinIndex,mtm.entityIdField1]">
+                        :value="{
+                          key: 'mtm_'+mtm.mtmId+'_'+mtm.entityIdField1,
+                          joinPartType: 'mtm',
+                          joinIndex: joinIndex,
+                          obj: mtm,
+                          field: mtm.entityIdField1
+                        }">
                       </el-option>
                       <el-option
                         :label="mtm.entityIdField2"
-                        :value="['mtm',mtm,joinIndex,mtm.entityIdField2]">
+                        :value="{
+                          key: 'mtm_'+mtm.mtmId+'_'+mtm.entityIdField2,
+                          joinPartType: 'mtm',
+                          joinIndex: joinIndex,
+                          obj: mtm,
+                          field: mtm.entityIdField2
+                        }">
                       </el-option>
                     </el-option-group>
                   </el-select>
@@ -133,7 +163,8 @@
                 </el-col>
                 <!-- 关联(右边字段)： t1.xx_id  -->
                 <el-col :span="8" class="col-inner">
-                  <el-select v-model="form.joins[index].right.tmp2" placeholder="请选择字段" style="width:100%;"
+                  <el-select v-model="form.joins[index].right.tmp2" placeholder="请选择字段"
+                             style="width:100%;" value-key="key"
                              @change="fillTmp2ToPart(form.joins[index].right)" filterable>
                     <span class="text-in-form" slot="prefix">
                       t{{form.joins[index].right.joinIndex}}
@@ -144,18 +175,36 @@
                         v-for="field in form.joins[index].right.entity.fieldList"
                         :key="field.fieldId"
                         :label="field.fieldDesc+'('+field.fieldName+')'"
-                        :value="['entity',form.joins[index].right.entity,index+1,field]">
+                        :value="{
+                          key: 'entity_'+form.joins[index].right.entity.entityId+'_'+field.fieldId,
+                          joinPartType: 'entity',
+                          joinIndex: index+1,
+                          obj: form.joins[index].right.entity,
+                          field: field
+                        }">
                       </el-option>
                     </template>
                     <!--如果右边是多对多-->
                     <template v-if="form.joins[index].right.joinPartType==='mtm'">
                       <el-option
                         :label="form.joins[index].right.mtm.entityIdField1"
-                        :value="['mtm',form.joins[index].right.mtm,index+1,form.joins[index].right.mtm.entityIdField1]">
+                        :value="{
+                          key: 'mtm_'+form.joins[index].right.mtm.mtmId+'_'+form.joins[index].right.mtm.entityIdField1,
+                          joinPartType: 'mtm',
+                          joinIndex: index+1,
+                          obj: form.joins[index].right.mtm,
+                          field: form.joins[index].right.mtm.entityIdField1
+                        }">
                       </el-option>
                       <el-option
                         :label="form.joins[index].right.mtm.entityIdField2"
-                        :value="['mtm',form.joins[index].right.mtm,index+1,form.joins[index].right.mtm.entityIdField2]">
+                        :value="{
+                          key: 'mtm_'+form.joins[index].right.mtm.mtmId+'_'+form.joins[index].right.mtm.entityIdField2,
+                          joinPartType: 'mtm',
+                          joinIndex: index+1,
+                          obj: form.joins[index].right.mtm,
+                          field: form.joins[index].right.mtm.entityIdField2
+                        }">
                       </el-option>
                     </template>
                   </el-select>
@@ -213,14 +262,6 @@ export default {
       rules: getRules()
     }
   },
-  watch: {
-    'form.entity' () {
-      repairFormBean(this.form)
-    },
-    'form.joins' () {
-      repairFormBean(this.form)
-    }
-  },
   methods: {
     initEntityOptions () {
       return entityApi.getList(this.projectId)
@@ -242,6 +283,7 @@ export default {
     handleEntityChange (entityId) {
       this.form.entity = this.entityOptions.find(value => value.entityId === entityId)
       this.loadEntityFields(this.form.entity)
+      repairFormBean(this.form, null)
     },
     loadEntityFields (entity) {
       if (entity.fieldList.length) {
@@ -286,35 +328,31 @@ export default {
       return pairs
     },
     fillTmp1ToPart (part) {
-      // tmp1的格式A：['entity',entity,joinIndex]
-      // tmp1的格式B：['mtm',mtm,joinIndex]
-      part.joinPartType = part.tmp1[0]
-      part.joinIndex = part.tmp1[2]
+      part.joinPartType = part.tmp1.joinPartType
+      part.joinIndex = part.tmp1.joinIndex
       if (part.joinPartType === 'entity') {
-        this.loadEntityFields(part.tmp1[1])
-        part.entity = part.tmp1[1]
-        part.entityId = part.tmp1[1].entityId
+        this.loadEntityFields(part.tmp1.obj)
+        part.entity = part.tmp1.obj
+        part.entityId = part.tmp1.obj.entityId
       } else if (part.joinPartType === 'mtm') {
-        part.mtm = part.tmp1[1]
-        part.mtmId = part.tmp1[1].mtmId
+        part.mtm = part.tmp1.obj
+        part.mtmId = part.tmp1.obj.mtmId
       }
-      repairFormBean(this.form)
+      repairFormBean(this.form, null)
     },
     fillTmp2ToPart (part) {
-      // tmp2的格式A：['entity',entity,joinIndex,field]
-      // tmp2的格式B：['mtm',mtm,joinIndex,mtm.entityIdField1]
-      part.joinPartType = part.tmp2[0]
-      part.joinIndex = part.tmp2[2]
+      part.joinPartType = part.tmp2.joinPartType
+      part.joinIndex = part.tmp2.joinIndex
       if (part.joinPartType === 'entity') {
-        this.loadEntityFields(part.tmp2[1])
-        part.entity = part.tmp2[1]
-        part.entityId = part.tmp2[1].entityId
-        part.field = part.tmp2[3]
-        part.fieldId = part.tmp2[3].fieldId
+        this.loadEntityFields(part.tmp2.obj)
+        part.entity = part.tmp2.obj
+        part.entityId = part.tmp2.obj.entityId
+        part.field = part.tmp2.field
+        part.fieldId = part.tmp2.field.fieldId
       } else if (part.joinPartType === 'mtm') {
-        part.mtm = part.tmp2[1]
-        part.mtmId = part.tmp2[1].mtmId
-        part.mtmField = part.tmp2[3]
+        part.mtm = part.tmp2.obj
+        part.mtmId = part.tmp2.obj.mtmId
+        part.mtmField = part.tmp2.field
       }
     },
     addJoin () {
@@ -322,6 +360,7 @@ export default {
     },
     removeJoin (index) {
       this.form.joins.splice(index, 1)
+      repairFormBean(this.form, index + 1)
     },
     submit () {
       let loading = null
