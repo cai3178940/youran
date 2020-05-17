@@ -5,6 +5,12 @@ export function initSourceFormBean (forEdit) {
     entityId: null,
     joins: [],
     detailColumnList: [],
+    whereList: [],
+    detailOrderList: [],
+    dimensionList: [],
+    metricsList: [],
+    havingList: [],
+    aggOrderList: [],
     limit: 0,
     // 后面的属性是缓存对象，表单提交时需要过滤掉
     entity: null
@@ -65,7 +71,7 @@ export function initJoinPartDTO (joinIndex, isRight) {
  * @param form 表单数据
  */
 export function repairAtJoinChange (form) {
-  // TODO
+  // TODO 修复各个list内相关记录
 }
 
 /**
@@ -106,6 +112,12 @@ export function getRules () {
     ],
     detailColumnList: [
       { required: true, type: 'array', message: '请选择明细列', trigger: 'change' }
+    ],
+    dimensionList: [
+      { required: true, type: 'array', message: '请设置聚合(维度)', trigger: 'blur' }
+    ],
+    metricsList: [
+      { required: true, type: 'array', message: '请设置聚合(指标)', trigger: 'blur' }
     ]
   }
 }

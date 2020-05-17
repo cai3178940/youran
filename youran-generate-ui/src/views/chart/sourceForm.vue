@@ -219,7 +219,7 @@
                          style="width:100%;" placeholder="请选择明细列"
                          multiple filterable>
                 <el-option-group
-                  v-for="([joinIndex,entity]) in detailColumnOptions"
+                  v-for="([joinIndex,entity]) in entityFieldOptions"
                   :key="joinIndex"
                   :label="entity.title+'('+entity.tableName+')'">
                   <el-option
@@ -237,6 +237,14 @@
               </el-select>
             </help-popover>
           </el-form-item>
+          <!-- 过滤条件 -->
+          <el-form-item label="过滤">
+            <help-popover name="chartSource.whereList">
+              <el-button type="primary" @click="addWhere"
+                         icon="el-icon-plus" plain>
+              </el-button>
+            </help-popover>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()" tabindex="160">保存并下一步</el-button>
             <el-button @click="goBack()" tabindex="180">返回</el-button>
@@ -244,16 +252,18 @@
         </el-form>
       </el-col>
     </el-row>
+    <where-form ref="whereForm" :whereOptions="entityFieldOptions" @add="onWhereAdd(0)"/>
   </div>
 </template>
 
 <script>
 // import projectApi from '@/api/project'
 // import chartApi from '@/api/chart'
+import whereForm from './item/whereForm'
 import entityApi from '@/api/entity'
 import mtmApi from '@/api/mtm'
 import fieldApi from '@/api/field'
-import options from '@/utils/options'
+import chartOptions from '@/utils/options-chart'
 import {
   initSourceFormBean,
   initJoinDTO,
@@ -269,12 +279,15 @@ export default {
     'chartTypeName',
     'chartId'
   ],
+  components: {
+    'where-form': whereForm
+  },
   data () {
     const edit = !!this.chartId
     return {
       edit: edit,
-      constTypeOptions: options.constTypeOptions,
-      joinTypeOptions: options.joinTypeOptions,
+      constTypeOptions: chartOptions.constTypeOptions,
+      joinTypeOptions: chartOptions.joinTypeOptions,
       entityOptions: [],
       mtmOptions: [],
       chartType: {
@@ -290,9 +303,9 @@ export default {
   },
   computed: {
     /**
-     * 明细列选项
+     * 实体字段选项
      */
-    detailColumnOptions () {
+    entityFieldOptions () {
       const options = []
       if (this.form.entity) {
         options.push([0, this.form.entity])
@@ -405,6 +418,45 @@ export default {
       this.form.joins.splice(index, 1)
       repairAtJoinRemove(this.form, index + 1)
     },
+    addWhere () {
+      this.$refs.whereForm.show()
+    },
+    removeWhere (index) {
+      // TODO
+    },
+    onWhereAdd (index, where) {
+      // TODO
+    },
+    addDetailOrder () {
+      // TODO
+    },
+    removeDetailOrder (index) {
+      // TODO
+    },
+    addDimension () {
+      // TODO
+    },
+    removeDimension (index) {
+      // TODO
+    },
+    addMetrics () {
+      // TODO
+    },
+    removeMetrics (index) {
+      // TODO
+    },
+    addHaving () {
+      // TODO
+    },
+    removeHaving (index) {
+      // TODO
+    },
+    addAggOrder () {
+      // TODO
+    },
+    removeAggOrder (index) {
+      // TODO
+    },
     submit () {
       let loading = null
       // 校验表单
@@ -431,7 +483,7 @@ export default {
     }
   },
   created () {
-    this.chartType = options.chartTypeOptions.find(op => op.name === this.chartTypeName)
+    this.chartType = chartOptions.chartTypeOptions.find(op => op.name === this.chartTypeName)
     this.form.aggregation = this.chartType.aggregation
     this.initEntityOptions()
       .then(() => this.initMtmOptions())

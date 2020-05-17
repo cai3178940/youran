@@ -358,6 +358,24 @@ public enum DevType {
     `,
     detailColumnList: `
 **明细列**：待填写
+    `,
+    whereList: `
+**过滤**：待填写
+    `,
+    detailOrderList: `
+**排序**：待填写
+    `,
+    dimensionList: `
+**聚合(维度)**：待填写
+    `,
+    metricsList: `
+**聚合(指标)**：待填写
+    `,
+    havingList: `
+**聚合(过滤)**：待填写
+    `,
+    aggOrderList: `
+**聚合(排序)**：待填写
     `
   }
 
