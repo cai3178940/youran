@@ -74,7 +74,7 @@
 <script>
 import projectApi from '@/api/project'
 import chartApi from '@/api/chart'
-import options from '@/utils/options'
+import chartOptions from '@/utils/options-chart'
 
 export default {
   name: 'chartList',
@@ -98,7 +98,7 @@ export default {
   },
   filters: {
     optionLabel (value, optionType) {
-      const ops = options[optionType]
+      const ops = chartOptions[optionType]
       for (const op of ops) {
         if (op.value === value) {
           return op.label
@@ -155,7 +155,7 @@ export default {
       this.$router.push(`/project/${this.projectId}/chart/${chartTypeName}/add`)
     },
     handleEdit (row) {
-      const chartType = options.chartTypeOptions.find(op => op.value === row.chartType)
+      const chartType = chartOptions.chartTypeOptions.find(op => op.value === row.chartType)
       this.$router.push(`/project/${this.projectId}/chart/${chartType.name}/edit/${row.chartId}`)
     }
   },

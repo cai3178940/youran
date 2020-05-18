@@ -252,7 +252,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <where-form ref="whereForm" :whereOptions="entityFieldOptions" @add="onWhereAdd(0)"/>
+    <where-form ref="whereForm" @add="onWhereAdd(0)"/>
   </div>
 </template>
 
@@ -419,7 +419,7 @@ export default {
       repairAtJoinRemove(this.form, index + 1)
     },
     addWhere () {
-      this.$refs.whereForm.show()
+      this.$refs.whereForm.show(this.entityFieldOptions, null)
     },
     removeWhere (index) {
       // TODO
