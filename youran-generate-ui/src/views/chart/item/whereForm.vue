@@ -19,7 +19,7 @@
                      style="width:100%;" placeholder="请选择过滤字段"
                      filterable>
             <el-option-group
-              v-for="([joinIndex,entity]) in whereOptions"
+              v-for="([joinIndex,entity]) in entityFieldOptions"
               :key="joinIndex"
               :label="entity.title+'('+entity.tableName+')'">
               <el-option
@@ -112,7 +112,7 @@ export default {
       edit: false,
       position: 0,
       formVisible: false,
-      whereOptions: [],
+      entityFieldOptions: [],
       timeGranularityOptions: chartOptions.timeGranularityOptions,
       // 最终返回给调用组件的表单数据
       form: initFormBean(),
@@ -133,7 +133,7 @@ export default {
       return false
     },
     /**
-     * 实体字段选项
+     * 过滤操作符选项
      */
     filterOperatorOptions () {
       if (this.tmp.tmp1.field) {
@@ -145,18 +145,18 @@ export default {
   methods: {
     /**
      * 显示表单窗口
-     * @param whereOptions 可选的where条件字段
+     * @param entityFieldOptions 可选的where条件字段
      * @param formBean 编辑的where条件，如果新增则为空
      * @param position 当前编辑的where条件在数组中的位置
      */
-    show (whereOptions, formBean, position) {
+    show (entityFieldOptions, formBean, position) {
       this.position = position
-      this.whereOptions = whereOptions
+      this.entityFieldOptions = entityFieldOptions
       this.tmp = initTmp()
       if (formBean) {
         this.edit = true
         this.form = formBean
-        formToTmp(this.form, this.tmp, whereOptions)
+        formToTmp(this.form, this.tmp, entityFieldOptions)
       } else {
         this.edit = false
         this.form = initFormBean()

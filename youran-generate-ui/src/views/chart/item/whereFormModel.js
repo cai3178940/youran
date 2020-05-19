@@ -41,9 +41,9 @@ export function initTmp () {
 /**
  * 从form中抽取数据到tmp
  */
-export function formToTmp (form, tmp, whereOptions) {
+export function formToTmp (form, tmp, entityFieldOptions) {
   if (!form.custom) {
-    const [joinIndex, entity] = whereOptions.find(
+    const [joinIndex, entity] = entityFieldOptions.find(
       ([joinIndex, entity]) => joinIndex === form.joinIndex)
     const field = entity.fieldList.find(field => field.fieldId === form.fieldId)
     tmp.tmp1 = {

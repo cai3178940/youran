@@ -12,6 +12,7 @@ function abbreviate (str, max) {
  * 关联类型
  * filterValueType为过滤值类型：1单值、2双值、3多值、4无值
  * matchFieldTypes为匹配的java字段类型
+ * display函数用来渲染表达式
  * timeGranularity为是否时间粒度
  */
 const filterOperatorOptions = [

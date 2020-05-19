@@ -230,7 +230,8 @@
                           key: 'common_'+joinIndex+'_'+field.fieldId,
                           fieldId: field.fieldId,
                           custom: false,
-                          joinIndex: joinIndex
+                          joinIndex: joinIndex,
+                          _displayText: field.fieldDesc+'('+field.fieldName+')'
                         }">
                   </el-option>
                 </el-option-group>
@@ -251,6 +252,20 @@
               </el-button>
             </help-popover>
           </el-form-item>
+          <!-- 排序 -->
+          <el-form-item label="排序">
+            <help-popover name="chartSource.detailOrderList">
+              <el-button v-for="(detailOrder,index) in form.detailOrderList"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editDetailOrder(index, detailOrder)"
+                         plain>
+                {{detailOrder._displayText}}
+              </el-button>
+              <el-button type="primary" @click="addDetailOrder" class="inner-form-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
+            </help-popover>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()" tabindex="160">保存并下一步</el-button>
             <el-button @click="goBack()" tabindex="180">返回</el-button>
@@ -259,6 +274,7 @@
       </el-col>
     </el-row>
     <where-form ref="whereForm" @submit="onWhereSubmit" @remove="onWhereRemove"/>
+    <detail-order-form ref="detailOrderForm" @submit="onDetailOrderSubmit" @remove="onDetailOrderRemove"/>
   </div>
 </template>
 
@@ -266,6 +282,7 @@
 // import projectApi from '@/api/project'
 // import chartApi from '@/api/chart'
 import whereForm from './item/whereForm'
+import detailOrderForm from './item/detailOrderForm'
 import entityApi from '@/api/entity'
 import mtmApi from '@/api/mtm'
 import fieldApi from '@/api/field'
@@ -286,7 +303,8 @@ export default {
     'chartId'
   ],
   components: {
-    'where-form': whereForm
+    whereForm,
+    detailOrderForm
   },
   data () {
     const edit = !!this.chartId
@@ -443,10 +461,22 @@ export default {
       }
     },
     addDetailOrder () {
-      // TODO
+      this.$refs.detailOrderForm.show(this.form.detailColumnList, null, this.form.detailOrderList.length)
     },
-    removeDetailOrder (index) {
-      // TODO
+    editDetailOrder (index, detailOrder) {
+      this.$refs.detailOrderForm.show(this.form.detailColumnList, detailOrder, index)
+    },
+    onDetailOrderSubmit (index, detailOrder) {
+      if (index >= this.form.detailOrderList.length) {
+        this.form.detailOrderList.push(detailOrder)
+      } else {
+        this.form.detailOrderList[index] = detailOrder
+      }
+    },
+    onDetailOrderRemove (index, detailOrder) {
+      if (index < this.form.detailOrderList.length) {
+        this.form.detailOrderList.splice(index, 1)
+      }
     },
     addDimension () {
       // TODO
