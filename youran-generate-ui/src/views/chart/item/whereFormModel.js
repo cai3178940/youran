@@ -2,6 +2,7 @@ import chartOptions from '@/utils/options-chart'
 
 export function initFormBean () {
   return {
+    _displayText: '',
     joinIndex: null,
     fieldId: null,
     filterOperator: null,
@@ -46,7 +47,7 @@ export function formToTmp (form, tmp, whereOptions) {
       ([joinIndex, entity]) => joinIndex === form.joinIndex)
     const field = entity.fieldList.find(field => field.fieldId === form.fieldId)
     tmp.tmp1 = {
-      key: joinIndex + '' + field.fieldId,
+      key: joinIndex + '_' + field.fieldId,
       field: field,
       joinIndex: joinIndex
     }
@@ -76,5 +77,9 @@ export function tmpToForm (tmp, form) {
     } else if (tmp.tmp2.filterValueType === 3) {
       form.filterValue = tmp.tmp5
     }
+    form._displayText = 't' + form.joinIndex + '.' + tmp.tmp1.field.fieldName +
+      tmp.tmp2.display(tmp.tmp1.field.jfieldType, form.filterValue, form.timeGranularity)
+  } else {
+    form._displayText = '[自定义内容]'
   }
 }

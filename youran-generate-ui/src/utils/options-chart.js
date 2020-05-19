@@ -1,3 +1,13 @@
+function abbreviate (str, max) {
+  if (!str) {
+    return ''
+  }
+  if (str.length > max) {
+    return str.substring(0, max - 3) + '...'
+  }
+  return str
+}
+
 /**
  * 关联类型
  * filterValueType为过滤值类型：1单值、2双值、3多值、4无值
@@ -15,6 +25,12 @@ const filterOperatorOptions = [
       'LocalDate', 'LocalDateTime', 'Date',
       'Boolean'
     ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' = \'' + abbreviate(value[0], 20) + '\''
+      }
+      return ' = ' + value[0]
+    },
     timeGranularity: false
   },
   {
@@ -26,6 +42,12 @@ const filterOperatorOptions = [
       'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
       'LocalDate', 'LocalDateTime', 'Date'
     ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' < \'' + abbreviate(value[0], 20) + '\''
+      }
+      return ' < ' + value[0]
+    },
     timeGranularity: false
   },
   {
@@ -37,6 +59,12 @@ const filterOperatorOptions = [
       'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
       'LocalDate', 'LocalDateTime', 'Date'
     ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' >= \'' + abbreviate(value[0], 20) + '\''
+      }
+      return ' >= ' + value[0]
+    },
     timeGranularity: false
   },
   {
@@ -48,6 +76,12 @@ const filterOperatorOptions = [
       'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
       'LocalDate', 'LocalDateTime', 'Date'
     ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' <= \'' + abbreviate(value[0], 20) + '\''
+      }
+      return ' <= ' + value[0]
+    },
     timeGranularity: false
   },
   {
@@ -59,6 +93,12 @@ const filterOperatorOptions = [
       'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
       'LocalDate', 'LocalDateTime', 'Date'
     ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' between \'' + abbreviate(value[0], 20) + '\' and \'' + abbreviate(value[1], 20) + '\''
+      }
+      return ' between ' + value[0] + ' and ' + value[1] + ''
+    },
     timeGranularity: false
   },
   {
@@ -70,6 +110,12 @@ const filterOperatorOptions = [
       'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
       'LocalDate', 'LocalDateTime', 'Date'
     ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' != \'' + abbreviate(value[0], 20) + '\''
+      }
+      return ' != ' + value[0]
+    },
     timeGranularity: false
   },
   {
@@ -77,6 +123,9 @@ const filterOperatorOptions = [
     label: '是当前',
     filterValueType: 4,
     matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
+    display: function (type, value, timeGranularity) {
+      return '是当前' + findTimeGranularityOption(timeGranularity).label
+    },
     timeGranularity: true
   },
   {
@@ -84,6 +133,9 @@ const filterOperatorOptions = [
     label: '前段时间',
     filterValueType: 1,
     matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
+    display: function (type, value, timeGranularity) {
+      return '是前' + value[0] + findTimeGranularityOption(timeGranularity).label
+    },
     timeGranularity: true
   },
   {
@@ -91,6 +143,9 @@ const filterOperatorOptions = [
     label: '后段时间',
     filterValueType: 1,
     matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
+    display: function (type, value, timeGranularity) {
+      return '是后' + value[0] + findTimeGranularityOption(timeGranularity).label
+    },
     timeGranularity: true
   },
   {
@@ -102,6 +157,9 @@ const filterOperatorOptions = [
       'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
       'LocalDate', 'LocalDateTime', 'Date'
     ],
+    display: function (type, value, timeGranularity) {
+      return ' in (...)'
+    },
     timeGranularity: false
   },
   {
@@ -113,6 +171,9 @@ const filterOperatorOptions = [
       'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
       'LocalDate', 'LocalDateTime', 'Date'
     ],
+    display: function (type, value, timeGranularity) {
+      return ' not in (...)'
+    },
     timeGranularity: false
   },
   {
@@ -125,6 +186,9 @@ const filterOperatorOptions = [
       'LocalDate', 'LocalDateTime', 'Date',
       'Boolean'
     ],
+    display: function (type, value, timeGranularity) {
+      return ' is null'
+    },
     timeGranularity: false
   },
   {
@@ -137,6 +201,9 @@ const filterOperatorOptions = [
       'LocalDate', 'LocalDateTime', 'Date',
       'Boolean'
     ],
+    display: function (type, value, timeGranularity) {
+      return ' is not null'
+    },
     timeGranularity: false
   },
   {
@@ -144,6 +211,9 @@ const filterOperatorOptions = [
     label: 'like',
     filterValueType: 1,
     matchFieldTypes: ['String'],
+    display: function (type, value, timeGranularity) {
+      return ' like \'%' + abbreviate(value[0], 20) + '%\''
+    },
     timeGranularity: false
   },
   {
@@ -155,9 +225,50 @@ const filterOperatorOptions = [
       'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
       'LocalDate', 'LocalDateTime', 'Date'
     ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' > \'' + abbreviate(value[0], 20) + '\''
+      }
+      return ' > ' + value[0]
+    },
     timeGranularity: false
   }
 ]
+
+const timeGranularityOptions = [
+  {
+    value: 1,
+    label: '分钟'
+  },
+  {
+    value: 2,
+    label: '小时'
+  },
+  {
+    value: 3,
+    label: '天'
+  },
+  {
+    value: 4,
+    label: '周'
+  },
+  {
+    value: 5,
+    label: '月'
+  },
+  {
+    value: 6,
+    label: '季度'
+  },
+  {
+    value: 7,
+    label: '年'
+  }
+]
+
+function findTimeGranularityOption (value) {
+  return timeGranularityOptions.find(option => option.value === value)
+}
 
 export default {
   /**
@@ -221,34 +332,5 @@ export default {
   /**
    * 时间粒度
    */
-  timeGranularityOptions: [
-    {
-      value: 1,
-      label: '分钟'
-    },
-    {
-      value: 2,
-      label: '小时'
-    },
-    {
-      value: 3,
-      label: '天'
-    },
-    {
-      value: 4,
-      label: '周'
-    },
-    {
-      value: 5,
-      label: '月'
-    },
-    {
-      value: 6,
-      label: '季度'
-    },
-    {
-      value: 7,
-      label: '年'
-    }
-  ]
+  timeGranularityOptions: timeGranularityOptions
 }

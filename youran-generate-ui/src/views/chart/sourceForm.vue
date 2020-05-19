@@ -244,7 +244,7 @@
                          :key="index" class="inner-form-button"
                          type="primary" @click="editWhere(index, where)"
                          plain>
-                显示内容
+                {{where._displayText}}
               </el-button>
               <el-button type="primary" @click="addWhere" class="inner-form-button"
                          icon="el-icon-plus" plain>
@@ -258,7 +258,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <where-form ref="whereForm" @submit="onWhereSubmit"/>
+    <where-form ref="whereForm" @submit="onWhereSubmit" @remove="onWhereRemove"/>
   </div>
 </template>
 
@@ -430,14 +430,16 @@ export default {
     editWhere (index, where) {
       this.$refs.whereForm.show(this.entityFieldOptions, where, index)
     },
-    removeWhere (index) {
-      // TODO
-    },
     onWhereSubmit (index, where) {
       if (index >= this.form.whereList.length) {
         this.form.whereList.push(where)
       } else {
         this.form.whereList[index] = where
+      }
+    },
+    onWhereRemove (index, where) {
+      if (index < this.form.whereList.length) {
+        this.form.whereList.splice(index, 1)
       }
     },
     addDetailOrder () {

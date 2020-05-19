@@ -89,6 +89,7 @@
       </template>
       <el-form-item>
         <el-button type="primary" @click="submit()">确定</el-button>
+        <el-button v-if="edit" type="danger" @click="remove()">删除</el-button>
         <el-button @click="cancel()">取消</el-button>
       </el-form-item>
     </el-form>
@@ -108,6 +109,7 @@ export default {
   name: 'where-form',
   data () {
     return {
+      edit: false,
       position: 0,
       formVisible: false,
       whereOptions: [],
@@ -152,9 +154,11 @@ export default {
       this.whereOptions = whereOptions
       this.tmp = initTmp()
       if (formBean) {
+        this.edit = true
         this.form = formBean
         formToTmp(this.form, this.tmp, whereOptions)
       } else {
+        this.edit = false
         this.form = initFormBean()
       }
       this.formVisible = true
@@ -162,6 +166,10 @@ export default {
     submit () {
       tmpToForm(this.tmp, this.form)
       this.$emit('submit', this.position, this.form)
+      this.formVisible = false
+    },
+    remove () {
+      this.$emit('remove', this.position, this.form)
       this.formVisible = false
     },
     cancel () {
