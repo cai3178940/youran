@@ -240,7 +240,13 @@
           <!-- 过滤条件 -->
           <el-form-item label="过滤">
             <help-popover name="chartSource.whereList">
-              <el-button type="primary" @click="addWhere"
+              <el-button v-for="(where,index) in form.whereList"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editWhere(index, where)"
+                         plain>
+                显示内容
+              </el-button>
+              <el-button type="primary" @click="addWhere" class="inner-form-button"
                          icon="el-icon-plus" plain>
               </el-button>
             </help-popover>
@@ -252,7 +258,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <where-form ref="whereForm" @add="onWhereAdd(0)"/>
+    <where-form ref="whereForm" @submit="onWhereSubmit"/>
   </div>
 </template>
 
@@ -419,13 +425,20 @@ export default {
       repairAtJoinRemove(this.form, index + 1)
     },
     addWhere () {
-      this.$refs.whereForm.show(this.entityFieldOptions, null)
+      this.$refs.whereForm.show(this.entityFieldOptions, null, this.form.whereList.length)
+    },
+    editWhere (index, where) {
+      this.$refs.whereForm.show(this.entityFieldOptions, where, index)
     },
     removeWhere (index) {
       // TODO
     },
-    onWhereAdd (index, where) {
-      // TODO
+    onWhereSubmit (index, where) {
+      if (index >= this.form.whereList.length) {
+        this.form.whereList.push(where)
+      } else {
+        this.form.whereList[index] = where
+      }
     },
     addDetailOrder () {
       // TODO
@@ -501,6 +514,9 @@ export default {
       font-size: 16px;
       color: #FA8072;
       padding: 7px 0px;
+    }
+    .inner-form-button {
+      margin: 0 10px 5px 0;
     }
   }
 

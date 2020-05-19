@@ -97,48 +97,18 @@
 
 <script>
 import chartOptions from '@/utils/options-chart'
-
-function initFormBean () {
-  return {
-    joinIndex: null,
-    fieldId: null,
-    filterOperator: null,
-    filterValue: null,
-    timeGranularity: null,
-    custom: false,
-    customContent: null
-  }
-}
-
-function initTmp () {
-  return {
-    // 过滤字段下拉框绑定对象
-    tmp1: {
-      key: '',
-      field: null,
-      joinIndex: null
-    },
-    // 过滤操作符下拉框绑定对象
-    tmp2: {
-      value: null,
-      label: null,
-      filterValueType: null,
-      matchFieldTypes: [],
-      timeGranularity: false
-    },
-    // 单过滤值绑定对象
-    tmp3: [null],
-    // 双过滤值绑定对象
-    tmp4: [null, null],
-    // 多过滤值绑定对象
-    tmp5: []
-  }
-}
+import {
+  initFormBean,
+  initTmp,
+  formToTmp,
+  tmpToForm
+} from './whereFormModel'
 
 export default {
   name: 'where-form',
   data () {
     return {
+      position: 0,
       formVisible: false,
       whereOptions: [],
       timeGranularityOptions: chartOptions.timeGranularityOptions,
@@ -171,42 +141,28 @@ export default {
     }
   },
   methods: {
-    show (whereOptions, formBean) {
+    /**
+     * 显示表单窗口
+     * @param whereOptions 可选的where条件字段
+     * @param formBean 编辑的where条件，如果新增则为空
+     * @param position 当前编辑的where条件在数组中的位置
+     */
+    show (whereOptions, formBean, position) {
+      this.position = position
       this.whereOptions = whereOptions
       this.tmp = initTmp()
       if (formBean) {
         this.form = formBean
-        this.resetTmp()
+        formToTmp(this.form, this.tmp, whereOptions)
       } else {
         this.form = initFormBean()
       }
       this.formVisible = true
     },
-    /**
-     * 重置临时数据
-     */
-    resetTmp () {
-      if (!this.form.custom) {
-        const [joinIndex, entity] = this.whereOptions.find(
-          ([joinIndex, entity]) => joinIndex === this.form.joinIndex)
-        const field = entity.fieldList.find(field => field.fieldId === this.form.fieldId)
-        this.tmp.tmp1 = {
-          key: joinIndex + '' + field.fieldId,
-          field: field,
-          joinIndex: joinIndex
-        }
-        this.tmp.tmp2 = chartOptions.getFilterOperatorOption(this.form.filterOperator)
-        if (this.tmp.tmp2.filterValueType === 1) {
-          this.tmp.tmp3 = this.form.filterValue
-        } else if (this.tmp.tmp2.filterValueType === 2) {
-          this.tmp.tmp4 = this.form.filterValue
-        } else if (this.tmp.tmp2.filterValueType === 3) {
-          this.tmp.tmp5 = this.form.filterValue
-        }
-      }
-    },
     submit () {
-      // TODO
+      tmpToForm(this.tmp, this.form)
+      this.$emit('submit', this.position, this.form)
+      this.formVisible = false
     },
     cancel () {
       this.formVisible = false
