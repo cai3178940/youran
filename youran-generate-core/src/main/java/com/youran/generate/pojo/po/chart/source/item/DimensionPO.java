@@ -50,7 +50,7 @@ public class DimensionPO extends MetaChartSourceItemPO {
         if (this.getJoinIndex() == 0) {
             this.entity = chartSource.getEntity();
         } else {
-            this.entity = this.getJoin().getRightEntity();
+            this.entity = this.getJoin().getRight().getEntity();
         }
         if(this.entity==null){
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表维度异常，所属实体不存在");
