@@ -4,6 +4,7 @@ import com.youran.generate.pojo.dto.chart.source.MetaChartSourceAddDTO;
 import com.youran.generate.pojo.dto.chart.source.MetaChartSourceUpdateDTO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.vo.chart.source.MetaChartSourceShowVO;
+import com.youran.generate.pojo.vo.chart.source.MetaChartSourceWithItemsShowVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
@@ -42,6 +43,9 @@ public interface MetaChartSourceMapper {
      * @return
      */
     MetaChartSourceShowVO toShowVO(MetaChartSourcePO metaChartSourcePO);
+
+
+    MetaChartSourceWithItemsShowVO toWithItemsShowVO(MetaChartSourcePO po);
 
 
 }

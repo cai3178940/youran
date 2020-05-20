@@ -122,6 +122,24 @@ public class MetaChartSourceItemService {
             .<MetaChartSourceItemPO>map(po -> po.castSubType(true))
             .collect(Collectors.toList());
     }
+
+
+    /**
+     * 根据数据源id查询所有数据项
+     *
+     * @param sourceId
+     * @param cast
+     * @return
+     */
+    public List<MetaChartSourceItemPO> findBySourceId(Integer sourceId, boolean cast) {
+        List<MetaChartSourceItemPO> list = metaChartSourceItemDAO.findBySourceId(sourceId);
+        if (!cast) {
+            return list;
+        }
+        return list.stream()
+            .<MetaChartSourceItemPO>map(po -> po.castSubType(true))
+            .collect(Collectors.toList());
+    }
 }
 
 

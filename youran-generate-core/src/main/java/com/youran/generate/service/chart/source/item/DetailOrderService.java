@@ -47,11 +47,16 @@ public class DetailOrderService {
     public DetailOrderPO save(DetailOrderAddDTO addDTO) {
         Integer projectId = addDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
+        DetailOrderPO po = this.doSave(addDTO);
+        metaProjectService.updateProject(project);
+        return po;
+    }
+
+    public DetailOrderPO doSave(DetailOrderAddDTO addDTO) {
         DetailOrderPO po = MetaChartSourceItemMapper.INSTANCE
             .fromDetailOrderAddDTO(addDTO);
         this.preparePO(po);
         metaChartSourceItemDAO.save(po);
-        metaProjectService.updateProject(project);
         return po;
     }
 

@@ -18,6 +18,10 @@ public abstract class AbstractSourceItemDTO extends AbstractDTO {
     @NotNull
     private Integer sourceId;
 
+    @ApiModelProperty(notes = "数据项唯一键", example = "1", required = true)
+    @NotNull
+    private String key;
+
     @ApiModelProperty(notes = "项目id", example = "1", required = true)
     @NotNull
     private Integer projectId;
@@ -28,6 +32,9 @@ public abstract class AbstractSourceItemDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = "父id", example = "1")
     private Integer parentId;
+
+    @ApiModelProperty(notes = "父数据项唯一键", example = "1")
+    private String parentKey;
 
     /**
      * 获取数据项类型
@@ -67,5 +74,21 @@ public abstract class AbstractSourceItemDTO extends AbstractDTO {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getParentKey() {
+        return parentKey;
+    }
+
+    public void setParentKey(String parentKey) {
+        this.parentKey = parentKey;
     }
 }

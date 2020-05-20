@@ -102,6 +102,14 @@ export function repairAtJoinRemove (form, removeJoinIndex) {
   }
 }
 
+/**
+ * 将表单数据剥离干净，只提交有用的信息
+ * @param form
+ */
+export function stripFormBean (form) {
+
+}
+
 export function getRules () {
   return {
     projectId: [

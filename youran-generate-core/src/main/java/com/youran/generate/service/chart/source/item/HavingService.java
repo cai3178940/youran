@@ -47,11 +47,16 @@ public class HavingService {
     public HavingPO save(HavingAddDTO addDTO) {
         Integer projectId = addDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
+        HavingPO po = this.doSave(addDTO);
+        metaProjectService.updateProject(project);
+        return po;
+    }
+
+    public HavingPO doSave(HavingAddDTO addDTO) {
         HavingPO po = MetaChartSourceItemMapper.INSTANCE
             .fromHavingAddDTO(addDTO);
         this.preparePO(po);
         metaChartSourceItemDAO.save(po);
-        metaProjectService.updateProject(project);
         return po;
     }
 

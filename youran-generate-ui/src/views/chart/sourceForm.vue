@@ -267,7 +267,7 @@
             </help-popover>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit()" tabindex="160">保存并下一步</el-button>
+            <el-button type="primary" @click="submit()" tabindex="160">下一步</el-button>
             <el-button @click="goBack()" tabindex="180">返回</el-button>
           </el-form-item>
         </el-form>
@@ -280,7 +280,7 @@
 
 <script>
 // import projectApi from '@/api/project'
-// import chartApi from '@/api/chart'
+import chartSourceApi from '@/api/chartSource'
 import whereForm from './item/whereForm'
 import detailOrderForm from './item/detailOrderForm'
 import entityApi from '@/api/entity'
@@ -292,8 +292,9 @@ import {
   initJoinDTO,
   repairAtJoinChange,
   repairAtJoinRemove,
+  stripFormBean,
   getRules
-} from './model'
+} from './sourceModel'
 
 export default {
   name: 'chartForm',
@@ -310,6 +311,8 @@ export default {
     const edit = !!this.chartId
     return {
       edit: edit,
+      sourceId: null,
+      formChanged: false,
       constTypeOptions: chartOptions.constTypeOptions,
       joinTypeOptions: chartOptions.joinTypeOptions,
       entityOptions: [],
@@ -407,6 +410,9 @@ export default {
       }
       return pairs
     },
+    /**
+     * 将实体填充到join中
+     */
     fillTmp1ToPart (part) {
       part.joinPartType = part.tmp1.joinPartType
       part.joinIndex = part.tmp1.joinIndex
@@ -419,7 +425,11 @@ export default {
         part.mtmId = part.tmp1.obj.mtmId
       }
       repairAtJoinChange(this.form)
+      this.formChanged = true
     },
+    /**
+     * 将字段及其所在实体/多对多填充到join中
+     */
     fillTmp2ToPart (part) {
       part.joinPartType = part.tmp2.joinPartType
       part.joinIndex = part.tmp2.joinIndex
@@ -434,13 +444,16 @@ export default {
         part.mtmId = part.tmp2.obj.mtmId
         part.mtmField = part.tmp2.field
       }
+      this.formChanged = true
     },
     addJoin () {
       this.form.joins.push(initJoinDTO(0, this.form.joins.length))
+      this.formChanged = true
     },
     removeJoin (index) {
       this.form.joins.splice(index, 1)
       repairAtJoinRemove(this.form, index + 1)
+      this.formChanged = true
     },
     addWhere () {
       this.$refs.whereForm.show(this.entityFieldOptions, null, this.form.whereList.length)
@@ -454,11 +467,13 @@ export default {
       } else {
         this.form.whereList[index] = where
       }
+      this.formChanged = true
     },
     onWhereRemove (index, where) {
       if (index < this.form.whereList.length) {
         this.form.whereList.splice(index, 1)
       }
+      this.formChanged = true
     },
     addDetailOrder () {
       this.$refs.detailOrderForm.show(this.form.detailColumnList, null, this.form.detailOrderList.length)
@@ -472,11 +487,13 @@ export default {
       } else {
         this.form.detailOrderList[index] = detailOrder
       }
+      this.formChanged = true
     },
     onDetailOrderRemove (index, detailOrder) {
       if (index < this.form.detailOrderList.length) {
         this.form.detailOrderList.splice(index, 1)
       }
+      this.formChanged = true
     },
     addDimension () {
       // TODO
@@ -502,14 +519,30 @@ export default {
     removeAggOrder (index) {
       // TODO
     },
+    /**
+     * 下一步
+     */
+    next () {
+      // 编辑的情况下，未进行任何修改，则直接进入下一页
+      if (this.edit && !this.formChanged) {
+        this.nextPage()
+      } else {
+        this.submit()
+          .then(() => this.nextPage())
+      }
+    },
+    nextPage () {
+      this.$router.push(`/project/${this.projectId}/chart/${this.chartTypeName}\
+        /${this.edit ? 'edit' : 'add'}/${this.chartId}/next?sourceId=${this.sourceId}`)
+    },
     submit () {
       let loading = null
       // 校验表单
-      this.$refs.chartForm.validate()
+      return this.$refs.chartForm.validate()
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          return Promise.resolve()
+          return chartSourceApi.saveOrUpdate(stripFormBean(this.form), this.edit)
         })
         // 执行页面跳转
         .then(() => {
@@ -530,8 +563,17 @@ export default {
   created () {
     this.chartType = chartOptions.chartTypeOptions.find(op => op.name === this.chartTypeName)
     this.form.aggregation = this.chartType.aggregation
-    this.initEntityOptions()
+    const promise = this.initEntityOptions()
       .then(() => this.initMtmOptions())
+    if (this.edit) {
+      this.sourceId = this.$router.currentRoute.query.sourceId
+      if (this.sourceId) {
+        promise.then(() => chartSourceApi.getSourceWithItems())
+          .then(data => {
+            this.form = data
+          })
+      }
+    }
   }
 }
 </script>

@@ -47,14 +47,18 @@ public class AggOrderService {
     public AggOrderPO save(AggOrderAddDTO addDTO) {
         Integer projectId = addDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        AggOrderPO po = MetaChartSourceItemMapper.INSTANCE
-            .fromAggOrderAddDTO(addDTO);
-        this.preparePO(po);
-        metaChartSourceItemDAO.save(po);
+        AggOrderPO po = this.doSave(addDTO);
         metaProjectService.updateProject(project);
         return po;
     }
 
+    public AggOrderPO doSave(AggOrderAddDTO addDTO){
+        AggOrderPO po = MetaChartSourceItemMapper.INSTANCE
+            .fromAggOrderAddDTO(addDTO);
+        this.preparePO(po);
+        metaChartSourceItemDAO.save(po);
+        return po;
+    }
 
     /**
      * 修改【图表数据源项】

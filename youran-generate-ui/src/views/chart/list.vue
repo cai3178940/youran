@@ -156,7 +156,8 @@ export default {
     },
     handleEdit (row) {
       const chartType = chartOptions.chartTypeOptions.find(op => op.value === row.chartType)
-      this.$router.push(`/project/${this.projectId}/chart/${chartType.name}/edit/${row.chartId}`)
+      this.$router.push(`/project/${this.projectId}/chart/${chartType.name}/edit/${row.chartId}?\
+        sourceId=${row.sourceId}`)
     }
   },
   activated () {

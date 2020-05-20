@@ -47,11 +47,16 @@ public class DetailColumnService {
     public DetailColumnPO save(DetailColumnAddDTO addDTO) {
         Integer projectId = addDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
+        DetailColumnPO po = this.doSave(addDTO);
+        metaProjectService.updateProject(project);
+        return po;
+    }
+
+    public DetailColumnPO doSave(DetailColumnAddDTO addDTO) {
         DetailColumnPO po = MetaChartSourceItemMapper.INSTANCE
             .fromDetailColumnAddDTO(addDTO);
         this.preparePO(po);
         metaChartSourceItemDAO.save(po);
-        metaProjectService.updateProject(project);
         return po;
     }
 

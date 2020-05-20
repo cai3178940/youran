@@ -26,6 +26,9 @@ public class MetaChartListVO extends AbstractVO {
     @ApiModelProperty(notes = N_PROJECT_ID, example = E_PROJECT_ID)
     private Integer projectId;
 
+    @ApiModelProperty(notes = N_SOURCE_ID,example = E_SOURCE_ID)
+    private Integer sourceId;
+
     @ApiModelProperty(notes = N_CHART_TYPE, example = E_CHART_TYPE, allowableValues = ChartType.VALUES_STR)
     private Integer chartType;
 
@@ -111,7 +114,12 @@ public class MetaChartListVO extends AbstractVO {
         this.operatedTime = operatedTime;
     }
 
+    public Integer getSourceId() {
+        return sourceId;
+    }
 
-
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
+    }
 }
 

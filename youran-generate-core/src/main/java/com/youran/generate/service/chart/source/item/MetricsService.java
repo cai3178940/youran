@@ -47,14 +47,18 @@ public class MetricsService {
     public MetricsPO save(MetricsAddDTO addDTO) {
         Integer projectId = addDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        MetricsPO po = MetaChartSourceItemMapper.INSTANCE
-            .fromMetricsAddDTO(addDTO);
-        this.preparePO(po);
-        metaChartSourceItemDAO.save(po);
+        MetricsPO po = this.doSave(addDTO);
         metaProjectService.updateProject(project);
         return po;
     }
 
+    public MetricsPO doSave(MetricsAddDTO addDTO) {
+        MetricsPO po = MetaChartSourceItemMapper.INSTANCE
+            .fromMetricsAddDTO(addDTO);
+        this.preparePO(po);
+        metaChartSourceItemDAO.save(po);
+        return po;
+    }
 
     /**
      * 修改【图表数据源项】

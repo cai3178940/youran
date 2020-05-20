@@ -149,5 +149,15 @@
             and t.project_id = #{arg0}
         </where>
     </select>
+    <select id="findBySourceId" resultType="MetaChartSourceItemPO">
+        select
+            <include refid="metaChartSourceItemColumns"><property name="alias" value="t"/></include>
+        from meta_chart_source_item t
+        <where>
+            and t.deleted=0
+            and t.source_id = #{arg0}
+        </where>
+    </select>
+
 
 </mapper>

@@ -47,14 +47,18 @@ public class DimensionService {
     public DimensionPO save(DimensionAddDTO addDTO) {
         Integer projectId = addDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        DimensionPO po = MetaChartSourceItemMapper.INSTANCE
-            .fromDimensionAddDTO(addDTO);
-        this.preparePO(po);
-        metaChartSourceItemDAO.save(po);
+        DimensionPO po = this.doSave(addDTO);
         metaProjectService.updateProject(project);
         return po;
     }
 
+    public DimensionPO doSave(DimensionAddDTO addDTO) {
+        DimensionPO po = MetaChartSourceItemMapper.INSTANCE
+            .fromDimensionAddDTO(addDTO);
+        this.preparePO(po);
+        metaChartSourceItemDAO.save(po);
+        return po;
+    }
 
     /**
      * 修改【图表数据源项】

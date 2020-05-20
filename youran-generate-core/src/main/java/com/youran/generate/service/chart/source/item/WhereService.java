@@ -47,14 +47,18 @@ public class WhereService {
     public WherePO save(WhereAddDTO addDTO) {
         Integer projectId = addDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        WherePO po = MetaChartSourceItemMapper.INSTANCE
-            .fromWhereAddDTO(addDTO);
-        this.preparePO(po);
-        metaChartSourceItemDAO.save(po);
+        WherePO po = this.doSave(addDTO);
         metaProjectService.updateProject(project);
         return po;
     }
 
+    public WherePO doSave(WhereAddDTO addDTO) {
+        WherePO po = MetaChartSourceItemMapper.INSTANCE
+            .fromWhereAddDTO(addDTO);
+        this.preparePO(po);
+        metaChartSourceItemDAO.save(po);
+        return po;
+    }
 
     /**
      * 修改【图表数据源项】
