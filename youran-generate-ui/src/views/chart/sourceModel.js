@@ -1,3 +1,5 @@
+import { repairDetailColumn } from './item/detailColumnModel'
+
 export function initSourceFormBean (forEdit) {
   const formBean = {
     projectId: null,
@@ -19,6 +21,16 @@ export function initSourceFormBean (forEdit) {
     formBean['sourceId'] = null
   }
   return formBean
+}
+
+export function fetchEntityIdsInForm (form) {
+  const entityIds = new Set([form.entityId])
+  form.joins.forEach(join => {
+    if (join.right.joinPartType === 'entity') {
+      entityIds.add(join.right.entityId)
+    }
+  })
+  return Array.from(entityIds)
 }
 
 export function initJoinDTO (leftIndex, rightIndex) {
@@ -100,6 +112,27 @@ export function repairAtJoinRemove (form, removeJoinIndex) {
     // 继续往后迭代
     currentIndex++
   }
+}
+
+/**
+ * 表单回显时修复formBean
+ */
+export function repairFormBean (form, entityOptions, mtmOptions) {
+  console.info(form)
+  // 修复entity属性
+  // 修复join数组
+  // 修复明细列
+  if (form.detailColumnList) {
+    form.detailColumnList
+      .forEach(detailColumn => repairDetailColumn(detailColumn, form))
+  }
+  // 修复过滤条件
+  // 修复排序列
+  // 修复聚合(维度)
+  // 修复聚合(指标)
+  // 修复聚合(过滤)
+  // 修复聚合(排序)
+  //
 }
 
 /**

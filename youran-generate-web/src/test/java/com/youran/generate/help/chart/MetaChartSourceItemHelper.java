@@ -52,7 +52,6 @@ public class MetaChartSourceItemHelper {
         dto.setSourceId(sourceId);
         dto.setJoinIndex(0);
         dto.setFieldId(fieldId);
-        dto.setAlias(null);
         dto.setCustom(false);
         dto.setCustomContent(null);
         dto.setCustomFieldType(null);
@@ -79,7 +78,6 @@ public class MetaChartSourceItemHelper {
         dto.setSourceId(sourceId);
         dto.setJoinIndex(0);
         dto.setFieldId(fieldId);
-        dto.setAlias(null);
         dto.setGranularity(Granularity.SINGLE_VALUE.getValue());
         return dto;
     }
@@ -105,9 +103,7 @@ public class MetaChartSourceItemHelper {
         dto.setSourceId(sourceId);
         dto.setJoinIndex(0);
         dto.setFieldId(fieldId);
-        dto.setAlias("metricsAlias");
         dto.setAggFunction(AggFunction.COUNT.getValue());
-        dto.setPercent(false);
         dto.setCustom(false);
         dto.setCustomContent(null);
         dto.setCustomFieldType(null);
@@ -152,7 +148,6 @@ public class MetaChartSourceItemHelper {
         dto.setJoinIndex(po.getJoinIndex());
         dto.setParentId(po.getParentId());
         dto.setFieldId(po.getFieldId());
-        dto.setAlias(po.getAlias());
         dto.setCustom(po.getCustom());
         dto.setCustomContent(po.getCustomContent());
         dto.setCustomFieldType(po.getCustomFieldType());
@@ -178,7 +173,6 @@ public class MetaChartSourceItemHelper {
         dto.setJoinIndex(po.getJoinIndex());
         dto.setParentId(po.getParentId());
         dto.setFieldId(po.getFieldId());
-        dto.setAlias(po.getAlias());
         dto.setGranularity(po.getGranularity());
         return dto;
     }
@@ -203,9 +197,7 @@ public class MetaChartSourceItemHelper {
         dto.setJoinIndex(po.getJoinIndex());
         dto.setParentId(po.getParentId());
         dto.setFieldId(po.getFieldId());
-        dto.setAlias(po.getAlias());
         dto.setAggFunction(po.getAggFunction());
-        dto.setPercent(po.getPercent());
         dto.setCustom(po.getCustom());
         dto.setCustomContent(po.getCustomContent());
         dto.setCustomFieldType(po.getCustomFieldType());

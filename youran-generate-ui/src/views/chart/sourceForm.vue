@@ -226,13 +226,7 @@
                     v-for="field in entity.fieldList"
                     :key="field.fieldId"
                     :label="field.fieldDesc+'('+field.fieldName+')'"
-                    :value="{
-                          key: 'common_'+joinIndex+'_'+field.fieldId,
-                          fieldId: field.fieldId,
-                          custom: false,
-                          joinIndex: joinIndex,
-                          _displayText: field.fieldDesc+'('+field.fieldName+')'
-                        }">
+                    :value="buildCommonDetailColumn(joinIndex, field)">
                   </el-option>
                 </el-option-group>
               </el-select>
@@ -293,8 +287,11 @@ import {
   repairAtJoinChange,
   repairAtJoinRemove,
   stripFormBean,
+  fetchEntityIdsInForm,
+  repairFormBean,
   getRules
 } from './sourceModel'
+import { buildCommonDetailColumn } from './item/detailColumnModel'
 
 export default {
   name: 'chartForm',
@@ -313,7 +310,6 @@ export default {
       edit: edit,
       sourceId: null,
       formChanged: false,
-      constTypeOptions: chartOptions.constTypeOptions,
       joinTypeOptions: chartOptions.joinTypeOptions,
       entityOptions: [],
       mtmOptions: [],
@@ -346,6 +342,7 @@ export default {
     }
   },
   methods: {
+    buildCommonDetailColumn,
     initEntityOptions () {
       return entityApi.getList(this.projectId)
         .then(data => {
@@ -370,7 +367,7 @@ export default {
     },
     loadEntityFields (entity) {
       if (entity.fieldList.length) {
-        return
+        return Promise.resolve()
       }
       return fieldApi.getList(entity.entityId, false)
         .then(data => {
@@ -568,10 +565,17 @@ export default {
     if (this.edit) {
       this.sourceId = this.$router.currentRoute.query.sourceId
       if (this.sourceId) {
-        promise.then(() => chartSourceApi.getSourceWithItems())
+        promise.then(() => chartSourceApi.getSourceWithItems(this.sourceId))
           .then(data => {
             this.form = data
+            const array = fetchEntityIdsInForm(this.form)
+              .map(entityId => {
+                const entity = this.entityOptions.find(value => value.entityId === entityId)
+                return this.loadEntityFields(entity)
+              })
+            return Promise.all(array)
           })
+          .then(() => repairFormBean(this.form, this.entityOptions, this.mtmOptions))
       }
     }
   }
