@@ -158,6 +158,20 @@
             and t.source_id = #{arg0}
         </where>
     </select>
+    <select id="findOtherItemIds" resultType="Integer">
+        select t.source_item_id
+        from meta_chart_source_item t
+        <where>
+            and t.deleted=0
+            and t.source_id = #{sourceId}
+            <if test="oldItemIds.size() > 0 ">
+            and t.source_item_id not in
+                <foreach collection="oldItemIds" index="index" item="_id" open="(" separator="," close=")">
+                    #{_id}
+                </foreach>
+            </if>
+        </where>
+    </select>
 
 
 </mapper>

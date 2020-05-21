@@ -70,16 +70,20 @@ public class DetailColumnService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public DetailColumnPO update(DetailColumnUpdateDTO updateDTO) {
-        Integer sourceItemId = updateDTO.getSourceItemId();
-        DetailColumnPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
-        Integer projectId = po.getProjectId();
+        Integer projectId = updateDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        MetaChartSourceItemMapper.INSTANCE.setDetailColumnUpdateDTO(po, updateDTO);
-        this.preparePO(po);
-        metaChartSourceItemDAO.update(po);
+        DetailColumnPO po = this.doUpdate(updateDTO);
         metaProjectService.updateProject(project);
         return po;
     }
 
+    public DetailColumnPO doUpdate(DetailColumnUpdateDTO updateDTO) {
+        Integer sourceItemId = updateDTO.getSourceItemId();
+        DetailColumnPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
+        MetaChartSourceItemMapper.INSTANCE.setDetailColumnUpdateDTO(po, updateDTO);
+        this.preparePO(po);
+        metaChartSourceItemDAO.update(po);
+        return po;
+    }
 
 }

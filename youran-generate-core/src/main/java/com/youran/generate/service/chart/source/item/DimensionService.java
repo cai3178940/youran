@@ -69,16 +69,20 @@ public class DimensionService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public DimensionPO update(DimensionUpdateDTO updateDTO) {
-        Integer sourceItemId = updateDTO.getSourceItemId();
-        DimensionPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
-        Integer projectId = po.getProjectId();
+        Integer projectId = updateDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        MetaChartSourceItemMapper.INSTANCE.setDimensionUpdateDTO(po, updateDTO);
-        this.preparePO(po);
-        metaChartSourceItemDAO.update(po);
+        DimensionPO po = this.doUpdate(updateDTO);
         metaProjectService.updateProject(project);
         return po;
     }
 
+    public DimensionPO doUpdate(DimensionUpdateDTO updateDTO) {
+        Integer sourceItemId = updateDTO.getSourceItemId();
+        DimensionPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
+        MetaChartSourceItemMapper.INSTANCE.setDimensionUpdateDTO(po, updateDTO);
+        this.preparePO(po);
+        metaChartSourceItemDAO.update(po);
+        return po;
+    }
 
 }

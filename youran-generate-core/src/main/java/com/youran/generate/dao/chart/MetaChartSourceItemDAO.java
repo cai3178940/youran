@@ -4,6 +4,7 @@ import com.youran.common.dao.DAO;
 import com.youran.generate.pojo.po.chart.source.item.MetaChartSourceItemPO;
 import com.youran.generate.pojo.qo.chart.MetaChartSourceItemQO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,6 +31,11 @@ public interface MetaChartSourceItemDAO extends DAO<MetaChartSourceItemPO> {
 
 
     List<MetaChartSourceItemPO> findBySourceId(Integer sourceId);
+
+    List<Integer> findOtherItemIds(@Param("sourceId") Integer sourceId,
+                                   @Param("oldItemIds") List<Integer> oldItemIds);
+
+
 }
 
 

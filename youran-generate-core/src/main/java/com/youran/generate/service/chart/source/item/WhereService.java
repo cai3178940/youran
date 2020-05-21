@@ -69,16 +69,19 @@ public class WhereService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public WherePO update(WhereUpdateDTO updateDTO) {
-        Integer sourceItemId = updateDTO.getSourceItemId();
-        WherePO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
-        Integer projectId = po.getProjectId();
+        Integer projectId = updateDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        MetaChartSourceItemMapper.INSTANCE.setWhereUpdateDTO(po, updateDTO);
-        this.preparePO(po);
-        metaChartSourceItemDAO.update(po);
+        WherePO po = this.doUpdate(updateDTO);
         metaProjectService.updateProject(project);
         return po;
     }
 
-
+    public WherePO doUpdate(WhereUpdateDTO updateDTO) {
+        Integer sourceItemId = updateDTO.getSourceItemId();
+        WherePO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
+        MetaChartSourceItemMapper.INSTANCE.setWhereUpdateDTO(po, updateDTO);
+        this.preparePO(po);
+        metaChartSourceItemDAO.update(po);
+        return po;
+    }
 }

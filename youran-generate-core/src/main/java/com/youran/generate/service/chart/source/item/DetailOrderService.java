@@ -70,14 +70,19 @@ public class DetailOrderService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public DetailOrderPO update(DetailOrderUpdateDTO updateDTO) {
+        Integer projectId = updateDTO.getProjectId();
+        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
+        DetailOrderPO po = this.doUpdate(updateDTO);
+        metaProjectService.updateProject(project);
+        return po;
+    }
+
+    public DetailOrderPO doUpdate(DetailOrderUpdateDTO updateDTO) {
         Integer sourceItemId = updateDTO.getSourceItemId();
         DetailOrderPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
-        Integer projectId = po.getProjectId();
-        MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
         MetaChartSourceItemMapper.INSTANCE.setDetailOrderUpdateDTO(po, updateDTO);
         this.preparePO(po);
         metaChartSourceItemDAO.update(po);
-        metaProjectService.updateProject(project);
         return po;
     }
 

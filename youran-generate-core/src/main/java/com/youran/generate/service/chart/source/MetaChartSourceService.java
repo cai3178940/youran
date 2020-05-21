@@ -116,13 +116,11 @@ public class MetaChartSourceService {
         }
         // 保存过滤条件
         List<WhereAddDTO> whereList = addDTO.getWhereList();
-        Map<String, WherePO> whereMap = new HashMap<>();
         if (CollectionUtils.isNotEmpty(whereList)) {
             for (WhereAddDTO columnAddDTO : whereList) {
                 columnAddDTO.setSourceId(sourceId);
                 columnAddDTO.setProjectId(projectId);
-                WherePO columnPO = whereService.doSave(columnAddDTO);
-                whereMap.put(columnAddDTO.getKey(), columnPO);
+                whereService.doSave(columnAddDTO);
             }
         }
         // 保存维度
@@ -158,7 +156,7 @@ public class MetaChartSourceService {
                 detailOrderService.doSave(columnAddDTO);
             }
         }
-        // 保存明细排序
+        // 保存having条件
         List<HavingAddDTO> havingList = addDTO.getHavingList();
         if (CollectionUtils.isNotEmpty(havingList)) {
             for (HavingAddDTO columnAddDTO : havingList) {
@@ -228,8 +226,119 @@ public class MetaChartSourceService {
         MetaChartSourceMapper.INSTANCE.setUpdateDTO(metaChartSource, updateDTO);
         metaChartSource.featureSerialize();
         metaChartSourceDAO.update(metaChartSource);
-
-        // TODO
+        List<Integer> oldItemIds = updateDTO.fetchSourceItemIds();
+        // 先删除其他数据项id
+        metaChartSourceItemService.deleteOtherItems(sourceId, oldItemIds);
+        Integer projectId = project.getProjectId();
+        // 保存明细列
+        List<DetailColumnUpdateDTO> detailColumnList = updateDTO.getDetailColumnList();
+        Map<String, DetailColumnPO> detailColumnMap = new HashMap<>();
+        if (CollectionUtils.isNotEmpty(detailColumnList)) {
+            for (DetailColumnUpdateDTO columnUpdateDTO : detailColumnList) {
+                columnUpdateDTO.setSourceId(sourceId);
+                columnUpdateDTO.setProjectId(projectId);
+                DetailColumnPO columnPO;
+                if (columnUpdateDTO.getSourceItemId() != null) {
+                    columnPO = detailColumnService.doUpdate(columnUpdateDTO);
+                } else {
+                    columnPO = detailColumnService.doSave(columnUpdateDTO);
+                }
+                detailColumnMap.put(columnUpdateDTO.getKey(), columnPO);
+            }
+        }
+        // 保存过滤条件
+        List<WhereUpdateDTO> whereList = updateDTO.getWhereList();
+        if (CollectionUtils.isNotEmpty(whereList)) {
+            for (WhereUpdateDTO columnUpdateDTO : whereList) {
+                columnUpdateDTO.setSourceId(sourceId);
+                columnUpdateDTO.setProjectId(projectId);
+                if (columnUpdateDTO.getSourceItemId() != null) {
+                    whereService.doUpdate(columnUpdateDTO);
+                } else {
+                    whereService.doSave(columnUpdateDTO);
+                }
+            }
+        }
+        // 保存维度
+        List<DimensionUpdateDTO> dimensionList = updateDTO.getDimensionList();
+        Map<String, DimensionPO> dimensionMap = new HashMap<>();
+        if (CollectionUtils.isNotEmpty(dimensionList)) {
+            for (DimensionUpdateDTO columnUpdateDTO : dimensionList) {
+                columnUpdateDTO.setSourceId(sourceId);
+                columnUpdateDTO.setProjectId(projectId);
+                DimensionPO columnPO;
+                if (columnUpdateDTO.getSourceItemId() != null) {
+                    columnPO = dimensionService.doUpdate(columnUpdateDTO);
+                } else {
+                    columnPO = dimensionService.doSave(columnUpdateDTO);
+                }
+                dimensionMap.put(columnUpdateDTO.getKey(), columnPO);
+            }
+        }
+        // 保存指标
+        List<MetricsUpdateDTO> metricsList = updateDTO.getMetricsList();
+        Map<String, MetricsPO> metricsMap = new HashMap<>();
+        if (CollectionUtils.isNotEmpty(metricsList)) {
+            for (MetricsUpdateDTO columnUpdateDTO : metricsList) {
+                columnUpdateDTO.setSourceId(sourceId);
+                columnUpdateDTO.setProjectId(projectId);
+                MetricsPO columnPO;
+                if (columnUpdateDTO.getSourceItemId() != null) {
+                    columnPO = metricsService.doUpdate(columnUpdateDTO);
+                } else {
+                    columnPO = metricsService.doSave(columnUpdateDTO);
+                }
+                metricsMap.put(columnUpdateDTO.getKey(), columnPO);
+            }
+        }
+        // 保存明细排序
+        List<DetailOrderUpdateDTO> detailOrderList = updateDTO.getDetailOrderList();
+        if (CollectionUtils.isNotEmpty(detailOrderList)) {
+            for (DetailOrderUpdateDTO columnUpdateDTO : detailOrderList) {
+                columnUpdateDTO.setSourceId(sourceId);
+                columnUpdateDTO.setProjectId(projectId);
+                DetailColumnPO parent = detailColumnMap.get(columnUpdateDTO.getParentKey());
+                columnUpdateDTO.setParentId(parent.getSourceItemId());
+                if (columnUpdateDTO.getSourceItemId() != null) {
+                    detailOrderService.doUpdate(columnUpdateDTO);
+                } else {
+                    detailOrderService.doSave(columnUpdateDTO);
+                }
+            }
+        }
+        // 保存having条件
+        List<HavingUpdateDTO> havingList = updateDTO.getHavingList();
+        if (CollectionUtils.isNotEmpty(havingList)) {
+            for (HavingUpdateDTO columnUpdateDTO : havingList) {
+                columnUpdateDTO.setSourceId(sourceId);
+                columnUpdateDTO.setProjectId(projectId);
+                MetricsPO parent = metricsMap.get(columnUpdateDTO.getParentKey());
+                columnUpdateDTO.setParentId(parent.getSourceItemId());
+                if (columnUpdateDTO.getSourceItemId() != null) {
+                    havingService.doUpdate(columnUpdateDTO);
+                } else {
+                    havingService.doSave(columnUpdateDTO);
+                }
+            }
+        }
+        // 保存聚合排序
+        List<AggOrderUpdateDTO> aggOrderList = updateDTO.getAggOrderList();
+        if (CollectionUtils.isNotEmpty(aggOrderList)) {
+            for (AggOrderUpdateDTO columnUpdateDTO : aggOrderList) {
+                columnUpdateDTO.setSourceId(sourceId);
+                columnUpdateDTO.setProjectId(projectId);
+                MetaChartSourceItemPO parent = dimensionMap.get(columnUpdateDTO.getParentKey());
+                if (parent == null) {
+                    parent = metricsMap.get(columnUpdateDTO.getParentKey());
+                }
+                columnUpdateDTO.setParentId(parent.getSourceItemId());
+                if (columnUpdateDTO.getSourceItemId() != null) {
+                    aggOrderService.doUpdate(columnUpdateDTO);
+                } else {
+                    aggOrderService.doSave(columnUpdateDTO);
+                }
+            }
+        }
         metaProjectService.updateProject(project);
         return metaChartSource;
     }

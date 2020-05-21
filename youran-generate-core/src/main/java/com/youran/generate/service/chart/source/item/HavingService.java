@@ -70,16 +70,19 @@ public class HavingService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public HavingPO update(HavingUpdateDTO updateDTO) {
-        Integer sourceItemId = updateDTO.getSourceItemId();
-        HavingPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
-        Integer projectId = po.getProjectId();
+        Integer projectId = updateDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        MetaChartSourceItemMapper.INSTANCE.setHavingUpdateDTO(po, updateDTO);
-        this.preparePO(po);
-        metaChartSourceItemDAO.update(po);
+        HavingPO po = this.doUpdate(updateDTO);
         metaProjectService.updateProject(project);
         return po;
     }
 
-
+    public HavingPO doUpdate(HavingUpdateDTO updateDTO) {
+        Integer sourceItemId = updateDTO.getSourceItemId();
+        HavingPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
+        MetaChartSourceItemMapper.INSTANCE.setHavingUpdateDTO(po, updateDTO);
+        this.preparePO(po);
+        metaChartSourceItemDAO.update(po);
+        return po;
+    }
 }

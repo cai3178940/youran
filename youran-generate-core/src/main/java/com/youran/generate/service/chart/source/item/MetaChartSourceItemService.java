@@ -140,6 +140,21 @@ public class MetaChartSourceItemService {
             .<MetaChartSourceItemPO>map(po -> po.castSubType(true))
             .collect(Collectors.toList());
     }
+
+    /**
+     * 删除某个数据源中的其他数据项
+     * @param sourceId
+     * @param oldItemIds
+     * @return
+     */
+    public int deleteOtherItems(Integer sourceId, List<Integer> oldItemIds) {
+        List<Integer> ids = metaChartSourceItemDAO.findOtherItemIds(sourceId, oldItemIds);
+        int count = 0;
+        for (Integer id : ids) {
+            count += metaChartSourceItemDAO.delete(id);
+        }
+        return count;
+    }
 }
 
 

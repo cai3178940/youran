@@ -69,16 +69,19 @@ public class MetricsService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public MetricsPO update(MetricsUpdateDTO updateDTO) {
-        Integer sourceItemId = updateDTO.getSourceItemId();
-        MetricsPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
-        Integer projectId = po.getProjectId();
+        Integer projectId = updateDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        MetaChartSourceItemMapper.INSTANCE.setMetricsUpdateDTO(po, updateDTO);
-        this.preparePO(po);
-        metaChartSourceItemDAO.update(po);
+        MetricsPO po = this.doUpdate(updateDTO);
         metaProjectService.updateProject(project);
         return po;
     }
 
-
+    public MetricsPO doUpdate(MetricsUpdateDTO updateDTO) {
+        Integer sourceItemId = updateDTO.getSourceItemId();
+        MetricsPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
+        MetaChartSourceItemMapper.INSTANCE.setMetricsUpdateDTO(po, updateDTO);
+        this.preparePO(po);
+        metaChartSourceItemDAO.update(po);
+        return po;
+    }
 }

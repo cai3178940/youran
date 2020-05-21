@@ -69,16 +69,21 @@ public class AggOrderService {
     @Transactional(rollbackFor = RuntimeException.class)
     @OptimisticLock
     public AggOrderPO update(AggOrderUpdateDTO updateDTO) {
-        Integer sourceItemId = updateDTO.getSourceItemId();
-        AggOrderPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
-        Integer projectId = po.getProjectId();
+        Integer projectId = updateDTO.getProjectId();
         MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
-        MetaChartSourceItemMapper.INSTANCE.setAggOrderUpdateDTO(po, updateDTO);
-        this.preparePO(po);
-        metaChartSourceItemDAO.update(po);
+        AggOrderPO po = this.doUpdate(updateDTO);
         metaProjectService.updateProject(project);
         return po;
     }
 
+
+    public AggOrderPO doUpdate(AggOrderUpdateDTO updateDTO) {
+        Integer sourceItemId = updateDTO.getSourceItemId();
+        AggOrderPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
+        MetaChartSourceItemMapper.INSTANCE.setAggOrderUpdateDTO(po, updateDTO);
+        this.preparePO(po);
+        metaChartSourceItemDAO.update(po);
+        return po;
+    }
 
 }
