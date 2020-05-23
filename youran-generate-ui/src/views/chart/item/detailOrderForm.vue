@@ -31,7 +31,7 @@
 <script>
 import {
   initFormBean,
-  resetDisplayText
+  repairDetailOrder
 } from './detailOrderModel'
 
 export default {
@@ -67,7 +67,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      resetDisplayText(this.form)
+      repairDetailOrder(this.form, this.detailColumnList)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

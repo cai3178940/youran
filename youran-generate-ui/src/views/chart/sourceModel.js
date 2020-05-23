@@ -3,9 +3,10 @@ import { repairDetailColumn } from './item/detailColumnModel'
 import { repairWhere } from './item/whereModel'
 import { repairDetailOrder } from './item/detailOrderModel'
 
-export function initSourceFormBean (forEdit) {
+export function initSourceFormBean (projectId) {
   const formBean = {
-    projectId: null,
+    sourceId: null,
+    projectId: projectId,
     aggregation: false,
     entityId: null,
     joins: [],
@@ -19,9 +20,6 @@ export function initSourceFormBean (forEdit) {
     limit: 0,
     // 后面的属性是缓存对象，表单提交时需要过滤掉
     entity: null
-  }
-  if (forEdit) {
-    formBean['sourceId'] = null
   }
   return formBean
 }
@@ -180,7 +178,7 @@ export function repairFormBean (form, entityOptions, mtmOptions) {
   // 修复排序列
   if (form.detailOrderList) {
     form.detailOrderList
-      .forEach(detailOrder => repairDetailOrder(detailOrder, form))
+      .forEach(detailOrder => repairDetailOrder(detailOrder, form.detailColumnList))
   }
   // 修复聚合(维度)
   // 修复聚合(指标)
@@ -205,11 +203,28 @@ function repairJoinPart (part, entityOptions, mtmOptions) {
 }
 
 /**
- * 将表单数据剥离干净，只提交有用的信息
- * @param form
+ * 从表单中提取出需要提交到后端的信息
  */
-export function stripFormBean (form) {
-
+export function extractFormBean (form) {
+  const copy = JSON.parse(JSON.stringify(form))
+  // 清除临时对象
+  delete copy.entity
+  copy.joins.forEach(join => {
+    delete join.left.entity
+    delete join.left.mtm
+    delete join.left.field
+    delete join.left.tmp1
+    delete join.left.tmp2
+    delete join.right.entity
+    delete join.right.mtm
+    delete join.right.field
+    delete join.right.tmp1
+    delete join.right.tmp2
+  })
+  copy.detailOrderList.forEach(detailOrder => {
+    delete detailOrder.detailColumn
+  })
+  return copy
 }
 
 export function getRules () {

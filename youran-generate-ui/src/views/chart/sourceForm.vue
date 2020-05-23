@@ -1,5 +1,5 @@
 <template>
-  <div class="chartFormDiv">
+  <div class="sourceFormDiv">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/chart` }">图表管理</el-breadcrumb-item>
@@ -9,7 +9,7 @@
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="16">
-        <el-form ref="chartForm" class="chartForm"
+        <el-form ref="sourceForm" class="sourceForm"
                  :rules="rules" :model="form" label-width="120px"
                  size="small" v-loading="formLoading">
           <!-- 实体： entity_0 t0 添加关联 -->
@@ -240,7 +240,7 @@ import {
   initJoinDTO,
   repairAtJoinChange,
   repairAtJoinRemove,
-  stripFormBean,
+  extractFormBean,
   fetchEntityIdsInForm,
   repairFormBean,
   buildTmp1ByEntity,
@@ -252,7 +252,7 @@ import {
 import { buildCommonDetailColumn } from './item/detailColumnModel'
 
 export default {
-  name: 'chartForm',
+  name: 'sourceForm',
   props: [
     'projectId',
     'chartTypeName',
@@ -278,7 +278,7 @@ export default {
         aggregation: false
       },
       formLoading: false,
-      form: initSourceFormBean(edit),
+      form: initSourceFormBean(this.projectId),
       rules: getRules()
     }
   },
@@ -497,11 +497,11 @@ export default {
     submit () {
       let loading = null
       // 校验表单
-      return this.$refs.chartForm.validate()
+      return this.$refs.sourceForm.validate()
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          return chartSourceApi.saveOrUpdate(stripFormBean(this.form), this.edit)
+          return chartSourceApi.saveOrUpdateWithItems(extractFormBean(this.form), this.edit)
         })
         // 执行页面跳转
         .then(() => {
@@ -527,7 +527,7 @@ export default {
     if (this.edit) {
       this.sourceId = this.$router.currentRoute.query.sourceId
       if (this.sourceId) {
-        promise.then(() => chartSourceApi.getSourceWithItems(this.sourceId))
+        promise.then(() => chartSourceApi.getWithItems(this.sourceId))
           .then(formBean => {
             const array = fetchEntityIdsInForm(formBean)
               .map(entityId => {
@@ -548,7 +548,7 @@ export default {
 
 <style lang="scss">
   @import '../../assets/common.scss';
-  .chartFormDiv .chartForm {
+  .sourceFormDiv .sourceForm {
     @include youran-form;
 
     .text-in-form {
