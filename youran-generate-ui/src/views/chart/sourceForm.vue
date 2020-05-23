@@ -4,7 +4,7 @@
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/chart` }">图表管理</el-breadcrumb-item>
       <el-breadcrumb-item>
-        {{edit?'编辑':'添加'}}{{chartType.label}}
+        {{nextEdit?'编辑':'添加'}}{{chartType.label}}（数据源）
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
@@ -215,7 +215,7 @@
             </help-popover>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submit()" tabindex="160">下一步</el-button>
+            <el-button type="primary" @click="next()" tabindex="160">下一步</el-button>
             <el-button @click="goBack()" tabindex="180">返回</el-button>
           </el-form-item>
         </el-form>
@@ -227,13 +227,12 @@
 </template>
 
 <script>
-// import projectApi from '@/api/project'
-import chartSourceApi from '@/api/chartSource'
-import whereForm from './item/whereForm'
-import detailOrderForm from './item/detailOrderForm'
+import chartSourceApi from '@/api/chart/chartSource'
 import entityApi from '@/api/entity'
 import mtmApi from '@/api/mtm'
 import fieldApi from '@/api/field'
+import whereForm from './item/whereForm'
+import detailOrderForm from './item/detailOrderForm'
 import chartOptions from '@/utils/options-chart'
 import {
   initSourceFormBean,
@@ -263,9 +262,12 @@ export default {
     detailOrderForm
   },
   data () {
-    const edit = !!this.chartId
+    const nextEdit = !!this.chartId
     return {
-      edit: edit,
+      // 当前表单是否编辑
+      edit: false,
+      // 下一步表单是否编辑
+      nextEdit: nextEdit,
       sourceId: null,
       formChanged: false,
       joinTypeOptions: chartOptions.joinTypeOptions,
@@ -491,8 +493,11 @@ export default {
       }
     },
     nextPage () {
-      this.$router.push(`/project/${this.projectId}/chart/${this.chartTypeName}\
-        /${this.edit ? 'edit' : 'add'}/${this.chartId}/next?sourceId=${this.sourceId}`)
+      if (this.nextEdit) {
+        this.$router.push(`/project/${this.projectId}/chart/${this.chartTypeName}/edit/${this.chartId}/next`)
+      } else {
+        this.$router.push(`/project/${this.projectId}/chart/${this.chartTypeName}/add/next?sourceId=${this.sourceId}`)
+      }
     },
     submit () {
       let loading = null
@@ -504,9 +509,9 @@ export default {
           return chartSourceApi.saveOrUpdateWithItems(extractFormBean(this.form), this.edit)
         })
         // 执行页面跳转
-        .then(() => {
+        .then(data => {
+          this.sourceId = data.sourceId
           this.$common.showMsg('success', '操作成功')
-          this.goBack()
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => {
@@ -524,23 +529,22 @@ export default {
     this.form.aggregation = this.chartType.aggregation
     const promise = this.initEntityOptions()
       .then(() => this.initMtmOptions())
-    if (this.edit) {
-      this.sourceId = this.$router.currentRoute.query.sourceId
-      if (this.sourceId) {
-        promise.then(() => chartSourceApi.getWithItems(this.sourceId))
-          .then(formBean => {
-            const array = fetchEntityIdsInForm(formBean)
-              .map(entityId => {
-                const entity = this.entityOptions.find(value => value.entityId === entityId)
-                return this.loadEntityFields(entity)
-              })
-            return Promise.all(array)
-              .then(() => {
-                repairFormBean(formBean, this.entityOptions, this.mtmOptions)
-                this.form = formBean
-              })
-          })
-      }
+    this.sourceId = this.$router.currentRoute.query.sourceId
+    if (this.sourceId) {
+      this.edit = true
+      promise.then(() => chartSourceApi.getWithItems(this.sourceId))
+        .then(formBean => {
+          const array = fetchEntityIdsInForm(formBean)
+            .map(entityId => {
+              const entity = this.entityOptions.find(value => value.entityId === entityId)
+              return this.loadEntityFields(entity)
+            })
+          return Promise.all(array)
+            .then(() => {
+              repairFormBean(formBean, this.entityOptions, this.mtmOptions)
+              this.form = formBean
+            })
+        })
     }
   }
 }

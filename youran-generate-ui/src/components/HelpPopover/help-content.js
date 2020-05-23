@@ -352,6 +352,21 @@ public enum DevType {
     `
 
   },
+  chart: {
+    chartName: `
+**图表名称**：待填写
+    `,
+    title: `
+**图表标题**：待填写
+    `,
+    module: `
+**模块名**：本图表的模块名称，生成代码时，使用模块名称划分目录， 如：system
+> 注意：请尽量使用业务模块相应的名称
+    `,
+    defaultPageSize: `
+**每页记录数**：待填写
+    `
+  },
   chartSource: {
     entityId: `
 **实体**：待填写

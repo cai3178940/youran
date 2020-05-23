@@ -7,12 +7,12 @@
       trigger="click">
       <div v-html="html" class="markdown-body"></div>
     </el-popover>
-    <el-col :span="22">
+    <div style="width: 100%;">
       <slot></slot>
-    </el-col>
-    <el-col v-if="!!html" :span="2">
-      <svg-icon className="question-icon color-primary" iconClass="question" v-popover:popover></svg-icon>
-    </el-col>
+    </div>
+    <div style="margin-left:10px; width: 20px;">
+      <svg-icon v-if="!!html" className="question-icon color-primary" iconClass="question" v-popover:popover></svg-icon>
+    </div>
   </div>
 </template>
 
@@ -47,10 +47,13 @@ export default {
 
 <style lang="scss">
   @import '../../assets/common.scss';
-  .help-popover .question-icon {
-    cursor: pointer;
-    font-size: 17px;
-    user-select: none;
-    color: #409EFF
+  .help-popover {
+    display: flex;
+    .question-icon {
+      cursor: pointer;
+      font-size: 17px;
+      user-select: none;
+      color: #409EFF
+    }
   }
 </style>

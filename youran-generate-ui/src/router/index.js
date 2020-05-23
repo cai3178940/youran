@@ -27,6 +27,7 @@ import templateForm from '@/views/template/form.vue'
 import chart from '@/views/chart/index.vue'
 import chartList from '@/views/chart/list.vue'
 import sourceForm from '@/views/chart/sourceForm.vue'
+import detailListForm from '@/views/chart/detailListForm.vue'
 
 Vue.use(Router)
 
@@ -105,6 +106,16 @@ export default new Router({
         {
           path: ':chartTypeName/edit/:chartId',
           component: sourceForm,
+          props: true
+        },
+        {
+          path: 'detailList/add/next',
+          component: detailListForm,
+          props: true
+        },
+        {
+          path: 'detailList/edit/:chartId/next',
+          component: detailListForm,
           props: true
         }
       ]

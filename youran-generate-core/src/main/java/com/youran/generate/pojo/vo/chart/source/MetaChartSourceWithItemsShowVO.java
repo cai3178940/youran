@@ -2,6 +2,7 @@ package com.youran.generate.pojo.vo.chart.source;
 
 import com.youran.generate.pojo.vo.chart.source.item.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,13 +13,13 @@ import java.util.List;
  */
 public class MetaChartSourceWithItemsShowVO extends MetaChartSourceShowVO {
 
-    private List<DetailColumnVO> detailColumnList;
-    private List<WhereVO> whereList;
-    private List<DetailOrderVO> detailOrderList;
-    private List<DimensionVO> dimensionList;
-    private List<MetricsVO> metricsList;
-    private List<HavingVO> havingList;
-    private List<AggOrderVO> aggOrderList;
+    private List<DetailColumnVO> detailColumnList = new ArrayList<>();
+    private List<WhereVO> whereList = new ArrayList<>();
+    private List<DetailOrderVO> detailOrderList = new ArrayList<>();
+    private List<DimensionVO> dimensionList = new ArrayList<>();
+    private List<MetricsVO> metricsList = new ArrayList<>();
+    private List<HavingVO> havingList = new ArrayList<>();
+    private List<AggOrderVO> aggOrderList = new ArrayList<>();
 
     public List<DetailColumnVO> getDetailColumnList() {
         return detailColumnList;

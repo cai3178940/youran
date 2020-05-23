@@ -26,15 +26,15 @@
                 创建图表<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="detail_list">
+                <el-dropdown-item command="detailList">
                   <svg-icon className="dropdown-icon color-warning" iconClass="detail-list"></svg-icon>
                   明细表
                 </el-dropdown-item>
-                <el-dropdown-item command="agg_table">
+                <el-dropdown-item command="aggTable">
                   <svg-icon className="dropdown-icon color-primary" iconClass="agg-table"></svg-icon>
                   聚合表
                 </el-dropdown-item>
-                <el-dropdown-item command="bar_line">
+                <el-dropdown-item command="barLine">
                   <svg-icon className="dropdown-icon color-success" iconClass="chart"></svg-icon>
                   柱线图
                 </el-dropdown-item>
@@ -73,7 +73,7 @@
 
 <script>
 import projectApi from '@/api/project'
-import chartApi from '@/api/chart'
+import chartApi from '@/api/chart/chart'
 import chartOptions from '@/utils/options-chart'
 
 export default {
@@ -156,8 +156,7 @@ export default {
     },
     handleEdit (row) {
       const chartType = chartOptions.chartTypeOptions.find(op => op.value === row.chartType)
-      this.$router.push(`/project/${this.projectId}/chart/${chartType.name}/edit/${row.chartId}?\
-        sourceId=${row.sourceId}`)
+      this.$router.push(`/project/${this.projectId}/chart/${chartType.name}/edit/${row.chartId}?sourceId=${row.sourceId}`)
     }
   },
   activated () {

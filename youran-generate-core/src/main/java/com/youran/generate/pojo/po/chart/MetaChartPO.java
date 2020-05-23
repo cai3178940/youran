@@ -5,7 +5,11 @@ import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.ChartType;
 import com.youran.generate.pojo.po.BasePO;
+import com.youran.generate.pojo.po.MetaEntityPO;
+import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
+
+import java.util.Map;
 
 /**
  * 图表
@@ -72,6 +76,18 @@ public class MetaChartPO extends BasePO {
      */
     public void assemble(MetaChartSourcePO chartSource) {
         this.chartSource = chartSource;
+    }
+
+    /**
+     * 校验数据是否有误
+     * @param entityMap
+     * @param mtmMap
+     */
+    public void check(Map<Integer, MetaEntityPO> entityMap, Map<Integer, MetaManyToManyPO> mtmMap) {
+        if(chartSource == null){
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表【" + this.chartName +
+                "】无数据源");
+        }
     }
 
     /**

@@ -271,19 +271,19 @@ export default {
     {
       value: 1,
       label: '明细表',
-      name: 'detail_list',
+      name: 'detailList',
       aggregation: false
     },
     {
       value: 2,
       label: '聚合表',
-      name: 'agg_table',
+      name: 'aggTable',
       aggregation: true
     },
     {
       value: 3,
       label: '柱线图',
-      name: 'bar_line',
+      name: 'barLine',
       aggregation: true
     },
     {

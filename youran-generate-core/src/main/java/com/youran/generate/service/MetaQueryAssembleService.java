@@ -629,7 +629,22 @@ public class MetaQueryAssembleService implements InitializingBean {
             }
         }
 
+        this.checkChart(project);
+    }
 
+    private void checkChart(MetaProjectPO project) {
+        List<MetaChartPO> charts = project.getCharts();
+        if (CollectionUtils.isNotEmpty(charts)) {
+            //将实体列表转成map
+            Map<Integer, MetaEntityPO> entityMap = project.getEntities().stream()
+                .collect(Collectors.toMap(MetaEntityPO::getEntityId, e -> e));
+            //将多对多列表转成map
+            Map<Integer, MetaManyToManyPO> mtmMap = project.getMtms().stream()
+                .collect(Collectors.toMap(MetaManyToManyPO::getMtmId, e -> e));
+            for (MetaChartPO chart : charts) {
+                chart.check(entityMap, mtmMap);
+            }
+        }
     }
 
 

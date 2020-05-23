@@ -6,10 +6,13 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.ChartType;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
 import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
+import com.youran.generate.pojo.po.MetaEntityPO;
+import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DetailColumnPO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 明细表
@@ -62,9 +65,17 @@ public class DetailListPO extends MetaChartPO {
             DetailColumnPO detailColumn = chartSource.getDetailColumnMap().get(sourceItemId);
             if (detailColumn != null) {
                 chartItem.setSourceItem(detailColumn);
-            } else {
+            }
+        }
+    }
+
+    @Override
+    public void check(Map<Integer, MetaEntityPO> entityMap, Map<Integer, MetaManyToManyPO> mtmMap) {
+        super.check(entityMap, mtmMap);
+        for (ChartItemDTO chartItem : columnList) {
+            if(chartItem.getSourceItem()==null){
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
-                    "图表【" + this.getTitle() + "】明细列不存在，sourceItemId=" + sourceItemId);
+                    "图表【" + this.getTitle() + "】明细列不存在：" + chartItem.getTitleAlias());
             }
         }
     }
