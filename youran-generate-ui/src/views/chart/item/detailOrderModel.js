@@ -1,4 +1,4 @@
-import { findSourceItemById } from '../util'
+import searchUtil from '../searchUtil'
 
 export function initFormBean () {
   return {
@@ -16,7 +16,7 @@ export function initFormBean () {
  */
 export function repairDetailOrder (detailOrder, detailColumnList) {
   if (!detailOrder.detailColumn) {
-    const detailColumn = findSourceItemById(detailColumnList, detailOrder.parentId)
+    const detailColumn = searchUtil.findSourceItemById(detailColumnList, detailOrder.parentId)
     detailOrder.detailColumn = detailColumn
   }
   detailOrder.joinIndex = detailOrder.detailColumn.joinIndex

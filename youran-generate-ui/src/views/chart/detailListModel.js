@@ -1,3 +1,5 @@
+import searchUtil from './searchUtil'
+
 export function initDetailListFormBean (projectId) {
   const formBean = {
     chartId: null,
@@ -10,6 +12,37 @@ export function initDetailListFormBean (projectId) {
     columnList: []
   }
   return formBean
+}
+
+/**
+ * 模拟表格数据
+ */
+export function mockTableData (rowIndex, chartItem) {
+  const detailColumn = chartItem.detailColumn
+  if (!detailColumn) {
+    console.info(chartItem)
+    return ''
+  }
+  let value
+  if (detailColumn.custom) {
+    value = rowIndex
+  } else {
+    value = rowIndex
+  }
+  if (chartItem.valuePrefix) {
+    value = chartItem.valuePrefix + value
+  }
+  if (chartItem.valueSuffix) {
+    value = value + chartItem.valueSuffix
+  }
+  return value
+}
+
+export function repairChartForm (chartFormBean, sourceFormBean) {
+  chartFormBean.columnList.forEach(chartItem => {
+    const detailColumn = searchUtil.findSourceItemById(sourceFormBean.detailColumnList, chartItem.sourceItemId)
+    chartItem.detailColumn = detailColumn
+  })
 }
 
 export function getRules () {

@@ -23,6 +23,19 @@ export default {
       .then(response => checkResult(response))
   },
   /**
+   * 获取多个字段信息
+   */
+  getListByFieldIds (fieldIds) {
+    return request.get(`/${apiPath}/meta_field/list`,
+      {
+        params: {
+          fieldId: fieldIds.join(','),
+          withCascadeFieldNum: false
+        }
+      })
+      .then(response => checkResult(response))
+  },
+  /**
    * 保存字段
    */
   saveOrUpdate (data, isUpdate) {

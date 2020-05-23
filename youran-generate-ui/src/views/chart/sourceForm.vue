@@ -240,7 +240,6 @@ import {
   repairAtJoinChange,
   repairAtJoinRemove,
   extractFormBean,
-  fetchEntityIdsInForm,
   repairFormBean,
   buildTmp1ByEntity,
   buildTmp1ByMtm,
@@ -249,6 +248,7 @@ import {
   getRules
 } from './sourceModel'
 import { buildCommonDetailColumn } from './item/detailColumnModel'
+import searchUtil from './searchUtil'
 
 export default {
   name: 'sourceForm',
@@ -534,7 +534,7 @@ export default {
       this.edit = true
       promise.then(() => chartSourceApi.getWithItems(this.sourceId))
         .then(formBean => {
-          const array = fetchEntityIdsInForm(formBean)
+          const array = searchUtil.findEntityIdsInFormBean(formBean)
             .map(entityId => {
               const entity = this.entityOptions.find(value => value.entityId === entityId)
               return this.loadEntityFields(entity)

@@ -1,4 +1,4 @@
-import { findEntityInEntityOptions } from './util'
+import searchUtil from './searchUtil'
 import { repairDetailColumn } from './item/detailColumnModel'
 import { repairWhere } from './item/whereModel'
 import { repairDetailOrder } from './item/detailOrderModel'
@@ -22,16 +22,6 @@ export function initSourceFormBean (projectId) {
     entity: null
   }
   return formBean
-}
-
-export function fetchEntityIdsInForm (form) {
-  const entityIds = new Set([form.entityId])
-  form.joins.forEach(join => {
-    if (join.right.joinPartType === 'entity') {
-      entityIds.add(join.right.entityId)
-    }
-  })
-  return Array.from(entityIds)
 }
 
 export function initJoinDTO (leftIndex, rightIndex) {
@@ -158,7 +148,7 @@ export function repairAtJoinRemove (form, removeJoinIndex) {
  */
 export function repairFormBean (form, entityOptions, mtmOptions) {
   // 修复entity属性
-  form.entity = findEntityInEntityOptions(entityOptions, form.entityId)
+  form.entity = searchUtil.findEntityInEntityOptions(entityOptions, form.entityId)
   // 修复join数组
   for (let i = 0; i < form.joins.length; i++) {
     const join = form.joins[i]

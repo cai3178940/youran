@@ -1,5 +1,5 @@
 import chartOptions from '@/utils/options-chart'
-import { findFieldInEntity, findEntityFieldInFormBean } from '../util'
+import searchUtil from '../searchUtil'
 
 export function initFormBean () {
   return {
@@ -46,7 +46,7 @@ export function formToTmp (form, tmp, entityFieldOptions) {
   if (!form.custom) {
     const [joinIndex, entity] = entityFieldOptions.find(
       ([joinIndex, entity]) => joinIndex === form.joinIndex)
-    const field = findFieldInEntity(entity, form.fieldId)
+    const field = searchUtil.findFieldInEntity(entity, form.fieldId)
     tmp.tmp1 = {
       key: joinIndex + '_' + field.fieldId,
       field: field,
@@ -93,7 +93,7 @@ export function repairWhere (where, sourceForm) {
   if (where.custom) {
     where._displayText = '[自定义内容]'
   } else {
-    const field = findEntityFieldInFormBean(sourceForm, joinIndex, where.fieldId)[1]
+    const field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, where.fieldId)[1]
     const operatorOption = chartOptions.getFilterOperatorOption(where.filterOperator)
     where._displayText = 't' + where.joinIndex + '.' + field.fieldName +
       operatorOption.display(field.jfieldType, where.filterValue, where.timeGranularity)

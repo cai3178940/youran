@@ -30,7 +30,7 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
     private String titleAlias;
 
     @ApiModelProperty(notes = "外键是否用title替换id展示",example = "false")
-    private boolean showFkTitle;
+    private Boolean showFkTitle;
 
     @ApiModelProperty(notes = "内容前置",example = "前缀_")
     private String valuePrefix;
@@ -72,11 +72,11 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
         this.titleAlias = titleAlias;
     }
 
-    public boolean isShowFkTitle() {
+    public Boolean getShowFkTitle() {
         return showFkTitle;
     }
 
-    public void setShowFkTitle(boolean showFkTitle) {
+    public void setShowFkTitle(Boolean showFkTitle) {
         this.showFkTitle = showFkTitle;
     }
 

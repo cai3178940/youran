@@ -167,7 +167,15 @@
         </if>
         from meta_field t
         where t.deleted=0
-        and t.entity_id = #{entityId,jdbcType=INTEGER}
+        <if test="entityId != null  ">
+            and t.entity_id = #{entityId,jdbcType=INTEGER}
+        </if>
+        <if test="_fieldIds != null and _fieldIds.size()>0 ">
+            and t.field_id in
+            <foreach collection="_fieldIds" item="_id" open="(" separator="," close=")">
+                #{_id}
+            </foreach>
+        </if>
         order by t.order_no, t.field_id
     </select>
 

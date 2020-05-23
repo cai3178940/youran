@@ -1,6 +1,6 @@
 import shortid from 'shortid'
 import { abbreviate } from '@/utils/string-util'
-import { findEntityFieldInFormBean } from '../util'
+import searchUtil from '../searchUtil'
 
 export function buildCommonDetailColumn (joinIndex, field) {
   return {
@@ -33,7 +33,7 @@ export function repairDetailColumn (detailColumn, sourceForm) {
     detailColumn._displayText = abbreviate(detailColumn.customContent, 20)
   } else {
     const fieldId = detailColumn.fieldId
-    const field = findEntityFieldInFormBean(sourceForm, joinIndex, fieldId)[1]
+    const field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, fieldId)[1]
     detailColumn.key = 'common_' + joinIndex + '_' + fieldId
     detailColumn._displayText = field.fieldDesc + '(' + field.fieldName + ')'
   }

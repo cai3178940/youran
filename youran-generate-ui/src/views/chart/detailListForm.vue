@@ -46,7 +46,10 @@
         </el-form>
       </el-aside>
       <el-main style="border-left:solid 1px #e6e6e6;">
-        <el-table size="small" :data="mockData" style="width: 100%" :border="true">
+        <el-table size="small"
+                  :data="emptyTableList"
+                  style="width: 100%"
+                  :border="true">
           <el-table-column align="center" width="70">
             <template slot="header">
               <el-button @click="addColumn(0)"
@@ -57,6 +60,9 @@
           <el-table-column v-for="(chartItem, index) in form.columnList"
                            :key="chartItem.sourceItemId" align="center">
             <template slot="header">
+              <el-button v-if="index!==0" size="small" type="text">
+                <i class="el-icon-arrow-left" style="font-size:14px"></i>
+              </el-button>
               <el-dropdown size="small" trigger="click" @command="handleCommand">
                 <el-button size="small">
                   {{chartItem.titleAlias}}
@@ -73,6 +79,12 @@
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
+              <el-button v-if="index < form.columnList.length-1" size="small" type="text">
+                <i class="el-icon-arrow-right" style="font-size:14px"></i>
+              </el-button>
+            </template>
+            <template v-slot="scope">
+              {{mockTableData(scope.row.i, chartItem)}}
             </template>
           </el-table-column>
           <el-table-column v-if="form.columnList.length" align="center" width="70">
@@ -90,10 +102,18 @@
 
 <script>
 import projectApi from '@/api/project'
+import fieldApi from '@/api/field'
 import detailListApi from '@/api/chart/detailList'
 import chartSourceApi from '@/api/chart/chartSource'
-import { initDetailListFormBean, getRules } from './detailListModel'
+import {
+  initDetailListFormBean,
+  repairChartForm,
+  mockTableData,
+  getRules
+} from './detailListModel'
 import { initSourceFormBean } from './sourceModel'
+import { initChartItemByDetailColumn } from './chartItemModel'
+import searchUtil from './searchUtil'
 
 export default {
   name: 'detailListForm',
@@ -118,11 +138,13 @@ export default {
     }
   },
   computed: {
-    mockData () {
-      return []
+    emptyTableList () {
+      const size = this.form.defaultPageSize > 100 ? 100 : this.form.defaultPageSize
+      return Array.from({ length: size }, (v, i) => ({ i: i }))
     }
   },
   methods: {
+    mockTableData: mockTableData,
     findModules (queryString, cb) {
       const action = () => {
         const entityModules = this.entityModules.slice(0)
@@ -163,24 +185,52 @@ export default {
         this.$router.push(`/project/${this.projectId}/chart/detailList/add?sourceId=${this.form.sourceId}`)
       }
     },
-    loadSource () {
+    /**
+     * 根据数据源中的明细列构建图表项
+     */
+    buildChartItems () {
+      this.form.columnList = this.sourceForm.detailColumnList
+        .map(detailColumn => initChartItemByDetailColumn(detailColumn))
+    },
+    /**
+     * 加载数据源及明细列字段详情
+     */
+    loadSourceWithDetailColumnFields () {
       return chartSourceApi.getWithItems(this.form.sourceId)
         .then(formBean => {
           this.sourceForm = formBean
+          // 获取明细列对应的字段id
+          const fieldIds = searchUtil.findFieldIdsInDetailColumns(formBean.detailColumnList)
+          // 从后端加载这些字段的详细信息
+          return fieldApi.getListByFieldIds(fieldIds)
         })
+        .then(fieldList => {
+          // 将字段详情放入每个明细列中
+          this.sourceForm.detailColumnList.forEach(detailColumn => {
+            detailColumn.field = fieldList.find(field => field.fieldId === detailColumn.fieldId)
+          })
+        })
+    },
+    repairChartForm () {
+      repairChartForm(this.form, this.sourceForm)
     }
   },
   created () {
     if (this.edit) {
       detailListApi.get(this.chartId)
         .then(formBean => {
+          formBean.columnList.forEach(value => {
+            value.detailColumn = {}
+          })
           this.form = formBean
         })
-        .then(() => this.loadSource())
+        .then(() => this.loadSourceWithDetailColumnFields())
+        .then(() => this.repairChartForm())
     } else {
       this.form.sourceId = this.$router.currentRoute.query.sourceId
       if (this.form.sourceId) {
-        this.loadSource()
+        this.loadSourceWithDetailColumnFields()
+          .then(() => this.buildChartItems())
       } else {
         this.$common.showNotifyError('sourceId为空')
       }
