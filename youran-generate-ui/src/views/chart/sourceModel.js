@@ -1,4 +1,7 @@
+import { findEntityInEntityOptions } from './util'
 import { repairDetailColumn } from './item/detailColumnModel'
+import { repairWhere } from './item/whereModel'
+import { repairDetailOrder } from './item/detailOrderModel'
 
 export function initSourceFormBean (forEdit) {
   const formBean = {
@@ -78,6 +81,44 @@ export function initJoinPartDTO (joinIndex, isRight) {
   return joinPart
 }
 
+export function buildTmp1ByEntity (joinIndex, entity) {
+  return {
+    key: 'entity_' + entity.entityId,
+    joinPartType: 'entity',
+    joinIndex: joinIndex,
+    obj: entity
+  }
+}
+
+export function buildTmp1ByMtm (joinIndex, mtm) {
+  return {
+    key: 'mtm_' + mtm.mtmId,
+    joinPartType: 'mtm',
+    joinIndex: joinIndex,
+    obj: mtm
+  }
+}
+
+export function buildTmp2ByEntity (joinIndex, entity, field) {
+  return {
+    key: 'entity_' + entity.entityId + '_' + field.fieldId,
+    joinPartType: 'entity',
+    joinIndex: joinIndex,
+    obj: entity,
+    field: field
+  }
+}
+
+export function buildTmp2ByMtm (joinIndex, mtm, mtmField) {
+  return {
+    key: 'mtm_' + mtm.mtmId + '_' + mtmField,
+    joinPartType: 'mtm',
+    joinIndex: joinIndex,
+    obj: mtm,
+    field: mtmField
+  }
+}
+
 /**
  * 修改关联时修复表单数据错误
  * @param form 表单数据
@@ -118,21 +159,49 @@ export function repairAtJoinRemove (form, removeJoinIndex) {
  * 表单回显时修复formBean
  */
 export function repairFormBean (form, entityOptions, mtmOptions) {
-  console.info(form)
   // 修复entity属性
+  form.entity = findEntityInEntityOptions(entityOptions, form.entityId)
   // 修复join数组
+  for (let i = 0; i < form.joins.length; i++) {
+    const join = form.joins[i]
+    repairJoinPart(join.left, entityOptions, mtmOptions)
+    repairJoinPart(join.right, entityOptions, mtmOptions)
+  }
   // 修复明细列
   if (form.detailColumnList) {
     form.detailColumnList
       .forEach(detailColumn => repairDetailColumn(detailColumn, form))
   }
   // 修复过滤条件
+  if (form.whereList) {
+    form.whereList
+      .forEach(where => repairWhere(where, form))
+  }
   // 修复排序列
+  if (form.detailOrderList) {
+    form.detailOrderList
+      .forEach(detailOrder => repairDetailOrder(detailOrder, form))
+  }
   // 修复聚合(维度)
   // 修复聚合(指标)
   // 修复聚合(过滤)
   // 修复聚合(排序)
-  //
+}
+
+function repairJoinPart (part, entityOptions, mtmOptions) {
+  if (part.joinPartType === 'entity') {
+    const entity = entityOptions.find(entity => entity.entityId === part.entityId)
+    const field = entity.fieldList.find(field => field.fieldId === part.fieldId)
+    part.entity = entity
+    part.field = field
+    part.tmp1 = buildTmp1ByEntity(part.joinIndex, entity)
+    part.tmp2 = buildTmp2ByEntity(part.joinIndex, entity, field)
+  } else if (part.joinPartType === 'mtm') {
+    const mtm = mtmOptions.find(mtm => mtm.mtmId === part.mtmId)
+    part.mtm = mtm
+    part.tmp1 = buildTmp1ByMtm(part.joinIndex, mtm)
+    part.tmp2 = buildTmp2ByMtm(part.joinIndex, mtm, part.mtmField)
+  }
 }
 
 /**

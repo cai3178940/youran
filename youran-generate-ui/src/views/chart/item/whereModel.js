@@ -1,4 +1,5 @@
 import chartOptions from '@/utils/options-chart'
+import { findFieldInEntity, findEntityFieldInFormBean } from '../util'
 
 export function initFormBean () {
   return {
@@ -45,7 +46,7 @@ export function formToTmp (form, tmp, entityFieldOptions) {
   if (!form.custom) {
     const [joinIndex, entity] = entityFieldOptions.find(
       ([joinIndex, entity]) => joinIndex === form.joinIndex)
-    const field = entity.fieldList.find(field => field.fieldId === form.fieldId)
+    const field = findFieldInEntity(entity, form.fieldId)
     tmp.tmp1 = {
       key: joinIndex + '_' + field.fieldId,
       field: field,
@@ -81,5 +82,20 @@ export function tmpToForm (tmp, form) {
       tmp.tmp2.display(tmp.tmp1.field.jfieldType, form.filterValue, form.timeGranularity)
   } else {
     form._displayText = '[自定义内容]'
+  }
+}
+
+/**
+ * 表单回显时修复过滤条件数据
+ */
+export function repairWhere (where, sourceForm) {
+  const joinIndex = where.joinIndex
+  if (where.custom) {
+    where._displayText = '[自定义内容]'
+  } else {
+    const field = findEntityFieldInFormBean(sourceForm, joinIndex, where.fieldId)[1]
+    const operatorOption = chartOptions.getFilterOperatorOption(where.filterOperator)
+    where._displayText = 't' + where.joinIndex + '.' + field.fieldName +
+      operatorOption.display(field.jfieldType, where.filterValue, where.timeGranularity)
   }
 }

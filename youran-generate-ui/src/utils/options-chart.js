@@ -1,12 +1,4 @@
-function abbreviate (str, max) {
-  if (!str) {
-    return ''
-  }
-  if (str.length > max) {
-    return str.substring(0, max - 3) + '...'
-  }
-  return str
-}
+import { abbreviate } from './string-util'
 
 /**
  * 关联类型

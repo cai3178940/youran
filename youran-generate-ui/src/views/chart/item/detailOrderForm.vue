@@ -32,7 +32,7 @@
 import {
   initFormBean,
   resetDisplayText
-} from './detailOrderFormModel'
+} from './detailOrderModel'
 
 export default {
   name: 'detailOrder-form',

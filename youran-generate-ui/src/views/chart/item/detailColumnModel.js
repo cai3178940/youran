@@ -1,3 +1,7 @@
+import shortid from 'shortid'
+import { abbreviate } from '@/utils/string-util'
+import { findEntityFieldInFormBean } from '../util'
+
 export function buildCommonDetailColumn (joinIndex, field) {
   return {
     key: 'common_' + joinIndex + '_' + field.fieldId,
@@ -8,15 +12,29 @@ export function buildCommonDetailColumn (joinIndex, field) {
   }
 }
 
+export function buildCustomDetailColumn (customContent, customFieldType) {
+  return {
+    key: 'custom_' + shortid.generate(),
+    custom: true,
+    joinIndex: 0,
+    customContent: customContent,
+    customFieldType: customFieldType,
+    _displayText: abbreviate(customContent, 20)
+  }
+}
+
 /**
  * 表单回显时修复明细列数据
  */
-export function repairDetailColumn (detailColumn, form) {
+export function repairDetailColumn (detailColumn, sourceForm) {
   const joinIndex = detailColumn.joinIndex
-  if (joinIndex === 0) {
-
+  if (detailColumn.custom) {
+    detailColumn.key = 'custom_' + shortid.generate()
+    detailColumn._displayText = abbreviate(detailColumn.customContent, 20)
+  } else {
+    const fieldId = detailColumn.fieldId
+    const field = findEntityFieldInFormBean(sourceForm, joinIndex, fieldId)[1]
+    detailColumn.key = 'common_' + joinIndex + '_' + fieldId
+    detailColumn._displayText = field.fieldDesc + '(' + field.fieldName + ')'
   }
-  const fieldId = detailColumn.fieldId
-  detailColumn.key = 'common_' + joinIndex + '_' + fieldId
-  detailColumn._displayText = ''
 }

@@ -103,7 +103,7 @@ import {
   initTmp,
   formToTmp,
   tmpToForm
-} from './whereFormModel'
+} from './whereModel'
 
 export default {
   name: 'where-form',

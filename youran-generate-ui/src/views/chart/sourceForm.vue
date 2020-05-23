@@ -63,12 +63,7 @@
                         v-for="entity in entityOptions"
                         :key="entity.entityId"
                         :label="entity.title+'('+entity.tableName+')'"
-                        :value="{
-                          key: 'entity_'+entity.entityId,
-                          joinPartType: 'entity',
-                          joinIndex: index+1,
-                          obj: entity
-                        }">
+                        :value="buildTmp1ByEntity(index+1, entity)">
                       </el-option>
                     </el-option-group>
                     <el-option-group label="多对多">
@@ -76,12 +71,7 @@
                         v-for="mtm in mtmOptions"
                         :key="mtm.mtmId"
                         :label="mtm.tableName"
-                        :value="{
-                          key: 'mtm_'+mtm.mtmId,
-                          joinPartType: 'mtm',
-                          joinIndex: index+1,
-                          obj: mtm
-                        }">
+                        :value="buildTmp1ByMtm(index+1, mtm)">
                       </el-option>
                     </el-option-group>
                   </el-select>
@@ -120,13 +110,7 @@
                         v-for="field in entity.fieldList"
                         :key="field.fieldId"
                         :label="field.fieldDesc+'('+field.fieldName+')'"
-                        :value="{
-                          key: 'entity_'+entity.entityId+'_'+field.fieldId,
-                          joinPartType: 'entity',
-                          joinIndex: joinIndex,
-                          obj: entity,
-                          field: field
-                        }">
+                        :value="buildTmp2ByEntity(joinIndex, entity, field)">
                       </el-option>
                     </el-option-group>
                     <!--所有上面的多对多-->
@@ -136,23 +120,11 @@
                       :label="'多对多('+mtm.tableName+')'">
                       <el-option
                         :label="mtm.entityIdField1"
-                        :value="{
-                          key: 'mtm_'+mtm.mtmId+'_'+mtm.entityIdField1,
-                          joinPartType: 'mtm',
-                          joinIndex: joinIndex,
-                          obj: mtm,
-                          field: mtm.entityIdField1
-                        }">
+                        :value="buildTmp2ByMtm(joinIndex, mtm, mtm.entityIdField1)">
                       </el-option>
                       <el-option
                         :label="mtm.entityIdField2"
-                        :value="{
-                          key: 'mtm_'+mtm.mtmId+'_'+mtm.entityIdField2,
-                          joinPartType: 'mtm',
-                          joinIndex: joinIndex,
-                          obj: mtm,
-                          field: mtm.entityIdField2
-                        }">
+                        :value="buildTmp2ByMtm(joinIndex, mtm, mtm.entityIdField2)">
                       </el-option>
                     </el-option-group>
                   </el-select>
@@ -175,36 +147,18 @@
                         v-for="field in form.joins[index].right.entity.fieldList"
                         :key="field.fieldId"
                         :label="field.fieldDesc+'('+field.fieldName+')'"
-                        :value="{
-                          key: 'entity_'+form.joins[index].right.entity.entityId+'_'+field.fieldId,
-                          joinPartType: 'entity',
-                          joinIndex: index+1,
-                          obj: form.joins[index].right.entity,
-                          field: field
-                        }">
+                        :value="buildTmp2ByEntity(index+1, form.joins[index].right.entity, field)">
                       </el-option>
                     </template>
                     <!--如果右边是多对多-->
                     <template v-if="form.joins[index].right.joinPartType==='mtm'">
                       <el-option
                         :label="form.joins[index].right.mtm.entityIdField1"
-                        :value="{
-                          key: 'mtm_'+form.joins[index].right.mtm.mtmId+'_'+form.joins[index].right.mtm.entityIdField1,
-                          joinPartType: 'mtm',
-                          joinIndex: index+1,
-                          obj: form.joins[index].right.mtm,
-                          field: form.joins[index].right.mtm.entityIdField1
-                        }">
+                        :value="buildTmp2ByMtm(index+1, form.joins[index].right.mtm, form.joins[index].right.mtm.entityIdField1)">
                       </el-option>
                       <el-option
                         :label="form.joins[index].right.mtm.entityIdField2"
-                        :value="{
-                          key: 'mtm_'+form.joins[index].right.mtm.mtmId+'_'+form.joins[index].right.mtm.entityIdField2,
-                          joinPartType: 'mtm',
-                          joinIndex: index+1,
-                          obj: form.joins[index].right.mtm,
-                          field: form.joins[index].right.mtm.entityIdField2
-                        }">
+                        :value="buildTmp2ByMtm(index+1, form.joins[index].right.mtm, form.joins[index].right.mtm.entityIdField2)">
                       </el-option>
                     </template>
                   </el-select>
@@ -289,6 +243,10 @@ import {
   stripFormBean,
   fetchEntityIdsInForm,
   repairFormBean,
+  buildTmp1ByEntity,
+  buildTmp1ByMtm,
+  buildTmp2ByEntity,
+  buildTmp2ByMtm,
   getRules
 } from './sourceModel'
 import { buildCommonDetailColumn } from './item/detailColumnModel'
@@ -343,6 +301,10 @@ export default {
   },
   methods: {
     buildCommonDetailColumn,
+    buildTmp1ByEntity,
+    buildTmp1ByMtm,
+    buildTmp2ByEntity,
+    buildTmp2ByMtm,
     initEntityOptions () {
       return entityApi.getList(this.projectId)
         .then(data => {
@@ -566,16 +528,18 @@ export default {
       this.sourceId = this.$router.currentRoute.query.sourceId
       if (this.sourceId) {
         promise.then(() => chartSourceApi.getSourceWithItems(this.sourceId))
-          .then(data => {
-            this.form = data
-            const array = fetchEntityIdsInForm(this.form)
+          .then(formBean => {
+            const array = fetchEntityIdsInForm(formBean)
               .map(entityId => {
                 const entity = this.entityOptions.find(value => value.entityId === entityId)
                 return this.loadEntityFields(entity)
               })
             return Promise.all(array)
+              .then(() => {
+                repairFormBean(formBean, this.entityOptions, this.mtmOptions)
+                this.form = formBean
+              })
           })
-          .then(() => repairFormBean(this.form, this.entityOptions, this.mtmOptions))
       }
     }
   }
