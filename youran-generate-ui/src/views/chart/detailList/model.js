@@ -1,5 +1,3 @@
-import searchUtil from './searchUtil'
-
 export function initDetailListFormBean (projectId) {
   const formBean = {
     chartId: null,
@@ -9,9 +7,36 @@ export function initDetailListFormBean (projectId) {
     module: '',
     title: '',
     defaultPageSize: 10,
-    columnList: []
+    columnList: [],
+    hiddenColumnList: []
   }
   return formBean
+}
+
+/**
+ * 从明细列构建图表项
+ */
+export function initChartItemByDetailColumn (detailColumn) {
+  const sourceItemId = detailColumn.sourceItemId
+  let alias
+  let titleAlias
+  if (detailColumn.custom) {
+    alias = 'custom' + sourceItemId
+    titleAlias = '【自定义】'
+  } else {
+    alias = detailColumn.field.jfieldName
+    titleAlias = detailColumn.field.fieldDesc
+  }
+  return {
+    sourceItemId: sourceItemId,
+    alias: alias,
+    titleAlias: titleAlias,
+    showFkTitle: false,
+    valuePrefix: '',
+    valueSuffix: '',
+    percent: false,
+    detailColumn: detailColumn
+  }
 }
 
 /**
@@ -25,9 +50,13 @@ export function mockTableData (rowIndex, chartItem) {
   }
   let value
   if (detailColumn.custom) {
-    value = rowIndex
+    value = rowIndex + 1
   } else {
-    value = rowIndex
+    if (detailColumn.field) {
+      value = detailColumn.field.fieldExample
+    } else {
+      value = rowIndex + 1
+    }
   }
   if (chartItem.valuePrefix) {
     value = chartItem.valuePrefix + value
@@ -36,13 +65,6 @@ export function mockTableData (rowIndex, chartItem) {
     value = value + chartItem.valueSuffix
   }
   return value
-}
-
-export function repairChartForm (chartFormBean, sourceFormBean) {
-  chartFormBean.columnList.forEach(chartItem => {
-    const detailColumn = searchUtil.findSourceItemById(sourceFormBean.detailColumnList, chartItem.sourceItemId)
-    chartItem.detailColumn = detailColumn
-  })
 }
 
 export function getRules () {

@@ -18,6 +18,9 @@ public class DetailListAddDTO extends AbstractChartDTO {
     @ApiModelProperty(notes = "明细列")
     private List<ChartItemDTO> columnList;
 
+    @ApiModelProperty(notes = "隐藏明细列")
+    private List<ChartItemDTO> hiddenColumnList;
+
     @ApiModelProperty(notes = "默认每页记录数")
     private Integer defaultPageSize;
 
@@ -32,6 +35,14 @@ public class DetailListAddDTO extends AbstractChartDTO {
 
     public void setColumnList(List<ChartItemDTO> columnList) {
         this.columnList = columnList;
+    }
+
+    public List<ChartItemDTO> getHiddenColumnList() {
+        return hiddenColumnList;
+    }
+
+    public void setHiddenColumnList(List<ChartItemDTO> hiddenColumnList) {
+        this.hiddenColumnList = hiddenColumnList;
     }
 
     public Integer getDefaultPageSize() {

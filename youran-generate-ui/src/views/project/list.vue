@@ -19,10 +19,10 @@
               v-loading="loading"
               :element-loading-text="loadingText">
       <el-table-column type="index" label="序号" width="50"></el-table-column>
-      <el-table-column property="projectName" label="项目标识" width="200"></el-table-column>
+      <el-table-column property="projectName" label="项目标识" width="180"></el-table-column>
       <el-table-column property="projectDesc" label="项目名称"></el-table-column>
-      <el-table-column property="author" label="作者" width="120"></el-table-column>
-      <el-table-column label="Git仓库" width="90px">
+      <el-table-column property="author" label="作者" width="100"></el-table-column>
+      <el-table-column label="Git仓库" width="80px">
         <template v-slot="scope">
           <svg-icon v-if="scope.row.remote" className="table-cell-icon color-success" iconClass="check"></svg-icon>
           <svg-icon v-else className="table-cell-icon color-danger" iconClass="times"></svg-icon>
@@ -81,11 +81,11 @@
       </el-table-column>
       <el-table-column
         label="操作"
-        width="205">
+        width="275">
         <template v-slot="scope">
-          <el-button @click="handleEntity(scope.row)" type="text" size="medium">实体</el-button>
-          <el-button @click="handleConst(scope.row)" type="text" size="medium">枚举</el-button>
-          <el-button @click="handleChart(scope.row)" type="text" size="medium">图表</el-button>
+          <el-button @click="handleEntity(scope.row)" type="text" size="medium">实体管理</el-button>
+          <el-button @click="handleConst(scope.row)" type="text" size="medium">枚举管理</el-button>
+          <el-button @click="handleChart(scope.row)" type="text" size="medium">图表管理</el-button>
           <el-dropdown size="small" trigger="click" @command="handleCommand" style="margin-left:10px;">
             <span class="el-dropdown-link button-font">
               操作<i class="el-icon-arrow-down el-icon--right"></i>

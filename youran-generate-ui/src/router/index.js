@@ -27,7 +27,7 @@ import templateForm from '@/views/template/form.vue'
 import chart from '@/views/chart/index.vue'
 import chartList from '@/views/chart/list.vue'
 import sourceForm from '@/views/chart/sourceForm.vue'
-import detailListForm from '@/views/chart/detailListForm.vue'
+import detailListForm from '@/views/chart/detailList/form.vue'
 
 Vue.use(Router)
 

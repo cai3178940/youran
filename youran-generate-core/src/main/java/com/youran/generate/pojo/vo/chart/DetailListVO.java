@@ -17,6 +17,10 @@ public class DetailListVO extends MetaChartShowVO {
      */
     private List<ChartItemDTO> columnList;
     /**
+     * 隐藏明细列
+     */
+    private List<ChartItemDTO> hiddenColumnList;
+    /**
      * 默认每页记录数
      */
     private Integer defaultPageSize;
@@ -27,6 +31,14 @@ public class DetailListVO extends MetaChartShowVO {
 
     public void setColumnList(List<ChartItemDTO> columnList) {
         this.columnList = columnList;
+    }
+
+    public List<ChartItemDTO> getHiddenColumnList() {
+        return hiddenColumnList;
+    }
+
+    public void setHiddenColumnList(List<ChartItemDTO> hiddenColumnList) {
+        this.hiddenColumnList = hiddenColumnList;
     }
 
     public Integer getDefaultPageSize() {

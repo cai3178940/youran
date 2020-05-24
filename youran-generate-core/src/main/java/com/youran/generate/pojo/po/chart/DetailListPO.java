@@ -27,6 +27,10 @@ public class DetailListPO extends MetaChartPO {
      */
     private List<ChartItemDTO<DetailColumnPO>> columnList;
     /**
+     * 隐藏明细列
+     */
+    private List<ChartItemDTO<DetailColumnPO>> hiddenColumnList;
+    /**
      * 默认每页记录数
      */
     private Integer defaultPageSize;
@@ -84,6 +88,7 @@ public class DetailListPO extends MetaChartPO {
     public void featureDeserialize() {
         FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
         this.columnList = featureDTO.getColumnList();
+        this.hiddenColumnList = featureDTO.getHiddenColumnList();
         this.defaultPageSize = featureDTO.getDefaultPageSize();
     }
 
@@ -91,8 +96,17 @@ public class DetailListPO extends MetaChartPO {
     public void featureSerialize() {
         FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setColumnList(this.columnList);
+        featureDTO.setHiddenColumnList(this.hiddenColumnList);
         featureDTO.setDefaultPageSize(this.defaultPageSize);
         this.setFeature(JsonUtil.toJSONString(featureDTO));
+    }
+
+    public List<ChartItemDTO<DetailColumnPO>> getHiddenColumnList() {
+        return hiddenColumnList;
+    }
+
+    public void setHiddenColumnList(List<ChartItemDTO<DetailColumnPO>> hiddenColumnList) {
+        this.hiddenColumnList = hiddenColumnList;
     }
 
     public List<ChartItemDTO<DetailColumnPO>> getColumnList() {
@@ -114,7 +128,16 @@ public class DetailListPO extends MetaChartPO {
 
     static class FeatureDTO{
         private List<ChartItemDTO<DetailColumnPO>> columnList;
+        private List<ChartItemDTO<DetailColumnPO>> hiddenColumnList;
         private Integer defaultPageSize;
+
+        public List<ChartItemDTO<DetailColumnPO>> getHiddenColumnList() {
+            return hiddenColumnList;
+        }
+
+        public void setHiddenColumnList(List<ChartItemDTO<DetailColumnPO>> hiddenColumnList) {
+            this.hiddenColumnList = hiddenColumnList;
+        }
 
         public List<ChartItemDTO<DetailColumnPO>> getColumnList() {
             return columnList;

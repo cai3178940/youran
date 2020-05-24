@@ -46,21 +46,34 @@
         </el-form>
       </el-aside>
       <el-main style="border-left:solid 1px #e6e6e6;">
+        <el-col :span="24" style="text-align: right; margin-bottom: 10px;">
+          <el-badge :value="form.hiddenColumnList.length" :hidden="!form.hiddenColumnList.length" class="item">
+            <el-dropdown size="small"
+                         trigger="click" @command="addColumn">
+              <el-button :disabled="!form.hiddenColumnList.length"
+                         type="success" size="small">
+                添加列
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-for="chartItem in form.hiddenColumnList"
+                                  :key="chartItem.sourceItemId"
+                                  :command="chartItem">
+                  {{chartItem.titleAlias}}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-badge>
+        </el-col>
         <el-table size="small"
                   :data="emptyTableList"
                   style="width: 100%"
                   :border="true">
-          <el-table-column align="center" width="70">
-            <template slot="header">
-              <el-button @click="addColumn(0)"
-                         size="small" icon="el-icon-plus" plain>
-              </el-button>
-            </template>
-          </el-table-column>
-          <el-table-column v-for="(chartItem, index) in form.columnList"
-                           :key="chartItem.sourceItemId" align="center">
-            <template slot="header">
-              <el-button v-if="index!==0" size="small" type="text">
+          <el-table-column v-for="chartItem in form.columnList"
+                           :key="chartItem.sourceItemId" align="center"
+                           width="180">
+            <template slot="header" slot-scope="scope">
+              <el-button v-if="scope.$index" @click="moveLeft(chartItem)" size="small" type="text">
                 <i class="el-icon-arrow-left" style="font-size:14px"></i>
               </el-button>
               <el-dropdown size="small" trigger="click" @command="handleCommand">
@@ -69,29 +82,23 @@
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item :command="{method:'editColumn',arg: [chartItem, index]}">
+                  <el-dropdown-item :command="{method:'editColumn',arg: chartItem}">
                     <svg-icon className="dropdown-icon color-primary" iconClass="setting"></svg-icon>
                     设置
                   </el-dropdown-item>
-                  <el-dropdown-item :command="{method:'removeColumn',arg: [chartItem, index]}">
+                  <el-dropdown-item :command="{method:'removeColumn',arg: chartItem}">
                     <svg-icon className="dropdown-icon color-danger" iconClass="delete"></svg-icon>
-                    删除
+                    移除
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
-              <el-button v-if="index < form.columnList.length-1" size="small" type="text">
+              <el-button v-if="scope.$index < form.columnList.length - 1"
+                         @click="moveRight(chartItem)" size="small" type="text">
                 <i class="el-icon-arrow-right" style="font-size:14px"></i>
               </el-button>
             </template>
             <template v-slot="scope">
               {{mockTableData(scope.row.i, chartItem)}}
-            </template>
-          </el-table-column>
-          <el-table-column v-if="form.columnList.length" align="center" width="70">
-            <template slot="header">
-              <el-button @click="addColumn(form.columnList.length)"
-                         size="small" icon="el-icon-plus" plain>
-              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -101,19 +108,19 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import detailListApi from '@/api/chart/detailList'
 import chartSourceApi from '@/api/chart/chartSource'
 import {
   initDetailListFormBean,
-  repairChartForm,
+  initChartItemByDetailColumn,
   mockTableData,
   getRules
-} from './detailListModel'
-import { initSourceFormBean } from './sourceModel'
-import { initChartItemByDetailColumn } from './chartItemModel'
-import searchUtil from './searchUtil'
+} from './model'
+import { initSourceFormBean } from '../sourceModel'
+import searchUtil from '../searchUtil'
 
 export default {
   name: 'detailListForm',
@@ -166,17 +173,57 @@ export default {
     handleCommand: function (command) {
       this[command.method](command.arg)
     },
-    removeColumn ([chartItem, index]) {
+    removeColumn (chartItem) {
+      const index = this.form.columnList.indexOf(chartItem)
+      const item = this.form.columnList.splice(index, 1)[0]
+      this.form.hiddenColumnList.push(item)
+    },
+    editColumn (chartItem) {
       console.info(chartItem)
     },
-    editColumn ([chartItem, index]) {
-      console.info(chartItem)
+    addColumn (chartItem) {
+      const index = this.form.hiddenColumnList.indexOf(chartItem)
+      const item = this.form.hiddenColumnList.splice(index, 1)[0]
+      this.form.columnList.push(item)
     },
-    addColumn () {
-      console.info(arguments)
+    moveLeft (chartItem) {
+      const arr = this.form.columnList
+      const index = arr.indexOf(chartItem)
+      if (index > 0) {
+        const tmp = arr[index]
+        arr.splice(index, 1)
+        Vue.nextTick(() => arr.splice(index - 1, 0, tmp))
+      }
+    },
+    moveRight (chartItem) {
+      const arr = this.form.columnList
+      const index = arr.indexOf(chartItem)
+      if (index < arr.length - 1) {
+        const tmp = arr[index]
+        arr.splice(index, 1)
+        Vue.nextTick(() => arr.splice(index + 1, 0, tmp))
+      }
     },
     submit () {
-      // todo
+      let loading = null
+      // 校验表单
+      return this.$refs.detailListForm.validate()
+        // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return detailListApi.saveOrUpdate(this.form, this.edit)
+        })
+        // 执行页面跳转
+        .then(() => {
+          this.$common.showMsg('success', '操作成功')
+          this.$router.push(`/project/${this.projectId}/chart`)
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
     },
     lastStep () {
       if (this.edit) {
@@ -184,13 +231,6 @@ export default {
       } else {
         this.$router.push(`/project/${this.projectId}/chart/detailList/add?sourceId=${this.form.sourceId}`)
       }
-    },
-    /**
-     * 根据数据源中的明细列构建图表项
-     */
-    buildChartItems () {
-      this.form.columnList = this.sourceForm.detailColumnList
-        .map(detailColumn => initChartItemByDetailColumn(detailColumn))
     },
     /**
      * 加载数据源及明细列字段详情
@@ -211,8 +251,25 @@ export default {
           })
         })
     },
-    repairChartForm () {
-      repairChartForm(this.form, this.sourceForm)
+    /**
+     * 修复添加表单数据
+     */
+    repairAddChartForm () {
+      this.form.columnList = this.sourceForm.detailColumnList
+        .map(detailColumn => initChartItemByDetailColumn(detailColumn))
+    },
+    /**
+     * 修复编辑表单数据
+     */
+    repairEditChartForm () {
+      this.form.columnList.forEach(chartItem => {
+        const detailColumn = searchUtil.findSourceItemById(this.sourceForm.detailColumnList, chartItem.sourceItemId)
+        chartItem.detailColumn = detailColumn
+      })
+      this.form.hiddenColumnList.forEach(chartItem => {
+        const detailColumn = searchUtil.findSourceItemById(this.sourceForm.detailColumnList, chartItem.sourceItemId)
+        chartItem.detailColumn = detailColumn
+      })
     }
   },
   created () {
@@ -222,15 +279,18 @@ export default {
           formBean.columnList.forEach(value => {
             value.detailColumn = {}
           })
+          formBean.hiddenColumnList.forEach(value => {
+            value.detailColumn = {}
+          })
           this.form = formBean
         })
         .then(() => this.loadSourceWithDetailColumnFields())
-        .then(() => this.repairChartForm())
+        .then(() => this.repairEditChartForm())
     } else {
       this.form.sourceId = this.$router.currentRoute.query.sourceId
       if (this.form.sourceId) {
         this.loadSourceWithDetailColumnFields()
-          .then(() => this.buildChartItems())
+          .then(() => this.repairAddChartForm())
       } else {
         this.$common.showNotifyError('sourceId为空')
       }
@@ -240,7 +300,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '../../assets/common.scss';
+  @import '../../../assets/common.scss';
   .detailListFormDiv .detailListForm {
     @include youran-form;
     padding: 20px 10px;
