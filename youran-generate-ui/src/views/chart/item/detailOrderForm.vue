@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="配置排序" :visible.sync="formVisible" width="50%">
-    <el-form ref="detailOrderForm" class="detailOrderForm"
+    <el-form ref="detailOrderForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
       <el-form-item label="排序列">

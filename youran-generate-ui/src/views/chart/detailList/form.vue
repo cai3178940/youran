@@ -47,23 +47,25 @@
       </el-aside>
       <el-main style="border-left:solid 1px #e6e6e6;">
         <el-col :span="24" style="text-align: right; margin-bottom: 10px;">
-          <el-badge :value="form.hiddenColumnList.length" :hidden="!form.hiddenColumnList.length" class="item">
-            <el-dropdown size="small"
-                         trigger="click" @command="addColumn">
-              <el-button :disabled="!form.hiddenColumnList.length"
-                         type="success" size="small">
-                添加列
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="chartItem in form.hiddenColumnList"
-                                  :key="chartItem.sourceItemId"
-                                  :command="chartItem">
-                  {{chartItem.titleAlias}}
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </el-badge>
+          <el-tooltip class="item" effect="dark" content="添加更多列请返回上一步" placement="left">
+            <el-badge :value="form.hiddenColumnList.length" :hidden="!form.hiddenColumnList.length" class="item">
+              <el-dropdown size="small"
+                           trigger="click" @command="addColumn">
+                <el-button :disabled="!form.hiddenColumnList.length"
+                           type="success" size="small">
+                  添加列
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item v-for="chartItem in form.hiddenColumnList"
+                                    :key="chartItem.sourceItemId"
+                                    :command="chartItem">
+                    {{chartItem.titleAlias}}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </el-badge>
+          </el-tooltip>
         </el-col>
         <el-table size="small"
                   :data="emptyTableList"
@@ -84,7 +86,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item :command="{method:'editColumn',arg: chartItem}">
                     <svg-icon className="dropdown-icon color-primary" iconClass="setting"></svg-icon>
-                    设置
+                    配置
                   </el-dropdown-item>
                   <el-dropdown-item :command="{method:'removeColumn',arg: chartItem}">
                     <svg-icon className="dropdown-icon color-danger" iconClass="delete"></svg-icon>
@@ -104,6 +106,7 @@
         </el-table>
       </el-main>
     </el-container>
+    <column-form ref="columnForm"></column-form>
   </div>
 </template>
 
@@ -113,6 +116,7 @@ import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import detailListApi from '@/api/chart/detailList'
 import chartSourceApi from '@/api/chart/chartSource'
+import columnForm from './columnForm'
 import {
   initDetailListFormBean,
   initChartItemByDetailColumn,
@@ -128,6 +132,9 @@ export default {
     'projectId',
     'chartId'
   ],
+  components: {
+    columnForm
+  },
   data () {
     const edit = !!this.chartId
     return {
@@ -179,7 +186,7 @@ export default {
       this.form.hiddenColumnList.push(item)
     },
     editColumn (chartItem) {
-      console.info(chartItem)
+      this.$refs.columnForm.show(chartItem)
     },
     addColumn (chartItem) {
       const index = this.form.hiddenColumnList.indexOf(chartItem)
@@ -262,36 +269,65 @@ export default {
      * 修复编辑表单数据
      */
     repairEditChartForm () {
-      this.form.columnList.forEach(chartItem => {
-        const detailColumn = searchUtil.findSourceItemById(this.sourceForm.detailColumnList, chartItem.sourceItemId)
-        chartItem.detailColumn = detailColumn
-      })
-      this.form.hiddenColumnList.forEach(chartItem => {
-        const detailColumn = searchUtil.findSourceItemById(this.sourceForm.detailColumnList, chartItem.sourceItemId)
-        chartItem.detailColumn = detailColumn
+      // 找出上一步新增加的列，并转换成chartItem后放入隐藏列中
+      const idSet = new Set()
+      this.form.columnList.forEach(chartItem => idSet.add(chartItem.sourceItemId))
+      this.form.hiddenColumnList.forEach(chartItem => idSet.add(chartItem.sourceItemId))
+      const newColumns = this.sourceForm.detailColumnList
+        .filter(detailColumn => !idSet.has(detailColumn.sourceItemId))
+        .map(detailColumn => initChartItemByDetailColumn(detailColumn))
+      this.form.hiddenColumnList.push(...newColumns)
+      // 将detailColumn放入chartItem中，并删除匹配不上detailColumn的列
+      const toRemove = []
+      this.form.columnList.concat(this.form.hiddenColumnList)
+        .forEach(chartItem => {
+          const detailColumn = searchUtil.findSourceItemById(this.sourceForm.detailColumnList, chartItem.sourceItemId)
+          if (detailColumn) {
+            chartItem.detailColumn = detailColumn
+          } else {
+            toRemove.push(chartItem)
+          }
+        })
+      toRemove.forEach(value => {
+        const i1 = this.form.columnList.indexOf(value)
+        const i2 = this.form.hiddenColumnList.indexOf(value)
+        if (i1 > -1) {
+          this.form.columnList.splice(i1, 1)
+        }
+        if (i2 > -1) {
+          this.form.hiddenColumnList.splice(i2, 1)
+        }
       })
     }
   },
   created () {
+    this.formLoading = true
     if (this.edit) {
       detailListApi.get(this.chartId)
         .then(formBean => {
-          formBean.columnList.forEach(value => {
-            value.detailColumn = {}
-          })
-          formBean.hiddenColumnList.forEach(value => {
-            value.detailColumn = {}
-          })
+          formBean.columnList.concat(formBean.hiddenColumnList)
+            .forEach(value => {
+              value.detailColumn = {}
+            })
           this.form = formBean
         })
         .then(() => this.loadSourceWithDetailColumnFields())
         .then(() => this.repairEditChartForm())
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          this.formLoading = false
+        })
     } else {
       this.form.sourceId = this.$router.currentRoute.query.sourceId
       if (this.form.sourceId) {
         this.loadSourceWithDetailColumnFields()
           .then(() => this.repairAddChartForm())
+          .catch(error => this.$common.showNotifyError(error))
+          .finally(() => {
+            this.formLoading = false
+          })
       } else {
+        this.formLoading = false
         this.$common.showNotifyError('sourceId为空')
       }
     }

@@ -35,6 +35,7 @@ export function initChartItemByDetailColumn (detailColumn) {
     valuePrefix: '',
     valueSuffix: '',
     percent: false,
+    format: '',
     detailColumn: detailColumn
   }
 }

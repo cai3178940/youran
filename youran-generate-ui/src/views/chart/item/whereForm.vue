@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="配置过滤" :visible.sync="formVisible" width="50%">
-    <el-form ref="whereForm" class="whereForm"
+    <el-form ref="whereForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
       <el-form-item label="自定义过滤条件">

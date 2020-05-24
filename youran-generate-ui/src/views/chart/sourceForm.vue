@@ -171,6 +171,7 @@
             <help-popover name="chartSource.detailColumnList">
               <el-select v-model="form.detailColumnList" value-key="key"
                          style="width:100%;" placeholder="请选择明细列"
+                         @change="changeForm"
                          multiple filterable>
                 <el-option-group
                   v-for="([joinIndex,entity]) in entityFieldOptions"
@@ -324,7 +325,11 @@ export default {
           this.mtmOptions = data
         })
     },
+    changeForm () {
+      this.formChanged = true
+    },
     handleEntityChange (entityId) {
+      this.changeForm()
       this.form.entity = this.entityOptions.find(value => value.entityId === entityId)
       this.loadEntityFields(this.form.entity)
       repairAtJoinChange(this.form)
@@ -386,7 +391,7 @@ export default {
         part.mtmId = part.tmp1.obj.mtmId
       }
       repairAtJoinChange(this.form)
-      this.formChanged = true
+      this.changeForm()
     },
     /**
      * 将字段及其所在实体/多对多填充到join中
@@ -405,16 +410,16 @@ export default {
         part.mtmId = part.tmp2.obj.mtmId
         part.mtmField = part.tmp2.field
       }
-      this.formChanged = true
+      this.changeForm()
     },
     addJoin () {
       this.form.joins.push(initJoinDTO(0, this.form.joins.length))
-      this.formChanged = true
+      this.changeForm()
     },
     removeJoin (index) {
       this.form.joins.splice(index, 1)
       repairAtJoinRemove(this.form, index + 1)
-      this.formChanged = true
+      this.changeForm()
     },
     addWhere () {
       this.$refs.whereForm.show(this.entityFieldOptions, null, this.form.whereList.length)
@@ -428,13 +433,13 @@ export default {
       } else {
         this.form.whereList[index] = where
       }
-      this.formChanged = true
+      this.changeForm()
     },
     onWhereRemove (index, where) {
       if (index < this.form.whereList.length) {
         this.form.whereList.splice(index, 1)
       }
-      this.formChanged = true
+      this.changeForm()
     },
     addDetailOrder () {
       this.$refs.detailOrderForm.show(this.form.detailColumnList, null, this.form.detailOrderList.length)
@@ -448,13 +453,13 @@ export default {
       } else {
         this.form.detailOrderList[index] = detailOrder
       }
-      this.formChanged = true
+      this.changeForm()
     },
     onDetailOrderRemove (index, detailOrder) {
       if (index < this.form.detailOrderList.length) {
         this.form.detailOrderList.splice(index, 1)
       }
-      this.formChanged = true
+      this.changeForm()
     },
     addDimension () {
       // TODO
@@ -532,6 +537,7 @@ export default {
     this.sourceId = this.$router.currentRoute.query.sourceId
     if (this.sourceId) {
       this.edit = true
+      this.formLoading = true
       promise.then(() => chartSourceApi.getWithItems(this.sourceId))
         .then(formBean => {
           const array = searchUtil.findEntityIdsInFormBean(formBean)
@@ -544,6 +550,10 @@ export default {
               repairFormBean(formBean, this.entityOptions, this.mtmOptions)
               this.form = formBean
             })
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          this.formLoading = false
         })
     }
   }

@@ -29,10 +29,7 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
     @ApiModelProperty(notes = "标题别名",example = "新的列名")
     private String titleAlias;
 
-    @ApiModelProperty(notes = "外键是否用title替换id展示",example = "false")
-    private Boolean showFkTitle;
-
-    @ApiModelProperty(notes = "内容前置",example = "前缀_")
+    @ApiModelProperty(notes = "内容前缀",example = "前缀_")
     private String valuePrefix;
     @ApiModelProperty(notes = "内容后缀",example = "_后缀")
     private String valueSuffix;
@@ -40,7 +37,8 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
     @ApiModelProperty(notes = "是否百分比",example = "false")
     private Boolean percent;
 
-    // TODO 数据格式化设置-数字、百分比、日期
+    @ApiModelProperty(notes = "格式化规则",example = "yyyy-MM-dd")
+    private String format;
 
     /**
      * 数据项
@@ -70,14 +68,6 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
 
     public void setTitleAlias(String titleAlias) {
         this.titleAlias = titleAlias;
-    }
-
-    public Boolean getShowFkTitle() {
-        return showFkTitle;
-    }
-
-    public void setShowFkTitle(Boolean showFkTitle) {
-        this.showFkTitle = showFkTitle;
     }
 
     public String getValuePrefix() {
@@ -110,5 +100,13 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
 
     public void setPercent(Boolean percent) {
         this.percent = percent;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 }
