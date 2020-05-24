@@ -1,4 +1,4 @@
-import { abbreviate } from './string-util'
+import { abbreviate } from './common-util'
 
 /**
  * 关联类型
@@ -308,6 +308,31 @@ export default {
     {
       value: 3,
       label: 'right join'
+    }
+  ],
+  /**
+   * 自定义列字段类型
+   */
+  customFieldTypeOptions: [
+    {
+      value: 1,
+      label: '字符串'
+    },
+    {
+      value: 2,
+      label: '整形'
+    },
+    {
+      value: 3,
+      label: '浮点型'
+    },
+    {
+      value: 4,
+      label: '日期'
+    },
+    {
+      value: 5,
+      label: '日期时间'
     }
   ],
   /**

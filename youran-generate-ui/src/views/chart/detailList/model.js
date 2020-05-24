@@ -46,7 +46,6 @@ export function initChartItemByDetailColumn (detailColumn) {
 export function mockTableData (rowIndex, chartItem) {
   const detailColumn = chartItem.detailColumn
   if (!detailColumn) {
-    console.info(chartItem)
     return ''
   }
   let value

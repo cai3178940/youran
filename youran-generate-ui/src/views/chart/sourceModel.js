@@ -1,4 +1,5 @@
 import searchUtil from './searchUtil'
+import { groupBy } from '@/utils/common-util'
 import { repairDetailColumn } from './item/detailColumnModel'
 import { repairWhere } from './item/whereModel'
 import { repairDetailOrder } from './item/detailOrderModel'
@@ -19,7 +20,8 @@ export function initSourceFormBean (projectId) {
     aggOrderList: [],
     limit: 0,
     // 后面的属性是缓存对象，表单提交时需要过滤掉
-    entity: null
+    entity: null,
+    customColumnList: []
   }
   return formBean
 }
@@ -159,6 +161,9 @@ export function repairFormBean (form, entityOptions, mtmOptions) {
   if (form.detailColumnList) {
     form.detailColumnList
       .forEach(detailColumn => repairDetailColumn(detailColumn, form))
+    const group = groupBy(form.detailColumnList, detailColumn => detailColumn.custom)
+    form.detailColumnList = group['false'] ? group['false'] : []
+    form.customColumnList = group['true'] ? group['true'] : []
   }
   // 修复过滤条件
   if (form.whereList) {
@@ -197,6 +202,9 @@ function repairJoinPart (part, entityOptions, mtmOptions) {
  */
 export function extractFormBean (form) {
   const copy = JSON.parse(JSON.stringify(form))
+  // 将自定义列合并到明细列中
+  copy.detailColumnList.push(...copy.customColumnList)
+  delete copy.customColumnList
   // 清除临时对象
   delete copy.entity
   copy.joins.forEach(join => {

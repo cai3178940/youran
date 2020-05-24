@@ -187,6 +187,20 @@
               </el-select>
             </help-popover>
           </el-form-item>
+          <!-- 自定义明细列 -->
+          <el-form-item label="自定义列">
+            <help-popover name="chartSource.customColumnList">
+              <el-button v-for="(customColumn,index) in form.customColumnList"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editCustomColumn(index, customColumn)"
+                         plain>
+                {{customColumn._displayText}}
+              </el-button>
+              <el-button type="primary" @click="addCustomColumn" class="inner-form-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
+            </help-popover>
+          </el-form-item>
           <!-- 过滤条件 -->
           <el-form-item label="过滤">
             <help-popover name="chartSource.whereList">
@@ -222,6 +236,7 @@
         </el-form>
       </el-col>
     </el-row>
+    <custom-column-form ref="customColumnForm" @submit="onCustomColumnSubmit" @remove="onCustomColumnRemove"/>
     <where-form ref="whereForm" @submit="onWhereSubmit" @remove="onWhereRemove"/>
     <detail-order-form ref="detailOrderForm" @submit="onDetailOrderSubmit" @remove="onDetailOrderRemove"/>
   </div>
@@ -232,6 +247,7 @@ import chartSourceApi from '@/api/chart/chartSource'
 import entityApi from '@/api/entity'
 import mtmApi from '@/api/mtm'
 import fieldApi from '@/api/field'
+import customColumnForm from './item/customColumnForm'
 import whereForm from './item/whereForm'
 import detailOrderForm from './item/detailOrderForm'
 import chartOptions from '@/utils/options-chart'
@@ -259,6 +275,7 @@ export default {
     'chartId'
   ],
   components: {
+    customColumnForm,
     whereForm,
     detailOrderForm
   },
@@ -419,6 +436,26 @@ export default {
     removeJoin (index) {
       this.form.joins.splice(index, 1)
       repairAtJoinRemove(this.form, index + 1)
+      this.changeForm()
+    },
+    addCustomColumn () {
+      this.$refs.customColumnForm.show(null, this.form.customColumnList.length)
+    },
+    editCustomColumn (index, customColumn) {
+      this.$refs.customColumnForm.show(customColumn, index)
+    },
+    onCustomColumnSubmit (index, customColumn) {
+      if (index >= this.form.customColumnList.length) {
+        this.form.customColumnList.push(customColumn)
+      } else {
+        this.form.customColumnList[index] = customColumn
+      }
+      this.changeForm()
+    },
+    onCustomColumnRemove (index, customColumn) {
+      if (index < this.form.customColumnList.length) {
+        this.form.customColumnList.splice(index, 1)
+      }
       this.changeForm()
     },
     addWhere () {

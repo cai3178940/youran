@@ -1,5 +1,5 @@
 import shortid from 'shortid'
-import { abbreviate } from '@/utils/string-util'
+import { abbreviate } from '@/utils/common-util'
 import searchUtil from '../searchUtil'
 
 export function buildCommonDetailColumn (joinIndex, field) {
