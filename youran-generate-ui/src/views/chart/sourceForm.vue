@@ -167,7 +167,7 @@
             </el-form-item>
           </template>
           <!-- 明细列：多选下拉框 -->
-          <el-form-item label="明细列" prop="detailColumnList">
+          <el-form-item v-if="!form.aggregation" label="明细列" prop="detailColumnList">
             <help-popover name="chartSource.detailColumnList">
               <el-select v-model="form.detailColumnList" value-key="key"
                          style="width:100%;" placeholder="请选择明细列"
@@ -188,7 +188,7 @@
             </help-popover>
           </el-form-item>
           <!-- 自定义明细列 -->
-          <el-form-item label="自定义列">
+          <el-form-item v-if="!form.aggregation" label="自定义列">
             <help-popover name="chartSource.customColumnList">
               <el-button v-for="(customColumn,index) in form.customColumnList"
                          :key="index" class="inner-form-button"
@@ -216,7 +216,7 @@
             </help-popover>
           </el-form-item>
           <!-- 排序 -->
-          <el-form-item label="排序">
+          <el-form-item v-if="!form.aggregation" label="排序">
             <help-popover name="chartSource.detailOrderList">
               <el-button v-for="(detailOrder,index) in form.detailOrderList"
                          :key="index" class="inner-form-button"
@@ -225,6 +225,62 @@
                 {{detailOrder._displayText}}
               </el-button>
               <el-button type="primary" @click="addDetailOrder" class="inner-form-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
+            </help-popover>
+          </el-form-item>
+          <!-- 聚合(维度) -->
+          <el-form-item v-if="form.aggregation" label="聚合(维度)">
+            <help-popover name="chartSource.dimensionList">
+              <el-button v-for="(dimension,index) in form.dimensionList"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editDimension(index, dimension)"
+                         plain>
+                {{dimension._displayText}}
+              </el-button>
+              <el-button type="primary" @click="addDimension" class="inner-form-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
+            </help-popover>
+          </el-form-item>
+          <!-- 聚合(指标) -->
+          <el-form-item v-if="form.aggregation" label="聚合(指标)">
+            <help-popover name="chartSource.metricsList">
+              <el-button v-for="(metrics,index) in form.metricsList"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editMetrics(index, metrics)"
+                         plain>
+                {{metrics._displayText}}
+              </el-button>
+              <el-button type="primary" @click="addMetrics" class="inner-form-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
+            </help-popover>
+          </el-form-item>
+          <!-- 聚合(过滤) -->
+          <el-form-item v-if="form.aggregation" label="聚合(过滤)">
+            <help-popover name="chartSource.havingList">
+              <el-button v-for="(having,index) in form.havingList"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editHaving(index, having)"
+                         plain>
+                {{having._displayText}}
+              </el-button>
+              <el-button type="primary" @click="addHaving" class="inner-form-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
+            </help-popover>
+          </el-form-item>
+          <!-- 聚合(排序) -->
+          <el-form-item v-if="form.aggregation" label="聚合(排序)">
+            <help-popover name="chartSource.aggOrderList">
+              <el-button v-for="(aggOrder,index) in form.aggOrderList"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editAggOrder(index, aggOrder)"
+                         plain>
+                {{aggOrder._displayText}}
+              </el-button>
+              <el-button type="primary" @click="addAggOrder" class="inner-form-button"
                          icon="el-icon-plus" plain>
               </el-button>
             </help-popover>
@@ -239,9 +295,12 @@
     <custom-column-form ref="customColumnForm" @submit="onCustomColumnSubmit" @remove="onCustomColumnRemove"/>
     <where-form ref="whereForm" @submit="onWhereSubmit" @remove="onWhereRemove"/>
     <detail-order-form ref="detailOrderForm" @submit="onDetailOrderSubmit" @remove="onDetailOrderRemove"/>
+    <dimension-form ref="dimensionForm" @submit="onDimensionSubmit" @remove="onDimensionRemove"/>
+    <metrics-form ref="metricsForm" @submit="onMetricsSubmit" @remove="onMetricsRemove"/>
+    <having-form ref="havingForm" @submit="onHavingSubmit" @remove="onHavingRemove"/>
+    <agg-order-form ref="aggOrderForm" @submit="onAggOrderSubmit" @remove="onAggOrderRemove"/>
   </div>
 </template>
-
 <script>
 import chartSourceApi from '@/api/chart/chartSource'
 import entityApi from '@/api/entity'
@@ -250,6 +309,10 @@ import fieldApi from '@/api/field'
 import customColumnForm from './item/customColumnForm'
 import whereForm from './item/whereForm'
 import detailOrderForm from './item/detailOrderForm'
+import dimensionForm from './item/dimensionForm'
+import metricsForm from './item/metricsForm'
+import havingForm from './item/havingForm'
+import aggOrderForm from './item/aggOrderForm'
 import chartOptions from '@/utils/options-chart'
 import {
   initSourceFormBean,
@@ -277,7 +340,11 @@ export default {
   components: {
     customColumnForm,
     whereForm,
-    detailOrderForm
+    detailOrderForm,
+    dimensionForm,
+    metricsForm,
+    havingForm,
+    aggOrderForm
   },
   data () {
     const nextEdit = !!this.chartId
@@ -458,6 +525,9 @@ export default {
       }
       this.changeForm()
     },
+    /**
+     * where条件
+     */
     addWhere () {
       this.$refs.whereForm.show(this.entityFieldOptions, null, this.form.whereList.length)
     },
@@ -478,6 +548,9 @@ export default {
       }
       this.changeForm()
     },
+    /**
+     * 明细列排序
+     */
     addDetailOrder () {
       this.$refs.detailOrderForm.show(this.form.detailColumnList, null, this.form.detailOrderList.length)
     },
@@ -498,29 +571,97 @@ export default {
       }
       this.changeForm()
     },
+    /**
+     * 维度
+     */
     addDimension () {
-      // TODO
+      this.$refs.dimensionForm.show(this.entityFieldOptions, null, this.form.dimensionList.length)
     },
-    removeDimension (index) {
-      // TODO
+    editDimension (index, dimension) {
+      this.$refs.dimensionForm.show(this.entityFieldOptions, dimension, index)
     },
+    onDimensionSubmit (index, dimension) {
+      if (index >= this.form.dimensionList.length) {
+        this.form.dimensionList.push(dimension)
+      } else {
+        this.form.dimensionList[index] = dimension
+      }
+      this.changeForm()
+    },
+    onDimensionRemove (index, dimension) {
+      if (index < this.form.dimensionList.length) {
+        this.form.dimensionList.splice(index, 1)
+      }
+      this.changeForm()
+    },
+    /**
+     * 指标
+     */
     addMetrics () {
-      // TODO
+      this.$refs.metricsForm.show(this.entityFieldOptions, null, this.form.metricsList.length)
     },
-    removeMetrics (index) {
-      // TODO
+    editMetrics (index, metrics) {
+      this.$refs.metricsForm.show(this.entityFieldOptions, metrics, index)
     },
+    onMetricsSubmit (index, metrics) {
+      if (index >= this.form.metricsList.length) {
+        this.form.metricsList.push(metrics)
+      } else {
+        this.form.metricsList[index] = metrics
+      }
+      this.changeForm()
+    },
+    onMetricsRemove (index, metrics) {
+      if (index < this.form.metricsList.length) {
+        this.form.metricsList.splice(index, 1)
+      }
+      this.changeForm()
+    },
+    /**
+     * having条件
+     */
     addHaving () {
-      // TODO
+      this.$refs.havingForm.show(this.form.metricsList, null, this.form.havingList.length)
     },
-    removeHaving (index) {
-      // TODO
+    editHaving (index, having) {
+      this.$refs.havingForm.show(this.form.metricsList, having, index)
     },
+    onHavingSubmit (index, having) {
+      if (index >= this.form.havingList.length) {
+        this.form.havingList.push(having)
+      } else {
+        this.form.havingList[index] = having
+      }
+      this.changeForm()
+    },
+    onHavingRemove (index, having) {
+      if (index < this.form.havingList.length) {
+        this.form.havingList.splice(index, 1)
+      }
+      this.changeForm()
+    },
+    /**
+     * 聚合排序
+     */
     addAggOrder () {
-      // TODO
+      this.$refs.aggOrderForm.show(this.form.dimensionList, this.form.metricsList, null, this.form.aggOrderList.length)
     },
-    removeAggOrder (index) {
-      // TODO
+    editAggOrder (index, aggOrder) {
+      this.$refs.aggOrderForm.show(this.form.dimensionList, this.form.metricsList, aggOrder, index)
+    },
+    onAggOrderSubmit (index, aggOrder) {
+      if (index >= this.form.aggOrderList.length) {
+        this.form.aggOrderList.push(aggOrder)
+      } else {
+        this.form.aggOrderList[index] = aggOrder
+      }
+      this.changeForm()
+    },
+    onAggOrderRemove (index, aggOrder) {
+      if (index < this.form.aggOrderList.length) {
+        this.form.aggOrderList.splice(index, 1)
+      }
+      this.changeForm()
     },
     /**
      * 下一步

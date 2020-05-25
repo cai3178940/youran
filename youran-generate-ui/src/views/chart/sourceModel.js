@@ -3,6 +3,7 @@ import { groupBy } from '@/utils/common-util'
 import { repairDetailColumn } from './item/detailColumnModel'
 import { repairWhere } from './item/whereModel'
 import { repairDetailOrder } from './item/detailOrderModel'
+import { repairDimension } from './item/dimensionModel'
 
 export function initSourceFormBean (projectId) {
   const formBean = {
@@ -176,6 +177,10 @@ export function repairFormBean (form, entityOptions, mtmOptions) {
       .forEach(detailOrder => repairDetailOrder(detailOrder, form.detailColumnList))
   }
   // 修复聚合(维度)
+  if (form.dimensionList) {
+    form.dimensionList
+      .forEach(dimension => repairDimension(dimension, form))
+  }
   // 修复聚合(指标)
   // 修复聚合(过滤)
   // 修复聚合(排序)

@@ -37,6 +37,7 @@
                 :fetch-suggestions="findModules"
                 style="width:100%;"
                 placeholder="例如：system"
+                v-lower-case
               ></el-autocomplete>
             </help-popover>
           </el-form-item>

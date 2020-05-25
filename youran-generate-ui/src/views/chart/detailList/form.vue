@@ -14,7 +14,8 @@
                  size="small">
           <el-form-item label="图表名称" prop="chartName">
             <help-popover name="chart.chartName">
-              <el-input v-model="form.chartName" placeholder="例如：MyFirstChart" tabindex="10"></el-input>
+              <el-input v-upper-case-first v-model="form.chartName"
+                        placeholder="例如：MyFirstChart" tabindex="10"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="图表标题" prop="title">
@@ -29,6 +30,7 @@
                 :fetch-suggestions="findModules"
                 style="width:100%;" tabindex="30"
                 placeholder="例如：system"
+                v-lower-case
               ></el-autocomplete>
             </help-popover>
           </el-form-item>
