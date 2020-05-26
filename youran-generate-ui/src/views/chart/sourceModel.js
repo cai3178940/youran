@@ -4,6 +4,9 @@ import { repairDetailColumn } from './item/detailColumnModel'
 import { repairWhere } from './item/whereModel'
 import { repairDetailOrder } from './item/detailOrderModel'
 import { repairDimension } from './item/dimensionModel'
+import { repairMetrics } from './item/metricsModel'
+import { repairHaving } from './item/havingModel'
+import { repairAggOrder } from './item/aggOrderModel'
 
 export function initSourceFormBean (projectId) {
   const formBean = {
@@ -182,8 +185,20 @@ export function repairFormBean (form, entityOptions, mtmOptions) {
       .forEach(dimension => repairDimension(dimension, form))
   }
   // 修复聚合(指标)
+  if (form.metricsList) {
+    form.metricsList
+      .forEach(metrics => repairMetrics(metrics, form))
+  }
   // 修复聚合(过滤)
+  if (form.havingList) {
+    form.havingList
+      .forEach(having => repairHaving(having, form.metricsList))
+  }
   // 修复聚合(排序)
+  if (form.aggOrderList) {
+    form.aggOrderList
+      .forEach(aggOrder => repairAggOrder(aggOrder, form.dimensionList, form.metricsList))
+  }
 }
 
 function repairJoinPart (part, entityOptions, mtmOptions) {

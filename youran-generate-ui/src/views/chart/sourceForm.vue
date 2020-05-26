@@ -230,7 +230,7 @@
             </help-popover>
           </el-form-item>
           <!-- 聚合(维度) -->
-          <el-form-item v-if="form.aggregation" label="聚合(维度)">
+          <el-form-item v-if="form.aggregation" label="聚合(维度)" prop="dimensionList">
             <help-popover name="chartSource.dimensionList">
               <el-button v-for="(dimension,index) in form.dimensionList"
                          :key="index" class="inner-form-button"
@@ -244,7 +244,7 @@
             </help-popover>
           </el-form-item>
           <!-- 聚合(指标) -->
-          <el-form-item v-if="form.aggregation" label="聚合(指标)">
+          <el-form-item v-if="form.aggregation" label="聚合(指标)" prop="metricsList">
             <help-popover name="chartSource.metricsList">
               <el-button v-for="(metrics,index) in form.metricsList"
                          :key="index" class="inner-form-button"
@@ -258,7 +258,7 @@
             </help-popover>
           </el-form-item>
           <!-- 聚合(过滤) -->
-          <el-form-item v-if="form.aggregation" label="聚合(过滤)">
+          <el-form-item v-if="form.aggregation && form.metricsList.length>0" label="聚合(过滤)">
             <help-popover name="chartSource.havingList">
               <el-button v-for="(having,index) in form.havingList"
                          :key="index" class="inner-form-button"

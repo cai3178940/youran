@@ -97,6 +97,7 @@ export default {
      * @param position 当前编辑的dimension在数组中的位置
      */
     show (entityFieldOptions, formBean, position) {
+      this.tmp = initTmp()
       this.position = position
       this.entityFieldOptions = entityFieldOptions
       this.tmp = initTmp()

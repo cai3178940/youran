@@ -4,13 +4,21 @@
              :rules="rules" :model="form"
              label-width="120px" size="small">
       <el-form-item label="排序列">
-        <el-select v-model="form.detailColumn" value-key="key"
+        <el-select v-model="form.parentItem" value-key="key"
                    style="width:100%;" placeholder="请选择排序列"
                    filterable>
-          <el-option v-for="detailColumn in detailColumnList"
-                     :key="detailColumn.key" :label="detailColumn._displayText"
-                     :value="detailColumn">
-          </el-option>
+          <el-option-group label="维度">
+            <el-option v-for="dimension in dimensionList"
+                       :key="dimension.key" :label="dimension._displayText"
+                       :value="dimension">
+            </el-option>
+          </el-option-group>
+          <el-option-group label="指标">
+            <el-option v-for="metrics in metricsList"
+                       :key="metrics.key" :label="metrics._displayText"
+                       :value="metrics">
+            </el-option>
+          </el-option-group>
         </el-select>
       </el-form-item>
       <el-form-item label="排序方式">
@@ -31,7 +39,7 @@
 <script>
 import {
   initFormBean,
-  repairDetailOrder
+  repairAggOrder
 } from './aggOrderModel'
 
 export default {
@@ -41,7 +49,8 @@ export default {
       edit: false,
       position: 0,
       formVisible: false,
-      detailColumnList: [],
+      dimensionList: [],
+      metricsList: [],
       // 最终返回给调用组件的表单数据
       form: initFormBean(),
       rules: {}
@@ -54,9 +63,10 @@ export default {
      * @param formBean 编辑的aggOrder条件，如果新增则为空
      * @param position 当前编辑的aggOrder条件在数组中的位置
      */
-    show (detailColumnList, formBean, position) {
+    show (dimensionList, metricsList, formBean, position) {
       this.position = position
-      this.detailColumnList = detailColumnList
+      this.dimensionList = dimensionList
+      this.metricsList = metricsList
       if (formBean) {
         this.edit = true
         this.form = formBean
@@ -67,7 +77,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      repairDetailOrder(this.form, this.detailColumnList)
+      repairAggOrder(this.form, this.dimensionList, this.metricsList)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

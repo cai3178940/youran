@@ -7,19 +7,22 @@ export function initFormBean () {
     sortType: 1,
     parentId: null,
     parentKey: null,
-    detailColumn: null
+    parentItem: null
   }
 }
 
 /**
  * 修复聚合排序数据
  */
-export function repairAggOrder (aggOrder, detailColumnList) {
-  if (!aggOrder.detailColumn) {
-    const detailColumn = searchUtil.findSourceItemById(detailColumnList, aggOrder.parentId)
-    aggOrder.detailColumn = detailColumn
+export function repairAggOrder (aggOrder, dimensionList, metricsList) {
+  if (!aggOrder.parentItem) {
+    let parentItem = searchUtil.findSourceItemById(dimensionList, aggOrder.parentId)
+    if (!parentItem) {
+      parentItem = searchUtil.findSourceItemById(metricsList, aggOrder.parentId)
+    }
+    aggOrder.parentItem = parentItem
   }
-  aggOrder.joinIndex = aggOrder.detailColumn.joinIndex
-  aggOrder.parentKey = aggOrder.detailColumn.key
-  aggOrder._displayText = aggOrder.detailColumn._displayText + (aggOrder.sortType === 1 ? '▲' : '▼')
+  aggOrder.joinIndex = aggOrder.parentItem.joinIndex
+  aggOrder.parentKey = aggOrder.parentItem.key
+  aggOrder._displayText = aggOrder.parentItem._displayText + (aggOrder.sortType === 1 ? '▲' : '▼')
 }
