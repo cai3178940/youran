@@ -28,6 +28,7 @@ import chart from '@/views/chart/index.vue'
 import chartList from '@/views/chart/list.vue'
 import sourceForm from '@/views/chart/sourceForm.vue'
 import detailListForm from '@/views/chart/detailList/form.vue'
+import aggTableForm from '@/views/chart/aggTable/form.vue'
 
 Vue.use(Router)
 
@@ -116,6 +117,16 @@ export default new Router({
         {
           path: 'detailList/edit/:chartId/next',
           component: detailListForm,
+          props: true
+        },
+        {
+          path: 'aggTable/add/next',
+          component: aggTableForm,
+          props: true
+        },
+        {
+          path: 'aggTable/edit/:chartId/next',
+          component: aggTableForm,
           props: true
         }
       ]

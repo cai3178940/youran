@@ -47,6 +47,19 @@ function findFieldIdsInDetailColumns (detailColumnList) {
   return Array.from(fieldIds)
 }
 
+function findFieldIdsInDimensionAndMetrics (dimensionList, metricsList) {
+  const fieldIds = new Set()
+  dimensionList.forEach(dimension => {
+    fieldIds.add(dimension.fieldId)
+  })
+  metricsList.forEach(metrics => {
+    if (!metrics.custom) {
+      fieldIds.add(metrics.fieldId)
+    }
+  })
+  return Array.from(fieldIds)
+}
+
 export default {
   findEntityInEntityOptions,
   findFieldInEntity,
@@ -54,5 +67,6 @@ export default {
   findEntityFieldInFormBean,
   findSourceItemById,
   findEntityIdsInFormBean,
-  findFieldIdsInDetailColumns
+  findFieldIdsInDetailColumns,
+  findFieldIdsInDimensionAndMetrics
 }

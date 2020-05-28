@@ -34,6 +34,7 @@ public class AggTableHelper {
         dto.setTitle(E_TITLE);
         dto.setDimensionList(dimensionList);
         dto.setMetricsList(metricsList);
+        dto.setDefaultPageSize(10);
         return dto;
     }
 
@@ -55,6 +56,7 @@ public class AggTableHelper {
         dto.setMetricsList(po.getMetricsList()
             .stream()
             .collect(Collectors.toList()));
+        dto.setDefaultPageSize(po.getDefaultPageSize());
         return dto;
     }
 

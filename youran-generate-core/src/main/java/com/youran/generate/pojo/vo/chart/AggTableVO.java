@@ -22,6 +22,19 @@ public class AggTableVO extends MetaChartShowVO {
      */
     private List<ChartItemDTO> metricsList;
 
+    /**
+     * 默认每页记录数
+     */
+    private Integer defaultPageSize;
+
+    public Integer getDefaultPageSize() {
+        return defaultPageSize;
+    }
+
+    public void setDefaultPageSize(Integer defaultPageSize) {
+        this.defaultPageSize = defaultPageSize;
+    }
+
     public List<ChartItemDTO> getDimensionList() {
         return dimensionList;
     }

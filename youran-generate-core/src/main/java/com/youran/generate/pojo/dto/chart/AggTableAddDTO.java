@@ -21,11 +21,20 @@ public class AggTableAddDTO extends AbstractChartDTO {
     @ApiModelProperty(notes = "指标列")
     private List<ChartItemDTO> metricsList;
 
-    // TODO 以后再扩展其他样式
+    @ApiModelProperty(notes = "默认每页记录数")
+    private Integer defaultPageSize;
 
     @Override
     public Integer getChartType() {
         return ChartType.AGG_TABLE.getValue();
+    }
+
+    public Integer getDefaultPageSize() {
+        return defaultPageSize;
+    }
+
+    public void setDefaultPageSize(Integer defaultPageSize) {
+        this.defaultPageSize = defaultPageSize;
     }
 
     public List<ChartItemDTO> getDimensionList() {

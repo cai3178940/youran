@@ -30,6 +30,11 @@ public class AggTablePO extends MetaChartPO {
      */
     private List<ChartItemDTO<MetricsPO>> metricsList;
 
+    /**
+     * 默认每页记录数
+     */
+    private Integer defaultPageSize;
+
     public AggTablePO() {
         this.setChartType(ChartType.AGG_TABLE.getValue());
     }
@@ -86,6 +91,7 @@ public class AggTablePO extends MetaChartPO {
         FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
         this.dimensionList = featureDTO.getDimensionList();
         this.metricsList = featureDTO.getMetricsList();
+        this.defaultPageSize = featureDTO.getDefaultPageSize();
     }
 
     @Override
@@ -93,6 +99,7 @@ public class AggTablePO extends MetaChartPO {
         FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setDimensionList(this.dimensionList);
         featureDTO.setMetricsList(this.metricsList);
+        featureDTO.setDefaultPageSize(this.defaultPageSize);
         this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
@@ -112,9 +119,27 @@ public class AggTablePO extends MetaChartPO {
         this.metricsList = metricsList;
     }
 
+    public Integer getDefaultPageSize() {
+        return defaultPageSize;
+    }
+
+    public void setDefaultPageSize(Integer defaultPageSize) {
+        this.defaultPageSize = defaultPageSize;
+    }
+
     static class FeatureDTO{
         private List<ChartItemDTO<DimensionPO>> dimensionList;
         private List<ChartItemDTO<MetricsPO>> metricsList;
+        private Integer defaultPageSize;
+
+        public Integer getDefaultPageSize() {
+            return defaultPageSize;
+        }
+
+        public void setDefaultPageSize(Integer defaultPageSize) {
+            this.defaultPageSize = defaultPageSize;
+        }
+
         public List<ChartItemDTO<DimensionPO>> getDimensionList() {
             return dimensionList;
         }

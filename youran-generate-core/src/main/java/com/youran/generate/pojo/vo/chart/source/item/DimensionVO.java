@@ -16,7 +16,7 @@ public class DimensionVO extends MetaChartSourceItemVO {
     /**
      * 维度粒度
      */
-    private String granularity;
+    private Integer granularity;
 
     public Integer getFieldId() {
         return fieldId;
@@ -26,11 +26,11 @@ public class DimensionVO extends MetaChartSourceItemVO {
         this.fieldId = fieldId;
     }
 
-    public String getGranularity() {
+    public Integer getGranularity() {
         return granularity;
     }
 
-    public void setGranularity(String granularity) {
+    public void setGranularity(Integer granularity) {
         this.granularity = granularity;
     }
 }
