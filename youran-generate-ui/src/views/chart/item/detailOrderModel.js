@@ -14,10 +14,13 @@ export function initFormBean () {
 /**
  * 修复排序列数据
  */
-export function repairDetailOrder (detailOrder, detailColumnList) {
+export function repairDetailOrder (detailOrder, detailColumnList, customColumnList) {
   if (!detailOrder.detailColumn) {
-    const detailColumn = searchUtil.findSourceItemById(detailColumnList, detailOrder.parentId)
-    detailOrder.detailColumn = detailColumn
+    let parentItem = searchUtil.findSourceItemById(detailColumnList, detailOrder.parentId)
+    if (!parentItem) {
+      parentItem = searchUtil.findSourceItemById(customColumnList, detailOrder.parentId)
+    }
+    detailOrder.detailColumn = parentItem
   }
   detailOrder.joinIndex = detailOrder.detailColumn.joinIndex
   detailOrder.parentKey = detailOrder.detailColumn.key

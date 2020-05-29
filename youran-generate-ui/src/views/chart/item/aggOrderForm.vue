@@ -37,10 +37,7 @@
 </template>
 
 <script>
-import {
-  initFormBean,
-  repairAggOrder
-} from './aggOrderModel'
+import { initFormBean, repairAggOrder } from './aggOrderModel'
 
 export default {
   name: 'aggOrder-form',
@@ -59,7 +56,8 @@ export default {
   methods: {
     /**
      * 显示表单窗口
-     * @param detailColumnList 可选的排序列
+     * @param dimensionList 可选的维度列
+     * @param metricsList 可选的指标列
      * @param formBean 编辑的aggOrder条件，如果新增则为空
      * @param position 当前编辑的aggOrder条件在数组中的位置
      */

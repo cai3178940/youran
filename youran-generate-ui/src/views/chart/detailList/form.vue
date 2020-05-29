@@ -125,8 +125,10 @@ import {
   mockTableData,
   getRules
 } from './model'
-import { initSourceFormBean } from '../sourceModel'
+import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
+import _differenceBy from 'lodash/differenceBy'
+import _intersectionBy from 'lodash/intersectionBy'
 
 export default {
   name: 'detailListForm',
@@ -142,7 +144,7 @@ export default {
     return {
       edit: edit,
       form: initDetailListFormBean(this.projectId),
-      sourceForm: initSourceFormBean(this.projectId),
+      sourceForm: sourceModel.initSourceFormBean(this.projectId),
       formLoading: false,
       rules: getRules()
     }
@@ -266,34 +268,13 @@ export default {
      */
     repairEditChartForm () {
       // 找出上一步新增加的列，并转换成chartItem后放入隐藏列中
-      const idSet = new Set()
-      this.form.columnList.forEach(chartItem => idSet.add(chartItem.sourceItemId))
-      this.form.hiddenColumnList.forEach(chartItem => idSet.add(chartItem.sourceItemId))
-      const newColumns = this.sourceForm.detailColumnList
-        .filter(detailColumn => !idSet.has(detailColumn.sourceItemId))
+      const columnToAdd = _differenceBy(this.sourceForm.detailColumnList, this.form.columnList,
+        this.form.hiddenColumnList, 'sourceItemId')
         .map(detailColumn => initChartItemByDetailColumn(detailColumn))
-      this.form.hiddenColumnList.push(...newColumns)
-      // 将detailColumn放入chartItem中，并删除匹配不上detailColumn的列
-      const toRemove = []
-      this.form.columnList.concat(this.form.hiddenColumnList)
-        .forEach(chartItem => {
-          const detailColumn = searchUtil.findSourceItemById(this.sourceForm.detailColumnList, chartItem.sourceItemId)
-          if (detailColumn) {
-            chartItem.detailColumn = detailColumn
-          } else {
-            toRemove.push(chartItem)
-          }
-        })
-      toRemove.forEach(value => {
-        const i1 = this.form.columnList.indexOf(value)
-        const i2 = this.form.hiddenColumnList.indexOf(value)
-        if (i1 > -1) {
-          this.form.columnList.splice(i1, 1)
-        }
-        if (i2 > -1) {
-          this.form.hiddenColumnList.splice(i2, 1)
-        }
-      })
+      this.form.hiddenColumnList.push(...columnToAdd)
+      // 删除匹配不上detailColumn的列
+      this.form.columnList = _intersectionBy(this.form.columnList, this.sourceForm.detailColumnList, 'sourceItemId')
+      this.form.hiddenColumnList = _intersectionBy(this.form.hiddenColumnList, this.sourceForm.detailColumnList, 'sourceItemId')
     }
   },
   created () {

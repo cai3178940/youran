@@ -7,10 +7,18 @@
         <el-select v-model="form.detailColumn" value-key="key"
                    style="width:100%;" placeholder="请选择排序列"
                    filterable>
-          <el-option v-for="detailColumn in detailColumnList"
-                     :key="detailColumn.key" :label="detailColumn._displayText"
-                     :value="detailColumn">
-          </el-option>
+          <el-option-group label="明细列">
+            <el-option v-for="detailColumn in detailColumnList"
+                       :key="detailColumn.key" :label="detailColumn._displayText"
+                       :value="detailColumn">
+            </el-option>
+          </el-option-group>
+          <el-option-group label="自定义明细列">
+            <el-option v-for="customColumn in customColumnList"
+                       :key="customColumn.key" :label="customColumn._displayText"
+                       :value="customColumn">
+            </el-option>
+          </el-option-group>
         </el-select>
       </el-form-item>
       <el-form-item label="排序方式">
@@ -42,6 +50,7 @@ export default {
       position: 0,
       formVisible: false,
       detailColumnList: [],
+      customColumnList: [],
       // 最终返回给调用组件的表单数据
       form: initFormBean(),
       rules: {}
@@ -50,13 +59,15 @@ export default {
   methods: {
     /**
      * 显示表单窗口
-     * @param detailColumnList 可选的排序列
+     * @param detailColumnList 可选的明细列
+     * @param customColumnList 可选的自定义明细列
      * @param formBean 编辑的detailOrder条件，如果新增则为空
      * @param position 当前编辑的detailOrder条件在数组中的位置
      */
-    show (detailColumnList, formBean, position) {
+    show (detailColumnList, customColumnList, formBean, position) {
       this.position = position
       this.detailColumnList = detailColumnList
+      this.customColumnList = customColumnList
       if (formBean) {
         this.edit = true
         this.form = formBean
@@ -67,7 +78,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      repairDetailOrder(this.form, this.detailColumnList)
+      repairDetailOrder(this.form, this.detailColumnList, this.customColumnList)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

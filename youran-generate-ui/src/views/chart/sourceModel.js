@@ -7,8 +7,9 @@ import { repairDimension } from './item/dimensionModel'
 import { repairMetrics } from './item/metricsModel'
 import { repairHaving } from './item/havingModel'
 import { repairAggOrder } from './item/aggOrderModel'
+import _intersectionWith from 'lodash/intersectionWith'
 
-export function initSourceFormBean (projectId) {
+function initSourceFormBean (projectId) {
   const formBean = {
     sourceId: null,
     projectId: projectId,
@@ -30,7 +31,7 @@ export function initSourceFormBean (projectId) {
   return formBean
 }
 
-export function initJoinDTO (leftIndex, rightIndex) {
+function initJoinDTO (leftIndex, rightIndex) {
   const join = {
     joinType: 1,
     left: initJoinPartDTO(leftIndex, false),
@@ -44,7 +45,7 @@ export function initJoinDTO (leftIndex, rightIndex) {
  * @param joinIndex 关联序号
  * @param isRight 是否右边
  */
-export function initJoinPartDTO (joinIndex, isRight) {
+function initJoinPartDTO (joinIndex, isRight) {
   const joinPart = {
     joinPartType: '',
     joinIndex: joinIndex,
@@ -75,7 +76,7 @@ export function initJoinPartDTO (joinIndex, isRight) {
   return joinPart
 }
 
-export function buildTmp1ByEntity (joinIndex, entity) {
+function buildTmp1ByEntity (joinIndex, entity) {
   return {
     key: 'entity_' + entity.entityId,
     joinPartType: 'entity',
@@ -84,7 +85,7 @@ export function buildTmp1ByEntity (joinIndex, entity) {
   }
 }
 
-export function buildTmp1ByMtm (joinIndex, mtm) {
+function buildTmp1ByMtm (joinIndex, mtm) {
   return {
     key: 'mtm_' + mtm.mtmId,
     joinPartType: 'mtm',
@@ -93,7 +94,7 @@ export function buildTmp1ByMtm (joinIndex, mtm) {
   }
 }
 
-export function buildTmp2ByEntity (joinIndex, entity, field) {
+function buildTmp2ByEntity (joinIndex, entity, field) {
   return {
     key: 'entity_' + entity.entityId + '_' + field.fieldId,
     joinPartType: 'entity',
@@ -103,7 +104,7 @@ export function buildTmp2ByEntity (joinIndex, entity, field) {
   }
 }
 
-export function buildTmp2ByMtm (joinIndex, mtm, mtmField) {
+function buildTmp2ByMtm (joinIndex, mtm, mtmField) {
   return {
     key: 'mtm_' + mtm.mtmId + '_' + mtmField,
     joinPartType: 'mtm',
@@ -114,10 +115,19 @@ export function buildTmp2ByMtm (joinIndex, mtm, mtmField) {
 }
 
 /**
+ * 修改明细列时修复表单数据错误
+ * @param form 表单数据
+ */
+function repairAtDetailColumnChange (form) {
+  form.detailOrderList = _intersectionWith(form.detailOrderList, form.detailColumnList.concat(form.customColumnList),
+    (detailOrder, detailColumn) => detailOrder.detailColumn === detailColumn)
+}
+
+/**
  * 修改关联时修复表单数据错误
  * @param form 表单数据
  */
-export function repairAtJoinChange (form) {
+function repairAtJoinChange (form) {
   // TODO 修复各个list内相关记录
 }
 
@@ -126,7 +136,7 @@ export function repairAtJoinChange (form) {
  * @param form 表单数据
  * @param removeJoinIndex 被移除的关联序号（从1开始）
  */
-export function repairAtJoinRemove (form, removeJoinIndex) {
+function repairAtJoinRemove (form, removeJoinIndex) {
   // 修复该关联之后的所有关联序号
   let currentIndex = removeJoinIndex
   const currentLength = form.joins.length
@@ -152,7 +162,7 @@ export function repairAtJoinRemove (form, removeJoinIndex) {
 /**
  * 表单回显时修复formBean
  */
-export function repairFormBean (form, entityOptions, mtmOptions) {
+function repairFormBean (form, entityOptions, mtmOptions) {
   // 修复entity属性
   form.entity = searchUtil.findEntityInEntityOptions(entityOptions, form.entityId)
   // 修复join数组
@@ -177,7 +187,7 @@ export function repairFormBean (form, entityOptions, mtmOptions) {
   // 修复排序列
   if (form.detailOrderList) {
     form.detailOrderList
-      .forEach(detailOrder => repairDetailOrder(detailOrder, form.detailColumnList))
+      .forEach(detailOrder => repairDetailOrder(detailOrder, form.detailColumnList, form.customColumnList))
   }
   // 修复聚合(维度)
   if (form.dimensionList) {
@@ -220,7 +230,7 @@ function repairJoinPart (part, entityOptions, mtmOptions) {
 /**
  * 从表单中提取出需要提交到后端的信息
  */
-export function extractFormBean (form) {
+function extractFormBean (form) {
   const copy = JSON.parse(JSON.stringify(form))
   // 将自定义列合并到明细列中
   copy.detailColumnList.push(...copy.customColumnList)
@@ -245,7 +255,7 @@ export function extractFormBean (form) {
   return copy
 }
 
-export function getRules () {
+function getRules () {
   return {
     projectId: [
       { required: true, type: 'number', message: '请选择项目', trigger: 'change' }
@@ -263,4 +273,19 @@ export function getRules () {
       { required: true, type: 'array', message: '请设置聚合(指标)', trigger: 'blur' }
     ]
   }
+}
+
+export default {
+  initSourceFormBean,
+  initJoinDTO,
+  repairAtDetailColumnChange,
+  repairAtJoinChange,
+  repairAtJoinRemove,
+  extractFormBean,
+  repairFormBean,
+  buildTmp1ByEntity,
+  buildTmp1ByMtm,
+  buildTmp2ByEntity,
+  buildTmp2ByMtm,
+  getRules
 }

@@ -171,7 +171,7 @@
             <help-popover name="chartSource.detailColumnList">
               <el-select v-model="form.detailColumnList" value-key="key"
                          style="width:100%;" placeholder="请选择明细列"
-                         @change="changeForm"
+                         @change="changeDetailColumn"
                          multiple filterable>
                 <el-option-group
                   v-for="([joinIndex,entity]) in entityFieldOptions"
@@ -314,19 +314,7 @@ import metricsForm from './item/metricsForm'
 import havingForm from './item/havingForm'
 import aggOrderForm from './item/aggOrderForm'
 import chartOptions from '@/utils/options-chart'
-import {
-  initSourceFormBean,
-  initJoinDTO,
-  repairAtJoinChange,
-  repairAtJoinRemove,
-  extractFormBean,
-  repairFormBean,
-  buildTmp1ByEntity,
-  buildTmp1ByMtm,
-  buildTmp2ByEntity,
-  buildTmp2ByMtm,
-  getRules
-} from './sourceModel'
+import module from './sourceModel'
 import { buildCommonDetailColumn } from './item/detailColumnModel'
 import searchUtil from './searchUtil'
 
@@ -365,8 +353,8 @@ export default {
         aggregation: false
       },
       formLoading: false,
-      form: initSourceFormBean(this.projectId),
-      rules: getRules()
+      form: module.initSourceFormBean(this.projectId),
+      rules: module.getRules()
     }
   },
   computed: {
@@ -388,10 +376,10 @@ export default {
   },
   methods: {
     buildCommonDetailColumn,
-    buildTmp1ByEntity,
-    buildTmp1ByMtm,
-    buildTmp2ByEntity,
-    buildTmp2ByMtm,
+    buildTmp1ByEntity: module.buildTmp1ByEntity,
+    buildTmp1ByMtm: module.buildTmp1ByMtm,
+    buildTmp2ByEntity: module.buildTmp2ByEntity,
+    buildTmp2ByMtm: module.buildTmp2ByMtm,
     initEntityOptions () {
       return entityApi.getList(this.projectId)
         .then(data => {
@@ -416,7 +404,7 @@ export default {
       this.changeForm()
       this.form.entity = this.entityOptions.find(value => value.entityId === entityId)
       this.loadEntityFields(this.form.entity)
-      repairAtJoinChange(this.form)
+      module.repairAtJoinChange(this.form)
     },
     loadEntityFields (entity) {
       if (entity.fieldList.length) {
@@ -474,7 +462,7 @@ export default {
         part.mtm = part.tmp1.obj
         part.mtmId = part.tmp1.obj.mtmId
       }
-      repairAtJoinChange(this.form)
+      module.repairAtJoinChange(this.form)
       this.changeForm()
     },
     /**
@@ -497,12 +485,16 @@ export default {
       this.changeForm()
     },
     addJoin () {
-      this.form.joins.push(initJoinDTO(0, this.form.joins.length))
+      this.form.joins.push(module.initJoinDTO(0, this.form.joins.length))
       this.changeForm()
     },
     removeJoin (index) {
       this.form.joins.splice(index, 1)
-      repairAtJoinRemove(this.form, index + 1)
+      module.repairAtJoinRemove(this.form, index + 1)
+      this.changeForm()
+    },
+    changeDetailColumn () {
+      module.repairAtDetailColumnChange(this.form)
       this.changeForm()
     },
     addCustomColumn () {
@@ -516,6 +508,7 @@ export default {
         this.form.customColumnList.push(customColumn)
       } else {
         this.form.customColumnList[index] = customColumn
+        module.repairAtDetailColumnChange(this.form)
       }
       this.changeForm()
     },
@@ -523,6 +516,7 @@ export default {
       if (index < this.form.customColumnList.length) {
         this.form.customColumnList.splice(index, 1)
       }
+      module.repairAtDetailColumnChange(this.form)
       this.changeForm()
     },
     /**
@@ -552,10 +546,12 @@ export default {
      * 明细列排序
      */
     addDetailOrder () {
-      this.$refs.detailOrderForm.show(this.form.detailColumnList, null, this.form.detailOrderList.length)
+      this.$refs.detailOrderForm.show(this.form.detailColumnList, this.form.customColumnList,
+        null, this.form.detailOrderList.length)
     },
     editDetailOrder (index, detailOrder) {
-      this.$refs.detailOrderForm.show(this.form.detailColumnList, detailOrder, index)
+      this.$refs.detailOrderForm.show(this.form.detailColumnList, this.form.customColumnList,
+        detailOrder, index)
     },
     onDetailOrderSubmit (index, detailOrder) {
       if (index >= this.form.detailOrderList.length) {
@@ -672,7 +668,6 @@ export default {
         this.nextPage()
       } else {
         this.submit()
-          .then(() => this.nextPage())
       }
     },
     nextPage () {
@@ -689,13 +684,14 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          return chartSourceApi.saveOrUpdateWithItems(extractFormBean(this.form), this.edit)
+          return chartSourceApi.saveOrUpdateWithItems(module.extractFormBean(this.form), this.edit)
         })
         // 执行页面跳转
         .then(data => {
           this.sourceId = data.sourceId
           this.$common.showMsg('success', '操作成功')
         })
+        .then(() => this.nextPage())
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => {
           if (loading) {
@@ -725,7 +721,7 @@ export default {
             })
           return Promise.all(array)
             .then(() => {
-              repairFormBean(formBean, this.entityOptions, this.mtmOptions)
+              module.repairFormBean(formBean, this.entityOptions, this.mtmOptions)
               this.form = formBean
             })
         })

@@ -131,7 +131,7 @@ import {
   mockTableData,
   getRules
 } from './model'
-import { initSourceFormBean } from '../sourceModel'
+import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
 
 export default {
@@ -148,7 +148,7 @@ export default {
     return {
       edit: edit,
       form: initAggTableFormBean(this.projectId),
-      sourceForm: initSourceFormBean(this.projectId),
+      sourceForm: sourceModel.initSourceFormBean(this.projectId),
       formLoading: false,
       rules: getRules()
     }
@@ -269,13 +269,15 @@ export default {
       // 对比数据源和当前表单中的dimension,并处理差异
       const dimensionToAdd = _differenceBy(this.sourceForm.dimensionList, this.form.dimensionList, 'sourceItemId')
         .map(dimension => initChartItemByDimension(dimension))
-      this.form.dimensionList = _intersectionBy(this.form.dimensionList, this.sourceForm.dimensionList, 'sourceItemId')
-        .push(...dimensionToAdd)
+      const interDimension = _intersectionBy(this.form.dimensionList, this.sourceForm.dimensionList, 'sourceItemId')
+      interDimension.push(...dimensionToAdd)
+      this.form.dimensionList = interDimension
       // 对比数据源和当前表单中的metrics,并处理差异
       const metricsToAdd = _differenceBy(this.sourceForm.metricsList, this.form.metricsList, 'sourceItemId')
         .map(metrics => initChartItemByMetrics(metrics))
-      this.form.metricsList = _intersectionBy(this.form.metricsList, this.sourceForm.metricsList, 'sourceItemId')
-        .push(...metricsToAdd)
+      const interMetrics = _intersectionBy(this.form.metricsList, this.sourceForm.metricsList, 'sourceItemId')
+      interMetrics.push(...metricsToAdd)
+      this.form.metricsList = interMetrics
     }
   },
   created () {
