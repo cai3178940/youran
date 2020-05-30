@@ -118,13 +118,8 @@ import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import detailListApi from '@/api/chart/detailList'
 import chartSourceApi from '@/api/chart/chartSource'
-import columnForm from './columnForm'
-import {
-  initDetailListFormBean,
-  initChartItemByDetailColumn,
-  mockTableData,
-  getRules
-} from './model'
+import columnForm from '../item/columnForm'
+import model from './model'
 import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
 import _differenceBy from 'lodash/differenceBy'
@@ -143,10 +138,10 @@ export default {
     const edit = !!this.chartId
     return {
       edit: edit,
-      form: initDetailListFormBean(this.projectId),
+      form: model.initDetailListFormBean(this.projectId),
       sourceForm: sourceModel.initSourceFormBean(this.projectId),
       formLoading: false,
-      rules: getRules()
+      rules: model.getRules()
     }
   },
   computed: {
@@ -156,7 +151,7 @@ export default {
     }
   },
   methods: {
-    mockTableData: mockTableData,
+    mockTableData: model.mockTableData,
     findModules (queryString, cb) {
       const action = () => {
         const entityModules = this.entityModules.slice(0)
@@ -261,7 +256,7 @@ export default {
      */
     repairAddChartForm () {
       this.form.columnList = this.sourceForm.detailColumnList
-        .map(detailColumn => initChartItemByDetailColumn(detailColumn))
+        .map(detailColumn => model.initChartItemByDetailColumn(detailColumn))
     },
     /**
      * 修复编辑表单数据
@@ -270,7 +265,7 @@ export default {
       // 找出上一步新增加的列，并转换成chartItem后放入隐藏列中
       const columnToAdd = _differenceBy(this.sourceForm.detailColumnList, this.form.columnList,
         this.form.hiddenColumnList, 'sourceItemId')
-        .map(detailColumn => initChartItemByDetailColumn(detailColumn))
+        .map(detailColumn => model.initChartItemByDetailColumn(detailColumn))
       this.form.hiddenColumnList.push(...columnToAdd)
       // 删除匹配不上detailColumn的列
       this.form.columnList = _intersectionBy(this.form.columnList, this.sourceForm.detailColumnList, 'sourceItemId')

@@ -1,7 +1,7 @@
 import searchUtil from '../searchUtil'
 import chartOptions from '@/utils/options-chart'
 
-export function initFormBean () {
+function initFormBean () {
   return {
     _displayText: '',
     joinIndex: null,
@@ -13,7 +13,7 @@ export function initFormBean () {
   }
 }
 
-export function initTmp () {
+function initTmp () {
   return {
     // 过滤操作符下拉框绑定对象
     tmp2: {
@@ -34,7 +34,7 @@ export function initTmp () {
 /**
  * 从form中抽取数据到tmp
  */
-export function formToTmp (form, tmp) {
+function formToTmp (form, tmp) {
   tmp.tmp2 = chartOptions.getFilterOperatorOption(form.filterOperator)
   if (tmp.tmp2.filterValueType === 1) {
     tmp.tmp3 = form.filterValue
@@ -48,7 +48,7 @@ export function formToTmp (form, tmp) {
 /**
  * 从tmp中抽取数据到form
  */
-export function tmpToForm (tmp, form) {
+function tmpToForm (tmp, form) {
   form.filterOperator = tmp.tmp2.value
   if (tmp.tmp2.filterValueType === 1) {
     form.filterValue = tmp.tmp3
@@ -62,7 +62,7 @@ export function tmpToForm (tmp, form) {
 /**
  * 修复过滤数据
  */
-export function repairHaving (having, metricsList) {
+function repairHaving (having, metricsList) {
   if (!having.metrics) {
     const metrics = searchUtil.findSourceItemById(metricsList, having.parentId)
     having.metrics = metrics
@@ -72,4 +72,12 @@ export function repairHaving (having, metricsList) {
   const operatorOption = chartOptions.getFilterOperatorOption(having.filterOperator)
   having._displayText = having.metrics._displayText +
     operatorOption.display(having.metrics.field.jfieldType, having.filterValue)
+}
+
+export default {
+  initFormBean,
+  initTmp,
+  formToTmp,
+  tmpToForm,
+  repairHaving
 }

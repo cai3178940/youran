@@ -46,12 +46,7 @@
 
 <script>
 import chartOptions from '@/utils/options-chart'
-import {
-  initFormBean,
-  initTmp,
-  formToTmp,
-  tmpToForm
-} from './dimensionModel'
+import dimensionModel from './dimensionModel'
 
 export default {
   name: 'dimension-form',
@@ -62,9 +57,9 @@ export default {
       formVisible: false,
       entityFieldOptions: [],
       // 最终返回给调用组件的表单数据
-      form: initFormBean(),
+      form: dimensionModel.initFormBean(),
       // 临时数据
-      tmp: initTmp(),
+      tmp: dimensionModel.initTmp(),
       rules: {}
     }
   },
@@ -97,22 +92,22 @@ export default {
      * @param position 当前编辑的dimension在数组中的位置
      */
     show (entityFieldOptions, formBean, position) {
-      this.tmp = initTmp()
+      this.tmp = dimensionModel.initTmp()
       this.position = position
       this.entityFieldOptions = entityFieldOptions
-      this.tmp = initTmp()
+      this.tmp = dimensionModel.initTmp()
       if (formBean) {
         this.edit = true
         this.form = formBean
-        formToTmp(this.form, this.tmp, entityFieldOptions)
+        dimensionModel.formToTmp(this.form, this.tmp, entityFieldOptions)
       } else {
         this.edit = false
-        this.form = initFormBean()
+        this.form = dimensionModel.initFormBean()
       }
       this.formVisible = true
     },
     submit () {
-      tmpToForm(this.tmp, this.form)
+      dimensionModel.tmpToForm(this.tmp, this.form)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

@@ -121,16 +121,10 @@ import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import aggTableApi from '@/api/chart/aggTable'
 import chartSourceApi from '@/api/chart/chartSource'
-import columnForm from './columnForm'
+import columnForm from '../item/columnForm'
 import _differenceBy from 'lodash/differenceBy'
 import _intersectionBy from 'lodash/intersectionBy'
-import {
-  initAggTableFormBean,
-  initChartItemByDimension,
-  initChartItemByMetrics,
-  mockTableData,
-  getRules
-} from './model'
+import model from './model'
 import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
 
@@ -147,10 +141,10 @@ export default {
     const edit = !!this.chartId
     return {
       edit: edit,
-      form: initAggTableFormBean(this.projectId),
+      form: model.initAggTableFormBean(this.projectId),
       sourceForm: sourceModel.initSourceFormBean(this.projectId),
       formLoading: false,
-      rules: getRules()
+      rules: model.getRules()
     }
   },
   computed: {
@@ -160,7 +154,7 @@ export default {
     }
   },
   methods: {
-    mockTableData: mockTableData,
+    mockTableData: model.mockTableData,
     findModules (queryString, cb) {
       const action = () => {
         const entityModules = this.entityModules.slice(0)
@@ -258,9 +252,9 @@ export default {
      */
     repairAddChartForm () {
       this.form.dimensionList = this.sourceForm.dimensionList
-        .map(dimension => initChartItemByDimension(dimension))
+        .map(dimension => model.initChartItemByDimension(dimension))
       this.form.metricsList = this.sourceForm.metricsList
-        .map(metrics => initChartItemByMetrics(metrics))
+        .map(metrics => model.initChartItemByMetrics(metrics))
     },
     /**
      * 修复编辑表单数据
@@ -268,13 +262,13 @@ export default {
     repairEditChartForm () {
       // 对比数据源和当前表单中的dimension,并处理差异
       const dimensionToAdd = _differenceBy(this.sourceForm.dimensionList, this.form.dimensionList, 'sourceItemId')
-        .map(dimension => initChartItemByDimension(dimension))
+        .map(dimension => model.initChartItemByDimension(dimension))
       const interDimension = _intersectionBy(this.form.dimensionList, this.sourceForm.dimensionList, 'sourceItemId')
       interDimension.push(...dimensionToAdd)
       this.form.dimensionList = interDimension
       // 对比数据源和当前表单中的metrics,并处理差异
       const metricsToAdd = _differenceBy(this.sourceForm.metricsList, this.form.metricsList, 'sourceItemId')
-        .map(metrics => initChartItemByMetrics(metrics))
+        .map(metrics => model.initChartItemByMetrics(metrics))
       const interMetrics = _intersectionBy(this.form.metricsList, this.sourceForm.metricsList, 'sourceItemId')
       interMetrics.push(...metricsToAdd)
       this.form.metricsList = interMetrics

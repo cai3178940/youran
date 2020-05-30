@@ -1,7 +1,7 @@
 import chartOptions from '@/utils/options-chart'
 import searchUtil from '../searchUtil'
 
-export function initFormBean () {
+function initFormBean () {
   return {
     _displayText: '',
     joinIndex: null,
@@ -14,7 +14,7 @@ export function initFormBean () {
   }
 }
 
-export function initTmp () {
+function initTmp () {
   return {
     // 指标字段下拉框绑定对象
     tmp1: {
@@ -34,7 +34,7 @@ export function initTmp () {
 /**
  * 从form中抽取数据到tmp
  */
-export function formToTmp (form, tmp, entityFieldOptions) {
+function formToTmp (form, tmp, entityFieldOptions) {
   if (!form.custom) {
     const [joinIndex, entity] = entityFieldOptions.find(
       ([joinIndex, entity]) => joinIndex === form.joinIndex)
@@ -52,7 +52,7 @@ export function formToTmp (form, tmp, entityFieldOptions) {
 /**
  * 从tmp中抽取数据到form
  */
-export function tmpToForm (tmp, form) {
+function tmpToForm (tmp, form) {
   if (!form.custom) {
     form.joinIndex = tmp.tmp1.joinIndex
     form.fieldId = tmp.tmp1.field.fieldId
@@ -67,7 +67,7 @@ export function tmpToForm (tmp, form) {
 /**
  * 表单回显时修复指标条件数据
  */
-export function repairMetrics (metrics, sourceForm) {
+function repairMetrics (metrics, sourceForm) {
   const joinIndex = metrics.joinIndex
   if (metrics.custom) {
     metrics._displayText = '[自定义内容]'
@@ -77,4 +77,12 @@ export function repairMetrics (metrics, sourceForm) {
     const aggFunctionOption = chartOptions.getAggFunctionOption(metrics.aggFunction)
     metrics._displayText = aggFunctionOption.display('t' + metrics.joinIndex + '.' + field.fieldName)
   }
+}
+
+export default {
+  initFormBean,
+  initTmp,
+  formToTmp,
+  tmpToForm,
+  repairMetrics
 }

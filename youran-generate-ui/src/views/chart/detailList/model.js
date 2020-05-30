@@ -1,4 +1,4 @@
-export function initDetailListFormBean (projectId) {
+function initDetailListFormBean (projectId) {
   const formBean = {
     chartId: null,
     projectId: projectId,
@@ -16,7 +16,7 @@ export function initDetailListFormBean (projectId) {
 /**
  * 从明细列构建图表项
  */
-export function initChartItemByDetailColumn (detailColumn) {
+function initChartItemByDetailColumn (detailColumn) {
   const sourceItemId = detailColumn.sourceItemId
   let alias
   let titleAlias
@@ -43,7 +43,7 @@ export function initChartItemByDetailColumn (detailColumn) {
 /**
  * 模拟表格数据
  */
-export function mockTableData (rowIndex, chartItem) {
+function mockTableData (rowIndex, chartItem) {
   const detailColumn = chartItem.detailColumn
   if (!detailColumn) {
     return ''
@@ -67,7 +67,7 @@ export function mockTableData (rowIndex, chartItem) {
   return value
 }
 
-export function getRules () {
+function getRules () {
   return {
     projectId: [
       { required: true, type: 'number', message: '请选择项目', trigger: 'change' }
@@ -93,4 +93,11 @@ export function getRules () {
       { required: true, type: 'array', message: '请设置明细列', trigger: 'blur' }
     ]
   }
+}
+
+export default {
+  initDetailListFormBean,
+  initChartItemByDetailColumn,
+  mockTableData,
+  getRules
 }

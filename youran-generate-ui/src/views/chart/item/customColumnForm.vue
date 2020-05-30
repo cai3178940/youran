@@ -31,9 +31,7 @@
 <script>
 import { abbreviate } from '@/utils/common-util'
 import chartOptions from '@/utils/options-chart'
-import {
-  buildCustomDetailColumn
-} from './detailColumnModel'
+import detailColumnModel from './detailColumnModel'
 
 export default {
   name: 'customColumn-form',
@@ -44,7 +42,7 @@ export default {
       formVisible: false,
       customFieldTypeOptions: chartOptions.customFieldTypeOptions,
       // 最终返回给调用组件的表单数据
-      form: buildCustomDetailColumn('', 1),
+      form: detailColumnModel.buildCustomDetailColumn('', 1),
       rules: {}
     }
   },
@@ -61,7 +59,7 @@ export default {
         this.form = formBean
       } else {
         this.edit = false
-        this.form = buildCustomDetailColumn('', 1)
+        this.form = detailColumnModel.buildCustomDetailColumn('', 1)
       }
       this.formVisible = true
     },

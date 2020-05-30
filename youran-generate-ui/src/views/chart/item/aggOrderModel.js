@@ -1,6 +1,6 @@
 import searchUtil from '../searchUtil'
 
-export function initFormBean () {
+function initFormBean () {
   return {
     _displayText: '',
     joinIndex: null,
@@ -14,7 +14,7 @@ export function initFormBean () {
 /**
  * 修复聚合排序数据
  */
-export function repairAggOrder (aggOrder, dimensionList, metricsList) {
+function repairAggOrder (aggOrder, dimensionList, metricsList) {
   if (!aggOrder.parentItem) {
     let parentItem = searchUtil.findSourceItemById(dimensionList, aggOrder.parentId)
     if (!parentItem) {
@@ -25,4 +25,9 @@ export function repairAggOrder (aggOrder, dimensionList, metricsList) {
   aggOrder.joinIndex = aggOrder.parentItem.joinIndex
   aggOrder.parentKey = aggOrder.parentItem.key
   aggOrder._displayText = aggOrder.parentItem._displayText + (aggOrder.sortType === 1 ? '▲' : '▼')
+}
+
+export default {
+  initFormBean,
+  repairAggOrder
 }

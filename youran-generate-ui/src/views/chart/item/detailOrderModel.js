@@ -1,6 +1,6 @@
 import searchUtil from '../searchUtil'
 
-export function initFormBean () {
+function initFormBean () {
   return {
     _displayText: '',
     joinIndex: null,
@@ -14,7 +14,7 @@ export function initFormBean () {
 /**
  * 修复排序列数据
  */
-export function repairDetailOrder (detailOrder, detailColumnList, customColumnList) {
+function repairDetailOrder (detailOrder, detailColumnList, customColumnList) {
   if (!detailOrder.detailColumn) {
     let parentItem = searchUtil.findSourceItemById(detailColumnList, detailOrder.parentId)
     if (!parentItem) {
@@ -25,4 +25,9 @@ export function repairDetailOrder (detailOrder, detailColumnList, customColumnLi
   detailOrder.joinIndex = detailOrder.detailColumn.joinIndex
   detailOrder.parentKey = detailOrder.detailColumn.key
   detailOrder._displayText = detailOrder.detailColumn._displayText + (detailOrder.sortType === 1 ? '▲' : '▼')
+}
+
+export default {
+  initFormBean,
+  repairDetailOrder
 }

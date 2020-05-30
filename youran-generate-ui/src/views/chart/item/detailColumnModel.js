@@ -2,7 +2,7 @@ import shortid from 'shortid'
 import { abbreviate } from '@/utils/common-util'
 import searchUtil from '../searchUtil'
 
-export function buildCommonDetailColumn (joinIndex, field) {
+function buildCommonDetailColumn (joinIndex, field) {
   return {
     key: 'common_' + joinIndex + '_' + field.fieldId,
     fieldId: field.fieldId,
@@ -12,7 +12,7 @@ export function buildCommonDetailColumn (joinIndex, field) {
   }
 }
 
-export function buildCustomDetailColumn (customContent, customFieldType) {
+function buildCustomDetailColumn (customContent, customFieldType) {
   return {
     key: 'custom_' + shortid.generate(),
     custom: true,
@@ -26,7 +26,7 @@ export function buildCustomDetailColumn (customContent, customFieldType) {
 /**
  * 表单回显时修复明细列数据
  */
-export function repairDetailColumn (detailColumn, sourceForm) {
+function repairDetailColumn (detailColumn, sourceForm) {
   const joinIndex = detailColumn.joinIndex
   if (detailColumn.custom) {
     detailColumn.key = 'custom_' + shortid.generate()
@@ -37,4 +37,10 @@ export function repairDetailColumn (detailColumn, sourceForm) {
     detailColumn.key = 'common_' + joinIndex + '_' + fieldId
     detailColumn._displayText = field.fieldDesc + '(' + field.fieldName + ')'
   }
+}
+
+export default {
+  buildCommonDetailColumn,
+  buildCustomDetailColumn,
+  repairDetailColumn
 }

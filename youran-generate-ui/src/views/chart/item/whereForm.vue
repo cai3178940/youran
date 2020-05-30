@@ -98,12 +98,7 @@
 
 <script>
 import chartOptions from '@/utils/options-chart'
-import {
-  initFormBean,
-  initTmp,
-  formToTmp,
-  tmpToForm
-} from './whereModel'
+import whereModel from './whereModel'
 
 export default {
   name: 'where-form',
@@ -115,9 +110,9 @@ export default {
       entityFieldOptions: [],
       timeGranularityOptions: chartOptions.timeGranularityOptions,
       // 最终返回给调用组件的表单数据
-      form: initFormBean(),
+      form: whereModel.initFormBean(),
       // 临时数据
-      tmp: initTmp(),
+      tmp: whereModel.initTmp(),
       rules: {}
     }
   },
@@ -152,19 +147,19 @@ export default {
     show (entityFieldOptions, formBean, position) {
       this.position = position
       this.entityFieldOptions = entityFieldOptions
-      this.tmp = initTmp()
+      this.tmp = whereModel.initTmp()
       if (formBean) {
         this.edit = true
         this.form = formBean
-        formToTmp(this.form, this.tmp, entityFieldOptions)
+        whereModel.formToTmp(this.form, this.tmp, entityFieldOptions)
       } else {
         this.edit = false
-        this.form = initFormBean()
+        this.form = whereModel.initFormBean()
       }
       this.formVisible = true
     },
     submit () {
-      tmpToForm(this.tmp, this.form)
+      whereModel.tmpToForm(this.tmp, this.form)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

@@ -315,7 +315,7 @@ import havingForm from './item/havingForm'
 import aggOrderForm from './item/aggOrderForm'
 import chartOptions from '@/utils/options-chart'
 import module from './sourceModel'
-import { buildCommonDetailColumn } from './item/detailColumnModel'
+import detailColumnModel from './item/detailColumnModel'
 import searchUtil from './searchUtil'
 
 export default {
@@ -375,7 +375,7 @@ export default {
     }
   },
   methods: {
-    buildCommonDetailColumn,
+    buildCommonDetailColumn: detailColumnModel.buildCommonDetailColumn,
     buildTmp1ByEntity: module.buildTmp1ByEntity,
     buildTmp1ByMtm: module.buildTmp1ByMtm,
     buildTmp2ByEntity: module.buildTmp2ByEntity,

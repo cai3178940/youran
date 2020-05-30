@@ -37,10 +37,7 @@
 </template>
 
 <script>
-import {
-  initFormBean,
-  repairDetailOrder
-} from './detailOrderModel'
+import detailOrderModel from './detailOrderModel'
 
 export default {
   name: 'detailOrder-form',
@@ -52,7 +49,7 @@ export default {
       detailColumnList: [],
       customColumnList: [],
       // 最终返回给调用组件的表单数据
-      form: initFormBean(),
+      form: detailOrderModel.initFormBean(),
       rules: {}
     }
   },
@@ -73,12 +70,12 @@ export default {
         this.form = formBean
       } else {
         this.edit = false
-        this.form = initFormBean()
+        this.form = detailOrderModel.initFormBean()
       }
       this.formVisible = true
     },
     submit () {
-      repairDetailOrder(this.form, this.detailColumnList, this.customColumnList)
+      detailOrderModel.repairDetailOrder(this.form, this.detailColumnList, this.customColumnList)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

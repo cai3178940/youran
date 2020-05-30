@@ -69,12 +69,7 @@
 
 <script>
 import chartOptions from '@/utils/options-chart'
-import {
-  initFormBean,
-  initTmp,
-  formToTmp,
-  tmpToForm
-} from './metricsModel'
+import metricsModel from './metricsModel'
 
 export default {
   name: 'metrics-form',
@@ -86,9 +81,9 @@ export default {
       entityFieldOptions: [],
       customFieldTypeOptions: chartOptions.customFieldTypeOptions,
       // 最终返回给调用组件的表单数据
-      form: initFormBean(),
+      form: metricsModel.initFormBean(),
       // 临时数据
-      tmp: initTmp(),
+      tmp: metricsModel.initTmp(),
       rules: {}
     }
   },
@@ -111,22 +106,22 @@ export default {
      * @param position 当前编辑的metrics在数组中的位置
      */
     show (entityFieldOptions, formBean, position) {
-      this.tmp = initTmp()
+      this.tmp = metricsModel.initTmp()
       this.position = position
       this.entityFieldOptions = entityFieldOptions
-      this.tmp = initTmp()
+      this.tmp = metricsModel.initTmp()
       if (formBean) {
         this.edit = true
         this.form = formBean
-        formToTmp(this.form, this.tmp, entityFieldOptions)
+        metricsModel.formToTmp(this.form, this.tmp, entityFieldOptions)
       } else {
         this.edit = false
-        this.form = initFormBean()
+        this.form = metricsModel.initFormBean()
       }
       this.formVisible = true
     },
     submit () {
-      tmpToForm(this.tmp, this.form)
+      metricsModel.tmpToForm(this.tmp, this.form)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

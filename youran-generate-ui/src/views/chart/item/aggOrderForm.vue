@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { initFormBean, repairAggOrder } from './aggOrderModel'
+import aggOrderModel from './aggOrderModel'
 
 export default {
   name: 'aggOrder-form',
@@ -49,7 +49,7 @@ export default {
       dimensionList: [],
       metricsList: [],
       // 最终返回给调用组件的表单数据
-      form: initFormBean(),
+      form: aggOrderModel.initFormBean(),
       rules: {}
     }
   },
@@ -70,12 +70,12 @@ export default {
         this.form = formBean
       } else {
         this.edit = false
-        this.form = initFormBean()
+        this.form = aggOrderModel.initFormBean()
       }
       this.formVisible = true
     },
     submit () {
-      repairAggOrder(this.form, this.dimensionList, this.metricsList)
+      aggOrderModel.repairAggOrder(this.form, this.dimensionList, this.metricsList)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

@@ -1,12 +1,12 @@
 import searchUtil from './searchUtil'
 import { groupBy } from '@/utils/common-util'
-import { repairDetailColumn } from './item/detailColumnModel'
-import { repairWhere } from './item/whereModel'
-import { repairDetailOrder } from './item/detailOrderModel'
-import { repairDimension } from './item/dimensionModel'
-import { repairMetrics } from './item/metricsModel'
-import { repairHaving } from './item/havingModel'
-import { repairAggOrder } from './item/aggOrderModel'
+import detailColumnModel from './item/detailColumnModel'
+import whereModel from './item/whereModel'
+import detailOrderModel from './item/detailOrderModel'
+import dimensionModel from './item/dimensionModel'
+import metricsModel from './item/metricsModel'
+import havingModel from './item/havingModel'
+import aggOrderModel from './item/aggOrderModel'
 import _intersectionWith from 'lodash/intersectionWith'
 
 function initSourceFormBean (projectId) {
@@ -174,7 +174,7 @@ function repairFormBean (form, entityOptions, mtmOptions) {
   // 修复明细列
   if (form.detailColumnList) {
     form.detailColumnList
-      .forEach(detailColumn => repairDetailColumn(detailColumn, form))
+      .forEach(detailColumn => detailColumnModel.repairDetailColumn(detailColumn, form))
     const group = groupBy(form.detailColumnList, detailColumn => detailColumn.custom)
     form.detailColumnList = group['false'] ? group['false'] : []
     form.customColumnList = group['true'] ? group['true'] : []
@@ -182,32 +182,32 @@ function repairFormBean (form, entityOptions, mtmOptions) {
   // 修复过滤条件
   if (form.whereList) {
     form.whereList
-      .forEach(where => repairWhere(where, form))
+      .forEach(where => whereModel.repairWhere(where, form))
   }
   // 修复排序列
   if (form.detailOrderList) {
     form.detailOrderList
-      .forEach(detailOrder => repairDetailOrder(detailOrder, form.detailColumnList, form.customColumnList))
+      .forEach(detailOrder => detailOrderModel.repairDetailOrder(detailOrder, form.detailColumnList, form.customColumnList))
   }
   // 修复聚合(维度)
   if (form.dimensionList) {
     form.dimensionList
-      .forEach(dimension => repairDimension(dimension, form))
+      .forEach(dimension => dimensionModel.repairDimension(dimension, form))
   }
   // 修复聚合(指标)
   if (form.metricsList) {
     form.metricsList
-      .forEach(metrics => repairMetrics(metrics, form))
+      .forEach(metrics => metricsModel.repairMetrics(metrics, form))
   }
   // 修复聚合(过滤)
   if (form.havingList) {
     form.havingList
-      .forEach(having => repairHaving(having, form.metricsList))
+      .forEach(having => havingModel.repairHaving(having, form.metricsList))
   }
   // 修复聚合(排序)
   if (form.aggOrderList) {
     form.aggOrderList
-      .forEach(aggOrder => repairAggOrder(aggOrder, form.dimensionList, form.metricsList))
+      .forEach(aggOrder => aggOrderModel.repairAggOrder(aggOrder, form.dimensionList, form.metricsList))
   }
 }
 

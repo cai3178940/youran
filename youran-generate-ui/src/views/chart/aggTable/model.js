@@ -1,4 +1,4 @@
-export function initAggTableFormBean (projectId) {
+function initAggTableFormBean (projectId) {
   const formBean = {
     chartId: null,
     projectId: projectId,
@@ -16,7 +16,7 @@ export function initAggTableFormBean (projectId) {
 /**
  * 从维度构建图表项
  */
-export function initChartItemByDimension (dimension) {
+function initChartItemByDimension (dimension) {
   return {
     sourceItemId: dimension.sourceItemId,
     alias: dimension.field.jfieldName,
@@ -32,7 +32,7 @@ export function initChartItemByDimension (dimension) {
 /**
  * 从维度构建图表项
  */
-export function initChartItemByMetrics (metrics) {
+function initChartItemByMetrics (metrics) {
   const sourceItemId = metrics.sourceItemId
   let alias
   let titleAlias
@@ -59,11 +59,11 @@ export function initChartItemByMetrics (metrics) {
 /**
  * 模拟表格数据
  */
-export function mockTableData (rowIndex, chartItem) {
+function mockTableData (rowIndex, chartItem) {
   return rowIndex + 1
 }
 
-export function getRules () {
+function getRules () {
   return {
     projectId: [
       { required: true, type: 'number', message: '请选择项目', trigger: 'change' }
@@ -92,4 +92,12 @@ export function getRules () {
       { required: true, type: 'array', message: '请设置指标列', trigger: 'blur' }
     ]
   }
+}
+
+export default {
+  initAggTableFormBean,
+  initChartItemByDimension,
+  initChartItemByMetrics,
+  mockTableData,
+  getRules
 }

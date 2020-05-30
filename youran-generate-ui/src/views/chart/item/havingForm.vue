@@ -64,13 +64,7 @@
 
 <script>
 import chartOptions from '@/utils/options-chart'
-import {
-  initFormBean,
-  initTmp,
-  formToTmp,
-  tmpToForm,
-  repairHaving
-} from './havingModel'
+import havingModel from './havingModel'
 
 export default {
   name: 'having-form',
@@ -81,9 +75,9 @@ export default {
       formVisible: false,
       metricsList: [],
       // 最终返回给调用组件的表单数据
-      form: initFormBean(),
+      form: havingModel.initFormBean(),
       // 临时数据
-      tmp: initTmp(),
+      tmp: havingModel.initTmp(),
       rules: {}
     }
   },
@@ -116,22 +110,22 @@ export default {
      * @param position 当前编辑的having条件在数组中的位置
      */
     show (metricsList, formBean, position) {
-      this.tmp = initTmp()
+      this.tmp = havingModel.initTmp()
       this.position = position
       this.metricsList = metricsList
       if (formBean) {
         this.edit = true
         this.form = formBean
-        formToTmp(this.form, this.tmp)
+        havingModel.formToTmp(this.form, this.tmp)
       } else {
         this.edit = false
-        this.form = initFormBean()
+        this.form = havingModel.initFormBean()
       }
       this.formVisible = true
     },
     submit () {
-      tmpToForm(this.tmp, this.form)
-      repairHaving(this.form, this.metricsList)
+      havingModel.tmpToForm(this.tmp, this.form)
+      havingModel.repairHaving(this.form, this.metricsList)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },
