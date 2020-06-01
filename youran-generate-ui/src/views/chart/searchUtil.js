@@ -3,7 +3,11 @@ function findEntityInEntityOptions (entityOptions, entityId) {
 }
 
 function findFieldInEntity (entity, fieldId) {
-  return entity.fieldList.find(field => field.fieldId === fieldId)
+  if (entity) {
+    return entity.fieldList.find(field => field.fieldId === fieldId)
+  } else {
+    return null
+  }
 }
 
 function findEntityInFormBean (formBean, joinIndex) {

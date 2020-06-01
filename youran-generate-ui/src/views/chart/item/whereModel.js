@@ -10,25 +10,18 @@ function initFormBean () {
     filterValue: null,
     timeGranularity: null,
     custom: false,
-    customContent: null
-  }
-}
-
-function initTmp () {
-  return {
-    // 过滤字段下拉框绑定对象
+    customContent: null,
+    operatorOption: {
+      value: 1,
+      filterValueType: 1,
+      timeGranularity: false
+    },
+    field: null,
+    // 以下是临时对象
     tmp1: {
       key: '',
       field: null,
       joinIndex: null
-    },
-    // 过滤操作符下拉框绑定对象
-    tmp2: {
-      value: null,
-      label: null,
-      filterValueType: null,
-      matchFieldTypes: [],
-      timeGranularity: false
     },
     // 单过滤值绑定对象
     tmp3: [null],
@@ -39,71 +32,58 @@ function initTmp () {
   }
 }
 
-/**
- * 从form中抽取数据到tmp
- */
-function formToTmp (form, tmp, entityFieldOptions) {
-  if (!form.custom) {
-    const [joinIndex, entity] = entityFieldOptions.find(
-      ([joinIndex, entity]) => joinIndex === form.joinIndex)
-    const field = searchUtil.findFieldInEntity(entity, form.fieldId)
-    tmp.tmp1 = {
-      key: joinIndex + '_' + field.fieldId,
-      field: field,
-      joinIndex: joinIndex
-    }
-    tmp.tmp2 = chartOptions.getFilterOperatorOption(form.filterOperator)
-    if (tmp.tmp2.filterValueType === 1) {
-      tmp.tmp3 = form.filterValue
-    } else if (tmp.tmp2.filterValueType === 2) {
-      tmp.tmp4 = form.filterValue
-    } else if (tmp.tmp2.filterValueType === 3) {
-      tmp.tmp5 = form.filterValue
-    }
+function displayText (form) {
+  if (form.custom) {
+    return '[自定义内容]'
   }
-}
-
-/**
- * 从tmp中抽取数据到form
- */
-function tmpToForm (tmp, form) {
-  if (!form.custom) {
-    form.joinIndex = tmp.tmp1.joinIndex
-    form.fieldId = tmp.tmp1.field.fieldId
-    form.filterOperator = tmp.tmp2.value
-    if (tmp.tmp2.filterValueType === 1) {
-      form.filterValue = tmp.tmp3
-    } else if (tmp.tmp2.filterValueType === 2) {
-      form.filterValue = tmp.tmp4
-    } else if (tmp.tmp2.filterValueType === 3) {
-      form.filterValue = tmp.tmp5
-    }
-    form._displayText = 't' + form.joinIndex + '.' + tmp.tmp1.field.fieldName +
-      tmp.tmp2.display(tmp.tmp1.field.jfieldType, form.filterValue, form.timeGranularity)
-  } else {
-    form._displayText = '[自定义内容]'
-  }
+  return 't' + form.joinIndex + '.' + form.field.fieldName +
+    form.operatorOption.display(form.field.jfieldType, form.filterValue, form.timeGranularity)
 }
 
 /**
  * 表单回显时修复过滤条件数据
  */
-function repairWhere (where, sourceForm) {
-  const joinIndex = where.joinIndex
-  if (where.custom) {
-    where._displayText = '[自定义内容]'
-  } else {
-    const field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, where.fieldId)[1]
-    const operatorOption = chartOptions.getFilterOperatorOption(where.filterOperator)
-    where._displayText = 't' + where.joinIndex + '.' + field.fieldName +
-      operatorOption.display(field.jfieldType, where.filterValue, where.timeGranularity)
+function repairWhereForEdit (where, sourceForm) {
+  if (!where.custom) {
+    where.operatorOption = chartOptions.getFilterOperatorOption(where.filterOperator)
+    where.field = searchUtil.findEntityFieldInFormBean(sourceForm, where.joinIndex, where.fieldId)[1]
+    where.tmp1 = {
+      key: where.joinIndex + '_' + where.fieldId,
+      field: where.field,
+      joinIndex: where.joinIndex
+    }
+    if (where.operatorOption.filterValueType === 1) {
+      where.tmp3 = where.filterValue
+    } else if (where.operatorOption.filterValueType === 2) {
+      where.tmp4 = where.filterValue
+    } else if (where.operatorOption.filterValueType === 3) {
+      where.tmp5 = where.filterValue
+    }
+  }
+}
+
+/**
+ * 从临时数据中抽取数据填充到form
+ */
+function repairWhereForSubmit (where) {
+  if (!where.custom) {
+    where.joinIndex = where.tmp1.joinIndex
+    where.field = where.tmp1.field
+    where.fieldId = where.tmp1.field.fieldId
+    where.filterOperator = where.operatorOption.value
+    if (where.operatorOption.filterValueType === 1) {
+      where.filterValue = where.tmp3
+    } else if (where.operatorOption.filterValueType === 2) {
+      where.filterValue = where.tmp4
+    } else if (where.operatorOption.filterValueType === 3) {
+      where.filterValue = where.tmp5
+    }
   }
 }
 
 export default {
   initFormBean,
-  initTmp,
-  formToTmp,
-  tmpToForm,
-  repairWhere
+  displayText,
+  repairWhereForSubmit,
+  repairWhereForEdit
 }

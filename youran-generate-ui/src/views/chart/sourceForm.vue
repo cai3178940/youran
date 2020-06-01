@@ -56,7 +56,7 @@
                 <!-- 关联(右边实体/多对多)： entity_1 -->
                 <el-col :span="12" class="col-left">
                   <el-select v-model="form.joins[index].right.tmp1" placeholder="请选择"
-                             style="width:100%;" @change="fillTmp1ToPart(form.joins[index].right)"
+                             style="width:100%;" @change="changeJoinTmp1(form.joins[index].right)"
                              value-key="key" filterable>
                     <el-option-group label="实体">
                       <el-option
@@ -97,7 +97,7 @@
                 <el-col :span="8" class="col-inner">
                   <el-select v-model="form.joins[index].left.tmp2" placeholder="请选择字段"
                              style="width:100%;" value-key="key"
-                             @change="fillTmp2ToPart(form.joins[index].left)" filterable>
+                             @change="changeJoinTmp2(form.joins[index].left)" filterable>
                     <span class="text-in-form" slot="prefix">
                       t{{form.joins[index].left.joinIndex}}
                     </span>
@@ -137,7 +137,7 @@
                 <el-col :span="8" class="col-inner">
                   <el-select v-model="form.joins[index].right.tmp2" placeholder="请选择字段"
                              style="width:100%;" value-key="key"
-                             @change="fillTmp2ToPart(form.joins[index].right)" filterable>
+                             @change="changeJoinTmp2(form.joins[index].right)" filterable>
                     <span class="text-in-form" slot="prefix">
                       t{{form.joins[index].right.joinIndex}}
                     </span>
@@ -208,7 +208,7 @@
                          :key="index" class="inner-form-button"
                          type="primary" @click="editWhere(index, where)"
                          plain>
-                {{where._displayText}}
+                {{where | displayWhere}}
               </el-button>
               <el-button type="primary" @click="addWhere" class="inner-form-button"
                          icon="el-icon-plus" plain>
@@ -308,6 +308,7 @@ import mtmApi from '@/api/mtm'
 import fieldApi from '@/api/field'
 import customColumnForm from './item/customColumnForm'
 import whereForm from './item/whereForm'
+import whereModel from './item/whereModel'
 import detailOrderForm from './item/detailOrderForm'
 import dimensionForm from './item/dimensionForm'
 import metricsForm from './item/metricsForm'
@@ -373,6 +374,9 @@ export default {
       })
       return options
     }
+  },
+  filters: {
+    displayWhere: whereModel.displayText
   },
   methods: {
     buildCommonDetailColumn: detailColumnModel.buildCommonDetailColumn,
@@ -449,9 +453,9 @@ export default {
       return pairs
     },
     /**
-     * 将实体填充到join中
+     * 关联对象变更
      */
-    fillTmp1ToPart (part) {
+    changeJoinTmp1 (part) {
       part.joinPartType = part.tmp1.joinPartType
       part.joinIndex = part.tmp1.joinIndex
       if (part.joinPartType === 'entity') {
@@ -466,9 +470,9 @@ export default {
       this.changeForm()
     },
     /**
-     * 将字段及其所在实体/多对多填充到join中
+     * 关联字段变更
      */
-    fillTmp2ToPart (part) {
+    changeJoinTmp2 (part) {
       part.joinPartType = part.tmp2.joinPartType
       part.joinIndex = part.tmp2.joinIndex
       if (part.joinPartType === 'entity') {
@@ -721,7 +725,7 @@ export default {
             })
           return Promise.all(array)
             .then(() => {
-              module.repairFormBean(formBean, this.entityOptions, this.mtmOptions)
+              module.repairSourceFormForEdit(formBean, this.entityOptions, this.mtmOptions)
               this.form = formBean
             })
         })

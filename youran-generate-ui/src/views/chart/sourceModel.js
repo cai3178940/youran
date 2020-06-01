@@ -8,6 +8,7 @@ import metricsModel from './item/metricsModel'
 import havingModel from './item/havingModel'
 import aggOrderModel from './item/aggOrderModel'
 import _intersectionWith from 'lodash/intersectionWith'
+import _remove from 'lodash/remove'
 
 function initSourceFormBean (projectId) {
   const formBean = {
@@ -128,7 +129,17 @@ function repairAtDetailColumnChange (form) {
  * @param form 表单数据
  */
 function repairAtJoinChange (form) {
-  // TODO 修复各个list内相关记录
+  // 移除失效的明细列
+  _remove(form.detailColumnList, detailColumn => {
+    if (detailColumn.custom) {
+      return false
+    }
+    const [entity, field] = searchUtil.findEntityFieldInFormBean(form, detailColumn.joinIndex, detailColumn.fieldId)
+    if (entity && field) {
+      return false
+    }
+    return true
+  })
 }
 
 /**
@@ -157,12 +168,33 @@ function repairAtJoinRemove (form, removeJoinIndex) {
     // 继续往后迭代
     currentIndex++
   }
+  // 移除对应的数据项
+  _remove(form.detailColumnList, detailColumn => detailColumn.joinIndex === removeJoinIndex)
+  _remove(form.whereList, where => where.joinIndex === removeJoinIndex)
+  _remove(form.detailOrderList, detailOrder => detailOrder.joinIndex === removeJoinIndex)
+  _remove(form.dimensionList, dimension => dimension.joinIndex === removeJoinIndex)
+  _remove(form.metricsList, metrics => metrics.joinIndex === removeJoinIndex)
+  _remove(form.havingList, having => having.joinIndex === removeJoinIndex)
+  _remove(form.aggOrderList, aggOrder => aggOrder.joinIndex === removeJoinIndex)
+  // 数据项序号--
+  const changeJoinIndex = item => {
+    if (item.joinIndex > removeJoinIndex) {
+      item.joinIndex--
+    }
+  }
+  form.detailColumnList.forEach(changeJoinIndex)
+  form.whereList.forEach(changeJoinIndex)
+  form.detailOrderList.forEach(changeJoinIndex)
+  form.dimensionList.forEach(changeJoinIndex)
+  form.metricsList.forEach(changeJoinIndex)
+  form.havingList.forEach(changeJoinIndex)
+  form.aggOrderList.forEach(changeJoinIndex)
 }
 
 /**
  * 表单回显时修复formBean
  */
-function repairFormBean (form, entityOptions, mtmOptions) {
+function repairSourceFormForEdit (form, entityOptions, mtmOptions) {
   // 修复entity属性
   form.entity = searchUtil.findEntityInEntityOptions(entityOptions, form.entityId)
   // 修复join数组
@@ -174,7 +206,7 @@ function repairFormBean (form, entityOptions, mtmOptions) {
   // 修复明细列
   if (form.detailColumnList) {
     form.detailColumnList
-      .forEach(detailColumn => detailColumnModel.repairDetailColumn(detailColumn, form))
+      .forEach(detailColumn => detailColumnModel.repairDetailColumnForEdit(detailColumn, form))
     const group = groupBy(form.detailColumnList, detailColumn => detailColumn.custom)
     form.detailColumnList = group['false'] ? group['false'] : []
     form.customColumnList = group['true'] ? group['true'] : []
@@ -182,32 +214,32 @@ function repairFormBean (form, entityOptions, mtmOptions) {
   // 修复过滤条件
   if (form.whereList) {
     form.whereList
-      .forEach(where => whereModel.repairWhere(where, form))
+      .forEach(where => whereModel.repairWhereForEdit(where, form))
   }
   // 修复排序列
   if (form.detailOrderList) {
     form.detailOrderList
-      .forEach(detailOrder => detailOrderModel.repairDetailOrder(detailOrder, form.detailColumnList, form.customColumnList))
+      .forEach(detailOrder => detailOrderModel.repairDetailOrderForEdit(detailOrder, form.detailColumnList, form.customColumnList))
   }
   // 修复聚合(维度)
   if (form.dimensionList) {
     form.dimensionList
-      .forEach(dimension => dimensionModel.repairDimension(dimension, form))
+      .forEach(dimension => dimensionModel.repairDimensionForEdit(dimension, form))
   }
   // 修复聚合(指标)
   if (form.metricsList) {
     form.metricsList
-      .forEach(metrics => metricsModel.repairMetrics(metrics, form))
+      .forEach(metrics => metricsModel.repairMetricsForEdit(metrics, form))
   }
   // 修复聚合(过滤)
   if (form.havingList) {
     form.havingList
-      .forEach(having => havingModel.repairHaving(having, form.metricsList))
+      .forEach(having => havingModel.repairHavingForEdit(having, form.metricsList))
   }
   // 修复聚合(排序)
   if (form.aggOrderList) {
     form.aggOrderList
-      .forEach(aggOrder => aggOrderModel.repairAggOrder(aggOrder, form.dimensionList, form.metricsList))
+      .forEach(aggOrder => aggOrderModel.repairAggOrderForEdit(aggOrder, form.dimensionList, form.metricsList))
   }
 }
 
@@ -282,7 +314,7 @@ export default {
   repairAtJoinChange,
   repairAtJoinRemove,
   extractFormBean,
-  repairFormBean,
+  repairSourceFormForEdit,
   buildTmp1ByEntity,
   buildTmp1ByMtm,
   buildTmp2ByEntity,

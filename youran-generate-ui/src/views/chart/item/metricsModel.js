@@ -67,7 +67,7 @@ function tmpToForm (tmp, form) {
 /**
  * 表单回显时修复指标条件数据
  */
-function repairMetrics (metrics, sourceForm) {
+function repairMetricsForEdit (metrics, sourceForm) {
   const joinIndex = metrics.joinIndex
   if (metrics.custom) {
     metrics._displayText = '[自定义内容]'
@@ -84,5 +84,5 @@ export default {
   initTmp,
   formToTmp,
   tmpToForm,
-  repairMetrics
+  repairMetricsForEdit
 }

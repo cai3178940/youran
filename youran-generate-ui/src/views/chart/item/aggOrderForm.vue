@@ -75,7 +75,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      aggOrderModel.repairAggOrder(this.form, this.dimensionList, this.metricsList)
+      aggOrderModel.repairAggOrderForEdit(this.form, this.dimensionList, this.metricsList)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

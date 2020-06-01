@@ -50,7 +50,7 @@ function tmpToForm (tmp, form) {
 /**
  * 表单回显时修复维度条件数据
  */
-function repairDimension (dimension, sourceForm) {
+function repairDimensionForEdit (dimension, sourceForm) {
   const joinIndex = dimension.joinIndex
   const field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, dimension.fieldId)[1]
   const granularityOption = chartOptions.getGranularityOption(dimension.granularity)
@@ -63,5 +63,5 @@ export default {
   initTmp,
   formToTmp,
   tmpToForm,
-  repairDimension
+  repairDimensionForEdit
 }

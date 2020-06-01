@@ -14,7 +14,7 @@ function initFormBean () {
 /**
  * 修复排序列数据
  */
-function repairDetailOrder (detailOrder, detailColumnList, customColumnList) {
+function repairDetailOrderForEdit (detailOrder, detailColumnList, customColumnList) {
   if (!detailOrder.detailColumn) {
     let parentItem = searchUtil.findSourceItemById(detailColumnList, detailOrder.parentId)
     if (!parentItem) {
@@ -29,5 +29,5 @@ function repairDetailOrder (detailOrder, detailColumnList, customColumnList) {
 
 export default {
   initFormBean,
-  repairDetailOrder
+  repairDetailOrderForEdit
 }

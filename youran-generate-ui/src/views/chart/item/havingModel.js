@@ -62,7 +62,7 @@ function tmpToForm (tmp, form) {
 /**
  * 修复过滤数据
  */
-function repairHaving (having, metricsList) {
+function repairHavingForEdit (having, metricsList) {
   if (!having.metrics) {
     const metrics = searchUtil.findSourceItemById(metricsList, having.parentId)
     having.metrics = metrics
@@ -79,5 +79,5 @@ export default {
   initTmp,
   formToTmp,
   tmpToForm,
-  repairHaving
+  repairHavingForEdit
 }

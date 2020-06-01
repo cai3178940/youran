@@ -125,7 +125,7 @@ export default {
     },
     submit () {
       havingModel.tmpToForm(this.tmp, this.form)
-      havingModel.repairHaving(this.form, this.metricsList)
+      havingModel.repairHavingForEdit(this.form, this.metricsList)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

@@ -14,7 +14,7 @@ function initFormBean () {
 /**
  * 修复聚合排序数据
  */
-function repairAggOrder (aggOrder, dimensionList, metricsList) {
+function repairAggOrderForEdit (aggOrder, dimensionList, metricsList) {
   if (!aggOrder.parentItem) {
     let parentItem = searchUtil.findSourceItemById(dimensionList, aggOrder.parentId)
     if (!parentItem) {
@@ -29,5 +29,5 @@ function repairAggOrder (aggOrder, dimensionList, metricsList) {
 
 export default {
   initFormBean,
-  repairAggOrder
+  repairAggOrderForEdit
 }

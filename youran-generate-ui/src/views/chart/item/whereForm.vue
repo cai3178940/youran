@@ -15,7 +15,7 @@
       </template>
       <template v-else>
         <el-form-item label="过滤字段">
-          <el-select v-model="tmp.tmp1" value-key="key"
+          <el-select v-model="form.tmp1" value-key="key"
                      style="width:100%;" placeholder="请选择过滤字段"
                      filterable>
             <el-option-group
@@ -36,7 +36,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="过滤运算符">
-          <el-select v-model="tmp.tmp2" value-key="value"
+          <el-select v-model="form.operatorOption" value-key="value"
                      style="width:100%;">
             <el-option
               v-for="option in filterOperatorOptions"
@@ -47,35 +47,35 @@
           </el-select>
         </el-form-item>
         <!-- 单值过滤 -->
-        <el-form-item v-if="tmp.tmp2.filterValueType===1" label="过滤值">
+        <el-form-item v-if="form.operatorOption.filterValueType===1" label="过滤值">
           <el-input-number style="width:100%;" v-if="isNumberField"
-                           v-model="tmp.tmp3[0]"></el-input-number>
-          <el-input v-else v-model="tmp.tmp3[0]"></el-input>
+                           v-model="form.tmp3[0]"></el-input-number>
+          <el-input v-else v-model="form.tmp3[0]"></el-input>
         </el-form-item>
         <!-- 双值过滤 -->
-        <el-form-item v-if="tmp.tmp2.filterValueType===2" label="过滤值范围">
+        <el-form-item v-if="form.operatorOption.filterValueType===2" label="过滤值范围">
           <el-col :span="10" class="col-left">
             <el-input-number style="width:100%;" v-if="isNumberField"
-                             v-model="tmp.tmp4[0]"></el-input-number>
-            <el-input v-else v-model="tmp.tmp4[0]"></el-input>
+                             v-model="form.tmp4[0]"></el-input-number>
+            <el-input v-else v-model="form.tmp4[0]"></el-input>
           </el-col>
           <el-col :span="4" class="col-inner" style="text-align: center;">
             <span class="text-in-form" style="color:blueviolet;"> ~ </span>
           </el-col>
           <el-col :span="10" class="col-right">
             <el-input-number style="width:100%;" v-if="isNumberField"
-                             v-model="tmp.tmp4[1]"></el-input-number>
-            <el-input v-else v-model="tmp.tmp4[1]"></el-input>
+                             v-model="form.tmp4[1]"></el-input-number>
+            <el-input v-else v-model="form.tmp4[1]"></el-input>
           </el-col>
         </el-form-item>
         <!-- 多值过滤 -->
-        <el-form-item v-if="tmp.tmp2.filterValueType===3" label="过滤值">
-          <el-select v-model="tmp.tmp5" style="width:100%;"
+        <el-form-item v-if="form.operatorOption.filterValueType===3" label="过滤值">
+          <el-select v-model="form.tmp5" style="width:100%;"
                      multiple allow-create
                      filterable placeholder="请输入过滤值">
           </el-select>
         </el-form-item>
-        <el-form-item v-if="tmp.tmp2.timeGranularity" label="时间粒度">
+        <el-form-item v-if="form.operatorOption.timeGranularity" label="时间粒度">
           <el-select v-model="form.timeGranularity"
                      style="width:100%;">
             <el-option
@@ -111,8 +111,6 @@ export default {
       timeGranularityOptions: chartOptions.timeGranularityOptions,
       // 最终返回给调用组件的表单数据
       form: whereModel.initFormBean(),
-      // 临时数据
-      tmp: whereModel.initTmp(),
       rules: {}
     }
   },
@@ -121,9 +119,9 @@ export default {
      * 当前选中字段是否数字类型
      */
     isNumberField () {
-      if (this.tmp.tmp1.field) {
+      if (this.form.tmp1.field) {
         return ['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal']
-          .indexOf(this.tmp.tmp1.field.jfieldType) > -1
+          .indexOf(this.form.tmp1.field.jfieldType) > -1
       }
       return false
     },
@@ -131,8 +129,8 @@ export default {
      * 过滤操作符选项
      */
     filterOperatorOptions () {
-      if (this.tmp.tmp1.field) {
-        return chartOptions.getFilterOperatorOptions(this.tmp.tmp1.field.jfieldType)
+      if (this.form.tmp1.field) {
+        return chartOptions.getFilterOperatorOptions(this.form.tmp1.field.jfieldType)
       }
       return []
     }
@@ -151,7 +149,6 @@ export default {
       if (formBean) {
         this.edit = true
         this.form = formBean
-        whereModel.formToTmp(this.form, this.tmp, entityFieldOptions)
       } else {
         this.edit = false
         this.form = whereModel.initFormBean()
@@ -159,7 +156,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      whereModel.tmpToForm(this.tmp, this.form)
+      whereModel.repairWhereForSubmit(this.form)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

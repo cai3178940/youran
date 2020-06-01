@@ -26,7 +26,7 @@ function buildCustomDetailColumn (customContent, customFieldType) {
 /**
  * 表单回显时修复明细列数据
  */
-function repairDetailColumn (detailColumn, sourceForm) {
+function repairDetailColumnForEdit (detailColumn, sourceForm) {
   const joinIndex = detailColumn.joinIndex
   if (detailColumn.custom) {
     detailColumn.key = 'custom_' + shortid.generate()
@@ -42,5 +42,5 @@ function repairDetailColumn (detailColumn, sourceForm) {
 export default {
   buildCommonDetailColumn,
   buildCustomDetailColumn,
-  repairDetailColumn
+  repairDetailColumnForEdit
 }

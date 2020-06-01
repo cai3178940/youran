@@ -75,7 +75,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      detailOrderModel.repairDetailOrder(this.form, this.detailColumnList, this.customColumnList)
+      detailOrderModel.repairDetailOrderForEdit(this.form, this.detailColumnList, this.customColumnList)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },
