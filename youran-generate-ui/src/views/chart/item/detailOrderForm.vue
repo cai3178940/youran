@@ -9,13 +9,13 @@
                    filterable>
           <el-option-group label="明细列">
             <el-option v-for="detailColumn in detailColumnList"
-                       :key="detailColumn.key" :label="detailColumn._displayText"
+                       :key="detailColumn.key" :label="detailColumn | displayDetailColumn"
                        :value="detailColumn">
             </el-option>
           </el-option-group>
           <el-option-group label="自定义明细列">
             <el-option v-for="customColumn in customColumnList"
-                       :key="customColumn.key" :label="customColumn._displayText"
+                       :key="customColumn.key" :label="customColumn | displayDetailColumn"
                        :value="customColumn">
             </el-option>
           </el-option-group>
@@ -38,6 +38,7 @@
 
 <script>
 import detailOrderModel from './detailOrderModel'
+import detailColumnModel from './detailColumnModel'
 
 export default {
   name: 'detailOrder-form',
@@ -52,6 +53,9 @@ export default {
       form: detailOrderModel.initFormBean(),
       rules: {}
     }
+  },
+  filters: {
+    displayDetailColumn: detailColumnModel.displayText
   },
   methods: {
     /**
@@ -75,7 +79,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      detailOrderModel.repairDetailOrderForEdit(this.form, this.detailColumnList, this.customColumnList)
+      detailOrderModel.repairDetailOrderForSubmit(this.form)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

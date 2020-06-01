@@ -1,8 +1,9 @@
 import searchUtil from '../searchUtil'
+import metricsModel from './metricsModel'
+import dimensionModel from './dimensionModel'
 
 function initFormBean () {
   return {
-    _displayText: '',
     joinIndex: null,
     sortType: 1,
     parentId: null,
@@ -11,9 +12,16 @@ function initFormBean () {
   }
 }
 
-/**
- * 修复聚合排序数据
- */
+function displayText (detailOrder) {
+  let parentDisplayText
+  if (detailOrder.parentItem.granularity) {
+    parentDisplayText = dimensionModel.displayText(detailOrder.parentItem)
+  } else {
+    parentDisplayText = metricsModel.displayText(detailOrder.parentItem)
+  }
+  return parentDisplayText + (detailOrder.sortType === 1 ? '▲' : '▼')
+}
+
 function repairAggOrderForEdit (aggOrder, dimensionList, metricsList) {
   if (!aggOrder.parentItem) {
     let parentItem = searchUtil.findSourceItemById(dimensionList, aggOrder.parentId)
@@ -24,10 +32,16 @@ function repairAggOrderForEdit (aggOrder, dimensionList, metricsList) {
   }
   aggOrder.joinIndex = aggOrder.parentItem.joinIndex
   aggOrder.parentKey = aggOrder.parentItem.key
-  aggOrder._displayText = aggOrder.parentItem._displayText + (aggOrder.sortType === 1 ? '▲' : '▼')
+}
+
+function repairAggOrderForSubmit (aggOrder) {
+  aggOrder.joinIndex = aggOrder.parentItem.joinIndex
+  aggOrder.parentKey = aggOrder.parentItem.key
 }
 
 export default {
   initFormBean,
-  repairAggOrderForEdit
+  displayText,
+  repairAggOrderForEdit,
+  repairAggOrderForSubmit
 }

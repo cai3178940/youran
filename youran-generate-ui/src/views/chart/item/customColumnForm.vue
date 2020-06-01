@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { abbreviate } from '@/utils/common-util'
 import chartOptions from '@/utils/options-chart'
 import detailColumnModel from './detailColumnModel'
 
@@ -64,7 +63,6 @@ export default {
       this.formVisible = true
     },
     submit () {
-      this.form._displayText = abbreviate(this.form.customContent, 20)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

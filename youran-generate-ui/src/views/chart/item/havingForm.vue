@@ -7,14 +7,14 @@
         <el-select v-model="form.metrics" value-key="key"
                    style="width:100%;" placeholder="请选择过滤列"
                    filterable>
-          <el-option v-for="detailColumn in metricsList"
-                     :key="detailColumn.key" :label="detailColumn._displayText"
-                     :value="detailColumn">
+          <el-option v-for="metrics in metricsList"
+                     :key="metrics.key" :label="metrics | displayMetrics"
+                     :value="metrics">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="过滤运算符">
-        <el-select v-model="tmp.tmp2" value-key="value"
+        <el-select v-model="form.tmp2" value-key="value"
                    style="width:100%;">
           <el-option
             v-for="option in filterOperatorOptions"
@@ -25,30 +25,30 @@
         </el-select>
       </el-form-item>
       <!-- 单值过滤 -->
-      <el-form-item v-if="tmp.tmp2.filterValueType===1" label="过滤值">
+      <el-form-item v-if="form.tmp2.filterValueType===1" label="过滤值">
         <el-input-number style="width:100%;" v-if="isNumberField"
-                         v-model="tmp.tmp3[0]"></el-input-number>
-        <el-input v-else v-model="tmp.tmp3[0]"></el-input>
+                         v-model="form.tmp3[0]"></el-input-number>
+        <el-input v-else v-model="form.tmp3[0]"></el-input>
       </el-form-item>
       <!-- 双值过滤 -->
-      <el-form-item v-if="tmp.tmp2.filterValueType===2" label="过滤值范围">
+      <el-form-item v-if="form.tmp2.filterValueType===2" label="过滤值范围">
         <el-col :span="10" class="col-left">
           <el-input-number style="width:100%;" v-if="isNumberField"
-                           v-model="tmp.tmp4[0]"></el-input-number>
-          <el-input v-else v-model="tmp.tmp4[0]"></el-input>
+                           v-model="form.tmp4[0]"></el-input-number>
+          <el-input v-else v-model="form.tmp4[0]"></el-input>
         </el-col>
         <el-col :span="4" class="col-inner" style="text-align: center;">
           <span class="text-in-form" style="color:blueviolet;"> ~ </span>
         </el-col>
         <el-col :span="10" class="col-right">
           <el-input-number style="width:100%;" v-if="isNumberField"
-                           v-model="tmp.tmp4[1]"></el-input-number>
-          <el-input v-else v-model="tmp.tmp4[1]"></el-input>
+                           v-model="form.tmp4[1]"></el-input-number>
+          <el-input v-else v-model="form.tmp4[1]"></el-input>
         </el-col>
       </el-form-item>
       <!-- 多值过滤 -->
-      <el-form-item v-if="tmp.tmp2.filterValueType===3" label="过滤值">
-        <el-select v-model="tmp.tmp5" style="width:100%;"
+      <el-form-item v-if="form.tmp2.filterValueType===3" label="过滤值">
+        <el-select v-model="form.tmp5" style="width:100%;"
                    multiple allow-create
                    filterable placeholder="请输入过滤值">
         </el-select>
@@ -64,6 +64,7 @@
 
 <script>
 import chartOptions from '@/utils/options-chart'
+import metricsModel from './metricsModel'
 import havingModel from './havingModel'
 
 export default {
@@ -76,10 +77,11 @@ export default {
       metricsList: [],
       // 最终返回给调用组件的表单数据
       form: havingModel.initFormBean(),
-      // 临时数据
-      tmp: havingModel.initTmp(),
       rules: {}
     }
+  },
+  filters: {
+    displayMetrics: metricsModel.displayText
   },
   computed: {
     /**
@@ -110,13 +112,11 @@ export default {
      * @param position 当前编辑的having条件在数组中的位置
      */
     show (metricsList, formBean, position) {
-      this.tmp = havingModel.initTmp()
       this.position = position
       this.metricsList = metricsList
       if (formBean) {
         this.edit = true
         this.form = formBean
-        havingModel.formToTmp(this.form, this.tmp)
       } else {
         this.edit = false
         this.form = havingModel.initFormBean()
@@ -124,8 +124,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      havingModel.tmpToForm(this.tmp, this.form)
-      havingModel.repairHavingForEdit(this.form, this.metricsList)
+      havingModel.repairHavingForSubmit(this.form)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

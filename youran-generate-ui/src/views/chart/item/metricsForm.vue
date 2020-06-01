@@ -26,7 +26,7 @@
       </template>
       <template v-else>
         <el-form-item label="指标字段">
-          <el-select v-model="tmp.tmp1" value-key="key"
+          <el-select v-model="form.tmp1" value-key="key"
                      style="width:100%;" placeholder="请选择指标字段"
                      filterable>
             <el-option-group
@@ -47,7 +47,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="聚合函数">
-          <el-select v-model="tmp.tmp2" value-key="value"
+          <el-select v-model="form.tmp2" value-key="value"
                      style="width:100%;">
             <el-option
               v-for="option in aggFunctionOptions"
@@ -82,8 +82,6 @@ export default {
       customFieldTypeOptions: chartOptions.customFieldTypeOptions,
       // 最终返回给调用组件的表单数据
       form: metricsModel.initFormBean(),
-      // 临时数据
-      tmp: metricsModel.initTmp(),
       rules: {}
     }
   },
@@ -92,8 +90,8 @@ export default {
      * 指标操作符选项
      */
     aggFunctionOptions () {
-      if (this.tmp.tmp1.field) {
-        return chartOptions.getAggFunctionOptions(this.tmp.tmp1.field.jfieldType)
+      if (this.form.tmp1.field) {
+        return chartOptions.getAggFunctionOptions(this.form.tmp1.field.jfieldType)
       }
       return []
     }
@@ -106,14 +104,11 @@ export default {
      * @param position 当前编辑的metrics在数组中的位置
      */
     show (entityFieldOptions, formBean, position) {
-      this.tmp = metricsModel.initTmp()
       this.position = position
       this.entityFieldOptions = entityFieldOptions
-      this.tmp = metricsModel.initTmp()
       if (formBean) {
         this.edit = true
         this.form = formBean
-        metricsModel.formToTmp(this.form, this.tmp, entityFieldOptions)
       } else {
         this.edit = false
         this.form = metricsModel.initFormBean()
@@ -121,7 +116,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      metricsModel.tmpToForm(this.tmp, this.form)
+      metricsModel.repairMetricsForSubmit(this.form)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

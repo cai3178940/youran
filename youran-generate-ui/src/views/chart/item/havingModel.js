@@ -1,20 +1,15 @@
 import searchUtil from '../searchUtil'
+import metricsModel from './metricsModel'
 import chartOptions from '@/utils/options-chart'
 
 function initFormBean () {
   return {
-    _displayText: '',
     joinIndex: null,
     filterOperator: null,
     filterValue: null,
     parentId: null,
     parentKey: null,
-    metrics: null
-  }
-}
-
-function initTmp () {
-  return {
+    metrics: null,
     // 过滤操作符下拉框绑定对象
     tmp2: {
       value: null,
@@ -31,31 +26,22 @@ function initTmp () {
   }
 }
 
-/**
- * 从form中抽取数据到tmp
- */
-function formToTmp (form, tmp) {
-  tmp.tmp2 = chartOptions.getFilterOperatorOption(form.filterOperator)
-  if (tmp.tmp2.filterValueType === 1) {
-    tmp.tmp3 = form.filterValue
-  } else if (tmp.tmp2.filterValueType === 2) {
-    tmp.tmp4 = form.filterValue
-  } else if (tmp.tmp2.filterValueType === 3) {
-    tmp.tmp5 = form.filterValue
-  }
+function displayText (having) {
+  return metricsModel.displayText(having.metrics) +
+    having.tmp2.display(having.metrics.field.jfieldType, having.filterValue)
 }
 
 /**
  * 从tmp中抽取数据到form
  */
-function tmpToForm (tmp, form) {
-  form.filterOperator = tmp.tmp2.value
-  if (tmp.tmp2.filterValueType === 1) {
-    form.filterValue = tmp.tmp3
-  } else if (tmp.tmp2.filterValueType === 2) {
-    form.filterValue = tmp.tmp4
-  } else if (tmp.tmp2.filterValueType === 3) {
-    form.filterValue = tmp.tmp5
+function repairHavingForSubmit (having) {
+  having.filterOperator = having.tmp2.value
+  if (having.tmp2.filterValueType === 1) {
+    having.filterValue = having.tmp3
+  } else if (having.tmp2.filterValueType === 2) {
+    having.filterValue = having.tmp4
+  } else if (having.tmp2.filterValueType === 3) {
+    having.filterValue = having.tmp5
   }
 }
 
@@ -69,15 +55,19 @@ function repairHavingForEdit (having, metricsList) {
   }
   having.joinIndex = having.metrics.joinIndex
   having.parentKey = having.metrics.key
-  const operatorOption = chartOptions.getFilterOperatorOption(having.filterOperator)
-  having._displayText = having.metrics._displayText +
-    operatorOption.display(having.metrics.field.jfieldType, having.filterValue)
+  having.tmp2 = chartOptions.getFilterOperatorOption(having.filterOperator)
+  if (having.tmp2.filterValueType === 1) {
+    having.tmp3 = having.filterValue
+  } else if (having.tmp2.filterValueType === 2) {
+    having.tmp4 = having.filterValue
+  } else if (having.tmp2.filterValueType === 3) {
+    having.tmp5 = having.filterValue
+  }
 }
 
 export default {
   initFormBean,
-  initTmp,
-  formToTmp,
-  tmpToForm,
-  repairHavingForEdit
+  displayText,
+  repairHavingForEdit,
+  repairHavingForSubmit
 }

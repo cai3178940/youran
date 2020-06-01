@@ -4,7 +4,7 @@
              :rules="rules" :model="form"
              label-width="120px" size="small">
       <el-form-item label="聚合字段">
-        <el-select v-model="tmp.tmp1" value-key="key"
+        <el-select v-model="form.tmp1" value-key="key"
                    style="width:100%;" placeholder="请选择聚合字段"
                    filterable>
           <el-option-group
@@ -25,13 +25,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="粒度">
-        <el-select v-model="form.granularity"
+        <el-select v-model="form.tmp2" value-key="value"
                    style="width:100%;">
           <el-option
             v-for="option in granularityOptions"
             :key="option.value"
             :label="option.label"
-            :value="option.value">
+            :value="option">
           </el-option>
         </el-select>
       </el-form-item>
@@ -58,8 +58,6 @@ export default {
       entityFieldOptions: [],
       // 最终返回给调用组件的表单数据
       form: dimensionModel.initFormBean(),
-      // 临时数据
-      tmp: dimensionModel.initTmp(),
       rules: {}
     }
   },
@@ -68,9 +66,9 @@ export default {
      * 当前选中字段是否数字类型
      */
     isNumberField () {
-      if (this.tmp.tmp1.field) {
+      if (this.form.tmp1.field) {
         return ['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal']
-          .indexOf(this.tmp.tmp1.field.jfieldType) > -1
+          .indexOf(this.form.tmp1.field.jfieldType) > -1
       }
       return false
     },
@@ -78,8 +76,8 @@ export default {
      * 粒度选项
      */
     granularityOptions () {
-      if (this.tmp.tmp1.field) {
-        return chartOptions.getGranularityOptions(this.tmp.tmp1.field.jfieldType)
+      if (this.form.tmp1.field) {
+        return chartOptions.getGranularityOptions(this.form.tmp1.field.jfieldType)
       }
       return []
     }
@@ -94,11 +92,9 @@ export default {
     show (entityFieldOptions, formBean, position) {
       this.position = position
       this.entityFieldOptions = entityFieldOptions
-      this.tmp = dimensionModel.initTmp()
       if (formBean) {
         this.edit = true
         this.form = formBean
-        dimensionModel.formToTmp(this.form, this.tmp, entityFieldOptions)
       } else {
         this.edit = false
         this.form = dimensionModel.initFormBean()
@@ -106,7 +102,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      dimensionModel.tmpToForm(this.tmp, this.form)
+      dimensionModel.repairDimensionForSubmit(this.form)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

@@ -194,7 +194,7 @@
                          :key="index" class="inner-form-button"
                          type="primary" @click="editCustomColumn(index, customColumn)"
                          plain>
-                {{customColumn._displayText}}
+                {{customColumn | displayDetailColumn}}
               </el-button>
               <el-button type="primary" @click="addCustomColumn" class="inner-form-button"
                          icon="el-icon-plus" plain>
@@ -222,7 +222,7 @@
                          :key="index" class="inner-form-button"
                          type="primary" @click="editDetailOrder(index, detailOrder)"
                          plain>
-                {{detailOrder._displayText}}
+                {{detailOrder | displayDetailOrder}}
               </el-button>
               <el-button type="primary" @click="addDetailOrder" class="inner-form-button"
                          icon="el-icon-plus" plain>
@@ -236,7 +236,7 @@
                          :key="index" class="inner-form-button"
                          type="primary" @click="editDimension(index, dimension)"
                          plain>
-                {{dimension._displayText}}
+                {{dimension | displayDimension}}
               </el-button>
               <el-button type="primary" @click="addDimension" class="inner-form-button"
                          icon="el-icon-plus" plain>
@@ -250,7 +250,7 @@
                          :key="index" class="inner-form-button"
                          type="primary" @click="editMetrics(index, metrics)"
                          plain>
-                {{metrics._displayText}}
+                {{metrics | displayMetrics}}
               </el-button>
               <el-button type="primary" @click="addMetrics" class="inner-form-button"
                          icon="el-icon-plus" plain>
@@ -264,7 +264,7 @@
                          :key="index" class="inner-form-button"
                          type="primary" @click="editHaving(index, having)"
                          plain>
-                {{having._displayText}}
+                {{having | displayHaving}}
               </el-button>
               <el-button type="primary" @click="addHaving" class="inner-form-button"
                          icon="el-icon-plus" plain>
@@ -278,7 +278,7 @@
                          :key="index" class="inner-form-button"
                          type="primary" @click="editAggOrder(index, aggOrder)"
                          plain>
-                {{aggOrder._displayText}}
+                {{aggOrder | displayAggOrder}}
               </el-button>
               <el-button type="primary" @click="addAggOrder" class="inner-form-button"
                          icon="el-icon-plus" plain>
@@ -310,10 +310,15 @@ import customColumnForm from './item/customColumnForm'
 import whereForm from './item/whereForm'
 import whereModel from './item/whereModel'
 import detailOrderForm from './item/detailOrderForm'
+import detailOrderModel from './item/detailOrderModel'
 import dimensionForm from './item/dimensionForm'
+import dimensionModel from './item/dimensionModel'
 import metricsForm from './item/metricsForm'
+import metricsModel from './item/metricsModel'
 import havingForm from './item/havingForm'
+import havingModel from './item/havingModel'
 import aggOrderForm from './item/aggOrderForm'
+import aggOrderModel from './item/aggOrderModel'
 import chartOptions from '@/utils/options-chart'
 import module from './sourceModel'
 import detailColumnModel from './item/detailColumnModel'
@@ -376,7 +381,13 @@ export default {
     }
   },
   filters: {
-    displayWhere: whereModel.displayText
+    displayWhere: whereModel.displayText,
+    displayHaving: havingModel.displayText,
+    displayMetrics: metricsModel.displayText,
+    displayDimension: dimensionModel.displayText,
+    displayDetailOrder: detailOrderModel.displayText,
+    displayAggOrder: aggOrderModel.displayText,
+    displayDetailColumn: detailColumnModel.displayText
   },
   methods: {
     buildCommonDetailColumn: detailColumnModel.buildCommonDetailColumn,

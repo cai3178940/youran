@@ -1,14 +1,19 @@
 import searchUtil from '../searchUtil'
+import detailColumnModel from './detailColumnModel'
 
 function initFormBean () {
   return {
-    _displayText: '',
     joinIndex: null,
     sortType: 1,
     parentId: null,
     parentKey: null,
     detailColumn: null
   }
+}
+
+function displayText (detailOrder) {
+  return detailColumnModel.displayText(detailOrder.detailColumn) +
+    (detailOrder.sortType === 1 ? '▲' : '▼')
 }
 
 /**
@@ -24,10 +29,19 @@ function repairDetailOrderForEdit (detailOrder, detailColumnList, customColumnLi
   }
   detailOrder.joinIndex = detailOrder.detailColumn.joinIndex
   detailOrder.parentKey = detailOrder.detailColumn.key
-  detailOrder._displayText = detailOrder.detailColumn._displayText + (detailOrder.sortType === 1 ? '▲' : '▼')
+}
+
+/**
+ * 修复排序列数据
+ */
+function repairDetailOrderForSubmit (detailOrder) {
+  detailOrder.joinIndex = detailOrder.detailColumn.joinIndex
+  detailOrder.parentKey = detailOrder.detailColumn.key
 }
 
 export default {
   initFormBean,
-  repairDetailOrderForEdit
+  displayText,
+  repairDetailOrderForEdit,
+  repairDetailOrderForSubmit
 }

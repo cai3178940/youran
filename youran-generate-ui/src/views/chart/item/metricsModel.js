@@ -3,19 +3,13 @@ import searchUtil from '../searchUtil'
 
 function initFormBean () {
   return {
-    _displayText: '',
     joinIndex: null,
     fieldId: null,
     aggFunction: null,
     custom: false,
     customContent: null,
     customFieldType: null,
-    field: null
-  }
-}
-
-function initTmp () {
-  return {
+    field: null,
     // 指标字段下拉框绑定对象
     tmp1: {
       key: '',
@@ -31,37 +25,11 @@ function initTmp () {
   }
 }
 
-/**
- * 从form中抽取数据到tmp
- */
-function formToTmp (form, tmp, entityFieldOptions) {
-  if (!form.custom) {
-    const [joinIndex, entity] = entityFieldOptions.find(
-      ([joinIndex, entity]) => joinIndex === form.joinIndex)
-    const field = searchUtil.findFieldInEntity(entity, form.fieldId)
-    tmp.tmp1 = {
-      key: joinIndex + '_' + field.fieldId,
-      field: field,
-      joinIndex: joinIndex
-    }
-    form.field = field
-    tmp.tmp2 = chartOptions.getAggFunctionOption(form.filterOperator)
+function displayText (form) {
+  if (form.custom) {
+    return '[自定义内容]'
   }
-}
-
-/**
- * 从tmp中抽取数据到form
- */
-function tmpToForm (tmp, form) {
-  if (!form.custom) {
-    form.joinIndex = tmp.tmp1.joinIndex
-    form.fieldId = tmp.tmp1.field.fieldId
-    form.field = tmp.tmp1.field
-    form.aggFunction = tmp.tmp2.value
-    form._displayText = tmp.tmp2.display('t' + form.joinIndex + '.' + tmp.tmp1.field.fieldName)
-  } else {
-    form._displayText = '[自定义内容]'
-  }
+  return form.tmp2.display('t' + form.joinIndex + '.' + form.field.fieldName)
 }
 
 /**
@@ -69,20 +37,33 @@ function tmpToForm (tmp, form) {
  */
 function repairMetricsForEdit (metrics, sourceForm) {
   const joinIndex = metrics.joinIndex
-  if (metrics.custom) {
-    metrics._displayText = '[自定义内容]'
-  } else {
+  if (!metrics.custom) {
     const field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, metrics.fieldId)[1]
     metrics.field = field
-    const aggFunctionOption = chartOptions.getAggFunctionOption(metrics.aggFunction)
-    metrics._displayText = aggFunctionOption.display('t' + metrics.joinIndex + '.' + field.fieldName)
+    metrics.tmp1 = {
+      key: joinIndex + '_' + field.fieldId,
+      field: field,
+      joinIndex: joinIndex
+    }
+    metrics.tmp2 = chartOptions.getAggFunctionOption(metrics.aggFunction)
+  }
+}
+
+/**
+ * 从tmp中抽取数据到form
+ */
+function repairMetricsForSubmit (form) {
+  if (!form.custom) {
+    form.joinIndex = form.tmp1.joinIndex
+    form.fieldId = form.tmp1.field.fieldId
+    form.field = form.tmp1.field
+    form.aggFunction = form.tmp2.value
   }
 }
 
 export default {
   initFormBean,
-  initTmp,
-  formToTmp,
-  tmpToForm,
-  repairMetricsForEdit
+  displayText,
+  repairMetricsForEdit,
+  repairMetricsForSubmit
 }

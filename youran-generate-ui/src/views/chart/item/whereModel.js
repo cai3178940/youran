@@ -3,7 +3,6 @@ import searchUtil from '../searchUtil'
 
 function initFormBean () {
   return {
-    _displayText: '',
     joinIndex: null,
     fieldId: null,
     filterOperator: null,
@@ -11,17 +10,17 @@ function initFormBean () {
     timeGranularity: null,
     custom: false,
     customContent: null,
-    operatorOption: {
-      value: 1,
-      filterValueType: 1,
-      timeGranularity: false
-    },
     field: null,
     // 以下是临时对象
     tmp1: {
       key: '',
       field: null,
       joinIndex: null
+    },
+    tmp2: {
+      value: 1,
+      filterValueType: 1,
+      timeGranularity: false
     },
     // 单过滤值绑定对象
     tmp3: [null],
@@ -37,7 +36,7 @@ function displayText (form) {
     return '[自定义内容]'
   }
   return 't' + form.joinIndex + '.' + form.field.fieldName +
-    form.operatorOption.display(form.field.jfieldType, form.filterValue, form.timeGranularity)
+    form.tmp2.display(form.field.jfieldType, form.filterValue, form.timeGranularity)
 }
 
 /**
@@ -45,18 +44,18 @@ function displayText (form) {
  */
 function repairWhereForEdit (where, sourceForm) {
   if (!where.custom) {
-    where.operatorOption = chartOptions.getFilterOperatorOption(where.filterOperator)
+    where.tmp2 = chartOptions.getFilterOperatorOption(where.filterOperator)
     where.field = searchUtil.findEntityFieldInFormBean(sourceForm, where.joinIndex, where.fieldId)[1]
     where.tmp1 = {
       key: where.joinIndex + '_' + where.fieldId,
       field: where.field,
       joinIndex: where.joinIndex
     }
-    if (where.operatorOption.filterValueType === 1) {
+    if (where.tmp2.filterValueType === 1) {
       where.tmp3 = where.filterValue
-    } else if (where.operatorOption.filterValueType === 2) {
+    } else if (where.tmp2.filterValueType === 2) {
       where.tmp4 = where.filterValue
-    } else if (where.operatorOption.filterValueType === 3) {
+    } else if (where.tmp2.filterValueType === 3) {
       where.tmp5 = where.filterValue
     }
   }
@@ -70,12 +69,12 @@ function repairWhereForSubmit (where) {
     where.joinIndex = where.tmp1.joinIndex
     where.field = where.tmp1.field
     where.fieldId = where.tmp1.field.fieldId
-    where.filterOperator = where.operatorOption.value
-    if (where.operatorOption.filterValueType === 1) {
+    where.filterOperator = where.tmp2.value
+    if (where.tmp2.filterValueType === 1) {
       where.filterValue = where.tmp3
-    } else if (where.operatorOption.filterValueType === 2) {
+    } else if (where.tmp2.filterValueType === 2) {
       where.filterValue = where.tmp4
-    } else if (where.operatorOption.filterValueType === 3) {
+    } else if (where.tmp2.filterValueType === 3) {
       where.filterValue = where.tmp5
     }
   }

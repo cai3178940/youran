@@ -9,13 +9,13 @@
                    filterable>
           <el-option-group label="维度">
             <el-option v-for="dimension in dimensionList"
-                       :key="dimension.key" :label="dimension._displayText"
+                       :key="dimension.key" :label="dimension | displayDimension"
                        :value="dimension">
             </el-option>
           </el-option-group>
           <el-option-group label="指标">
             <el-option v-for="metrics in metricsList"
-                       :key="metrics.key" :label="metrics._displayText"
+                       :key="metrics.key" :label="metrics | displayMetrics"
                        :value="metrics">
             </el-option>
           </el-option-group>
@@ -38,6 +38,8 @@
 
 <script>
 import aggOrderModel from './aggOrderModel'
+import dimensionModel from './dimensionModel'
+import metricsModel from './metricsModel'
 
 export default {
   name: 'aggOrder-form',
@@ -52,6 +54,10 @@ export default {
       form: aggOrderModel.initFormBean(),
       rules: {}
     }
+  },
+  filters: {
+    displayDimension: dimensionModel.displayText,
+    displayMetrics: metricsModel.displayText
   },
   methods: {
     /**
@@ -75,7 +81,7 @@ export default {
       this.formVisible = true
     },
     submit () {
-      aggOrderModel.repairAggOrderForEdit(this.form, this.dimensionList, this.metricsList)
+      aggOrderModel.repairAggOrderForSubmit(this.form)
       this.$emit('submit', this.position, this.form)
       this.formVisible = false
     },

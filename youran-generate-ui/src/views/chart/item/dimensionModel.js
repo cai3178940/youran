@@ -3,65 +3,49 @@ import searchUtil from '../searchUtil'
 
 function initFormBean () {
   return {
-    _displayText: '',
     joinIndex: null,
     fieldId: null,
-    granularity: null
-  }
-}
-
-function initTmp () {
-  return {
+    granularity: null,
     // 维度字段下拉框绑定对象
     tmp1: {
       key: '',
       field: null,
       joinIndex: null
-    }
+    },
+    tmp2: {}
   }
 }
 
-/**
- * 从form中抽取数据到tmp
- */
-function formToTmp (form, tmp, entityFieldOptions) {
-  const [joinIndex, entity] = entityFieldOptions.find(
-    ([joinIndex, entity]) => joinIndex === form.joinIndex)
-  const field = searchUtil.findFieldInEntity(entity, form.fieldId)
-  tmp.tmp1 = {
-    key: joinIndex + '_' + field.fieldId,
-    field: field,
-    joinIndex: joinIndex
-  }
+function displayText (dimension) {
+  return dimension.tmp2.display(
+    dimension.tmp1.field.jfieldType, 't' + dimension.joinIndex + '.' + dimension.tmp1.field.fieldName)
 }
 
 /**
  * 从tmp中抽取数据到form
  */
-function tmpToForm (tmp, form) {
-  const field = tmp.tmp1.field
-  form.joinIndex = tmp.tmp1.joinIndex
-  form.fieldId = field.fieldId
-  const granularityOption = chartOptions.getGranularityOption(form.granularity)
-  form._displayText = granularityOption.display(
-    field.jfieldType, 't' + form.joinIndex + '.' + field.fieldName)
+function repairDimensionForSubmit (form) {
+  form.joinIndex = form.tmp1.joinIndex
+  form.granularity = form.tmp2.value
+  form.fieldId = form.tmp1.field.fieldId
 }
 
 /**
  * 表单回显时修复维度条件数据
  */
 function repairDimensionForEdit (dimension, sourceForm) {
-  const joinIndex = dimension.joinIndex
-  const field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, dimension.fieldId)[1]
-  const granularityOption = chartOptions.getGranularityOption(dimension.granularity)
-  dimension._displayText = granularityOption.display(
-    field.jfieldType, 't' + dimension.joinIndex + '.' + field.fieldName)
+  const field = searchUtil.findEntityFieldInFormBean(sourceForm, dimension.joinIndex, dimension.fieldId)[1]
+  dimension.tmp2 = chartOptions.getGranularityOption(dimension.granularity)
+  dimension.tmp1 = {
+    key: dimension.joinIndex + '_' + field.fieldId,
+    field: field,
+    joinIndex: dimension.joinIndex
+  }
 }
 
 export default {
   initFormBean,
-  initTmp,
-  formToTmp,
-  tmpToForm,
-  repairDimensionForEdit
+  displayText,
+  repairDimensionForEdit,
+  repairDimensionForSubmit
 }
