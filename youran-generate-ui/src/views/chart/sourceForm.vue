@@ -39,7 +39,8 @@
           </el-form-item>
           <template v-for="(join,index) in form.joins">
             <!-- 关联(表)： inner join entity_1 t1 移除关联 -->
-            <el-form-item :key="'a'+index">
+            <el-form-item :key="'a'+index" :prop="'joins.' + index"
+                          :rules="getJoinRuleTmp1()">
               <help-popover name="chartSource.joins">
                 <!-- 关联(join方式)： inner join -->
                 <el-col :span="6" class="col-left">
@@ -87,7 +88,8 @@
               </help-popover>
             </el-form-item>
             <!-- 关联： on t0.xx_id = t1.xx_id -->
-            <el-form-item :key="'b'+index">
+            <el-form-item :key="'b'+index" :prop="'joins.' + index"
+                          :rules="getJoinRuleTmp2()">
               <help-popover name="chartSource.joins">
                 <!-- 关联： on  -->
                 <el-col :span="2" class="col-left" style="text-align: center;">
@@ -419,7 +421,7 @@ export default {
       this.changeForm()
       this.form.entity = this.entityOptions.find(value => value.entityId === entityId)
       this.loadEntityFields(this.form.entity)
-      module.repairAtJoinChange(this.form)
+      module.repairAtJoinChange(this.form, 0)
     },
     loadEntityFields (entity) {
       if (entity.fieldList.length) {
@@ -429,6 +431,30 @@ export default {
         .then(data => {
           entity.fieldList = data
         })
+    },
+    getJoinRuleTmp1 () {
+      return {
+        validator (rule, join, callback) {
+          if (!join.right.tmp1.key) {
+            callback(new Error('请选择关联对象'))
+          } else {
+            callback()
+          }
+        },
+        trigger: 'change'
+      }
+    },
+    getJoinRuleTmp2 () {
+      return {
+        validator (rule, join, callback) {
+          if (!join.left.tmp2.key || !join.right.tmp2.key) {
+            callback(new Error('请选择关联字段'))
+          } else {
+            callback()
+          }
+        },
+        trigger: 'change'
+      }
     },
     /**
      * 获取某个关联之前的关联实体
@@ -477,7 +503,7 @@ export default {
         part.mtm = part.tmp1.obj
         part.mtmId = part.tmp1.obj.mtmId
       }
-      module.repairAtJoinChange(this.form)
+      module.repairAtJoinChange(this.form, part.joinIndex)
       this.changeForm()
     },
     /**

@@ -41,6 +41,16 @@ function initJoinDTO (leftIndex, rightIndex) {
   return join
 }
 
+function initJoinPartTmp2 (joinIndex) {
+  return {
+    key: '', // [joinPartType]_[objId]_[fieldId]
+    joinPartType: '',
+    joinIndex: joinIndex,
+    obj: null,
+    field: null
+  }
+}
+
 /**
  * 初始化关联左/右部分
  * @param joinIndex 关联序号
@@ -58,13 +68,7 @@ function initJoinPartDTO (joinIndex, isRight) {
     entity: null,
     mtm: null,
     field: null,
-    tmp2: {
-      key: '', // [joinPartType]_[objId]_[fieldId]
-      joinPartType: '',
-      joinIndex: joinIndex,
-      obj: null,
-      field: null
-    }
+    tmp2: initJoinPartTmp2(joinIndex)
   }
   if (isRight) {
     joinPart.tmp1 = {
@@ -128,18 +132,46 @@ function repairAtDetailColumnChange (form) {
  * 修改关联时修复表单数据错误
  * @param form 表单数据
  */
-function repairAtJoinChange (form) {
-  // 移除失效的明细列
-  _remove(form.detailColumnList, detailColumn => {
-    if (detailColumn.custom) {
+function repairAtJoinChange (form, joinIndex) {
+  // 清理join的左侧字段
+  form.joins.forEach(join => {
+    if (join.left.joinIndex === joinIndex) {
+      join.left = initJoinPartDTO(0, false)
+    }
+    if (join.right.joinIndex === joinIndex) {
+      join.right.fieldId = null
+      join.right.field = null
+      join.right.mtmField = null
+      join.right.tmp2 = initJoinPartTmp2(joinIndex)
+    }
+  })
+  function predicate (item) {
+    if (item.joinIndex !== joinIndex) {
       return false
     }
-    const [entity, field] = searchUtil.findEntityFieldInFormBean(form, detailColumn.joinIndex, detailColumn.fieldId)
+    if (item.custom) {
+      return false
+    }
+    const [entity, field] = searchUtil.findEntityFieldInFormBean(form, item.joinIndex, item.fieldId)
     if (entity && field) {
       return false
     }
     return true
-  })
+  }
+  // 移除失效的明细列
+  _remove(form.detailColumnList, predicate)
+  // 移除失效的where条件
+  _remove(form.whereList, predicate)
+  // 移除失效的明细排序
+  _remove(form.detailOrderList, detailOrder => predicate(detailOrder.detailColumn))
+  // 移除失效的维度
+  _remove(form.dimensionList, predicate)
+  // 移除失效的指标
+  _remove(form.metricsList, predicate)
+  // 移除失效的having
+  _remove(form.havingList, having => predicate(having.metrics))
+  // 移除失效的聚合排序
+  _remove(form.aggOrderList, aggOrder => predicate(aggOrder.parentItem))
 }
 
 /**
