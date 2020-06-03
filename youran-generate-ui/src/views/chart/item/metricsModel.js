@@ -66,6 +66,7 @@ function repairMetricsForSubmit (metrics) {
     metrics.aggFunction = metrics.tmp2.value
   } else {
     metrics.key = 'custom_' + shortid.generate()
+    metrics.joinIndex = 0
   }
 }
 

@@ -38,7 +38,7 @@ function initChartItemByMetrics (metrics) {
   let titleAlias
   if (metrics.custom) {
     alias = 'custom' + sourceItemId
-    titleAlias = '【自定义】'
+    titleAlias = '【自定义指标】'
   } else {
     alias = metrics.field.jfieldName
     titleAlias = metrics.field.fieldDesc

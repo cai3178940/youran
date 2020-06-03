@@ -22,7 +22,7 @@ function initChartItemByDetailColumn (detailColumn) {
   let titleAlias
   if (detailColumn.custom) {
     alias = 'custom' + sourceItemId
-    titleAlias = '【自定义】'
+    titleAlias = '【自定义列】'
   } else {
     alias = detailColumn.field.jfieldName
     titleAlias = detailColumn.field.fieldDesc

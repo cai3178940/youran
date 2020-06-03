@@ -77,6 +77,8 @@ function repairWhereForSubmit (where) {
     } else if (where.tmp2.filterValueType === 3) {
       where.filterValue = where.tmp5
     }
+  } else {
+    where.joinIndex = 0
   }
 }
 
