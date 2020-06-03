@@ -3,6 +3,7 @@ import searchUtil from '../searchUtil'
 
 function initFormBean () {
   return {
+    key: '',
     joinIndex: null,
     fieldId: null,
     granularity: null,
@@ -12,6 +13,7 @@ function initFormBean () {
       field: null,
       joinIndex: null
     },
+    // 粒度绑定对象
     tmp2: {}
   }
 }
@@ -25,6 +27,7 @@ function displayText (dimension) {
  * 从tmp中抽取数据到form
  */
 function repairDimensionForSubmit (form) {
+  form.key = 'dimension_' + form.tmp1.joinIndex + '_' + form.tmp1.field.fieldId
   form.joinIndex = form.tmp1.joinIndex
   form.granularity = form.tmp2.value
   form.fieldId = form.tmp1.field.fieldId
@@ -35,6 +38,7 @@ function repairDimensionForSubmit (form) {
  */
 function repairDimensionForEdit (dimension, sourceForm) {
   const field = searchUtil.findEntityFieldInFormBean(sourceForm, dimension.joinIndex, dimension.fieldId)[1]
+  dimension.key = 'dimension_' + dimension.joinIndex + '_' + field.fieldId
   dimension.tmp2 = chartOptions.getGranularityOption(dimension.granularity)
   dimension.tmp1 = {
     key: dimension.joinIndex + '_' + field.fieldId,

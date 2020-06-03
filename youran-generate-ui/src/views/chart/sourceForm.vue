@@ -198,7 +198,8 @@
                          plain>
                 {{customColumn | displayDetailColumn}}
               </el-button>
-              <el-button type="primary" @click="addCustomColumn" class="inner-form-button"
+              <el-button type="success" @click="addCustomColumn"
+                         class="inner-form-button inner-add-button"
                          icon="el-icon-plus" plain>
               </el-button>
             </help-popover>
@@ -212,7 +213,8 @@
                          plain>
                 {{where | displayWhere}}
               </el-button>
-              <el-button type="primary" @click="addWhere" class="inner-form-button"
+              <el-button type="success" @click="addWhere"
+                         class="inner-form-button inner-add-button"
                          icon="el-icon-plus" plain>
               </el-button>
             </help-popover>
@@ -226,7 +228,8 @@
                          plain>
                 {{detailOrder | displayDetailOrder}}
               </el-button>
-              <el-button type="primary" @click="addDetailOrder" class="inner-form-button"
+              <el-button type="success" @click="addDetailOrder"
+                         class="inner-form-button inner-add-button"
                          icon="el-icon-plus" plain>
               </el-button>
             </help-popover>
@@ -240,7 +243,8 @@
                          plain>
                 {{dimension | displayDimension}}
               </el-button>
-              <el-button type="primary" @click="addDimension" class="inner-form-button"
+              <el-button type="success" @click="addDimension"
+                         class="inner-form-button inner-add-button"
                          icon="el-icon-plus" plain>
               </el-button>
             </help-popover>
@@ -254,7 +258,8 @@
                          plain>
                 {{metrics | displayMetrics}}
               </el-button>
-              <el-button type="primary" @click="addMetrics" class="inner-form-button"
+              <el-button type="success" @click="addMetrics"
+                         class="inner-form-button inner-add-button"
                          icon="el-icon-plus" plain>
               </el-button>
             </help-popover>
@@ -268,7 +273,8 @@
                          plain>
                 {{having | displayHaving}}
               </el-button>
-              <el-button type="primary" @click="addHaving" class="inner-form-button"
+              <el-button type="success" @click="addHaving"
+                         class="inner-form-button inner-add-button"
                          icon="el-icon-plus" plain>
               </el-button>
             </help-popover>
@@ -282,7 +288,8 @@
                          plain>
                 {{aggOrder | displayAggOrder}}
               </el-button>
-              <el-button type="primary" @click="addAggOrder" class="inner-form-button"
+              <el-button type="success" @click="addAggOrder"
+                         class="inner-form-button inner-add-button"
                          icon="el-icon-plus" plain>
               </el-button>
             </help-popover>
@@ -788,6 +795,9 @@ export default {
     }
     .inner-form-button {
       margin: 0 10px 5px 0;
+    }
+    .inner-add-button {
+      border-style: dashed;
     }
   }
 

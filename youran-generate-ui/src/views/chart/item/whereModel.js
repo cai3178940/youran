@@ -33,7 +33,7 @@ function initFormBean () {
 
 function displayText (form) {
   if (form.custom) {
-    return '[自定义内容]'
+    return '[自定义过滤]'
   }
   return 't' + form.joinIndex + '.' + form.field.fieldName +
     form.tmp2.display(form.field.jfieldType, form.filterValue, form.timeGranularity)
