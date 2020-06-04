@@ -27,11 +27,11 @@ function initFormBean () {
   }
 }
 
-function displayText (form) {
-  if (form.custom) {
+function displayText (metrics) {
+  if (metrics.custom) {
     return '[自定义指标]'
   }
-  return form.tmp2.display('t' + form.joinIndex + '.' + form.field.fieldName)
+  return metrics.tmp2.display('t' + metrics.joinIndex + '.' + metrics.field.fieldName)
 }
 
 /**
@@ -40,12 +40,13 @@ function displayText (form) {
 function repairMetricsForEdit (metrics, sourceForm) {
   const joinIndex = metrics.joinIndex
   if (!metrics.custom) {
-    const field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, metrics.fieldId)[1]
-    metrics.key = 'metrics_' + joinIndex + '_' + field.fieldId
-    metrics.field = field
+    if (!metrics.field) {
+      metrics.field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, metrics.fieldId)[1]
+    }
+    metrics.key = 'metrics_' + joinIndex + '_' + metrics.field.fieldId
     metrics.tmp1 = {
-      key: joinIndex + '_' + field.fieldId,
-      field: field,
+      key: joinIndex + '_' + metrics.field.fieldId,
+      field: metrics.field,
       joinIndex: joinIndex
     }
     metrics.tmp2 = chartOptions.getAggFunctionOption(metrics.aggFunction)

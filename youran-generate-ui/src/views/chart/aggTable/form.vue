@@ -237,11 +237,11 @@ export default {
           return fieldApi.getListByFieldIds(fieldIds)
         })
         .then(fieldList => {
-          // 将字段详情放入每个维度列中
+          // 将字段详情放入每个维度中
           this.sourceForm.dimensionList.forEach(dimension => {
             dimension.field = fieldList.find(field => field.fieldId === dimension.fieldId)
           })
-          // 将字段详情放入每个指标列中
+          // 将字段详情放入每个指标中
           this.sourceForm.metricsList.forEach(metrics => {
             metrics.field = fieldList.find(field => field.fieldId === metrics.fieldId)
           })

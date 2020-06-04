@@ -38,13 +38,13 @@
             <help-popover name="chart.axisX">
               <!-- 下拉框 -->
               <el-col :span="15" class="col-left">
-                <el-select v-model="form.axisX" value-key="key"
+                <el-select v-model="form.axisX" value-key="sourceItemId"
                            style="width:100%;" placeholder="请选择维度"
                            filterable>
-                  <el-option v-for="dimension in dimensionList"
+                  <el-option v-for="dimension in sourceForm.dimensionList"
                              :disabled="dimension === form.axisX2"
                              :key="dimension.key" :label="dimension | displayDimension"
-                             :value="dimension">
+                             :value="initChartItemByDimension(dimension)">
                   </el-option>
                 </el-select>
               </el-col>
@@ -68,13 +68,13 @@
             <help-popover name="chart.axisX2">
               <!-- 下拉框 -->
               <el-col :span="15" class="col-left">
-                <el-select v-model="form.axisX2" value-key="key"
+                <el-select v-model="form.axisX2" value-key="sourceItemId"
                            style="width:100%;" placeholder="请选择维度"
                            filterable>
-                  <el-option v-for="dimension in dimensionList"
+                  <el-option v-for="dimension in sourceForm.dimensionList"
                              :disabled="dimension === form.axisX"
                              :key="dimension.key" :label="dimension | displayDimension"
-                             :value="dimension">
+                             :value="initChartItemByDimension(dimension)">
                   </el-option>
                 </el-select>
               </el-col>
@@ -95,13 +95,13 @@
             <help-popover name="chart.axisYList">
               <!-- 下拉框 -->
               <el-col :span="15" class="col-left">
-                <el-select v-model="form.axisYList[0]" value-key="key"
+                <el-select v-model="form.axisYList[0]" value-key="sourceItemId"
                            style="width:100%;" placeholder="请选择指标"
                            filterable>
-                  <el-option v-for="metrics in metricsList"
-                             :disabled="form.axisYList[0]!== metrics && form.axisYList.contains(metrics)"
+                  <el-option v-for="metrics in sourceForm.metricsList"
+                             :disabled="form.axisYList[0]!== metrics && form.axisYList.includes(metrics)"
                              :key="metrics.key" :label="metrics | displayMetrics"
-                             :value="metrics">
+                             :value="initChartItemByMetrics(metrics)">
                   </el-option>
                 </el-select>
               </el-col>
@@ -127,13 +127,13 @@
             <help-popover name="chart.axisYList2">
               <!-- 下拉框 -->
               <el-col :span="15" class="col-left">
-                <el-select v-model="form.axisYList[i]" value-key="key"
+                <el-select v-model="form.axisYList[i]" value-key="sourceItemId"
                            style="width:100%;" placeholder="请选择指标"
                            filterable>
-                  <el-option v-for="metrics in metricsList"
-                             :disabled="form.axisYList[i]!== metrics && form.axisYList.contains(metrics)"
+                  <el-option v-for="metrics in sourceForm.metricsList"
+                             :disabled="form.axisYList[i]!== metrics && form.axisYList.includes(metrics)"
                              :key="metrics.key" :label="metrics | displayMetrics"
-                             :value="metrics">
+                             :value="initChartItemByMetrics(metrics)">
                   </el-option>
                 </el-select>
               </el-col>
@@ -167,7 +167,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import barLineApi from '@/api/chart/barLine'
@@ -196,8 +195,6 @@ export default {
       edit: edit,
       axisX2Visible: false,
       axisYListVisible: 0,
-      dimensionList: [],
-      metricsList: [],
       form: model.initBarLineFormBean(this.projectId),
       sourceForm: sourceModel.initSourceFormBean(this.projectId),
       formLoading: false,
@@ -215,6 +212,8 @@ export default {
     displayMetrics: metricsModel.displayText
   },
   methods: {
+    initChartItemByDimension: model.initChartItemByDimension,
+    initChartItemByMetrics: model.initChartItemByMetrics,
     removeAxisX2 () {
       this.form.axisX2 = null
       this.axisX2Visible = false
@@ -223,8 +222,8 @@ export default {
       this.form.axisYList.splice(i, 1)
       this.axisYListVisible = this.axisYListVisible - 1
     },
-    editItem (item) {
-      // todo
+    editItem (chartItem) {
+      this.$refs.columnForm.show(chartItem)
     },
     findModules (queryString, cb) {
       const action = () => {
@@ -242,40 +241,6 @@ export default {
             this.entityModules = data
             action()
           })
-      }
-    },
-    handleCommand: function (command) {
-      this[command.method](command.arg)
-    },
-    removeColumn (chartItem) {
-      const index = this.form.columnList.indexOf(chartItem)
-      const item = this.form.columnList.splice(index, 1)[0]
-      this.form.hiddenColumnList.push(item)
-    },
-    editColumn (chartItem) {
-      this.$refs.columnForm.show(chartItem)
-    },
-    addColumn (chartItem) {
-      const index = this.form.hiddenColumnList.indexOf(chartItem)
-      const item = this.form.hiddenColumnList.splice(index, 1)[0]
-      this.form.columnList.push(item)
-    },
-    moveLeft (chartItem) {
-      const arr = this.form.columnList
-      const index = arr.indexOf(chartItem)
-      if (index > 0) {
-        const tmp = arr[index]
-        arr.splice(index, 1)
-        Vue.nextTick(() => arr.splice(index - 1, 0, tmp))
-      }
-    },
-    moveRight (chartItem) {
-      const arr = this.form.columnList
-      const index = arr.indexOf(chartItem)
-      if (index < arr.length - 1) {
-        const tmp = arr[index]
-        arr.splice(index, 1)
-        Vue.nextTick(() => arr.splice(index + 1, 0, tmp))
       }
     },
     submit () {
@@ -307,21 +272,27 @@ export default {
       }
     },
     /**
-     * 加载数据源及明细列字段详情
+     * 加载数据源及维度列和指标列字段详情
      */
-    loadSourceWithDetailColumnFields () {
+    loadSourceWithDimensionMetricsFields () {
       return chartSourceApi.getWithItems(this.form.sourceId)
         .then(formBean => {
           this.sourceForm = formBean
-          // 获取明细列对应的字段id
-          const fieldIds = searchUtil.findFieldIdsInDetailColumns(formBean.detailColumnList)
+          // 获取维度指标对应的字段id
+          const fieldIds = searchUtil.findFieldIdsInDimensionAndMetrics(formBean.dimensionList, formBean.metricsList)
           // 从后端加载这些字段的详细信息
           return fieldApi.getListByFieldIds(fieldIds)
         })
         .then(fieldList => {
-          // 将字段详情放入每个明细列中
-          this.sourceForm.detailColumnList.forEach(detailColumn => {
-            detailColumn.field = fieldList.find(field => field.fieldId === detailColumn.fieldId)
+          // 将字段详情放入每个维度中
+          this.sourceForm.dimensionList.forEach(dimension => {
+            dimension.field = fieldList.find(field => field.fieldId === dimension.fieldId)
+            dimensionModel.repairDimensionForEdit(dimension, this.sourceForm)
+          })
+          // 将字段详情放入每个指标中
+          this.sourceForm.metricsList.forEach(metrics => {
+            metrics.field = fieldList.find(field => field.fieldId === metrics.fieldId)
+            metricsModel.repairMetricsForEdit(metrics, this.sourceForm)
           })
         })
     },
@@ -329,21 +300,24 @@ export default {
      * 修复添加表单数据
      */
     repairAddChartForm () {
-      this.form.columnList = this.sourceForm.detailColumnList
-        .map(detailColumn => model.initChartItemByDetailColumn(detailColumn))
+      // todo
     },
     /**
      * 修复编辑表单数据
      */
     repairEditChartForm () {
-      // 找出上一步新增加的列，并转换成chartItem后放入隐藏列中
-      const columnToAdd = _differenceBy(this.sourceForm.detailColumnList, this.form.columnList,
-        this.form.hiddenColumnList, 'sourceItemId')
-        .map(detailColumn => model.initChartItemByDetailColumn(detailColumn))
-      this.form.hiddenColumnList.push(...columnToAdd)
-      // 删除匹配不上detailColumn的列
-      this.form.columnList = _intersectionBy(this.form.columnList, this.sourceForm.detailColumnList, 'sourceItemId')
-      this.form.hiddenColumnList = _intersectionBy(this.form.hiddenColumnList, this.sourceForm.detailColumnList, 'sourceItemId')
+      // 对比数据源和当前表单中的dimension,并处理差异
+      const dimensionToAdd = _differenceBy(this.sourceForm.dimensionList, this.form.dimensionList, 'sourceItemId')
+        .map(dimension => model.initChartItemByDimension(dimension))
+      const interDimension = _intersectionBy(this.form.dimensionList, this.sourceForm.dimensionList, 'sourceItemId')
+      interDimension.push(...dimensionToAdd)
+      this.form.dimensionList = interDimension
+      // 对比数据源和当前表单中的metrics,并处理差异
+      const metricsToAdd = _differenceBy(this.sourceForm.metricsList, this.form.metricsList, 'sourceItemId')
+        .map(metrics => model.initChartItemByMetrics(metrics))
+      const interMetrics = _intersectionBy(this.form.metricsList, this.sourceForm.metricsList, 'sourceItemId')
+      interMetrics.push(...metricsToAdd)
+      this.form.metricsList = interMetrics
     }
   },
   created () {
@@ -351,13 +325,11 @@ export default {
     if (this.edit) {
       barLineApi.get(this.chartId)
         .then(formBean => {
-          formBean.columnList.concat(formBean.hiddenColumnList)
-            .forEach(value => {
-              value.detailColumn = {}
-            })
+          formBean.dimensionList.forEach(value => { value.dimension = {} })
+          formBean.metricsList.forEach(value => { value.metrics = {} })
           this.form = formBean
         })
-        .then(() => this.loadSourceWithDetailColumnFields())
+        .then(() => this.loadSourceWithDimensionMetricsFields())
         .then(() => this.repairEditChartForm())
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => {
@@ -366,7 +338,7 @@ export default {
     } else {
       this.form.sourceId = this.$router.currentRoute.query.sourceId
       if (this.form.sourceId) {
-        this.loadSourceWithDetailColumnFields()
+        this.loadSourceWithDimensionMetricsFields()
           .then(() => this.repairAddChartForm())
           .catch(error => this.$common.showNotifyError(error))
           .finally(() => {
