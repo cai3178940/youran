@@ -29,6 +29,7 @@ import chartList from '@/views/chart/list.vue'
 import sourceForm from '@/views/chart/sourceForm.vue'
 import detailListForm from '@/views/chart/detailList/form.vue'
 import aggTableForm from '@/views/chart/aggTable/form.vue'
+import barLineForm from '@/views/chart/barLine/form.vue'
 
 Vue.use(Router)
 
@@ -127,6 +128,16 @@ export default new Router({
         {
           path: 'aggTable/edit/:chartId/next',
           component: aggTableForm,
+          props: true
+        },
+        {
+          path: 'barLine/add/next',
+          component: barLineForm,
+          props: true
+        },
+        {
+          path: 'barLine/edit/:chartId/next',
+          component: barLineForm,
           props: true
         }
       ]
