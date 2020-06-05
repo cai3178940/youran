@@ -3,18 +3,18 @@ package com.youran.generate.web.rest.chart;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.WebConst;
-import com.youran.generate.pojo.dto.chart.AggTableAddDTO;
-import com.youran.generate.pojo.dto.chart.AggTableUpdateDTO;
-import com.youran.generate.pojo.dto.chart.DetailListAddDTO;
-import com.youran.generate.pojo.dto.chart.DetailListUpdateDTO;
+import com.youran.generate.pojo.dto.chart.*;
 import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.chart.AggTablePO;
+import com.youran.generate.pojo.po.chart.BarLinePO;
 import com.youran.generate.pojo.po.chart.DetailListPO;
 import com.youran.generate.pojo.qo.chart.MetaChartQO;
 import com.youran.generate.pojo.vo.chart.AggTableVO;
+import com.youran.generate.pojo.vo.chart.BarLineVO;
 import com.youran.generate.pojo.vo.chart.DetailListVO;
 import com.youran.generate.pojo.vo.chart.MetaChartListVO;
 import com.youran.generate.service.chart.AggTableService;
+import com.youran.generate.service.chart.BarLineService;
 import com.youran.generate.service.chart.DetailListService;
 import com.youran.generate.service.chart.MetaChartService;
 import com.youran.generate.web.AbstractController;
@@ -46,6 +46,8 @@ public class MetaChartController extends AbstractController implements MetaChart
     private AggTableService aggTableService;
     @Autowired
     private DetailListService detailListService;
+    @Autowired
+    private BarLineService barLineService;
 
     @Override
     @PostMapping("/agg_table")
@@ -90,6 +92,30 @@ public class MetaChartController extends AbstractController implements MetaChart
     @GetMapping("/detail_list/{chartId}")
     public ResponseEntity<DetailListVO> showDetailList(@PathVariable Integer chartId) {
         DetailListVO vo = detailListService.show(chartId);
+        return ResponseEntity.ok(vo);
+    }
+
+
+    @Override
+    @PostMapping("/bar_line")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<BarLineVO> saveBarLine(@Valid @RequestBody BarLineAddDTO addDTO) throws Exception {
+        BarLinePO po = barLineService.save(addDTO);
+        return ResponseEntity.created(new URI(apiPath + "/meta_chart/bar_line/" + po.getChartId()))
+            .body(MetaChartMapper.INSTANCE.toBarLineVO(po));
+    }
+
+    @Override
+    @PutMapping("/bar_line")
+    public ResponseEntity<BarLineVO> updateBarLine(@Valid @RequestBody BarLineUpdateDTO updateDTO) {
+        BarLinePO po = barLineService.update(updateDTO);
+        return ResponseEntity.ok(MetaChartMapper.INSTANCE.toBarLineVO(po));
+    }
+
+    @Override
+    @GetMapping("/bar_line/{chartId}")
+    public ResponseEntity<BarLineVO> showBarLine(@PathVariable Integer chartId) {
+        BarLineVO vo = barLineService.show(chartId);
         return ResponseEntity.ok(vo);
     }
 

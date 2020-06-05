@@ -174,8 +174,6 @@ import columnForm from '../item/columnForm'
 import model from './model'
 import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
-import _differenceBy from 'lodash/differenceBy'
-import _intersectionBy from 'lodash/intersectionBy'
 import dimensionModel from '../item/dimensionModel'
 import metricsModel from '../item/metricsModel'
 
@@ -307,29 +305,6 @@ export default {
               this.sourceForm = sourceForm
             })
         })
-    },
-    /**
-     * 修复添加表单数据
-     */
-    repairAddChartForm () {
-      // todo
-    },
-    /**
-     * 修复编辑表单数据
-     */
-    repairEditChartForm () {
-      // 对比数据源和当前表单中的dimension,并处理差异
-      const dimensionToAdd = _differenceBy(this.sourceForm.dimensionList, this.form.dimensionList, 'sourceItemId')
-        .map(dimension => model.initChartItemByDimension(dimension))
-      const interDimension = _intersectionBy(this.form.dimensionList, this.sourceForm.dimensionList, 'sourceItemId')
-      interDimension.push(...dimensionToAdd)
-      this.form.dimensionList = interDimension
-      // 对比数据源和当前表单中的metrics,并处理差异
-      const metricsToAdd = _differenceBy(this.sourceForm.metricsList, this.form.metricsList, 'sourceItemId')
-        .map(metrics => model.initChartItemByMetrics(metrics))
-      const interMetrics = _intersectionBy(this.form.metricsList, this.sourceForm.metricsList, 'sourceItemId')
-      interMetrics.push(...metricsToAdd)
-      this.form.metricsList = interMetrics
     }
   },
   created () {
@@ -337,12 +312,16 @@ export default {
     if (this.edit) {
       barLineApi.get(this.chartId)
         .then(formBean => {
-          formBean.dimensionList.forEach(value => { value.dimension = {} })
-          formBean.metricsList.forEach(value => { value.metrics = {} })
+          if (formBean.axisX) {
+            formBean.axisX.dimension = {}
+          }
+          if (formBean.axisX2) {
+            formBean.axisX2.dimension = {}
+          }
+          formBean.axisYList.forEach(value => { value.metrics = {} })
           this.form = formBean
         })
         .then(() => this.loadSourceWithDimensionMetricsFields())
-        .then(() => this.repairEditChartForm())
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => {
           this.formLoading = false
@@ -351,7 +330,6 @@ export default {
       this.form.sourceId = this.$router.currentRoute.query.sourceId
       if (this.form.sourceId) {
         this.loadSourceWithDimensionMetricsFields()
-          .then(() => this.repairAddChartForm())
           .catch(error => this.$common.showNotifyError(error))
           .finally(() => {
             this.formLoading = false
