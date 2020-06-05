@@ -42,7 +42,7 @@
                            style="width:100%;" placeholder="请选择维度"
                            filterable>
                   <el-option v-for="dimension in sourceForm.dimensionList"
-                             :disabled="dimension === form.axisX2"
+                             :disabled="dimensionOptionDisabled(form.axisX2, dimension)"
                              :key="dimension.key" :label="dimension | displayDimension"
                              :value="initChartItemByDimension(dimension)">
                   </el-option>
@@ -57,7 +57,7 @@
               </el-col>
               <!-- 添加附加维度 -->
               <el-col :span="5" class="col-right">
-                <el-button v-if="!axisX2Visible && axisYListVisible === 0"
+                <el-button v-if="!axisX2Visible && axisYListVisible === 0 && sourceForm.dimensionList.length > 1"
                            size="small" type="text" @click="axisX2Visible = true">
                   添加维度
                 </el-button>
@@ -72,7 +72,7 @@
                            style="width:100%;" placeholder="请选择维度"
                            filterable>
                   <el-option v-for="dimension in sourceForm.dimensionList"
-                             :disabled="dimension === form.axisX"
+                             :disabled="dimensionOptionDisabled(form.axisX, dimension)"
                              :key="dimension.key" :label="dimension | displayDimension"
                              :value="initChartItemByDimension(dimension)">
                   </el-option>
@@ -99,7 +99,7 @@
                            style="width:100%;" placeholder="请选择指标"
                            filterable>
                   <el-option v-for="metrics in sourceForm.metricsList"
-                             :disabled="form.axisYList[0]!== metrics && form.axisYList.includes(metrics)"
+                             :disabled="metricsOptionDisabled(0, metrics)"
                              :key="metrics.key" :label="metrics | displayMetrics"
                              :value="initChartItemByMetrics(metrics)">
                   </el-option>
@@ -114,7 +114,7 @@
               </el-col>
               <!-- 增加指标 -->
               <el-col :span="5" class="col-right">
-                <el-button v-if="!axisX2Visible && form.axisYList.length < 2 "
+                <el-button v-if="!axisX2Visible && sourceForm.metricsList.length > axisYListVisible+1"
                            size="small" type="text" @click="axisYListVisible ++">
                   添加指标
                 </el-button>
@@ -131,7 +131,7 @@
                            style="width:100%;" placeholder="请选择指标"
                            filterable>
                   <el-option v-for="metrics in sourceForm.metricsList"
-                             :disabled="form.axisYList[i]!== metrics && form.axisYList.includes(metrics)"
+                             :disabled="metricsOptionDisabled(i, metrics)"
                              :key="metrics.key" :label="metrics | displayMetrics"
                              :value="initChartItemByMetrics(metrics)">
                   </el-option>
@@ -146,8 +146,7 @@
               </el-col>
               <!-- 移除指标 -->
               <el-col :span="5" class="col-right">
-                <el-button v-if="!axisX2Visible && form.axisYList.length < 2 "
-                           size="small" type="text" @click="removeAxisY(i)">
+                <el-button size="small" type="text" @click="removeAxisY(i)">
                   移除指标
                 </el-button>
               </el-col>
@@ -214,6 +213,19 @@ export default {
   methods: {
     initChartItemByDimension: model.initChartItemByDimension,
     initChartItemByMetrics: model.initChartItemByMetrics,
+    dimensionOptionDisabled (otherAxisX, dimension) {
+      if (otherAxisX && otherAxisX.dimension === dimension) {
+        return true
+      }
+      return false
+    },
+    metricsOptionDisabled (i, metrics) {
+      const currentItem = this.form.axisYList[i]
+      if (currentItem && currentItem.metrics === metrics) {
+        return false
+      }
+      return !!this.form.axisYList.find(item => item.metrics === metrics)
+    },
     removeAxisX2 () {
       this.form.axisX2 = null
       this.axisX2Visible = false
@@ -276,24 +288,24 @@ export default {
      */
     loadSourceWithDimensionMetricsFields () {
       return chartSourceApi.getWithItems(this.form.sourceId)
-        .then(formBean => {
-          this.sourceForm = formBean
+        .then(sourceForm => {
           // 获取维度指标对应的字段id
-          const fieldIds = searchUtil.findFieldIdsInDimensionAndMetrics(formBean.dimensionList, formBean.metricsList)
+          const fieldIds = searchUtil.findFieldIdsInDimensionAndMetrics(sourceForm.dimensionList, sourceForm.metricsList)
           // 从后端加载这些字段的详细信息
           return fieldApi.getListByFieldIds(fieldIds)
-        })
-        .then(fieldList => {
-          // 将字段详情放入每个维度中
-          this.sourceForm.dimensionList.forEach(dimension => {
-            dimension.field = fieldList.find(field => field.fieldId === dimension.fieldId)
-            dimensionModel.repairDimensionForEdit(dimension, this.sourceForm)
-          })
-          // 将字段详情放入每个指标中
-          this.sourceForm.metricsList.forEach(metrics => {
-            metrics.field = fieldList.find(field => field.fieldId === metrics.fieldId)
-            metricsModel.repairMetricsForEdit(metrics, this.sourceForm)
-          })
+            .then(fieldList => {
+              // 将字段详情放入每个维度中
+              sourceForm.dimensionList.forEach(dimension => {
+                dimension.field = fieldList.find(field => field.fieldId === dimension.fieldId)
+                dimensionModel.repairDimensionForEdit(dimension, sourceForm)
+              })
+              // 将字段详情放入每个指标中
+              sourceForm.metricsList.forEach(metrics => {
+                metrics.field = fieldList.find(field => field.fieldId === metrics.fieldId)
+                metricsModel.repairMetricsForEdit(metrics, sourceForm)
+              })
+              this.sourceForm = sourceForm
+            })
         })
     },
     /**
