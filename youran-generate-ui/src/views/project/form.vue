@@ -3,7 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item>
-        {{edit?'编辑项目':'添加项目'}}
+        {{edit?'编辑项目':'创建项目'}}
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">

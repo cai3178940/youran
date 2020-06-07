@@ -4,7 +4,7 @@
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/chart` }">图表管理</el-breadcrumb-item>
       <el-breadcrumb-item>
-        {{nextEdit?'编辑':'添加'}}{{chartType.label}}（数据源）
+        {{nextEdit?'编辑':'创建'}}{{chartType.label}}（数据源）
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">

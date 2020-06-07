@@ -4,7 +4,7 @@
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/chart` }">图表管理</el-breadcrumb-item>
       <el-breadcrumb-item>
-        {{edit?'编辑':'添加'}}明细表
+        {{edit?'编辑':'创建'}}明细表
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-container v-loading="formLoading" style="border:solid 1px #e6e6e6;">
@@ -252,7 +252,7 @@ export default {
         })
     },
     /**
-     * 修复添加表单数据
+     * 修复创建表单数据
      */
     repairAddChartForm () {
       this.form.columnList = this.sourceForm.detailColumnList

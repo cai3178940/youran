@@ -243,15 +243,15 @@ function initData () {
     // 当前模板文件编辑窗口是否可见
     visible: false,
     contextMenuOptions: menuOptions1,
-    // 是否显示添加模板文件表单
+    // 是否显示创建模板文件表单
     templateFileFormVisible: false,
-    // 添加模板文件表单是否加载中
+    // 创建模板文件表单是否加载中
     templateFileFormLoading: false,
     // 模板文件表单模式
     templateFileFormMode: 'add',
     // 模板文件上传路径
     templateFileUploadUrl: `/${apiPath}/template_file/upload`,
-    // 添加模板文件表单
+    // 创建模板文件表单
     templateFileForm: initTemplateFileFormBean(),
     // 上下文类型
     contextType: options.contextType,

@@ -4,7 +4,7 @@
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/chart` }">图表管理</el-breadcrumb-item>
       <el-breadcrumb-item>
-        {{edit?'编辑':'添加'}}柱线图
+        {{edit?'编辑':'创建'}}柱线图
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-container v-loading="formLoading" style="border:solid 1px #e6e6e6;">

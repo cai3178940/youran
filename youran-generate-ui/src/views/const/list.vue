@@ -21,7 +21,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button @click.native="handleAdd" type="success">添加枚举</el-button>
+            <el-button @click.native="handleAdd" type="success">创建枚举</el-button>
             <el-button @click.native="handleDel" type="danger">删除枚举</el-button>
           </el-form-item>
         </el-form>

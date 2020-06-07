@@ -4,7 +4,7 @@
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/const` }">枚举管理</el-breadcrumb-item>
       <el-breadcrumb-item>
-        {{edit?'编辑枚举':'添加枚举'}}
+        {{edit?'编辑枚举':'创建枚举'}}
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">

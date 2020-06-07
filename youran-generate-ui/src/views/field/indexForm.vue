@@ -5,7 +5,7 @@
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity` }">实体管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/entity/${this.entityId}/field` }">字段管理</el-breadcrumb-item>
       <el-breadcrumb-item>
-        {{edit?'编辑索引':'添加索引'}}
+        {{edit?'编辑索引':'创建索引'}}
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">

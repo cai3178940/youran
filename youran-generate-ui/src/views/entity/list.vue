@@ -21,8 +21,8 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button @click.native="handleAdd" type="success">添加实体</el-button>
-            <el-button @click.native="handleMtmAdd" type="warning">添加多对多</el-button>
+            <el-button @click.native="handleAdd" type="success">创建实体</el-button>
+            <el-button @click.native="handleMtmAdd" type="warning">创建多对多</el-button>
             <el-button @click.native="handleErDiagram" type="primary">查看ER图</el-button>
             <el-button @click.native="handleDel" type="danger">删除</el-button>
           </el-form-item>

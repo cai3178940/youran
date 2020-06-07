@@ -27,7 +27,7 @@
                 <el-button ref="copyButton"
                            @click="showAddTemplateForm"
                            type="success"
-                           style="margin: 0 0 2px 10px;">添加字段</el-button>
+                           style="margin: 0 0 2px 10px;">创建字段</el-button>
               </el-badge>
               <el-button style="margin-left: 10px;" @click.native="handleIndexAdd" type="primary">创建索引</el-button>
               <el-button @click.native="handleDel" type="danger">删除字段</el-button>
@@ -391,7 +391,7 @@ const initListContains = function () {
 }
 
 /**
- * 初始化添加字段模板表单
+ * 初始化创建字段模板表单
  */
 const initTemplateForm = function () {
   return {
@@ -412,13 +412,13 @@ export default {
   },
   data () {
     return {
-      // 控制添加字段窗口的显示
+      // 控制创建字段窗口的显示
       addTemplateFormVisible: false,
       // 可变字段模板
       flexibleTemplate,
       // 系统预置字段
       fixedTemplate,
-      // 添加字段模板表单
+      // 创建字段模板表单
       templateForm: initTemplateForm(),
       // 查询参数
       query: {
@@ -442,7 +442,7 @@ export default {
       listContains: initListContains(),
       // 索引列表
       indexes: [],
-      // 控制字段添加红色渐隐特效
+      // 控制字段创建红色渐隐特效
       addImmFieldIds: [],
       loading: false,
       // 控制外键级联扩展列表弹出框是否显示
@@ -633,7 +633,7 @@ export default {
         .finally(() => { this.loading = false })
     },
     /**
-     * 展示添加字段模板表单
+     * 展示创建字段模板表单
      */
     showAddTemplateForm () {
       this.addTemplateFormVisible = true
@@ -696,9 +696,9 @@ export default {
         type=${type}&template=${this.templateForm.template}&orderNo=${this.templateForm.orderNo}`)
     },
     /**
-     * 立即添加字段
-     * 读取添加模板表单中的数据，调用添加字段接口
-     * 处理字段添加特效
+     * 立即创建字段
+     * 读取创建模板表单中的数据，调用创建字段接口
+     * 处理字段创建特效
      */
     handleAddImm () {
       this.addTemplateFormVisible = false
@@ -716,7 +716,7 @@ export default {
             // 将字段放入特效列表
             this.addImmFieldIds.push(data.fieldId)
             if (refresh) {
-              this.$common.showMsg('success', '添加成功')
+              this.$common.showMsg('success', '创建成功')
               this.doQuery()
                 .then(() => this.doQueryIndex())
                 .then(() => this.doValidateEntityInner())
@@ -742,7 +742,7 @@ export default {
       } else {
         promise = Promise.all(templates.map(temp => doAddImm(temp)))
           .then(() => {
-            this.$common.showMsg('success', '添加成功')
+            this.$common.showMsg('success', '创建成功')
             return this.doQuery()
               .then(() => this.doQueryIndex())
               .then(() => this.doValidateEntityInner())
@@ -838,7 +838,7 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
     },
     /**
-     * 添加索引
+     * 创建索引
      */
     handleIndexAdd () {
       if (!this.selectItems.length) {

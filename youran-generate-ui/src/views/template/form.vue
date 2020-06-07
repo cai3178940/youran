@@ -3,7 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/template' }">模板管理</el-breadcrumb-item>
       <el-breadcrumb-item>
-        {{edit?'编辑模板':'添加模板'}}
+        {{edit?'编辑模板':'创建模板'}}
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
