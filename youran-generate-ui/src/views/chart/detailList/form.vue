@@ -108,7 +108,7 @@
         </el-table>
       </el-main>
     </el-container>
-    <column-form ref="columnForm"></column-form>
+    <chart-item-form ref="chartItemForm"></chart-item-form>
   </div>
 </template>
 
@@ -118,7 +118,7 @@ import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import detailListApi from '@/api/chart/detailList'
 import chartSourceApi from '@/api/chart/chartSource'
-import columnForm from '../item/columnForm'
+import chartItemForm from '../item/chartItemForm'
 import model from './model'
 import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
@@ -132,7 +132,7 @@ export default {
     'chartId'
   ],
   components: {
-    columnForm
+    chartItemForm
   },
   data () {
     const edit = !!this.chartId
@@ -179,7 +179,7 @@ export default {
       this.form.hiddenColumnList.push(item)
     },
     editColumn (chartItem) {
-      this.$refs.columnForm.show(chartItem)
+      this.$refs.chartItemForm.show(chartItem)
     },
     addColumn (chartItem) {
       const index = this.form.hiddenColumnList.indexOf(chartItem)

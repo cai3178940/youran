@@ -111,7 +111,7 @@
         </el-table>
       </el-main>
     </el-container>
-    <column-form ref="columnForm"></column-form>
+    <chart-item-form ref="chartItemForm"></chart-item-form>
   </div>
 </template>
 
@@ -121,7 +121,7 @@ import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import aggTableApi from '@/api/chart/aggTable'
 import chartSourceApi from '@/api/chart/chartSource'
-import columnForm from '../item/columnForm'
+import chartItemForm from '../item/chartItemForm'
 import _differenceBy from 'lodash/differenceBy'
 import _intersectionBy from 'lodash/intersectionBy'
 import model from './model'
@@ -135,7 +135,7 @@ export default {
     'chartId'
   ],
   components: {
-    columnForm
+    chartItemForm
   },
   data () {
     const edit = !!this.chartId
@@ -177,7 +177,7 @@ export default {
       this[command.method](command.arg)
     },
     editColumn (chartItem) {
-      this.$refs.columnForm.show(chartItem)
+      this.$refs.chartItemForm.show(chartItem)
     },
     moveLeft (chartItem, arr) {
       const index = arr.indexOf(chartItem)

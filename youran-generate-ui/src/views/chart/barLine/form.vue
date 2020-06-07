@@ -159,9 +159,10 @@
         </el-form>
       </el-aside>
       <el-main style="border-left:solid 1px #e6e6e6;">
+        <bar-line-chart ref="barLineChart"></bar-line-chart>
       </el-main>
     </el-container>
-    <column-form ref="columnForm"></column-form>
+    <chart-item-form ref="chartItemForm"></chart-item-form>
   </div>
 </template>
 
@@ -170,12 +171,13 @@ import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import barLineApi from '@/api/chart/barLine'
 import chartSourceApi from '@/api/chart/chartSource'
-import columnForm from '../item/columnForm'
+import chartItemForm from '../item/chartItemForm'
 import model from './model'
 import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
 import dimensionModel from '../item/dimensionModel'
 import metricsModel from '../item/metricsModel'
+import barLineChart from './chart'
 
 export default {
   name: 'barLineForm',
@@ -184,7 +186,8 @@ export default {
     'chartId'
   ],
   components: {
-    columnForm
+    chartItemForm,
+    barLineChart
   },
   data () {
     const edit = !!this.chartId
@@ -227,7 +230,7 @@ export default {
       this.axisYListVisible = this.axisYListVisible - 1
     },
     editItem (chartItem) {
-      this.$refs.columnForm.show(chartItem)
+      this.$refs.chartItemForm.show(chartItem)
     },
     findModules (queryString, cb) {
       const action = () => {

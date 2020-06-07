@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="配置列属性" :visible.sync="formVisible" width="50%">
-    <el-form ref="columnForm"
+    <el-form ref="chartItemForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
       <el-form-item label="列名">
@@ -34,7 +34,7 @@
 <script>
 
 export default {
-  name: 'column-form',
+  name: 'chart-item-form',
   data () {
     return {
       formVisible: false,
@@ -66,6 +66,7 @@ export default {
       this.oldForm.valueSuffix = this.form.valueSuffix
       this.oldForm.format = this.form.format
       this.formVisible = false
+      this.$emit('submit', this.oldForm)
     },
     cancel () {
       this.formVisible = false

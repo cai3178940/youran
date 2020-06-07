@@ -56,13 +56,6 @@ function initChartItemByMetrics (metrics) {
   }
 }
 
-/**
- * 模拟图表数据
- */
-function mockChartData () {
-  return []
-}
-
 function getRules () {
   return {
     projectId: [
@@ -95,6 +88,5 @@ export default {
   initBarLineFormBean,
   initChartItemByDimension,
   initChartItemByMetrics,
-  mockChartData,
   getRules
 }

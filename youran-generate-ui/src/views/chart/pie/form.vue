@@ -40,6 +40,7 @@
               <el-col :span="20" class="col-left">
                 <el-select v-model="form.dimension" value-key="sourceItemId"
                            style="width:100%;" placeholder="请选择维度"
+                           @change="renderChart"
                            filterable>
                   <el-option v-for="dimension in sourceForm.dimensionList"
                              :key="dimension.key" :label="dimension | displayDimension"
@@ -62,6 +63,7 @@
               <el-col :span="20" class="col-left">
                 <el-select v-model="form.metrics" value-key="sourceItemId"
                            style="width:100%;" placeholder="请选择指标"
+                           @change="renderChart"
                            filterable>
                   <el-option v-for="metrics in sourceForm.metricsList"
                              :key="metrics.key" :label="metrics | displayMetrics"
@@ -85,9 +87,10 @@
         </el-form>
       </el-aside>
       <el-main style="border-left:solid 1px #e6e6e6;">
+        <pie-chart ref="pieChart"></pie-chart>
       </el-main>
     </el-container>
-    <column-form ref="columnForm"></column-form>
+    <chart-item-form ref="chartItemForm" @submit="renderChart"></chart-item-form>
   </div>
 </template>
 
@@ -96,12 +99,13 @@ import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import pieApi from '@/api/chart/pie'
 import chartSourceApi from '@/api/chart/chartSource'
-import columnForm from '../item/columnForm'
+import chartItemForm from '../item/chartItemForm'
 import model from './model'
 import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
 import dimensionModel from '../item/dimensionModel'
 import metricsModel from '../item/metricsModel'
+import pieChart from './chart'
 
 export default {
   name: 'pieForm',
@@ -110,7 +114,8 @@ export default {
     'chartId'
   ],
   components: {
-    columnForm
+    chartItemForm,
+    pieChart
   },
   data () {
     const edit = !!this.chartId
@@ -130,7 +135,7 @@ export default {
     initChartItemByDimension: model.initChartItemByDimension,
     initChartItemByMetrics: model.initChartItemByMetrics,
     editItem (chartItem) {
-      this.$refs.columnForm.show(chartItem)
+      this.$refs.chartItemForm.show(chartItem)
     },
     findModules (queryString, cb) {
       const action = () => {
@@ -202,6 +207,28 @@ export default {
               this.sourceForm = sourceForm
             })
         })
+    },
+    /**
+     * 修复编辑表单数据
+     */
+    repairEditChartForm () {
+      const dimension = this.sourceForm.dimensionList
+        .find(dimension => dimension.sourceItemId === this.form.dimension.sourceItemId)
+      if (dimension) {
+        this.form.dimension.dimension = dimension
+      } else {
+        this.form.dimension = null
+      }
+      const metrics = this.sourceForm.metricsList
+        .find(metrics => metrics.sourceItemId === this.form.metrics.sourceItemId)
+      if (metrics) {
+        this.form.metrics.metrics = metrics
+      } else {
+        this.form.metrics = null
+      }
+    },
+    renderChart () {
+      this.$refs.pieChart.renderChart(this.form.dimension, this.form.metrics)
     }
   },
   created () {
@@ -218,6 +245,10 @@ export default {
           this.form = formBean
         })
         .then(() => this.loadSourceWithDimensionMetricsFields())
+        .then(() => {
+          this.repairEditChartForm()
+          this.renderChart()
+        })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => {
           this.formLoading = false
@@ -226,6 +257,7 @@ export default {
       this.form.sourceId = this.$router.currentRoute.query.sourceId
       if (this.form.sourceId) {
         this.loadSourceWithDimensionMetricsFields()
+          .then(() => this.renderChart())
           .catch(error => this.$common.showNotifyError(error))
           .finally(() => {
             this.formLoading = false

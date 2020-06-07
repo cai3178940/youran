@@ -55,13 +55,6 @@ function initChartItemByMetrics (metrics) {
   }
 }
 
-/**
- * 模拟图表数据
- */
-function mockChartData () {
-  return []
-}
-
 function getRules () {
   return {
     projectId: [
@@ -94,6 +87,5 @@ export default {
   initPieFormBean,
   initChartItemByDimension,
   initChartItemByMetrics,
-  mockChartData,
   getRules
 }
