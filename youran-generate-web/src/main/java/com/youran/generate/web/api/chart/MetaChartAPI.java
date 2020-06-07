@@ -2,10 +2,7 @@ package com.youran.generate.web.api.chart;
 
 import com.youran.generate.pojo.dto.chart.*;
 import com.youran.generate.pojo.qo.chart.MetaChartQO;
-import com.youran.generate.pojo.vo.chart.AggTableVO;
-import com.youran.generate.pojo.vo.chart.BarLineVO;
-import com.youran.generate.pojo.vo.chart.DetailListVO;
-import com.youran.generate.pojo.vo.chart.MetaChartListVO;
+import com.youran.generate.pojo.vo.chart.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -104,6 +101,34 @@ public interface MetaChartAPI {
         @ApiImplicitParam(name = "chartId", dataType = "int", value = "【柱线图】id", paramType = "path"),
     })
     ResponseEntity<BarLineVO> showBarLine(Integer chartId);
+
+
+    /**
+     * 新增【饼图】
+     */
+    @ApiOperation(value="新增【饼图】")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "addDTO", dataType = "PieAddDTO", value = "新增【饼图】参数", paramType = "body"),
+    })
+    ResponseEntity<PieVO> savePie(PieAddDTO addDTO) throws Exception;
+
+    /**
+     * 修改【饼图】
+     */
+    @ApiOperation(value="修改【饼图】")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "updateDTO", dataType = "PieUpdateDTO", value = "修改【饼图】参数", paramType = "body"),
+    })
+    ResponseEntity<PieVO> updatePie(PieUpdateDTO updateDTO);
+
+    /**
+     * 查看【饼图】详情
+     */
+    @ApiOperation(value="查看【饼图】详情")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "chartId", dataType = "int", value = "【饼图】id", paramType = "path"),
+    })
+    ResponseEntity<PieVO> showPie(Integer chartId);
 
 
 

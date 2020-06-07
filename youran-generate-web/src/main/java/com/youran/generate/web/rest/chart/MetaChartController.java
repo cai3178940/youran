@@ -8,15 +8,10 @@ import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.chart.AggTablePO;
 import com.youran.generate.pojo.po.chart.BarLinePO;
 import com.youran.generate.pojo.po.chart.DetailListPO;
+import com.youran.generate.pojo.po.chart.PiePO;
 import com.youran.generate.pojo.qo.chart.MetaChartQO;
-import com.youran.generate.pojo.vo.chart.AggTableVO;
-import com.youran.generate.pojo.vo.chart.BarLineVO;
-import com.youran.generate.pojo.vo.chart.DetailListVO;
-import com.youran.generate.pojo.vo.chart.MetaChartListVO;
-import com.youran.generate.service.chart.AggTableService;
-import com.youran.generate.service.chart.BarLineService;
-import com.youran.generate.service.chart.DetailListService;
-import com.youran.generate.service.chart.MetaChartService;
+import com.youran.generate.pojo.vo.chart.*;
+import com.youran.generate.service.chart.*;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.chart.MetaChartAPI;
 import org.apache.commons.lang3.ArrayUtils;
@@ -48,6 +43,8 @@ public class MetaChartController extends AbstractController implements MetaChart
     private DetailListService detailListService;
     @Autowired
     private BarLineService barLineService;
+    @Autowired
+    private PieService pieService;
 
     @Override
     @PostMapping("/agg_table")
@@ -116,6 +113,29 @@ public class MetaChartController extends AbstractController implements MetaChart
     @GetMapping("/bar_line/{chartId}")
     public ResponseEntity<BarLineVO> showBarLine(@PathVariable Integer chartId) {
         BarLineVO vo = barLineService.show(chartId);
+        return ResponseEntity.ok(vo);
+    }
+
+    @Override
+    @PostMapping("/pie")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<PieVO> savePie(@Valid @RequestBody PieAddDTO addDTO) throws Exception {
+        PiePO po = pieService.save(addDTO);
+        return ResponseEntity.created(new URI(apiPath + "/meta_chart/pie/" + po.getChartId()))
+            .body(MetaChartMapper.INSTANCE.toPieVO(po));
+    }
+
+    @Override
+    @PutMapping("/pie")
+    public ResponseEntity<PieVO> updatePie(@Valid @RequestBody PieUpdateDTO updateDTO) {
+        PiePO po = pieService.update(updateDTO);
+        return ResponseEntity.ok(MetaChartMapper.INSTANCE.toPieVO(po));
+    }
+
+    @Override
+    @GetMapping("/pie/{chartId}")
+    public ResponseEntity<PieVO> showPie(@PathVariable Integer chartId) {
+        PieVO vo = pieService.show(chartId);
         return ResponseEntity.ok(vo);
     }
 

@@ -30,6 +30,7 @@ import sourceForm from '@/views/chart/sourceForm.vue'
 import detailListForm from '@/views/chart/detailList/form.vue'
 import aggTableForm from '@/views/chart/aggTable/form.vue'
 import barLineForm from '@/views/chart/barLine/form.vue'
+import pieForm from '@/views/chart/pie/form.vue'
 
 Vue.use(Router)
 
@@ -138,6 +139,16 @@ export default new Router({
         {
           path: 'barLine/edit/:chartId/next',
           component: barLineForm,
+          props: true
+        },
+        {
+          path: 'pie/add/next',
+          component: pieForm,
+          props: true
+        },
+        {
+          path: 'pie/edit/:chartId/next',
+          component: pieForm,
           props: true
         }
       ]
