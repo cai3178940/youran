@@ -7,6 +7,10 @@
         {{edit?'编辑':'创建'}}柱线图
       </el-breadcrumb-item>
     </el-breadcrumb>
+    <el-steps :active="2" simple>
+      <el-step title="第一步：配置数据源" icon="el-icon-coin"></el-step>
+      <el-step title="第二步：配置柱线图" icon="el-icon-set-up"></el-step>
+    </el-steps>
     <el-container v-loading="formLoading" style="border:solid 1px #e6e6e6;">
       <el-aside style="width: 400px;">
         <el-form ref="barLineForm" class="barLineForm"

@@ -4,9 +4,13 @@
       <el-breadcrumb-item :to="{ path: '/project' }">项目管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: `/project/${this.projectId}/chart` }">图表管理</el-breadcrumb-item>
       <el-breadcrumb-item>
-        {{nextEdit?'编辑':'创建'}}{{chartType.label}}（数据源）
+        {{nextEdit?'编辑':'创建'}}{{chartType.label}}
       </el-breadcrumb-item>
     </el-breadcrumb>
+    <el-steps :active="1" simple>
+      <el-step title="第一步：配置数据源" icon="el-icon-coin"></el-step>
+      <el-step :title="'第二步：配置'+chartType.label" icon="el-icon-set-up"></el-step>
+    </el-steps>
     <el-row type="flex" align="middle" :gutter="20">
       <el-col :span="16">
         <el-form ref="sourceForm" class="sourceForm"
