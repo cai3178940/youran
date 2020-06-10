@@ -23,10 +23,10 @@ function mockDimension (chartItem, i) {
   if (field.jfieldType === 'String') {
     value = chartItem.titleAlias + convertIndexToAlphabet(i)
   } else if (['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal'].includes(field.jfieldType)) {
-    value = i
+    value = i + ''
   } else {
     // todo 其他类型，如果是枚举则加载枚举值
-    value = i
+    value = i + ''
   }
   if (chartItem.valuePrefix) {
     value = chartItem.valuePrefix + value
