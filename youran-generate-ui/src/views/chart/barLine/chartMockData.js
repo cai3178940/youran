@@ -1,21 +1,53 @@
-// import chartItemMock from '../item/chartItemMock'
+import chartItemMock from '../item/chartItemMock'
+
 export default {
   mockDimensionsForMode1 (axisX, axisX2) {
-    return []
+    const dimensions = chartItemMock.mockDimensionList(axisX2, 3)
+    return [axisX.alias].concat(dimensions)
   },
   mockSourceForMode1 (dimensions, axisX, axisY) {
-    return []
+    const source = []
+    for (let i = 0; i < 5; i++) {
+      const item = {}
+      item[dimensions[0]] = chartItemMock.mockDimension(axisX, i)
+      for (let j = 1; j < dimensions.length; j++) {
+        item[dimensions[j]] = chartItemMock.mockMetrics(axisY, i + j)
+      }
+      source.push(item)
+    }
+    return source
   },
   mockSeriesForMode1 (dimensions) {
-    return []
+    const series = []
+    for (let i = 0; i < dimensions.length - 1; i++) {
+      series.push({ type: 'bar' })
+    }
+    return series
   },
   mockDimensionsForMode2 (axisX, axisYList) {
-    return []
+    const dimensions = [axisX.alias]
+    axisYList.forEach(axisY => dimensions.push(axisY.titleAlias))
+    return dimensions
   },
   mockSourceForMode2 (dimensions, axisX, axisYList) {
-    return []
+    const source = []
+    for (let i = 0; i < 5; i++) {
+      const item = {}
+      item[dimensions[0]] = chartItemMock.mockDimension(axisX, i)
+      for (let j = 1; j < dimensions.length; j++) {
+        const axisY = axisYList[j - 1]
+        item[dimensions[j]] = chartItemMock.mockMetrics(axisY, i + j)
+      }
+      source.push(item)
+    }
+    return source
   },
   mockSeriesForMode2 (axisYList) {
-    return []
+    const series = []
+    for (let i = 0; i < axisYList.length; i++) {
+      // todo 可选择柱或线
+      series.push({ type: 'bar' })
+    }
+    return series
   }
 }

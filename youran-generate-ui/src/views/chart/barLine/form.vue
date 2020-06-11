@@ -44,6 +44,7 @@
               <el-col :span="15" class="col-left">
                 <el-select v-model="form.axisX" value-key="sourceItemId"
                            style="width:100%;" placeholder="请选择维度"
+                           @change="renderChart"
                            filterable>
                   <el-option v-for="dimension in sourceForm.dimensionList"
                              :disabled="dimensionOptionDisabled(form.axisX2, dimension)"
@@ -74,6 +75,7 @@
               <el-col :span="15" class="col-left">
                 <el-select v-model="form.axisX2" value-key="sourceItemId"
                            style="width:100%;" placeholder="请选择维度"
+                           @change="renderChart"
                            filterable>
                   <el-option v-for="dimension in sourceForm.dimensionList"
                              :disabled="dimensionOptionDisabled(form.axisX, dimension)"
@@ -101,6 +103,7 @@
               <el-col :span="15" class="col-left">
                 <el-select v-model="form.axisYList[0]" value-key="sourceItemId"
                            style="width:100%;" placeholder="请选择指标"
+                           @change="renderChart"
                            filterable>
                   <el-option v-for="metrics in sourceForm.metricsList"
                              :disabled="metricsOptionDisabled(0, metrics)"
@@ -133,6 +136,7 @@
               <el-col :span="15" class="col-left">
                 <el-select v-model="form.axisYList[i]" value-key="sourceItemId"
                            style="width:100%;" placeholder="请选择指标"
+                           @change="renderChart"
                            filterable>
                   <el-option v-for="metrics in sourceForm.metricsList"
                              :disabled="metricsOptionDisabled(i, metrics)"
@@ -166,7 +170,7 @@
         <bar-line-chart ref="barLineChart"></bar-line-chart>
       </el-main>
     </el-container>
-    <chart-item-form ref="chartItemForm"></chart-item-form>
+    <chart-item-form ref="chartItemForm" @submit="renderChart"></chart-item-form>
   </div>
 </template>
 
@@ -228,10 +232,12 @@ export default {
     removeAxisX2 () {
       this.form.axisX2 = null
       this.axisX2Visible = false
+      this.renderChart()
     },
     removeAxisY (i) {
       this.form.axisYList.splice(i, 1)
       this.axisYListVisible = this.axisYListVisible - 1
+      this.renderChart()
     },
     editItem (chartItem) {
       this.$refs.chartItemForm.show(chartItem)
@@ -306,6 +312,26 @@ export default {
               this.sourceForm = sourceForm
             })
         })
+    },
+    /**
+     * 修复编辑表单数据
+     */
+    repairEditChartForm () {
+      if (this.form.axisX) {
+        this.form.axisX.dimension = this.sourceForm.dimensionList
+          .find(dimension => dimension.sourceItemId === this.form.axisX.sourceItemId)
+      }
+      if (this.form.axisX2) {
+        this.form.axisX2.dimension = this.sourceForm.dimensionList
+          .find(dimension => dimension.sourceItemId === this.form.axisX2.sourceItemId)
+      }
+      this.form.axisYList.forEach(axisY => {
+        axisY.metrics = this.sourceForm.metricsList
+          .find(metrics => metrics.sourceItemId === axisY.sourceItemId)
+      })
+    },
+    renderChart () {
+      this.$refs.barLineChart.renderChart(this.form.axisX, this.form.axisX2, this.form.axisYList)
     }
   },
   created () {
@@ -313,16 +339,17 @@ export default {
     if (this.edit) {
       barLineApi.get(this.chartId)
         .then(formBean => {
-          if (formBean.axisX) {
-            formBean.axisX.dimension = {}
-          }
           if (formBean.axisX2) {
-            formBean.axisX2.dimension = {}
+            this.axisX2Visible = true
           }
-          formBean.axisYList.forEach(value => { value.metrics = {} })
+          if (formBean.axisYList.length > 1) {
+            this.axisYListVisible = formBean.axisYList.length - 1
+          }
           this.form = formBean
         })
         .then(() => this.loadSourceWithDimensionMetricsFields())
+        .then(() => this.repairEditChartForm())
+        .then(() => this.renderChart())
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => {
           this.formLoading = false
@@ -331,6 +358,7 @@ export default {
       this.form.sourceId = this.$router.currentRoute.query.sourceId
       if (this.form.sourceId) {
         this.loadSourceWithDimensionMetricsFields()
+          .then(() => this.renderChart())
           .catch(error => this.$common.showNotifyError(error))
           .finally(() => {
             this.formLoading = false
