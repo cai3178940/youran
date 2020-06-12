@@ -40,6 +40,9 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
     @ApiModelProperty(notes = "格式化规则",example = "yyyy-MM-dd")
     private String format;
 
+    @ApiModelProperty(notes = "系列类型",example = "line")
+    private String seriesType;
+
     /**
      * 数据项
      */
@@ -108,5 +111,13 @@ public class ChartItemDTO<T extends MetaChartSourceItemPO> extends AbstractDTO {
 
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    public String getSeriesType() {
+        return seriesType;
+    }
+
+    public void setSeriesType(String seriesType) {
+        this.seriesType = seriesType;
     }
 }

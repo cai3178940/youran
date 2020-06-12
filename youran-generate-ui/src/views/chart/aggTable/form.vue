@@ -121,10 +121,10 @@
 
 <script>
 import Vue from 'vue'
-import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import aggTableApi from '@/api/chart/aggTable'
 import chartSourceApi from '@/api/chart/chartSource'
+import modulesMixin from '@/components/Mixins/modules'
 import chartItemForm from '../item/chartItemForm'
 import _differenceBy from 'lodash/differenceBy'
 import _intersectionBy from 'lodash/intersectionBy'
@@ -138,6 +138,7 @@ export default {
     'projectId',
     'chartId'
   ],
+  mixins: [modulesMixin],
   components: {
     chartItemForm
   },
@@ -159,24 +160,6 @@ export default {
   },
   methods: {
     mockTableData: model.mockTableData,
-    findModules (queryString, cb) {
-      const action = () => {
-        const entityModules = this.entityModules.slice(0)
-        const results = queryString ? entityModules.filter(
-          c => c.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-        ) : entityModules
-        cb(results.map(c => ({ value: c })))
-      }
-      if (this.entityModules) {
-        action()
-      } else {
-        projectApi.findModules(this.projectId)
-          .then(data => {
-            this.entityModules = data
-            action()
-          })
-      }
-    },
     handleCommand: function (command) {
       this[command.method](command.arg)
     },

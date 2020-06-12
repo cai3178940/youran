@@ -52,6 +52,7 @@ function initChartItemByMetrics (metrics) {
     valueSuffix: '',
     percent: false,
     format: '',
+    seriesType: 'bar',
     metrics: metrics
   }
 }

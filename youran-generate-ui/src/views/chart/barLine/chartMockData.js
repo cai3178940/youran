@@ -45,8 +45,9 @@ export default {
   mockSeriesForMode2 (axisYList) {
     const series = []
     for (let i = 0; i < axisYList.length; i++) {
-      // todo 可选择柱或线
-      series.push({ type: 'bar' })
+      const axisY = axisYList[i]
+      const seriesType = axisY.seriesType ? axisY.seriesType : 'bar'
+      series.push({ type: seriesType })
     }
     return series
   }

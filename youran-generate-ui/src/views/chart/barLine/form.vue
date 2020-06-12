@@ -56,7 +56,7 @@
               <!-- 设置按钮 -->
               <el-col :span="4" class="col-inner" style="text-align: left;">
                 <el-button :disabled="!form.axisX" size="small" type="text"
-                           style="padding-left: 5px;" @click="editItem(form.axisX)">
+                           style="padding-left: 5px;" @click="editItem(form.axisX,{seriesType:false})">
                   <svg-icon iconClass="setting"></svg-icon>
                 </el-button>
               </el-col>
@@ -87,7 +87,7 @@
               <!-- 设置按钮 -->
               <el-col :span="4" class="col-inner" style="text-align: left;">
                 <el-button :disabled="!form.axisX2" size="small" type="text"
-                           style="padding-left: 5px;" @click="editItem(form.axisX2)">
+                           style="padding-left: 5px;" @click="editItem(form.axisX2,{seriesType:false})">
                   <svg-icon iconClass="setting"></svg-icon>
                 </el-button>
               </el-col>
@@ -115,7 +115,7 @@
               <!-- 设置按钮 -->
               <el-col :span="4" class="col-inner" style="text-align: left;">
                 <el-button :disabled="!form.axisYList[0]" size="small" type="text"
-                           style="padding-left: 5px;" @click="editItem(form.axisYList[0])">
+                           style="padding-left: 5px;" @click="editItem(form.axisYList[0],{seriesType:true})">
                   <svg-icon iconClass="setting"></svg-icon>
                 </el-button>
               </el-col>
@@ -148,7 +148,7 @@
               <!-- 设置按钮 -->
               <el-col :span="4" class="col-inner" style="text-align: left;">
                 <el-button :disabled="!form.axisYList[i]" size="small" type="text"
-                           style="padding-left: 5px;" @click="editItem(form.axisYList[i])">
+                           style="padding-left: 5px;" @click="editItem(form.axisYList[i],{seriesType:true})">
                   <svg-icon iconClass="setting"></svg-icon>
                 </el-button>
               </el-col>
@@ -175,10 +175,10 @@
 </template>
 
 <script>
-import projectApi from '@/api/project'
 import fieldApi from '@/api/field'
 import barLineApi from '@/api/chart/barLine'
 import chartSourceApi from '@/api/chart/chartSource'
+import modulesMixin from '@/components/Mixins/modules'
 import chartItemForm from '../item/chartItemForm'
 import model from './model'
 import sourceModel from '../sourceModel'
@@ -193,6 +193,7 @@ export default {
     'projectId',
     'chartId'
   ],
+  mixins: [modulesMixin],
   components: {
     chartItemForm,
     barLineChart
@@ -239,26 +240,8 @@ export default {
       this.axisYListVisible = this.axisYListVisible - 1
       this.renderChart()
     },
-    editItem (chartItem) {
-      this.$refs.chartItemForm.show(chartItem)
-    },
-    findModules (queryString, cb) {
-      const action = () => {
-        const entityModules = this.entityModules.slice(0)
-        const results = queryString ? entityModules.filter(
-          c => c.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-        ) : entityModules
-        cb(results.map(c => ({ value: c })))
-      }
-      if (this.entityModules) {
-        action()
-      } else {
-        projectApi.findModules(this.projectId)
-          .then(data => {
-            this.entityModules = data
-            action()
-          })
-      }
+    editItem (chartItem, visible) {
+      this.$refs.chartItemForm.show(chartItem, visible)
     },
     submit () {
       let loading = null

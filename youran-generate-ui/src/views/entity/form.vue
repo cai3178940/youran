@@ -103,17 +103,18 @@
 <script>
 import projectApi from '@/api/project'
 import entityApi from '@/api/entity'
+import modulesMixin from '@/components/Mixins/modules'
 import { initFormBean, getRules } from './model'
 
 export default {
   name: 'entityForm',
   props: ['projectId', 'entityId'],
+  mixins: [modulesMixin],
   data () {
     const edit = !!this.entityId
     return {
       edit: edit,
       projectList: [],
-      entityModules: null,
       formLoading: false,
       old: initFormBean(edit),
       form: initFormBean(edit),
@@ -175,24 +176,6 @@ export default {
     copyClassNameToTableName () {
       this.form.tableName = this.$common.snakeCase(this.form.className)
       this.$refs.entityForm.validateField('classAndTableName')
-    },
-    findModules (queryString, cb) {
-      const action = () => {
-        const entityModules = this.entityModules.slice(0)
-        const results = queryString ? entityModules.filter(
-          c => c.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-        ) : entityModules
-        cb(results.map(c => ({ value: c })))
-      }
-      if (this.entityModules) {
-        action()
-      } else {
-        projectApi.findModules(this.projectId)
-          .then(data => {
-            this.entityModules = data
-            action()
-          })
-      }
     }
   },
   created () {

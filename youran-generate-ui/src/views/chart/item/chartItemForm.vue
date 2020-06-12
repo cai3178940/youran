@@ -23,6 +23,13 @@
         <el-input placeholder="请输入格式化" v-model="form.format">
         </el-input>
       </el-form-item>
+      <el-form-item v-if="visible.seriesType" label="展示形式">
+        <el-select v-model="form.seriesType"
+                   style="width:100%;">
+          <el-option label="柱型" :value="'bar'"></el-option>
+          <el-option label="线型" :value="'line'"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit()">确定</el-button>
         <el-button @click="cancel()">取消</el-button>
@@ -46,7 +53,11 @@ export default {
         alias: null,
         valuePrefix: null,
         valueSuffix: null,
-        format: null
+        format: null,
+        seriesType: null
+      },
+      visible: {
+        seriesType: false
       },
       rules: {}
     }
@@ -54,9 +65,12 @@ export default {
   computed: {
   },
   methods: {
-    show (formBean) {
+    show (formBean, visible) {
       this.oldForm = formBean
       this.form = JSON.parse(JSON.stringify(formBean))
+      if (visible) {
+        Object.assign(this.visible, visible)
+      }
       this.formVisible = true
     },
     submit () {
@@ -65,6 +79,7 @@ export default {
       this.oldForm.valuePrefix = this.form.valuePrefix
       this.oldForm.valueSuffix = this.form.valueSuffix
       this.oldForm.format = this.form.format
+      this.oldForm.seriesType = this.form.seriesType
       this.formVisible = false
       this.$emit('submit', this.oldForm)
     },
