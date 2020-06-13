@@ -4,17 +4,17 @@ import searchUtil from '../searchUtil'
 
 function buildCommonDetailColumn (joinIndex, field) {
   return {
-    key: 'common_' + joinIndex + '_' + field.fieldId,
+    key: 'detialColumn_' + joinIndex + '_' + field.fieldId,
     fieldId: field.fieldId,
     custom: false,
     joinIndex: joinIndex,
-    field: null
+    field: field
   }
 }
 
 function buildCustomDetailColumn (customContent, customFieldType) {
   return {
-    key: 'custom_' + shortid.generate(),
+    key: 'detialColumn_' + shortid.generate(),
     custom: true,
     joinIndex: 0,
     customContent: customContent,
@@ -35,12 +35,9 @@ function displayText (detailColumn) {
  */
 function repairDetailColumnForEdit (detailColumn, sourceForm) {
   const joinIndex = detailColumn.joinIndex
-  if (detailColumn.custom) {
-    detailColumn.key = 'custom_' + shortid.generate()
-  } else {
+  if (!detailColumn.custom) {
     const fieldId = detailColumn.fieldId
     detailColumn.field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, fieldId)[1]
-    detailColumn.key = 'common_' + joinIndex + '_' + fieldId
   }
 }
 

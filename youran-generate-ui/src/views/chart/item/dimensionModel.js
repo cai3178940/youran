@@ -1,9 +1,10 @@
+import shortid from 'shortid'
 import chartOptions from '@/utils/options-chart'
 import searchUtil from '../searchUtil'
 
 function initFormBean () {
   return {
-    key: '',
+    key: 'dimension_' + shortid.generate(),
     joinIndex: null,
     fieldId: null,
     granularity: null,
@@ -28,7 +29,6 @@ function displayText (dimension) {
  * 从tmp中抽取数据到form
  */
 function repairDimensionForSubmit (form) {
-  form.key = 'dimension_' + form.tmp1.joinIndex + '_' + form.tmp1.field.fieldId
   form.joinIndex = form.tmp1.joinIndex
   form.granularity = form.tmp2.value
   form.fieldId = form.tmp1.field.fieldId
@@ -42,7 +42,6 @@ function repairDimensionForEdit (dimension, sourceForm) {
   if (!dimension.field) {
     dimension.field = searchUtil.findEntityFieldInFormBean(sourceForm, dimension.joinIndex, dimension.fieldId)[1]
   }
-  dimension.key = 'dimension_' + dimension.joinIndex + '_' + dimension.fieldId
   dimension.tmp2 = chartOptions.getGranularityOption(dimension.granularity)
   dimension.tmp1 = {
     key: dimension.joinIndex + '_' + dimension.fieldId,

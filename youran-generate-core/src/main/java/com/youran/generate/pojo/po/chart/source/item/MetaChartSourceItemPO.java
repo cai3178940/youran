@@ -22,6 +22,11 @@ public class MetaChartSourceItemPO extends BasePO {
     private Integer sourceItemId;
 
     /**
+     * 唯一键
+     */
+    private String key;
+
+    /**
      * 项目id
      */
     private Integer projectId;
@@ -47,6 +52,11 @@ public class MetaChartSourceItemPO extends BasePO {
      * 父数据项id
      */
     private Integer parentId;
+
+    /**
+     * 父数据项key
+     */
+    private String parentKey;
 
     /**
      * 特性json
@@ -204,5 +214,20 @@ public class MetaChartSourceItemPO extends BasePO {
         this.chartSource = chartSource;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getParentKey() {
+        return parentKey;
+    }
+
+    public void setParentKey(String parentKey) {
+        this.parentKey = parentKey;
+    }
 }
 

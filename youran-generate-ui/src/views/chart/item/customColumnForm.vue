@@ -42,6 +42,7 @@ export default {
       customFieldTypeOptions: chartOptions.customFieldTypeOptions,
       // 最终返回给调用组件的表单数据
       form: detailColumnModel.buildCustomDetailColumn('', 1),
+      oldForm: null,
       rules: {}
     }
   },
@@ -55,7 +56,8 @@ export default {
       this.position = position
       if (formBean) {
         this.edit = true
-        this.form = formBean
+        this.oldForm = formBean
+        this.form = Object.assign({}, formBean)
       } else {
         this.edit = false
         this.form = detailColumnModel.buildCustomDetailColumn('', 1)

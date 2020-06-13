@@ -1,8 +1,10 @@
+import shortid from 'shortid'
 import searchUtil from '../searchUtil'
 import detailColumnModel from './detailColumnModel'
 
 function initFormBean () {
   return {
+    key: 'detailOrder_' + shortid.generate(),
     joinIndex: null,
     sortType: 1,
     parentId: null,

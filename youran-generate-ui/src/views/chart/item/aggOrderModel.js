@@ -1,9 +1,11 @@
+import shortid from 'shortid'
 import searchUtil from '../searchUtil'
 import metricsModel from './metricsModel'
 import dimensionModel from './dimensionModel'
 
 function initFormBean () {
   return {
+    key: 'aggOrder_' + shortid.generate(),
     joinIndex: null,
     sortType: 1,
     parentId: null,

@@ -51,6 +51,7 @@ export default {
       customColumnList: [],
       // 最终返回给调用组件的表单数据
       form: detailOrderModel.initFormBean(),
+      oldForm: null,
       rules: {}
     }
   },
@@ -71,7 +72,8 @@ export default {
       this.customColumnList = customColumnList
       if (formBean) {
         this.edit = true
-        this.form = formBean
+        this.oldForm = formBean
+        this.form = Object.assign({}, formBean)
       } else {
         this.edit = false
         this.form = detailOrderModel.initFormBean()

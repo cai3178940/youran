@@ -344,11 +344,13 @@ DROP TABLE IF EXISTS `meta_chart_source_item`;
 
 CREATE TABLE `meta_chart_source_item` (
     `source_item_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `key` varchar(32) NOT NULL COMMENT '唯一键',
     `project_id` int(11) NOT NULL COMMENT '项目id',
     `source_id` int(11) NOT NULL COMMENT '所属数据源id',
     `join_index` tinyint(4) NOT NULL COMMENT '关联实体序号',
     `type` tinyint(4) NOT NULL COMMENT '数据项类型',
     `parent_id` int(11) DEFAULT NULL COMMENT '父数据项id',
+    `parent_key` varchar(32) DEFAULT NULL COMMENT '父数据项key',
     `feature` text DEFAULT NULL COMMENT '特性json',
     `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
     `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',

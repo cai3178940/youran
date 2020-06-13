@@ -18,6 +18,9 @@ public class MetaChartSourceItemVO extends AbstractVO {
     @ApiModelProperty(notes = N_SOURCE_ITEM_ID, example = E_SOURCE_ITEM_ID)
     private Integer sourceItemId;
 
+    @ApiModelProperty(notes = N_KEY, example = E_KEY)
+    private String key;
+
     @ApiModelProperty(notes = N_PROJECT_ID, example = E_PROJECT_ID)
     private Integer projectId;
 
@@ -26,6 +29,9 @@ public class MetaChartSourceItemVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_PARENT_ID, example = E_PARENT_ID)
     private Integer parentId;
+
+    @ApiModelProperty(notes = N_PARENT_KEY, example = E_PARENT_KEY)
+    private String parentKey;
 
     public Integer getSourceItemId() {
         return this.sourceItemId;
@@ -59,5 +65,20 @@ public class MetaChartSourceItemVO extends AbstractVO {
         this.parentId = parentId;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getParentKey() {
+        return parentKey;
+    }
+
+    public void setParentKey(String parentKey) {
+        this.parentKey = parentKey;
+    }
 }
 

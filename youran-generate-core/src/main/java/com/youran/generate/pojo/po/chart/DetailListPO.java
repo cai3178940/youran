@@ -10,9 +10,11 @@ import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaManyToManyPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DetailColumnPO;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 明细表
@@ -71,13 +73,20 @@ public class DetailListPO extends MetaChartPO {
                 chartItem.setSourceItem(detailColumn);
             }
         }
+        // 过滤掉无效的列
+        this.columnList = this.columnList.stream().filter(item -> item.getSourceItem() != null)
+            .collect(Collectors.toList());
     }
 
     @Override
     public void check(Map<Integer, MetaEntityPO> entityMap, Map<Integer, MetaManyToManyPO> mtmMap) {
         super.check(entityMap, mtmMap);
+        if (CollectionUtils.isEmpty(columnList)) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                "图表【" + this.getTitle() + "】未配置明细列");
+        }
         for (ChartItemDTO chartItem : columnList) {
-            if(chartItem.getSourceItem()==null){
+            if (chartItem.getSourceItem() == null) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
                     "图表【" + this.getTitle() + "】明细列不存在：" + chartItem.getTitleAlias());
             }
@@ -126,7 +135,7 @@ public class DetailListPO extends MetaChartPO {
     }
 
 
-    static class FeatureDTO{
+    static class FeatureDTO {
         private List<ChartItemDTO<DetailColumnPO>> columnList;
         private List<ChartItemDTO<DetailColumnPO>> hiddenColumnList;
         private Integer defaultPageSize;

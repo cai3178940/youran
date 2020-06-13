@@ -1,8 +1,10 @@
+import shortid from 'shortid'
 import chartOptions from '@/utils/options-chart'
 import searchUtil from '../searchUtil'
 
 function initFormBean () {
   return {
+    key: 'where_' + shortid.generate(),
     joinIndex: null,
     fieldId: null,
     filterOperator: null,
@@ -17,11 +19,7 @@ function initFormBean () {
       field: null,
       joinIndex: null
     },
-    tmp2: {
-      value: 1,
-      filterValueType: 1,
-      timeGranularity: false
-    },
+    tmp2: chartOptions.getFilterOperatorOption(1),
     // 单过滤值绑定对象
     tmp3: [null],
     // 双过滤值绑定对象

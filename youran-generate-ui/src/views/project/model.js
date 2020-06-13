@@ -57,7 +57,7 @@ export function getRules () {
       { max: 50, message: '长度不能超过50个字符', trigger: 'blur' }
     ],
     remote: [
-      { required: true, type: 'boolean', message: '请选择是否启用', trigger: 'change' }
+      { required: false, type: 'boolean', message: '请选择是否启用', trigger: 'change' }
     ],
     templateId: [
       { required: true, type: 'number', message: '请选择模板', trigger: 'change' }

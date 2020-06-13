@@ -4,7 +4,7 @@ import shortid from 'shortid'
 
 function initFormBean () {
   return {
-    key: '',
+    key: 'metrics_' + shortid.generate(),
     joinIndex: null,
     fieldId: null,
     aggFunction: null,
@@ -43,15 +43,12 @@ function repairMetricsForEdit (metrics, sourceForm) {
     if (!metrics.field) {
       metrics.field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, metrics.fieldId)[1]
     }
-    metrics.key = 'metrics_' + joinIndex + '_' + metrics.field.fieldId
     metrics.tmp1 = {
       key: joinIndex + '_' + metrics.field.fieldId,
       field: metrics.field,
       joinIndex: joinIndex
     }
     metrics.tmp2 = chartOptions.getAggFunctionOption(metrics.aggFunction)
-  } else {
-    metrics.key = 'custom_' + shortid.generate()
   }
 }
 
@@ -60,13 +57,11 @@ function repairMetricsForEdit (metrics, sourceForm) {
  */
 function repairMetricsForSubmit (metrics) {
   if (!metrics.custom) {
-    metrics.key = 'metrics_' + metrics.tmp1.joinIndex + '_' + metrics.tmp1.field.fieldId
     metrics.joinIndex = metrics.tmp1.joinIndex
     metrics.fieldId = metrics.tmp1.field.fieldId
     metrics.field = metrics.tmp1.field
     metrics.aggFunction = metrics.tmp2.value
   } else {
-    metrics.key = 'custom_' + shortid.generate()
     metrics.joinIndex = 0
   }
 }

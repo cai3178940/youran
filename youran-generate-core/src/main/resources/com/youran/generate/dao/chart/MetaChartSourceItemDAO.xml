@@ -7,11 +7,13 @@
 
     <sql id="metaChartSourceItemColumns">
         ${alias}.source_item_id as sourceItemId,
+        ${alias}.`key`,
         ${alias}.project_id as projectId,
         ${alias}.source_id as sourceId,
         ${alias}.join_index as joinIndex,
         ${alias}.`type`,
         ${alias}.parent_id as parentId,
+        ${alias}.parent_key as parentKey,
         ${alias}.feature,
         ${alias}.created_time as createdTime,
         ${alias}.created_by as createdBy,
@@ -44,11 +46,13 @@
     <insert id="_save" useGeneratedKeys="true" keyProperty="sourceItemId" parameterType="MetaChartSourceItemPO">
         insert into meta_chart_source_item(
         source_item_id,
+        `key`,
         project_id,
         source_id,
         join_index,
         `type`,
         parent_id,
+        parent_key,
         feature,
         created_time,
         created_by,
@@ -58,11 +62,13 @@
         deleted
         ) VALUES (
         #{sourceItemId,jdbcType=INTEGER},
+        #{key,jdbcType=VARCHAR},
         #{projectId,jdbcType=INTEGER},
         #{sourceId,jdbcType=INTEGER},
         #{joinIndex,jdbcType=INTEGER},
         #{type,jdbcType=INTEGER},
         #{parentId,jdbcType=INTEGER},
+        #{parentKey,jdbcType=VARCHAR},
         #{feature,jdbcType=VARCHAR},
         #{createdTime,jdbcType=TIMESTAMP},
         #{createdBy,jdbcType=VARCHAR},
@@ -76,11 +82,13 @@
 
     <update id="_update" parameterType="MetaChartSourceItemPO">
         update meta_chart_source_item set
+            `key`=#{key,jdbcType=VARCHAR},
             project_id=#{projectId,jdbcType=INTEGER},
             source_id=#{sourceId,jdbcType=INTEGER},
             join_index=#{joinIndex,jdbcType=INTEGER},
             `type`=#{type,jdbcType=INTEGER},
             parent_id=#{parentId,jdbcType=INTEGER},
+            parent_key=#{parentKey,jdbcType=INTEGER},
             feature=#{feature,jdbcType=VARCHAR},
             operated_time=#{operatedTime,jdbcType=TIMESTAMP},
             operated_by=#{operatedBy,jdbcType=VARCHAR},

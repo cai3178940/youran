@@ -1,9 +1,11 @@
+import shortid from 'shortid'
 import searchUtil from '../searchUtil'
 import metricsModel from './metricsModel'
 import chartOptions from '@/utils/options-chart'
 
 function initFormBean () {
   return {
+    key: 'having_' + shortid.generate(),
     joinIndex: null,
     filterOperator: null,
     filterValue: null,
@@ -43,6 +45,8 @@ function repairHavingForSubmit (having) {
   } else if (having.tmp2.filterValueType === 3) {
     having.filterValue = having.tmp5
   }
+  having.joinIndex = having.metrics.joinIndex
+  having.parentKey = having.metrics.key
 }
 
 /**

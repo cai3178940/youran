@@ -561,7 +561,7 @@ export default {
       if (index >= this.form.customColumnList.length) {
         this.form.customColumnList.push(customColumn)
       } else {
-        this.form.customColumnList[index] = customColumn
+        this.$set(this.form.customColumnList, index, customColumn)
         module.repairAtDetailColumnChange(this.form)
       }
       this.changeForm()
@@ -586,7 +586,7 @@ export default {
       if (index >= this.form.whereList.length) {
         this.form.whereList.push(where)
       } else {
-        this.form.whereList[index] = where
+        this.$set(this.form.whereList, index, where)
       }
       this.changeForm()
     },
@@ -611,7 +611,7 @@ export default {
       if (index >= this.form.detailOrderList.length) {
         this.form.detailOrderList.push(detailOrder)
       } else {
-        this.form.detailOrderList[index] = detailOrder
+        this.$set(this.form.detailOrderList, index, detailOrder)
       }
       this.changeForm()
     },
@@ -634,7 +634,7 @@ export default {
       if (index >= this.form.dimensionList.length) {
         this.form.dimensionList.push(dimension)
       } else {
-        this.form.dimensionList[index] = dimension
+        this.$set(this.form.dimensionList, index, dimension)
       }
       this.changeForm()
     },
@@ -657,7 +657,7 @@ export default {
       if (index >= this.form.metricsList.length) {
         this.form.metricsList.push(metrics)
       } else {
-        this.form.metricsList[index] = metrics
+        this.$set(this.form.metricsList, index, metrics)
       }
       this.changeForm()
     },
@@ -680,7 +680,7 @@ export default {
       if (index >= this.form.havingList.length) {
         this.form.havingList.push(having)
       } else {
-        this.form.havingList[index] = having
+        this.$set(this.form.havingList, index, having)
       }
       this.changeForm()
     },
@@ -703,7 +703,7 @@ export default {
       if (index >= this.form.aggOrderList.length) {
         this.form.aggOrderList.push(aggOrder)
       } else {
-        this.form.aggOrderList[index] = aggOrder
+        this.$set(this.form.aggOrderList, index, aggOrder)
       }
       this.changeForm()
     },
