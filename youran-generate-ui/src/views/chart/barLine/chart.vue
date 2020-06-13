@@ -16,8 +16,11 @@ export default {
     }
   },
   methods: {
-    buildOption (axisX, axisX2, axisYList) {
+    buildOption (chartBean) {
       const option = {
+        title: {
+          text: ''
+        },
         legend: {},
         tooltip: {},
         dataset: {
@@ -28,22 +31,23 @@ export default {
         yAxis: {},
         series: []
       }
-      const mode = this.checkParamMode(axisX, axisX2, axisYList)
+      option.title.text = chartBean.title
+      const mode = this.checkParamMode(chartBean)
       if (mode === 1) {
         // 模式1：存在附加维度，则将附加维度每个值转换成列，和主维度共同形成x轴
-        const dimensions = chartMockData.mockDimensionsForMode1(axisX, axisX2)
+        const dimensions = chartMockData.mockDimensionsForMode1(chartBean.axisX, chartBean.axisX2)
         option.dataset.dimensions = dimensions
-        const source = chartMockData.mockSourceForMode1(dimensions, axisX, axisYList[0])
+        const source = chartMockData.mockSourceForMode1(dimensions, chartBean.axisX, chartBean.axisYList[0])
         option.dataset.source = source
         const series = chartMockData.mockSeriesForMode1(dimensions)
         option.series = series
       } else if (mode === 2) {
         // 模式2：存在多个指标，每个指标作为单独的一列
-        const dimensions = chartMockData.mockDimensionsForMode2(axisX, axisYList)
+        const dimensions = chartMockData.mockDimensionsForMode2(chartBean.axisX, chartBean.axisYList)
         option.dataset.dimensions = dimensions
-        const source = chartMockData.mockSourceForMode2(dimensions, axisX, axisYList)
+        const source = chartMockData.mockSourceForMode2(dimensions, chartBean.axisX, chartBean.axisYList)
         option.dataset.source = source
-        const series = chartMockData.mockSeriesForMode2(axisYList)
+        const series = chartMockData.mockSeriesForMode2(chartBean.axisYList)
         option.series = series
       }
       return option
@@ -51,26 +55,26 @@ export default {
     /**
      * 校验参数模式
      */
-    checkParamMode (axisX, axisX2, axisYList) {
+    checkParamMode (chartBean) {
       // 不存在主维度，则为异常模式
-      if (!axisX) {
+      if (!chartBean.axisX) {
         return 0
       }
       // 不存在指标，则为异常模式
-      if (!axisYList || axisYList.length === 0) {
+      if (!chartBean.axisYList || chartBean.axisYList.length === 0) {
         return 0
       }
       // 存在附加维度，则为模式1，否则为模式2
-      if (axisX2) {
+      if (chartBean.axisX2) {
         return 1
       } else {
         return 2
       }
     },
-    renderChart (axisX, axisX2, axisYList) {
+    renderChart (chartBean) {
       const chartEl = this.$el.children[0]
       this.chart = echarts.init(chartEl)
-      this.chart.setOption(this.buildOption(axisX, axisX2, axisYList))
+      this.chart.setOption(this.buildOption(chartBean))
     }
   },
   beforeDestroy () {
@@ -81,7 +85,7 @@ export default {
     this.chart = null
   },
   mounted () {
-    this.renderChart(null, null, null)
+    this.renderChart({})
   }
 }
 </script>

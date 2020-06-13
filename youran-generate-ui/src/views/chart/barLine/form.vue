@@ -24,7 +24,8 @@
           </el-form-item>
           <el-form-item label="图表标题" prop="title">
             <help-popover name="chart.title">
-              <el-input v-model="form.title" placeholder="例如：我的第一张图表" tabindex="20"></el-input>
+              <el-input v-model="form.title" @change="renderChart"
+                        placeholder="例如：我的第一张图表" tabindex="20"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="模块名" prop="module">
@@ -314,7 +315,7 @@ export default {
       })
     },
     renderChart () {
-      this.$refs.barLineChart.renderChart(this.form.axisX, this.form.axisX2, this.form.axisYList)
+      this.$refs.barLineChart.renderChart(this.form)
     }
   },
   created () {

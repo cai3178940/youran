@@ -16,8 +16,11 @@ export default {
     }
   },
   methods: {
-    buildOption (dimension, metrics) {
+    buildOption (chartBean) {
       const option = {
+        title: {
+          text: ''
+        },
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -32,26 +35,28 @@ export default {
         },
         series: [
           {
+            center: ['40%', '50%'],
             name: '',
             type: 'pie',
             data: []
           }
         ]
       }
-      if (dimension) {
-        option.series[0].name = dimension.titleAlias
-        const legendData = chartMockData.mockLegendData(dimension)
+      option.title.text = chartBean.title
+      if (chartBean.dimension) {
+        option.series[0].name = chartBean.dimension.titleAlias
+        const legendData = chartMockData.mockLegendData(chartBean.dimension)
         option.legend.data = legendData
-        if (metrics) {
-          option.series[0].data = chartMockData.mockSeriesData(metrics, legendData)
+        if (chartBean.metrics) {
+          option.series[0].data = chartMockData.mockSeriesData(chartBean.metrics, legendData)
         }
       }
       return option
     },
-    renderChart (dimension, metrics) {
+    renderChart (chartBean) {
       const chartEl = this.$el.children[0]
       this.chart = echarts.init(chartEl)
-      this.chart.setOption(this.buildOption(dimension, metrics))
+      this.chart.setOption(this.buildOption(chartBean))
     }
   },
   beforeDestroy () {
@@ -62,7 +67,7 @@ export default {
     this.chart = null
   },
   mounted () {
-    this.renderChart(null, null)
+    this.renderChart({})
   }
 }
 </script>
