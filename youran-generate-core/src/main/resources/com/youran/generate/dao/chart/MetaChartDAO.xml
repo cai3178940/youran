@@ -117,7 +117,7 @@
 
     <sql id="orderCondition">
         order by
-            t.operated_time desc
+            t.created_time asc
     </sql>
 
     <select id="findCountByQuery" parameterType="MetaChartQO" resultType="int">

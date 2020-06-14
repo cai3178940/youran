@@ -79,7 +79,7 @@
                   :border="true">
           <el-table-column v-for="chartItem in form.columnList"
                            :key="chartItem.sourceItemId" align="center"
-                           width="180">
+                           min-width="180">
             <template slot="header" slot-scope="scope">
               <el-button v-if="scope.$index" @click="moveLeft(chartItem)" size="small" type="text">
                 <i class="el-icon-arrow-left" style="font-size:14px"></i>

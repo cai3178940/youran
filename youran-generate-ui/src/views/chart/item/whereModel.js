@@ -3,7 +3,7 @@ import chartOptions from '@/utils/options-chart'
 import searchUtil from '../searchUtil'
 
 function initFormBean () {
-  return {
+  const formBean = {
     key: 'where_' + shortid.generate(),
     joinIndex: null,
     fieldId: null,
@@ -11,22 +11,23 @@ function initFormBean () {
     filterValue: null,
     timeGranularity: null,
     custom: false,
-    customContent: null,
-    field: null,
-    // 以下是临时对象
-    tmp1: {
-      key: '',
-      field: null,
-      joinIndex: null
-    },
-    tmp2: chartOptions.getFilterOperatorOption(1),
-    // 单过滤值绑定对象
-    tmp3: [null],
-    // 双过滤值绑定对象
-    tmp4: [null, null],
-    // 多过滤值绑定对象
-    tmp5: []
+    customContent: null
   }
+  initOtherInfo(formBean)
+  return formBean
+}
+
+function initOtherInfo (formBean) {
+  formBean.field = null
+  formBean.tmp1 = {
+    key: '',
+    field: null,
+    joinIndex: null
+  }
+  formBean.tmp2 = chartOptions.getFilterOperatorOption(1)
+  formBean.tmp3 = [null]
+  formBean.tmp4 = [null, null]
+  formBean.tmp5 = []
 }
 
 function displayText (form) {
@@ -42,8 +43,8 @@ function displayText (form) {
  */
 function repairWhereForEdit (where, sourceForm) {
   if (!where.custom) {
-    where.tmp2 = chartOptions.getFilterOperatorOption(where.filterOperator)
     where.field = searchUtil.findEntityFieldInFormBean(sourceForm, where.joinIndex, where.fieldId)[1]
+    where.tmp2 = chartOptions.getFilterOperatorOption(where.filterOperator)
     where.tmp1 = {
       key: where.joinIndex + '_' + where.fieldId,
       field: where.field,
@@ -56,6 +57,8 @@ function repairWhereForEdit (where, sourceForm) {
     } else if (where.tmp2.filterValueType === 3) {
       where.tmp5 = where.filterValue
     }
+  } else {
+    initOtherInfo(where)
   }
 }
 

@@ -3,27 +3,32 @@ import searchUtil from '../searchUtil'
 import shortid from 'shortid'
 
 function initFormBean () {
-  return {
+  const formBean = {
     key: 'metrics_' + shortid.generate(),
     joinIndex: null,
     fieldId: null,
     aggFunction: null,
     custom: false,
     customContent: null,
-    customFieldType: null,
+    customFieldType: null
+  }
+  initOtherInfo(formBean)
+  return formBean
+}
+
+function initOtherInfo (formBean) {
+  formBean.field = null
+  // 指标字段下拉框绑定对象
+  formBean.tmp1 = {
+    key: '',
     field: null,
-    // 指标字段下拉框绑定对象
-    tmp1: {
-      key: '',
-      field: null,
-      joinIndex: null
-    },
-    // 聚合函数下拉框绑定对象
-    tmp2: {
-      value: null,
-      label: null,
-      matchFieldTypes: []
-    }
+    joinIndex: null
+  }
+  // 聚合函数下拉框绑定对象
+  formBean.tmp2 = {
+    value: null,
+    label: null,
+    matchFieldTypes: []
   }
 }
 
@@ -49,6 +54,8 @@ function repairMetricsForEdit (metrics, sourceForm) {
       joinIndex: joinIndex
     }
     metrics.tmp2 = chartOptions.getAggFunctionOption(metrics.aggFunction)
+  } else {
+    initOtherInfo(metrics)
   }
 }
 

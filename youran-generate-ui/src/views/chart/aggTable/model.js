@@ -1,3 +1,5 @@
+import dimensionModel from '../item/dimensionModel'
+import metricsModel from '../item/metricsModel'
 function initAggTableFormBean (projectId) {
   const formBean = {
     chartId: null,
@@ -19,8 +21,8 @@ function initAggTableFormBean (projectId) {
 function initChartItemByDimension (dimension) {
   return {
     sourceItemId: dimension.sourceItemId,
-    alias: dimension.field.jfieldName,
-    titleAlias: dimension.field.fieldDesc,
+    alias: 'dimension' + dimension.sourceItemId,
+    titleAlias: dimensionModel.displayText(dimension),
     showFkTitle: false,
     valuePrefix: '',
     valueSuffix: '',
@@ -33,20 +35,10 @@ function initChartItemByDimension (dimension) {
  * 从维度构建图表项
  */
 function initChartItemByMetrics (metrics) {
-  const sourceItemId = metrics.sourceItemId
-  let alias
-  let titleAlias
-  if (metrics.custom) {
-    alias = 'custom' + sourceItemId
-    titleAlias = '【自定义指标】'
-  } else {
-    alias = metrics.field.jfieldName
-    titleAlias = metrics.field.fieldDesc
-  }
   return {
-    sourceItemId: sourceItemId,
-    alias: alias,
-    titleAlias: titleAlias,
+    sourceItemId: metrics.sourceItemId,
+    alias: 'metrics' + metrics.sourceItemId,
+    titleAlias: metricsModel.displayText(metrics),
     showFkTitle: false,
     valuePrefix: '',
     valueSuffix: '',

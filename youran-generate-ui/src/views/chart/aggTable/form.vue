@@ -58,7 +58,7 @@
                   :border="true">
           <el-table-column v-for="chartItem in form.dimensionList"
                            :key="chartItem.sourceItemId" align="center"
-                           width="180">
+                           min-width="180">
             <template slot="header" slot-scope="scope">
               <el-button v-if="scope.$index" @click="moveLeft(chartItem,form.dimensionList)" size="small" type="text">
                 <i class="el-icon-arrow-left" style="font-size:14px"></i>
@@ -86,7 +86,7 @@
           </el-table-column>
           <el-table-column v-for="chartItem in form.metricsList"
                            :key="chartItem.sourceItemId" align="center"
-                           width="180">
+                           min-width="180">
             <template slot="header" slot-scope="scope">
               <el-button v-if="scope.$index-form.dimensionList.length" @click="moveLeft(chartItem,form.metricsList)" size="small" type="text">
                 <i class="el-icon-arrow-left" style="font-size:14px"></i>
@@ -130,6 +130,8 @@ import _differenceBy from 'lodash/differenceBy'
 import _intersectionBy from 'lodash/intersectionBy'
 import model from './model'
 import sourceModel from '../sourceModel'
+import dimensionModel from '../item/dimensionModel'
+import metricsModel from '../item/metricsModel'
 import searchUtil from '../searchUtil'
 
 export default {
@@ -227,10 +229,12 @@ export default {
           // 将字段详情放入每个维度中
           this.sourceForm.dimensionList.forEach(dimension => {
             dimension.field = fieldList.find(field => field.fieldId === dimension.fieldId)
+            dimensionModel.repairDimensionForEdit(dimension, this.sourceForm)
           })
           // 将字段详情放入每个指标中
           this.sourceForm.metricsList.forEach(metrics => {
             metrics.field = fieldList.find(field => field.fieldId === metrics.fieldId)
+            metricsModel.repairMetricsForEdit(metrics, this.sourceForm)
           })
         })
     },
