@@ -143,7 +143,7 @@ public class ReverseEngineeringService {
                 SQLColumnDefinition sqlColumnDefinition = (SQLColumnDefinition) element;
                 String fieldName = cleanQuote(sqlColumnDefinition.getNameAsString());
                 boolean pk = this.isPkField(sqlColumnDefinition, pkAlone);
-                String fieldType = sqlColumnDefinition.getDataType().getName();
+                String fieldType = StringUtils.lowerCase(sqlColumnDefinition.getDataType().getName());
                 int fieldLength = 0;
                 int fieldScale = 0;
                 List<SQLExpr> arguments = sqlColumnDefinition.getDataType().getArguments();
