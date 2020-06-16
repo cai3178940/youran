@@ -60,6 +60,8 @@ public class FreeMarkerConfigFactory {
             FilterOperator.class,
             SortType.class,
             JoinType.class,
+            Granularity.class,
+            AggFunction.class,
             MetaSpecialField.class,
             PrimaryKeyStrategy.class,
             CommonTemplateFunction.class,

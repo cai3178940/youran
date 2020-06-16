@@ -3,7 +3,9 @@ package com.youran.generate.template.function;
 import com.youran.generate.util.SwitchCaseUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -22,6 +24,15 @@ public class CommonTemplateFunction {
      */
     public static Set createHashSet() {
         return new LinkedHashSet();
+    }
+
+    /**
+     * 创建HashMap
+     *
+     * @return
+     */
+    public static Map createHashMap() {
+        return new LinkedHashMap();
     }
 
     /**
