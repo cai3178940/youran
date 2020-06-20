@@ -99,8 +99,13 @@ export default {
      * 过滤操作符选项
      */
     filterOperatorOptions () {
-      if (this.form.metrics && this.form.metrics.field) {
-        return chartOptions.getFilterOperatorOptions(this.form.metrics.field.jfieldType)
+      if (this.form.metrics) {
+        if (this.form.metrics.custom) {
+          return chartOptions.getFilterOperatorOptions(this.form.metrics.field.jfieldType)
+        }
+        if (this.form.metrics.field) {
+          return chartOptions.getFilterOperatorOptions(this.form.metrics.field.jfieldType)
+        }
       }
       return []
     }

@@ -157,74 +157,6 @@ const filterOperatorOptions = [
     timeGranularity: false
   },
   {
-    value: 10,
-    label: '小于',
-    filterValueType: 1,
-    matchFieldTypes: [
-      'String',
-      'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
-      'LocalDate', 'LocalDateTime', 'Date'
-    ],
-    display: function (type, value, timeGranularity) {
-      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' < \'' + abbreviate(value[0], 20) + '\''
-      }
-      return ' < ' + value[0]
-    },
-    timeGranularity: false
-  },
-  {
-    value: 11,
-    label: '大于等于',
-    filterValueType: 1,
-    matchFieldTypes: [
-      'String',
-      'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
-      'LocalDate', 'LocalDateTime', 'Date'
-    ],
-    display: function (type, value, timeGranularity) {
-      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' >= \'' + abbreviate(value[0], 20) + '\''
-      }
-      return ' >= ' + value[0]
-    },
-    timeGranularity: false
-  },
-  {
-    value: 12,
-    label: '小于等于',
-    filterValueType: 1,
-    matchFieldTypes: [
-      'String',
-      'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
-      'LocalDate', 'LocalDateTime', 'Date'
-    ],
-    display: function (type, value, timeGranularity) {
-      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' <= \'' + abbreviate(value[0], 20) + '\''
-      }
-      return ' <= ' + value[0]
-    },
-    timeGranularity: false
-  },
-  {
-    value: 13,
-    label: '介于之间',
-    filterValueType: 2,
-    matchFieldTypes: [
-      'String',
-      'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
-      'LocalDate', 'LocalDateTime', 'Date'
-    ],
-    display: function (type, value, timeGranularity) {
-      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' between \'' + abbreviate(value[0], 20) + '\' and \'' + abbreviate(value[1], 20) + '\''
-      }
-      return ' between ' + value[0] + ' and ' + value[1] + ''
-    },
-    timeGranularity: false
-  },
-  {
     value: 2,
     label: '不等于',
     filterValueType: 1,
@@ -240,36 +172,6 @@ const filterOperatorOptions = [
       return ' != ' + value[0]
     },
     timeGranularity: false
-  },
-  {
-    value: 21,
-    label: '是当前',
-    filterValueType: 4,
-    matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
-    display: function (type, value, timeGranularity) {
-      return '是当前' + findTimeGranularityOption(timeGranularity).label
-    },
-    timeGranularity: true
-  },
-  {
-    value: 22,
-    label: '前段时间',
-    filterValueType: 1,
-    matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
-    display: function (type, value, timeGranularity) {
-      return '是前' + value[0] + findTimeGranularityOption(timeGranularity).label
-    },
-    timeGranularity: true
-  },
-  {
-    value: 23,
-    label: '后段时间',
-    filterValueType: 1,
-    matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
-    display: function (type, value, timeGranularity) {
-      return '是后' + value[0] + findTimeGranularityOption(timeGranularity).label
-    },
-    timeGranularity: true
   },
   {
     value: 3,
@@ -355,6 +257,104 @@ const filterOperatorOptions = [
       return ' > ' + value[0]
     },
     timeGranularity: false
+  },
+  {
+    value: 10,
+    label: '小于',
+    filterValueType: 1,
+    matchFieldTypes: [
+      'String',
+      'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
+      'LocalDate', 'LocalDateTime', 'Date'
+    ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' < \'' + abbreviate(value[0], 20) + '\''
+      }
+      return ' < ' + value[0]
+    },
+    timeGranularity: false
+  },
+  {
+    value: 11,
+    label: '大于等于',
+    filterValueType: 1,
+    matchFieldTypes: [
+      'String',
+      'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
+      'LocalDate', 'LocalDateTime', 'Date'
+    ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' >= \'' + abbreviate(value[0], 20) + '\''
+      }
+      return ' >= ' + value[0]
+    },
+    timeGranularity: false
+  },
+  {
+    value: 12,
+    label: '小于等于',
+    filterValueType: 1,
+    matchFieldTypes: [
+      'String',
+      'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
+      'LocalDate', 'LocalDateTime', 'Date'
+    ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' <= \'' + abbreviate(value[0], 20) + '\''
+      }
+      return ' <= ' + value[0]
+    },
+    timeGranularity: false
+  },
+  {
+    value: 13,
+    label: '介于之间',
+    filterValueType: 2,
+    matchFieldTypes: [
+      'String',
+      'Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal',
+      'LocalDate', 'LocalDateTime', 'Date'
+    ],
+    display: function (type, value, timeGranularity) {
+      if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
+        return ' between \'' + abbreviate(value[0], 20) + '\' and \'' + abbreviate(value[1], 20) + '\''
+      }
+      return ' between ' + value[0] + ' and ' + value[1] + ''
+    },
+    timeGranularity: false
+  },
+  {
+    value: 21,
+    label: '是当前',
+    filterValueType: 4,
+    matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
+    display: function (type, value, timeGranularity) {
+      return '是当前' + findTimeGranularityOption(timeGranularity).label
+    },
+    timeGranularity: true
+  },
+  {
+    value: 22,
+    label: '前段时间',
+    filterValueType: 1,
+    matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
+    display: function (type, value, timeGranularity) {
+      return '是前' + value[0] + findTimeGranularityOption(timeGranularity).label
+    },
+    timeGranularity: true
+  },
+  {
+    value: 23,
+    label: '后段时间',
+    filterValueType: 1,
+    matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
+    display: function (type, value, timeGranularity) {
+      return '是后' + value[0] + findTimeGranularityOption(timeGranularity).label
+    },
+    timeGranularity: true
   }
 ]
 
@@ -522,22 +522,27 @@ export default {
   customFieldTypeOptions: [
     {
       value: 1,
+      jfieldType: 'String',
       label: '字符串'
     },
     {
       value: 2,
+      jfieldType: 'Integer',
       label: '整形'
     },
     {
       value: 3,
+      jfieldType: 'Double',
       label: '浮点型'
     },
     {
       value: 4,
+      jfieldType: 'Date',
       label: '日期'
     },
     {
       value: 5,
+      jfieldType: 'Date',
       label: '日期时间'
     }
   ],

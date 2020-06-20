@@ -1,6 +1,10 @@
 import chartItemMock from '../item/chartItemMock'
 
 export default {
+  /**
+   * 假设axisX为部门，axisX2为性别
+   * 则返回结果为：['deptId','男','女']
+   */
   mockDimensionsForMode1 (axisX, axisX2) {
     const dimensions = chartItemMock.mockDimensionList(axisX2, 3)
     return [axisX.alias].concat(dimensions)

@@ -21,11 +21,11 @@
             <el-option-group
               v-for="([joinIndex,entity]) in entityFieldOptions"
               :key="joinIndex"
-              :label="entity.title+'('+entity.tableName+')'">
+              :label="entity.title+'('+entity.tableName+' as t'+joinIndex+')'">
               <el-option
                 v-for="field in entity.fieldList"
                 :key="field.fieldId"
-                :label="field.fieldDesc+'('+field.fieldName+')'"
+                :label="field.fieldDesc+'(t'+joinIndex+'.'+field.fieldName+')'"
                 :value="{
                   key: joinIndex+'_'+field.fieldId,
                   field: field,
