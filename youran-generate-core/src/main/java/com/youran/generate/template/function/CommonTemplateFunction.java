@@ -27,12 +27,12 @@ public class CommonTemplateFunction {
     }
 
     /**
-     * 创建HashMap
+     * 创建HashMap包装
      *
      * @return
      */
-    public static Map createHashMap() {
-        return new LinkedHashMap();
+    public static MapWrapper createHashMapWrapper() {
+        return new MapWrapper(new LinkedHashMap());
     }
 
     /**
@@ -93,6 +93,36 @@ public class CommonTemplateFunction {
             return content;
         }
         return content.substring(0, i) + content.substring(i + 1);
+    }
+
+
+    /**
+     * map包装类
+     */
+    public static class MapWrapper {
+
+        private Map target;
+
+        public MapWrapper(Map target) {
+            this.target = target;
+        }
+
+        public Object get(Object key) {
+            return target.get(key);
+        }
+
+
+        public void put(Object key, Object value) {
+            target.put(key, value);
+        }
+
+        public boolean containsKey(Object key) {
+            return target.containsKey(key);
+        }
+
+        public Map target() {
+            return target;
+        }
     }
 
 }
