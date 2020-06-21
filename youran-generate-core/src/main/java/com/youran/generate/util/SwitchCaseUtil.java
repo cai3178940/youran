@@ -51,6 +51,24 @@ public class SwitchCaseUtil {
         return stream.collect(Collectors.joining("_"));
     }
 
+    /**
+     * 驼峰转短横线
+     *
+     * @param name
+     * @param upCase
+     * @return
+     */
+    public static String camelCaseToKebabCase(String name, boolean upCase) {
+        String[] split = StringUtils.splitByCharacterTypeCamelCase(name);
+        Stream<String> stream = Arrays.stream(split);
+        if (upCase) {
+            stream = stream.map(String::toUpperCase);
+        } else {
+            stream = stream.map(String::toLowerCase);
+        }
+        return stream.collect(Collectors.joining("-"));
+    }
+
 
 
     /**

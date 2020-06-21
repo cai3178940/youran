@@ -58,6 +58,17 @@ public class CommonTemplateFunction {
     }
 
     /**
+     * 驼峰转短横线
+     *
+     * @param name
+     * @param upCase
+     * @return
+     */
+    public static String camelCaseToKebabCase(String name, boolean upCase) {
+        return SwitchCaseUtil.camelCaseToKebabCase(name, upCase);
+    }
+
+    /**
      * 首个单词转小写
      *
      * @param name
