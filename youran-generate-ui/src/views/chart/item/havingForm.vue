@@ -101,9 +101,11 @@ export default {
     filterOperatorOptions () {
       if (this.form.metrics) {
         if (this.form.metrics.custom) {
-          return chartOptions.getFilterOperatorOptions(this.form.metrics.field.jfieldType)
-        }
-        if (this.form.metrics.field) {
+          const option = chartOptions.getCustomFieldTypeOption(this.form.metrics.customFieldType)
+          if (option) {
+            return chartOptions.getFilterOperatorOptions(option.jfieldType)
+          }
+        } else if (this.form.metrics.field) {
           return chartOptions.getFilterOperatorOptions(this.form.metrics.field.jfieldType)
         }
       }

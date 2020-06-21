@@ -29,8 +29,14 @@ function initFormBean () {
 }
 
 function displayText (having) {
-  return metricsModel.displayText(having.metrics) +
-    having.tmp2.display(having.metrics.field.jfieldType, having.filterValue)
+  const metricsText = metricsModel.displayText(having.metrics)
+  let jfieldType
+  if (having.metrics.custom) {
+    jfieldType = chartOptions.getCustomFieldTypeOption(having.metrics.customFieldType).jfieldType
+  } else {
+    jfieldType = having.metrics.field.jfieldType
+  }
+  return metricsText + having.tmp2.display(jfieldType, having.filterValue)
 }
 
 /**

@@ -193,18 +193,27 @@ public class BaseContext {
     }
 
     /**
-     * 根据字段类型添加依赖
+     * 添加字段类型依赖
      *
      * @param field
      */
     public void addFieldTypeImport(MetaFieldPO field) {
-        if (Objects.equals(field.getJfieldType(), JFieldType.LOCALDATE.getJavaType())) {
+        this.addFieldTypeImport(field.getJfieldType());
+    }
+
+    /**
+     * 根据字段类型添加依赖
+     *
+     * @param jfieldType
+     */
+    public void addFieldTypeImport(String jfieldType) {
+        if (Objects.equals(jfieldType, JFieldType.LOCALDATE.getJavaType())) {
             this.addImport("java.time.LocalDate");
-        } else if (Objects.equals(field.getJfieldType(), JFieldType.LOCALDATETIME.getJavaType())) {
+        } else if (Objects.equals(jfieldType, JFieldType.LOCALDATETIME.getJavaType())) {
             this.addImport("java.time.LocalDateTime");
-        } else if (Objects.equals(field.getJfieldType(), JFieldType.DATE.getJavaType())) {
+        } else if (Objects.equals(jfieldType, JFieldType.DATE.getJavaType())) {
             this.addImport("java.util.Date");
-        } else if (Objects.equals(field.getJfieldType(), JFieldType.BIGDECIMAL.getJavaType())) {
+        } else if (Objects.equals(jfieldType, JFieldType.BIGDECIMAL.getJavaType())) {
             this.addImport("java.math.BigDecimal");
         }
     }
