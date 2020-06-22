@@ -3,8 +3,8 @@
     <el-form ref="chartItemForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
-      <el-form-item label="列名">
-        <el-input placeholder="请输入列名" v-model="form.titleAlias">
+      <el-form-item label="标题">
+        <el-input placeholder="请输入标题" v-model="form.titleAlias">
         </el-input>
       </el-form-item>
       <el-form-item label="字段名">

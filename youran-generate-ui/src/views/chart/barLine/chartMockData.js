@@ -3,19 +3,31 @@ import chartItemMock from '../item/chartItemMock'
 export default {
   /**
    * 假设axisX为部门，axisX2为性别
-   * 则返回结果为：['deptId','男','女']
+   * 则返回结果为：['dept','男','女']
    */
   mockDimensionsForMode1 (axisX, axisX2) {
     const dimensions = chartItemMock.mockDimensionList(axisX2, 3)
     return [axisX.alias].concat(dimensions)
   },
+  /**
+   * 返回结果：
+   * [
+   *   ['dept','男','女'],
+   *   ['部门1',20,30],
+   *   ['部门2',30,40],
+   *   ['部门3',40,50],
+   *   ['部门4',50,60],
+   *   ['部门5',60,70]
+   * ]
+   */
   mockSourceForMode1 (dimensions, axisX, axisY) {
-    const source = []
+    // 第一行为维度行
+    const source = [dimensions]
     for (let i = 0; i < 5; i++) {
-      const item = {}
-      item[dimensions[0]] = chartItemMock.mockDimension(axisX, i)
+      const item = []
+      item[0] = chartItemMock.mockDimension(axisX, i)
       for (let j = 1; j < dimensions.length; j++) {
-        item[dimensions[j]] = chartItemMock.mockMetrics(axisY, i + j)
+        item[j] = chartItemMock.mockMetrics(axisY, i + j)
       }
       source.push(item)
     }
@@ -28,19 +40,35 @@ export default {
     }
     return series
   },
+  /**
+   * 假设axisX为部门，axisYList[0]为部门人数，axisYList[1]为部门平均年龄
+   * 则返回结果为：['dept','employeeNum','avgAge']
+   */
   mockDimensionsForMode2 (axisX, axisYList) {
     const dimensions = [axisX.alias]
     axisYList.forEach(axisY => dimensions.push(axisY.titleAlias))
     return dimensions
   },
+  /**
+   * 返回结果：
+   * [
+   *   ['dept','employeeNum','avgAge'],
+   *   ['部门1',20,30],
+   *   ['部门2',30,40],
+   *   ['部门3',40,50],
+   *   ['部门4',50,60],
+   *   ['部门5',60,70]
+   * ]
+   */
   mockSourceForMode2 (dimensions, axisX, axisYList) {
-    const source = []
+    // 第一行为维度行
+    const source = [dimensions]
     for (let i = 0; i < 5; i++) {
-      const item = {}
-      item[dimensions[0]] = chartItemMock.mockDimension(axisX, i)
+      const item = []
+      item[0] = chartItemMock.mockDimension(axisX, i)
       for (let j = 1; j < dimensions.length; j++) {
         const axisY = axisYList[j - 1]
-        item[dimensions[j]] = chartItemMock.mockMetrics(axisY, i + j)
+        item[j] = chartItemMock.mockMetrics(axisY, i + j)
       }
       source.push(item)
     }

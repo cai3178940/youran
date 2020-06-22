@@ -24,7 +24,6 @@ export default {
         legend: {},
         tooltip: {},
         dataset: {
-          dimensions: [],
           source: []
         },
         xAxis: { type: 'category' },
@@ -36,7 +35,6 @@ export default {
       if (mode === 1) {
         // 模式1：存在附加维度，则将附加维度每个值转换成列，和主维度共同形成x轴
         const dimensions = chartMockData.mockDimensionsForMode1(chartBean.axisX, chartBean.axisX2)
-        option.dataset.dimensions = dimensions
         const source = chartMockData.mockSourceForMode1(dimensions, chartBean.axisX, chartBean.axisYList[0])
         option.dataset.source = source
         const series = chartMockData.mockSeriesForMode1(dimensions)
@@ -44,7 +42,6 @@ export default {
       } else if (mode === 2) {
         // 模式2：存在多个指标，每个指标作为单独的一列
         const dimensions = chartMockData.mockDimensionsForMode2(chartBean.axisX, chartBean.axisYList)
-        option.dataset.dimensions = dimensions
         const source = chartMockData.mockSourceForMode2(dimensions, chartBean.axisX, chartBean.axisYList)
         option.dataset.source = source
         const series = chartMockData.mockSeriesForMode2(chartBean.axisYList)
@@ -74,7 +71,7 @@ export default {
     renderChart (chartBean) {
       const chartEl = this.$el.children[0]
       this.chart = echarts.init(chartEl)
-      this.chart.setOption(this.buildOption(chartBean))
+      this.chart.setOption(this.buildOption(chartBean), true)
     }
   },
   beforeDestroy () {
