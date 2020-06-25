@@ -34,15 +34,15 @@ export default {
       const mode = this.checkParamMode(chartBean)
       if (mode === 1) {
         // 模式1：存在附加维度，则将附加维度每个值转换成列，和主维度共同形成x轴
-        const dimensions = chartMockData.mockDimensionsForMode1(chartBean.axisX, chartBean.axisX2)
-        const source = chartMockData.mockSourceForMode1(dimensions, chartBean.axisX, chartBean.axisYList[0])
+        const header = chartMockData.mockHeaderForMode1(chartBean.axisX, chartBean.axisX2)
+        const source = chartMockData.mockSourceForMode1(header, chartBean.axisX, chartBean.axisYList[0])
         option.dataset.source = source
-        const series = chartMockData.mockSeriesForMode1(dimensions)
+        const series = chartMockData.mockSeriesForMode1(header, chartBean.axisYList[0])
         option.series = series
       } else if (mode === 2) {
         // 模式2：存在多个指标，每个指标作为单独的一列
-        const dimensions = chartMockData.mockDimensionsForMode2(chartBean.axisX, chartBean.axisYList)
-        const source = chartMockData.mockSourceForMode2(dimensions, chartBean.axisX, chartBean.axisYList)
+        const header = chartMockData.mockHeaderForMode2(chartBean.axisX, chartBean.axisYList)
+        const source = chartMockData.mockSourceForMode2(header, chartBean.axisX, chartBean.axisYList)
         option.dataset.source = source
         const series = chartMockData.mockSeriesForMode2(chartBean.axisYList)
         option.series = series
@@ -86,7 +86,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss">
   @import '../../../assets/common.scss';
   .barLineChart {
