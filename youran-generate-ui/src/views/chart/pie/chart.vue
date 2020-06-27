@@ -21,34 +21,28 @@ export default {
         title: {
           text: ''
         },
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
-        },
+        tooltip: {},
         legend: {
           type: 'scroll',
           orient: 'vertical',
           right: 10,
           top: 20,
-          bottom: 20,
-          data: []
+          bottom: 20
+        },
+        dataset: {
+          source: []
         },
         series: [
           {
             center: ['40%', '50%'],
-            name: '',
-            type: 'pie',
-            data: []
+            type: 'pie'
           }
         ]
       }
       option.title.text = chartBean.title
       if (chartBean.dimension) {
-        option.series[0].name = chartBean.dimension.titleAlias
-        const legendData = chartMockData.mockLegendData(chartBean.dimension)
-        option.legend.data = legendData
         if (chartBean.metrics) {
-          option.series[0].data = chartMockData.mockSeriesData(chartBean.metrics, legendData)
+          option.dataset.source = chartMockData.mockDatasetSource(chartBean.dimension, chartBean.metrics)
         }
       }
       return option
