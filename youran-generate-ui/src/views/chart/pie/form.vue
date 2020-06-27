@@ -95,7 +95,8 @@
         <pie-chart ref="pieChart"></pie-chart>
       </el-main>
     </el-container>
-    <chart-item-form ref="chartItemForm" @submit="renderChart"></chart-item-form>
+    <chart-item-form ref="chartItemForm" @submit="renderChart"/>
+    <option-template-form ref="optionTemplateForm" @submit="updateOptionTemplate"/>
   </div>
 </template>
 
@@ -105,6 +106,7 @@ import pieApi from '@/api/chart/pie'
 import chartSourceApi from '@/api/chart/chartSource'
 import modulesMixin from '@/components/Mixins/modules'
 import chartItemForm from '../item/chartItemForm'
+import optionTemplateForm from '../item/optionTemplateForm'
 import model from './model'
 import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
@@ -121,6 +123,7 @@ export default {
   mixins: [modulesMixin],
   components: {
     chartItemForm,
+    optionTemplateForm,
     pieChart
   },
   data () {
@@ -217,6 +220,12 @@ export default {
     },
     renderChart () {
       this.$refs.pieChart.renderChart(this.form)
+    },
+    handleOptionTemplateEdit () {
+      this.$refs.optionTemplateForm.show(this.form.optionTemplate)
+    },
+    updateOptionTemplate (optionTemplate) {
+      this.form.optionTemplate = optionTemplate
     }
   },
   created () {

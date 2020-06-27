@@ -171,7 +171,7 @@
         <el-row>
           <el-col :span="24" style="text-align: right;">
             <el-button size="small" @click.native="handleOptionTemplateEdit"
-                       type="warning">编辑图表配置项</el-button>
+                       type="warning">echarts配置项</el-button>
           </el-col>
         </el-row>
         <bar-line-chart ref="barLineChart"></bar-line-chart>
