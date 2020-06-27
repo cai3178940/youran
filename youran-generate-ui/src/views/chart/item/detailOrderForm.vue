@@ -41,7 +41,7 @@ import detailOrderModel from './detailOrderModel'
 import detailColumnModel from './detailColumnModel'
 
 export default {
-  name: 'detailOrder-form',
+  name: 'detail-order-form',
   data () {
     return {
       edit: false,

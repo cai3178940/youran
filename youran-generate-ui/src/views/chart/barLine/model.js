@@ -8,7 +8,22 @@ function initBarLineFormBean (projectId) {
     title: '',
     axisX: null,
     axisX2: null,
-    axisYList: []
+    axisYList: [],
+    optionTemplate: `
+{
+  "title": {
+    "text": \${title}
+  },
+  "legend": {},
+  "tooltip": {},
+  "dataset": {
+    "source": \${source}
+  },
+  "xAxis": { "type": "category" },
+  "yAxis": {},
+  "series": \${series}
+}
+    `
   }
   return formBean
 }

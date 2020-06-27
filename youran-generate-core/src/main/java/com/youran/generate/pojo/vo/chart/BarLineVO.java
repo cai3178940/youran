@@ -27,6 +27,11 @@ public class BarLineVO extends MetaChartShowVO {
      */
     private List<ChartItemDTO> axisYList;
 
+    /**
+     * 图表配置项模板
+     */
+    private String optionTemplate;
+
     public ChartItemDTO getAxisX() {
         return axisX;
     }
@@ -49,5 +54,13 @@ public class BarLineVO extends MetaChartShowVO {
 
     public void setAxisYList(List<ChartItemDTO> axisYList) {
         this.axisYList = axisYList;
+    }
+
+    public String getOptionTemplate() {
+        return optionTemplate;
+    }
+
+    public void setOptionTemplate(String optionTemplate) {
+        this.optionTemplate = optionTemplate;
     }
 }

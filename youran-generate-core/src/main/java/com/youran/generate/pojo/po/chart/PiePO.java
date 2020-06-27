@@ -28,6 +28,11 @@ public class PiePO extends MetaChartPO {
      */
     private ChartItemDTO<MetricsPO> metrics;
 
+    /**
+     * 图表配置项模板
+     */
+    private String optionTemplate;
+
     public PiePO() {
         this.setChartType(ChartType.PIE.getValue());
     }
@@ -79,6 +84,7 @@ public class PiePO extends MetaChartPO {
         FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
         this.dimension = featureDTO.getDimension();
         this.metrics = featureDTO.getMetrics();
+        this.optionTemplate = featureDTO.getOptionTemplate();
     }
 
     @Override
@@ -86,6 +92,7 @@ public class PiePO extends MetaChartPO {
         FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setDimension(this.dimension);
         featureDTO.setMetrics(this.metrics);
+        featureDTO.setOptionTemplate(this.optionTemplate);
         this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
@@ -105,9 +112,18 @@ public class PiePO extends MetaChartPO {
         this.metrics = metrics;
     }
 
+    public String getOptionTemplate() {
+        return optionTemplate;
+    }
+
+    public void setOptionTemplate(String optionTemplate) {
+        this.optionTemplate = optionTemplate;
+    }
+
     static class FeatureDTO{
         private ChartItemDTO<DimensionPO> dimension;
         private ChartItemDTO<MetricsPO> metrics;
+        private String optionTemplate;
 
         public ChartItemDTO<DimensionPO> getDimension() {
             return dimension;
@@ -123,6 +139,14 @@ public class PiePO extends MetaChartPO {
 
         public void setMetrics(ChartItemDTO<MetricsPO> metrics) {
             this.metrics = metrics;
+        }
+
+        public String getOptionTemplate() {
+            return optionTemplate;
+        }
+
+        public void setOptionTemplate(String optionTemplate) {
+            this.optionTemplate = optionTemplate;
         }
     }
 }

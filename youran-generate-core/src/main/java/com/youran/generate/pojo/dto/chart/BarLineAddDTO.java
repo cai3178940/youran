@@ -24,6 +24,8 @@ public class BarLineAddDTO extends AbstractChartDTO {
     @ApiModelProperty(notes = "Y轴(指标)")
     private List<ChartItemDTO> axisYList;
 
+    @ApiModelProperty(notes = "图表配置项模板")
+    private String optionTemplate;
 
     @Override
     public Integer getChartType() {
@@ -52,5 +54,13 @@ public class BarLineAddDTO extends AbstractChartDTO {
 
     public void setAxisYList(List<ChartItemDTO> axisYList) {
         this.axisYList = axisYList;
+    }
+
+    public String getOptionTemplate() {
+        return optionTemplate;
+    }
+
+    public void setOptionTemplate(String optionTemplate) {
+        this.optionTemplate = optionTemplate;
     }
 }

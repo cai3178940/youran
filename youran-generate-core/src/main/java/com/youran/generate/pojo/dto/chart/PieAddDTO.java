@@ -19,6 +19,9 @@ public class PieAddDTO extends AbstractChartDTO {
     @ApiModelProperty(notes = "指标项")
     private ChartItemDTO metrics;
 
+    @ApiModelProperty(notes = "图表配置项模板")
+    private String optionTemplate;
+
     @Override
     public Integer getChartType() {
         return ChartType.PIE.getValue();
@@ -38,5 +41,13 @@ public class PieAddDTO extends AbstractChartDTO {
 
     public void setMetrics(ChartItemDTO metrics) {
         this.metrics = metrics;
+    }
+
+    public String getOptionTemplate() {
+        return optionTemplate;
+    }
+
+    public void setOptionTemplate(String optionTemplate) {
+        this.optionTemplate = optionTemplate;
     }
 }

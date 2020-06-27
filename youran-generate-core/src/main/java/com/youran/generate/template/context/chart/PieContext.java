@@ -24,10 +24,16 @@ public class PieContext extends AbstractChartContext<PiePO> {
      */
     private ChartItemDTO<MetricsPO> metrics;
 
+    /**
+     * 图表配置项模板
+     */
+    private String optionTemplate;
+
     public PieContext(MetaProjectPO project, PiePO pie) {
         super(project, pie);
         this.dimension = pie.getDimension();
         this.metrics = pie.getMetrics();
+        this.optionTemplate = pie.getOptionTemplate();
     }
 
     public ChartItemDTO<DimensionPO> getDimension() {
@@ -44,5 +50,13 @@ public class PieContext extends AbstractChartContext<PiePO> {
 
     public void setMetrics(ChartItemDTO<MetricsPO> metrics) {
         this.metrics = metrics;
+    }
+
+    public String getOptionTemplate() {
+        return optionTemplate;
+    }
+
+    public void setOptionTemplate(String optionTemplate) {
+        this.optionTemplate = optionTemplate;
     }
 }

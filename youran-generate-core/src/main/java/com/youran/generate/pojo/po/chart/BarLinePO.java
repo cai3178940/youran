@@ -35,6 +35,11 @@ public class BarLinePO extends MetaChartPO {
      */
     private List<ChartItemDTO<MetricsPO>> axisYList;
 
+    /**
+     * 图表配置项模板
+     */
+    private String optionTemplate;
+
     public BarLinePO() {
         this.setChartType(ChartType.BAR_LINE.getValue());
     }
@@ -101,6 +106,7 @@ public class BarLinePO extends MetaChartPO {
         this.axisX = featureDTO.getAxisX();
         this.axisX2 = featureDTO.getAxisX2();
         this.axisYList = featureDTO.getAxisYList();
+        this.optionTemplate = featureDTO.getOptionTemplate();
     }
 
     @Override
@@ -109,6 +115,7 @@ public class BarLinePO extends MetaChartPO {
         featureDTO.setAxisX(this.axisX);
         featureDTO.setAxisX2(this.axisX2);
         featureDTO.setAxisYList(this.axisYList);
+        featureDTO.setOptionTemplate(this.optionTemplate);
         this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
@@ -136,10 +143,19 @@ public class BarLinePO extends MetaChartPO {
         this.axisYList = axisYList;
     }
 
+    public String getOptionTemplate() {
+        return optionTemplate;
+    }
+
+    public void setOptionTemplate(String optionTemplate) {
+        this.optionTemplate = optionTemplate;
+    }
+
     static class FeatureDTO{
         private ChartItemDTO<DimensionPO> axisX;
         private ChartItemDTO<DimensionPO> axisX2;
         private List<ChartItemDTO<MetricsPO>> axisYList;
+        private String optionTemplate;
 
         public ChartItemDTO<DimensionPO> getAxisX() {
             return axisX;
@@ -163,6 +179,14 @@ public class BarLinePO extends MetaChartPO {
 
         public void setAxisYList(List<ChartItemDTO<MetricsPO>> axisYList) {
             this.axisYList = axisYList;
+        }
+
+        public String getOptionTemplate() {
+            return optionTemplate;
+        }
+
+        public void setOptionTemplate(String optionTemplate) {
+            this.optionTemplate = optionTemplate;
         }
     }
 

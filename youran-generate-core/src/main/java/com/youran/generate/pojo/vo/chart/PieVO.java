@@ -20,6 +20,11 @@ public class PieVO extends MetaChartShowVO {
      */
     private ChartItemDTO metrics;
 
+    /**
+     * 图表配置项模板
+     */
+    private String optionTemplate;
+
     public ChartItemDTO getDimension() {
         return dimension;
     }
@@ -34,5 +39,13 @@ public class PieVO extends MetaChartShowVO {
 
     public void setMetrics(ChartItemDTO metrics) {
         this.metrics = metrics;
+    }
+
+    public String getOptionTemplate() {
+        return optionTemplate;
+    }
+
+    public void setOptionTemplate(String optionTemplate) {
+        this.optionTemplate = optionTemplate;
     }
 }

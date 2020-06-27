@@ -17,19 +17,14 @@ export default {
   },
   methods: {
     buildOption (chartBean) {
-      const option = {
-        title: {
-          text: ''
-        },
-        legend: {},
-        tooltip: {},
-        dataset: {
-          source: []
-        },
-        xAxis: { type: 'category' },
-        yAxis: {},
-        series: []
+      const optionTemplate = chartBean.optionTemplate
+      if (!optionTemplate) {
+        return {}
       }
+      const optionJson = optionTemplate.replace(`\${title}`, `""`)
+        .replace(`\${source}`, '[]')
+        .replace(`\${series}`, '[]')
+      const option = JSON.parse(optionJson)
       option.title.text = chartBean.title
       const mode = this.checkParamMode(chartBean)
       if (mode === 1) {

@@ -168,10 +168,17 @@
         </el-form>
       </el-aside>
       <el-main style="border-left:solid 1px #e6e6e6;">
+        <el-row>
+          <el-col :span="24" style="text-align: right;">
+            <el-button size="small" @click.native="handleOptionTemplateEdit"
+                       type="warning">编辑图表配置项</el-button>
+          </el-col>
+        </el-row>
         <bar-line-chart ref="barLineChart"></bar-line-chart>
       </el-main>
     </el-container>
-    <chart-item-form ref="chartItemForm" @submit="renderChart"></chart-item-form>
+    <chart-item-form ref="chartItemForm" @submit="renderChart"/>
+    <option-template-form ref="optionTemplateForm" @submit="updateOptionTemplate"/>
   </div>
 </template>
 
@@ -181,6 +188,7 @@ import barLineApi from '@/api/chart/barLine'
 import chartSourceApi from '@/api/chart/chartSource'
 import modulesMixin from '@/components/Mixins/modules'
 import chartItemForm from '../item/chartItemForm'
+import optionTemplateForm from '../item/optionTemplateForm'
 import model from './model'
 import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
@@ -197,6 +205,7 @@ export default {
   mixins: [modulesMixin],
   components: {
     chartItemForm,
+    optionTemplateForm,
     barLineChart
   },
   data () {
@@ -316,6 +325,12 @@ export default {
     },
     renderChart () {
       this.$refs.barLineChart.renderChart(this.form)
+    },
+    handleOptionTemplateEdit () {
+      this.$refs.optionTemplateForm.show(this.form.optionTemplate)
+    },
+    updateOptionTemplate (optionTemplate) {
+      this.form.optionTemplate = optionTemplate
     }
   },
   created () {

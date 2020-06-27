@@ -17,28 +17,13 @@ export default {
   },
   methods: {
     buildOption (chartBean) {
-      const option = {
-        title: {
-          text: ''
-        },
-        tooltip: {},
-        legend: {
-          type: 'scroll',
-          orient: 'vertical',
-          right: 10,
-          top: 20,
-          bottom: 20
-        },
-        dataset: {
-          source: []
-        },
-        series: [
-          {
-            center: ['40%', '50%'],
-            type: 'pie'
-          }
-        ]
+      const optionTemplate = chartBean.optionTemplate
+      if (!optionTemplate) {
+        return {}
       }
+      const optionJson = optionTemplate.replace(`\${title}`, `""`)
+        .replace(`\${source}`, '[]')
+      const option = JSON.parse(optionJson)
       option.title.text = chartBean.title
       if (chartBean.dimension) {
         if (chartBean.metrics) {

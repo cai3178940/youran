@@ -33,7 +33,7 @@ import chartOptions from '@/utils/options-chart'
 import detailColumnModel from './detailColumnModel'
 
 export default {
-  name: 'customColumn-form',
+  name: 'custom-column-form',
   data () {
     return {
       edit: false,

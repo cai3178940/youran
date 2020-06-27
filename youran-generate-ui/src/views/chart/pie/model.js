@@ -7,7 +7,31 @@ function initPieFormBean (projectId) {
     module: '',
     title: '',
     dimension: null,
-    metrics: null
+    metrics: null,
+    optionTemplate: `
+{
+  "title": {
+    "text": \${title}
+  },
+  "tooltip": {},
+  "legend": {
+    "type": "scroll",
+    "orient": "vertical",
+    "right": 10,
+    "top": 20,
+    "bottom": 20
+  },
+  "dataset": {
+    "source": \${source}
+  },
+  "series": [
+    {
+      "center": ["40%", "50%"],
+      "type": "pie"
+    }
+  ]
+}
+    `
   }
   return formBean
 }

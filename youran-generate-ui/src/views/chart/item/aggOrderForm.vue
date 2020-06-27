@@ -42,7 +42,7 @@ import dimensionModel from './dimensionModel'
 import metricsModel from './metricsModel'
 
 export default {
-  name: 'aggOrder-form',
+  name: 'agg-order-form',
   data () {
     return {
       edit: false,

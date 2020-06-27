@@ -392,6 +392,10 @@ public enum DevType {
     aggOrderList: `
 **聚合(排序)**：待填写
     `
+  },
+  chartItem: {
+    optionTemplate: `
+**图表配置项**：待填写
+    `
   }
-
 }
