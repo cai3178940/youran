@@ -1,5 +1,5 @@
 import shortid from 'shortid'
-import chartOptions from '@/utils/options-chart'
+import chartFilterOperator from '@/utils/options-chart-filter-operator'
 import searchUtil from '../searchUtil'
 
 function initFormBean () {
@@ -24,7 +24,7 @@ function initOtherInfo (formBean) {
     field: null,
     joinIndex: null
   }
-  formBean.tmp2 = chartOptions.getFilterOperatorOption(1)
+  formBean.tmp2 = chartFilterOperator.getFilterOperatorOption(1)
   formBean.tmp3 = [null]
   formBean.tmp4 = [null, null]
   formBean.tmp5 = []
@@ -44,7 +44,7 @@ function displayText (form) {
 function repairWhereForEdit (where, sourceForm) {
   if (!where.custom) {
     where.field = searchUtil.findEntityFieldInFormBean(sourceForm, where.joinIndex, where.fieldId)[1]
-    where.tmp2 = chartOptions.getFilterOperatorOption(where.filterOperator)
+    where.tmp2 = chartFilterOperator.getFilterOperatorOption(where.filterOperator)
     where.tmp1 = {
       key: where.joinIndex + '_' + where.fieldId,
       field: where.field,

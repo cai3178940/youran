@@ -1,4 +1,4 @@
-import chartOptions from '@/utils/options-chart'
+import chartAggFunction from '@/utils/options-chart-agg-function'
 import searchUtil from '../searchUtil'
 import shortid from 'shortid'
 
@@ -53,7 +53,7 @@ function repairMetricsForEdit (metrics, sourceForm) {
       field: metrics.field,
       joinIndex: joinIndex
     }
-    metrics.tmp2 = chartOptions.getAggFunctionOption(metrics.aggFunction)
+    metrics.tmp2 = chartAggFunction.getAggFunctionOption(metrics.aggFunction)
   } else {
     initOtherInfo(metrics)
   }

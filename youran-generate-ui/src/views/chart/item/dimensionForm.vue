@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import chartOptions from '@/utils/options-chart'
+import chartGranularity from '@/utils/options-chart-granularity'
 import dimensionModel from './dimensionModel'
 
 export default {
@@ -78,7 +78,7 @@ export default {
      */
     granularityOptions () {
       if (this.form.tmp1.field) {
-        return chartOptions.getGranularityOptions(this.form.tmp1.field.jfieldType)
+        return chartGranularity.getGranularityOptions(this.form.tmp1.field.jfieldType)
       }
       return []
     }

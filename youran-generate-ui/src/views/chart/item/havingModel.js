@@ -1,7 +1,8 @@
 import shortid from 'shortid'
 import searchUtil from '../searchUtil'
 import metricsModel from './metricsModel'
-import chartOptions from '@/utils/options-chart'
+import chartFilterOperator from '@/utils/options-chart-filter-operator'
+import chartCustomFieldType from '@/utils/options-chart-custom-field-type'
 
 function initFormBean () {
   return {
@@ -32,7 +33,7 @@ function displayText (having) {
   const metricsText = metricsModel.displayText(having.metrics)
   let jfieldType
   if (having.metrics.custom) {
-    jfieldType = chartOptions.getCustomFieldTypeOption(having.metrics.customFieldType).jfieldType
+    jfieldType = chartCustomFieldType.getCustomFieldTypeOption(having.metrics.customFieldType).jfieldType
   } else {
     jfieldType = having.metrics.field.jfieldType
   }
@@ -65,7 +66,7 @@ function repairHavingForEdit (having, metricsList) {
   }
   having.joinIndex = having.metrics.joinIndex
   having.parentKey = having.metrics.key
-  having.tmp2 = chartOptions.getFilterOperatorOption(having.filterOperator)
+  having.tmp2 = chartFilterOperator.getFilterOperatorOption(having.filterOperator)
   if (having.tmp2.filterValueType === 1) {
     having.tmp3 = having.filterValue
   } else if (having.tmp2.filterValueType === 2) {

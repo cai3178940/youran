@@ -63,7 +63,8 @@
 </template>
 
 <script>
-import chartOptions from '@/utils/options-chart'
+import chartCustomFieldType from '@/utils/options-chart-custom-field-type'
+import chartFilterOperator from '@/utils/options-chart-filter-operator'
 import metricsModel from './metricsModel'
 import havingModel from './havingModel'
 
@@ -101,12 +102,12 @@ export default {
     filterOperatorOptions () {
       if (this.form.metrics) {
         if (this.form.metrics.custom) {
-          const option = chartOptions.getCustomFieldTypeOption(this.form.metrics.customFieldType)
+          const option = chartCustomFieldType.getCustomFieldTypeOption(this.form.metrics.customFieldType)
           if (option) {
-            return chartOptions.getFilterOperatorOptions(option.jfieldType)
+            return chartFilterOperator.getFilterOperatorOptions(option.jfieldType)
           }
         } else if (this.form.metrics.field) {
-          return chartOptions.getFilterOperatorOptions(this.form.metrics.field.jfieldType)
+          return chartFilterOperator.getFilterOperatorOptions(this.form.metrics.field.jfieldType)
         }
       }
       return []

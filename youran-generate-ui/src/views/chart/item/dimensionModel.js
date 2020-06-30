@@ -1,5 +1,5 @@
 import shortid from 'shortid'
-import chartOptions from '@/utils/options-chart'
+import chartGranularity from '@/utils/options-chart-granularity'
 import searchUtil from '../searchUtil'
 
 function initFormBean () {
@@ -42,7 +42,7 @@ function repairDimensionForEdit (dimension, sourceForm) {
   if (!dimension.field) {
     dimension.field = searchUtil.findEntityFieldInFormBean(sourceForm, dimension.joinIndex, dimension.fieldId)[1]
   }
-  dimension.tmp2 = chartOptions.getGranularityOption(dimension.granularity)
+  dimension.tmp2 = chartGranularity.getGranularityOption(dimension.granularity)
   dimension.tmp1 = {
     key: dimension.joinIndex + '_' + dimension.fieldId,
     field: dimension.field,

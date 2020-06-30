@@ -92,6 +92,12 @@
         </el-form>
       </el-aside>
       <el-main style="border-left:solid 1px #e6e6e6;">
+        <el-row>
+          <el-col :span="24" style="text-align: right;">
+            <el-button size="small" @click.native="handleOptionTemplateEdit"
+                       type="warning">echarts配置项</el-button>
+          </el-col>
+        </el-row>
         <pie-chart ref="pieChart"></pie-chart>
       </el-main>
     </el-container>
@@ -226,6 +232,7 @@ export default {
     },
     updateOptionTemplate (optionTemplate) {
       this.form.optionTemplate = optionTemplate
+      this.renderChart()
     }
   },
   created () {

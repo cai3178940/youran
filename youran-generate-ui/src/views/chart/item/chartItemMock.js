@@ -1,3 +1,4 @@
+import chartGranularity from '@/utils/options-chart-granularity'
 const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 function convertIndexToAlphabet (i) {
@@ -18,15 +19,23 @@ function mockMetrics (chartItem, i) {
  * 模拟第i条维度数据
  */
 function mockDimension (chartItem, i) {
+  console.info(chartItem.dimension)
   const field = chartItem.dimension.field
   let value = ''
-  if (field.jfieldType === 'String') {
-    value = chartItem.titleAlias + convertIndexToAlphabet(i)
-  } else if (['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal'].includes(field.jfieldType)) {
-    value = i + ''
+  const granularityOption = chartGranularity.getGranularityOption(chartItem.dimension.granularity)
+  if (granularityOption.mockDimension) {
+    // 非单值维度，按聚合粒度mock
+    value = granularityOption.mockDimension(i)
   } else {
-    // todo 其他类型，如果是枚举则加载枚举值
-    value = i + ''
+    // 单值维度，按字段类型mock
+    if (field.jfieldType === 'String') {
+      value = chartItem.titleAlias + convertIndexToAlphabet(i)
+    } else if (['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal'].includes(field.jfieldType)) {
+      value = i + ''
+    } else {
+      // todo 其他类型，如果是枚举则加载枚举值
+      value = i + ''
+    }
   }
   if (chartItem.valuePrefix) {
     value = chartItem.valuePrefix + value

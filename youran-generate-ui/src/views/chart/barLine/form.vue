@@ -331,6 +331,7 @@ export default {
     },
     updateOptionTemplate (optionTemplate) {
       this.form.optionTemplate = optionTemplate
+      this.renderChart()
     }
   },
   created () {

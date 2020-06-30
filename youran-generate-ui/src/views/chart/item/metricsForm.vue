@@ -68,7 +68,8 @@
 </template>
 
 <script>
-import chartOptions from '@/utils/options-chart'
+import chartCustomFieldType from '@/utils/options-chart-custom-field-type'
+import chartAggFunction from '@/utils/options-chart-agg-function'
 import metricsModel from './metricsModel'
 
 export default {
@@ -79,7 +80,7 @@ export default {
       position: 0,
       formVisible: false,
       entityFieldOptions: [],
-      customFieldTypeOptions: chartOptions.customFieldTypeOptions,
+      customFieldTypeOptions: chartCustomFieldType.customFieldTypeOptions,
       // 最终返回给调用组件的表单数据
       form: metricsModel.initFormBean(),
       oldForm: null,
@@ -92,7 +93,7 @@ export default {
      */
     aggFunctionOptions () {
       if (this.form.tmp1.field) {
-        return chartOptions.getAggFunctionOptions(this.form.tmp1.field.jfieldType)
+        return chartAggFunction.getAggFunctionOptions(this.form.tmp1.field.jfieldType)
       }
       return []
     }

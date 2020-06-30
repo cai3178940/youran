@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import chartOptions from '@/utils/options-chart'
+import chartCustomFieldType from '@/utils/options-chart-custom-field-type'
 import detailColumnModel from './detailColumnModel'
 
 export default {
@@ -39,7 +39,7 @@ export default {
       edit: false,
       position: 0,
       formVisible: false,
-      customFieldTypeOptions: chartOptions.customFieldTypeOptions,
+      customFieldTypeOptions: chartCustomFieldType.customFieldTypeOptions,
       // 最终返回给调用组件的表单数据
       form: detailColumnModel.buildCustomDetailColumn('', 1),
       oldForm: null,

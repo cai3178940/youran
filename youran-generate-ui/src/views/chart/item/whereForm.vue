@@ -97,7 +97,8 @@
 </template>
 
 <script>
-import chartOptions from '@/utils/options-chart'
+import chartFilterOperator from '@/utils/options-chart-filter-operator'
+import chartTimeGranularity from '@/utils/options-chart-time-granularity'
 import whereModel from './whereModel'
 
 export default {
@@ -108,7 +109,7 @@ export default {
       position: 0,
       formVisible: false,
       entityFieldOptions: [],
-      timeGranularityOptions: chartOptions.timeGranularityOptions,
+      timeGranularityOptions: chartTimeGranularity.timeGranularityOptions,
       // 最终返回给调用组件的表单数据
       form: whereModel.initFormBean(),
       oldForm: null,
@@ -131,7 +132,7 @@ export default {
      */
     filterOperatorOptions () {
       if (this.form.tmp1.field) {
-        return chartOptions.getFilterOperatorOptions(this.form.tmp1.field.jfieldType)
+        return chartFilterOperator.getFilterOperatorOptions(this.form.tmp1.field.jfieldType)
       }
       return []
     }
