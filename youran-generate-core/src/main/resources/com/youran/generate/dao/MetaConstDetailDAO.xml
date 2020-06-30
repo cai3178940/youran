@@ -71,7 +71,19 @@
     <select id="findListByQuery" parameterType="MetaConstDetailQO" resultType="MetaConstDetailListVO">
         select * from meta_const_detail t
         where t.deleted=0
-        and t.const_id = #{constId,jdbcType=INTEGER}
+        <choose>
+            <when test="constId != null">
+                and t.const_id = #{constId,jdbcType=INTEGER}
+            </when>
+            <otherwise>
+                and t.const_id in (
+                    select const_id from meta_const
+                    where project_id = #{projectId,jdbcType=INTEGER}
+                    and const_name = #{constName,jdbcType=VARCHAR}
+                    and deleted=0
+                )
+            </otherwise>
+        </choose>
         order by t.detail_value
     </select>
 

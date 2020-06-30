@@ -15,10 +15,11 @@ function convertIndexToAlphabet (i) {
 function mockMetrics (chartItem, i) {
   return 10 + i * 10
 }
+
 /**
  * 模拟第i条维度数据
  */
-function mockDimension (chartItem, i) {
+function mockDimension (chartItem, i, constDetails) {
   console.info(chartItem.dimension)
   const field = chartItem.dimension.field
   let value = ''
@@ -27,15 +28,23 @@ function mockDimension (chartItem, i) {
     // 非单值维度，按聚合粒度mock
     value = granularityOption.mockDimension(i)
   } else {
-    // 单值维度，按字段类型mock
-    if (field.jfieldType === 'String') {
-      value = chartItem.titleAlias + convertIndexToAlphabet(i)
-    } else if (['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal'].includes(field.jfieldType)) {
-      value = i + ''
+    // 单值维度且是枚举，从枚举值mock
+    if (field.dicType && constDetails[field.dicType] && constDetails[field.dicType].length) {
+      value = mockDimensionByConst(i, constDetails[field.dicType])
     } else {
-      // todo 其他类型，如果是枚举则加载枚举值
-      value = i + ''
+      // 单值普通字段，按类型mock
+      if (field.jfieldType === 'String') {
+        value = chartItem.titleAlias + convertIndexToAlphabet(i)
+      } else if (['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal'].includes(field.jfieldType)) {
+        value = i + ''
+      } else {
+        // todo 其他类型
+        value = i + ''
+      }
     }
+  }
+  if (value === null) {
+    return null
   }
   if (chartItem.valuePrefix) {
     value = chartItem.valuePrefix + value
@@ -47,12 +56,26 @@ function mockDimension (chartItem, i) {
 }
 
 /**
+ * 从枚举中mock
+ */
+function mockDimensionByConst (i, details) {
+  if (details.length - 1 < i) {
+    return null
+  }
+  const detail = details[i]
+  return detail.detailValue
+}
+
+/**
  * 模拟维度列表数据
  */
-function mockDimensionList (chartItem, count) {
+function mockDimensionList (chartItem, count, constDetails) {
   const list = []
   for (let i = 0; i < count; i++) {
-    list.push(mockDimension(chartItem, i))
+    const item = mockDimension(chartItem, i, constDetails)
+    if (item) {
+      list.push(item)
+    }
   }
   return list
 }

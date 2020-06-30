@@ -213,7 +213,6 @@ export default {
       this.detailLoading = true
       return constApi.getDetailList(
         {
-          'projectId': this.query.projectId,
           'constId': constId
         })
         .then(data => { this.detailList = data })

@@ -20,6 +20,7 @@
     "github-markdown-css": "^3.0.1",
     "gojs": "^2.0.14",
     "lodash": "^4.17.15",
+    "moment": "^2.27.0",
     "qs": "^6.7.0",
     "shortid": "^2.2.14",
     "showdown": "^1.9.1",
