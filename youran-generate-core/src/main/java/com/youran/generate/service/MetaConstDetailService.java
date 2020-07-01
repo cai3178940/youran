@@ -12,11 +12,14 @@ import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.qo.MetaConstDetailQO;
 import com.youran.generate.pojo.vo.MetaConstDetailListVO;
 import com.youran.generate.pojo.vo.MetaConstDetailShowVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 常量值增删改查服务
@@ -97,6 +100,22 @@ public class MetaConstDetailService {
         return metaConstDetailDAO.findListByQuery(metaConstDetailQO);
     }
 
+    public Map<String, List<MetaConstDetailListVO>> lists(MetaConstDetailQO metaConstDetailQO) {
+        String constName = metaConstDetailQO.getConstName();
+        if (StringUtils.isBlank(constName)) {
+            return null;
+        }
+        Map<String, List<MetaConstDetailListVO>> map = new HashMap<>();
+        String[] split = constName.split(",");
+        for (String name : split) {
+            MetaConstDetailQO qo = new MetaConstDetailQO();
+            qo.setProjectId(metaConstDetailQO.getProjectId());
+            qo.setConstName(name);
+            map.put(name, this.list(qo));
+        }
+        return map;
+    }
+
     /**
      * 查询常量值详情
      *
@@ -140,6 +159,7 @@ public class MetaConstDetailService {
     public List<MetaConstDetailPO> findByConstId(Integer constId) {
         return metaConstDetailDAO.findByConstId(constId);
     }
+
 
 
 }

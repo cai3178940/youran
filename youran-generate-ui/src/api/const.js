@@ -56,6 +56,13 @@ export default {
       .then(response => checkResult(response))
   },
   /**
+   * 查询枚举值列表
+   */
+  getDetailLists (params) {
+    return request.get(`/${apiPath}/meta_const_detail/lists`, { params: params })
+      .then(response => checkResult(response))
+  },
+  /**
    * 新增或修改枚举值
    */
   saveOrUpdateDetail (data, isUpdate) {

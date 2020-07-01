@@ -5,8 +5,8 @@ export default {
    * 假设axisX为部门，axisX2为性别
    * 则返回结果为：['部门','男','女']
    */
-  mockHeaderForMode1 (axisX, axisX2) {
-    const header = chartItemMock.mockDimensionList(axisX2, 3)
+  mockHeaderForMode1 (axisX, axisX2, constDetails) {
+    const header = chartItemMock.mockDimensionList(axisX2, 3, constDetails, true)
     return [axisX.titleAlias].concat(header)
   },
   /**
@@ -20,12 +20,12 @@ export default {
    *   ['部门5',60,70]
    * ]
    */
-  mockSourceForMode1 (header, axisX, axisY) {
+  mockSourceForMode1 (header, axisX, axisY, constDetails) {
     // 第一行为维度行
     const source = [header]
     for (let i = 0; i < 5; i++) {
       const item = []
-      item[0] = chartItemMock.mockDimension(axisX, i)
+      item[0] = chartItemMock.mockDimension(axisX, i, constDetails)
       for (let j = 1; j < header.length; j++) {
         item[j] = chartItemMock.mockMetrics(axisY, i + j)
       }
@@ -61,12 +61,16 @@ export default {
    *   ['部门5',60,70]
    * ]
    */
-  mockSourceForMode2 (header, axisX, axisYList) {
+  mockSourceForMode2 (header, axisX, axisYList, constDetails) {
     // 第一行为维度行
     const source = [header]
     for (let i = 0; i < 5; i++) {
       const item = []
-      item[0] = chartItemMock.mockDimension(axisX, i)
+      const value0 = chartItemMock.mockDimension(axisX, i, constDetails)
+      if (value0 === null) {
+        continue
+      }
+      item[0] = value0
       for (let j = 1; j < header.length; j++) {
         const axisY = axisYList[j - 1]
         item[j] = chartItemMock.mockMetrics(axisY, i + j)

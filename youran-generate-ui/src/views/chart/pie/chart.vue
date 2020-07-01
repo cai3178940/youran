@@ -49,7 +49,7 @@ export default {
       const callback = () => {
         const chartEl = this.$el.children[0]
         this.chart = echarts.init(chartEl)
-        this.chart.setOption(this.buildOption(chartBean))
+        this.chart.setOption(this.buildOption(chartBean), true)
       }
       const constName = getConstName(chartBean)
       if (constName) {

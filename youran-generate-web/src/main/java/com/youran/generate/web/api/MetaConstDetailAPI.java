@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 【常量值】api
@@ -45,9 +46,18 @@ public interface MetaConstDetailAPI {
      */
     @ApiOperation(value = "查询常量值列表")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "metaConstDetailQO", dataType = "MetaConstDetailQO", value = "分页查询参数", paramType = "body"),
+        @ApiImplicitParam(name = "metaConstDetailQO", dataType = "MetaConstDetailQO", value = "查询参数", paramType = "body"),
     })
     ResponseEntity<List<MetaConstDetailListVO>> list(MetaConstDetailQO metaConstDetailQO);
+
+    /**
+     * 查询常量值列表
+     */
+    @ApiOperation(value = "查询常量值列表")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "metaConstDetailQO", dataType = "MetaConstDetailQO", value = "查询参数", paramType = "body"),
+    })
+    ResponseEntity<Map<String,List<MetaConstDetailListVO>>> lists(MetaConstDetailQO metaConstDetailQO);
 
     /**
      * 查看常量值详情

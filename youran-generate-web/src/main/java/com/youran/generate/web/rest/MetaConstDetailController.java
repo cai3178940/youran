@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 【常量值】控制器
@@ -58,6 +59,13 @@ public class MetaConstDetailController extends AbstractController implements Met
     public ResponseEntity<List<MetaConstDetailListVO>> list(@Valid MetaConstDetailQO metaConstDetailQO) {
         List<MetaConstDetailListVO> list = metaConstDetailService.list(metaConstDetailQO);
         return ResponseEntity.ok(list);
+    }
+
+    @Override
+    @GetMapping(value = "/lists")
+    public ResponseEntity<Map<String,List<MetaConstDetailListVO>>> lists(@Valid MetaConstDetailQO metaConstDetailQO) {
+        Map<String,List<MetaConstDetailListVO>> map = metaConstDetailService.lists(metaConstDetailQO);
+        return ResponseEntity.ok(map);
     }
 
     @Override

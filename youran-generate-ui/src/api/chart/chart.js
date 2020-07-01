@@ -18,7 +18,6 @@ export default {
    * 批量删除图表
    */
   deleteBatch (data) {
-    console.info(data)
     return request.delete(`/${apiPath}/meta_chart`, { data })
       .then(response => checkResult(response))
   }
