@@ -19,7 +19,7 @@ function mockMetrics (chartItem, i) {
 /**
  * 模拟第i条维度数据
  */
-function mockDimension (chartItem, i, constDetails, useDetailRemark) {
+function mockDimension (chartItem, i, constDetails) {
   const field = chartItem.dimension.field
   let value = ''
   const granularityOption = chartGranularity.getGranularityOption(chartItem.dimension.granularity)
@@ -29,7 +29,7 @@ function mockDimension (chartItem, i, constDetails, useDetailRemark) {
   } else {
     // 单值维度且是枚举，从枚举值mock
     if (field.dicType && constDetails[field.dicType] && constDetails[field.dicType].length) {
-      value = mockDimensionByConst(i, constDetails[field.dicType], useDetailRemark)
+      value = mockDimensionByConst(i, constDetails[field.dicType])
     } else {
       // 单值普通字段，按类型mock
       if (field.jfieldType === 'String') {
@@ -57,25 +57,21 @@ function mockDimension (chartItem, i, constDetails, useDetailRemark) {
 /**
  * 从枚举中mock
  */
-function mockDimensionByConst (i, details, useDetailRemark) {
+function mockDimensionByConst (i, details) {
   if (details.length - 1 < i) {
     return null
   }
   const detail = details[i]
-  if (useDetailRemark) {
-    return detail.detailRemark
-  } else {
-    return detail.detailValue
-  }
+  return detail.detailRemark
 }
 
 /**
  * 模拟维度列表数据
  */
-function mockDimensionList (chartItem, count, constDetails, useDetailRemark) {
+function mockDimensionList (chartItem, count, constDetails) {
   const list = []
   for (let i = 0; i < count; i++) {
-    const item = mockDimension(chartItem, i, constDetails, useDetailRemark)
+    const item = mockDimension(chartItem, i, constDetails)
     if (item) {
       list.push(item)
     }

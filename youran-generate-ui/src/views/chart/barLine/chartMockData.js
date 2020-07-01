@@ -6,7 +6,7 @@ export default {
    * 则返回结果为：['部门','男','女']
    */
   mockHeaderForMode1 (axisX, axisX2, constDetails) {
-    const header = chartItemMock.mockDimensionList(axisX2, 3, constDetails, true)
+    const header = chartItemMock.mockDimensionList(axisX2, 3, constDetails)
     return [axisX.titleAlias].concat(header)
   },
   /**
