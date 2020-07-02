@@ -8,31 +8,7 @@
 import echarts from 'echarts'
 import chartMockData from './chartMockData'
 import constDetailMixin from '@/components/Mixins/const-detail'
-
-/**
- * 获取需要加载的常量名
- */
-function getConstNames (chartBean) {
-  const names = new Set()
-  if (chartBean.axisX) {
-    const constName = getConstName(chartBean.axisX)
-    if (constName) {
-      names.add(constName)
-    }
-  }
-  if (chartBean.axisX2) {
-    const constName = getConstName(chartBean.axisX2)
-    if (constName) {
-      names.add(constName)
-    }
-  }
-  return Array.from(names)
-}
-
-function getConstName (chartItem) {
-  const field = chartItem.dimension.field
-  return field.dicType
-}
+import model from './model'
 
 export default {
   name: 'barLineChart',
@@ -91,8 +67,8 @@ export default {
       }
     },
     renderChart (chartBean) {
-      const constName = getConstNames(chartBean)
-      this.loadConstDetail(chartBean.projectId, constName)
+      const constNames = model.getConstNames(chartBean)
+      this.loadConstDetail(chartBean.projectId, constNames)
         .then(() => {
           const chartEl = this.$el.children[0]
           this.chart = echarts.init(chartEl)

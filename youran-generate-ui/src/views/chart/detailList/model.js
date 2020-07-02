@@ -43,17 +43,18 @@ function initChartItemByDetailColumn (detailColumn) {
 /**
  * 模拟表格数据
  */
-function mockTableData (rowIndex, chartItem) {
+function mockTableData (rowIndex, chartItem, constDetails) {
   const detailColumn = chartItem.detailColumn
   if (!detailColumn) {
     return ''
   }
   let value
   if (detailColumn.custom) {
+    // TODO 根据自定义字段类型进行mock
     value = rowIndex + 1
   } else {
     if (detailColumn.field) {
-      value = detailColumn.field.fieldExample
+      value = mockFieldValue(rowIndex, detailColumn.field, constDetails)
     } else {
       value = rowIndex + 1
     }
@@ -65,6 +66,14 @@ function mockTableData (rowIndex, chartItem) {
     value = value + chartItem.valueSuffix
   }
   return value
+}
+
+function mockFieldValue (rowIndex, field, constDetails) {
+  if (field.dicType && constDetails[field.dicType] && constDetails[field.dicType].length) {
+    const details = constDetails[field.dicType]
+    return details[rowIndex % details.length].detailRemark
+  }
+  return field.fieldExample
 }
 
 function getRules () {

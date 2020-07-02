@@ -100,9 +100,35 @@ function getRules () {
   }
 }
 
+/**
+ * 获取需要加载的常量名
+ */
+function getConstNames (formBean) {
+  const names = new Set()
+  if (formBean.axisX) {
+    const constName = getConstName(formBean.axisX)
+    if (constName) {
+      names.add(constName)
+    }
+  }
+  if (formBean.axisX2) {
+    const constName = getConstName(formBean.axisX2)
+    if (constName) {
+      names.add(constName)
+    }
+  }
+  return Array.from(names)
+}
+
+function getConstName (chartItem) {
+  const field = chartItem.dimension.field
+  return field.dicType
+}
+
 export default {
   initBarLineFormBean,
   initChartItemByDimension,
   initChartItemByMetrics,
-  getRules
+  getRules,
+  getConstNames
 }

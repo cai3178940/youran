@@ -106,7 +106,7 @@
               </el-button>
             </template>
             <template v-slot="scope">
-              {{mockTableData(scope.row.i, chartItem)}}
+              {{mockTableData(scope.row.i, chartItem, constDetails)}}
             </template>
           </el-table-column>
         </el-table>
@@ -122,12 +122,14 @@ import fieldApi from '@/api/field'
 import detailListApi from '@/api/chart/detailList'
 import chartSourceApi from '@/api/chart/chartSource'
 import modulesMixin from '@/components/Mixins/modules'
+import constDetailMixin from '@/components/Mixins/const-detail'
 import chartItemForm from '../item/chartItemForm'
 import model from './model'
 import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
 import _differenceBy from 'lodash/differenceBy'
 import _intersectionBy from 'lodash/intersectionBy'
+import _uniq from 'lodash/uniq'
 
 export default {
   name: 'detailListForm',
@@ -135,7 +137,7 @@ export default {
     'projectId',
     'chartId'
   ],
-  mixins: [modulesMixin],
+  mixins: [modulesMixin, constDetailMixin],
   components: {
     chartItemForm
   },
@@ -150,6 +152,9 @@ export default {
     }
   },
   computed: {
+    /**
+     * 空表格数据，每个单元格单独mock
+     */
     emptyTableList () {
       const size = this.form.defaultPageSize > 100 ? 100 : this.form.defaultPageSize
       return Array.from({ length: size }, (v, i) => ({ i: i }))
@@ -236,6 +241,10 @@ export default {
           this.sourceForm.detailColumnList.forEach(detailColumn => {
             detailColumn.field = fieldList.find(field => field.fieldId === detailColumn.fieldId)
           })
+          // 从所有字段中获取常量名
+          const constNames = _uniq(fieldList.map(field => field.dicType).filter(t => t))
+          // 加载常量值
+          return this.loadConstDetail(this.projectId, constNames)
         })
     },
     /**
@@ -257,6 +266,10 @@ export default {
       // 删除匹配不上detailColumn的列
       this.form.columnList = _intersectionBy(this.form.columnList, this.sourceForm.detailColumnList, 'sourceItemId')
       this.form.hiddenColumnList = _intersectionBy(this.form.hiddenColumnList, this.sourceForm.detailColumnList, 'sourceItemId')
+      // 给columnList的每项，注入detailColumn
+      this.form.columnList.forEach(column => {
+        column.detailColumn = this.sourceForm.detailColumnList.find(detailColumn => detailColumn.sourceItemId === column.sourceItemId)
+      })
     }
   },
   created () {

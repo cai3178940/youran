@@ -107,9 +107,21 @@ function getRules () {
   }
 }
 
+/**
+ * 获取需要加载的常量名
+ */
+function getConstName (formBean) {
+  if (!formBean.dimension) {
+    return null
+  }
+  const field = formBean.dimension.dimension.field
+  return field.dicType
+}
+
 export default {
   initPieFormBean,
   initChartItemByDimension,
   initChartItemByMetrics,
-  getRules
+  getRules,
+  getConstName
 }

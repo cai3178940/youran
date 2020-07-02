@@ -8,17 +8,7 @@
 import echarts from 'echarts'
 import chartMockData from './chartMockData'
 import constDetailMixin from '@/components/Mixins/const-detail'
-
-/**
- * 获取需要加载的常量名
- */
-function getConstName (chartBean) {
-  if (!chartBean.dimension) {
-    return null
-  }
-  const field = chartBean.dimension.dimension.field
-  return field.dicType
-}
+import model from './model'
 
 export default {
   name: 'pieChart',
@@ -51,7 +41,7 @@ export default {
         this.chart = echarts.init(chartEl)
         this.chart.setOption(this.buildOption(chartBean), true)
       }
-      const constName = getConstName(chartBean)
+      const constName = model.getConstName(chartBean)
       if (constName) {
         this.loadConstDetail(chartBean.projectId, constName)
           .then(callback)
