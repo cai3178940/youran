@@ -1,5 +1,6 @@
 import dimensionModel from '../item/dimensionModel'
 import metricsModel from '../item/metricsModel'
+
 function initAggTableFormBean (projectId) {
   const formBean = {
     chartId: null,
@@ -49,9 +50,10 @@ function initChartItemByMetrics (metrics) {
 }
 
 /**
- * 模拟表格数据
+ * 模拟指标数据
  */
-function mockTableData (rowIndex, chartItem) {
+function mockMetricsData (rowIndex, chartItem) {
+  // TODO
   return rowIndex + 1
 }
 
@@ -90,6 +92,6 @@ export default {
   initAggTableFormBean,
   initChartItemByDimension,
   initChartItemByMetrics,
-  mockTableData,
+  mockMetricsData,
   getRules
 }

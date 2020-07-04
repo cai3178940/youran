@@ -6,7 +6,7 @@ export default {
    * 则返回结果为：['部门','男','女']
    */
   mockHeaderForMode1 (axisX, axisX2, constDetails) {
-    const header = chartItemMock.mockDimensionList(axisX2, 3, constDetails)
+    const header = chartItemMock.mockDimensionList(axisX2, 3, constDetails, true)
     return [axisX.titleAlias].concat(header)
   },
   /**
@@ -25,7 +25,7 @@ export default {
     const source = [header]
     for (let i = 0; i < 5; i++) {
       const item = []
-      item[0] = chartItemMock.mockDimension(axisX, i, constDetails)
+      item[0] = chartItemMock.mockDimension(axisX, i, constDetails, true)
       for (let j = 1; j < header.length; j++) {
         item[j] = chartItemMock.mockMetrics(axisY, i + j)
       }
@@ -66,7 +66,7 @@ export default {
     const source = [header]
     for (let i = 0; i < 5; i++) {
       const item = []
-      const value0 = chartItemMock.mockDimension(axisX, i, constDetails)
+      const value0 = chartItemMock.mockDimension(axisX, i, constDetails, true)
       if (value0 === null) {
         continue
       }

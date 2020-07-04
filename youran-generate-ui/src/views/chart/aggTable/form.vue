@@ -81,7 +81,7 @@
               </el-button>
             </template>
             <template v-slot="scope">
-              {{mockTableData(scope.row.i, chartItem)}}
+              {{mockDimension(chartItem, scope.row.i, constDetails, false)}}
             </template>
           </el-table-column>
           <el-table-column v-for="chartItem in form.metricsList"
@@ -109,7 +109,7 @@
               </el-button>
             </template>
             <template v-slot="scope">
-              {{mockTableData(scope.row.i, chartItem)}}
+              {{mockMetrics(chartItem, scope.row.i)}}
             </template>
           </el-table-column>
         </el-table>
@@ -125,14 +125,17 @@ import fieldApi from '@/api/field'
 import aggTableApi from '@/api/chart/aggTable'
 import chartSourceApi from '@/api/chart/chartSource'
 import modulesMixin from '@/components/Mixins/modules'
+import constDetailMixin from '@/components/Mixins/const-detail'
 import chartItemForm from '../item/chartItemForm'
 import _differenceBy from 'lodash/differenceBy'
 import _intersectionBy from 'lodash/intersectionBy'
+import _uniq from 'lodash/uniq'
 import model from './model'
 import sourceModel from '../sourceModel'
 import dimensionModel from '../item/dimensionModel'
 import metricsModel from '../item/metricsModel'
 import searchUtil from '../searchUtil'
+import chartItemMock from '../item/chartItemMock'
 
 export default {
   name: 'aggTableForm',
@@ -140,7 +143,7 @@ export default {
     'projectId',
     'chartId'
   ],
-  mixins: [modulesMixin],
+  mixins: [modulesMixin, constDetailMixin],
   components: {
     chartItemForm
   },
@@ -161,7 +164,8 @@ export default {
     }
   },
   methods: {
-    mockTableData: model.mockTableData,
+    mockDimension: chartItemMock.mockDimension,
+    mockMetrics: chartItemMock.mockMetrics,
     handleCommand: function (command) {
       this[command.method](command.arg)
     },
@@ -237,6 +241,13 @@ export default {
             metricsModel.repairMetricsForEdit(metrics, this.sourceForm)
           })
         })
+        .then(() => {
+          const constNames = _uniq(this.sourceForm.dimensionList
+            .map(dimension => dimension.field.dicType)
+            .filter(t => t))
+          // 加载常量值
+          return this.loadConstDetail(this.projectId, constNames)
+        })
     },
     /**
      * 修复创建表单数据
@@ -251,10 +262,16 @@ export default {
      * 修复编辑表单数据
      */
     repairEditChartForm () {
-      // 对比数据源和当前表单中的dimension,并处理差异
+      // 获取以前的维度图表项和数据源维度的交集
+      const interDimension = _intersectionBy(this.form.dimensionList, this.sourceForm.dimensionList, 'sourceItemId')
+      // 给interDimension的每项，注入dimension
+      interDimension.forEach(chartItem => {
+        chartItem.dimension = this.sourceForm.dimensionList.find(dimension => dimension.sourceItemId === chartItem.sourceItemId)
+      })
+      // 找出上一步新增的维度，并映射成维度图表项
       const dimensionToAdd = _differenceBy(this.sourceForm.dimensionList, this.form.dimensionList, 'sourceItemId')
         .map(dimension => model.initChartItemByDimension(dimension))
-      const interDimension = _intersectionBy(this.form.dimensionList, this.sourceForm.dimensionList, 'sourceItemId')
+      // 插入上一步新增的维度
       interDimension.push(...dimensionToAdd)
       this.form.dimensionList = interDimension
       // 对比数据源和当前表单中的metrics,并处理差异
