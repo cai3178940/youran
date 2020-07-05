@@ -53,7 +53,7 @@
           <el-select v-if="form.tmp1.field && form.tmp1.field.dicType"
                      v-model="form.tmp3[0]" style="width:100%;">
             <el-option
-              v-for="constDetail in constDetails[form.tmp1.field.dicType]"
+              v-for="constDetail in constDetailOptions"
               :key="constDetail.constDetailId"
               :label="constDetail.detailRemark"
               :value="constDetail.detailValue">
@@ -88,7 +88,7 @@
                      multiple filterable
                      placeholder="请输入过滤值">
             <el-option
-              v-for="constDetail in constDetails[form.tmp1.field.dicType]"
+              v-for="constDetail in constDetailOptions"
               :key="constDetail.constDetailId"
               :label="constDetail.detailRemark"
               :value="constDetail.detailValue">
@@ -163,12 +163,23 @@ export default {
         return chartFilterOperator.getFilterOperatorOptions(this.form.tmp1.field.jfieldType)
       }
       return []
+    },
+    /**
+     * 枚举选项列表
+     */
+    constDetailOptions () {
+      if (this.form.tmp1.field && this.form.tmp1.field.dicType) {
+        return this.constDetails[this.form.tmp1.field.dicType]
+      }
+      return []
     }
   },
   methods: {
     handleFieldChange ({ field }) {
       if (field.dicType) {
         this.loadConstDetail(this.projectId, field.dicType)
+          // 加载完以后强刷一下
+          .then(() => { this.$forceUpdate() })
       }
     },
     /**
@@ -193,6 +204,8 @@ export default {
       if (field && field.dicType) {
         this.loadConstDetail(projectId, field.dicType)
           .then(() => { this.formVisible = true })
+      } else {
+        this.formVisible = true
       }
     },
     submit () {
