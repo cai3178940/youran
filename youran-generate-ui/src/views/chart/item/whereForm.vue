@@ -17,6 +17,7 @@
         <el-form-item label="过滤字段">
           <el-select v-model="form.tmp1" value-key="key"
                      style="width:100%;" placeholder="请选择过滤字段"
+                     @change="handleFieldChange"
                      filterable>
             <el-option-group
               v-for="([joinIndex,entity]) in entityFieldOptions"
@@ -48,8 +49,20 @@
         </el-form-item>
         <!-- 单值过滤 -->
         <el-form-item v-if="form.tmp2.filterValueType===1" label="过滤值">
-          <el-input-number style="width:100%;" v-if="isNumberField"
+          <!-- 枚举类型 -->
+          <el-select v-if="form.tmp1.field && form.tmp1.field.dicType"
+                     v-model="form.tmp3[0]" style="width:100%;">
+            <el-option
+              v-for="constDetail in constDetails[form.tmp1.field.dicType]"
+              :key="constDetail.constDetailId"
+              :label="constDetail.detailRemark"
+              :value="constDetail.detailValue">
+            </el-option>
+          </el-select>
+          <!-- 数值类型 -->
+          <el-input-number style="width:100%;" v-else-if="isNumberField"
                            v-model="form.tmp3[0]"></el-input-number>
+          <!-- 其他 -->
           <el-input v-else v-model="form.tmp3[0]"></el-input>
         </el-form-item>
         <!-- 双值过滤 -->
@@ -70,7 +83,19 @@
         </el-form-item>
         <!-- 多值过滤 -->
         <el-form-item v-if="form.tmp2.filterValueType===3" label="过滤值">
-          <el-select v-model="form.tmp5" style="width:100%;"
+          <el-select v-if="form.tmp1.field && form.tmp1.field.dicType"
+                     v-model="form.tmp5" style="width:100%;"
+                     multiple filterable
+                     placeholder="请输入过滤值">
+            <el-option
+              v-for="constDetail in constDetails[form.tmp1.field.dicType]"
+              :key="constDetail.constDetailId"
+              :label="constDetail.detailRemark"
+              :value="constDetail.detailValue">
+            </el-option>
+          </el-select>
+          <el-select v-else
+                     v-model="form.tmp5" style="width:100%;"
                      multiple allow-create
                      filterable placeholder="请输入过滤值">
           </el-select>
@@ -100,9 +125,11 @@
 import chartFilterOperator from '@/utils/options-chart-filter-operator'
 import chartTimeGranularity from '@/utils/options-chart-time-granularity'
 import whereModel from './whereModel'
+import constDetailMixin from '@/components/Mixins/const-detail'
 
 export default {
   name: 'where-form',
+  mixins: [constDetailMixin],
   data () {
     return {
       edit: false,
@@ -110,6 +137,7 @@ export default {
       formVisible: false,
       entityFieldOptions: [],
       timeGranularityOptions: chartTimeGranularity.timeGranularityOptions,
+      projectId: null,
       // 最终返回给调用组件的表单数据
       form: whereModel.initFormBean(),
       oldForm: null,
@@ -138,13 +166,19 @@ export default {
     }
   },
   methods: {
+    handleFieldChange ({ field }) {
+      if (field.dicType) {
+        this.loadConstDetail(this.projectId, field.dicType)
+      }
+    },
     /**
      * 显示表单窗口
      * @param entityFieldOptions 可选的where条件字段
      * @param formBean 编辑的where条件，如果新增则为空
      * @param position 当前编辑的where条件在数组中的位置
      */
-    show (entityFieldOptions, formBean, position) {
+    show (projectId, entityFieldOptions, formBean, position) {
+      this.projectId = projectId
       this.position = position
       this.entityFieldOptions = entityFieldOptions
       if (formBean) {
@@ -155,7 +189,11 @@ export default {
         this.edit = false
         this.form = whereModel.initFormBean()
       }
-      this.formVisible = true
+      const field = this.form.tmp1.field
+      if (field && field.dicType) {
+        this.loadConstDetail(projectId, field.dicType)
+          .then(() => { this.formVisible = true })
+      }
     },
     submit () {
       whereModel.repairWhereForSubmit(this.form)

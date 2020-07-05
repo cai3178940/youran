@@ -10,14 +10,14 @@ function initFormBean () {
     aggFunction: null,
     custom: false,
     customContent: null,
-    customFieldType: null
+    customFieldType: null,
+    field: null
   }
   initOtherInfo(formBean)
   return formBean
 }
 
 function initOtherInfo (formBean) {
-  formBean.field = null
   // 指标字段下拉框绑定对象
   formBean.tmp1 = {
     key: '',
@@ -44,6 +44,7 @@ function displayText (metrics) {
  */
 function repairMetricsForEdit (metrics, sourceForm) {
   const joinIndex = metrics.joinIndex
+  initOtherInfo(metrics)
   if (!metrics.custom) {
     if (!metrics.field) {
       metrics.field = searchUtil.findEntityFieldInFormBean(sourceForm, joinIndex, metrics.fieldId)[1]
@@ -54,8 +55,6 @@ function repairMetricsForEdit (metrics, sourceForm) {
       joinIndex: joinIndex
     }
     metrics.tmp2 = chartAggFunction.getAggFunctionOption(metrics.aggFunction)
-  } else {
-    initOtherInfo(metrics)
   }
 }
 

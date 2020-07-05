@@ -335,7 +335,7 @@ import havingModel from './item/havingModel'
 import aggOrderForm from './item/aggOrderForm'
 import aggOrderModel from './item/aggOrderModel'
 import chartOptions from '@/utils/options-chart'
-import module from './sourceModel'
+import model from './sourceModel'
 import detailColumnModel from './item/detailColumnModel'
 import searchUtil from './searchUtil'
 
@@ -374,8 +374,8 @@ export default {
         aggregation: false
       },
       formLoading: false,
-      form: module.initSourceFormBean(this.projectId),
-      rules: module.getRules()
+      form: model.initSourceFormBean(this.projectId),
+      rules: model.getRules()
     }
   },
   computed: {
@@ -406,10 +406,10 @@ export default {
   },
   methods: {
     buildCommonDetailColumn: detailColumnModel.buildCommonDetailColumn,
-    buildTmp1ByEntity: module.buildTmp1ByEntity,
-    buildTmp1ByMtm: module.buildTmp1ByMtm,
-    buildTmp2ByEntity: module.buildTmp2ByEntity,
-    buildTmp2ByMtm: module.buildTmp2ByMtm,
+    buildTmp1ByEntity: model.buildTmp1ByEntity,
+    buildTmp1ByMtm: model.buildTmp1ByMtm,
+    buildTmp2ByEntity: model.buildTmp2ByEntity,
+    buildTmp2ByMtm: model.buildTmp2ByMtm,
     initEntityOptions () {
       return entityApi.getList(this.projectId)
         .then(data => {
@@ -434,7 +434,7 @@ export default {
       this.changeForm()
       this.form.entity = this.entityOptions.find(value => value.entityId === entityId)
       this.loadEntityFields(this.form.entity)
-      module.repairAtJoinChange(this.form, 0)
+      model.repairAtJoinChange(this.form, 0)
     },
     loadEntityFields (entity) {
       if (entity.fieldList.length) {
@@ -516,7 +516,7 @@ export default {
         part.mtm = part.tmp1.obj
         part.mtmId = part.tmp1.obj.mtmId
       }
-      module.repairAtJoinChange(this.form, part.joinIndex)
+      model.repairAtJoinChange(this.form, part.joinIndex)
       this.changeForm()
     },
     /**
@@ -539,16 +539,16 @@ export default {
       this.changeForm()
     },
     addJoin () {
-      this.form.joins.push(module.initJoinDTO(0, this.form.joins.length))
+      this.form.joins.push(model.initJoinDTO(0, this.form.joins.length))
       this.changeForm()
     },
     removeJoin (index) {
       this.form.joins.splice(index, 1)
-      module.repairAtJoinRemove(this.form, index + 1)
+      model.repairAtJoinRemove(this.form, index + 1)
       this.changeForm()
     },
     changeDetailColumn () {
-      module.repairAtDetailColumnChange(this.form)
+      model.repairAtDetailColumnChange(this.form)
       this.changeForm()
     },
     addCustomColumn () {
@@ -562,7 +562,7 @@ export default {
         this.form.customColumnList.push(customColumn)
       } else {
         this.$set(this.form.customColumnList, index, customColumn)
-        module.repairAtDetailColumnChange(this.form)
+        model.repairAtDetailColumnChange(this.form)
       }
       this.changeForm()
     },
@@ -570,17 +570,17 @@ export default {
       if (index < this.form.customColumnList.length) {
         this.form.customColumnList.splice(index, 1)
       }
-      module.repairAtDetailColumnChange(this.form)
+      model.repairAtDetailColumnChange(this.form)
       this.changeForm()
     },
     /**
      * where条件
      */
     addWhere () {
-      this.$refs.whereForm.show(this.entityFieldOptions, null, this.form.whereList.length)
+      this.$refs.whereForm.show(this.projectId, this.entityFieldOptions, null, this.form.whereList.length)
     },
     editWhere (index, where) {
-      this.$refs.whereForm.show(this.entityFieldOptions, where, index)
+      this.$refs.whereForm.show(this.projectId, this.entityFieldOptions, where, index)
     },
     onWhereSubmit (index, where) {
       if (index >= this.form.whereList.length) {
@@ -738,7 +738,7 @@ export default {
         // 提交表单
         .then(() => {
           loading = this.$loading()
-          return chartSourceApi.saveOrUpdateWithItems(module.extractFormBean(this.form), this.edit)
+          return chartSourceApi.saveOrUpdateWithItems(model.extractFormBean(this.form), this.edit)
         })
         // 执行页面跳转
         .then(data => {
@@ -775,7 +775,7 @@ export default {
             })
           return Promise.all(array)
             .then(() => {
-              module.repairSourceFormForEdit(formBean, this.entityOptions, this.mtmOptions)
+              model.repairSourceFormForEdit(formBean, this.entityOptions, this.mtmOptions)
               this.form = formBean
             })
         })

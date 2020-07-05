@@ -11,14 +11,14 @@ function initFormBean () {
     filterValue: null,
     timeGranularity: null,
     custom: false,
-    customContent: null
+    customContent: null,
+    field: null
   }
   initOtherInfo(formBean)
   return formBean
 }
 
 function initOtherInfo (formBean) {
-  formBean.field = null
   formBean.tmp1 = {
     key: '',
     field: null,
@@ -42,6 +42,7 @@ function displayText (form) {
  * 表单回显时修复过滤条件数据
  */
 function repairWhereForEdit (where, sourceForm) {
+  initOtherInfo(where)
   if (!where.custom) {
     where.field = searchUtil.findEntityFieldInFormBean(sourceForm, where.joinIndex, where.fieldId)[1]
     where.tmp2 = chartFilterOperator.getFilterOperatorOption(where.filterOperator)
@@ -57,8 +58,6 @@ function repairWhereForEdit (where, sourceForm) {
     } else if (where.tmp2.filterValueType === 3) {
       where.tmp5 = where.filterValue
     }
-  } else {
-    initOtherInfo(where)
   }
 }
 
