@@ -27,7 +27,6 @@ export default {
       }
       const optionJson = optionTemplate.replace(`\${source}`, '[]')
       const option = JSON5.parse(optionJson)
-      option.title.text = chartBean.title
       if (chartBean.dimension) {
         if (chartBean.metrics) {
           option.dataset.source = chartMockData.mockDatasetSource(chartBean.dimension, chartBean.metrics, this.constDetails)

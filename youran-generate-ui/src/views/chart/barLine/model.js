@@ -18,8 +18,7 @@ function initBarLineFormBean (projectId) {
   xAxis: { type: 'category' },
   yAxis: {},
   series: \${series}
-}
-    `
+}`
   }
   return formBean
 }

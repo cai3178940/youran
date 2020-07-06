@@ -26,8 +26,7 @@ function initPieFormBean (projectId) {
       type: 'pie'
     }
   ]
-}
-    `
+}`
   }
   return formBean
 }

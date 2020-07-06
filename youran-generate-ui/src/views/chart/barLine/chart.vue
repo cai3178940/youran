@@ -28,7 +28,6 @@ export default {
       const optionJson = optionTemplate.replace(`\${source}`, '[]')
         .replace(`\${series}`, '[]')
       const option = JSON5.parse(optionJson)
-      option.title.text = chartBean.title
       const mode = this.checkParamMode(chartBean)
       if (mode === 1) {
         // 模式1：存在附加维度，则将附加维度每个值转换成列，和主维度共同形成x轴
