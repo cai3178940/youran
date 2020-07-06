@@ -6,6 +6,7 @@
 
 <script>
 import echarts from 'echarts'
+import JSON5 from 'json5'
 import chartMockData from './chartMockData'
 import constDetailMixin from '@/components/Mixins/const-detail'
 import model from './model'
@@ -24,10 +25,9 @@ export default {
       if (!optionTemplate) {
         return {}
       }
-      const optionJson = optionTemplate.replace(`\${title}`, `""`)
-        .replace(`\${source}`, '[]')
+      const optionJson = optionTemplate.replace(`\${source}`, '[]')
         .replace(`\${series}`, '[]')
-      const option = JSON.parse(optionJson)
+      const option = JSON5.parse(optionJson)
       option.title.text = chartBean.title
       const mode = this.checkParamMode(chartBean)
       if (mode === 1) {

@@ -11,17 +11,14 @@ function initBarLineFormBean (projectId) {
     axisYList: [],
     optionTemplate: `
 {
-  "title": {
-    "text": \${title}
+  legend: {},
+  tooltip: {},
+  dataset: {
+    source: \${source}
   },
-  "legend": {},
-  "tooltip": {},
-  "dataset": {
-    "source": \${source}
-  },
-  "xAxis": { "type": "category" },
-  "yAxis": {},
-  "series": \${series}
+  xAxis: { type: 'category' },
+  yAxis: {},
+  series: \${series}
 }
     `
   }
