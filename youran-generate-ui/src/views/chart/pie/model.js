@@ -8,8 +8,7 @@ function initPieFormBean (projectId) {
     title: '',
     dimension: null,
     metrics: null,
-    optionTemplate: `
-{
+    optionTemplate: `{
   tooltip: {},
   legend: {
     type: 'scroll',

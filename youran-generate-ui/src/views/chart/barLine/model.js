@@ -9,8 +9,7 @@ function initBarLineFormBean (projectId) {
     axisX: null,
     axisX2: null,
     axisYList: [],
-    optionTemplate: `
-{
+    optionTemplate: `{
   legend: {},
   tooltip: {},
   dataset: {
