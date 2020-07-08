@@ -6,6 +6,7 @@
         <help-popover name="chartItem.optionTemplate">
           <el-input v-model="form.optionTemplate" type="textarea"
                     :autosize="{ minRows: 10 }"></el-input>
+          <el-button type="text" @click="format()">格式化</el-button>
         </help-popover>
       </el-form-item>
     </el-form>
@@ -17,7 +18,7 @@
 </template>
 
 <script>
-
+import JSON5 from '@/components/JSON5'
 export default {
   name: 'option-template-form',
   data () {
@@ -36,6 +37,21 @@ export default {
     show (optionTemplate) {
       this.form.optionTemplate = optionTemplate
       this.formVisible = true
+    },
+    /**
+     * 格式化json
+     */
+    format () {
+      // eslint-disable-next-line no-template-curly-in-string
+      const json = this.form.optionTemplate.replace('${source}', '\'${source}\'')
+        // eslint-disable-next-line no-template-curly-in-string
+        .replace('${series}', '\'${series}\'')
+      const obj = JSON5.parse(json)
+      this.form.optionTemplate = JSON5.stringify(obj, { space: 2 })
+        // eslint-disable-next-line no-template-curly-in-string
+        .replace('\'${source}\'', '${source}')
+        // eslint-disable-next-line no-template-curly-in-string
+        .replace('\'${series}\'', '${series}')
     },
     submit () {
       this.$emit('submit', this.form.optionTemplate)

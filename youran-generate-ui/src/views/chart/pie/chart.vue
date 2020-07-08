@@ -6,7 +6,7 @@
 
 <script>
 import echarts from 'echarts'
-import JSON5 from 'json5'
+import JSON5 from '@/components/JSON5'
 import chartMockData from './chartMockData'
 import constDetailMixin from '@/components/Mixins/const-detail'
 import model from './model'
