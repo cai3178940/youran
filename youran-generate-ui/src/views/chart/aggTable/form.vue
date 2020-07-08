@@ -58,7 +58,7 @@
                   :border="true">
           <el-table-column v-for="chartItem in form.dimensionList"
                            :key="chartItem.sourceItemId" align="center"
-                           min-width="180">
+                           min-width="180" class-name="head-column">
             <template slot="header" slot-scope="scope">
               <el-button v-if="scope.$index" @click="moveLeft(chartItem,form.dimensionList)" size="small" type="text">
                 <i class="el-icon-arrow-left" style="font-size:14px"></i>
@@ -86,7 +86,7 @@
           </el-table-column>
           <el-table-column v-for="chartItem in form.metricsList"
                            :key="chartItem.sourceItemId" align="center"
-                           min-width="180">
+                           min-width="180" class-name="head-column">
             <template slot="header" slot-scope="scope">
               <el-button v-if="scope.$index-form.dimensionList.length" @click="moveLeft(chartItem,form.metricsList)" size="small" type="text">
                 <i class="el-icon-arrow-left" style="font-size:14px"></i>
@@ -274,10 +274,16 @@ export default {
       // 插入上一步新增的维度
       interDimension.push(...dimensionToAdd)
       this.form.dimensionList = interDimension
+
+      // 获取以前的指标图表项和数据源指标的交集
+      const interMetrics = _intersectionBy(this.form.metricsList, this.sourceForm.metricsList, 'sourceItemId')
+      // 给interMetrics的每项，注入metrics
+      interMetrics.forEach(chartItem => {
+        chartItem.metrics = this.sourceForm.metricsList.find(metrics => metrics.sourceItemId === chartItem.sourceItemId)
+      })
       // 对比数据源和当前表单中的metrics,并处理差异
       const metricsToAdd = _differenceBy(this.sourceForm.metricsList, this.form.metricsList, 'sourceItemId')
         .map(metrics => model.initChartItemByMetrics(metrics))
-      const interMetrics = _intersectionBy(this.form.metricsList, this.sourceForm.metricsList, 'sourceItemId')
       interMetrics.push(...metricsToAdd)
       this.form.metricsList = interMetrics
     }
@@ -317,9 +323,16 @@ export default {
 
 <style lang="scss">
   @import '../../../assets/common.scss';
-  .aggTableFormDiv .aggTableForm {
-    @include youran-form;
-    padding: 20px 10px;
+  .aggTableFormDiv {
+    .aggTableForm {
+      @include youran-form;
+      padding: 20px 10px;
+    }
+    .head-column {
+      .cell {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+    }
   }
-
 </style>

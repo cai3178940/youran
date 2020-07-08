@@ -79,7 +79,7 @@
                   :border="true">
           <el-table-column v-for="chartItem in form.columnList"
                            :key="chartItem.sourceItemId" align="center"
-                           min-width="180">
+                           min-width="180" class-name="head-column">
             <template slot="header" slot-scope="scope">
               <el-button v-if="scope.$index" @click="moveLeft(chartItem)" size="small" type="text">
                 <i class="el-icon-arrow-left" style="font-size:14px"></i>
@@ -309,9 +309,16 @@ export default {
 
 <style lang="scss">
   @import '../../../assets/common.scss';
-  .detailListFormDiv .detailListForm {
-    @include youran-form;
-    padding: 20px 10px;
+  .detailListFormDiv {
+    .detailListForm {
+      @include youran-form;
+      padding: 20px 10px;
+    }
+    .head-column {
+      .cell {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+    }
   }
-
 </style>

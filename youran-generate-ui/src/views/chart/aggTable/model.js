@@ -49,14 +49,6 @@ function initChartItemByMetrics (metrics) {
   }
 }
 
-/**
- * 模拟指标数据
- */
-function mockMetricsData (rowIndex, chartItem) {
-  // TODO
-  return rowIndex + 1
-}
-
 function getRules () {
   return {
     projectId: [
@@ -92,6 +84,5 @@ export default {
   initAggTableFormBean,
   initChartItemByDimension,
   initChartItemByMetrics,
-  mockMetricsData,
   getRules
 }

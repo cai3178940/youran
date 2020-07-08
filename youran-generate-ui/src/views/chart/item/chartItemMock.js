@@ -1,4 +1,6 @@
 import chartGranularity from '@/utils/options-chart-granularity'
+import chartAggFunction from '@/utils/options-chart-agg-function'
+import chartCustomFieldType from '@/utils/options-chart-custom-field-type'
 const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 function convertIndexToAlphabet (i) {
@@ -13,7 +15,23 @@ function convertIndexToAlphabet (i) {
  * 模拟第i条指标数据
  */
 function mockMetrics (chartItem, i) {
-  return 10 + i * 10
+  // mock自定义指标
+  if (chartItem.metrics.custom) {
+    const customFieldTypeOption = chartCustomFieldType.getCustomFieldTypeOption(chartItem.metrics.customFieldType)
+    return customFieldTypeOption.mockValue(i)
+  }
+  const aggFunctionOption = chartAggFunction.getAggFunctionOption(chartItem.metrics.aggFunction)
+  if (aggFunctionOption) {
+    if (aggFunctionOption.value === 5 || aggFunctionOption.value === 6) {
+      return 10 + i * 10
+    } else {
+      const field = chartItem.metrics.field
+      if (field) {
+        return field.fieldExample
+      }
+    }
+  }
+  return ''
 }
 
 /**
@@ -21,12 +39,12 @@ function mockMetrics (chartItem, i) {
  */
 function mockDimension (chartItem, i, constDetails, unique) {
   const field = chartItem.dimension.field
-  let value = ''
+  let value = null
   const granularityOption = chartGranularity.getGranularityOption(chartItem.dimension.granularity)
-  if (granularityOption.mockDimension) {
+  if (granularityOption && granularityOption.mockDimension) {
     // 非单值维度，按聚合粒度mock
     value = granularityOption.mockDimension(i)
-  } else {
+  } else if (field) {
     // 单值维度且是枚举，从枚举值mock
     if (field.dicType && constDetails[field.dicType] && constDetails[field.dicType].length) {
       value = mockDimensionByConst(i, constDetails[field.dicType], unique)
