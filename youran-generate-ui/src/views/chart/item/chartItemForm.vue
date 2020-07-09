@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="配置列属性" :visible.sync="formVisible" width="50%">
+  <el-dialog title="属性配置" :visible.sync="formVisible" width="50%">
     <el-form ref="chartItemForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
@@ -11,15 +11,15 @@
         <el-input placeholder="请输入字段名" v-model="form.alias">
         </el-input>
       </el-form-item>
-      <el-form-item label="内容前缀">
+      <el-form-item v-if="visible.valuePrefix" label="内容前缀">
         <el-input placeholder="请输入内容前缀" v-model="form.valuePrefix">
         </el-input>
       </el-form-item>
-      <el-form-item label="内容后缀">
+      <el-form-item v-if="visible.valueSuffix" label="内容后缀">
         <el-input placeholder="请输入内容后缀" v-model="form.valueSuffix">
         </el-input>
       </el-form-item>
-      <el-form-item label="格式化">
+      <el-form-item v-if="visible.format" label="格式化">
         <el-input placeholder="请输入格式化" v-model="form.format">
         </el-input>
       </el-form-item>
@@ -57,6 +57,9 @@ export default {
         seriesType: null
       },
       visible: {
+        valuePrefix: true,
+        valueSuffix: true,
+        format: true,
         seriesType: false
       },
       rules: {}

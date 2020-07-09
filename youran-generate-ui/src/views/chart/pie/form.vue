@@ -56,7 +56,10 @@
               <!-- 设置按钮 -->
               <el-col :span="4" class="col-right">
                 <el-button :disabled="!form.dimension" size="small" type="text"
-                           style="padding-left: 5px;" @click="editItem(form.dimension)">
+                           style="padding-left: 5px;" @click="editItem(form.dimension,{
+                             valuePrefix: true,
+                             valueSuffix: true
+                           })">
                   <svg-icon iconClass="setting"></svg-icon>
                 </el-button>
               </el-col>
@@ -79,7 +82,10 @@
               <!-- 设置按钮 -->
               <el-col :span="4" class="col-right">
                 <el-button :disabled="!form.metrics" size="small" type="text"
-                           style="padding-left: 5px;" @click="editItem(form.metrics)">
+                           style="padding-left: 5px;" @click="editItem(form.metrics, {
+                             valuePrefix: false,
+                             valueSuffix: false
+                           })">
                   <svg-icon iconClass="setting"></svg-icon>
                 </el-button>
               </el-col>
@@ -149,8 +155,8 @@ export default {
   methods: {
     initChartItemByDimension: model.initChartItemByDimension,
     initChartItemByMetrics: model.initChartItemByMetrics,
-    editItem (chartItem) {
-      this.$refs.chartItemForm.show(chartItem)
+    editItem (chartItem, visible) {
+      this.$refs.chartItemForm.show(chartItem, visible)
     },
     submit () {
       let loading = null

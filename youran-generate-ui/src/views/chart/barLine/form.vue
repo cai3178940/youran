@@ -57,7 +57,11 @@
               <!-- 设置按钮 -->
               <el-col :span="4" class="col-inner" style="text-align: left;">
                 <el-button :disabled="!form.axisX" size="small" type="text"
-                           style="padding-left: 5px;" @click="editItem(form.axisX,{seriesType:false})">
+                           style="padding-left: 5px;" @click="editItem(form.axisX,{
+                             valuePrefix: true,
+                             valueSuffix: true,
+                             seriesType:false
+                           })">
                   <svg-icon iconClass="setting"></svg-icon>
                 </el-button>
               </el-col>
@@ -88,7 +92,11 @@
               <!-- 设置按钮 -->
               <el-col :span="4" class="col-inner" style="text-align: left;">
                 <el-button :disabled="!form.axisX2" size="small" type="text"
-                           style="padding-left: 5px;" @click="editItem(form.axisX2,{seriesType:false})">
+                           style="padding-left: 5px;" @click="editItem(form.axisX2,{
+                             valuePrefix: true,
+                             valueSuffix: true,
+                             seriesType:false
+                           })">
                   <svg-icon iconClass="setting"></svg-icon>
                 </el-button>
               </el-col>
@@ -116,7 +124,11 @@
               <!-- 设置按钮 -->
               <el-col :span="4" class="col-inner" style="text-align: left;">
                 <el-button :disabled="!form.axisYList[0]" size="small" type="text"
-                           style="padding-left: 5px;" @click="editItem(form.axisYList[0],{seriesType:true})">
+                           style="padding-left: 5px;" @click="editItem(form.axisYList[0],{
+                             valuePrefix: false,
+                             valueSuffix: false,
+                             seriesType: true
+                           })">
                   <svg-icon iconClass="setting"></svg-icon>
                 </el-button>
               </el-col>
@@ -149,7 +161,11 @@
               <!-- 设置按钮 -->
               <el-col :span="4" class="col-inner" style="text-align: left;">
                 <el-button :disabled="!form.axisYList[i]" size="small" type="text"
-                           style="padding-left: 5px;" @click="editItem(form.axisYList[i],{seriesType:true})">
+                           style="padding-left: 5px;" @click="editItem(form.axisYList[i],{
+                             valuePrefix: false,
+                             valueSuffix: false,
+                             seriesType: true
+                           })">
                   <svg-icon iconClass="setting"></svg-icon>
                 </el-button>
               </el-col>
