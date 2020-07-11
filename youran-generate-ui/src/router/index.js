@@ -27,6 +27,7 @@ import templateForm from '@/views/template/form.vue'
 import chart from '@/views/chart/index.vue'
 import chartList from '@/views/chart/list.vue'
 import sourceForm from '@/views/chart/sourceForm.vue'
+import dashboardForm from '@/views/chart/dashboard/form.vue'
 import detailListForm from '@/views/chart/detailList/form.vue'
 import aggTableForm from '@/views/chart/aggTable/form.vue'
 import barLineForm from '@/views/chart/barLine/form.vue'
@@ -99,6 +100,16 @@ export default new Router({
         {
           path: '',
           component: chartList,
+          props: true
+        },
+        {
+          path: 'dashboard/add',
+          component: dashboardForm,
+          props: true
+        },
+        {
+          path: 'dashboard/edit/:dashboardId',
+          component: dashboardForm,
           props: true
         },
         {

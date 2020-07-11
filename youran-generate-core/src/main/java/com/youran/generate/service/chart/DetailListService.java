@@ -1,5 +1,7 @@
 package com.youran.generate.service.chart;
 
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.chart.MetaChartDAO;
 import com.youran.generate.pojo.dto.chart.DetailListAddDTO;
@@ -9,6 +11,8 @@ import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.DetailListPO;
 import com.youran.generate.pojo.vo.chart.DetailListVO;
 import com.youran.generate.service.MetaProjectService;
+import com.youran.generate.util.ChartValidateUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +39,10 @@ public class DetailListService {
      * @param po
      */
     public void check(DetailListPO po) {
-        // TODO
+        if (CollectionUtils.isEmpty(po.getColumnList())) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "未添加明细列");
+        }
+        ChartValidateUtil.checkItemAliasConflict(po.getColumnList());
     }
 
     /**

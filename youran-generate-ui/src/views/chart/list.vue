@@ -44,7 +44,8 @@
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button @click.native="handleDel" type="danger">删除</el-button>
+            <el-button @click.native="handleDel" type="danger">删除图表</el-button>
+            <el-button @click.native="handleAddDashboard" type="primary">创建看板</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -52,7 +53,7 @@
     <el-table :data="list" style="width: 100%" :border="true"
               @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column property="chartName" label="名称"></el-table-column>
+      <el-table-column property="chartName" label="看板名称"></el-table-column>
       <el-table-column property="title" label="标题"></el-table-column>
       <el-table-column label="类型" width="200px">
         <template v-slot="scope">
@@ -68,12 +69,27 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-table :data="dashboardList" style="width: 100%;margin-top: 20px;" :border="true"
+              v-loading="loading">
+      <el-table-column property="name" label="名称"></el-table-column>
+      <el-table-column property="title" label="标题"></el-table-column>
+      <el-table-column property="module" label="模块名"></el-table-column>
+      <el-table-column
+        label="操作"
+        width="200">
+        <template v-slot="scope">
+          <el-button @click="handleEditDashboard(scope.row)" type="text" size="medium">编辑</el-button>
+          <el-button @click="handleDeleteDashboard(scope.row)" type="text" size="medium">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
 import projectApi from '@/api/project'
 import chartApi from '@/api/chart/chart'
+import dashboardApi from '@/api/chart/dashboard'
 import chartOptions from '@/utils/options-chart'
 
 export default {
@@ -93,6 +109,7 @@ export default {
       activeNum: 0,
       selectItems: [],
       list: [],
+      dashboardList: [],
       loading: false
     }
   },
@@ -137,6 +154,7 @@ export default {
         this.$router.push(`/project/${this.query.projectId}/chart`)
       }
       this.doQuery()
+      this.doQueryDashboard()
     },
     // 列表查询
     doQuery () {
@@ -151,12 +169,37 @@ export default {
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
     },
+    // 看板列表查询
+    doQueryDashboard () {
+      if (!this.query.projectId) {
+        return
+      }
+      this.loading = true
+      return dashboardApi.getList(this.query.projectId)
+        .then(data => {
+          this.dashboardList = data
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => { this.loading = false })
+    },
     handleAdd (chartTypeName) {
       this.$router.push(`/project/${this.projectId}/chart/${chartTypeName}/add`)
     },
     handleEdit (row) {
       const chartType = chartOptions.chartTypeOptions.find(op => op.value === row.chartType)
       this.$router.push(`/project/${this.projectId}/chart/${chartType.name}/edit/${row.chartId}?sourceId=${row.sourceId}`)
+    },
+    handleAddDashboard () {
+      this.$router.push(`/project/${this.projectId}/chart/dashboard/add`)
+    },
+    handleEditDashboard (row) {
+      this.$router.push(`/project/${this.projectId}/chart/dashboard/edit/${row.dashboardId}`)
+    },
+    handleDeleteDashboard (row) {
+      this.$common.confirm('是否确认删除')
+        .then(() => dashboardApi.deleteSingle(row.dashboardId))
+        .then(() => this.doQueryDashboard())
+        .catch(error => this.$common.showNotifyError(error))
     }
   },
   activated () {
@@ -165,7 +208,10 @@ export default {
         this.queryForm.projectId = parseInt(this.projectId)
         this.query.projectId = this.queryForm.projectId
       })
-      .then(() => this.doQuery())
+      .then(() => {
+        this.doQuery()
+        this.doQueryDashboard()
+      })
   }
 }
 </script>

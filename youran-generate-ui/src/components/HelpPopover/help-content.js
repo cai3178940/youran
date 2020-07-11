@@ -397,5 +397,16 @@ public enum DevType {
     optionTemplate: `
 **图表配置项**：待填写
     `
+  },
+  dashboard: {
+    name: `
+**名称**：待填写
+    `,
+    title: `
+**标题**：待填写
+    `,
+    module: `
+**模块名**：待填写
+    `
   }
 }

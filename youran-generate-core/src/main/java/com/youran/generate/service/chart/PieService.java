@@ -1,17 +1,25 @@
 package com.youran.generate.service.chart;
 
+import com.youran.common.constant.ErrorCode;
+import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.generate.dao.chart.MetaChartDAO;
+import com.youran.generate.pojo.dto.chart.ChartItemDTO;
 import com.youran.generate.pojo.dto.chart.PieAddDTO;
 import com.youran.generate.pojo.dto.chart.PieUpdateDTO;
 import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.PiePO;
+import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
+import com.youran.generate.pojo.po.chart.source.item.MetricsPO;
 import com.youran.generate.pojo.vo.chart.PieVO;
 import com.youran.generate.service.MetaProjectService;
+import com.youran.generate.util.ChartValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 
 /**
  * 饼图服务类
@@ -35,7 +43,15 @@ public class PieService {
      * @param po
      */
     public void check(PiePO po) {
-        // TODO
+        ChartItemDTO<DimensionPO> dimension = po.getDimension();
+        ChartItemDTO<MetricsPO> metrics = po.getMetrics();
+        if (dimension == null) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "未指定维度");
+        }
+        if (metrics == null) {
+            throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "未指定指标");
+        }
+        ChartValidateUtil.checkItemAliasConflict(Arrays.asList(dimension, metrics));
     }
 
     /**

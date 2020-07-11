@@ -380,3 +380,21 @@ CREATE TABLE `meta_chart` (
     `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
     PRIMARY KEY (`chart_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='图表';
+
+DROP TABLE IF EXISTS `meta_dashboard`;
+
+CREATE TABLE `meta_dashboard` (
+    `dashboard_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `name` varchar(64) NOT NULL COMMENT '名称',
+    `title` varchar(64) NOT NULL COMMENT '标题',
+    `module` varchar(50) DEFAULT NULL COMMENT '模块',
+    `feature` text DEFAULT NULL COMMENT '特性',
+    `project_id` int(11) NOT NULL COMMENT '项目id',
+    `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
+    `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
+    `operated_time` datetime NOT NULL COMMENT '修改时间【yyyy-MM-dd HH:mm:ss】',
+    `operated_by` varchar(20) NOT NULL COMMENT '修改人【最大长度20】',
+    `version` int(11) NOT NULL COMMENT '乐观锁版本号【整型】',
+    `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
+    PRIMARY KEY (`dashboard_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='看板';

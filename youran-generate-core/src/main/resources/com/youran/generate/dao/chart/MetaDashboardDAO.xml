@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.dao.chart.MetaDashboardDAO">
+
+
+    <sql id="metaDashboardColumns">
+        ${alias}.dashboard_id as dashboardId,
+        ${alias}.`name`,
+        ${alias}.title,
+        ${alias}.module,
+        ${alias}.feature,
+        ${alias}.project_id as projectId,
+        ${alias}.created_time as createdTime,
+        ${alias}.created_by as createdBy,
+        ${alias}.operated_time as operatedTime,
+        ${alias}.operated_by as operatedBy,
+        ${alias}.version,
+        ${alias}.deleted
+    </sql>
+
+
+    <select id="findById" resultType="MetaDashboardPO">
+        select
+            <include refid="metaDashboardColumns"><property name="alias" value="t"/></include>
+        from meta_dashboard t
+        <where>
+            and t.deleted=0
+            and t.dashboard_id = #{arg0}
+        </where>
+        limit 1
+    </select>
+
+    <select id="exist" resultType="boolean">
+        select count(1) from meta_dashboard
+        <where>
+            and deleted=0
+            and dashboard_id = #{arg0}
+        </where>
+    </select>
+
+    <insert id="_save" useGeneratedKeys="true" keyProperty="dashboardId" parameterType="MetaDashboardPO">
+        insert into meta_dashboard(
+        dashboard_id,
+        `name`,
+        title,
+        module,
+        feature,
+        project_id,
+        created_time,
+        created_by,
+        operated_time,
+        operated_by,
+        version,
+        deleted
+        ) VALUES (
+        #{dashboardId,jdbcType=INTEGER},
+        #{name,jdbcType=VARCHAR},
+        #{title,jdbcType=VARCHAR},
+        #{module,jdbcType=VARCHAR},
+        #{feature,jdbcType=VARCHAR},
+        #{projectId,jdbcType=INTEGER},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{createdBy,jdbcType=VARCHAR},
+        #{operatedTime,jdbcType=TIMESTAMP},
+        #{operatedBy,jdbcType=VARCHAR},
+        #{version,jdbcType=INTEGER},
+        #{deleted,jdbcType=BOOLEAN}
+        )
+    </insert>
+
+
+    <update id="_update" parameterType="MetaDashboardPO">
+        update meta_dashboard set
+            `name`=#{name,jdbcType=VARCHAR},
+            title=#{title,jdbcType=VARCHAR},
+            module=#{module,jdbcType=VARCHAR},
+            feature=#{feature,jdbcType=VARCHAR},
+            project_id=#{projectId,jdbcType=INTEGER},
+            operated_time=#{operatedTime,jdbcType=TIMESTAMP},
+            operated_by=#{operatedBy,jdbcType=VARCHAR},
+            version = version+1,
+            deleted=#{deleted,jdbcType=BOOLEAN}
+        where dashboard_id=#{dashboardId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and deleted=0
+    </update>
+
+    <delete id="delete">
+        update meta_dashboard set deleted=1
+        where dashboard_id=#{arg0,jdbcType=INTEGER}
+        and deleted=0
+    </delete>
+
+
+    <sql id="queryCondition">
+        <if test="projectId != null ">
+            and t.project_id = #{projectId}
+        </if>
+    </sql>
+
+    <sql id="orderCondition">
+        order by
+            t.operated_time desc
+    </sql>
+
+    <select id="findCountByQuery" parameterType="MetaDashboardQO" resultType="int">
+        select count(1) from meta_dashboard t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+    </select>
+
+    <select id="findListByQuery" parameterType="MetaDashboardQO" resultType="MetaDashboardListVO">
+        select
+            <include refid="metaDashboardColumns"><property name="alias" value="t"/></include>
+        from meta_dashboard t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+        <include refid="orderCondition"/>
+    </select>
+
+
+
+    <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
+
+
+</mapper>
