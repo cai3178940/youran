@@ -39,6 +39,7 @@ public class MetaDashboardService {
     @Transactional(rollbackFor = RuntimeException.class)
     public MetaDashboardPO save(MetaDashboardAddDTO metaDashboardDTO) {
         MetaDashboardPO metaDashboard = MetaDashboardMapper.INSTANCE.fromAddDTO(metaDashboardDTO);
+        metaDashboard.featureSerialize();
         metaDashboardDAO.save(metaDashboard);
         return metaDashboard;
     }
@@ -55,6 +56,7 @@ public class MetaDashboardService {
         Integer dashboardId = metaDashboardUpdateDTO.getDashboardId();
         MetaDashboardPO metaDashboard = this.getMetaDashboard(dashboardId, true);
         MetaDashboardMapper.INSTANCE.setUpdateDTO(metaDashboard, metaDashboardUpdateDTO);
+        metaDashboard.featureSerialize();
         metaDashboardDAO.update(metaDashboard);
         return metaDashboard;
     }
@@ -82,6 +84,7 @@ public class MetaDashboardService {
         if (force && metaDashboard == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
         }
+        metaDashboard.featureDeserialize();
         return metaDashboard;
     }
 

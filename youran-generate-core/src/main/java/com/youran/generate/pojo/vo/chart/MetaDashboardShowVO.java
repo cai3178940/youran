@@ -1,8 +1,11 @@
 package com.youran.generate.pojo.vo.chart;
 
 import com.youran.common.pojo.vo.AbstractVO;
+import com.youran.generate.pojo.dto.chart.LayoutDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.List;
 
 import static com.youran.generate.pojo.example.chart.MetaDashboardExample.*;
 
@@ -33,6 +36,18 @@ public class MetaDashboardShowVO extends AbstractVO {
     @ApiModelProperty(notes = N_PROJECT_ID,example = E_PROJECT_ID)
     private Integer projectId;
 
+    /**
+     * 图表布局
+     */
+    private List<LayoutDTO> layout;
+
+    public List<LayoutDTO> getLayout() {
+        return layout;
+    }
+
+    public void setLayout(List<LayoutDTO> layout) {
+        this.layout = layout;
+    }
 
     public Integer getDashboardId() {
         return this.dashboardId;

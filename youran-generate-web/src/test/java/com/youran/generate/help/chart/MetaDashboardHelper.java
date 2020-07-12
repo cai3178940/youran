@@ -24,7 +24,6 @@ public class MetaDashboardHelper {
         dto.setName(E_NAME);
         dto.setTitle(E_TITLE);
         dto.setModule(E_MODULE);
-        dto.setFeature(E_FEATURE);
         dto.setProjectId(SafeUtil.getInteger(E_PROJECT_ID));
         return dto;
     }
@@ -40,7 +39,6 @@ public class MetaDashboardHelper {
         dto.setName(metaDashboard.getName());
         dto.setTitle(metaDashboard.getTitle());
         dto.setModule(metaDashboard.getModule());
-        dto.setFeature(metaDashboard.getFeature());
         dto.setProjectId(metaDashboard.getProjectId());
         return dto;
     }

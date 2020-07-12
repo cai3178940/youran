@@ -1,6 +1,10 @@
 package com.youran.generate.pojo.po.chart;
 
+import com.youran.common.util.JsonUtil;
+import com.youran.generate.pojo.dto.chart.LayoutDTO;
 import com.youran.generate.pojo.po.BasePO;
+
+import java.util.List;
 
 /**
  * 看板
@@ -40,6 +44,30 @@ public class MetaDashboardPO extends BasePO {
      */
     private Integer projectId;
 
+    /**
+     * 图表布局
+     */
+    private List<LayoutDTO> layout;
+
+
+    public void featureDeserialize() {
+        FeatureDTO featureDTO = JsonUtil.parseObject(this.getFeature(), FeatureDTO.class);
+        this.layout = featureDTO.getLayout();
+    }
+
+    public void featureSerialize() {
+        FeatureDTO featureDTO = new FeatureDTO();
+        featureDTO.setLayout(this.layout);
+        this.setFeature(JsonUtil.toJSONString(featureDTO));
+    }
+
+    public List<LayoutDTO> getLayout() {
+        return layout;
+    }
+
+    public void setLayout(List<LayoutDTO> layout) {
+        this.layout = layout;
+    }
 
     public Integer getDashboardId() {
         return this.dashboardId;
@@ -87,6 +115,18 @@ public class MetaDashboardPO extends BasePO {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    static class FeatureDTO {
+        private List<LayoutDTO> layout;
+
+        public List<LayoutDTO> getLayout() {
+            return layout;
+        }
+
+        public void setLayout(List<LayoutDTO> layout) {
+            this.layout = layout;
+        }
     }
 }
 

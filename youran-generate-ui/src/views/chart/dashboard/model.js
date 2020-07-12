@@ -3,12 +3,20 @@ function initFormBean (projectId) {
     name: '',
     title: '',
     module: '',
-    projectId: null,
-    layout: [
-      { 'x': 0, 'y': 0, 'w': 4, 'h': 4, 'i': '0', title: 'MyAggTable' }
-    ]
+    projectId: projectId,
+    layout: []
   }
   return formBean
+}
+
+function initLayout (chartId) {
+  return {
+    x: 0,
+    y: 0,
+    w: 6,
+    h: 4,
+    i: chartId
+  }
 }
 
 function getRules () {
@@ -32,5 +40,6 @@ function getRules () {
 
 export default {
   initFormBean,
-  getRules
+  getRules,
+  initLayout
 }

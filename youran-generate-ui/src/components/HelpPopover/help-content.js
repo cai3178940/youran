@@ -407,6 +407,9 @@ public enum DevType {
     `,
     module: `
 **模块名**：待填写
+    `,
+    chartIds: `
+**图表**：待填写
     `
   }
 }

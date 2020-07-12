@@ -69,7 +69,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-table :data="dashboardList" style="width: 100%;margin-top: 20px;" :border="true"
+    <el-table v-if="dashboardList.length" :data="dashboardList"
+              style="width: 100%;margin-top: 20px;" :border="true"
               v-loading="loading">
       <el-table-column property="name" label="名称"></el-table-column>
       <el-table-column property="title" label="标题"></el-table-column>

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 import static com.youran.generate.pojo.example.chart.MetaDashboardExample.*;
 
@@ -32,14 +33,22 @@ public class MetaDashboardAddDTO extends AbstractDTO {
     @Length(max = 50)
     private String module;
 
-    @ApiModelProperty(notes = N_FEATURE, example = E_FEATURE)
-    @Length(max = 32)
-    private String feature;
-
     @ApiModelProperty(notes = N_PROJECT_ID, example = E_PROJECT_ID, required = true)
     @NotNull
     private Integer projectId;
 
+    /**
+     * 图表布局
+     */
+    private List<LayoutDTO> layout;
+
+    public List<LayoutDTO> getLayout() {
+        return layout;
+    }
+
+    public void setLayout(List<LayoutDTO> layout) {
+        this.layout = layout;
+    }
 
     public String getName() {
         return this.name;
@@ -63,14 +72,6 @@ public class MetaDashboardAddDTO extends AbstractDTO {
 
     public void setModule(String module) {
         this.module = module;
-    }
-
-    public String getFeature() {
-        return this.feature;
-    }
-
-    public void setFeature(String feature) {
-        this.feature = feature;
     }
 
     public Integer getProjectId() {

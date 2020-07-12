@@ -3,6 +3,13 @@ import { request, apiPath, checkResult } from '@/utils/request'
 export default {
 
   /**
+   * 查询看板详情
+   */
+  get (dashboardId) {
+    return request.get(`/${apiPath}/meta_dashboard/${dashboardId}`)
+      .then(response => checkResult(response))
+  },
+  /**
    * 查询项目下的看板列表
    */
   getList (projectId) {
@@ -12,6 +19,13 @@ export default {
           projectId
         }
       })
+      .then(response => checkResult(response))
+  },
+  /**
+   * 保存看板
+   */
+  saveOrUpdate (data, isUpdate) {
+    return request[isUpdate ? 'put' : 'post'](`/${apiPath}/meta_dashboard`, data)
       .then(response => checkResult(response))
   },
   /**
