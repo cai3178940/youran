@@ -53,11 +53,17 @@
     <el-table :data="list" style="width: 100%" :border="true"
               @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column property="chartName" label="看板名称"></el-table-column>
-      <el-table-column property="title" label="标题"></el-table-column>
+      <el-table-column property="chartName" label="图表名称"></el-table-column>
+      <el-table-column property="title" label="图表标题"></el-table-column>
       <el-table-column label="类型" width="200px">
         <template v-slot="scope">
-          {{ scope.row.chartType | optionLabel('chartTypeOptions')}}
+          <template v-for="chartType in [getChartType(scope.row)]">
+            <el-tooltip :key="chartType.value" class="item" effect="dark" :content="chartType.label" placement="right">
+              <svg-icon :className="'dropdown-icon '+chartType.class"
+                        :iconClass="chartType.icon">
+              </svg-icon>
+            </el-tooltip>
+          </template>
         </template>
       </el-table-column>
       <el-table-column property="module" label="模块名"></el-table-column>
@@ -72,8 +78,8 @@
     <el-table v-if="dashboardList.length" :data="dashboardList"
               style="width: 100%;margin-top: 20px;" :border="true"
               v-loading="loading">
-      <el-table-column property="name" label="名称"></el-table-column>
-      <el-table-column property="title" label="标题"></el-table-column>
+      <el-table-column property="name" label="看板名称"></el-table-column>
+      <el-table-column property="title" label="看板标题"></el-table-column>
       <el-table-column property="module" label="模块名"></el-table-column>
       <el-table-column
         label="操作"
@@ -126,6 +132,9 @@ export default {
     }
   },
   methods: {
+    getChartType (chart) {
+      return chartOptions.getChartTypeOption(chart.chartType)
+    },
     selectionChange (val) {
       this.selectItems = val
       this.activeNum = this.selectItems.length
