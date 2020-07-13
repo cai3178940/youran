@@ -14,7 +14,8 @@
                  size="small">
           <el-form-item label="名称">
             <help-popover name="dashboard.name">
-              <el-input v-model="form.name" placeholder="请输入名称"></el-input>
+              <el-input v-upper-case-first v-model="form.name"
+                        placeholder="请输入名称"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="标题">
@@ -49,7 +50,7 @@
           </el-form-item>
         </el-form>
       </el-aside>
-      <el-main style="min-height:500px;border-left:solid 1px #e6e6e6;">
+      <el-main style="min-height:500px;border-left:solid 1px #e6e6e6;padding:0px;">
         <grid-layout
           :layout.sync="form.layout"
           :col-num="12"
@@ -61,14 +62,24 @@
           :vertical-compact="true"
         >
           <grid-item v-for="item in form.layout"
+                     :minW="2"
+                     :minH="2"
                      :x="item.x"
                      :y="item.y"
                      :w="item.w"
                      :h="item.h"
                      :i="item.i"
-                     :key="item.i"
-          >
-            x={{item.x}},y={{item.y}},w={{item.w}},h={{item.h}},i={{item.i}}
+                     :key="item.i">
+            <el-card class="box-card" style="height:100%;">
+              <div slot="header">
+                <span style="white-space:nowrap;">{{showTitle(item.i)}}</span>
+                <el-button style="display:inline-block; float: right; font-size:17px; padding: 2px 0"
+                           type="text" icon="el-icon-s-tools"></el-button>
+              </div>
+              <div>
+                x={{item.x}},y={{item.y}},w={{item.w}},h={{item.h}},i={{item.i}}
+              </div>
+            </el-card>
           </grid-item>
         </grid-layout>
       </el-main>
@@ -110,6 +121,13 @@ export default {
         .then(data => { this.form = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.formLoading = false })
+    },
+    showTitle (chartId) {
+      const chart = this.chartOptions.find(chart => chart.chartId === chartId)
+      if (chart) {
+        return chart.title
+      }
+      return ''
     },
     loadCharts () {
       this.formLoading = true
@@ -167,9 +185,15 @@ export default {
 
 <style lang="scss">
   @import '../../../assets/common.scss';
-  .dashboardFormDiv .dashboardForm {
-    @include youran-form;
-    padding: 20px 10px;
+  .dashboardFormDiv {
+    .dashboardForm {
+      @include youran-form;
+      padding: 20px 10px;
+    }
+    .el-card__header {
+      height: 30px;
+      padding: 4px 10px;
+    }
   }
 
 </style>
