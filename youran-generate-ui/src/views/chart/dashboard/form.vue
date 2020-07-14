@@ -145,10 +145,7 @@ export default {
       if (ref) {
         const chartComponent = ref[0]
         if (chartComponent.chart) {
-          chartComponent.chart.resize({
-            width: newWPx - 20,
-            height: newHPx - 20
-          })
+          chartComponent.resize()
         }
       }
     },

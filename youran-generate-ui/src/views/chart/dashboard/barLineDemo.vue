@@ -41,20 +41,19 @@ export default {
       const chartEl = this.$el.children[0]
       this.chart = echarts.init(chartEl)
       this.chart.setOption(this.option, true)
+    },
+    resize () {
+      this.chart.resize({
+        width: this.$parent.$el.clientWidth - 20,
+        height: this.$parent.$el.clientHeight - 25
+      })
     }
   },
   mounted () {
     this.renderChart()
-    this.chart.resize({
-      width: this.$parent.$el.clientWidth - 20,
-      height: this.$parent.$el.scrollHeight - 20
-    })
+    setTimeout(() => {
+      this.resize()
+    }, 50)
   }
 }
 </script>
-<style lang="scss">
-  .barLineDemo {
-    width: 100%;
-    height: 100%;
-  }
-</style>
