@@ -52,6 +52,7 @@
       </el-aside>
       <el-main style="min-height:500px;border-left:solid 1px #e6e6e6;padding:0px;">
         <grid-layout
+          ref="gridLayout"
           :layout.sync="form.layout"
           :col-num="12"
           :row-height="30"
@@ -59,8 +60,7 @@
           :autoSize="true"
           :is-draggable="true"
           :is-resizable="true"
-          :vertical-compact="true"
-        >
+          :vertical-compact="true">
           <grid-item v-for="item in form.layout"
                      :minW="2"
                      :minH="2"
@@ -69,16 +69,16 @@
                      :w="item.w"
                      :h="item.h"
                      :i="item.i"
-                     :key="item.i">
+                     :key="item.i"
+                     @resized="resizedEvent">
             <el-card class="box-card" style="height:100%;">
               <div slot="header">
                 <span style="white-space:nowrap;">{{showTitle(item.i)}}</span>
                 <el-button style="display:inline-block; float: right; font-size:17px; padding: 2px 0"
                            type="text" icon="el-icon-s-tools"></el-button>
               </div>
-              <div>
-                x={{item.x}},y={{item.y}},w={{item.w}},h={{item.h}},i={{item.i}}
-              </div>
+              <component :ref="'chart'+item.i" :is="mapDemoComponent(item.i)"
+                         height="100%" width="100%"></component>
             </el-card>
           </grid-item>
         </grid-layout>
@@ -95,12 +95,15 @@ import VueGridLayout from 'vue-grid-layout'
 import _intersectionWith from 'lodash/intersectionWith'
 import _differenceWith from 'lodash/differenceWith'
 import _remove from 'lodash/remove'
+import barLineDemo from './barLineDemo'
+import chartTypeUtil from '@/utils/options-chart-type'
 
 export default {
   name: 'dashboard',
   components: {
     GridLayout: VueGridLayout.GridLayout,
-    GridItem: VueGridLayout.GridItem
+    GridItem: VueGridLayout.GridItem,
+    barLineDemo
   },
   props: ['projectId', 'dashboardId'],
   data () {
@@ -128,6 +131,26 @@ export default {
         return chart.title
       }
       return ''
+    },
+    mapDemoComponent (chartId) {
+      const chart = this.chartOptions.find(chart => chart.chartId === chartId)
+      if (chart) {
+        const chartTypeOption = chartTypeUtil.getChartTypeOption(chart.chartType)
+        return chartTypeOption.demoComponent
+      }
+      return ''
+    },
+    resizedEvent (i, newH, newW, newHPx, newWPx) {
+      const ref = this.$refs['chart' + i]
+      if (ref) {
+        const chartComponent = ref[0]
+        if (chartComponent.chart) {
+          chartComponent.chart.resize({
+            width: newWPx - 20,
+            height: newHPx - 20
+          })
+        }
+      }
     },
     loadCharts () {
       this.formLoading = true

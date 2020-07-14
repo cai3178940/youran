@@ -5,6 +5,7 @@ const chartTypeOptions = [
     name: 'detailList',
     icon: 'detail-list',
     class: 'color-warning',
+    demoComponent: 'barLineDemo',
     aggregation: false
   },
   {
@@ -13,6 +14,7 @@ const chartTypeOptions = [
     name: 'aggTable',
     icon: 'agg-table',
     class: 'color-primary',
+    demoComponent: 'barLineDemo',
     aggregation: true
   },
   {
@@ -21,6 +23,7 @@ const chartTypeOptions = [
     name: 'barLine',
     icon: 'chart',
     class: 'color-success',
+    demoComponent: 'barLineDemo',
     aggregation: true
   },
   {
@@ -29,6 +32,7 @@ const chartTypeOptions = [
     name: 'pie',
     icon: 'pie-chart',
     class: 'color-danger',
+    demoComponent: 'barLineDemo',
     aggregation: true
   }
 ]
@@ -40,22 +44,5 @@ export default {
   chartTypeOptions,
   getChartTypeOption (value) {
     return chartTypeOptions.find(option => option.value === value)
-  },
-  /**
-   * 关联类型
-   */
-  joinTypeOptions: [
-    {
-      value: 1,
-      label: 'inner join'
-    },
-    {
-      value: 2,
-      label: 'left join'
-    },
-    {
-      value: 3,
-      label: 'right join'
-    }
-  ]
+  }
 }

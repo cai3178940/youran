@@ -97,7 +97,7 @@
 import projectApi from '@/api/project'
 import chartApi from '@/api/chart/chart'
 import dashboardApi from '@/api/chart/dashboard'
-import chartOptions from '@/utils/options-chart'
+import chartTypeUtil from '@/utils/options-chart-type'
 
 export default {
   name: 'chartList',
@@ -120,20 +120,9 @@ export default {
       loading: false
     }
   },
-  filters: {
-    optionLabel (value, optionType) {
-      const ops = chartOptions[optionType]
-      for (const op of ops) {
-        if (op.value === value) {
-          return op.label
-        }
-      }
-      return null
-    }
-  },
   methods: {
     getChartType (chart) {
-      return chartOptions.getChartTypeOption(chart.chartType)
+      return chartTypeUtil.getChartTypeOption(chart.chartType)
     },
     selectionChange (val) {
       this.selectItems = val
@@ -196,7 +185,7 @@ export default {
       this.$router.push(`/project/${this.projectId}/chart/${chartTypeName}/add`)
     },
     handleEdit (row) {
-      const chartType = chartOptions.chartTypeOptions.find(op => op.value === row.chartType)
+      const chartType = chartTypeUtil.chartTypeOptions.find(op => op.value === row.chartType)
       this.$router.push(`/project/${this.projectId}/chart/${chartType.name}/edit/${row.chartId}?sourceId=${row.sourceId}`)
     },
     handleAddDashboard () {

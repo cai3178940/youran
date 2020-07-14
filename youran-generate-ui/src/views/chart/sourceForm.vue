@@ -334,7 +334,8 @@ import havingForm from './item/havingForm'
 import havingModel from './item/havingModel'
 import aggOrderForm from './item/aggOrderForm'
 import aggOrderModel from './item/aggOrderModel'
-import chartOptions from '@/utils/options-chart'
+import joinTypeUtil from '@/utils/options-chart-join-type'
+import chartTypeUtil from '@/utils/options-chart-type'
 import model from './sourceModel'
 import detailColumnModel from './item/detailColumnModel'
 import searchUtil from './searchUtil'
@@ -364,7 +365,7 @@ export default {
       nextEdit: nextEdit,
       sourceId: null,
       formChanged: false,
-      joinTypeOptions: chartOptions.joinTypeOptions,
+      joinTypeOptions: joinTypeUtil.joinTypeOptions,
       entityOptions: [],
       mtmOptions: [],
       chartType: {
@@ -758,7 +759,7 @@ export default {
     }
   },
   created () {
-    this.chartType = chartOptions.chartTypeOptions.find(op => op.name === this.chartTypeName)
+    this.chartType = chartTypeUtil.chartTypeOptions.find(op => op.name === this.chartTypeName)
     this.form.aggregation = this.chartType.aggregation
     const promise = this.initEntityOptions()
       .then(() => this.initMtmOptions())
