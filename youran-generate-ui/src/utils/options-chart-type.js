@@ -5,7 +5,7 @@ const chartTypeOptions = [
     name: 'detailList',
     icon: 'detail-list',
     class: 'color-warning',
-    demoComponent: 'barLineDemo',
+    demoComponent: 'detailListDemo',
     aggregation: false
   },
   {
@@ -14,7 +14,7 @@ const chartTypeOptions = [
     name: 'aggTable',
     icon: 'agg-table',
     class: 'color-primary',
-    demoComponent: 'barLineDemo',
+    demoComponent: 'aggTableDemo',
     aggregation: true
   },
   {
@@ -32,7 +32,7 @@ const chartTypeOptions = [
     name: 'pie',
     icon: 'pie-chart',
     class: 'color-danger',
-    demoComponent: 'barLineDemo',
+    demoComponent: 'pieDemo',
     aggregation: true
   }
 ]

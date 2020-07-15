@@ -7,7 +7,7 @@
 import echarts from 'echarts'
 
 export default {
-  name: 'barLineChart',
+  name: 'barLineDemo',
   data () {
     return {
       option: {
@@ -53,7 +53,7 @@ export default {
     this.renderChart()
     setTimeout(() => {
       this.resize()
-    }, 50)
+    }, 100)
   }
 }
 </script>

@@ -95,7 +95,10 @@ import VueGridLayout from 'vue-grid-layout'
 import _intersectionWith from 'lodash/intersectionWith'
 import _differenceWith from 'lodash/differenceWith'
 import _remove from 'lodash/remove'
-import barLineDemo from './barLineDemo'
+import barLineDemo from './demo/barLineDemo'
+import pieDemo from './demo/pieDemo'
+import aggTableDemo from './demo/aggTableDemo'
+import detailListDemo from './demo/detailListDemo'
 import chartTypeUtil from '@/utils/options-chart-type'
 
 export default {
@@ -103,7 +106,10 @@ export default {
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
-    barLineDemo
+    barLineDemo,
+    pieDemo,
+    aggTableDemo,
+    detailListDemo
   },
   props: ['projectId', 'dashboardId'],
   data () {
@@ -144,7 +150,7 @@ export default {
       const ref = this.$refs['chart' + i]
       if (ref) {
         const chartComponent = ref[0]
-        if (chartComponent.chart) {
+        if (chartComponent.resize) {
           chartComponent.resize()
         }
       }
@@ -213,6 +219,9 @@ export default {
     .el-card__header {
       height: 30px;
       padding: 4px 10px;
+    }
+    .el-card__body {
+      padding: 10px;
     }
   }
 
