@@ -71,11 +71,12 @@
                      :i="item.i"
                      :key="item.i"
                      @resized="resizedEvent">
+            <el-button class="settingButton"
+                       type="text" icon="el-icon-s-tools"
+                       @click="handleLayoutSetting(item)"></el-button>
             <el-card class="box-card" style="height:100%;">
-              <div slot="header">
+              <div v-if="item.showTitle" slot="header">
                 <span style="white-space:nowrap;">{{showTitle(item.i)}}</span>
-                <el-button style="display:inline-block; float: right; font-size:17px; padding: 2px 0"
-                           type="text" icon="el-icon-s-tools"></el-button>
               </div>
               <component :ref="'chart'+item.i" :is="mapDemoComponent(item.i)"
                          height="100%" width="100%"></component>
@@ -84,6 +85,7 @@
         </grid-layout>
       </el-main>
     </el-container>
+    <layout-setting ref="layoutSettingForm"></layout-setting>
   </div>
 </template>
 
@@ -100,12 +102,14 @@ import pieDemo from './demo/pieDemo'
 import aggTableDemo from './demo/aggTableDemo'
 import detailListDemo from './demo/detailListDemo'
 import chartTypeUtil from '@/utils/options-chart-type'
+import layoutSetting from './layoutSetting'
 
 export default {
   name: 'dashboard',
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
+    layoutSetting,
     barLineDemo,
     pieDemo,
     aggTableDemo,
@@ -192,6 +196,9 @@ export default {
     },
     goBack () {
       this.$router.push(`/project/${this.projectId}/chart`)
+    },
+    handleLayoutSetting (item) {
+      this.$refs.layoutSettingForm.show(item)
     }
   },
   created () {
@@ -221,7 +228,19 @@ export default {
       padding: 4px 10px;
     }
     .el-card__body {
-      padding: 10px;
+      padding: 0px;
+    }
+    .settingButton {
+      position:absolute;
+      z-index: 1000;
+      right: 10px;
+      font-size:17px;
+      padding-top: 7px;
+      transition: 0.5s;
+      opacity: 0;
+    }
+    .vue-grid-item:hover .settingButton {
+      opacity: 1;
     }
   }
 

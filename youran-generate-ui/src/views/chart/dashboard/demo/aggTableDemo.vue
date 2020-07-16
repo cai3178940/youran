@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     resize () {
-      this.maxHeight = this.$parent.$el.clientHeight - 70
+      this.maxHeight = this.$parent.$el.clientHeight - 40
     }
   },
   mounted () {

@@ -31,6 +31,19 @@ public class LayoutDTO extends AbstractDTO {
      */
     private Integer h;
 
+    /**
+     * 是否显示标题
+     */
+    private Boolean showTitle;
+
+    public Boolean getShowTitle() {
+        return showTitle;
+    }
+
+    public void setShowTitle(Boolean showTitle) {
+        this.showTitle = showTitle;
+    }
+
     public Integer getI() {
         return i;
     }

@@ -45,7 +45,7 @@ export default {
     resize () {
       this.chart.resize({
         width: this.$parent.$el.clientWidth - 20,
-        height: this.$parent.$el.clientHeight - 25
+        height: this.$parent.$el.clientHeight - 20
       })
     }
   },
