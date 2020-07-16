@@ -4,6 +4,12 @@
     <el-form ref="layoutSettingForm"
              :model="form"
              label-width="80px" size="small">
+      <el-form-item label="卡片布局">
+        <el-radio-group v-model="form.showCard">
+          <el-radio border :label="true">显示</el-radio>
+          <el-radio border :label="false">隐藏</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="标题">
         <el-radio-group v-model="form.showTitle">
           <el-radio border :label="true">显示</el-radio>
@@ -28,6 +34,7 @@ export default {
       oldForm: null,
       // 表单数据
       form: {
+        showCard: true,
         showTitle: true
       }
     }
@@ -39,6 +46,7 @@ export default {
       this.formVisible = true
     },
     submit () {
+      this.oldForm.showCard = this.form.showCard
       this.oldForm.showTitle = this.form.showTitle
       this.formVisible = false
       this.$emit('submit', this.oldForm)

@@ -74,13 +74,20 @@
             <el-button class="settingButton"
                        type="text" icon="el-icon-s-tools"
                        @click="handleLayoutSetting(item)"></el-button>
-            <el-card class="box-card" style="height:100%;">
+            <el-card v-if="item.showCard" class="box-card" style="height:100%;">
               <div v-if="item.showTitle" slot="header">
                 <span style="white-space:nowrap;">{{showTitle(item.i)}}</span>
               </div>
               <component :ref="'chart'+item.i" :is="mapDemoComponent(item.i)"
                          height="100%" width="100%"></component>
             </el-card>
+            <template v-else>
+              <div v-if="item.showTitle" class="chartTitle">
+                <span style="white-space:nowrap;">{{showTitle(item.i)}}</span>
+              </div>
+              <component :ref="'chart'+item.i" :is="mapDemoComponent(item.i)"
+                         height="100%" width="100%"></component>
+            </template>
           </grid-item>
         </grid-layout>
       </el-main>
@@ -229,6 +236,10 @@ export default {
     }
     .el-card__body {
       padding: 0px;
+    }
+    .chartTitle {
+      color: #303133;
+      margin: 2px;
     }
     .settingButton {
       position:absolute;

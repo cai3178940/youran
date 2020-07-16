@@ -16,6 +16,7 @@ function initLayout (chartId) {
     w: 6,
     h: 6,
     i: chartId,
+    showCard: true,
     showTitle: true
   }
 }

@@ -32,9 +32,21 @@ public class LayoutDTO extends AbstractDTO {
     private Integer h;
 
     /**
+     * 是否显示卡片
+     */
+    private Boolean showCard;
+    /**
      * 是否显示标题
      */
     private Boolean showTitle;
+
+    public Boolean getShowCard() {
+        return showCard;
+    }
+
+    public void setShowCard(Boolean showCard) {
+        this.showCard = showCard;
+    }
 
     public Boolean getShowTitle() {
         return showTitle;
