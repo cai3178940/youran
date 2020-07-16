@@ -53,9 +53,10 @@
     <el-table :data="list" style="width: 100%" :border="true"
               @selection-change="selectionChange" v-loading="loading">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column property="chartName" label="图表名称"></el-table-column>
+      <el-table-column property="chartName" label="图表名称"
+                       width="250"></el-table-column>
       <el-table-column property="title" label="图表标题"></el-table-column>
-      <el-table-column label="类型" width="200px">
+      <el-table-column label="类型" width="100">
         <template v-slot="scope">
           <template v-for="chartType in [getChartType(scope.row)]">
             <el-tooltip :key="chartType.value" class="item" effect="dark" :content="chartType.label" placement="right">
@@ -66,7 +67,8 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column property="module" label="模块名"></el-table-column>
+      <el-table-column property="module" label="模块名"
+                       width="200"></el-table-column>
       <el-table-column
         label="操作"
         width="200">
@@ -76,11 +78,12 @@
       </el-table-column>
     </el-table>
     <el-table v-if="dashboardList.length" :data="dashboardList"
-              style="width: 100%;margin-top: 20px;" :border="true"
-              v-loading="loading">
-      <el-table-column property="name" label="看板名称"></el-table-column>
+              style="width: 100%;margin-top: 20px;" :border="true">
+      <el-table-column property="name" label="看板名称"
+                       width="300"></el-table-column>
       <el-table-column property="title" label="看板标题"></el-table-column>
-      <el-table-column property="module" label="模块名"></el-table-column>
+      <el-table-column property="module" label="模块名"
+                       width="200"></el-table-column>
       <el-table-column
         label="操作"
         width="200">

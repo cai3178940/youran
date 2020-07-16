@@ -24,6 +24,16 @@ public class MetaChartQO extends AbstractQO {
     @Length(max = 64,message = "chartName最大长度不能超过{max}")
     private String chartName;
 
+    @ApiParam(value = "模块排序标识【1升序,-1降序,0不排序】", example = "1")
+    private Integer moduleSortSign;
+
+    public Integer getModuleSortSign() {
+        return moduleSortSign;
+    }
+
+    public void setModuleSortSign(Integer moduleSortSign) {
+        this.moduleSortSign = moduleSortSign;
+    }
 
     public Integer getProjectId() {
         return this.projectId;

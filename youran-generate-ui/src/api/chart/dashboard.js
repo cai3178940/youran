@@ -16,7 +16,8 @@ export default {
     return request.get(`/${apiPath}/meta_dashboard`,
       {
         params: {
-          projectId
+          projectId,
+          moduleSortSign: 1
         }
       })
       .then(response => checkResult(response))

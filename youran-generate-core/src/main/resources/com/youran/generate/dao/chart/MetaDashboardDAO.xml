@@ -102,6 +102,9 @@
 
     <sql id="orderCondition">
         order by
+        <if test="moduleSortSign != null and moduleSortSign!=0">
+            t.module <if test="moduleSortSign > 0">asc</if><if test="moduleSortSign &lt; 0">desc</if>,
+        </if>
             t.operated_time desc
     </sql>
 

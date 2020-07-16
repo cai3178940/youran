@@ -24,7 +24,7 @@
           class_name,
           `table_name`,
           title,
-          `module`,
+          module,
           `desc`,
           page_sign,
           feature,
@@ -60,7 +60,7 @@
           class_name = #{className,jdbcType=VARCHAR},
           `table_name` = #{tableName,jdbcType=VARCHAR},
           title = #{title,jdbcType=VARCHAR},
-          `module` = #{module,jdbcType=VARCHAR},
+          module = #{module,jdbcType=VARCHAR},
           `desc` = #{desc,jdbcType=VARCHAR},
           page_sign = #{pageSign,jdbcType=BOOLEAN},
           feature = #{feature,jdbcType=VARCHAR},
@@ -89,7 +89,11 @@
         select * from meta_entity t
         where t.deleted=0
         and t.project_id = #{projectId,jdbcType=INTEGER}
-        order by t.created_time
+        order by
+        <if test="moduleSortSign != null and moduleSortSign!=0">
+            t.module <if test="moduleSortSign > 0">asc</if><if test="moduleSortSign &lt; 0">desc</if>,
+        </if>
+            t.created_time
         limit #{startIndex},#{pageSize}
     </select>
 

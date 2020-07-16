@@ -20,6 +20,9 @@ public class MetaEntityQO extends PageQO {
     @NotNull
     private Integer projectId;
 
+    @ApiParam(value = "模块排序标识【1升序,-1降序,0不排序】", example = "1")
+    private Integer moduleSortSign;
+
     public Integer getProjectId() {
         return projectId;
     }
@@ -28,4 +31,11 @@ public class MetaEntityQO extends PageQO {
         this.projectId = projectId;
     }
 
+    public Integer getModuleSortSign() {
+        return moduleSortSign;
+    }
+
+    public void setModuleSortSign(Integer moduleSortSign) {
+        this.moduleSortSign = moduleSortSign;
+    }
 }

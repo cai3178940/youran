@@ -9,7 +9,8 @@ export default {
     return request.get(`/${apiPath}/meta_chart`,
       {
         params: {
-          projectId
+          projectId,
+          moduleSortSign: 1
         }
       })
       .then(response => checkResult(response))
