@@ -3,8 +3,10 @@ package com.youran.generate.pojo.po.chart;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.pojo.dto.chart.LayoutDTO;
 import com.youran.generate.pojo.po.BasePO;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 看板
@@ -48,6 +50,21 @@ public class MetaDashboardPO extends BasePO {
      * 图表布局
      */
     private List<LayoutDTO> layout;
+
+    /**
+     * 装配数据
+     *
+     * @param chartMap
+     */
+    public void assemble(Map<Integer, MetaChartPO> chartMap) {
+        if (CollectionUtils.isEmpty(layout)) {
+            return;
+        }
+        for (LayoutDTO layoutDTO : layout) {
+            MetaChartPO chartPO = chartMap.get(layoutDTO.getI());
+            layoutDTO.setChart(chartPO);
+        }
+    }
 
 
     public void featureDeserialize() {

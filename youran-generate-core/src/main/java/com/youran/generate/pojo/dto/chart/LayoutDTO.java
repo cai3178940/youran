@@ -1,6 +1,8 @@
 package com.youran.generate.pojo.dto.chart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.pojo.dto.AbstractDTO;
+import com.youran.generate.pojo.po.chart.MetaChartPO;
 
 /**
  * 图表布局
@@ -39,6 +41,17 @@ public class LayoutDTO extends AbstractDTO {
      * 是否显示标题
      */
     private Boolean showTitle;
+
+    @JsonIgnore
+    private MetaChartPO chart;
+
+    public MetaChartPO getChart() {
+        return chart;
+    }
+
+    public void setChart(MetaChartPO chart) {
+        this.chart = chart;
+    }
 
     public Boolean getShowCard() {
         return showCard;

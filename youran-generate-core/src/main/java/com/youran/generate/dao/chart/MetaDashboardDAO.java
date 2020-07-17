@@ -27,6 +27,14 @@ public interface MetaDashboardDAO extends DAO<MetaDashboardPO> {
     List<MetaDashboardListVO> findListByQuery(MetaDashboardQO metaDashboardQO);
 
 
+    /**
+     * 根据项目id查询所有【看板】列表
+     * @param projectId
+     * @return
+     */
+    List<MetaDashboardPO> findByProjectId(Integer projectId);
+
+
 }
 
 

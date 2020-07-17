@@ -25,7 +25,7 @@ public class EntityContext extends BaseContext {
     /**
      * 当前实体
      */
-    private MetaEntityPO metaEntity;
+    private final MetaEntityPO metaEntity;
     /**
      * 当前实体id
      */
@@ -370,10 +370,6 @@ public class EntityContext extends BaseContext {
 
     public MetaEntityPO getMetaEntity() {
         return metaEntity;
-    }
-
-    public void setMetaEntity(MetaEntityPO metaEntity) {
-        this.metaEntity = metaEntity;
     }
 
     public Integer getEntityId() {

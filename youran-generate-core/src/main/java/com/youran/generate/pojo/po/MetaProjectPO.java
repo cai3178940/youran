@@ -2,6 +2,7 @@ package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
+import com.youran.generate.pojo.po.chart.MetaDashboardPO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -119,6 +120,11 @@ public class MetaProjectPO extends BasePO {
      */
     @JsonIgnore
     private transient List<MetaChartPO> charts;
+    /**
+     * 项目下的所有看板
+     */
+    @JsonIgnore
+    private transient List<MetaDashboardPO> dashboards;
 
     /**
      * 根据序号获取远程git仓库地址
@@ -201,6 +207,14 @@ public class MetaProjectPO extends BasePO {
 
     public void setCharts(List<MetaChartPO> charts) {
         this.charts = charts;
+    }
+
+    public List<MetaDashboardPO> getDashboards() {
+        return dashboards;
+    }
+
+    public void setDashboards(List<MetaDashboardPO> dashboards) {
+        this.dashboards = dashboards;
     }
 
     public String getAuthor() {

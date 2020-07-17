@@ -17,7 +17,7 @@ public abstract class AbstractChartContext<ChartPO extends MetaChartPO> extends 
     /**
      * 图表对象
      */
-    private ChartPO chart;
+    private final ChartPO chart;
     /**
      * 主键ID
      */
@@ -69,10 +69,6 @@ public abstract class AbstractChartContext<ChartPO extends MetaChartPO> extends 
 
     public ChartPO getChart() {
         return chart;
-    }
-
-    public void setChart(ChartPO chart) {
-        this.chart = chart;
     }
 
     public MetaChartSourcePO getChartSource() {

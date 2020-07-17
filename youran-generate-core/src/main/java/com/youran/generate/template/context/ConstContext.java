@@ -20,7 +20,7 @@ public class ConstContext extends BaseContext {
     /**
      * 常量对象
      */
-    private MetaConstPO metaConst;
+    private final MetaConstPO metaConst;
     /**
      * 常量名称-首字母小写
      */
@@ -60,10 +60,6 @@ public class ConstContext extends BaseContext {
 
     public MetaConstPO getMetaConst() {
         return metaConst;
-    }
-
-    public void setMetaConst(MetaConstPO metaConst) {
-        this.metaConst = metaConst;
     }
 
     public String getConstName() {

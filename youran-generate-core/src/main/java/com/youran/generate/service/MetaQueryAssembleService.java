@@ -8,9 +8,11 @@ import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.MetaSpecialField;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
+import com.youran.generate.pojo.po.chart.MetaDashboardPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.MetaChartSourceItemPO;
 import com.youran.generate.service.chart.MetaChartService;
+import com.youran.generate.service.chart.MetaDashboardService;
 import com.youran.generate.service.chart.source.MetaChartSourceService;
 import com.youran.generate.service.chart.source.item.MetaChartSourceItemService;
 import com.youran.generate.util.MetadataUtil;
@@ -58,6 +60,8 @@ public class MetaQueryAssembleService implements InitializingBean {
     private MetaChartSourceService metaChartSourceService;
     @Autowired
     private MetaChartSourceItemService metaChartSourceItemService;
+    @Autowired
+    private MetaDashboardService metaDashboardService;
     /**
      * 项目元数据缓存
      */
@@ -109,8 +113,15 @@ public class MetaQueryAssembleService implements InitializingBean {
             // 装配图表列表
             List<MetaChartPO> charts = this.getAllAssembledCharts(projectId, metaEntities, manyToManies);
             project.setCharts(charts);
+
+            List<MetaDashboardPO> dashboards = null;
+            if (CollectionUtils.isNotEmpty(charts)) {
+                dashboards = this.getAllAssembledDashboards(projectId, charts);
+            }
+            project.setDashboards(dashboards);
+
             // 校验命名重复的问题
-            this.checkNameDuplicate(metaEntities, charts);
+            this.checkNameDuplicate(metaEntities, charts, dashboards);
         }
         return project;
     }
@@ -120,8 +131,11 @@ public class MetaQueryAssembleService implements InitializingBean {
      *
      * @param metaEntities
      * @param charts
+     * @param dashboards
      */
-    private void checkNameDuplicate(List<MetaEntityPO> metaEntities, List<MetaChartPO> charts) {
+    private void checkNameDuplicate(List<MetaEntityPO> metaEntities,
+                                    List<MetaChartPO> charts,
+                                    List<MetaDashboardPO> dashboards) {
         Set<String> names = new HashSet<>();
         if (metaEntities != null) {
             for (MetaEntityPO metaEntity : metaEntities) {
@@ -137,6 +151,15 @@ public class MetaQueryAssembleService implements InitializingBean {
                 String name = metaChart.getChartName().toUpperCase();
                 if (names.contains(name)) {
                     throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "图表命名冲突【" + metaChart.getChartName() + "】");
+                }
+                names.add(name);
+            }
+        }
+        if (dashboards != null) {
+            for (MetaDashboardPO metaDashboard : dashboards) {
+                String name = metaDashboard.getName().toUpperCase();
+                if (names.contains(name)) {
+                    throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "看板命名冲突【" + metaDashboard.getName() + "】");
                 }
                 names.add(name);
             }
@@ -193,6 +216,28 @@ public class MetaQueryAssembleService implements InitializingBean {
         }
 
         return charts;
+    }
+
+    /**
+     * 装配所有看板元数据
+     *
+     * @param projectId 项目id
+     * @param charts    图表列表
+     * @return 装配完成的看板元数据
+     */
+    private List<MetaDashboardPO> getAllAssembledDashboards(Integer projectId, List<MetaChartPO> charts) {
+        List<MetaDashboardPO> dashboards = metaDashboardService.findByProjectId(projectId);
+        if (CollectionUtils.isEmpty(dashboards)) {
+            return Collections.emptyList();
+        }
+        //将图表列表转成map
+        Map<Integer, MetaChartPO> chartMap = charts.stream()
+            .collect(Collectors.toMap(MetaChartPO::getChartId, e -> e));
+        for (MetaDashboardPO dashboard : dashboards) {
+            // 看板装配数据
+            dashboard.assemble(chartMap);
+        }
+        return dashboards;
     }
 
     /**

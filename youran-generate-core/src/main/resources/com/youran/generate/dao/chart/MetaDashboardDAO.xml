@@ -126,7 +126,15 @@
         </where>
         <include refid="orderCondition"/>
     </select>
-
+    <select id="findByProjectId" resultType="MetaDashboardPO">
+        select
+            <include refid="metaDashboardColumns"><property name="alias" value="t"/></include>
+        from meta_dashboard t
+        <where>
+            and t.deleted=0
+            and t.project_id = #{arg0}
+        </where>
+    </select>
 
 
     <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->

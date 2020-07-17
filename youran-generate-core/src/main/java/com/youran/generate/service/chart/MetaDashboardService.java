@@ -76,10 +76,10 @@ public class MetaDashboardService {
      * 根据主键获取【看板】
      *
      * @param dashboardId 主键
-     * @param force 是否强制获取
+     * @param force       是否强制获取
      * @return
      */
-    public MetaDashboardPO getMetaDashboard(Integer dashboardId, boolean force){
+    public MetaDashboardPO getMetaDashboard(Integer dashboardId, boolean force) {
         MetaDashboardPO metaDashboard = metaDashboardDAO.findById(dashboardId);
         if (force && metaDashboard == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
@@ -116,7 +116,19 @@ public class MetaDashboardService {
         return count;
     }
 
-
+    /**
+     * 根据项目id查询所有看板实体
+     *
+     * @param projectId
+     * @return
+     */
+    public List<MetaDashboardPO> findByProjectId(Integer projectId) {
+        List<MetaDashboardPO> dashboards = metaDashboardDAO.findByProjectId(projectId);
+        for (MetaDashboardPO dashboard : dashboards) {
+            dashboard.featureDeserialize();
+        }
+        return dashboards;
+    }
 }
 
 
