@@ -4,6 +4,7 @@ import com.youran.generate.pojo.dto.chart.LayoutDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
 import com.youran.generate.template.context.BaseContext;
+import com.youran.generate.util.SwitchCaseUtil;
 
 import java.util.List;
 
@@ -26,6 +27,11 @@ public class DashboardContext extends BaseContext {
     private String name;
 
     /**
+     * 名称-首个单词转小写
+     */
+    private String nameLower;
+
+    /**
      * 标题
      */
     private String title;
@@ -34,11 +40,6 @@ public class DashboardContext extends BaseContext {
      * 模块
      */
     private String module;
-
-    /**
-     * 特性
-     */
-    private String feature;
 
     /**
      * 项目id
@@ -50,11 +51,21 @@ public class DashboardContext extends BaseContext {
      */
     private List<LayoutDTO> layout;
 
-    public DashboardContext(MetaProjectPO project, MetaDashboardPO metaDashboardPO) {
+    public DashboardContext(MetaProjectPO project, MetaDashboardPO metaDashboard) {
         super(project);
-        this.metaDashboard = metaDashboardPO;
+        this.metaDashboard = metaDashboard;
+        this.name = metaDashboard.getName();
+        this.nameLower = SwitchCaseUtil.lowerFirstWord(metaDashboard.getName());
+        this.title = metaDashboard.getTitle();
+        this.module = metaDashboard.getModule();
+        this.projectId = metaDashboard.getProjectId();
+        this.layout = metaDashboard.getLayout();
+
     }
 
+    public String getNameLower() {
+        return nameLower;
+    }
 
     public MetaDashboardPO getMetaDashboard() {
         return metaDashboard;
@@ -90,14 +101,6 @@ public class DashboardContext extends BaseContext {
 
     public void setModule(String module) {
         this.module = module;
-    }
-
-    public String getFeature() {
-        return feature;
-    }
-
-    public void setFeature(String feature) {
-        this.feature = feature;
     }
 
     public Integer getProjectId() {

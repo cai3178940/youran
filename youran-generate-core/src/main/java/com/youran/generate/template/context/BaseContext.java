@@ -9,6 +9,7 @@ import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
+import com.youran.generate.pojo.po.chart.MetaDashboardPO;
 import com.youran.generate.util.SwitchCaseUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -50,6 +51,10 @@ public class BaseContext {
      * 所有图表
      */
     protected List<MetaChartPO> charts;
+    /**
+     * 所有看板
+     */
+    protected List<MetaDashboardPO> dashboards;
     /**
      * 包名
      */
@@ -137,6 +142,8 @@ public class BaseContext {
         this.mtms = project.getMtms();
         //所有图表
         this.charts = project.getCharts();
+        //所有图表
+        this.dashboards = project.getDashboards();
         //项目特性
         this.projectFeature = FeatureMapper.asProjectFeatureDTO(project.getFeature());
         //初始化java依赖
@@ -403,6 +410,14 @@ public class BaseContext {
 
     public void setCharts(List<MetaChartPO> charts) {
         this.charts = charts;
+    }
+
+    public List<MetaDashboardPO> getDashboards() {
+        return dashboards;
+    }
+
+    public void setDashboards(List<MetaDashboardPO> dashboards) {
+        this.dashboards = dashboards;
     }
 
     public String getPackageName() {

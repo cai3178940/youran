@@ -7,10 +7,12 @@ import com.youran.generate.dao.chart.MetaDashboardDAO;
 import com.youran.generate.pojo.dto.chart.MetaDashboardAddDTO;
 import com.youran.generate.pojo.dto.chart.MetaDashboardUpdateDTO;
 import com.youran.generate.pojo.mapper.chart.MetaDashboardMapper;
+import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
 import com.youran.generate.pojo.qo.chart.MetaDashboardQO;
 import com.youran.generate.pojo.vo.chart.MetaDashboardListVO;
 import com.youran.generate.pojo.vo.chart.MetaDashboardShowVO;
+import com.youran.generate.service.MetaProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +30,8 @@ public class MetaDashboardService {
 
     @Autowired
     private MetaDashboardDAO metaDashboardDAO;
-
+    @Autowired
+    private MetaProjectService metaProjectService;
 
     /**
      * 新增【看板】
@@ -40,7 +43,10 @@ public class MetaDashboardService {
     public MetaDashboardPO save(MetaDashboardAddDTO metaDashboardDTO) {
         MetaDashboardPO metaDashboard = MetaDashboardMapper.INSTANCE.fromAddDTO(metaDashboardDTO);
         metaDashboard.featureSerialize();
+        //校验操作人
+        MetaProjectPO project = metaProjectService.getAndCheckProject(metaDashboard.getProjectId());
         metaDashboardDAO.save(metaDashboard);
+        metaProjectService.updateProject(project);
         return metaDashboard;
     }
 
@@ -57,7 +63,10 @@ public class MetaDashboardService {
         MetaDashboardPO metaDashboard = this.getMetaDashboard(dashboardId, true);
         MetaDashboardMapper.INSTANCE.setUpdateDTO(metaDashboard, metaDashboardUpdateDTO);
         metaDashboard.featureSerialize();
+        //校验操作人
+        MetaProjectPO project = metaProjectService.getAndCheckProject(metaDashboard.getProjectId());
         metaDashboardDAO.update(metaDashboard);
+        metaProjectService.updateProject(project);
         return metaDashboard;
     }
 
@@ -111,7 +120,15 @@ public class MetaDashboardService {
     public int delete(Integer... dashboardIds) {
         int count = 0;
         for (Integer dashboardId : dashboardIds) {
+            MetaDashboardPO po = metaDashboardDAO.findById(dashboardId);
+            if (po == null) {
+                continue;
+            }
+            Integer projectId = po.getProjectId();
+            //校验操作人
+            MetaProjectPO project = metaProjectService.getAndCheckProject(projectId);
             count += metaDashboardDAO.delete(dashboardId);
+            metaProjectService.updateProject(project);
         }
         return count;
     }
