@@ -44,5 +44,11 @@ export default {
   chartTypeOptions,
   getChartTypeOption (value) {
     return chartTypeOptions.find(option => option.value === value)
+  },
+  /**
+   * 是否表格
+   */
+  isTable (value) {
+    return value === 1 || value === 2
   }
 }

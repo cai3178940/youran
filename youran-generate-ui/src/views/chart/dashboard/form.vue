@@ -74,20 +74,14 @@
             <el-button class="settingButton"
                        type="text" icon="el-icon-s-tools"
                        @click="handleLayoutSetting(item)"></el-button>
-            <el-card v-if="item.showCard" class="box-card" style="height:100%;">
+            <el-card :class="getCardClass(item)"
+                     :shadow="item.showCard?'always':'never'">
               <div v-if="item.showTitle" slot="header">
                 <span style="white-space:nowrap;">{{showTitle(item.i)}}</span>
               </div>
               <component :ref="'chart'+item.i" :is="mapDemoComponent(item.i)"
                          height="100%" width="100%"></component>
             </el-card>
-            <template v-else>
-              <div v-if="item.showTitle" class="chartTitle">
-                <span style="white-space:nowrap;">{{showTitle(item.i)}}</span>
-              </div>
-              <component :ref="'chart'+item.i" :is="mapDemoComponent(item.i)"
-                         height="100%" width="100%"></component>
-            </template>
           </grid-item>
         </grid-layout>
       </el-main>
@@ -141,6 +135,20 @@ export default {
         .then(data => { this.form = data })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.formLoading = false })
+    },
+    getCardClass (item) {
+      const clazz = {
+        'box-card': true,
+        'card-chart': true
+      }
+      if (!item.showCard) {
+        clazz['card-hidden'] = true
+      }
+      const chart = this.chartOptions.find(chart => chart.chartId === item.i)
+      if (chart) {
+        clazz['card-table'] = chartTypeUtil.isTable(chart.chartType)
+      }
+      return clazz
     },
     showTitle (chartId) {
       const chart = this.chartOptions.find(chart => chart.chartId === chartId)
@@ -237,10 +245,6 @@ export default {
     .el-card__body {
       padding: 0px;
     }
-    .chartTitle {
-      color: #303133;
-      margin: 3px;
-    }
     .settingButton {
       position:absolute;
       z-index: 1000;
@@ -252,6 +256,18 @@ export default {
     }
     .vue-grid-item:hover .settingButton {
       opacity: 1;
+    }
+    .card-chart {
+      height: 100%;
+    }
+    .card-hidden {
+      border-style: none;
+      .el-card__header {
+        border-style: none;
+      }
+    }
+    .card-table {
+      overflow-y: auto;
     }
   }
 
