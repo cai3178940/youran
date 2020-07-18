@@ -323,3 +323,78 @@ CREATE TABLE `user_setting` (
     KEY `IDX_KM9P3FO` (`username`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户配置';
 
+
+DROP TABLE IF EXISTS `meta_chart_source`;
+
+CREATE TABLE `meta_chart_source` (
+    `source_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `project_id` int(11) NOT NULL COMMENT '项目id',
+    `feature` text DEFAULT NULL COMMENT '特性json',
+    `aggregation` tinyint(4) NOT NULL COMMENT '是否聚合',
+    `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
+    `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
+    `operated_time` datetime NOT NULL COMMENT '修改时间【yyyy-MM-dd HH:mm:ss】',
+    `operated_by` varchar(20) NOT NULL COMMENT '修改人【最大长度20】',
+    `version` int(11) NOT NULL COMMENT '乐观锁版本号【整型】',
+    `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
+    PRIMARY KEY (`source_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='图表数据源';
+
+DROP TABLE IF EXISTS `meta_chart_source_item`;
+
+CREATE TABLE `meta_chart_source_item` (
+    `source_item_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `key` varchar(32) NOT NULL COMMENT '唯一键',
+    `project_id` int(11) NOT NULL COMMENT '项目id',
+    `source_id` int(11) NOT NULL COMMENT '所属数据源id',
+    `join_index` tinyint(4) NOT NULL COMMENT '关联实体序号',
+    `type` tinyint(4) NOT NULL COMMENT '数据项类型',
+    `parent_id` int(11) DEFAULT NULL COMMENT '父数据项id',
+    `parent_key` varchar(32) DEFAULT NULL COMMENT '父数据项key',
+    `feature` text DEFAULT NULL COMMENT '特性json',
+    `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
+    `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
+    `operated_time` datetime NOT NULL COMMENT '修改时间【yyyy-MM-dd HH:mm:ss】',
+    `operated_by` varchar(20) NOT NULL COMMENT '修改人【最大长度20】',
+    `version` int(11) NOT NULL COMMENT '乐观锁版本号【整型】',
+    `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
+    PRIMARY KEY (`source_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='图表数据源项';
+
+DROP TABLE IF EXISTS `meta_chart`;
+
+CREATE TABLE `meta_chart` (
+    `chart_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `project_id` int(11) NOT NULL COMMENT '项目id',
+    `source_id` int(11) NOT NULL COMMENT '数据源id',
+    `chart_type` tinyint(4) NOT NULL COMMENT '图表类型',
+    `chart_name` varchar(64) NOT NULL COMMENT '图表名称',
+    `module` varchar(50) DEFAULT NULL COMMENT '模块名',
+    `title` varchar(64) NOT NULL COMMENT '图表标题',
+    `feature` text DEFAULT NULL COMMENT '特性json',
+    `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
+    `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
+    `operated_time` datetime NOT NULL COMMENT '修改时间【yyyy-MM-dd HH:mm:ss】',
+    `operated_by` varchar(20) NOT NULL COMMENT '修改人【最大长度20】',
+    `version` int(11) NOT NULL COMMENT '乐观锁版本号【整型】',
+    `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
+    PRIMARY KEY (`chart_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='图表';
+
+DROP TABLE IF EXISTS `meta_dashboard`;
+
+CREATE TABLE `meta_dashboard` (
+    `dashboard_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `name` varchar(64) NOT NULL COMMENT '名称',
+    `title` varchar(64) NOT NULL COMMENT '标题',
+    `module` varchar(50) DEFAULT NULL COMMENT '模块',
+    `feature` text DEFAULT NULL COMMENT '特性',
+    `project_id` int(11) NOT NULL COMMENT '项目id',
+    `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
+    `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
+    `operated_time` datetime NOT NULL COMMENT '修改时间【yyyy-MM-dd HH:mm:ss】',
+    `operated_by` varchar(20) NOT NULL COMMENT '修改人【最大长度20】',
+    `version` int(11) NOT NULL COMMENT '乐观锁版本号【整型】',
+    `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
+    PRIMARY KEY (`dashboard_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='看板';

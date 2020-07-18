@@ -239,7 +239,7 @@ export default {
     }
     .chartTitle {
       color: #303133;
-      margin: 2px;
+      margin: 3px;
     }
     .settingButton {
       position:absolute;
