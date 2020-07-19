@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po.chart.source.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
@@ -20,11 +21,13 @@ public class HavingPO extends MetaChartSourceItemPO {
     /**
      * 过滤运算符
      */
+    @JsonIgnore
     private Integer filterOperator;
 
     /**
      * 过滤值
      */
+    @JsonIgnore
     private String[] filterValue;
 
     public HavingPO() {

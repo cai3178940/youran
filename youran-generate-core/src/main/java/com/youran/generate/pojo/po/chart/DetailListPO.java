@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po.chart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
@@ -27,14 +28,17 @@ public class DetailListPO extends MetaChartPO {
     /**
      * 明细列
      */
+    @JsonIgnore
     private List<ChartItemDTO<DetailColumnPO>> columnList;
     /**
      * 隐藏明细列
      */
+    @JsonIgnore
     private List<ChartItemDTO<DetailColumnPO>> hiddenColumnList;
     /**
      * 默认每页记录数
      */
+    @JsonIgnore
     private Integer defaultPageSize;
 
     public DetailListPO() {

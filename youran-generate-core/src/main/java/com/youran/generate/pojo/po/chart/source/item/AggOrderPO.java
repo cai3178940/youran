@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po.chart.source.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
@@ -20,6 +21,7 @@ public class AggOrderPO extends MetaChartSourceItemPO {
     /**
      * 排序方式
      */
+    @JsonIgnore
     private Integer sortType;
 
 

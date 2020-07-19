@@ -8,6 +8,14 @@ import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.dto.SystemDTO;
 import com.youran.generate.pojo.mapper.*;
 import com.youran.generate.pojo.po.*;
+import com.youran.generate.pojo.po.chart.MetaChartPO;
+import com.youran.generate.pojo.po.chart.MetaDashboardPO;
+import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
+import com.youran.generate.pojo.po.chart.source.item.MetaChartSourceItemPO;
+import com.youran.generate.service.chart.MetaChartService;
+import com.youran.generate.service.chart.MetaDashboardService;
+import com.youran.generate.service.chart.source.MetaChartSourceService;
+import com.youran.generate.service.chart.source.item.MetaChartSourceItemService;
 import com.youran.generate.util.Zip4jUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -20,10 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,6 +42,7 @@ import java.util.stream.Stream;
 @Service
 public class MetaImportExportService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetaImportExportService.class);
     public static final String PROJECT_JSON_FILE = "project.json";
     public static final String CONST_JSON_FILE = "const.json";
     public static final String CONST_DETAIL_JSON_FILE = "constDetail.json";
@@ -46,8 +52,11 @@ public class MetaImportExportService {
     public static final String CASCADE_EXT_JSON_FILE = "cascadeExt.json";
     public static final String MTM_JSON_FILE = "manyToMany.json";
     public static final String MTM_CASCADE_EXT_JSON_FILE = "mtmCascadeExt.json";
+    public static final String CHART_JSON_FILE = "chart.json";
+    public static final String CHART_SOURCE_JSON_FILE = "chartSource.json";
+    public static final String CHART_SOURCE_ITEM_JSON_FILE = "chartSourceItem.json";
+    public static final String DASHBOARD_JSON_FILE = "dashboard.json";
     public static final String SYSTEM_JSON_FILE = "_system.json";
-    private static final Logger LOGGER = LoggerFactory.getLogger(MetaImportExportService.class);
     @Autowired
     private MetaQueryAssembleService metaQueryAssembleService;
     @Autowired
@@ -70,6 +79,14 @@ public class MetaImportExportService {
     private MetaManyToManyService metaManyToManyService;
     @Autowired
     private MetaMtmCascadeExtService metaMtmCascadeExtService;
+    @Autowired
+    private MetaChartService metaChartService;
+    @Autowired
+    private MetaChartSourceService metaChartSourceService;
+    @Autowired
+    private MetaChartSourceItemService metaChartSourceItemService;
+    @Autowired
+    private MetaDashboardService metaDashboardService;
     @Autowired
     private DataDirService dataDirService;
 
@@ -151,6 +168,25 @@ public class MetaImportExportService {
             // 导出多对多级联扩展json文件
             JsonUtil.writeJsonToFile(mtmCascades, true, new File(dir, MTM_CASCADE_EXT_JSON_FILE));
         }
+        List<MetaChartPO> charts = project.getCharts();
+        if (CollectionUtils.isNotEmpty(charts)) {
+            // 导出图表json文件
+            JsonUtil.writeJsonToFile(charts, true, new File(dir, CHART_JSON_FILE));
+            Set<MetaChartSourcePO> chartSources = charts.stream().map(MetaChartPO::getChartSource).collect(Collectors.toSet());
+            // 导出图表数据源json文件
+            JsonUtil.writeJsonToFile(chartSources, true, new File(dir, CHART_SOURCE_JSON_FILE));
+            List<MetaChartSourceItemPO> chartSourceItems = chartSources.stream()
+                .flatMap(chartSource -> chartSource.fetchSourceItems().stream())
+                .collect(Collectors.toList());
+            // 导出图表数据项json文件
+            JsonUtil.writeJsonToFile(chartSourceItems, true, new File(dir, CHART_SOURCE_ITEM_JSON_FILE));
+        }
+        List<MetaDashboardPO> dashboards = project.getDashboards();
+        if (CollectionUtils.isNotEmpty(dashboards)) {
+            // 导出看板json文件
+            JsonUtil.writeJsonToFile(dashboards, true, new File(dir, DASHBOARD_JSON_FILE));
+        }
+
         // 导出系统信息json文件
         SystemDTO systemDTO = new SystemDTO(generateProperties.getVersion());
         JsonUtil.writeJsonToFile(systemDTO, true, new File(dir, SYSTEM_JSON_FILE));

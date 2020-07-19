@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po.chart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
@@ -21,16 +22,19 @@ public class PiePO extends MetaChartPO {
     /**
      * 维度项
      */
+    @JsonIgnore
     private ChartItemDTO<DimensionPO> dimension;
 
     /**
      * 指标项
      */
+    @JsonIgnore
     private ChartItemDTO<MetricsPO> metrics;
 
     /**
      * 图表配置项模板
      */
+    @JsonIgnore
     private String optionTemplate;
 
     public PiePO() {

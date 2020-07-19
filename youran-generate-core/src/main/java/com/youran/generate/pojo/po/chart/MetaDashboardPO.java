@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po.chart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.pojo.dto.chart.LayoutDTO;
 import com.youran.generate.pojo.po.BasePO;
@@ -49,6 +50,7 @@ public class MetaDashboardPO extends BasePO {
     /**
      * 图表布局
      */
+    @JsonIgnore
     private List<LayoutDTO> layout;
 
     /**

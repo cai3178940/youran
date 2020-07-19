@@ -50,16 +50,19 @@ public class MetaChartSourcePO extends BasePO {
     /**
      * 主实体id
      */
+    @JsonIgnore
     private Integer entityId;
 
     /**
      * 关联
      */
+    @JsonIgnore
     private List<JoinDTO> joins;
 
     /**
      * 数量限制
      */
+    @JsonIgnore
     private Integer limit;
 
     /**
@@ -103,6 +106,35 @@ public class MetaChartSourcePO extends BasePO {
      */
     @JsonIgnore
     private transient Map<Integer, AggOrderPO> aggOrderMap;
+
+    /**
+     * 获取所有数据项
+     */
+    public List<MetaChartSourceItemPO> fetchSourceItems() {
+        List<MetaChartSourceItemPO> list = new ArrayList<>();
+        if (detailColumnMap != null) {
+            list.addAll(detailColumnMap.values());
+        }
+        if (dimensionMap != null) {
+            list.addAll(dimensionMap.values());
+        }
+        if (metricsMap != null) {
+            list.addAll(metricsMap.values());
+        }
+        if (whereMap != null) {
+            list.addAll(whereMap.values());
+        }
+        if (havingMap != null) {
+            list.addAll(havingMap.values());
+        }
+        if (detailOrderMap != null) {
+            list.addAll(detailOrderMap.values());
+        }
+        if (aggOrderMap != null) {
+            list.addAll(aggOrderMap.values());
+        }
+        return list;
+    }
 
     /**
      * 装配数据

@@ -21,11 +21,13 @@ public class DimensionPO extends MetaChartSourceItemPO {
     /**
      * 字段id
      */
+    @JsonIgnore
     private Integer fieldId;
 
     /**
      * 维度粒度
      */
+    @JsonIgnore
     private Integer granularity;
 
     /**

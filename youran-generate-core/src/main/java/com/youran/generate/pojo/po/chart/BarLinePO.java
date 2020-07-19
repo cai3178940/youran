@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po.chart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
@@ -23,21 +24,25 @@ public class BarLinePO extends MetaChartPO {
     /**
      * 主X轴
      */
+    @JsonIgnore
     private ChartItemDTO<DimensionPO> axisX;
 
     /**
      * 副X轴
      */
+    @JsonIgnore
     private ChartItemDTO<DimensionPO> axisX2;
 
     /**
      * Y轴
      */
+    @JsonIgnore
     private List<ChartItemDTO<MetricsPO>> axisYList;
 
     /**
      * 图表配置项模板
      */
+    @JsonIgnore
     private String optionTemplate;
 
     public BarLinePO() {

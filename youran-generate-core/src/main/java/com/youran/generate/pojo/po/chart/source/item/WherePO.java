@@ -21,31 +21,37 @@ public class WherePO extends MetaChartSourceItemPO {
     /**
      * 字段id
      */
+    @JsonIgnore
     private Integer fieldId;
 
     /**
      * 过滤运算符
      */
+    @JsonIgnore
     private Integer filterOperator;
 
     /**
      * 过滤值
      */
+    @JsonIgnore
     private String[] filterValue;
 
     /**
      * 时间粒度
      */
+    @JsonIgnore
     private Integer timeGranularity;
 
     /**
      * 是否自定义
      */
+    @JsonIgnore
     private Boolean custom;
 
     /**
      * 自定义内容
      */
+    @JsonIgnore
     private String customContent;
 
     /**

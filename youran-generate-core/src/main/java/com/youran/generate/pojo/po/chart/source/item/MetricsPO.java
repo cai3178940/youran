@@ -22,26 +22,31 @@ public class MetricsPO extends MetaChartSourceItemPO {
     /**
      * 字段id
      */
+    @JsonIgnore
     private Integer fieldId;
 
     /**
      * 聚合函数
      */
+    @JsonIgnore
     private Integer aggFunction;
 
     /**
      * 是否自定义
      */
+    @JsonIgnore
     private Boolean custom;
 
     /**
      * 自定义内容
      */
+    @JsonIgnore
     private String customContent;
 
     /**
      * 自定义字段类型
      */
+    @JsonIgnore
     private Integer customFieldType;
 
     /**

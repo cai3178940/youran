@@ -1,5 +1,6 @@
 package com.youran.generate.pojo.po.chart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
@@ -23,16 +24,19 @@ public class AggTablePO extends MetaChartPO {
     /**
      * 维度列
      */
+    @JsonIgnore
     private List<ChartItemDTO<DimensionPO>> dimensionList;
 
     /**
      * 指标列
      */
+    @JsonIgnore
     private List<ChartItemDTO<MetricsPO>> metricsList;
 
     /**
      * 默认每页记录数
      */
+    @JsonIgnore
     private Integer defaultPageSize;
 
     public AggTablePO() {
