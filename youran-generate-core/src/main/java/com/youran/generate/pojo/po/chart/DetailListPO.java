@@ -114,6 +114,20 @@ public class DetailListPO extends MetaChartPO {
         this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
+    @Override
+    public void convertItemId(Map<Integer, Integer> metaChartSourceItemIdMap) {
+        if (CollectionUtils.isNotEmpty(columnList)) {
+            for (ChartItemDTO<DetailColumnPO> item : columnList) {
+                item.setSourceItemId(metaChartSourceItemIdMap.get(item.getSourceItemId()));
+            }
+        }
+        if (CollectionUtils.isNotEmpty(hiddenColumnList)) {
+            for (ChartItemDTO<DetailColumnPO> item : hiddenColumnList) {
+                item.setSourceItemId(metaChartSourceItemIdMap.get(item.getSourceItemId()));
+            }
+        }
+    }
+
     public List<ChartItemDTO<DetailColumnPO>> getHiddenColumnList() {
         return hiddenColumnList;
     }

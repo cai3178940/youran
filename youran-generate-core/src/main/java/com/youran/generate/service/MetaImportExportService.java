@@ -6,7 +6,12 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.dto.SystemDTO;
+import com.youran.generate.pojo.dto.chart.source.JoinDTO;
+import com.youran.generate.pojo.dto.chart.source.JoinPartDTO;
 import com.youran.generate.pojo.mapper.*;
+import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
+import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
+import com.youran.generate.pojo.mapper.chart.MetaChartSourceMapper;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
@@ -267,8 +272,8 @@ public class MetaImportExportService {
         // 读取外键级联扩展json文件，并解析成po列表
         List<MetaCascadeExtPO> cascadeExtListFromJson = JsonUtil.parseArrayFromFile(
             new File(jsonDir + CASCADE_EXT_JSON_FILE), MetaCascadeExtPO.class);
-        cascadeExtListFromJson.stream()
-            .forEach(cascadeExtFromJson -> this.saveCascadeExt(cascadeExtFromJson, entityIdMap, fieldIdMap, projectId));
+        cascadeExtListFromJson.forEach(cascadeExtFromJson ->
+            this.saveCascadeExt(cascadeExtFromJson, entityIdMap, fieldIdMap, projectId));
 
         // 读取多对多json文件，并解析成po列表
         List<MetaManyToManyPO> mtmListFromJson = JsonUtil.parseArrayFromFile(
@@ -286,11 +291,40 @@ public class MetaImportExportService {
             .forEach(mtmCascadeExtFromJson -> this.saveMtmCascadeExt(mtmCascadeExtFromJson, mtmIdMap,
                 entityIdMap, fieldIdMap, projectId));
         // 更新title字段id
-        entityList.stream().forEach(metaEntityPO -> this.updateEntityFeature(metaEntityPO, fieldIdMap));
+        entityList.forEach(metaEntityPO -> this.updateEntityFeature(metaEntityPO, fieldIdMap));
 
+        // 读取图表数据源json文件，并解析成po列表
+        List<MetaChartSourcePO> metaChartSourceFromJson = JsonUtil.parseArrayFromFile(
+            new File(jsonDir + CHART_SOURCE_JSON_FILE), MetaChartSourcePO.class);
+        List<MetaChartSourcePO> metaChartSourceList = metaChartSourceFromJson.stream()
+            .map(metaChartSourcePO -> this.saveMetaChartSource(metaChartSourcePO, entityIdMap, fieldIdMap, mtmIdMap, projectId))
+            .collect(Collectors.toList());
+        Map<Integer, Integer> metaChartSourceIdMap = this.getIdMap(metaChartSourceFromJson, metaChartSourceList, MetaChartSourcePO::getSourceId);
+
+        // 读取图表数据项json文件，并解析成po列表
+        List<MetaChartSourceItemPO> metaChartSourceItemFromJson = JsonUtil.parseArrayFromFile(
+            new File(jsonDir + CHART_SOURCE_ITEM_JSON_FILE), MetaChartSourceItemPO.class);
+        List<MetaChartSourceItemPO> metaChartSourceItemList = metaChartSourceItemFromJson.stream()
+            .map(metaChartSourceItemPO -> this.saveMetaChartSourceItem(metaChartSourceItemPO, metaChartSourceIdMap, projectId))
+            .collect(Collectors.toList());
+        Map<Integer, Integer> metaChartSourceItemIdMap = this.getIdMap(metaChartSourceItemFromJson, metaChartSourceItemList, MetaChartSourceItemPO::getSourceItemId);
+        // 更新图表数据项
+        metaChartSourceItemList.forEach(sourceItemPO -> this.updateChartSourceItemFeature(sourceItemPO, fieldIdMap, metaChartSourceItemIdMap));
+
+        // 读取图表json文件，并解析成po列表
+        List<MetaChartPO> metaChartFromJson = JsonUtil.parseArrayFromFile(
+            new File(jsonDir + CHART_JSON_FILE), MetaChartPO.class);
+        List<MetaChartPO> metaChartList = metaChartFromJson.stream()
+            .map(metaChartSourcePO -> this.saveMetaChart(metaChartSourcePO, metaChartSourceIdMap, metaChartSourceItemIdMap, projectId))
+            .collect(Collectors.toList());
+        Map<Integer, Integer> metaChartIdMap = this.getIdMap(metaChartFromJson, metaChartList, MetaChartPO::getChartId);
+
+
+        // todo 导入看板
 
         return project;
     }
+
 
     /**
      * 更新实体特性
@@ -545,6 +579,131 @@ public class MetaImportExportService {
         metaMtmCascadeExtService.doSave(mtmCascadeExtPO);
         LOGGER.debug("导入多对多级联扩展：{}", JsonUtil.toJSONString(mtmCascadeExtPO));
         return mtmCascadeExtPO;
+    }
+
+    /**
+     * 把json中解析出来的图表数据源保存到数据库
+     *
+     * @param metaChartSourceFromJson
+     * @param entityIdMap
+     * @param fieldIdMap
+     * @param mtmIdMap
+     * @param projectId
+     * @return
+     */
+    private MetaChartSourcePO saveMetaChartSource(MetaChartSourcePO metaChartSourceFromJson,
+                                                  Map<Integer, Integer> entityIdMap,
+                                                  Map<Integer, Integer> fieldIdMap,
+                                                  Map<Integer, Integer> mtmIdMap,
+                                                  Integer projectId) {
+        MetaChartSourcePO chartSourcePO = MetaChartSourceMapper.INSTANCE.copy(metaChartSourceFromJson);
+        chartSourcePO.setProjectId(projectId);
+        chartSourcePO.featureDeserialize();
+        chartSourcePO.setEntityId(entityIdMap.get(chartSourcePO.getEntityId()));
+        List<JoinDTO> joins = chartSourcePO.getJoins();
+        if (CollectionUtils.isNotEmpty(joins)) {
+            for (JoinDTO join : joins) {
+                this.convertIdsForJoinPartDTO(join.getLeft(), entityIdMap, fieldIdMap, mtmIdMap);
+                this.convertIdsForJoinPartDTO(join.getRight(), entityIdMap, fieldIdMap, mtmIdMap);
+            }
+        }
+        chartSourcePO.featureSerialize();
+        metaChartSourceService.doSave(chartSourcePO);
+        LOGGER.debug("导入图表数据源：{}", JsonUtil.toJSONString(chartSourcePO));
+        return chartSourcePO;
+    }
+
+    private void convertIdsForJoinPartDTO(JoinPartDTO joinPartDTO,
+                                          Map<Integer, Integer> entityIdMap,
+                                          Map<Integer, Integer> fieldIdMap,
+                                          Map<Integer, Integer> mtmIdMap) {
+        if (joinPartDTO == null) {
+            return;
+        }
+        if (joinPartDTO.getEntityId() != null) {
+            joinPartDTO.setEntityId(entityIdMap.get(joinPartDTO.getEntityId()));
+        }
+        if (joinPartDTO.getFieldId() != null) {
+            joinPartDTO.setFieldId(fieldIdMap.get(joinPartDTO.getFieldId()));
+        }
+        if (joinPartDTO.getMtmId() != null) {
+            joinPartDTO.setMtmId(mtmIdMap.get(joinPartDTO.getMtmId()));
+        }
+    }
+
+    /**
+     * 把json中解析出来的图表数据项保存到数据库
+     *
+     * @param metaChartSourceItemFromJson
+     * @param metaChartSourceIdMap
+     * @param projectId
+     * @return
+     */
+    private MetaChartSourceItemPO saveMetaChartSourceItem(MetaChartSourceItemPO metaChartSourceItemFromJson,
+                                                          Map<Integer, Integer> metaChartSourceIdMap,
+                                                          Integer projectId) {
+        Integer sourceId = metaChartSourceIdMap.get(metaChartSourceItemFromJson.getSourceId());
+        if (sourceId == null) {
+            LOGGER.error("图表数据项json有误：{}", JsonUtil.toJSONString(metaChartSourceItemFromJson));
+            return null;
+        }
+        MetaChartSourceItemPO chartSourceItemPO = MetaChartSourceItemMapper.INSTANCE.copy(metaChartSourceItemFromJson);
+        chartSourceItemPO.setProjectId(projectId);
+        chartSourceItemPO.setSourceId(sourceId);
+        metaChartSourceItemService.doSave(chartSourceItemPO);
+        LOGGER.debug("导入图表数据项：{}", JsonUtil.toJSONString(chartSourceItemPO));
+        return chartSourceItemPO;
+    }
+
+    /**
+     * 更新图表数据项
+     *
+     * @param sourceItemPO
+     * @param fieldIdMap
+     * @param metaChartSourceItemIdMap
+     */
+    private void updateChartSourceItemFeature(MetaChartSourceItemPO sourceItemPO,
+                                              Map<Integer, Integer> fieldIdMap,
+                                              Map<Integer, Integer> metaChartSourceItemIdMap) {
+        boolean changed = false;
+        if (sourceItemPO.getParentId() != null) {
+            sourceItemPO.setParentId(metaChartSourceItemIdMap.get(sourceItemPO.getParentId()));
+            changed = true;
+        }
+        MetaChartSourceItemPO metaChartSourceItemPO = sourceItemPO.castSubType(true);
+        changed |= metaChartSourceItemPO.convertFieldId(fieldIdMap);
+        if (changed) {
+            metaChartSourceItemPO.featureSerialize();
+            metaChartSourceItemService.doUpdate(metaChartSourceItemPO);
+        }
+    }
+
+    /**
+     * 把json中解析出来的图表保存到数据库
+     *
+     * @param metaChartSourceFromJson
+     * @param metaChartSourceIdMap
+     * @param metaChartSourceItemIdMap
+     * @param projectId
+     * @return
+     */
+    private MetaChartPO saveMetaChart(MetaChartPO metaChartSourceFromJson,
+                                      Map<Integer, Integer> metaChartSourceIdMap,
+                                      Map<Integer, Integer> metaChartSourceItemIdMap,
+                                      Integer projectId) {
+        Integer sourceId = metaChartSourceIdMap.get(metaChartSourceFromJson.getSourceId());
+        if (sourceId == null) {
+            LOGGER.error("图表json有误：{}", JsonUtil.toJSONString(metaChartSourceFromJson));
+            return null;
+        }
+        MetaChartPO chartPO = MetaChartMapper.INSTANCE.copy(metaChartSourceFromJson);
+        chartPO.setProjectId(projectId);
+        MetaChartPO subType = chartPO.castSubType(true);
+        subType.convertItemId(metaChartSourceItemIdMap);
+        subType.featureSerialize();
+        metaChartService.doSave(subType);
+        LOGGER.debug("导入图表：{}", JsonUtil.toJSONString(subType));
+        return subType;
     }
 
     /**

@@ -8,6 +8,8 @@ import com.youran.generate.pojo.dto.chart.source.JoinDTO;
 import com.youran.generate.pojo.po.BasePO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 
+import java.util.Map;
+
 /**
  * 图表数据项
  *
@@ -86,7 +88,7 @@ public class MetaChartSourceItemPO extends BasePO {
      */
     public void assembleItem(MetaChartSourcePO chartSource) {
         this.chartSource = chartSource;
-        if(this.joinIndex > 0){
+        if (this.joinIndex > 0) {
             this.join = this.chartSource.getJoins().get(this.joinIndex - 1);
         }
     }
@@ -132,6 +134,16 @@ public class MetaChartSourceItemPO extends BasePO {
      */
     public void featureSerialize() {
         throw new RuntimeException("未实现");
+    }
+
+    /**
+     * 转换字段id
+     *
+     * @param fieldIdMap
+     * @return
+     */
+    public boolean convertFieldId(Map<Integer, Integer> fieldIdMap) {
+        return false;
     }
 
     public Integer getSourceItemId() {
@@ -229,5 +241,6 @@ public class MetaChartSourceItemPO extends BasePO {
     public void setParentKey(String parentKey) {
         this.parentKey = parentKey;
     }
+
 }
 

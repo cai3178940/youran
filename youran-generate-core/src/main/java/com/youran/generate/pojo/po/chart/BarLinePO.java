@@ -10,8 +10,10 @@ import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
 import com.youran.generate.pojo.po.chart.source.item.MetricsPO;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 柱线图
@@ -57,7 +59,7 @@ public class BarLinePO extends MetaChartPO {
      * @return
      */
     public static BarLinePO fromSuperType(MetaChartPO superPO,
-                                             boolean featureDeserialize) {
+                                          boolean featureDeserialize) {
         if (!ChartType.BAR_LINE.getValue().equals(superPO.getChartType())) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "类型转换异常");
         }
@@ -82,7 +84,7 @@ public class BarLinePO extends MetaChartPO {
                 "图表【" + this.getTitle() + "】主X轴不存在，sourceItemId=" + axisXSourceItemId);
         }
 
-        if(axisX2!=null) {
+        if (axisX2 != null) {
             Integer axisX2SourceItemId = axisX2.getSourceItemId();
             DimensionPO axisX2Dimension = chartSource.getDimensionMap().get(axisX2SourceItemId);
             if (axisX2Dimension != null) {
@@ -124,6 +126,21 @@ public class BarLinePO extends MetaChartPO {
         this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
+    @Override
+    public void convertItemId(Map<Integer, Integer> metaChartSourceItemIdMap) {
+        if (axisX != null) {
+            axisX.setSourceItemId(metaChartSourceItemIdMap.get(axisX.getSourceItemId()));
+        }
+        if (axisX2 != null) {
+            axisX2.setSourceItemId(metaChartSourceItemIdMap.get(axisX2.getSourceItemId()));
+        }
+        if (CollectionUtils.isNotEmpty(axisYList)) {
+            for (ChartItemDTO<MetricsPO> item : axisYList) {
+                item.setSourceItemId(metaChartSourceItemIdMap.get(item.getSourceItemId()));
+            }
+        }
+    }
+
     public ChartItemDTO<DimensionPO> getAxisX() {
         return axisX;
     }
@@ -156,7 +173,7 @@ public class BarLinePO extends MetaChartPO {
         this.optionTemplate = optionTemplate;
     }
 
-    static class FeatureDTO{
+    static class FeatureDTO {
         private ChartItemDTO<DimensionPO> axisX;
         private ChartItemDTO<DimensionPO> axisX2;
         private List<ChartItemDTO<MetricsPO>> axisYList;

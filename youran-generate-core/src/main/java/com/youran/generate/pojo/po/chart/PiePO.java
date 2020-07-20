@@ -11,6 +11,8 @@ import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
 import com.youran.generate.pojo.po.chart.source.item.MetricsPO;
 
+import java.util.Map;
+
 /**
  * 饼图
  *
@@ -50,7 +52,7 @@ public class PiePO extends MetaChartPO {
      * @return
      */
     public static PiePO fromSuperType(MetaChartPO superPO,
-                                          boolean featureDeserialize) {
+                                      boolean featureDeserialize) {
         if (!ChartType.PIE.getValue().equals(superPO.getChartType())) {
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "类型转换异常");
         }
@@ -100,6 +102,16 @@ public class PiePO extends MetaChartPO {
         this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
+    @Override
+    public void convertItemId(Map<Integer, Integer> metaChartSourceItemIdMap) {
+        if (dimension != null) {
+            dimension.setSourceItemId(metaChartSourceItemIdMap.get(dimension.getSourceItemId()));
+        }
+        if (metrics != null) {
+            metrics.setSourceItemId(metaChartSourceItemIdMap.get(metrics.getSourceItemId()));
+        }
+    }
+
     public ChartItemDTO<DimensionPO> getDimension() {
         return dimension;
     }
@@ -124,7 +136,7 @@ public class PiePO extends MetaChartPO {
         this.optionTemplate = optionTemplate;
     }
 
-    static class FeatureDTO{
+    static class FeatureDTO {
         private ChartItemDTO<DimensionPO> dimension;
         private ChartItemDTO<MetricsPO> metrics;
         private String optionTemplate;

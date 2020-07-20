@@ -10,6 +10,8 @@ import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 
+import java.util.Map;
+
 /**
  * 明细列
  *
@@ -118,6 +120,16 @@ public class DetailColumnPO extends MetaChartSourceItemPO {
         featureDTO.setCustomFieldType(this.customFieldType);
         this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
+
+    @Override
+    public boolean convertFieldId(Map<Integer, Integer> fieldIdMap) {
+        if (fieldId != null) {
+            this.fieldId = fieldIdMap.get(fieldId);
+            return true;
+        }
+        return false;
+    }
+
 
     public Integer getFieldId() {
         return fieldId;

@@ -95,6 +95,14 @@ public class MetaChartService {
             .<MetaChartPO>map(po -> po.castSubType(true))
             .collect(Collectors.toList());
     }
+
+    public void doSave(MetaChartPO metaChartPO) {
+        metaChartDAO.save(metaChartPO);
+    }
+
+    public int doUpdate(MetaChartPO po) {
+        return metaChartDAO.update(po);
+    }
 }
 
 

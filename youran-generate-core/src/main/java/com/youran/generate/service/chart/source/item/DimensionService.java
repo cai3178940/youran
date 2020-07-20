@@ -1,7 +1,6 @@
 package com.youran.generate.service.chart.source.item;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.generate.dao.chart.MetaChartSourceItemDAO;
 import com.youran.generate.pojo.dto.chart.source.item.DimensionAddDTO;
 import com.youran.generate.pojo.dto.chart.source.item.DimensionUpdateDTO;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
@@ -21,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class DimensionService {
 
-    @Autowired
-    private MetaChartSourceItemDAO metaChartSourceItemDAO;
     @Autowired
     private MetaChartSourceItemService metaChartSourceItemService;
     @Autowired
@@ -56,7 +53,7 @@ public class DimensionService {
         DimensionPO po = MetaChartSourceItemMapper.INSTANCE
             .fromDimensionAddDTO(addDTO);
         this.preparePO(po);
-        metaChartSourceItemDAO.save(po);
+        metaChartSourceItemService.doSave(po);
         return po;
     }
 
@@ -81,7 +78,7 @@ public class DimensionService {
         DimensionPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
         MetaChartSourceItemMapper.INSTANCE.setDimensionUpdateDTO(po, updateDTO);
         this.preparePO(po);
-        metaChartSourceItemDAO.update(po);
+        metaChartSourceItemService.doUpdate(po);
         return po;
     }
 

@@ -3,7 +3,6 @@ package com.youran.generate.service.chart;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.generate.dao.chart.MetaChartDAO;
 import com.youran.generate.pojo.dto.chart.BarLineAddDTO;
 import com.youran.generate.pojo.dto.chart.BarLineUpdateDTO;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
@@ -32,8 +31,6 @@ import java.util.List;
 @Service
 public class BarLineService {
 
-    @Autowired
-    private MetaChartDAO metaChartDAO;
     @Autowired
     private MetaChartService metaChartService;
     @Autowired
@@ -75,7 +72,7 @@ public class BarLineService {
         BarLinePO po = MetaChartMapper.INSTANCE.fromBarLineAddDTO(addDTO);
         po.featureSerialize();
         this.check(po);
-        metaChartDAO.save(po);
+        metaChartService.doSave(po);
         metaProjectService.updateProject(project);
         return po;
     }
@@ -97,7 +94,7 @@ public class BarLineService {
         MetaChartMapper.INSTANCE.setBarLineUpdateDTO(po, updateDTO);
         po.featureSerialize();
         this.check(po);
-        metaChartDAO.update(po);
+        metaChartService.doUpdate(po);
         metaProjectService.updateProject(project);
         return po;
     }

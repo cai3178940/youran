@@ -2,7 +2,6 @@ package com.youran.generate.service.chart;
 
 import com.google.common.collect.Lists;
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.generate.dao.chart.MetaChartDAO;
 import com.youran.generate.pojo.dto.chart.AggTableAddDTO;
 import com.youran.generate.pojo.dto.chart.AggTableUpdateDTO;
 import com.youran.generate.pojo.dto.chart.ChartItemDTO;
@@ -29,8 +28,6 @@ import java.util.List;
 @Service
 public class AggTableService {
 
-    @Autowired
-    private MetaChartDAO metaChartDAO;
     @Autowired
     private MetaChartService metaChartService;
     @Autowired
@@ -62,7 +59,7 @@ public class AggTableService {
         AggTablePO po = MetaChartMapper.INSTANCE.fromAggTableAddDTO(addDTO);
         po.featureSerialize();
         this.check(po);
-        metaChartDAO.save(po);
+        metaChartService.doSave(po);
         metaProjectService.updateProject(project);
         return po;
     }
@@ -84,7 +81,7 @@ public class AggTableService {
         MetaChartMapper.INSTANCE.setAggTableUpdateDTO(po, updateDTO);
         po.featureSerialize();
         this.check(po);
-        metaChartDAO.update(po);
+        metaChartService.doUpdate(po);
         metaProjectService.updateProject(project);
         return po;
     }

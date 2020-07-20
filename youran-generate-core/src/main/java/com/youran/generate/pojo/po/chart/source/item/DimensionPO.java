@@ -10,6 +10,8 @@ import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 
+import java.util.Map;
+
 /**
  * 维度
  *
@@ -96,6 +98,15 @@ public class DimensionPO extends MetaChartSourceItemPO {
         featureDTO.setFieldId(this.fieldId);
         featureDTO.setGranularity(this.granularity);
         this.setFeature(JsonUtil.toJSONString(featureDTO));
+    }
+
+    @Override
+    public boolean convertFieldId(Map<Integer, Integer> fieldIdMap) {
+        if (fieldId != null) {
+            this.fieldId = fieldIdMap.get(fieldId);
+            return true;
+        }
+        return false;
     }
 
 

@@ -1,7 +1,6 @@
 package com.youran.generate.service.chart.source.item;
 
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.generate.dao.chart.MetaChartSourceItemDAO;
 import com.youran.generate.pojo.dto.chart.source.item.DetailOrderAddDTO;
 import com.youran.generate.pojo.dto.chart.source.item.DetailOrderUpdateDTO;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
@@ -21,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class DetailOrderService {
 
-    @Autowired
-    private MetaChartSourceItemDAO metaChartSourceItemDAO;
     @Autowired
     private MetaChartSourceItemService metaChartSourceItemService;
     @Autowired
@@ -56,7 +53,7 @@ public class DetailOrderService {
         DetailOrderPO po = MetaChartSourceItemMapper.INSTANCE
             .fromDetailOrderAddDTO(addDTO);
         this.preparePO(po);
-        metaChartSourceItemDAO.save(po);
+        metaChartSourceItemService.doSave(po);
         return po;
     }
 
@@ -82,7 +79,7 @@ public class DetailOrderService {
         DetailOrderPO po = metaChartSourceItemService.getMetaChartSourceItem(sourceItemId, true);
         MetaChartSourceItemMapper.INSTANCE.setDetailOrderUpdateDTO(po, updateDTO);
         this.preparePO(po);
-        metaChartSourceItemDAO.update(po);
+        metaChartSourceItemService.doUpdate(po);
         return po;
     }
 

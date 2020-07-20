@@ -49,6 +49,14 @@ public class MetaChartSourceItemService {
         }
     }
 
+    public void doSave(MetaChartSourceItemPO chartSourceItemPO) {
+        metaChartSourceItemDAO.save(chartSourceItemPO);
+    }
+
+    public int doUpdate(MetaChartSourceItemPO chartSourceItemPO) {
+        return metaChartSourceItemDAO.update(chartSourceItemPO);
+    }
+
     /**
      * 查询列表
      *
@@ -155,6 +163,7 @@ public class MetaChartSourceItemService {
         }
         return count;
     }
+
 }
 
 

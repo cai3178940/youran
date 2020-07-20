@@ -10,6 +10,8 @@ import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 
+import java.util.Map;
+
 /**
  * where条件
  *
@@ -74,7 +76,7 @@ public class WherePO extends MetaChartSourceItemPO {
     public void assembleItem(MetaChartSourcePO chartSource) {
         super.assembleItem(chartSource);
         // 非自定义的情况下，需要装配实体和字段对象
-        if(!custom) {
+        if (!custom) {
             if (this.getJoinIndex() == 0) {
                 this.entity = chartSource.getEntity();
             } else {
@@ -132,6 +134,15 @@ public class WherePO extends MetaChartSourceItemPO {
         featureDTO.setCustom(this.custom);
         featureDTO.setCustomContent(this.customContent);
         this.setFeature(JsonUtil.toJSONString(featureDTO));
+    }
+
+    @Override
+    public boolean convertFieldId(Map<Integer, Integer> fieldIdMap) {
+        if (fieldId != null) {
+            this.fieldId = fieldIdMap.get(fieldId);
+            return true;
+        }
+        return false;
     }
 
     public Integer getFieldId() {
@@ -198,7 +209,7 @@ public class WherePO extends MetaChartSourceItemPO {
         this.timeGranularity = timeGranularity;
     }
 
-    static class FeatureDTO{
+    static class FeatureDTO {
         private Integer fieldId;
         private Integer filterOperator;
         private String[] filterValue;

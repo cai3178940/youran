@@ -48,5 +48,6 @@ public interface MetaChartSourceMapper {
     MetaChartSourceWithItemsShowVO toWithItemsShowVO(MetaChartSourcePO po);
 
 
+    MetaChartSourcePO copy(MetaChartSourcePO metaChartSourcePO);
 }
 

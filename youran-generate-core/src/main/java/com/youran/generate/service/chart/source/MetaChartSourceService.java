@@ -81,9 +81,13 @@ public class MetaChartSourceService {
         this.checkProjectId(project, addDTO.getProjectId());
         MetaChartSourcePO metaChartSource = MetaChartSourceMapper.INSTANCE.fromAddDTO(addDTO);
         metaChartSource.featureSerialize();
-        metaChartSourceDAO.save(metaChartSource);
+        this.doSave(metaChartSource);
         metaProjectService.updateProject(project);
         return metaChartSource;
+    }
+
+    public void doSave(MetaChartSourcePO chartSourcePO) {
+        metaChartSourceDAO.save(chartSourcePO);
     }
 
     /**
@@ -100,7 +104,7 @@ public class MetaChartSourceService {
         this.checkProjectId(project, addDTO.getProjectId());
         MetaChartSourcePO metaChartSource = MetaChartSourceMapper.INSTANCE.fromAddDTO(addDTO);
         metaChartSource.featureSerialize();
-        metaChartSourceDAO.save(metaChartSource);
+        this.doSave(metaChartSource);
         Integer sourceId = metaChartSource.getSourceId();
         Integer projectId = project.getProjectId();
         // 保存明细列

@@ -75,6 +75,6 @@ public interface MetaChartSourceItemMapper {
     AggOrderVO toAggOrderVO(AggOrderPO po);
 
 
-
+    MetaChartSourceItemPO copy(MetaChartSourceItemPO metaChartSourceItemFromJson);
 }
 

@@ -48,5 +48,8 @@ public interface MetaChartMapper {
     PieVO toPieVO(PiePO po);
 
 
+    MetaChartPO copy(MetaChartPO metaChartSourceFromJson);
+
+
 }
 

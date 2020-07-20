@@ -126,6 +126,10 @@ public class MetaChartPO extends BasePO {
         throw new RuntimeException("未实现");
     }
 
+    public void convertItemId(Map<Integer, Integer> metaChartSourceItemIdMap) {
+
+    }
+
     public Integer getChartId() {
         return this.chartId;
     }

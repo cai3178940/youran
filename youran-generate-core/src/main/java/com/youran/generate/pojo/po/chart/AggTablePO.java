@@ -10,8 +10,10 @@ import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.pojo.po.chart.source.item.DimensionPO;
 import com.youran.generate.pojo.po.chart.source.item.MetricsPO;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 聚合表
@@ -105,6 +107,20 @@ public class AggTablePO extends MetaChartPO {
         featureDTO.setMetricsList(this.metricsList);
         featureDTO.setDefaultPageSize(this.defaultPageSize);
         this.setFeature(JsonUtil.toJSONString(featureDTO));
+    }
+
+    @Override
+    public void convertItemId(Map<Integer, Integer> metaChartSourceItemIdMap) {
+        if (CollectionUtils.isNotEmpty(dimensionList)) {
+            for (ChartItemDTO<DimensionPO> item : dimensionList) {
+                item.setSourceItemId(metaChartSourceItemIdMap.get(item.getSourceItemId()));
+            }
+        }
+        if (CollectionUtils.isNotEmpty(metricsList)) {
+            for (ChartItemDTO<MetricsPO> item : metricsList) {
+                item.setSourceItemId(metaChartSourceItemIdMap.get(item.getSourceItemId()));
+            }
+        }
     }
 
     public List<ChartItemDTO<DimensionPO>> getDimensionList() {
