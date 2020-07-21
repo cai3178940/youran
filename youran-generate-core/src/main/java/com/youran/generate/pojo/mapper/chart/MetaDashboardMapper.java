@@ -4,8 +4,7 @@ import com.youran.generate.pojo.dto.chart.MetaDashboardAddDTO;
 import com.youran.generate.pojo.dto.chart.MetaDashboardUpdateDTO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
 import com.youran.generate.pojo.vo.chart.MetaDashboardShowVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -42,6 +41,15 @@ public interface MetaDashboardMapper {
      * @return
      */
     MetaDashboardShowVO toShowVO(MetaDashboardPO metaDashboardPO);
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "name"),
+        @Mapping(target = "title"),
+        @Mapping(target = "module"),
+        @Mapping(target = "feature"),
+    })
+    MetaDashboardPO copy(MetaDashboardPO metaDashboardFromJson);
 
 
 }

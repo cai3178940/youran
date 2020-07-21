@@ -6,12 +6,14 @@ import com.youran.common.util.JsonUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.dto.SystemDTO;
+import com.youran.generate.pojo.dto.chart.LayoutDTO;
 import com.youran.generate.pojo.dto.chart.source.JoinDTO;
 import com.youran.generate.pojo.dto.chart.source.JoinPartDTO;
 import com.youran.generate.pojo.mapper.*;
 import com.youran.generate.pojo.mapper.chart.MetaChartMapper;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceItemMapper;
 import com.youran.generate.pojo.mapper.chart.MetaChartSourceMapper;
+import com.youran.generate.pojo.mapper.chart.MetaDashboardMapper;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
@@ -319,9 +321,10 @@ public class MetaImportExportService {
             .collect(Collectors.toList());
         Map<Integer, Integer> metaChartIdMap = this.getIdMap(metaChartFromJson, metaChartList, MetaChartPO::getChartId);
 
-
-        // todo 导入看板
-
+        // 读取看板json文件，并解析成po列表
+        List<MetaDashboardPO> metaDashboardFromJson = JsonUtil.parseArrayFromFile(
+            new File(jsonDir + DASHBOARD_JSON_FILE), MetaDashboardPO.class);
+        metaDashboardFromJson.forEach(metaDashboardPO -> this.saveMetaDashboard(metaDashboardPO, metaChartIdMap, projectId));
         return project;
     }
 
@@ -671,7 +674,7 @@ public class MetaImportExportService {
             changed = true;
         }
         MetaChartSourceItemPO metaChartSourceItemPO = sourceItemPO.castSubType(true);
-        changed |= metaChartSourceItemPO.convertFieldId(fieldIdMap);
+        changed |= metaChartSourceItemPO.convertKeysForImport(fieldIdMap);
         if (changed) {
             metaChartSourceItemPO.featureSerialize();
             metaChartSourceItemService.doUpdate(metaChartSourceItemPO);
@@ -698,12 +701,35 @@ public class MetaImportExportService {
         }
         MetaChartPO chartPO = MetaChartMapper.INSTANCE.copy(metaChartSourceFromJson);
         chartPO.setProjectId(projectId);
+        chartPO.setSourceId(sourceId);
         MetaChartPO subType = chartPO.castSubType(true);
         subType.convertItemId(metaChartSourceItemIdMap);
         subType.featureSerialize();
         metaChartService.doSave(subType);
         LOGGER.debug("导入图表：{}", JsonUtil.toJSONString(subType));
         return subType;
+    }
+
+    /**
+     * 把json中解析出来的看板保存到数据库
+     *
+     * @param metaDashboardFromJson
+     * @param metaChartIdMap
+     * @param projectId
+     */
+    private void saveMetaDashboard(MetaDashboardPO metaDashboardFromJson,
+                                   Map<Integer, Integer> metaChartIdMap,
+                                   Integer projectId) {
+        MetaDashboardPO dashboardPO = MetaDashboardMapper.INSTANCE.copy(metaDashboardFromJson);
+        dashboardPO.featureDeserialize();
+        dashboardPO.setProjectId(projectId);
+        List<LayoutDTO> layout = dashboardPO.getLayout();
+        for (LayoutDTO layoutDTO : layout) {
+            layoutDTO.setI(metaChartIdMap.get(layoutDTO.getI()));
+        }
+        dashboardPO.featureSerialize();
+        metaDashboardService.doSave(dashboardPO);
+        LOGGER.debug("导入看板：{}", JsonUtil.toJSONString(dashboardPO));
     }
 
     /**

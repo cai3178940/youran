@@ -3,8 +3,7 @@ package com.youran.generate.pojo.mapper.chart;
 import com.youran.generate.pojo.dto.chart.source.item.*;
 import com.youran.generate.pojo.po.chart.source.item.*;
 import com.youran.generate.pojo.vo.chart.source.item.*;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -74,7 +73,15 @@ public interface MetaChartSourceItemMapper {
     DimensionVO toDimensionVO(DimensionPO po);
     AggOrderVO toAggOrderVO(AggOrderPO po);
 
-
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "key"),
+        @Mapping(target = "joinIndex"),
+        @Mapping(target = "type"),
+        @Mapping(target = "parentId"),
+        @Mapping(target = "parentKey"),
+        @Mapping(target = "feature"),
+    })
     MetaChartSourceItemPO copy(MetaChartSourceItemPO metaChartSourceItemFromJson);
 }
 

@@ -137,7 +137,7 @@ public class WherePO extends MetaChartSourceItemPO {
     }
 
     @Override
-    public boolean convertFieldId(Map<Integer, Integer> fieldIdMap) {
+    public boolean convertKeysForImport(Map<Integer, Integer> fieldIdMap) {
         if (fieldId != null) {
             this.fieldId = fieldIdMap.get(fieldId);
             return true;

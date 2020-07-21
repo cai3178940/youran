@@ -137,12 +137,12 @@ public class MetaChartSourceItemPO extends BasePO {
     }
 
     /**
-     * 转换字段id
+     * 导入元数据时转换唯一键
      *
      * @param fieldIdMap
      * @return
      */
-    public boolean convertFieldId(Map<Integer, Integer> fieldIdMap) {
+    public boolean convertKeysForImport(Map<Integer, Integer> fieldIdMap) {
         return false;
     }
 

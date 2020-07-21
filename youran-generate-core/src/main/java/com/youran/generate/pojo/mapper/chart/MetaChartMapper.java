@@ -6,8 +6,7 @@ import com.youran.generate.pojo.vo.chart.AggTableVO;
 import com.youran.generate.pojo.vo.chart.BarLineVO;
 import com.youran.generate.pojo.vo.chart.DetailListVO;
 import com.youran.generate.pojo.vo.chart.PieVO;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -47,7 +46,14 @@ public interface MetaChartMapper {
     DetailListVO toDetailListVO(DetailListPO po);
     PieVO toPieVO(PiePO po);
 
-
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "chartType"),
+        @Mapping(target = "chartName"),
+        @Mapping(target = "module"),
+        @Mapping(target = "title"),
+        @Mapping(target = "feature"),
+    })
     MetaChartPO copy(MetaChartPO metaChartSourceFromJson);
 
 

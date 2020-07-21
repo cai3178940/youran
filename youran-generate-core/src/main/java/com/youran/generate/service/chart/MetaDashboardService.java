@@ -45,9 +45,13 @@ public class MetaDashboardService {
         metaDashboard.featureSerialize();
         //校验操作人
         MetaProjectPO project = metaProjectService.getAndCheckProject(metaDashboard.getProjectId());
-        metaDashboardDAO.save(metaDashboard);
+        this.doSave(metaDashboard);
         metaProjectService.updateProject(project);
         return metaDashboard;
+    }
+
+    public void doSave(MetaDashboardPO dashboardPO) {
+        metaDashboardDAO.save(dashboardPO);
     }
 
     /**
@@ -146,6 +150,7 @@ public class MetaDashboardService {
         }
         return dashboards;
     }
+
 }
 
 

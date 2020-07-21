@@ -122,9 +122,10 @@ public class DetailColumnPO extends MetaChartSourceItemPO {
     }
 
     @Override
-    public boolean convertFieldId(Map<Integer, Integer> fieldIdMap) {
+    public boolean convertKeysForImport(Map<Integer, Integer> fieldIdMap) {
         if (fieldId != null) {
             this.fieldId = fieldIdMap.get(fieldId);
+            this.setKey("detialColumn_" + this.getJoinIndex() + "_" + fieldId);
             return true;
         }
         return false;
