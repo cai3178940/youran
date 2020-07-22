@@ -19,49 +19,50 @@ public class DashboardContext extends BaseContext {
     /**
      * 主键ID
      */
-    private Integer dashboardId;
+    private final Integer dashboardId;
 
     /**
      * 名称
      */
-    private String name;
+    private final String name;
 
     /**
      * 名称-首个单词转小写
      */
-    private String nameLower;
+    private final String nameLower;
 
     /**
      * 标题
      */
-    private String title;
+    private final String title;
 
     /**
      * 模块
      */
-    private String module;
+    private final String module;
 
     /**
      * 项目id
      */
-    private Integer projectId;
+    private final Integer projectId;
 
     /**
      * 图表布局
      */
-    private List<LayoutDTO> layout;
+    private final List<LayoutDTO> layout;
 
     public DashboardContext(MetaProjectPO project, MetaDashboardPO metaDashboard) {
         super(project);
         this.metaDashboard = metaDashboard;
+        this.dashboardId = metaDashboard.getDashboardId();
         this.name = metaDashboard.getName();
         this.nameLower = SwitchCaseUtil.lowerFirstWord(metaDashboard.getName());
         this.title = metaDashboard.getTitle();
         this.module = metaDashboard.getModule();
         this.projectId = metaDashboard.getProjectId();
         this.layout = metaDashboard.getLayout();
-
     }
+
 
     public String getNameLower() {
         return nameLower;
@@ -75,47 +76,24 @@ public class DashboardContext extends BaseContext {
         return dashboardId;
     }
 
-    public void setDashboardId(Integer dashboardId) {
-        this.dashboardId = dashboardId;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getModule() {
         return module;
-    }
-
-    public void setModule(String module) {
-        this.module = module;
     }
 
     public Integer getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
-    }
-
     public List<LayoutDTO> getLayout() {
         return layout;
     }
 
-    public void setLayout(List<LayoutDTO> layout) {
-        this.layout = layout;
-    }
 }

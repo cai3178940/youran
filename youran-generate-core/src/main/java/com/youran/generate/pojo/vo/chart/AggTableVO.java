@@ -26,6 +26,18 @@ public class AggTableVO extends MetaChartShowVO {
      * 默认每页记录数
      */
     private Integer defaultPageSize;
+    /**
+     * 是否支持excel导出
+     */
+    private Boolean excelExport;
+
+    public Boolean getExcelExport() {
+        return excelExport;
+    }
+
+    public void setExcelExport(Boolean excelExport) {
+        this.excelExport = excelExport;
+    }
 
     public Integer getDefaultPageSize() {
         return defaultPageSize;

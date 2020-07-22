@@ -365,6 +365,9 @@ public enum DevType {
     `,
     defaultPageSize: `
 **每页记录数**：待填写
+    `,
+    excelExport: `
+**excel导出**：待填写
     `
   },
   chartSource: {

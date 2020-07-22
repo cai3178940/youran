@@ -29,121 +29,121 @@ public class EntityContext extends BaseContext {
     /**
      * 当前实体id
      */
-    private Integer entityId;
+    private final Integer entityId;
     /**
      * 类名
      */
-    private String className;
+    private final String className;
     /**
      * 类名-首个单词转小写
      */
-    private String classNameLower;
+    private final String classNameLower;
     /**
      * 表名
      */
-    private String tableName;
+    private final String tableName;
     /**
      * 标题
      */
-    private String title;
+    private final String title;
     /**
      * 模块名称
      */
-    private String module;
+    private final String module;
     /**
      * 描述
      */
-    private String desc;
+    private final String desc;
     /**
      * 主键字段
      */
-    private MetaFieldPO pk;
+    private final MetaFieldPO pk;
     /**
      * 主键字段名称
      */
-    private String id;
+    private final String id;
     /**
      * 主键字段名称-首字母大写
      */
-    private String idUpper;
+    private final String idUpper;
     /**
      * 主键字段类型
      */
-    private String type;
+    private final String type;
     /**
      * 字段列表
      */
-    private Map<Integer, MetaFieldPO> fields;
+    private final Map<Integer, MetaFieldPO> fields;
     /**
      * 是否分页查询
      */
-    private Boolean pageSign;
+    private final Boolean pageSign;
     /**
      * 版本字段
      */
-    private MetaFieldPO versionField;
+    private final MetaFieldPO versionField;
     /**
      * 逻辑删除字段
      */
-    private MetaFieldPO delField;
+    private final MetaFieldPO delField;
     /**
      * 标题字段
      */
-    private MetaFieldPO titleField;
+    private final MetaFieldPO titleField;
     /**
      * 外键字段
      */
-    private Map<Integer, MetaFieldPO> fkFields;
+    private final Map<Integer, MetaFieldPO> fkFields;
     /**
      * 添加字段
      */
-    private Map<Integer, MetaFieldPO> insertFields;
+    private final Map<Integer, MetaFieldPO> insertFields;
     /**
      * 修改字段
      */
-    private Map<Integer, MetaFieldPO> updateFields;
+    private final Map<Integer, MetaFieldPO> updateFields;
     /**
      * 查询字段
      */
-    private Map<Integer, MetaFieldPO> queryFields;
+    private final Map<Integer, MetaFieldPO> queryFields;
     /**
      * 展示字段
      */
-    private Map<Integer, MetaFieldPO> showFields;
+    private final Map<Integer, MetaFieldPO> showFields;
     /**
      * 列表字段
      */
-    private Map<Integer, MetaFieldPO> listFields;
+    private final Map<Integer, MetaFieldPO> listFields;
     /**
      * 排序字段
      */
-    private Map<Integer, MetaFieldPO> listSortFields;
+    private final Map<Integer, MetaFieldPO> listSortFields;
     /**
      * 创建日期字段
      */
-    private MetaFieldPO createdTimeField;
+    private final MetaFieldPO createdTimeField;
     /**
      * 创建人字段
      */
-    private MetaFieldPO createdByField;
+    private final MetaFieldPO createdByField;
     /**
      * 操作日期字段
      */
-    private MetaFieldPO operatedTimeField;
+    private final MetaFieldPO operatedTimeField;
     /**
      * 操作人字段
      */
-    private MetaFieldPO operatedByField;
+    private final MetaFieldPO operatedByField;
 
     /**
      * 持有引用的多对多关系
      */
-    private Map<MetaEntityPO, MetaManyToManyPO> holds;
+    private final Map<MetaEntityPO, MetaManyToManyPO> holds;
 
     /**
      * 未持有引用的多对多关系
      */
-    private Map<MetaEntityPO, MetaManyToManyPO> unHolds;
+    private final Map<MetaEntityPO, MetaManyToManyPO> unHolds;
 
     /**
      * 对应的外键列表(当前主键对应的其他实体外键字段)
@@ -152,7 +152,7 @@ public class EntityContext extends BaseContext {
      * 2、对应实体是用户，用户中的外键字段是部门id
      * 3、则此处存放的是用户表中的部门id
      */
-    private List<MetaFieldPO> foreignFields;
+    private final List<MetaFieldPO> foreignFields;
     /**
      * 对应的外键实体集合(当前主键对应的其他实体)
      * 比如：
@@ -160,11 +160,11 @@ public class EntityContext extends BaseContext {
      * 2、对应实体是用户，用户中的外键字段是部门id
      * 3、则此处存放的是用户实体
      */
-    private Set<MetaEntityPO> foreignEntities;
+    private final Set<MetaEntityPO> foreignEntities;
     /**
      * 实体特性
      */
-    private MetaEntityFeatureDTO entityFeature;
+    private final MetaEntityFeatureDTO entityFeature;
 
     public EntityContext(MetaProjectPO project, MetaEntityPO entity) {
         super(project);
@@ -376,256 +376,128 @@ public class EntityContext extends BaseContext {
         return entityId;
     }
 
-    public void setEntityId(Integer entityId) {
-        this.entityId = entityId;
-    }
-
     public String getClassName() {
         return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
     }
 
     public String getClassNameLower() {
         return classNameLower;
     }
 
-    public void setClassNameLower(String classNameLower) {
-        this.classNameLower = classNameLower;
-    }
-
     public String getTableName() {
         return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getModule() {
         return module;
-    }
-
-    public void setModule(String module) {
-        this.module = module;
     }
 
     public String getDesc() {
         return desc;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
     public MetaFieldPO getPk() {
         return pk;
-    }
-
-    public void setPk(MetaFieldPO pk) {
-        this.pk = pk;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getIdUpper() {
         return idUpper;
-    }
-
-    public void setIdUpper(String idUpper) {
-        this.idUpper = idUpper;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public Boolean getPageSign() {
         return pageSign;
-    }
-
-    public void setPageSign(Boolean pageSign) {
-        this.pageSign = pageSign;
     }
 
     public MetaFieldPO getVersionField() {
         return versionField;
     }
 
-    public void setVersionField(MetaFieldPO versionField) {
-        this.versionField = versionField;
-    }
-
     public MetaFieldPO getDelField() {
         return delField;
-    }
-
-    public void setDelField(MetaFieldPO delField) {
-        this.delField = delField;
     }
 
     public Map<Integer, MetaFieldPO> getFields() {
         return fields;
     }
 
-    public void setFields(Map<Integer, MetaFieldPO> fields) {
-        this.fields = fields;
-    }
-
     public Map<Integer, MetaFieldPO> getFkFields() {
         return fkFields;
-    }
-
-    public void setFkFields(Map<Integer, MetaFieldPO> fkFields) {
-        this.fkFields = fkFields;
     }
 
     public Map<Integer, MetaFieldPO> getInsertFields() {
         return insertFields;
     }
 
-    public void setInsertFields(Map<Integer, MetaFieldPO> insertFields) {
-        this.insertFields = insertFields;
-    }
-
     public Map<Integer, MetaFieldPO> getUpdateFields() {
         return updateFields;
-    }
-
-    public void setUpdateFields(Map<Integer, MetaFieldPO> updateFields) {
-        this.updateFields = updateFields;
     }
 
     public Map<Integer, MetaFieldPO> getQueryFields() {
         return queryFields;
     }
 
-    public void setQueryFields(Map<Integer, MetaFieldPO> queryFields) {
-        this.queryFields = queryFields;
-    }
-
     public Map<Integer, MetaFieldPO> getShowFields() {
         return showFields;
-    }
-
-    public void setShowFields(Map<Integer, MetaFieldPO> showFields) {
-        this.showFields = showFields;
     }
 
     public Map<Integer, MetaFieldPO> getListFields() {
         return listFields;
     }
 
-    public void setListFields(Map<Integer, MetaFieldPO> listFields) {
-        this.listFields = listFields;
-    }
-
     public Map<Integer, MetaFieldPO> getListSortFields() {
         return listSortFields;
-    }
-
-    public void setListSortFields(Map<Integer, MetaFieldPO> listSortFields) {
-        this.listSortFields = listSortFields;
     }
 
     public MetaFieldPO getCreatedTimeField() {
         return createdTimeField;
     }
 
-    public void setCreatedTimeField(MetaFieldPO createdTimeField) {
-        this.createdTimeField = createdTimeField;
-    }
-
     public MetaFieldPO getOperatedTimeField() {
         return operatedTimeField;
-    }
-
-    public void setOperatedTimeField(MetaFieldPO operatedTimeField) {
-        this.operatedTimeField = operatedTimeField;
     }
 
     public MetaFieldPO getCreatedByField() {
         return createdByField;
     }
 
-    public void setCreatedByField(MetaFieldPO createdByField) {
-        this.createdByField = createdByField;
-    }
-
     public MetaFieldPO getOperatedByField() {
         return operatedByField;
-    }
-
-    public void setOperatedByField(MetaFieldPO operatedByField) {
-        this.operatedByField = operatedByField;
     }
 
     public Map<MetaEntityPO, MetaManyToManyPO> getHolds() {
         return holds;
     }
 
-    public void setHolds(Map<MetaEntityPO, MetaManyToManyPO> holds) {
-        this.holds = holds;
-    }
-
     public Map<MetaEntityPO, MetaManyToManyPO> getUnHolds() {
         return unHolds;
-    }
-
-    public void setUnHolds(Map<MetaEntityPO, MetaManyToManyPO> unHolds) {
-        this.unHolds = unHolds;
     }
 
     public List<MetaFieldPO> getForeignFields() {
         return foreignFields;
     }
 
-    public void setForeignFields(List<MetaFieldPO> foreignFields) {
-        this.foreignFields = foreignFields;
-    }
-
     public Set<MetaEntityPO> getForeignEntities() {
         return foreignEntities;
-    }
-
-    public void setForeignEntities(Set<MetaEntityPO> foreignEntities) {
-        this.foreignEntities = foreignEntities;
     }
 
     public MetaEntityFeatureDTO getEntityFeature() {
         return entityFeature;
     }
 
-    public void setEntityFeature(MetaEntityFeatureDTO entityFeature) {
-        this.entityFeature = entityFeature;
-    }
-
     public MetaFieldPO getTitleField() {
         return titleField;
-    }
-
-    public void setTitleField(MetaFieldPO titleField) {
-        this.titleField = titleField;
     }
 
     @Override

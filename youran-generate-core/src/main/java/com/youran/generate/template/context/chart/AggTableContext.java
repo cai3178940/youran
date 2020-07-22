@@ -19,32 +19,42 @@ public class AggTableContext extends AbstractChartContext<AggTablePO> {
     /**
      * 维度列
      */
-    private List<ChartItemDTO<DimensionPO>> dimensionList;
-
+    private final List<ChartItemDTO<DimensionPO>> dimensionList;
     /**
      * 指标列
      */
-    private List<ChartItemDTO<MetricsPO>> metricsList;
+    private final List<ChartItemDTO<MetricsPO>> metricsList;
+    /**
+     * 默认每页记录数
+     */
+    private final Integer defaultPageSize;
+    /**
+     * 是否支持excel导出
+     */
+    private final Boolean excelExport;
 
     public AggTableContext(MetaProjectPO project, AggTablePO aggTable) {
         super(project, aggTable);
         this.dimensionList = aggTable.getDimensionList();
         this.metricsList = aggTable.getMetricsList();
+        this.defaultPageSize = aggTable.getDefaultPageSize();
+        this.excelExport = aggTable.getExcelExport();
     }
 
     public List<ChartItemDTO<DimensionPO>> getDimensionList() {
         return dimensionList;
     }
 
-    public void setDimensionList(List<ChartItemDTO<DimensionPO>> dimensionList) {
-        this.dimensionList = dimensionList;
-    }
-
     public List<ChartItemDTO<MetricsPO>> getMetricsList() {
         return metricsList;
     }
 
-    public void setMetricsList(List<ChartItemDTO<MetricsPO>> metricsList) {
-        this.metricsList = metricsList;
+    public Integer getDefaultPageSize() {
+        return defaultPageSize;
     }
+
+    public Boolean getExcelExport() {
+        return excelExport;
+    }
+
 }

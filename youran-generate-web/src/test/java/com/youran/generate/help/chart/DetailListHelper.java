@@ -34,6 +34,7 @@ public class DetailListHelper {
         dto.setTitle(E_TITLE);
         dto.setColumnList(columnList);
         dto.setDefaultPageSize(10);
+        dto.setExcelExport(true);
         return dto;
     }
 
@@ -54,6 +55,7 @@ public class DetailListHelper {
             .collect(Collectors.toList()));
         dto.setHiddenColumnList(Collections.emptyList());
         dto.setDefaultPageSize(po.getDefaultPageSize());
+        dto.setExcelExport(po.getExcelExport());
         return dto;
     }
 

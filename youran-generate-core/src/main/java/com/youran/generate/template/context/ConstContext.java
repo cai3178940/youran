@@ -24,27 +24,27 @@ public class ConstContext extends BaseContext {
     /**
      * 常量名称-首字母小写
      */
-    private String constName;
+    private final String constName;
     /**
      * 常量名称-首字母大写
      */
-    private String constNameUpper;
+    private final String constNameUpper;
     /**
      * 常量描述
      */
-    private String remark;
+    private final String remark;
     /**
      * 常量类型
      */
-    private Integer constType;
+    private final Integer constType;
     /**
      * 常量类型-字符串
      */
-    private String constTypeStr;
+    private final String constTypeStr;
     /**
      * 常量值列表
      */
-    private List<MetaConstDetailPO> detailList;
+    private final List<MetaConstDetailPO> detailList;
 
     public ConstContext(MetaProjectPO project, MetaConstPO metaConst) {
         super(project);
@@ -66,48 +66,24 @@ public class ConstContext extends BaseContext {
         return constName;
     }
 
-    public void setConstName(String constName) {
-        this.constName = constName;
-    }
-
     public String getConstNameUpper() {
         return constNameUpper;
-    }
-
-    public void setConstNameUpper(String constNameUpper) {
-        this.constNameUpper = constNameUpper;
     }
 
     public String getConstTypeStr() {
         return constTypeStr;
     }
 
-    public void setConstTypeStr(String constTypeStr) {
-        this.constTypeStr = constTypeStr;
-    }
-
     public String getRemark() {
         return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 
     public Integer getConstType() {
         return constType;
     }
 
-    public void setConstType(Integer constType) {
-        this.constType = constType;
-    }
-
     public List<MetaConstDetailPO> getDetailList() {
         return detailList;
-    }
-
-    public void setDetailList(List<MetaConstDetailPO> detailList) {
-        this.detailList = detailList;
     }
 
     @Override

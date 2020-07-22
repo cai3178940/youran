@@ -7,6 +7,7 @@ function initDetailListFormBean (projectId) {
     module: '',
     title: '',
     defaultPageSize: 10,
+    excelExport: true,
     columnList: [],
     hiddenColumnList: []
   }

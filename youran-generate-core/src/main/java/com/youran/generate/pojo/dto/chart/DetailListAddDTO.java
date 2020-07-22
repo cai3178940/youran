@@ -24,6 +24,9 @@ public class DetailListAddDTO extends AbstractChartDTO {
     @ApiModelProperty(notes = "默认每页记录数")
     private Integer defaultPageSize;
 
+    @ApiModelProperty(notes = "是否支持excel导出")
+    private Boolean excelExport;
+
     @Override
     public Integer getChartType() {
         return ChartType.DETAIL_LIST.getValue();
@@ -51,5 +54,13 @@ public class DetailListAddDTO extends AbstractChartDTO {
 
     public void setDefaultPageSize(Integer defaultPageSize) {
         this.defaultPageSize = defaultPageSize;
+    }
+
+    public Boolean getExcelExport() {
+        return excelExport;
+    }
+
+    public void setExcelExport(Boolean excelExport) {
+        this.excelExport = excelExport;
     }
 }

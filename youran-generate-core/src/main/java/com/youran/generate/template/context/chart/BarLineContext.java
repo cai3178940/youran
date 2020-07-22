@@ -19,22 +19,22 @@ public class BarLineContext extends AbstractChartContext<BarLinePO> {
     /**
      * 主X轴
      */
-    private ChartItemDTO<DimensionPO> axisX;
+    private final ChartItemDTO<DimensionPO> axisX;
 
     /**
      * 副X轴
      */
-    private ChartItemDTO<DimensionPO> axisX2;
+    private final ChartItemDTO<DimensionPO> axisX2;
 
     /**
      * Y轴
      */
-    private List<ChartItemDTO<MetricsPO>> axisYList;
+    private final List<ChartItemDTO<MetricsPO>> axisYList;
 
     /**
      * 图表配置项模板
      */
-    private String optionTemplate;
+    private final String optionTemplate;
 
     public BarLineContext(MetaProjectPO project, BarLinePO barLine) {
         super(project, barLine);
@@ -48,31 +48,16 @@ public class BarLineContext extends AbstractChartContext<BarLinePO> {
         return axisX;
     }
 
-    public void setAxisX(ChartItemDTO<DimensionPO> axisX) {
-        this.axisX = axisX;
-    }
-
     public ChartItemDTO<DimensionPO> getAxisX2() {
         return axisX2;
-    }
-
-    public void setAxisX2(ChartItemDTO<DimensionPO> axisX2) {
-        this.axisX2 = axisX2;
     }
 
     public List<ChartItemDTO<MetricsPO>> getAxisYList() {
         return axisYList;
     }
 
-    public void setAxisYList(List<ChartItemDTO<MetricsPO>> axisYList) {
-        this.axisYList = axisYList;
-    }
-
     public String getOptionTemplate() {
         return optionTemplate;
     }
 
-    public void setOptionTemplate(String optionTemplate) {
-        this.optionTemplate = optionTemplate;
-    }
 }

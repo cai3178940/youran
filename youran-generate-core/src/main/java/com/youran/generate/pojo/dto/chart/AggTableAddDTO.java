@@ -24,6 +24,9 @@ public class AggTableAddDTO extends AbstractChartDTO {
     @ApiModelProperty(notes = "默认每页记录数")
     private Integer defaultPageSize;
 
+    @ApiModelProperty(notes = "是否支持excel导出")
+    private Boolean excelExport;
+
     @Override
     public Integer getChartType() {
         return ChartType.AGG_TABLE.getValue();
@@ -51,5 +54,13 @@ public class AggTableAddDTO extends AbstractChartDTO {
 
     public void setMetricsList(List<ChartItemDTO> metricsList) {
         this.metricsList = metricsList;
+    }
+
+    public Boolean getExcelExport() {
+        return excelExport;
+    }
+
+    public void setExcelExport(Boolean excelExport) {
+        this.excelExport = excelExport;
     }
 }

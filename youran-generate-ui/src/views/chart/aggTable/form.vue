@@ -45,6 +45,13 @@
                                tabindex="40"></el-input-number>
             </help-popover>
           </el-form-item>
+          <el-form-item label="导出" prop="excelExport">
+            <help-popover name="chart.excelExport">
+              <el-checkbox v-model="form.excelExport" tabindex="50">
+                支持excel导出
+              </el-checkbox>
+            </help-popover>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()" tabindex="160">提交</el-button>
             <el-button @click="lastStep()" tabindex="180">上一步</el-button>

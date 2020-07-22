@@ -40,6 +40,11 @@ public class AggTablePO extends MetaChartPO {
      */
     @JsonIgnore
     private Integer defaultPageSize;
+    /**
+     * 是否支持excel导出
+     */
+    @JsonIgnore
+    private Boolean excelExport;
 
     public AggTablePO() {
         this.setChartType(ChartType.AGG_TABLE.getValue());
@@ -98,6 +103,7 @@ public class AggTablePO extends MetaChartPO {
         this.dimensionList = featureDTO.getDimensionList();
         this.metricsList = featureDTO.getMetricsList();
         this.defaultPageSize = featureDTO.getDefaultPageSize();
+        this.excelExport = featureDTO.getExcelExport();
     }
 
     @Override
@@ -106,6 +112,7 @@ public class AggTablePO extends MetaChartPO {
         featureDTO.setDimensionList(this.dimensionList);
         featureDTO.setMetricsList(this.metricsList);
         featureDTO.setDefaultPageSize(this.defaultPageSize);
+        featureDTO.setExcelExport(this.excelExport);
         this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
@@ -147,10 +154,27 @@ public class AggTablePO extends MetaChartPO {
         this.defaultPageSize = defaultPageSize;
     }
 
+    public Boolean getExcelExport() {
+        return excelExport;
+    }
+
+    public void setExcelExport(Boolean excelExport) {
+        this.excelExport = excelExport;
+    }
+
     static class FeatureDTO{
         private List<ChartItemDTO<DimensionPO>> dimensionList;
         private List<ChartItemDTO<MetricsPO>> metricsList;
         private Integer defaultPageSize;
+        private Boolean excelExport;
+
+        public Boolean getExcelExport() {
+            return excelExport;
+        }
+
+        public void setExcelExport(Boolean excelExport) {
+            this.excelExport = excelExport;
+        }
 
         public Integer getDefaultPageSize() {
             return defaultPageSize;

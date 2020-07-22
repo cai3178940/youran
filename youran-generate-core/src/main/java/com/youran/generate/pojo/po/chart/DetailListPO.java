@@ -40,6 +40,11 @@ public class DetailListPO extends MetaChartPO {
      */
     @JsonIgnore
     private Integer defaultPageSize;
+    /**
+     * 是否支持excel导出
+     */
+    @JsonIgnore
+    private Boolean excelExport;
 
     public DetailListPO() {
         this.setChartType(ChartType.DETAIL_LIST.getValue());
@@ -103,6 +108,7 @@ public class DetailListPO extends MetaChartPO {
         this.columnList = featureDTO.getColumnList();
         this.hiddenColumnList = featureDTO.getHiddenColumnList();
         this.defaultPageSize = featureDTO.getDefaultPageSize();
+        this.excelExport = featureDTO.getExcelExport();
     }
 
     @Override
@@ -111,6 +117,7 @@ public class DetailListPO extends MetaChartPO {
         featureDTO.setColumnList(this.columnList);
         featureDTO.setHiddenColumnList(this.hiddenColumnList);
         featureDTO.setDefaultPageSize(this.defaultPageSize);
+        featureDTO.setExcelExport(this.excelExport);
         this.setFeature(JsonUtil.toJSONString(featureDTO));
     }
 
@@ -126,6 +133,14 @@ public class DetailListPO extends MetaChartPO {
                 item.setSourceItemId(metaChartSourceItemIdMap.get(item.getSourceItemId()));
             }
         }
+    }
+
+    public Boolean getExcelExport() {
+        return excelExport;
+    }
+
+    public void setExcelExport(Boolean excelExport) {
+        this.excelExport = excelExport;
     }
 
     public List<ChartItemDTO<DetailColumnPO>> getHiddenColumnList() {
@@ -157,6 +172,15 @@ public class DetailListPO extends MetaChartPO {
         private List<ChartItemDTO<DetailColumnPO>> columnList;
         private List<ChartItemDTO<DetailColumnPO>> hiddenColumnList;
         private Integer defaultPageSize;
+        private Boolean excelExport;
+
+        public Boolean getExcelExport() {
+            return excelExport;
+        }
+
+        public void setExcelExport(Boolean excelExport) {
+            this.excelExport = excelExport;
+        }
 
         public List<ChartItemDTO<DetailColumnPO>> getHiddenColumnList() {
             return hiddenColumnList;

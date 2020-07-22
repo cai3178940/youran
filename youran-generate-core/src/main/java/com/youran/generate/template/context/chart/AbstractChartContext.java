@@ -21,38 +21,38 @@ public abstract class AbstractChartContext<ChartPO extends MetaChartPO> extends 
     /**
      * 主键ID
      */
-    private Integer chartId;
+    private final Integer chartId;
 
     /**
      * 图表类型
      *
      * @see com.youran.generate.constant.ChartType
      */
-    private Integer chartType;
+    private final Integer chartType;
 
     /**
      * 图表名称
      */
-    private String chartName;
+    private final String chartName;
 
     /**
      * 图表名称-首个单词转小写
      */
-    private String chartNameLower;
+    private final String chartNameLower;
 
     /**
      * 模块名
      */
-    private String module;
+    private final String module;
 
     /**
      * 图表标题
      */
-    private String title;
+    private final String title;
     /**
      * 图表数据源
      */
-    private MetaChartSourcePO chartSource;
+    private final MetaChartSourcePO chartSource;
 
 
     public AbstractChartContext(MetaProjectPO project, ChartPO chart) {
@@ -75,55 +75,27 @@ public abstract class AbstractChartContext<ChartPO extends MetaChartPO> extends 
         return chartSource;
     }
 
-    public void setChartSource(MetaChartSourcePO chartSource) {
-        this.chartSource = chartSource;
-    }
-
     public Integer getChartId() {
         return chartId;
-    }
-
-    public void setChartId(Integer chartId) {
-        this.chartId = chartId;
     }
 
     public Integer getChartType() {
         return chartType;
     }
 
-    public void setChartType(Integer chartType) {
-        this.chartType = chartType;
-    }
-
     public String getChartName() {
         return chartName;
-    }
-
-    public void setChartName(String chartName) {
-        this.chartName = chartName;
     }
 
     public String getChartNameLower() {
         return chartNameLower;
     }
 
-    public void setChartNameLower(String chartNameLower) {
-        this.chartNameLower = chartNameLower;
-    }
-
     public String getModule() {
         return module;
     }
 
-    public void setModule(String module) {
-        this.module = module;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 }

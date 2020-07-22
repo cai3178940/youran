@@ -38,79 +38,79 @@ public class BaseContext {
     /**
      * 实体列表
      */
-    protected List<MetaEntityPO> metaEntities;
+    protected final List<MetaEntityPO> metaEntities;
     /**
      * 常量列表
      */
-    protected List<MetaConstPO> metaConsts;
+    protected final List<MetaConstPO> metaConsts;
     /**
      * 多对多列表
      */
-    protected List<MetaManyToManyPO> mtms;
+    protected final List<MetaManyToManyPO> mtms;
     /**
      * 所有图表
      */
-    protected List<MetaChartPO> charts;
+    protected final List<MetaChartPO> charts;
     /**
      * 所有看板
      */
-    protected List<MetaDashboardPO> dashboards;
+    protected final List<MetaDashboardPO> dashboards;
     /**
      * 包名
      */
-    protected String packageName;
+    protected final String packageName;
     /**
      * common包名
      */
-    protected String commonPackage;
+    protected final String commonPackage;
     /**
      * 项目标识-驼峰格式-首字母小写
      */
-    protected String projectName;
+    protected final String projectName;
     /**
      * 项目标识-驼峰格式-首字母大写
      */
-    protected String projectNameUpper;
+    protected final String projectNameUpper;
     /**
      * 项目标识-短横杠分割
      */
-    protected String projectNameSplit;
+    protected final String projectNameSplit;
     /**
      * 项目名称
      */
-    protected String projectDesc;
+    protected final String projectDesc;
     /**
      * 原始模块名
      */
-    protected String originProjectName;
+    protected final String originProjectName;
     /**
      * maven的groupId
      */
-    protected String groupId;
+    protected final String groupId;
     /**
      * 作者
      */
-    protected String author;
+    protected final String author;
     /**
      * 创建时间
      */
-    protected Date createdTime;
+    protected final Date createdTime;
     /**
      * 导入模块
      */
-    protected Set<String> imports;
+    protected final Set<String> imports;
     /**
      * 静态导入模块
      */
-    protected Set<String> staticImports;
+    protected final Set<String> staticImports;
     /**
      * spring注入bean
      */
-    protected Set<String> autowired;
+    protected final Set<String> autowired;
     /**
      * spring-boot版本
      */
-    protected MetaProjectFeatureDTO projectFeature;
+    protected final MetaProjectFeatureDTO projectFeature;
 
 
     public BaseContext(MetaProjectPO project) {
@@ -384,152 +384,76 @@ public class BaseContext {
         return metaEntities;
     }
 
-    public void setMetaEntities(List<MetaEntityPO> metaEntities) {
-        this.metaEntities = metaEntities;
-    }
-
     public List<MetaConstPO> getMetaConsts() {
         return metaConsts;
-    }
-
-    public void setMetaConsts(List<MetaConstPO> metaConsts) {
-        this.metaConsts = metaConsts;
     }
 
     public List<MetaManyToManyPO> getMtms() {
         return mtms;
     }
 
-    public void setMtms(List<MetaManyToManyPO> mtms) {
-        this.mtms = mtms;
-    }
-
     public List<MetaChartPO> getCharts() {
         return charts;
-    }
-
-    public void setCharts(List<MetaChartPO> charts) {
-        this.charts = charts;
     }
 
     public List<MetaDashboardPO> getDashboards() {
         return dashboards;
     }
 
-    public void setDashboards(List<MetaDashboardPO> dashboards) {
-        this.dashboards = dashboards;
-    }
-
     public String getPackageName() {
         return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
     }
 
     public String getCommonPackage() {
         return commonPackage;
     }
 
-    public void setCommonPackage(String commonPackage) {
-        this.commonPackage = commonPackage;
-    }
-
     public String getProjectName() {
         return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
     }
 
     public String getProjectNameUpper() {
         return projectNameUpper;
     }
 
-    public void setProjectNameUpper(String projectNameUpper) {
-        this.projectNameUpper = projectNameUpper;
-    }
-
     public String getProjectNameSplit() {
         return projectNameSplit;
-    }
-
-    public void setProjectNameSplit(String projectNameSplit) {
-        this.projectNameSplit = projectNameSplit;
     }
 
     public String getOriginProjectName() {
         return originProjectName;
     }
 
-    public void setOriginProjectName(String originProjectName) {
-        this.originProjectName = originProjectName;
-    }
-
     public String getGroupId() {
         return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public Date getCreatedTime() {
         return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
     }
 
     public String getProjectDesc() {
         return projectDesc;
     }
 
-    public void setProjectDesc(String projectDesc) {
-        this.projectDesc = projectDesc;
-    }
-
     public Set<String> getImports() {
         return imports;
-    }
-
-    public void setImports(Set<String> imports) {
-        this.imports = imports;
     }
 
     public Set<String> getStaticImports() {
         return staticImports;
     }
 
-    public void setStaticImports(Set<String> staticImports) {
-        this.staticImports = staticImports;
-    }
-
     public Set<String> getAutowired() {
         return autowired;
     }
 
-    public void setAutowired(Set<String> autowired) {
-        this.autowired = autowired;
-    }
-
     public MetaProjectFeatureDTO getProjectFeature() {
         return projectFeature;
-    }
-
-    public void setProjectFeature(MetaProjectFeatureDTO projectFeature) {
-        this.projectFeature = projectFeature;
     }
 
     @Override

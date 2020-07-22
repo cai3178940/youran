@@ -10,6 +10,7 @@ function initAggTableFormBean (projectId) {
     module: '',
     title: '',
     defaultPageSize: 10,
+    excelExport: true,
     dimensionList: [],
     metricsList: []
   }
