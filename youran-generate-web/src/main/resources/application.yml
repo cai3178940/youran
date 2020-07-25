@@ -19,9 +19,9 @@ spring:
         multipart:
             max-request-size: 100MB
             max-file-size: 100MB
-swagger:
-    base-package: com.youran.generate
-
+springfox:
+    documentation:
+        enabled: true
 mybatis:
     config-location: classpath:mybatis-config.xml
 

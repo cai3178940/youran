@@ -17,10 +17,11 @@ public class MetaProjectFeatureDTO extends AbstractDTO {
 
     /**
      * spring-boot版本【1或2】
+     * 不再支持spring-boot1
      */
-    @ApiModelProperty(notes = "spring-boot版本【1或2】", example = "1")
-    @NotNull
+    @ApiModelProperty(hidden = true)
     @Const(constClass = FeatureConst.Boot.class)
+    @Deprecated
     private Integer bootVersion = FeatureConst.Boot.BOOT_2;
 
     /**

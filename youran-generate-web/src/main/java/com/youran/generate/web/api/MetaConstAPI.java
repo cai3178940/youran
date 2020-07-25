@@ -19,7 +19,7 @@ import java.util.List;
  * @author: cbb
  * @date: 2017/5/12
  */
-@Api(tags = "MetaConstPO")
+@Api(tags = "【常量枚举】API")
 public interface MetaConstAPI {
 
     /**

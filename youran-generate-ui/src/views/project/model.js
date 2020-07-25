@@ -15,7 +15,7 @@ export function initFormBean (forEdit) {
     username: '',
     password: '',
     feature: {
-      bootVersion: 1,
+      bootVersion: 2,
       lombokEnabled: false
     }
   }

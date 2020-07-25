@@ -14,12 +14,12 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * 【多对多关联】api
+ * 【多对多关联】API
  *
  * @author: cbb
  * @date: 2017/5/12
  */
-@Api(tags = "MetaManyToManyPO")
+@Api(tags = "【多对多关联】API")
 public interface MetaManyToManyAPI {
 
     /**

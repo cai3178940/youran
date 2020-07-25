@@ -19,7 +19,7 @@ import java.util.List;
  * @author: cbb
  * @date: 2017/5/12
  */
-@Api(tags = "MetaCascadeExtPO")
+@Api(tags = "【级联扩展】API")
 public interface MetaCascadeExtAPI {
 
     /**

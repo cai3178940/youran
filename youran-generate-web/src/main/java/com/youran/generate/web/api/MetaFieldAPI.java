@@ -15,12 +15,12 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * 【字段】api
+ * 【字段】API
  *
  * @author: cbb
  * @date: 2017/5/12
  */
-@Api(tags = "MetaFieldPO")
+@Api(tags = "【字段】API")
 public interface MetaFieldAPI {
 
     /**

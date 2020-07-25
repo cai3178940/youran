@@ -39,7 +39,7 @@ public class MetaProjectHelper {
 
     private static MetaProjectFeatureDTO getFeature() {
         MetaProjectFeatureDTO dto = new MetaProjectFeatureDTO();
-        dto.setBootVersion(FeatureConst.Boot.BOOT_1);
+        dto.setBootVersion(FeatureConst.Boot.BOOT_2);
         return dto;
     }
 

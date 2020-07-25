@@ -14,12 +14,12 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * 【索引】api
+ * 【索引】API
  *
  * @author: cbb
  * @date 2017/5/16
  */
-@Api(tags = "MetaIndexPO")
+@Api(tags = "【索引】API")
 public interface MetaIndexAPI {
 
     /**

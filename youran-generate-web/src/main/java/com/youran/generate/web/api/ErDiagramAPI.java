@@ -15,7 +15,7 @@ import java.util.List;
  * @author cbb
  * @date 2018/7/17
  */
-@Api(tags = "ErDiagram")
+@Api(tags = "【实体关系图】API")
 public interface ErDiagramAPI {
 
     /**

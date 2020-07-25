@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 【常量值】api
+ * 【常量值】API
  *
  * @author: cbb
  * @date: 2017/5/12
  */
-@Api(tags = "MetaConstDetailPO")
+@Api(tags = "【常量值】API")
 public interface MetaConstDetailAPI {
 
     /**

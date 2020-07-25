@@ -7,12 +7,12 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * 【反向工程】api
+ * 【反向工程】API
  *
  * @author: cbb
  * @date 2017/5/24
  */
-@Api(tags = "ReverseEngineering")
+@Api(tags = "【反向工程】API")
 public interface ReverseEngineeringAPI {
 
     /**

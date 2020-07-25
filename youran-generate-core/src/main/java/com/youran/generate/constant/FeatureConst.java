@@ -10,6 +10,7 @@ import com.youran.common.validator.Check;
  */
 public class FeatureConst {
 
+    @Deprecated
     public static class Boot {
 
         public static final int BOOT_1 = 1;

@@ -23,7 +23,7 @@ import java.util.List;
  * @author cbb
  * @date 2019/10/24
  */
-@Api(tags = "CodeTemplate")
+@Api(tags = "【代码模板】API")
 public interface CodeTemplateAPI {
 
     /**

@@ -14,12 +14,12 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 /**
- * 【项目】api
+ * 【项目】API
  *
  * @author: cbb
  * @date 2017/5/24
  */
-@Api(tags = "MetaProjectPO")
+@Api(tags = "【项目】API")
 public interface MetaProjectAPI {
 
     /**

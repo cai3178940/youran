@@ -10,10 +10,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 
 /**
+ * 【系统用户】API
  * @author cbb
  * @date 2019/10/23
  */
-@Api(tags = "SystemUser")
+@Api(tags = "【系统用户】API")
 public interface SystemUserAPI {
 
     /**

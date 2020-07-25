@@ -10,8 +10,6 @@ logging:
             sql: debug
         com:
             youran: trace
-swagger:
-    enabled: true
 youran:
     # 缓存数据目录，用来临时存储模板文件、生成的代码文件，每次启动都会清空该目录
     data-dir: D:\\youran

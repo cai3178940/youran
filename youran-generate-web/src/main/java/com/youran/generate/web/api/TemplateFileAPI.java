@@ -22,7 +22,7 @@ import java.util.List;
  * @author cbb
  * @date 2019/10/24
  */
-@Api(tags = "TemplateFile")
+@Api(tags = "【模板文件】API")
 public interface TemplateFileAPI {
 
     /**

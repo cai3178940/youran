@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author: cbb
  * @date: 2017/5/13
  */
-@Api(tags = "MetaCodeGen")
+@Api(tags = "【代码生成】API")
 public interface MetaCodeGenAPI {
 
     /**

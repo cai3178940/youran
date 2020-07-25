@@ -8,12 +8,12 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 
 /**
- * 【实体】api
+ * 【元数据校验】API
  *
  * @author: cbb
  * @date: 2019/10/10
  */
-@Api(tags = "MetaValidate")
+@Api(tags = "【元数据校验】API")
 public interface MetaValidateAPI {
 
     /**

@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
  * @author: cbb
  * @date: 2018/03/17
  */
-@Api(tags = "GenHistory")
+@Api(tags = "【生成历史】API")
 public interface GenHistoryAPI {
 
     /**

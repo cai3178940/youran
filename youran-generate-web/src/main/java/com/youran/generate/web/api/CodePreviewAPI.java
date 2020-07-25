@@ -9,10 +9,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 
 /**
+ * 代码预览API
  * @author cbb
  * @date 2019/8/29
  */
-@Api(tags = "CodePreview")
+@Api(tags = "【代码预览】API")
 public interface CodePreviewAPI {
 
     /**

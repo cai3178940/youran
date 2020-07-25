@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 【实体】api
+ * 【实体】API
  *
  * @author: cbb
  * @date: 2017/5/12
  */
-@Api(tags = "MetaEntityPO")
+@Api(tags = "【实体】API")
 public interface MetaEntityAPI {
 
     /**

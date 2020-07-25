@@ -1,12 +1,13 @@
 package com.youran.generate.web.config;
 
-import com.spring4all.swagger.EnableSwagger2Doc;
+import com.youran.generate.constant.WebConst;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
 
 /**
  * swagger配置引入
@@ -15,26 +16,22 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date: 2018/1/16
  */
 @Configuration
+@ConditionalOnProperty(
+    value = "springfox.documentation.enabled",
+    havingValue = "true",
+    matchIfMissing = true
+)
 public class SwaggerConfig {
 
-    @EnableSwagger2Doc
-    @ConditionalOnProperty(value = "swagger.enabled")
-    public static class SwaggerEnabledConfig {
-    }
+    @Value(WebConst.API_PATH)
+    private String apiPath;
 
-    /**
-     * 如果没有开启swagger，则需要手动隐藏swagger-ui.html静态页面
-     */
-    @Configuration
-    @ConditionalOnProperty(value = "swagger.enabled", havingValue = "false", matchIfMissing = true)
-    public static class SwaggerDisabledConfig implements WebMvcConfigurer {
-
-        @Override
-        public void addViewControllers(ViewControllerRegistry registry) {
-            registry.addStatusController("/swagger-ui.html", HttpStatus.NOT_FOUND);
-            registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        }
-
+    @Bean
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.OAS_30)
+            .select()
+            .paths(PathSelectors.ant(apiPath + "/**"))
+            .build();
     }
 
 }

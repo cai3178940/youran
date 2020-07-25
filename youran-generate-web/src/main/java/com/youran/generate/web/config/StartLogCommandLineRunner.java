@@ -26,7 +26,7 @@ public class StartLogCommandLineRunner implements CommandLineRunner, Ordered {
 
     private final Environment env;
 
-    @Value("${swagger.enabled:false}")
+    @Value("${springfox.documentation.enabled:true}")
     private boolean swaggerEnabled;
 
     public StartLogCommandLineRunner(Environment env) {
@@ -50,7 +50,7 @@ public class StartLogCommandLineRunner implements CommandLineRunner, Ordered {
             .append("\t本地: \thttp://localhost:").append(port).append(contextPath).append("\n")
             .append("\t外部: \thttp://").append(IpUtil.getLocalIp()).append(":").append(port).append(contextPath).append("\n");
         if (swaggerEnabled) {
-            sb.append("\t文档:\thttp://").append(IpUtil.getLocalIp()).append(":").append(port).append(contextPath).append("swagger-ui.html");
+            sb.append("\t文档:\thttp://").append(IpUtil.getLocalIp()).append(":").append(port).append(contextPath).append("swagger-ui/index.html");
         }
         sb.append("\n----------------------------------------------------------");
         LOG.info(sb.toString());
