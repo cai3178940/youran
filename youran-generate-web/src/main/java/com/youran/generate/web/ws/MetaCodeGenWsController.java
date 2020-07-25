@@ -35,7 +35,7 @@ import java.util.Map;
  * @date: 2017/5/13
  */
 @Controller
-@Api(tags = "MetaCodeGenWs")
+@Api(tags = "【代码生成websocket专用】API")
 public class MetaCodeGenWsController extends AbstractController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetaCodeGenWsController.class);
