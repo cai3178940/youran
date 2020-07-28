@@ -354,65 +354,165 @@ public enum DevType {
   },
   chart: {
     chartName: `
-**图表名称**：待填写
+**图表名称**：生成图表的java-bean名称，必须符合类名规范
     `,
     title: `
-**图表标题**：待填写
+**图表标题**：图表的中文标题
     `,
     module: `
 **模块名**：本图表的模块名称，生成代码时，使用模块名称划分目录， 如：system
 > 注意：请尽量使用业务模块相应的名称
     `,
     defaultPageSize: `
-**每页记录数**：待填写
+**每页记录数**：表格的默认分页参数
     `,
     excelExport: `
-**excel导出**：待填写
+**excel导出**：是否需要提供excel导出功能
     `
   },
   chartSource: {
     entityId: `
-**实体**：待填写
+**实体及关联**：对应以下示例sql的黑体部分
+
+select
+
+&nbsp;&nbsp;t0.username,
+
+&nbsp;&nbsp;t1.dept_name
+
+**from t_user t0**
+
+**inner join t_dept t1**
+
+**&nbsp;&nbsp;on t0.dept_id = t1.id**
     `,
     detailColumnList: `
-**明细列**：待填写
+**明细列**：对应以下示例sql的黑体部分
+
+select
+
+**&nbsp;&nbsp;t0.username,**
+
+**&nbsp;&nbsp;t0.age**
+
+from t_user t0
+
+    `,
+    customColumnList: `
+**自定义列**：对应以下示例sql的黑体部分
+
+select
+
+&nbsp;&nbsp;t0.username,
+
+&nbsp;&nbsp;t0.age,
+
+**&nbsp;&nbsp;concat('+86',t0.phone)**
+
+from t_user t0
     `,
     whereList: `
-**过滤**：待填写
+**过滤**：对应以下示例sql的黑体部分
+
+select
+
+&nbsp;&nbsp;t0.username,
+
+&nbsp;&nbsp;t0.age
+
+from t_user t0
+
+**where t0.sex = 1**
     `,
     detailOrderList: `
-**排序**：待填写
+**排序**：对应以下示例sql的黑体部分
+
+select
+
+&nbsp;&nbsp;t0.username,
+
+&nbsp;&nbsp;t0.age
+
+from t_user t0
+
+**order by t0.age desc**
     `,
     dimensionList: `
-**聚合(维度)**：待填写
+**聚合(维度)**：对应以下示例sql的黑体部分
+
+select
+
+**&nbsp;&nbsp;t0.sex,**
+
+&nbsp;&nbsp;count(t0.user_id)
+
+from t_user t0
+
+**group by t0.sex**
     `,
     metricsList: `
-**聚合(指标)**：待填写
+**聚合(指标)**：对应以下示例sql的黑体部分
+
+select
+
+&nbsp;&nbsp;t0.sex,
+
+**&nbsp;&nbsp;count(t0.user_id)**
+
+from t_user t0
+
+group by t0.sex
     `,
     havingList: `
-**聚合(过滤)**：待填写
+**聚合(过滤)**：对应以下示例sql的黑体部分
+
+select
+
+&nbsp;&nbsp;t0.sex,
+
+&nbsp;&nbsp;count(t0.user_id)
+
+from t_user t0
+
+group by t0.sex
+
+**having count(t0.user_id) > 100**
     `,
     aggOrderList: `
-**聚合(排序)**：待填写
+**聚合(排序)**：对应以下示例sql的黑体部分
+select
+
+&nbsp;&nbsp;t0.sex,
+
+&nbsp;&nbsp;count(t0.user_id)
+
+from t_user t0
+
+group by t0.sex
+
+**order by count(t0.user_id) desc**
     `
   },
   chartItem: {
     optionTemplate: `
-**图表配置项**：待填写
+**option配置**：echarts配置项，请勿删除变量占位符
+
+详细配置请参考<a href="https://echarts.apache.org/zh/option.html" target="_blank">echarts配置手册</a>
     `
   },
   dashboard: {
     name: `
-**名称**：待填写
+**名称**：生成看板的英文名称，必须符合类名规范
     `,
     title: `
-**标题**：待填写
+**标题**：看板中文标题
     `,
     module: `
-**模块名**：待填写
+**模块名**：看板所属的模块名称，生成代码时，使用模块名称划分目录， 如：system
+> 注意：请尽量使用业务模块相应的名称
     `,
     chartIds: `
-**图表**：待填写
+**图表**：需要加入到当前看板中的图表，可在右侧面板中自定义布局
     `
   }
 }

@@ -1,5 +1,5 @@
 import { abbreviate } from './common-util'
-import { findTimeGranularityOption } from './options-chart-time-granularity'
+import timeGranularityUtil from './options-chart-time-granularity'
 
 /**
  * 关联类型
@@ -203,7 +203,7 @@ const filterOperatorOptions = [
     filterValueType: 4,
     matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
     display: function (type, value, timeGranularity) {
-      return '是当前' + findTimeGranularityOption(timeGranularity).label
+      return '是当前' + timeGranularityUtil.findTimeGranularityOption(timeGranularity).label
     },
     timeGranularity: true
   },
@@ -213,7 +213,7 @@ const filterOperatorOptions = [
     filterValueType: 1,
     matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
     display: function (type, value, timeGranularity) {
-      return '是前' + value[0] + findTimeGranularityOption(timeGranularity).label
+      return '是前' + value[0] + timeGranularityUtil.findTimeGranularityOption(timeGranularity).label
     },
     timeGranularity: true
   },
@@ -223,7 +223,7 @@ const filterOperatorOptions = [
     filterValueType: 1,
     matchFieldTypes: ['LocalDate', 'LocalDateTime', 'Date'],
     display: function (type, value, timeGranularity) {
-      return '是后' + value[0] + findTimeGranularityOption(timeGranularity).label
+      return '是后' + value[0] + timeGranularityUtil.findTimeGranularityOption(timeGranularity).label
     },
     timeGranularity: true
   }

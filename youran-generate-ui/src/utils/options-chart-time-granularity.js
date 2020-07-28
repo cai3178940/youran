@@ -34,7 +34,7 @@ const timeGranularityOptions = [
 
 export default {
   timeGranularityOptions: timeGranularityOptions,
-  findTimeGranularityOption: function (value) {
+  findTimeGranularityOption (value) {
     return timeGranularityOptions.find(option => option.value === value)
   }
 }
