@@ -4,31 +4,43 @@
              :rules="rules" :model="form"
              label-width="120px" size="small">
       <el-form-item label="标题">
-        <el-input placeholder="请输入标题" v-model="form.titleAlias">
-        </el-input>
+        <help-popover name="chartItem.titleAlias">
+          <el-input placeholder="请输入标题" v-model="form.titleAlias">
+          </el-input>
+        </help-popover>
       </el-form-item>
       <el-form-item label="字段名">
-        <el-input placeholder="请输入字段名" v-model="form.alias">
-        </el-input>
+        <help-popover name="chartItem.alias">
+          <el-input placeholder="请输入字段名" v-model="form.alias">
+          </el-input>
+        </help-popover>
       </el-form-item>
       <el-form-item v-if="visible.valuePrefix" label="内容前缀">
-        <el-input placeholder="请输入内容前缀" v-model="form.valuePrefix">
-        </el-input>
+        <help-popover name="chartItem.valuePrefix">
+          <el-input placeholder="请输入内容前缀" v-model="form.valuePrefix">
+          </el-input>
+        </help-popover>
       </el-form-item>
       <el-form-item v-if="visible.valueSuffix" label="内容后缀">
-        <el-input placeholder="请输入内容后缀" v-model="form.valueSuffix">
-        </el-input>
+        <help-popover name="chartItem.valueSuffix">
+          <el-input placeholder="请输入内容后缀" v-model="form.valueSuffix">
+          </el-input>
+        </help-popover>
       </el-form-item>
       <el-form-item v-if="visible.format" label="格式化">
-        <el-input placeholder="请输入格式化" v-model="form.format">
-        </el-input>
+        <help-popover name="chartItem.format">
+          <el-input placeholder="请输入格式化" v-model="form.format">
+          </el-input>
+        </help-popover>
       </el-form-item>
       <el-form-item v-if="visible.seriesType" label="展示形式">
-        <el-select v-model="form.seriesType"
-                   style="width:100%;">
-          <el-option label="柱型" :value="'bar'"></el-option>
-          <el-option label="线型" :value="'line'"></el-option>
-        </el-select>
+        <help-popover name="chartItem.seriesType">
+          <el-select v-model="form.seriesType"
+                     style="width:100%;">
+            <el-option label="柱型" :value="'bar'"></el-option>
+            <el-option label="线型" :value="'line'"></el-option>
+          </el-select>
+        </help-popover>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit()">确定</el-button>
@@ -74,6 +86,10 @@ export default {
       if (visible) {
         Object.assign(this.visible, visible)
       }
+      // 暂时不开启以下3项配置
+      this.visible.valuePrefix = false
+      this.visible.valueSuffix = false
+      this.visible.format = false
       this.formVisible = true
     },
     submit () {

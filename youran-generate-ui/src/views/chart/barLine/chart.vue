@@ -6,7 +6,6 @@
 
 <script>
 import echarts from 'echarts'
-import JSON5 from '@/components/JSON5'
 import chartMockData from './chartMockData'
 import constDetailMixin from '@/components/Mixins/const-detail'
 import model from './model'
@@ -27,7 +26,8 @@ export default {
       }
       const optionJson = optionTemplate.replace(`\${source}`, '[]')
         .replace(`\${series}`, '[]')
-      const option = JSON5.parse(optionJson)
+      // eslint-disable-next-line no-eval
+      const option = eval('(' + optionJson + ')')
       const mode = this.checkParamMode(chartBean)
       if (mode === 1) {
         // 模式1：存在附加维度，则将附加维度每个值转换成列，和主维度共同形成x轴

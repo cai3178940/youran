@@ -494,6 +494,24 @@ group by t0.sex
     `
   },
   chartItem: {
+    titleAlias: `
+**标题**：字段的中文描述
+    `,
+    alias: `
+**字段名**：后端rest接口返回的字段名称
+    `,
+    valuePrefix: `
+**内容前缀**：在展示结果前面加上固定的文字
+    `,
+    valueSuffix: `
+**内容后缀**：在展示结果后面加上固定的文字
+    `,
+    format: `
+**格式化**：将数字或日期结果进行格式化
+    `,
+    seriesType: `
+**展示形式**：后端rest接口返回的字段名称
+    `,
     optionTemplate: `
 **option配置**：echarts配置项，请勿删除变量占位符
 

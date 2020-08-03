@@ -18,7 +18,8 @@
 </template>
 
 <script>
-import JSON5 from '@/components/JSON5'
+import beautify from 'js-beautify'
+
 export default {
   name: 'option-template-form',
   data () {
@@ -46,8 +47,7 @@ export default {
       const json = this.form.optionTemplate.replace('${source}', '\'${source}\'')
         // eslint-disable-next-line no-template-curly-in-string
         .replace('${series}', '\'${series}\'')
-      const obj = JSON5.parse(json)
-      this.form.optionTemplate = JSON5.stringify(obj, { space: 2 })
+      this.form.optionTemplate = beautify(json, { indent_size: 2 })
         // eslint-disable-next-line no-template-curly-in-string
         .replace('\'${source}\'', '${source}')
         // eslint-disable-next-line no-template-curly-in-string

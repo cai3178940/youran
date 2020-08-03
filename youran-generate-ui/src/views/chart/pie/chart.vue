@@ -6,7 +6,6 @@
 
 <script>
 import echarts from 'echarts'
-import JSON5 from '@/components/JSON5'
 import chartMockData from './chartMockData'
 import constDetailMixin from '@/components/Mixins/const-detail'
 import model from './model'
@@ -26,7 +25,8 @@ export default {
         return {}
       }
       const optionJson = optionTemplate.replace(`\${source}`, '[]')
-      const option = JSON5.parse(optionJson)
+      // eslint-disable-next-line no-eval
+      const option = eval('(' + optionJson + ')')
       if (chartBean.dimension) {
         if (chartBean.metrics) {
           option.dataset.source = chartMockData.mockDatasetSource(chartBean.dimension, chartBean.metrics, this.constDetails)
