@@ -15,17 +15,23 @@
           <el-form-item label="名称">
             <help-popover name="dashboard.name">
               <el-input v-upper-case-first v-model="form.name"
-                        placeholder="请输入名称"></el-input>
+                        placeholder="例如：MyDashboard"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="标题">
             <help-popover name="dashboard.title">
-              <el-input v-model="form.title" placeholder="请输入标题"></el-input>
+              <el-input v-model="form.title" placeholder="例如：首页"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="模块名">
             <help-popover name="dashboard.module">
-              <el-input v-model="form.module" placeholder="请输入模块名"></el-input>
+              <el-autocomplete
+                v-model="form.module"
+                :fetch-suggestions="findModules"
+                style="width:100%;" tabindex="30"
+                placeholder="例如：system"
+                v-lower-case
+              ></el-autocomplete>
             </help-popover>
           </el-form-item>
           <el-form-item label="图表">
@@ -92,6 +98,7 @@
 
 <script>
 import model from './model'
+import modulesMixin from '@/components/Mixins/modules'
 import dashboardApi from '@/api/chart/dashboard'
 import chartApi from '@/api/chart/chart'
 import VueGridLayout from 'vue-grid-layout'
@@ -107,6 +114,7 @@ import layoutSetting from './layoutSetting'
 
 export default {
   name: 'dashboard',
+  mixins: [modulesMixin],
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
@@ -176,7 +184,7 @@ export default {
     },
     loadCharts () {
       this.formLoading = true
-      return chartApi.getList()
+      return chartApi.getList(this.projectId)
         .then(data => { this.chartOptions = data })
         .finally(() => { this.formLoading = false })
     },
