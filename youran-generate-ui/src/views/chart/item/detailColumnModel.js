@@ -1,5 +1,5 @@
 import shortid from 'shortid'
-import { abbreviate } from '@/utils/common-util'
+import _truncate from 'lodash/truncate'
 import searchUtil from '../searchUtil'
 
 function buildCommonDetailColumn (joinIndex, field) {
@@ -24,7 +24,7 @@ function buildCustomDetailColumn (customContent, customFieldType) {
 
 function displayText (detailColumn) {
   if (detailColumn.custom) {
-    return abbreviate(detailColumn.customContent, 20)
+    return _truncate(detailColumn.customContent, { length: 20 })
   } else {
     return detailColumn.field.fieldDesc + '(' + detailColumn.field.fieldName + ')'
   }

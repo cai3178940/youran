@@ -62,6 +62,12 @@
           <!-- 数值类型 -->
           <el-input-number style="width:100%;" v-else-if="isNumberField"
                            v-model="form.tmp3[0]"></el-input-number>
+          <!-- 布尔类型 -->
+          <el-select v-else-if="isBoolField"
+                     v-model="form.tmp3[0]" style="width:100%;">
+            <el-option value="true"></el-option>
+            <el-option value="false"></el-option>
+          </el-select>
           <!-- 其他 -->
           <el-input v-else v-model="form.tmp3[0]"></el-input>
         </el-form-item>
@@ -152,6 +158,15 @@ export default {
       if (this.form.tmp1.field) {
         return ['Integer', 'Short', 'Long', 'Double', 'Float', 'BigDecimal']
           .indexOf(this.form.tmp1.field.jfieldType) > -1
+      }
+      return false
+    },
+    /**
+     * 当前选中字段是否布尔类型
+     */
+    isBoolField () {
+      if (this.form.tmp1.field) {
+        return this.form.tmp1.field.jfieldType === 'Boolean'
       }
       return false
     },

@@ -1,4 +1,4 @@
-import { abbreviate } from './common-util'
+import _truncate from 'lodash/truncate'
 import timeGranularityUtil from './options-chart-time-granularity'
 
 /**
@@ -21,7 +21,7 @@ const filterOperatorOptions = [
     ],
     display: function (type, value, timeGranularity) {
       if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' = \'' + abbreviate(value[0], 20) + '\''
+        return ' = \'' + _truncate(value[0], { length: 20 }) + '\''
       }
       return ' = ' + value[0]
     },
@@ -38,7 +38,7 @@ const filterOperatorOptions = [
     ],
     display: function (type, value, timeGranularity) {
       if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' != \'' + abbreviate(value[0], 20) + '\''
+        return ' != \'' + _truncate(value[0], { length: 20 }) + '\''
       }
       return ' != ' + value[0]
     },
@@ -108,7 +108,7 @@ const filterOperatorOptions = [
     filterValueType: 1,
     matchFieldTypes: ['String'],
     display: function (type, value, timeGranularity) {
-      return ' like \'%' + abbreviate(value[0], 20) + '%\''
+      return ' like \'%' + _truncate(value[0], { length: 20 }) + '%\''
     },
     timeGranularity: false
   },
@@ -123,7 +123,7 @@ const filterOperatorOptions = [
     ],
     display: function (type, value, timeGranularity) {
       if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' > \'' + abbreviate(value[0], 20) + '\''
+        return ' > \'' + _truncate(value[0], { length: 20 }) + '\''
       }
       return ' > ' + value[0]
     },
@@ -140,7 +140,7 @@ const filterOperatorOptions = [
     ],
     display: function (type, value, timeGranularity) {
       if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' < \'' + abbreviate(value[0], 20) + '\''
+        return ' < \'' + _truncate(value[0], { length: 20 }) + '\''
       }
       return ' < ' + value[0]
     },
@@ -157,7 +157,7 @@ const filterOperatorOptions = [
     ],
     display: function (type, value, timeGranularity) {
       if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' >= \'' + abbreviate(value[0], 20) + '\''
+        return ' >= \'' + _truncate(value[0], { length: 20 }) + '\''
       }
       return ' >= ' + value[0]
     },
@@ -174,7 +174,7 @@ const filterOperatorOptions = [
     ],
     display: function (type, value, timeGranularity) {
       if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' <= \'' + abbreviate(value[0], 20) + '\''
+        return ' <= \'' + _truncate(value[0], { length: 20 }) + '\''
       }
       return ' <= ' + value[0]
     },
@@ -191,7 +191,7 @@ const filterOperatorOptions = [
     ],
     display: function (type, value, timeGranularity) {
       if (['String', 'LocalDate', 'LocalDateTime', 'Date'].indexOf(type) > -1) {
-        return ' between \'' + abbreviate(value[0], 20) + '\' and \'' + abbreviate(value[1], 20) + '\''
+        return ' between \'' + _truncate(value[0], { length: 20 }) + '\' and \'' + _truncate(value[1], { length: 20 }) + '\''
       }
       return ' between ' + value[0] + ' and ' + value[1] + ''
     },

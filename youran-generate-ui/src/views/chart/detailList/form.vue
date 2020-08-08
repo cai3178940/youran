@@ -93,7 +93,7 @@
               </el-button>
               <el-dropdown size="small" trigger="click" @command="handleCommand">
                 <el-button size="small">
-                  {{chartItem.titleAlias}}
+                  {{chartItem.titleAlias|truncate(7)}}
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
@@ -136,6 +136,7 @@ import sourceModel from '../sourceModel'
 import searchUtil from '../searchUtil'
 import _differenceBy from 'lodash/differenceBy'
 import _intersectionBy from 'lodash/intersectionBy'
+import _truncate from 'lodash/truncate'
 import _uniq from 'lodash/uniq'
 
 export default {
@@ -165,6 +166,11 @@ export default {
     emptyTableList () {
       const size = this.form.defaultPageSize > 100 ? 100 : this.form.defaultPageSize
       return Array.from({ length: size }, (v, i) => ({ i: i }))
+    }
+  },
+  filters: {
+    truncate (value, length) {
+      return _truncate(value, { length })
     }
   },
   methods: {
