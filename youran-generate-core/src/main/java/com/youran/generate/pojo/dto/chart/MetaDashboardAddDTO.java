@@ -1,11 +1,13 @@
 package com.youran.generate.pojo.dto.chart;
 
 import com.youran.common.pojo.dto.AbstractDTO;
+import com.youran.generate.constant.PatternConst;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 import static com.youran.generate.pojo.example.chart.MetaDashboardExample.*;
@@ -22,6 +24,7 @@ public class MetaDashboardAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_NAME, example = E_NAME, required = true)
     @NotNull
     @Length(max = 64)
+    @Pattern(regexp = PatternConst.CLASS_NAME, message = PatternConst.CLASS_NAME_MSG)
     private String name;
 
     @ApiModelProperty(notes = N_TITLE, example = E_TITLE, required = true)
@@ -31,6 +34,7 @@ public class MetaDashboardAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_MODULE, example = E_MODULE)
     @Length(max = 50)
+    @Pattern(regexp = PatternConst.MODULE, message = PatternConst.MODULE_MSG)
     private String module;
 
     @ApiModelProperty(notes = N_PROJECT_ID, example = E_PROJECT_ID, required = true)

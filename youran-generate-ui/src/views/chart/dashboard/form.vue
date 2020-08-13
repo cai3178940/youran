@@ -12,18 +12,18 @@
         <el-form ref="dashboardForm" class="dashboardForm"
                  :rules="rules" :model="form" label-width="70px"
                  size="small">
-          <el-form-item label="名称">
+          <el-form-item label="名称" prop="name">
             <help-popover name="dashboard.name">
               <el-input v-upper-case-first v-model="form.name"
                         placeholder="例如：MyDashboard"></el-input>
             </help-popover>
           </el-form-item>
-          <el-form-item label="标题">
+          <el-form-item label="标题" prop="title">
             <help-popover name="dashboard.title">
               <el-input v-model="form.title" placeholder="例如：首页"></el-input>
             </help-popover>
           </el-form-item>
-          <el-form-item label="模块名">
+          <el-form-item label="模块名" prop="module">
             <help-popover name="dashboard.module">
               <el-autocomplete
                 v-model="form.module"

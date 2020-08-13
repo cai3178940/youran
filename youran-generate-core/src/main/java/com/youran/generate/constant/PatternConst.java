@@ -44,5 +44,4 @@ public class PatternConst {
     public static final String MODULE = "^(\\w|_|-)*$";
     public static final String MODULE_MSG = "不符合模块命名格式";
 
-
 }

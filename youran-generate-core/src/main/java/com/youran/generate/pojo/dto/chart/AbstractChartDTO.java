@@ -33,6 +33,7 @@ public abstract class AbstractChartDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = "模块名", example = "system")
     @Length(max = 50)
+    @Pattern(regexp = PatternConst.MODULE, message = PatternConst.MODULE_MSG)
     private String module;
 
     @ApiModelProperty(notes = "图表标题", example = "示例图表", required = true)
