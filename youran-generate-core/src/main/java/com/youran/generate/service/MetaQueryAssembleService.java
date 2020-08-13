@@ -114,7 +114,7 @@ public class MetaQueryAssembleService implements InitializingBean {
             List<MetaChartPO> charts = this.getAllAssembledCharts(projectId, metaEntities, manyToManies);
             project.setCharts(charts);
 
-            List<MetaDashboardPO> dashboards = null;
+            List<MetaDashboardPO> dashboards = Collections.emptyList();
             if (CollectionUtils.isNotEmpty(charts)) {
                 dashboards = this.getAllAssembledDashboards(projectId, charts);
             }
