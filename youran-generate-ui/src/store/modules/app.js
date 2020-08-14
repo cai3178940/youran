@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 const state = {
   downloadUrl: null
 }
@@ -20,10 +22,10 @@ const actions = {
    * @param url
    */
   downloadFile (context, url) {
-    context.commit('setDownloadUrl', url)
-    setTimeout(() => {
-      context.commit('setDownloadUrl', null)
-    }, 2000)
+    context.commit('setDownloadUrl', null)
+    Vue.nextTick(() => {
+      context.commit('setDownloadUrl', url)
+    })
   }
 }
 

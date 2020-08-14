@@ -33,7 +33,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Git操作业务类
@@ -134,7 +133,7 @@ public class GitService {
             }
         } catch (GitAPIException e) {
             LOGGER.error("clone仓库异常", e);
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "clone仓库异常");
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "clone仓库异常:" + e.getMessage());
         }
     }
 
@@ -309,6 +308,5 @@ public class GitService {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "显示代码差异异常");
         }
     }
-
 
 }
