@@ -67,7 +67,7 @@ export default {
     },
     renderChart (chartBean) {
       const constNames = model.getConstNames(chartBean)
-      this.loadConstDetail(chartBean.projectId, constNames)
+      this.loadConstDetail(chartBean.projectId, ...constNames)
         .then(() => {
           const chartEl = this.$el.children[0]
           this.chart = echarts.init(chartEl)

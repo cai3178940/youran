@@ -21,8 +21,10 @@ export default {
             'constName': names.join(',')
           })
           .then(data => {
-            for (const name in data) {
-              this.constDetails[name].push(...data[name])
+            for (let name of names) {
+              if (data[name]) {
+                this.constDetails[name].push(...data[name])
+              }
             }
           })
       }

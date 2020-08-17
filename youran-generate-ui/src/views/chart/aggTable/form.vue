@@ -259,7 +259,7 @@ export default {
             .map(dimension => dimension.field.dicType)
             .filter(t => t))
           // 加载常量值
-          return this.loadConstDetail(this.projectId, constNames)
+          return this.loadConstDetail(this.projectId, ...constNames)
         })
     },
     /**

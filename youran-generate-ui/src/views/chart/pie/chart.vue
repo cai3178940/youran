@@ -42,7 +42,7 @@ export default {
       }
       const constName = model.getConstName(chartBean)
       if (constName) {
-        this.loadConstDetail(chartBean.projectId, constName)
+        this.loadConstDetail(chartBean.projectId, ...constName)
           .then(callback)
       } else {
         callback()
