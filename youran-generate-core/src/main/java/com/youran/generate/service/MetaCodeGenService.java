@@ -400,6 +400,10 @@ public class MetaCodeGenService {
         // 推送远程仓库
         this.progressing(progressConsumer, 90, 99, 1, "推送远程仓库");
         gitService.push(repository, credential);
+        try {
+            repository.close();
+        } catch (Exception e) {
+        }
         // 创建提交历史
         GenHistoryPO history = genHistoryService.save(project, codeTemplate,
             remoteUrl, commit, newBranchName);
@@ -439,20 +443,21 @@ public class MetaCodeGenService {
         String repoDir = dataDirService.getProjectRepoDir(projectId, templateId, lastVersion);
         GitCredentialDTO credential = this.getCredentialDTO(project);
         this.progressing(progressConsumer, 5, 10, 1, "克隆远程仓库");
-        Repository repository = gitService.getClonedRemoteRepository(repoDir, remoteUrl,
-            credential, oldBranchName, generateProperties.getAutoBranchName(), lastCommit);
-        // 将代码生成到本地repo目录
-        this.genProjectCodeIntoRepository(projectId, templateId, progressConsumer, repository);
-        this.progressing(progressConsumer, 90, 99, 1, "提交到暂存区");
-        // 提交到暂存区
-        String stash = gitService.createStash(repository);
-        // 如果代码无变化，则直接返回空字符串
-        if (stash == null) {
-            return "";
+        try (Repository repository = gitService.getClonedRemoteRepository(repoDir, remoteUrl,
+            credential, oldBranchName, generateProperties.getAutoBranchName(), lastCommit)) {
+            // 将代码生成到本地repo目录
+            this.genProjectCodeIntoRepository(projectId, templateId, progressConsumer, repository);
+            this.progressing(progressConsumer, 90, 99, 1, "提交到暂存区");
+            // 提交到暂存区
+            String stash = gitService.createStash(repository);
+            // 如果代码无变化，则直接返回空字符串
+            if (stash == null) {
+                return "";
+            }
+            this.progressing(progressConsumer, 90, 99, 1, "获取差异代码");
+            // 获取差异代码
+            return gitService.getStashDiff(repository, stash);
         }
-        this.progressing(progressConsumer, 90, 99, 1, "获取差异代码");
-        // 获取差异代码
-        return gitService.getStashDiff(repository, stash);
     }
 
 
