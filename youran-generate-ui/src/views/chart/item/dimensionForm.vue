@@ -3,7 +3,7 @@
     <el-form ref="dimensionForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
-      <el-form-item label="聚合字段">
+      <el-form-item label="聚合字段" prop="tmp1">
         <el-select v-model="form.tmp1" value-key="key"
                    style="width:100%;" placeholder="请选择聚合字段"
                    filterable>
@@ -24,7 +24,7 @@
           </el-option-group>
         </el-select>
       </el-form-item>
-      <el-form-item label="粒度">
+      <el-form-item label="粒度" prop="tmp2">
         <el-select v-model="form.tmp2" value-key="value"
                    style="width:100%;">
           <el-option
@@ -59,7 +59,14 @@ export default {
       // 最终返回给调用组件的表单数据
       form: dimensionModel.initFormBean(),
       oldForm: null,
-      rules: {}
+      rules: {
+        tmp1: [
+          { required: true, message: '请选择聚合字段', trigger: 'change' }
+        ],
+        tmp2: [
+          { required: true, message: '请选择粒度', trigger: 'change' }
+        ]
+      }
     }
   },
   computed: {

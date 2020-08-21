@@ -3,7 +3,7 @@
     <el-form ref="havingForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
-      <el-form-item label="过滤列">
+      <el-form-item label="过滤列" prop="metrics">
         <el-select v-model="form.metrics" value-key="key"
                    style="width:100%;" placeholder="请选择过滤列"
                    filterable>
@@ -13,7 +13,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="过滤运算符">
+      <el-form-item label="过滤运算符" prop="tmp2">
         <el-select v-model="form.tmp2" value-key="value"
                    style="width:100%;">
           <el-option
@@ -25,13 +25,13 @@
         </el-select>
       </el-form-item>
       <!-- 单值过滤 -->
-      <el-form-item v-if="form.tmp2.filterValueType===1" label="过滤值">
+      <el-form-item v-if="form.tmp2.filterValueType===1" label="过滤值" prop="tmp3">
         <el-input-number style="width:100%;" v-if="isNumberField"
                          v-model="form.tmp3[0]"></el-input-number>
         <el-input v-else v-model="form.tmp3[0]"></el-input>
       </el-form-item>
       <!-- 双值过滤 -->
-      <el-form-item v-if="form.tmp2.filterValueType===2" label="过滤值范围">
+      <el-form-item v-if="form.tmp2.filterValueType===2" label="过滤值范围" prop="tmp4">
         <el-col :span="10" class="col-left">
           <el-input-number style="width:100%;" v-if="isNumberField"
                            v-model="form.tmp4[0]"></el-input-number>
@@ -47,7 +47,7 @@
         </el-col>
       </el-form-item>
       <!-- 多值过滤 -->
-      <el-form-item v-if="form.tmp2.filterValueType===3" label="过滤值">
+      <el-form-item v-if="form.tmp2.filterValueType===3" label="过滤值" prop="tmp5">
         <el-select v-model="form.tmp5" style="width:100%;"
                    multiple allow-create
                    filterable placeholder="请输入过滤值">
@@ -79,7 +79,23 @@ export default {
       // 最终返回给调用组件的表单数据
       form: havingModel.initFormBean(),
       oldForm: null,
-      rules: {}
+      rules: {
+        metrics: [
+          { required: true, message: '请选择过滤列', trigger: 'change' }
+        ],
+        tmp2: [
+          { required: true, message: '请选择过滤运算符', trigger: 'change' }
+        ],
+        tmp3: [
+          { required: true, message: '请输入过滤值', trigger: 'blur' }
+        ],
+        tmp4: [
+          { required: true, message: '请输入过滤值范围', trigger: 'blur' }
+        ],
+        tmp5: [
+          { required: true, message: '请输入过滤值', trigger: 'change' }
+        ]
+      }
     }
   },
   filters: {

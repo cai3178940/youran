@@ -3,12 +3,12 @@
     <el-form ref="customColumnForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
-      <el-form-item label="自定义内容">
+      <el-form-item label="自定义内容" prop="customContent">
         <el-input type="textarea" :rows="2"
                   placeholder="请输入内容" v-model="form.customContent">
         </el-input>
       </el-form-item>
-      <el-form-item label="自定义字段类型">
+      <el-form-item label="自定义字段类型" prop="customFieldType">
         <el-select v-model="form.customFieldType" placeholder="请选择"
                    style="width:100%;">
           <el-option
@@ -43,7 +43,14 @@ export default {
       // 最终返回给调用组件的表单数据
       form: detailColumnModel.buildCustomDetailColumn('', 1),
       oldForm: null,
-      rules: {}
+      rules: {
+        customContent: [
+          { required: true, message: '请填写自定义内容', trigger: 'blur' }
+        ],
+        customFieldType: [
+          { required: true, message: '请选择自定义字段类型', trigger: 'change' }
+        ]
+      }
     }
   },
   methods: {

@@ -3,7 +3,7 @@
     <el-form ref="detailOrderForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
-      <el-form-item label="排序列">
+      <el-form-item label="排序列" prop="detailColumn">
         <el-select v-model="form.detailColumn" value-key="key"
                    style="width:100%;" placeholder="请选择排序列"
                    filterable>
@@ -21,7 +21,7 @@
           </el-option-group>
         </el-select>
       </el-form-item>
-      <el-form-item label="排序方式">
+      <el-form-item label="排序方式" prop="sortType">
         <el-radio-group v-model="form.sortType">
           <el-radio border :label="1">升序▲</el-radio>
           <el-radio border :label="2">降序▼</el-radio>
@@ -52,7 +52,14 @@ export default {
       // 最终返回给调用组件的表单数据
       form: detailOrderModel.initFormBean(),
       oldForm: null,
-      rules: {}
+      rules: {
+        detailColumn: [
+          { required: true, message: '请选择排序列', trigger: 'change' }
+        ],
+        sortType: [
+          { required: true, message: '请选择排序方式', trigger: 'change' }
+        ]
+      }
     }
   },
   filters: {
