@@ -10,3 +10,13 @@ export const groupBy = (list, fn) => {
   })
   return groups
 }
+
+/**
+ * 0值返回true，其余按正常逻辑取布尔
+ */
+export const boolExceptZero = (value) => {
+  if (value === 0) {
+    return true
+  }
+  return !!value
+}

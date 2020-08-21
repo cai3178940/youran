@@ -41,9 +41,21 @@ function repairAggOrderForSubmit (aggOrder) {
   aggOrder.parentKey = aggOrder.parentItem.key
 }
 
+function getRules () {
+  return {
+    parentItem: [
+      { required: true, message: '请选择排序列', trigger: 'change' }
+    ],
+    sortType: [
+      { required: true, message: '请选择排序方式', trigger: 'change' }
+    ]
+  }
+}
+
 export default {
   initFormBean,
   displayText,
   repairAggOrderForEdit,
-  repairAggOrderForSubmit
+  repairAggOrderForSubmit,
+  getRules
 }

@@ -79,23 +79,7 @@ export default {
       // 最终返回给调用组件的表单数据
       form: havingModel.initFormBean(),
       oldForm: null,
-      rules: {
-        metrics: [
-          { required: true, message: '请选择过滤列', trigger: 'change' }
-        ],
-        tmp2: [
-          { required: true, message: '请选择过滤运算符', trigger: 'change' }
-        ],
-        tmp3: [
-          { required: true, message: '请输入过滤值', trigger: 'blur' }
-        ],
-        tmp4: [
-          { required: true, message: '请输入过滤值范围', trigger: 'blur' }
-        ],
-        tmp5: [
-          { required: true, message: '请输入过滤值', trigger: 'change' }
-        ]
-      }
+      rules: havingModel.getRules()
     }
   },
   filters: {
@@ -150,9 +134,12 @@ export default {
       this.formVisible = true
     },
     submit () {
-      havingModel.repairHavingForSubmit(this.form)
-      this.$emit('submit', this.position, this.form)
-      this.formVisible = false
+      this.$refs.havingForm.validate()
+        .then(() => {
+          havingModel.repairHavingForSubmit(this.form)
+          this.$emit('submit', this.position, this.form)
+          this.formVisible = false
+        })
     },
     remove () {
       this.$emit('remove', this.position, this.form)

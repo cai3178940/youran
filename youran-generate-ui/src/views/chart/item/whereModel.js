@@ -1,6 +1,7 @@
 import shortid from 'shortid'
 import chartFilterOperator from '@/utils/options-chart-filter-operator'
 import searchUtil from '../searchUtil'
+import { boolExceptZero } from '@/utils/common-util'
 
 function initFormBean () {
   const formBean = {
@@ -82,9 +83,86 @@ function repairWhereForSubmit (where) {
   }
 }
 
+function getRules () {
+  return {
+    custom: [
+      { required: true, message: '请选择是否自定义', trigger: 'change' }
+    ],
+    customContent: [
+      { required: true, message: '请输入自定义内容', trigger: 'blur' }
+    ],
+    tmp1: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !value.field) {
+            callback(new Error('请选择过滤字段'))
+          }
+          callback()
+        },
+        trigger: 'change'
+      }
+    ],
+    tmp2: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !value.value) {
+            callback(new Error('请选择过滤运算符'))
+          }
+          callback()
+        },
+        trigger: 'change'
+      }
+    ],
+    tmp3: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !boolExceptZero(value[0])) {
+            callback(new Error('请输入过滤值'))
+          }
+          callback()
+        },
+        trigger: 'blur'
+      }
+    ],
+    tmp4: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value ||
+            !boolExceptZero(value[0]) ||
+            !boolExceptZero(value[1])) {
+            callback(new Error('请输入过滤值范围'))
+          }
+          callback()
+        },
+        trigger: 'blur'
+      }
+    ],
+    tmp5: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !value.length || !boolExceptZero(value[0])) {
+            callback(new Error('请输入过滤值'))
+          }
+          callback()
+        },
+        trigger: 'change'
+      }
+    ],
+    timeGranularity: [
+      { required: true, message: '请选择时间粒度', trigger: 'change' }
+    ]
+  }
+}
+
 export default {
   initFormBean,
   displayText,
   repairWhereForSubmit,
-  repairWhereForEdit
+  repairWhereForEdit,
+  getRules
 }

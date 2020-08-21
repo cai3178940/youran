@@ -3,18 +3,18 @@
     <el-form ref="whereForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
-      <el-form-item label="自定义过滤条件">
+      <el-form-item label="自定义过滤条件" prop="custom">
         <el-switch v-model="form.custom"></el-switch>
       </el-form-item>
       <template v-if="form.custom">
-        <el-form-item label="自定义内容">
+        <el-form-item label="自定义内容" prop="customContent">
           <el-input type="textarea" :rows="2"
                     placeholder="请输入内容" v-model="form.customContent">
           </el-input>
         </el-form-item>
       </template>
       <template v-else>
-        <el-form-item label="过滤字段">
+        <el-form-item label="过滤字段" prop="tmp1">
           <el-select v-model="form.tmp1" value-key="key"
                      style="width:100%;" placeholder="请选择过滤字段"
                      @change="handleFieldChange"
@@ -36,7 +36,7 @@
             </el-option-group>
           </el-select>
         </el-form-item>
-        <el-form-item label="过滤运算符">
+        <el-form-item label="过滤运算符" prop="tmp2">
           <el-select v-model="form.tmp2" value-key="value"
                      style="width:100%;">
             <el-option
@@ -48,7 +48,7 @@
           </el-select>
         </el-form-item>
         <!-- 单值过滤 -->
-        <el-form-item v-if="form.tmp2.filterValueType===1" label="过滤值">
+        <el-form-item v-if="form.tmp2.filterValueType===1" label="过滤值" prop="tmp3">
           <!-- 枚举类型 -->
           <el-select v-if="form.tmp1.field && form.tmp1.field.dicType"
                      v-model="form.tmp3[0]" style="width:100%;">
@@ -72,7 +72,7 @@
           <el-input v-else v-model="form.tmp3[0]"></el-input>
         </el-form-item>
         <!-- 双值过滤 -->
-        <el-form-item v-if="form.tmp2.filterValueType===2" label="过滤值范围">
+        <el-form-item v-if="form.tmp2.filterValueType===2" label="过滤值范围" prop="tmp4">
           <el-col :span="10" class="col-left">
             <el-input-number style="width:100%;" v-if="isNumberField"
                              v-model="form.tmp4[0]"></el-input-number>
@@ -88,7 +88,7 @@
           </el-col>
         </el-form-item>
         <!-- 多值过滤 -->
-        <el-form-item v-if="form.tmp2.filterValueType===3" label="过滤值">
+        <el-form-item v-if="form.tmp2.filterValueType===3" label="过滤值" prop="tmp5">
           <el-select v-if="form.tmp1.field && form.tmp1.field.dicType"
                      v-model="form.tmp5" style="width:100%;"
                      multiple filterable
@@ -106,7 +106,7 @@
                      filterable placeholder="请输入过滤值">
           </el-select>
         </el-form-item>
-        <el-form-item v-if="form.tmp2.timeGranularity" label="时间粒度">
+        <el-form-item v-if="form.tmp2.timeGranularity" label="时间粒度" prop="timeGranularity">
           <el-select v-model="form.timeGranularity"
                      style="width:100%;">
             <el-option
@@ -147,7 +147,7 @@ export default {
       // 最终返回给调用组件的表单数据
       form: whereModel.initFormBean(),
       oldForm: null,
-      rules: {}
+      rules: whereModel.getRules()
     }
   },
   computed: {
@@ -224,9 +224,12 @@ export default {
       }
     },
     submit () {
-      whereModel.repairWhereForSubmit(this.form)
-      this.$emit('submit', this.position, this.form)
-      this.formVisible = false
+      this.$refs.whereForm.validate()
+        .then(() => {
+          whereModel.repairWhereForSubmit(this.form)
+          this.$emit('submit', this.position, this.form)
+          this.formVisible = false
+        })
     },
     remove () {
       this.$emit('remove', this.position, this.form)

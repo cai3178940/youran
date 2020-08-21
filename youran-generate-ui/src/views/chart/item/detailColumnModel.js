@@ -41,9 +41,21 @@ function repairDetailColumnForEdit (detailColumn, sourceForm) {
   }
 }
 
+function getCustomColumnRules () {
+  return {
+    customContent: [
+      { required: true, message: '请填写自定义内容', trigger: 'blur' }
+    ],
+    customFieldType: [
+      { required: true, message: '请选择自定义字段类型', trigger: 'change' }
+    ]
+  }
+}
+
 export default {
   buildCommonDetailColumn,
   buildCustomDetailColumn,
   displayText,
-  repairDetailColumnForEdit
+  repairDetailColumnForEdit,
+  getCustomColumnRules
 }

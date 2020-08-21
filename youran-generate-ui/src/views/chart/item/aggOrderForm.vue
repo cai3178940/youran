@@ -53,14 +53,7 @@ export default {
       // 最终返回给调用组件的表单数据
       form: aggOrderModel.initFormBean(),
       oldForm: null,
-      rules: {
-        parentItem: [
-          { required: true, message: '请选择排序列', trigger: 'change' }
-        ],
-        sortType: [
-          { required: true, message: '请选择排序方式', trigger: 'change' }
-        ]
-      }
+      rules: aggOrderModel.getRules()
     }
   },
   filters: {
@@ -90,9 +83,12 @@ export default {
       this.formVisible = true
     },
     submit () {
-      aggOrderModel.repairAggOrderForSubmit(this.form)
-      this.$emit('submit', this.position, this.form)
-      this.formVisible = false
+      this.$refs.aggOrderForm.validate()
+        .then(() => {
+          aggOrderModel.repairAggOrderForSubmit(this.form)
+          this.$emit('submit', this.position, this.form)
+          this.formVisible = false
+        })
     },
     remove () {
       this.$emit('remove', this.position, this.oldForm)

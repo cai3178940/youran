@@ -50,9 +50,39 @@ function repairDimensionForEdit (dimension, sourceForm) {
   }
 }
 
+function getRules () {
+  return {
+    tmp1: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !value.field) {
+            callback(new Error('请选择聚合字段'))
+          }
+          callback()
+        },
+        trigger: 'change'
+      }
+    ],
+    tmp2: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !value.value) {
+            callback(new Error('请选择粒度'))
+          }
+          callback()
+        },
+        trigger: 'change'
+      }
+    ]
+  }
+}
+
 export default {
   initFormBean,
   displayText,
   repairDimensionForEdit,
-  repairDimensionForSubmit
+  repairDimensionForSubmit,
+  getRules
 }

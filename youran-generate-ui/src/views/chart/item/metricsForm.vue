@@ -3,16 +3,16 @@
     <el-form ref="metricsForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
-      <el-form-item label="自定义指标">
+      <el-form-item label="自定义指标" prop="custom">
         <el-switch v-model="form.custom"></el-switch>
       </el-form-item>
       <template v-if="form.custom">
-        <el-form-item label="自定义内容">
+        <el-form-item label="自定义内容" prop="customContent">
           <el-input type="textarea" :rows="2"
                     placeholder="请输入内容" v-model="form.customContent">
           </el-input>
         </el-form-item>
-        <el-form-item label="自定义字段类型">
+        <el-form-item label="自定义字段类型" prop="customFieldType">
           <el-select v-model="form.customFieldType" placeholder="请选择"
                      style="width:100%;">
             <el-option
@@ -25,7 +25,7 @@
         </el-form-item>
       </template>
       <template v-else>
-        <el-form-item label="指标字段">
+        <el-form-item label="指标字段" prop="tmp1">
           <el-select v-model="form.tmp1" value-key="key"
                      style="width:100%;" placeholder="请选择指标字段"
                      filterable>
@@ -46,7 +46,7 @@
             </el-option-group>
           </el-select>
         </el-form-item>
-        <el-form-item label="聚合函数">
+        <el-form-item label="聚合函数" prop="tmp2">
           <el-select v-model="form.tmp2" value-key="value"
                      style="width:100%;">
             <el-option
@@ -84,7 +84,7 @@ export default {
       // 最终返回给调用组件的表单数据
       form: metricsModel.initFormBean(),
       oldForm: null,
-      rules: {}
+      rules: metricsModel.getRules()
     }
   },
   computed: {
@@ -119,9 +119,12 @@ export default {
       this.formVisible = true
     },
     submit () {
-      metricsModel.repairMetricsForSubmit(this.form)
-      this.$emit('submit', this.position, this.form)
-      this.formVisible = false
+      this.$refs.metricsForm.validate()
+        .then(() => {
+          metricsModel.repairMetricsForSubmit(this.form)
+          this.$emit('submit', this.position, this.form)
+          this.formVisible = false
+        })
     },
     remove () {
       this.$emit('remove', this.position, this.form)

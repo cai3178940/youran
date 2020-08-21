@@ -43,14 +43,7 @@ export default {
       // 最终返回给调用组件的表单数据
       form: detailColumnModel.buildCustomDetailColumn('', 1),
       oldForm: null,
-      rules: {
-        customContent: [
-          { required: true, message: '请填写自定义内容', trigger: 'blur' }
-        ],
-        customFieldType: [
-          { required: true, message: '请选择自定义字段类型', trigger: 'change' }
-        ]
-      }
+      rules: detailColumnModel.getCustomColumnRules()
     }
   },
   methods: {
@@ -72,8 +65,11 @@ export default {
       this.formVisible = true
     },
     submit () {
-      this.$emit('submit', this.position, this.form)
-      this.formVisible = false
+      this.$refs.customColumnForm.validate()
+        .then(() => {
+          this.$emit('submit', this.position, this.form)
+          this.formVisible = false
+        })
     },
     remove () {
       this.$emit('remove', this.position, this.form)

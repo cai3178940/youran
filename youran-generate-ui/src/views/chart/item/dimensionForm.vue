@@ -59,14 +59,7 @@ export default {
       // 最终返回给调用组件的表单数据
       form: dimensionModel.initFormBean(),
       oldForm: null,
-      rules: {
-        tmp1: [
-          { required: true, message: '请选择聚合字段', trigger: 'change' }
-        ],
-        tmp2: [
-          { required: true, message: '请选择粒度', trigger: 'change' }
-        ]
-      }
+      rules: dimensionModel.getRules()
     }
   },
   computed: {
@@ -111,9 +104,12 @@ export default {
       this.formVisible = true
     },
     submit () {
-      dimensionModel.repairDimensionForSubmit(this.form)
-      this.$emit('submit', this.position, this.form)
-      this.formVisible = false
+      this.$refs.dimensionForm.validate()
+        .then(() => {
+          dimensionModel.repairDimensionForSubmit(this.form)
+          this.$emit('submit', this.position, this.form)
+          this.formVisible = false
+        })
     },
     remove () {
       this.$emit('remove', this.position, this.form)

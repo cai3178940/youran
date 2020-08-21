@@ -72,9 +72,48 @@ function repairMetricsForSubmit (metrics) {
   }
 }
 
+function getRules () {
+  return {
+    custom: [
+      { required: true, message: '请选择是否自定义', trigger: 'change' }
+    ],
+    customContent: [
+      { required: true, message: '请输入自定义内容', trigger: 'blur' }
+    ],
+    customFieldType: [
+      { required: true, message: '请选择自定义字段类型', trigger: 'change' }
+    ],
+    tmp1: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !value.field) {
+            callback(new Error('请选择指标字段'))
+          }
+          callback()
+        },
+        trigger: 'change'
+      }
+    ],
+    tmp2: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !value.value) {
+            callback(new Error('请选择聚合函数'))
+          }
+          callback()
+        },
+        trigger: 'change'
+      }
+    ]
+  }
+}
+
 export default {
   initFormBean,
   displayText,
   repairMetricsForEdit,
-  repairMetricsForSubmit
+  repairMetricsForSubmit,
+  getRules
 }

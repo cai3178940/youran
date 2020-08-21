@@ -52,14 +52,7 @@ export default {
       // 最终返回给调用组件的表单数据
       form: detailOrderModel.initFormBean(),
       oldForm: null,
-      rules: {
-        detailColumn: [
-          { required: true, message: '请选择排序列', trigger: 'change' }
-        ],
-        sortType: [
-          { required: true, message: '请选择排序方式', trigger: 'change' }
-        ]
-      }
+      rules: detailOrderModel.getRules()
     }
   },
   filters: {
@@ -88,9 +81,12 @@ export default {
       this.formVisible = true
     },
     submit () {
-      detailOrderModel.repairDetailOrderForSubmit(this.form)
-      this.$emit('submit', this.position, this.form)
-      this.formVisible = false
+      this.$refs.detailOrderForm.validate()
+        .then(() => {
+          detailOrderModel.repairDetailOrderForSubmit(this.form)
+          this.$emit('submit', this.position, this.form)
+          this.formVisible = false
+        })
     },
     remove () {
       this.$emit('remove', this.position, this.form)

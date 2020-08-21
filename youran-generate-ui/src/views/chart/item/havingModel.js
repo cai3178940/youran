@@ -3,6 +3,7 @@ import searchUtil from '../searchUtil'
 import metricsModel from './metricsModel'
 import chartFilterOperator from '@/utils/options-chart-filter-operator'
 import chartCustomFieldType from '@/utils/options-chart-custom-field-type'
+import { boolExceptZero } from '@/utils/common-util'
 
 function initFormBean () {
   return {
@@ -76,9 +77,68 @@ function repairHavingForEdit (having, metricsList) {
   }
 }
 
+function getRules () {
+  return {
+    metrics: [
+      { required: true, message: '请选择过滤列', trigger: 'change' }
+    ],
+    tmp2: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !value.value) {
+            callback(new Error('请选择过滤运算符'))
+          }
+          callback()
+        },
+        trigger: 'change'
+      }
+    ],
+    tmp3: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !boolExceptZero(value[0])) {
+            callback(new Error('请输入过滤值'))
+          }
+          callback()
+        },
+        trigger: 'blur'
+      }
+    ],
+    tmp4: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value ||
+            !boolExceptZero(value[0]) ||
+            !boolExceptZero(value[1])) {
+            callback(new Error('请输入过滤值范围'))
+          }
+          callback()
+        },
+        trigger: 'blur'
+      }
+    ],
+    tmp5: [
+      {
+        required: true,
+        validator: (rule, value, callback) => {
+          if (!value || !value.length || !boolExceptZero(value[0])) {
+            callback(new Error('请输入过滤值'))
+          }
+          callback()
+        },
+        trigger: 'change'
+      }
+    ]
+  }
+}
+
 export default {
   initFormBean,
   displayText,
   repairHavingForEdit,
-  repairHavingForSubmit
+  repairHavingForSubmit,
+  getRules
 }

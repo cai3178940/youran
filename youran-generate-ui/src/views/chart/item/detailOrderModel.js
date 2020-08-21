@@ -41,9 +41,21 @@ function repairDetailOrderForSubmit (detailOrder) {
   detailOrder.parentKey = detailOrder.detailColumn.key
 }
 
+function getRules () {
+  return {
+    detailColumn: [
+      { required: true, message: '请选择排序列', trigger: 'change' }
+    ],
+    sortType: [
+      { required: true, message: '请选择排序方式', trigger: 'change' }
+    ]
+  }
+}
+
 export default {
   initFormBean,
   displayText,
   repairDetailOrderForEdit,
-  repairDetailOrderForSubmit
+  repairDetailOrderForSubmit,
+  getRules
 }
