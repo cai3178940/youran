@@ -12,13 +12,14 @@
 <a href="doc/IncrementalGeneration.md" target="_blank">点击查看原理</a>：
 支持将代码直接生成到远程git仓库，同时支持在元数据变动以后再次生成（只生成差异部分）。
 2. ★★★自定义模板：如果预置的代码模板不能满足您的需求，可基于您自己团队的技术框架开发属于您独有的代码模板。
-3. ★反向工程：如果您的应用已经完成了表结构设计，请使用`反向工程`功能将建表语句反向导入项目中，自动生成实体和字段。
-4. 多对多关系：支持在两个实体之间建立多对多关联关系，会在mysql中生成一张关联表，可以设置两个实体之间是否持有对方引用，持有引用的一方会自动生成维护关联关系的功能。
-5. 外键关联：在添加字段的时候，可以设置该字段是否外键，外键字段需要关联某个实体的主键，从而可以实现`一对一`或`一对多`关联。
-6. 级联扩展：外键字段或多对多实体上可以配置级联字段，级联字段可以作为被关联实体的查询条件，也能作为查询结果展示。
-7. 实体ER图：可以在实体列表页选择多个存在关联关系的实体，点击`查看ER图`按钮，即可生成实体关系图。
-8. 代码预览：不需要下载就可以在线浏览生成的代码，还能预览元数据变动后新生成的代码与之前的差异。
-9. 3.2.0新功能：可生成excel导入导出功能
+3. ★★★自定义图表：在已有实体的基础上，可配置自定义的明细表和聚合表，可配置echarts图表，可将多个图表放在一个看板中展示。
+4. ★反向工程：如果您的应用已经完成了表结构设计，请使用`反向工程`功能将建表语句反向导入项目中，自动生成实体和字段。
+5. 多对多关系：支持在两个实体之间建立多对多关联关系，会在mysql中生成一张关联表，可以设置两个实体之间是否持有对方引用，持有引用的一方会自动生成维护关联关系的功能。
+6. 外键关联：在添加字段的时候，可以设置该字段是否外键，外键字段需要关联某个实体的主键，从而可以实现`一对一`或`一对多`关联。
+7. 级联扩展：外键字段或多对多实体上可以配置级联字段，级联字段可以作为被关联实体的查询条件，也能作为查询结果展示。
+8. 实体ER图：可以在实体列表页选择多个存在关联关系的实体，点击`查看ER图`按钮，即可生成实体关系图。
+9. 代码预览：不需要下载就可以在线浏览生成的代码，还能预览元数据变动后新生成的代码与之前的差异。
+10. 可生成excel导入导出功能
 （基于<a href="https://github.com/alibaba/easyexcel" target="_blank">easyexcel</a>），
 可选择是否使用lombok插件。
 
@@ -42,22 +43,25 @@
 ## 页面截图
 
 **项目管理**
-![项目管理](https://github.com/cai3178940/image/raw/master/youran/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86.png)
+![项目管理](./doc/image/projects.png)
 
 **增量预览**
-![增量预览](https://github.com/cai3178940/image/raw/master/youran/%E5%A2%9E%E9%87%8F%E9%A2%84%E8%A7%88.png)
+![增量预览](./doc/image/increment-preview.png)
 
 **字段管理**
-![字段管理](https://github.com/cai3178940/image/raw/master/youran/%E5%AD%97%E6%AE%B5%E7%AE%A1%E7%90%86.png)
+![字段管理](./doc/image/fields.png)
 
 **ER图**
-![ER图](https://github.com/cai3178940/image/raw/master/youran/ER%E5%9B%BE.png)
+![ER图](./doc/image/er-diagram.png)
 
 **代码预览**
-![代码预览](https://github.com/cai3178940/image/raw/master/youran/%E4%BB%A3%E7%A0%81%E9%A2%84%E8%A7%88.png)
+![代码预览](./doc/image/code-preview.png)
 
 **模板列表**
-![模板列表](https://github.com/cai3178940/image/raw/master/youran/%E6%A8%A1%E6%9D%BF%E5%88%97%E8%A1%A8.png)
+![模板列表](./doc/image/templates.png)
+
+**自定义图表**
+![自定义图表](./doc/image/charts.png)
 
 
 ## 试用地址 
@@ -138,6 +142,6 @@ http://129.211.183.46/ui
 
 ## 生成效果展示
 
-![image](https://github.com/cai3178940/image/raw/master/youran/%E7%94%9F%E6%88%90%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA.png)
+![image](./doc/image/display.png)
 
 > <a href="https://github.com/cai3178940/youran" target="_blank">点击访问Github源码地址</a>
