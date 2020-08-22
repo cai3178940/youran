@@ -156,8 +156,9 @@ import templateApi from '@/api/template'
 import CodePreview from './codePreview'
 import ImportProject from './import'
 import showdown from 'showdown'
-import { Diff2Html } from 'diff2html'
-import 'diff2html/dist/diff2html.css'
+// 文件差异对比工具 https://github.com/rtfpessoa/diff2html
+import { html } from 'diff2html'
+import 'diff2html/bundles/css/diff2html.min.css'
 
 const converter = new showdown.Converter({
   emoji: 'true',
@@ -439,7 +440,7 @@ export default {
             if (!progressVO.data) {
               this.$common.showNotifyError('代码无变动')
             } else {
-              this.codeDiffHtml = Diff2Html.getPrettyHtml(progressVO.data, {
+              this.codeDiffHtml = html(progressVO.data, {
                 inputFormat: 'diff',
                 showFiles: true,
                 matching: 'lines',

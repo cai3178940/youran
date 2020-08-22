@@ -1,16 +1,19 @@
-import { snakeCase, camelCase, upperCaseFirst, lowerCaseFirst } from 'change-case'
+import _snakeCase from 'lodash/snakeCase'
+import _camelCase from 'lodash/camelCase'
+import _upperFirst from 'lodash/upperFirst'
+import _lowerFirst from 'lodash/lowerFirst'
 
 export default {
   install (Vue, options) {
     Vue.prototype.$common = {
       // 字符串转下划线格式
-      snakeCase: snakeCase,
+      snakeCase: _snakeCase,
       // 字符串转驼峰格式
-      camelCase: camelCase,
+      camelCase: _camelCase,
       // 首字母转大写
-      upperCaseFirst: upperCaseFirst,
+      upperCaseFirst: _upperFirst,
       // 首字母转小写
-      lowerCaseFirst: lowerCaseFirst,
+      lowerCaseFirst: _lowerFirst,
 
       confirm (msg) {
         return Vue.prototype.$confirm(msg, '提示', {
@@ -145,7 +148,7 @@ export default {
     Vue.directive('upper-case-first', {
       update: function (el, binding, vnode) {
         const value = vnode.data.model.value
-        vnode.data.model.callback(upperCaseFirst(value))
+        vnode.data.model.callback(_upperFirst(value))
       }
     })
 
@@ -153,7 +156,7 @@ export default {
     Vue.directive('lower-case-first', {
       update: function (el, binding, vnode) {
         const value = vnode.data.model.value
-        vnode.data.model.callback(lowerCaseFirst(value))
+        vnode.data.model.callback(_lowerFirst(value))
       }
     })
   }
