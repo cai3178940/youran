@@ -38,7 +38,10 @@
           <el-select v-model="form.seriesType"
                      style="width:100%;">
             <el-option label="柱型" :value="'bar'"></el-option>
-            <el-option label="线型" :value="'line'"></el-option>
+            <el-option label="折线" :value="'line'"></el-option>
+            <el-option label="平滑曲线" :value="'line-smooth'"></el-option>
+            <el-option label="区域堆叠" :value="'area-stack'"></el-option>
+            <el-option label="柱型堆叠" :value="'bar-stack'"></el-option>
           </el-select>
         </help-popover>
       </el-form-item>

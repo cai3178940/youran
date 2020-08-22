@@ -1,5 +1,30 @@
 import chartItemMock from '../item/chartItemMock'
 
+function mockSeries (chartItem) {
+  let seriesType = chartItem.seriesType ? chartItem.seriesType : 'bar'
+  let areaStyle = null
+  let stack = null
+  let smooth = null
+  if (seriesType === 'area-stack') {
+    seriesType = 'line'
+    areaStyle = {}
+    stack = '总量'
+  } else if (seriesType === 'bar-stack') {
+    seriesType = 'bar'
+    areaStyle = {}
+    stack = '总量'
+  } else if (seriesType === 'line-smooth') {
+    seriesType = 'line'
+    smooth = true
+  }
+  return {
+    type: seriesType,
+    areaStyle: areaStyle,
+    stack: stack,
+    smooth: smooth
+  }
+}
+
 export default {
   /**
    * 假设axisX为部门，axisX2为性别
@@ -34,10 +59,9 @@ export default {
     return source
   },
   mockSeriesForMode1 (header, axisY) {
-    const seriesType = axisY.seriesType ? axisY.seriesType : 'bar'
     const series = []
     for (let i = 0; i < header.length - 1; i++) {
-      series.push({ type: seriesType })
+      series.push(mockSeries(axisY))
     }
     return series
   },
@@ -82,9 +106,7 @@ export default {
   mockSeriesForMode2 (axisYList) {
     const series = []
     for (let i = 0; i < axisYList.length; i++) {
-      const axisY = axisYList[i]
-      const seriesType = axisY.seriesType ? axisY.seriesType : 'bar'
-      series.push({ type: seriesType })
+      series.push(mockSeries(axisYList[i]))
     }
     return series
   }
