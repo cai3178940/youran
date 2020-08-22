@@ -25,7 +25,12 @@ function initOtherInfo (formBean) {
     field: null,
     joinIndex: null
   }
-  formBean.tmp2 = chartFilterOperator.getFilterOperatorOption(1)
+  formBean.tmp2 = {
+    value: null,
+    label: null,
+    filterValueType: null,
+    matchFieldTypes: []
+  }
   formBean.tmp3 = [null]
   formBean.tmp4 = [null, null]
   formBean.tmp5 = []

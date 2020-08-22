@@ -3,13 +3,13 @@
     <el-form ref="chartItemForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
-      <el-form-item label="标题">
+      <el-form-item label="标题" prop="titleAlias">
         <help-popover name="chartItem.titleAlias">
           <el-input placeholder="请输入标题" v-model="form.titleAlias">
           </el-input>
         </help-popover>
       </el-form-item>
-      <el-form-item label="字段名">
+      <el-form-item label="字段名" prop="alias">
         <help-popover name="chartItem.alias">
           <el-input placeholder="请输入字段名" v-model="form.alias">
           </el-input>
@@ -33,7 +33,7 @@
           </el-input>
         </help-popover>
       </el-form-item>
-      <el-form-item v-if="visible.seriesType" label="展示形式">
+      <el-form-item v-if="visible.seriesType" label="展示形式" prop="seriesType">
         <help-popover name="chartItem.seriesType">
           <el-select v-model="form.seriesType"
                      style="width:100%;">
@@ -77,7 +77,17 @@ export default {
         format: true,
         seriesType: false
       },
-      rules: {}
+      rules: {
+        titleAlias: [
+          { required: true, message: '请输入标题', trigger: 'blur' }
+        ],
+        alias: [
+          { required: true, message: '请输入字段名', trigger: 'blur' }
+        ],
+        seriesType: [
+          { required: true, message: '请选择展示形式', trigger: 'change' }
+        ]
+      }
     }
   },
   computed: {
@@ -94,16 +104,22 @@ export default {
       this.visible.valueSuffix = false
       this.visible.format = false
       this.formVisible = true
+      this.$nextTick(() => {
+        this.$refs.chartItemForm.clearValidate()
+      })
     },
     submit () {
-      this.oldForm.titleAlias = this.form.titleAlias
-      this.oldForm.alias = this.form.alias
-      this.oldForm.valuePrefix = this.form.valuePrefix
-      this.oldForm.valueSuffix = this.form.valueSuffix
-      this.oldForm.format = this.form.format
-      this.oldForm.seriesType = this.form.seriesType
-      this.formVisible = false
-      this.$emit('submit', this.oldForm)
+      this.$refs.chartItemForm.validate()
+        .then(() => {
+          this.oldForm.titleAlias = this.form.titleAlias
+          this.oldForm.alias = this.form.alias
+          this.oldForm.valuePrefix = this.form.valuePrefix
+          this.oldForm.valueSuffix = this.form.valueSuffix
+          this.oldForm.format = this.form.format
+          this.oldForm.seriesType = this.form.seriesType
+          this.formVisible = false
+          this.$emit('submit', this.oldForm)
+        })
     },
     cancel () {
       this.formVisible = false

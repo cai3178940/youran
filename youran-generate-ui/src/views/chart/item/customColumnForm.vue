@@ -63,6 +63,7 @@ export default {
         this.form = detailColumnModel.buildCustomDetailColumn('', 1)
       }
       this.formVisible = true
+      this.$refs.customColumnForm.clearValidate()
     },
     submit () {
       this.$refs.customColumnForm.validate()

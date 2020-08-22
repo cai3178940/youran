@@ -117,6 +117,7 @@ export default {
         this.form = metricsModel.initFormBean()
       }
       this.formVisible = true
+      this.$refs.metricsForm.clearValidate()
     },
     submit () {
       this.$refs.metricsForm.validate()

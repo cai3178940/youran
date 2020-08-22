@@ -102,6 +102,7 @@ export default {
         this.form = dimensionModel.initFormBean()
       }
       this.formVisible = true
+      this.$refs.dimensionForm.clearValidate()
     },
     submit () {
       this.$refs.dimensionForm.validate()
