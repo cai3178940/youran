@@ -151,7 +151,15 @@ export default {
         responseType: 'text',
         params: params
       })
-      .then(response => checkResult(response))
+      .then(response => {
+        return new Promise((resolve, reject) => {
+          if (response.status >= 200 && response.status < 300) {
+            return resolve(response.request.responseText)
+          } else {
+            return reject(new Error(response.data))
+          }
+        })
+      })
   },
   /**
    * 查询模块列表
