@@ -1,16 +1,14 @@
 server:
     servlet:
         context-path: /
+        encoding:
+            force: true
     port: 8088
 spring:
     application:
         name: youran-generate
     profiles:
         active: local
-    # 强制指定响应头content-type是utf-8编码
-    http:
-        encoding:
-            force: true
     security:
         user:
             name: admin
