@@ -61,6 +61,7 @@
             query_type,
             order_no,
             special_field,
+            labels,
             created_time,
             created_by,
             operated_time,
@@ -100,6 +101,7 @@
             #{queryType,jdbcType=INTEGER},
             #{orderNo,jdbcType=INTEGER},
             #{specialField,jdbcType=VARCHAR},
+            #{labels,jdbcType=VARCHAR},
             #{createdTime,jdbcType=TIMESTAMP},
             #{createdBy,jdbcType=VARCHAR},
             #{operatedTime,jdbcType=TIMESTAMP},
@@ -141,6 +143,7 @@
             query_type = #{queryType,jdbcType=INTEGER},
             order_no = #{orderNo,jdbcType=INTEGER},
             special_field = #{specialField,jdbcType=VARCHAR},
+            labels = #{labels,jdbcType=VARCHAR},
             operated_time = #{operatedTime,jdbcType=TIMESTAMP},
             operated_by = #{operatedBy,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}
@@ -195,5 +198,22 @@
         where t.deleted=0
         and t.entity_id = #{entityId,jdbcType=INTEGER}
         and t.`query` = 1
+    </select>
+    <select id="findLabels" resultType="string">
+        SELECT DISTINCT * FROM (
+        SELECT CASE WHEN LOCATE(':', t.label) &gt; 0 THEN LEFT(t.label, LOCATE(':', t.label)) ELSE t.label END AS label FROM (SELECT
+        SUBSTRING_INDEX (
+        SUBSTRING_INDEX (a.labels, ';', b.help_topic_id + 1),
+        ';',
+        - 1
+        ) label
+        FROM
+        meta_field a
+        JOIN mysql.help_topic b
+        ON b.help_topic_id &lt; (
+        LENGTH (a.labels) - LENGTH (REPLACE (a.labels, ';', '')) + 1
+        )) AS t
+        ) AS t2
+        ORDER BY t2.label;
     </select>
 </mapper>

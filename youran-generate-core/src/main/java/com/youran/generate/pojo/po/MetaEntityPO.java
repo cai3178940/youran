@@ -60,6 +60,10 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      * 后续有新的特性直接往里加，省的再扩展新字段
      */
     private String feature;
+    /**
+     * 标签
+     */
+    private String labels;
 
     /**
      * 字段列表
@@ -533,6 +537,14 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setFeature(String feature) {
         this.feature = feature;
+    }
+
+    public String getLabels() {
+        return labels;
+    }
+
+    public void setLabels(String labels) {
+        this.labels = labels;
     }
 
     public MetaEntityFeatureDTO getEntityFeature() {

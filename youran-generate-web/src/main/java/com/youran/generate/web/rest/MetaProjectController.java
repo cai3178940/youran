@@ -90,4 +90,11 @@ public class MetaProjectController extends AbstractController implements MetaPro
         List<String> modules = metaProjectService.findModules(projectId);
         return ResponseEntity.ok(modules);
     }
+
+    @Override
+    @GetMapping(value = "/labels")
+    public ResponseEntity<List<String>> findLabels() {
+        List<String> labels = metaProjectService.findLabels();
+        return ResponseEntity.ok(labels);
+    }
 }

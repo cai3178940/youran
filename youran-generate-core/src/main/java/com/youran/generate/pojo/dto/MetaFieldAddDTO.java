@@ -11,6 +11,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import java.util.List;
+
 import static com.youran.generate.pojo.example.MetaFieldExample.*;
 
 
@@ -142,6 +144,12 @@ public class MetaFieldAddDTO extends AbstractDTO {
     @ApiModelProperty(notes = N_SPECIALFIELD, example = E_SPECIALFIELD)
     @Const(constClass = MetaSpecialField.class)
     private String specialField;
+
+    /**
+     * 标签
+     */
+    @ApiModelProperty(notes = N_LABELS, example = E_LABELS)
+    private List<String> labels;
 
     public Integer getColumnWidth() {
         return columnWidth;
@@ -373,5 +381,13 @@ public class MetaFieldAddDTO extends AbstractDTO {
 
     public void setPkStrategy(Integer pkStrategy) {
         this.pkStrategy = pkStrategy;
+    }
+
+    public List<String> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<String> labels) {
+        this.labels = labels;
     }
 }

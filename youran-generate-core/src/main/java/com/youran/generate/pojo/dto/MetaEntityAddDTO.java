@@ -11,6 +11,8 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import java.util.List;
+
 import static com.youran.generate.pojo.example.MetaEntityExample.*;
 
 
@@ -64,6 +66,12 @@ public class MetaEntityAddDTO extends AbstractDTO {
      * 实体特性
      */
     private MetaEntityFeatureDTO feature;
+
+    /**
+     * 标签
+     */
+    @ApiModelProperty(notes = N_LABELS, example = E_LABELS)
+    private List<String> labels;
 
     @AssertTrue(message = "类名不合法")
     public boolean isClassNameValid(){
@@ -142,4 +150,11 @@ public class MetaEntityAddDTO extends AbstractDTO {
         this.desc = desc;
     }
 
+    public List<String> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<String> labels) {
+        this.labels = labels;
+    }
 }

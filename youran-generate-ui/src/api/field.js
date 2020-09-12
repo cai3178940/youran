@@ -65,6 +65,13 @@ export default {
   deleteBatch (data) {
     return request.put(`/${apiPath}/meta_field/delete_batch`, data)
       .then(response => checkResult(response))
+  },
+  /**
+   * 查询模块列表
+   */
+  findLabels () {
+    return request.get(`/${apiPath}/meta_field/labels`)
+      .then(response => checkResult(response))
   }
 
 }

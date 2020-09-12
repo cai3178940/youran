@@ -97,4 +97,7 @@ public interface MetaProjectAPI {
     })
     ResponseEntity<List<String>> findModules(Integer projectId);
 
+    @ApiOperation(value = "查询标签列表")
+    ResponseEntity<List<String>> findLabels();
+
 }

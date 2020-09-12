@@ -28,6 +28,7 @@
           `desc`,
           page_sign,
           feature,
+          labels,
           created_time,
           created_by,
           operated_time,
@@ -45,6 +46,7 @@
           #{desc,jdbcType=VARCHAR},
           #{pageSign,jdbcType=BOOLEAN},
           #{feature,jdbcType=VARCHAR},
+          #{labels,jdbcType=VARCHAR},
           #{createdTime,jdbcType=TIMESTAMP},
           #{createdBy,jdbcType=VARCHAR},
           #{operatedTime,jdbcType=TIMESTAMP},
@@ -64,6 +66,7 @@
           `desc` = #{desc,jdbcType=VARCHAR},
           page_sign = #{pageSign,jdbcType=BOOLEAN},
           feature = #{feature,jdbcType=VARCHAR},
+          labels = #{labels,jdbcType=VARCHAR},
           operated_time = #{operatedTime,jdbcType=TIMESTAMP},
           operated_by = #{operatedBy,jdbcType=VARCHAR},
           version = #{version,jdbcType=INTEGER}
@@ -175,5 +178,21 @@
             and t.entity_id = #{entityId,jdbcType=INTEGER}
             and m.hold_refer2 = #{hold,jdbcType=BOOLEAN}
     </select>
-
+    <select id="findLabels" resultType="string">
+        SELECT DISTINCT * FROM (
+        SELECT CASE WHEN LOCATE(':', t.label) &gt; 0 THEN LEFT(t.label, LOCATE(':', t.label)) ELSE t.label END AS label FROM (SELECT
+        SUBSTRING_INDEX (
+        SUBSTRING_INDEX (a.labels, ';', b.help_topic_id + 1),
+        ';',
+        - 1
+        ) label
+        FROM
+        meta_entity a
+        JOIN mysql.help_topic b
+        ON b.help_topic_id &lt; (
+        LENGTH (a.labels) - LENGTH (REPLACE (a.labels, ';', '')) + 1
+        )) AS t
+        ) AS t2
+        ORDER BY t2.label;
+    </select>
 </mapper>

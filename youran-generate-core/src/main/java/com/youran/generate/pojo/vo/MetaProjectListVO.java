@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.List;
+
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
 /**
@@ -56,6 +58,9 @@ public class MetaProjectListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME)
     private String username;
+
+    @ApiModelProperty(notes = N_LABELS, example = E_LABELS)
+    private List<String> labels;
 
     public String getGroupId() {
         return groupId;
@@ -167,6 +172,14 @@ public class MetaProjectListVO extends AbstractVO {
 
     public void setProjectDesc(String projectDesc) {
         this.projectDesc = projectDesc;
+    }
+
+    public List<String> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<String> labels) {
+        this.labels = labels;
     }
 
     @Override

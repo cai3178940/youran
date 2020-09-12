@@ -167,5 +167,12 @@ export default {
   findModules (projectId) {
     return request.get(`/${apiPath}/meta_project/${projectId}/modules`)
       .then(response => checkResult(response))
+  },
+  /**
+   * 查询模块列表
+   */
+  findLabels () {
+    return request.get(`/${apiPath}/meta_project/labels`)
+      .then(response => checkResult(response))
   }
 }

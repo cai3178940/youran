@@ -101,6 +101,10 @@ public class MetaProjectPO extends BasePO {
      */
     private String feature;
     /**
+     * 标签
+     */
+    private String labels;
+    /**
      * 项目下的所有实体
      */
     @JsonIgnore
@@ -311,6 +315,14 @@ public class MetaProjectPO extends BasePO {
 
     public void setFeature(String feature) {
         this.feature = feature;
+    }
+
+    public String getLabels() {
+        return labels;
+    }
+
+    public void setLabels(String labels) {
+        this.labels = labels;
     }
 
     public Integer getTemplateId() {

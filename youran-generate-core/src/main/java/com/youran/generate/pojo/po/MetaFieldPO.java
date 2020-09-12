@@ -145,6 +145,10 @@ public class MetaFieldPO extends BasePO {
      * 特殊字段类型
      */
     private String specialField;
+    /**
+     * 标签
+     */
+    private String labels;
 
     /**
      * 外键对应实体
@@ -242,6 +246,14 @@ public class MetaFieldPO extends BasePO {
 
     public void setSpecialField(String specialField) {
         this.specialField = specialField;
+    }
+
+    public String getLabels() {
+        return labels;
+    }
+
+    public void setLabels(String labels) {
+        this.labels = labels;
     }
 
     public Integer getFieldId() {

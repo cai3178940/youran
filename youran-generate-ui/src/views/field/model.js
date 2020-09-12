@@ -58,7 +58,8 @@ export function initFormBean (forEdit) {
     // 编辑方式
     editType: options.editTypeOptions['TEXT'].value,
     // 排序号
-    orderNo: 1
+    orderNo: 1,
+    labels: []
   }
   if (forEdit) {
     formBean['fieldId'] = null
@@ -149,6 +150,21 @@ export function getRules (vm) {
     ],
     orderNo: [
       { required: true, message: '请输入排序号', trigger: 'blur' }
+    ],
+    labels: [
+      { type: 'array',
+        validator: (rule, labels, callback) => {
+          for (let index = 0; index < labels.length; index++) {
+            const label = labels[index]
+            if (!/^[a-zA-Z|_]+(:[a-zA-Z|_|0-9|,]+)?$/.test(label)) {
+              callback(new Error(`标签[${label}]格式错误，请重新填写`))
+            }
+          }
+
+          callback()
+        },
+        trigger: 'blur'
+      }
     ]
   }
 }

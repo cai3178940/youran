@@ -14,7 +14,7 @@ import org.mapstruct.factory.Mappers;
  * @author: cbb
  * @date: 2017/5/12
  */
-@Mapper
+@Mapper(uses = LabelsMapper.class)
 public interface MetaFieldMapper {
 
     MetaFieldMapper INSTANCE = Mappers.getMapper(MetaFieldMapper.class);

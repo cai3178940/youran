@@ -25,5 +25,11 @@ public interface MetaProjectDAO extends DAO<MetaProjectPO> {
      */
     List<String> findModules(Integer projectId);
 
+    /**
+     * 查询label标签
+     *
+     * @return
+     */
+    List<String> findLabels();
 
 }

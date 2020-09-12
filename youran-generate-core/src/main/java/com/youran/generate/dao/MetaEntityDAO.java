@@ -55,4 +55,10 @@ public interface MetaEntityDAO extends DAO<MetaEntityPO> {
                                                 @Param("hold") boolean hold);
 
 
+    /**
+     * 查询label标签
+     *
+     * @return
+     */
+    List<String> findLabels();
 }

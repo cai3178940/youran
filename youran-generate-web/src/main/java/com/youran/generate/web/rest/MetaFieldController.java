@@ -99,6 +99,11 @@ public class MetaFieldController extends AbstractController implements MetaField
         Integer orderNo = metaFieldService.updateOrderNo(dto);
         return ResponseEntity.ok(orderNo);
     }
-
+    @Override
+    @GetMapping(value = "/labels")
+    public ResponseEntity<List<String>> findLabels() {
+        List<String> labels = metaFieldService.findLabels();
+        return ResponseEntity.ok(labels);
+    }
 
 }

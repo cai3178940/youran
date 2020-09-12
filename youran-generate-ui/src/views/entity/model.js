@@ -67,6 +67,21 @@ export function getRules (vm) {
     ],
     desc: [
       { max: 250, message: '长度不能超过250个字符', trigger: 'blur' }
+    ],
+    labels: [
+      { type: 'array',
+        validator: (rule, labels, callback) => {
+          for (let index = 0; index < labels.length; index++) {
+            const label = labels[index]
+            if (!/^[a-zA-Z|_]+(:[a-zA-Z|_|0-9|,]+)?$/.test(label)) {
+              callback(new Error(`标签[${label}]格式错误，请重新填写`))
+            }
+          }
+
+          callback()
+        },
+        trigger: 'blur'
+      }
     ]
   }
 }

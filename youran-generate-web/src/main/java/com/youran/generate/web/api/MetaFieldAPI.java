@@ -85,4 +85,8 @@ public interface MetaFieldAPI {
         @ApiImplicitParam(name = "dto", dataType = "MetaFieldUpdateOrderNoDTO", value = "修改字段序号参数", paramType = "body"),
     })
     ResponseEntity<Integer> updateOrderNo(MetaFieldUpdateOrderNoDTO dto);
+
+    @ApiOperation(value = "查询标签列表")
+    ResponseEntity<List<String>> findLabels();
+
 }

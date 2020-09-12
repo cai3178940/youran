@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import java.util.List;
+
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
 /**
@@ -78,6 +80,11 @@ public class MetaProjectAddDTO extends AbstractDTO {
     @Length(max = 32, message = "password最大长度不能超过{max}")
     private String password;
 
+    /**
+     * 标签
+     */
+    @ApiModelProperty(notes = N_LABELS, example = E_LABELS)
+    private List<String> labels;
     /**
      * 项目特性
      */
@@ -201,5 +208,13 @@ public class MetaProjectAddDTO extends AbstractDTO {
 
     public void setRemoteUrl3(String remoteUrl3) {
         this.remoteUrl3 = remoteUrl3;
+    }
+
+    public List<String> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<String> labels) {
+        this.labels = labels;
     }
 }

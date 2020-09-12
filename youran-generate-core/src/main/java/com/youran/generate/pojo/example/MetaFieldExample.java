@@ -72,5 +72,6 @@ public class MetaFieldExample extends AbstractExample {
     public static final String E_UPDATE = "true";
     public static final String N_SPECIALFIELD = "特殊字段类型";
     public static final String E_SPECIALFIELD = "deleted";
-
+    public static final String N_LABELS = "标签";
+    public static final String E_LABELS = "order:desc";
 }
