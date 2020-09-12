@@ -1,6 +1,7 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.generate.util.LabelsUtil;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
 import org.apache.commons.lang3.StringUtils;
@@ -179,6 +180,27 @@ public class MetaProjectPO extends BasePO {
             return packageName.substring(0, index) + ".common";
         }
         return "common";
+    }
+
+    /**
+     * 判断实体是否包含标签
+     * @param label
+     * @return
+     */
+    public boolean hasLabel(String label) {
+        if(null != getLabelValue(label)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断实体是否包含标签
+     * @param label
+     * @return 标签值
+     */
+    public String getLabelValue(String label) {
+        return LabelsUtil.getLabelValue(label, this.labels);
     }
 
     public List<MetaManyToManyPO> getMtms() {

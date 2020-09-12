@@ -1,6 +1,7 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.generate.util.LabelsUtil;
 import com.youran.generate.constant.PrimaryKeyStrategy;
 import org.apache.commons.lang3.StringUtils;
 
@@ -182,6 +183,27 @@ public class MetaFieldPO extends BasePO {
     public String fetchComment() {
         return StringUtils.isBlank(this.fieldComment) ?
             this.fieldDesc : this.fieldComment;
+    }
+
+    /**
+     * 判断实体是否包含标签
+     * @param label
+     * @return
+     */
+    public boolean hasLabel(String label) {
+        if(null != getLabelValue(label)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断实体是否包含标签
+     * @param label
+     * @return 标签值
+     */
+    public String getLabelValue(String label) {
+        return LabelsUtil.getLabelValue(label, this.labels);
     }
 
     public Integer getProjectId() {

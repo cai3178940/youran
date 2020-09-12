@@ -55,6 +55,10 @@ export default {
 - **Key:value**：以键值对的方式的标签
 
 > 注意：key只能是字符串和下划线；value可以包含大小写字母、数字、下划线、逗号
+
+**模板中获取标签配置**
+- **判断key是否存在**：\${this.hasLabel(label)}
+- **获取key配置的value**：\${this.getLabelValue(label)!}
     `
   },
   entity: {
@@ -99,6 +103,10 @@ export default {
 - **Key:value**：以键值对的方式的标签
 
 > 注意：key只能是字符串和下划线；value可以包含大小写字母、数字、下划线、逗号
+
+**模板中获取标签配置**
+- **判断key是否存在**：\${this.metaEntity.hasLabel(label)}
+- **获取key配置的value**：\${this.metaEntity.getLabelValue(label)!}
     `
   },
   field: {
@@ -259,6 +267,10 @@ private Integer publishSignSortSign;
 - **Key:value**：以键值对的方式的标签
 
 > 注意：key只能是字符串和下划线；value可以包含大小写字母、数字、下划线、逗号
+
+**模板中获取标签配置**
+- **判断key是否存在**：\${fieldPO.hasLabel(label)}
+- **获取key配置的value**：\${fieldPO.getLabelValue(label)!}
     `
   },
   'const': {
