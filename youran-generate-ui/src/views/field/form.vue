@@ -309,7 +309,8 @@ export default {
       commonFeature: options.commonFeature,
       fkFeature: options.fkFeature,
       inputVisible: false,
-      inputValue: ''
+      inputValue: '',
+      labels: null
     }
   },
   computed: {
@@ -595,17 +596,22 @@ export default {
       }
     },
     findLabels (queryString, cb) {
-      const action = (data) => {
-        const labels = data.slice(0)
+      const action = () => {
+        const labels = this.labels.slice(0)
         const results = queryString ? labels.filter(
           c => c.toLowerCase().indexOf(queryString.toLowerCase()) === 0
         ) : labels
         cb(results.map(c => ({ value: c })))
       }
-      fieldApi.findLabels()
-        .then(data => {
-          action(data)
-        })
+      if (this.labels) {
+        action()
+      } else {
+        fieldApi.findLabels()
+          .then(data => {
+            this.labels = data
+            action()
+          })
+      }
     }
   },
   created () {
