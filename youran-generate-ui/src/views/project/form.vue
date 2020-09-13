@@ -70,42 +70,38 @@
             </help-popover>
           </el-form-item>
           <el-form-item v-if="templateItemVisible2" prop="templateId2">
-            <help-popover name="project.templateId2">
-              <el-col :span="18" class="col-left">
-                <el-select style="width:100%;" v-model="form.templateId2"
-                           placeholder="请选择第二模板" tabindex="80" clearable>
-                  <el-option
-                    v-for="item in templateList"
-                    :key="item.templateId"
-                    :disabled="item.templateId===form.templateId || item.templateId===form.templateId3"
-                    :label="item.name+'v'+item.templateVersion"
-                    :value="item.templateId">
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="6" class="col-right">
-                <el-button size="small" type="text" @click="removeTemplateItem(2)">移除第二模板</el-button>
-              </el-col>
-            </help-popover>
+            <el-col :span="18" class="col-left">
+              <el-select style="width:100%;" v-model="form.templateId2"
+                         placeholder="请选择第二模板" tabindex="80" clearable>
+                <el-option
+                  v-for="item in templateList"
+                  :key="item.templateId"
+                  :disabled="item.templateId===form.templateId || item.templateId===form.templateId3"
+                  :label="item.name+'v'+item.templateVersion"
+                  :value="item.templateId">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="6" class="col-right">
+              <el-button size="small" type="text" @click="removeTemplateItem(2)">移除第二模板</el-button>
+            </el-col>
           </el-form-item>
           <el-form-item v-if="templateItemVisible3" prop="templateId3">
-            <help-popover name="project.templateId3">
-              <el-col :span="18" class="col-left">
-                <el-select style="width:100%;" v-model="form.templateId3"
-                           placeholder="请选择第三模板" tabindex="90" clearable>
-                  <el-option
-                    v-for="item in templateList"
-                    :key="item.templateId"
-                    :disabled="item.templateId===form.templateId || item.templateId===form.templateId2"
-                    :label="item.name+'v'+item.templateVersion"
-                    :value="item.templateId">
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="6" class="col-right">
-                <el-button size="small" type="text" @click="removeTemplateItem(3)">移除第三模板</el-button>
-              </el-col>
-            </help-popover>
+            <el-col :span="18" class="col-left">
+              <el-select style="width:100%;" v-model="form.templateId3"
+                         placeholder="请选择第三模板" tabindex="90" clearable>
+                <el-option
+                  v-for="item in templateList"
+                  :key="item.templateId"
+                  :disabled="item.templateId===form.templateId || item.templateId===form.templateId2"
+                  :label="item.name+'v'+item.templateVersion"
+                  :value="item.templateId">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="6" class="col-right">
+              <el-button size="small" type="text" @click="removeTemplateItem(3)">移除第三模板</el-button>
+            </el-col>
           </el-form-item>
           <el-form-item label="标签" prop="labels" >
             <help-popover name="project.labels">
@@ -183,6 +179,7 @@
 <script>
 import projectApi from '@/api/project'
 import templateApi from '@/api/template'
+import labelApi from '@/api/label'
 import { initFormBean, getRules } from './model'
 
 export default {
@@ -325,9 +322,10 @@ export default {
       if (this.labels) {
         action()
       } else {
-        projectApi.findLabels()
+        const templateIds = [this.form.templateId, this.form.templateId2, this.form.templateId3]
+        labelApi.getMetaLabel(null, templateIds, 'project')
           .then(data => {
-            this.labels = data
+            this.labels = data.map(o => o.key)
             action()
           })
       }

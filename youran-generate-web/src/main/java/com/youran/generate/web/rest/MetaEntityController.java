@@ -110,10 +110,4 @@ public class MetaEntityController extends AbstractController implements MetaEnti
         return ResponseEntity.ok(fkFieldName);
     }
 
-    @Override
-    @GetMapping(value = "/labels")
-    public ResponseEntity<List<String>> findLabels() {
-        List<String> labels = metaEntityService.findLabels();
-        return ResponseEntity.ok(labels);
-    }
 }

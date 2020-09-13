@@ -241,12 +241,4 @@ public class MetaEntityService {
     }
 
 
-    /**
-     * 查询系统中使用过的label标签
-     *
-     * @return label列表
-     */
-    public List<String> findLabels() {
-        return metaEntityDAO.findLabels();
-    }
 }

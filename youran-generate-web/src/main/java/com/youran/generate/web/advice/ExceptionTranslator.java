@@ -174,7 +174,7 @@ public class ExceptionTranslator {
             message = errorCode.getDesc();
         }
         return ResponseEntity.status(errorCode.getValue())
-            .body(ReplyVO.fail(message));
+            .body(new ReplyVO<>(errorCode.getValue().toString(), message));
     }
 
 }

@@ -51,11 +51,5 @@ public interface MetaFieldDAO extends DAO<MetaFieldPO> {
      */
     List<String> findJFieldNamesForQuery(Integer entityId);
 
-    /**
-     * 查询label标签
-     *
-     * @return
-     */
-    List<String> findLabels();
 
 }

@@ -266,15 +266,6 @@ public class MetaProjectService {
         return metaProjectDAO.findModules(projectId);
     }
 
-
-    /**
-     * 查询系统中使用过的label标签
-     *
-     * @return label列表
-     */
-    public List<String> findLabels() {
-        return metaProjectDAO.findLabels();
-    }
     /**
      * 根据项目校验操作人
      *

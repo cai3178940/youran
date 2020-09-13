@@ -1,5 +1,5 @@
 <template>
-  <div class="help-popover">
+  <div class="help-popover" :name="name">
     <el-popover
       ref="popover"
       placement="right"
@@ -37,6 +37,7 @@ export default {
         }
       }
       html = converter.makeHtml(markdown)
+      console.info(this.name, markdown, html)
     }
     return {
       html: html

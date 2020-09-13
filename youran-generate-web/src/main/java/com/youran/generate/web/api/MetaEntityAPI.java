@@ -107,7 +107,4 @@ public interface MetaEntityAPI {
     })
     ResponseEntity<String> getDefaultFkFieldNameForSql(Integer entityId);
 
-    @ApiOperation(value = "查询标签列表")
-    ResponseEntity<List<String>> findLabels();
-
 }

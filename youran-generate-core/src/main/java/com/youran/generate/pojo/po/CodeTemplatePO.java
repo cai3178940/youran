@@ -1,6 +1,8 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.common.util.JsonUtil;
+import com.youran.generate.pojo.dto.MetaLabelPackDTO;
 
 import java.util.List;
 
@@ -29,22 +31,22 @@ public class CodeTemplatePO extends BasePO {
      * 模板版本号
      */
     private String templateVersion;
-
     /**
      * 兼容最低系统版本号
      */
     private String sysLowVersion;
-
     /**
      * 是否系统默认模板
      */
     private Boolean sysDefault;
-
     /**
-     * 备注【最大长度256】
+     * 备注
      */
     private String remark;
-
+    /**
+     * 标签元数据，json格式
+     */
+    private String metaLabel;
     /**
      * 内部版本号，每次模板有变动都自动加一
      */
@@ -55,6 +57,13 @@ public class CodeTemplatePO extends BasePO {
      * 模板文件列表
      */
     private List<TemplateFilePO> templateFiles;
+
+    /**
+     * 获取标签元数据包
+     */
+    public MetaLabelPackDTO fetchMetaLabelPack() {
+        return JsonUtil.parseObject(this.metaLabel, MetaLabelPackDTO.class);
+    }
 
     public List<TemplateFilePO> getTemplateFiles() {
         return templateFiles;
@@ -128,5 +137,12 @@ public class CodeTemplatePO extends BasePO {
         this.innerVersion = innerVersion;
     }
 
+    public String getMetaLabel() {
+        return metaLabel;
+    }
+
+    public void setMetaLabel(String metaLabel) {
+        this.metaLabel = metaLabel;
+    }
 }
 

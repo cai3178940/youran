@@ -126,22 +126,4 @@
         ) as t
     </select>
 
-    <select id="findLabels" resultType="string">
-        SELECT DISTINCT * FROM (
-        SELECT CASE WHEN LOCATE(':', t.label) &gt; 0 THEN LEFT(t.label, LOCATE(':', t.label)) ELSE t.label END AS label FROM (SELECT
-        SUBSTRING_INDEX (
-        SUBSTRING_INDEX (a.labels, ';', b.help_topic_id + 1),
-        ';',
-        - 1
-        ) label
-        FROM
-        meta_project a
-        JOIN mysql.help_topic b
-        ON b.help_topic_id &lt; (
-        LENGTH (a.labels) - LENGTH (REPLACE (a.labels, ';', '')) + 1
-        )) AS t
-        ) AS t2
-        ORDER BY t2.label;
-    </select>
-
 </mapper>

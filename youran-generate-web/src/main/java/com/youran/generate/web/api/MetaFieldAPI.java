@@ -86,7 +86,4 @@ public interface MetaFieldAPI {
     })
     ResponseEntity<Integer> updateOrderNo(MetaFieldUpdateOrderNoDTO dto);
 
-    @ApiOperation(value = "查询标签列表")
-    ResponseEntity<List<String>> findLabels();
-
 }

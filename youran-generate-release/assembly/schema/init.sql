@@ -280,6 +280,7 @@ CREATE TABLE `code_template` (
     `sys_low_version` varchar(10) NOT NULL COMMENT '兼容最低系统版本号',
     `sys_default` tinyint(4) NOT NULL COMMENT '是否系统默认模板',
     `remark` text DEFAULT NULL COMMENT 'markdown备注',
+    `meta_label` text DEFAULT NULL COMMENT '标签元数据，json格式',
     `inner_version` int(11) NOT NULL COMMENT '内部版本号，每次模板有变动都自动加一',
     `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
     `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',

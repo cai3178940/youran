@@ -85,13 +85,6 @@ export default {
         }
       })
       .then(response => checkResult(response))
-  },
-  /**
-   * 查询模块列表
-   */
-  findLabels () {
-    return request.get(`/${apiPath}/meta_entity/labels`)
-      .then(response => checkResult(response))
   }
 
 }
