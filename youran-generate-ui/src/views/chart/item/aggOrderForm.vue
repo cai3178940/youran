@@ -81,7 +81,9 @@ export default {
         this.form = aggOrderModel.initFormBean()
       }
       this.formVisible = true
-      this.$refs.aggOrderForm.clearValidate()
+      this.$nextTick(() => {
+        this.$refs.aggOrderForm.clearValidate()
+      })
     },
     submit () {
       this.$refs.aggOrderForm.validate()

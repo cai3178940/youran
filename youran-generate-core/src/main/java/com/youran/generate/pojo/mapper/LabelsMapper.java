@@ -1,10 +1,10 @@
 package com.youran.generate.pojo.mapper;
 
-import com.youran.generate.util.LabelsUtil;
+import com.youran.common.util.JsonUtil;
+import com.youran.generate.pojo.dto.LabelDTO;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,16 +16,15 @@ import java.util.List;
 public class LabelsMapper {
 
 
-    public static String asString(List<String> labels) {
-        return StringUtils.join(labels, LabelsUtil.LABEL_SPLIT);
+    public static String asString(List<LabelDTO> labels) {
+        return JsonUtil.toJSONString(labels);
     }
 
-    public static List<String> asList(String labels) {
-        String[] split = StringUtils.split(labels, LabelsUtil.LABEL_SPLIT);
-        if (null == split) {
-            return Collections.EMPTY_LIST;
+    public static List<LabelDTO> asList(String labels) {
+        if (StringUtils.isBlank(labels)) {
+            return new ArrayList<>();
         }
-        return Arrays.asList(split);
+        return JsonUtil.parseArray(labels, LabelDTO.class);
     }
 
 }

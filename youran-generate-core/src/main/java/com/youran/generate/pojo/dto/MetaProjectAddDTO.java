@@ -83,8 +83,8 @@ public class MetaProjectAddDTO extends AbstractDTO {
     /**
      * 标签
      */
-    @ApiModelProperty(notes = N_LABELS, example = E_LABELS)
-    private List<String> labels;
+    @ApiModelProperty(notes = "标签")
+    private List<LabelDTO> labels;
     /**
      * 项目特性
      */
@@ -210,11 +210,11 @@ public class MetaProjectAddDTO extends AbstractDTO {
         this.remoteUrl3 = remoteUrl3;
     }
 
-    public List<String> getLabels() {
+    public List<LabelDTO> getLabels() {
         return labels;
     }
 
-    public void setLabels(List<String> labels) {
+    public void setLabels(List<LabelDTO> labels) {
         this.labels = labels;
     }
 }

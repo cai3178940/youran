@@ -1,7 +1,6 @@
 package com.youran.generate.pojo.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.youran.generate.constant.EditType;
 
 import java.util.List;
 
@@ -19,11 +18,6 @@ public class MetaLabelDTO {
      */
     private String key;
     /**
-     * 编辑方式
-     * @see EditType
-     */
-    private Integer editType;
-    /**
      * 候选项
      */
     private List<String> candidate;
@@ -34,14 +28,6 @@ public class MetaLabelDTO {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public Integer getEditType() {
-        return editType;
-    }
-
-    public void setEditType(Integer editType) {
-        this.editType = editType;
     }
 
     public List<String> getCandidate() {

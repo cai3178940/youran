@@ -148,8 +148,8 @@ public class MetaFieldAddDTO extends AbstractDTO {
     /**
      * 标签
      */
-    @ApiModelProperty(notes = N_LABELS, example = E_LABELS)
-    private List<String> labels;
+    @ApiModelProperty(notes = "标签")
+    private List<LabelDTO> labels;
 
     public Integer getColumnWidth() {
         return columnWidth;
@@ -383,11 +383,11 @@ public class MetaFieldAddDTO extends AbstractDTO {
         this.pkStrategy = pkStrategy;
     }
 
-    public List<String> getLabels() {
+    public List<LabelDTO> getLabels() {
         return labels;
     }
 
-    public void setLabels(List<String> labels) {
+    public void setLabels(List<LabelDTO> labels) {
         this.labels = labels;
     }
 }

@@ -79,7 +79,9 @@ export default {
         this.form = detailOrderModel.initFormBean()
       }
       this.formVisible = true
-      this.$refs.detailOrderForm.clearValidate()
+      this.$nextTick(() => {
+        this.$refs.detailOrderForm.clearValidate()
+      })
     },
     submit () {
       this.$refs.detailOrderForm.validate()

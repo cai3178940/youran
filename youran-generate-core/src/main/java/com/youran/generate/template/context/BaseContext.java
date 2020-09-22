@@ -5,9 +5,9 @@ import com.youran.common.exception.BusinessException;
 import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.exception.SkipCurrentException;
+import com.youran.generate.pojo.dto.LabelDTO;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
-import com.youran.generate.pojo.mapper.LabelsMapper;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
@@ -117,7 +117,7 @@ public class BaseContext {
     /**
      * 项目标签
      */
-    private HashMap<String, String> labels;
+    protected final List<LabelDTO> labelList;
 
     public BaseContext(MetaProjectPO project) {
         //所有实体
@@ -153,18 +153,7 @@ public class BaseContext {
         //项目特性
         this.projectFeature = FeatureMapper.asProjectFeatureDTO(project.getFeature());
         //项目标签
-        List<String> labels = LabelsMapper.asList(project.getLabels());
-        this.labels = new HashMap<>(labels.size());
-        for (String label : labels) {
-            label = StringUtils.trim(label);
-            if (StringUtils.contains(label, LabelsUtil.KEY_SPLIT)) {
-                String value = StringUtils.trim(StringUtils.substringAfter(label, LabelsUtil.KEY_SPLIT));
-                this.labels.put(label, value);
-            } else {
-                this.labels.put(label, label);
-            }
-
-        }
+        this.labelList = project.getLabelList();
         //初始化java依赖
         this.imports = new TreeSet<>();
         this.staticImports = new TreeSet<>();
@@ -400,20 +389,26 @@ public class BaseContext {
 
     /**
      * 判断项目是否包含标签
-     * @param label
+     *
+     * @param key
      * @return
      */
-    public boolean hasLabel(String label) {
-        return this.labels.containsKey(StringUtils.trim(label));
+    public boolean hasLabel(String key) {
+        return LabelsUtil.findLabel(this.labelList, key) != null;
     }
 
     /**
-     * 判断项目是否包含标签
-     * @param label
+     * 获取标签值
+     *
+     * @param key
      * @return 标签值
      */
-    public String getLabelValue(String label) {
-        return this.labels.get(StringUtils.trim(label));
+    public String getLabelValue(String key) {
+        LabelDTO label = LabelsUtil.findLabel(this.labelList, key);
+        if (label == null) {
+            return null;
+        }
+        return label.getValue();
     }
 
     public List<MetaEntityPO> getMetaEntities() {

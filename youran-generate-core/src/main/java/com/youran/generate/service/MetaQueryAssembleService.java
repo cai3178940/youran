@@ -6,6 +6,7 @@ import com.google.common.collect.Sets;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.MetaSpecialField;
+import com.youran.generate.pojo.mapper.LabelsMapper;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
@@ -119,7 +120,8 @@ public class MetaQueryAssembleService implements InitializingBean {
                 dashboards = this.getAllAssembledDashboards(projectId, charts);
             }
             project.setDashboards(dashboards);
-
+            // 装配标签
+            project.setLabelList(LabelsMapper.asList(project.getLabels()));
             // 校验命名重复的问题
             this.checkNameDuplicate(metaEntities, charts, dashboards);
         }
@@ -282,6 +284,8 @@ public class MetaQueryAssembleService implements InitializingBean {
      */
     public MetaEntityPO getAssembledEntity(Integer entityId, boolean withIndex) {
         MetaEntityPO metaEntity = metaEntityService.getEntity(entityId, true);
+        // 装配标签
+        metaEntity.setLabelList(LabelsMapper.asList(metaEntity.getLabels()));
         List<MetaFieldPO> fieldList = metaFieldService.findByEntityId(entityId);
         if (CollectionUtils.isNotEmpty(fieldList)) {
             // 给实体装配字段
@@ -303,6 +307,8 @@ public class MetaQueryAssembleService implements InitializingBean {
      */
     private void assembleFieldForEntity(MetaEntityPO entity, List<MetaFieldPO> fieldList) {
         for (MetaFieldPO field : fieldList) {
+            // 装配标签
+            field.setLabelList(LabelsMapper.asList(field.getLabels()));
             MetadataUtil.checkAndRepairFieldPO(field);
             entity.addField(field);
             String specialField = field.getSpecialField();

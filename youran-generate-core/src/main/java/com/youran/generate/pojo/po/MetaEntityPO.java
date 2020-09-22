@@ -2,9 +2,10 @@ package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.common.util.JsonUtil;
-import com.youran.generate.util.LabelsUtil;
+import com.youran.generate.pojo.dto.LabelDTO;
 import com.youran.generate.pojo.dto.MetaEntityFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
+import com.youran.generate.util.LabelsUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -201,27 +202,34 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     @JsonIgnore
     private transient MetaEntityFeatureDTO entityFeature;
 
-
+    /**
+     * 实体内的所有标签
+     */
+    @JsonIgnore
+    private transient List<LabelDTO> labelList;
 
     /**
      * 判断实体是否包含标签
-     * @param label
+     *
+     * @param key
      * @return
      */
-    public boolean hasLabel(String label) {
-        if(null != getLabelValue(label)) {
-            return true;
-        }
-        return false;
+    public boolean hasLabel(String key) {
+        return LabelsUtil.findLabel(this.labelList, key) != null;
     }
 
     /**
-     * 判断实体是否包含标签
-     * @param label
+     * 获取标签值
+     *
+     * @param key
      * @return 标签值
      */
-    public String getLabelValue(String label) {
-        return LabelsUtil.getLabelValue(label, this.labels);
+    public String getLabelValue(String key) {
+        LabelDTO label = LabelsUtil.findLabel(this.labelList, key);
+        if (label == null) {
+            return null;
+        }
+        return label.getValue();
     }
 
     /**
@@ -234,7 +242,7 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
         }
         this.entityFeature = FeatureMapper.asEntityFeatureDTO(this.feature);
         // 兼容旧数据，模块不存在则设置为空串
-        if (StringUtils.isBlank(this.module)){
+        if (StringUtils.isBlank(this.module)) {
             this.module = "";
         }
     }
@@ -585,6 +593,14 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setTitleField(MetaFieldPO titleField) {
         this.titleField = titleField;
+    }
+
+    public List<LabelDTO> getLabelList() {
+        return labelList;
+    }
+
+    public void setLabelList(List<LabelDTO> labelList) {
+        this.labelList = labelList;
     }
 
     @Override

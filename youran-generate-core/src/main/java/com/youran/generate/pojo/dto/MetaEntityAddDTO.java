@@ -70,8 +70,8 @@ public class MetaEntityAddDTO extends AbstractDTO {
     /**
      * 标签
      */
-    @ApiModelProperty(notes = N_LABELS, example = E_LABELS)
-    private List<String> labels;
+    @ApiModelProperty(notes = "标签")
+    private List<LabelDTO> labels;
 
     @AssertTrue(message = "类名不合法")
     public boolean isClassNameValid(){
@@ -150,11 +150,11 @@ public class MetaEntityAddDTO extends AbstractDTO {
         this.desc = desc;
     }
 
-    public List<String> getLabels() {
+    public List<LabelDTO> getLabels() {
         return labels;
     }
 
-    public void setLabels(List<String> labels) {
+    public void setLabels(List<LabelDTO> labels) {
         this.labels = labels;
     }
 }

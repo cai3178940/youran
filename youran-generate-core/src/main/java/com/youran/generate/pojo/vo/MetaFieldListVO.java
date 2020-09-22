@@ -1,6 +1,7 @@
 package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
+import com.youran.generate.pojo.dto.LabelDTO;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -107,8 +108,8 @@ public class MetaFieldListVO extends AbstractVO {
     @ApiModelProperty(notes = N_SPECIALFIELD, example = E_SPECIALFIELD)
     private String specialField;
 
-    @ApiModelProperty(notes = N_LABELS, example = E_LABELS)
-    private List<String> labels;
+    @ApiModelProperty(notes = "标签")
+    private List<LabelDTO> labels;
 
     @ApiModelProperty(notes = "级联字段数量", example = "0")
     private Integer cascadeFieldNum;
@@ -361,11 +362,11 @@ public class MetaFieldListVO extends AbstractVO {
         this.update = update;
     }
 
-    public List<String> getLabels() {
+    public List<LabelDTO> getLabels() {
         return labels;
     }
 
-    public void setLabels(List<String> labels) {
+    public void setLabels(List<LabelDTO> labels) {
         this.labels = labels;
     }
 

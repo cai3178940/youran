@@ -82,21 +82,6 @@ export function getRules () {
       bootVersion: [
         { required: true, type: 'number', message: '请选择spring-boot版本', trigger: 'change' }
       ]
-    },
-    labels: [
-      { type: 'array',
-        validator: (rule, labels, callback) => {
-          for (let index = 0; index < labels.length; index++) {
-            const label = labels[index]
-            if (!/^[a-zA-Z|_]+(:[a-zA-Z|_|0-9|,]+)?$/.test(label)) {
-              callback(new Error(`标签[${label}]格式错误，请重新填写`))
-            }
-          }
-
-          callback()
-        },
-        trigger: 'blur'
-      }
-    ]
+    }
   }
 }

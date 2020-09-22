@@ -1,9 +1,10 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.youran.generate.util.LabelsUtil;
+import com.youran.generate.pojo.dto.LabelDTO;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
+import com.youran.generate.util.LabelsUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -130,6 +131,11 @@ public class MetaProjectPO extends BasePO {
      */
     @JsonIgnore
     private transient List<MetaDashboardPO> dashboards;
+    /**
+     * 项目下的所有标签
+     */
+    @JsonIgnore
+    private transient List<LabelDTO> labelList;
 
     /**
      * 根据序号获取远程git仓库地址
@@ -184,23 +190,26 @@ public class MetaProjectPO extends BasePO {
 
     /**
      * 判断实体是否包含标签
-     * @param label
+     *
+     * @param key
      * @return
      */
-    public boolean hasLabel(String label) {
-        if(null != getLabelValue(label)) {
-            return true;
-        }
-        return false;
+    public boolean hasLabel(String key) {
+        return LabelsUtil.findLabel(this.labelList, key) != null;
     }
 
     /**
-     * 判断实体是否包含标签
-     * @param label
+     * 获取标签值
+     *
+     * @param key
      * @return 标签值
      */
-    public String getLabelValue(String label) {
-        return LabelsUtil.getLabelValue(label, this.labels);
+    public String getLabelValue(String key) {
+        LabelDTO label = LabelsUtil.findLabel(this.labelList, key);
+        if (label == null) {
+            return null;
+        }
+        return label.getValue();
     }
 
     public List<MetaManyToManyPO> getMtms() {
@@ -387,4 +396,11 @@ public class MetaProjectPO extends BasePO {
         this.remoteUrl3 = remoteUrl3;
     }
 
+    public List<LabelDTO> getLabelList() {
+        return labelList;
+    }
+
+    public void setLabelList(List<LabelDTO> labelList) {
+        this.labelList = labelList;
+    }
 }
