@@ -103,20 +103,6 @@
               <el-button size="small" type="text" @click="removeTemplateItem(3)">移除第三模板</el-button>
             </el-col>
           </el-form-item>
-          <el-form-item label="标签" prop="labels" >
-            <help-popover name="project.labels">
-              <el-button v-for="(label,index) in form.labels"
-                         :key="index" class="inner-form-button"
-                         type="primary" @click="editLabel(index, label)"
-                         plain>
-                {{label | displayLabel}}
-              </el-button>
-              <el-button type="success" @click="addLabel"
-                         class="inner-form-button inner-add-button"
-                         icon="el-icon-plus" plain>
-              </el-button>
-            </help-popover>
-          </el-form-item>
           <el-form-item label="启用Git仓库" prop="remote">
             <help-popover name="project.remote">
               <el-switch v-model="form.remote" tabindex="100">
@@ -156,6 +142,20 @@
               </help-popover>
             </el-form-item>
           </template>
+          <el-form-item label="标签" prop="labels" >
+            <help-popover name="project.labels">
+              <el-button v-for="(label,index) in form.labels"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editLabel(index, label)"
+                         plain>
+                {{label | displayLabel}}
+              </el-button>
+              <el-button type="success" @click="addLabel"
+                         class="inner-form-button inner-add-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
+            </help-popover>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()" tabindex="160">提交</el-button>
             <el-button v-if="edit" type="warning" @click="reset()" tabindex="170">重置</el-button>

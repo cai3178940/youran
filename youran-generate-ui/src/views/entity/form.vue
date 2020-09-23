@@ -62,20 +62,6 @@
               </el-col>
             </help-popover>
           </el-form-item>
-          <el-form-item label="标签" prop="labels" >
-            <help-popover name="entity.labels">
-              <el-button v-for="(label,index) in form.labels"
-                         :key="index" class="inner-form-button"
-                         type="primary" @click="editLabel(index, label)"
-                         plain>
-                {{label | displayLabel}}
-              </el-button>
-              <el-button type="success" @click="addLabel"
-                         class="inner-form-button inner-add-button"
-                         icon="el-icon-plus" plain>
-              </el-button>
-            </help-popover>
-          </el-form-item>
           <el-form-item label="描述" prop="desc">
             <help-popover name="entity.desc">
               <el-input v-model="form.desc" type="textarea"
@@ -101,6 +87,20 @@
               <el-checkbox v-model="form.feature.deleteBatch" tabindex="110">批量删除</el-checkbox>
               <el-checkbox v-model="form.feature.excelExport" tabindex="120">excel导出</el-checkbox>
               <el-checkbox v-model="form.feature.excelImport" tabindex="130">excel导入</el-checkbox>
+            </help-popover>
+          </el-form-item>
+          <el-form-item label="标签" prop="labels" >
+            <help-popover name="entity.labels">
+              <el-button v-for="(label,index) in form.labels"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editLabel(index, label)"
+                         plain>
+                {{label | displayLabel}}
+              </el-button>
+              <el-button type="success" @click="addLabel"
+                         class="inner-form-button inner-add-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
             </help-popover>
           </el-form-item>
           <el-form-item>

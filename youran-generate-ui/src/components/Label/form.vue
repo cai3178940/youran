@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="配置标签" :visible.sync="formVisible" width="50%">
+  <el-dialog title="配置标签" :visible.sync="formVisible" width="40%">
     <el-form ref="labelForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
@@ -89,10 +89,7 @@ export default {
     },
     findKeySuggestions (queryString, cb) {
       const action = () => {
-        const metaLabels = this.metaLabels.slice(0)
-        const results = queryString ? metaLabels.filter(
-          c => c.key.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-        ) : metaLabels
+        const results = this.metaLabels.slice(0)
         cb(results.map(c => ({ value: c.key })))
       }
       if (this.metaLabels) {
