@@ -240,25 +240,16 @@
           </el-form-item>
           <el-form-item label="标签" prop="labels" >
             <help-popover name="field.labels">
-               <el-col :span="24" class="col-left">
-                 <el-tag
-                    :key="tag"
-                    v-for="tag in form.labels"
-                    closable
-                    :disable-transitions="false"
-                    @close="handleClose(tag)">
-                    {{tag}}
-                  </el-tag>
-                  <el-autocomplete
-                    v-if="inputVisible"
-                    v-model="inputValue"
-                    class="input-new-tag"
-                    ref="saveTagInput"
-                    :fetch-suggestions="findLabels"
-                    @keyup.enter.native="handleInputConfirm"
-                    @select="handleSelectConfirm"></el-autocomplete>
-                  <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 增加标签</el-button>
-               </el-col>
+              <el-button v-for="(label,index) in form.labels"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editLabel(index, label)"
+                         plain>
+                {{label | displayLabel}}
+              </el-button>
+              <el-button type="success" @click="addLabel"
+                         class="inner-form-button inner-add-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
             </help-popover>
           </el-form-item>
           <el-form-item>
@@ -270,6 +261,7 @@
       </el-col>
     </el-row>
     <el-backtop target=".el-main"></el-backtop>
+    <label-form ref="labelForm" @submit="onLabelSubmit" @remove="onLabelRemove"></label-form>
   </div>
 </template>
 
@@ -278,12 +270,16 @@ import options from '@/utils/options'
 import entityApi from '@/api/entity'
 import fieldApi from '@/api/field'
 import constApi from '@/api/const'
+import labelForm from '@/components/Label/form'
 import { initFormBean, getRules } from './model'
 import { findSystemTemplate } from '@/utils/field-template'
 
 export default {
   name: 'fieldForm',
   props: ['projectId', 'entityId', 'fieldId'],
+  components: {
+    labelForm
+  },
   data () {
     const edit = !!this.fieldId
     return {
@@ -311,6 +307,15 @@ export default {
       inputVisible: false,
       inputValue: '',
       labels: null
+    }
+  },
+  filters: {
+    displayLabel (label) {
+      if (label.value) {
+        return label.key + ':' + label.value
+      } else {
+        return label.key
+      }
     }
   },
   computed: {
@@ -568,49 +573,28 @@ export default {
       this.form.foreignKey = true
       this.formReady()
     },
-    handleClose (tag) {
-      this.form.labels.splice(this.form.labels.indexOf(tag), 1)
-      this.$refs.projectForm.validateField('labels')
+    editLabel (index, label) {
+      this.$refs.labelForm.show({
+        projectId: this.projectId,
+        labelType: 'field'
+      }, label, index)
     },
-    showInput () {
-      this.inputVisible = true
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus()
-      })
+    addLabel () {
+      this.$refs.labelForm.show({
+        projectId: this.projectId,
+        labelType: 'field'
+      }, null, this.form.labels.length)
     },
-    handleInputConfirm () {
-      let inputValue = this.inputValue
-      if (inputValue) {
-        if (!this.form.labels) this.form.labels = []
-        if (this.form.labels.indexOf(inputValue) === -1) {
-          this.form.labels.push(inputValue)
-        }
-      }
-      this.inputVisible = false
-      this.inputValue = ''
-    },
-    handleSelectConfirm () {
-      let inputValue = this.inputValue
-      if (!inputValue.endsWith(':')) {
-        this.handleInputConfirm()
-      }
-    },
-    findLabels (queryString, cb) {
-      const action = () => {
-        const labels = this.labels.slice(0)
-        const results = queryString ? labels.filter(
-          c => c.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-        ) : labels
-        cb(results.map(c => ({ value: c })))
-      }
-      if (this.labels) {
-        action()
+    onLabelSubmit (index, label) {
+      if (index >= this.form.labels.length) {
+        this.form.labels.push(label)
       } else {
-        fieldApi.findLabels()
-          .then(data => {
-            this.labels = data
-            action()
-          })
+        this.$set(this.form.labels, index, label)
+      }
+    },
+    onLabelRemove (index, label) {
+      if (index < this.form.labels.length) {
+        this.form.labels.splice(index, 1)
       }
     }
   },

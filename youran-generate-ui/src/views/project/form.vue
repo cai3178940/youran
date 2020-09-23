@@ -198,7 +198,11 @@ export default {
   },
   filters: {
     displayLabel (label) {
-      return label.key + ':' + label.value
+      if (label.value) {
+        return label.key + ':' + label.value
+      } else {
+        return label.key
+      }
     }
   },
   methods: {
@@ -285,10 +289,22 @@ export default {
       }
     },
     editLabel (index, label) {
-      this.$refs.labelForm.show(label, index)
+      const templateIds = [this.form.templateId, this.form.templateId2, this.form.templateId3]
+        .filter(value => value)
+      this.$refs.labelForm.show({
+        projectId: this.projectId,
+        templateId: templateIds,
+        labelType: 'project'
+      }, label, index)
     },
     addLabel () {
-      this.$refs.labelForm.show(null, this.form.labels.length)
+      const templateIds = [this.form.templateId, this.form.templateId2, this.form.templateId3]
+        .filter(value => value)
+      this.$refs.labelForm.show({
+        projectId: this.projectId,
+        templateId: templateIds,
+        labelType: 'project'
+      }, null, this.form.labels.length)
     },
     onLabelSubmit (index, label) {
       if (index >= this.form.labels.length) {

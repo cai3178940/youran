@@ -37,7 +37,6 @@ export default {
         }
       }
       html = converter.makeHtml(markdown)
-      console.info(this.name, markdown, html)
     }
     return {
       html: html

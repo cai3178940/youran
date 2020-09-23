@@ -18,49 +18,48 @@ public class MetaLabelPackDTO extends AbstractDTO {
     /**
      * 项目标签元数据
      */
-    private List<MetaLabelDTO> projectMetaLabel;
+    private List<MetaLabelDTO> project;
     /**
      * 实体标签元数据
      */
-    private List<MetaLabelDTO> entityMetaLabel;
+    private List<MetaLabelDTO> entity;
     /**
      * 字段标签元数据
      */
-    private List<MetaLabelDTO> fieldMetaLabel;
+    private List<MetaLabelDTO> field;
 
     public List<MetaLabelDTO> fetchByType(String labelType) {
         if (LabelType.PROJECT.equals(labelType)) {
-            return this.projectMetaLabel;
+            return this.project;
         } else if (LabelType.ENTITY.equals(labelType)) {
-            return this.entityMetaLabel;
+            return this.entity;
         } else if (LabelType.FIELD.equals(labelType)) {
-            return this.fieldMetaLabel;
+            return this.field;
         }
         return null;
     }
 
-
-    public List<MetaLabelDTO> getProjectMetaLabel() {
-        return projectMetaLabel;
+    public List<MetaLabelDTO> getProject() {
+        return project;
     }
 
-    public void setProjectMetaLabel(List<MetaLabelDTO> projectMetaLabel) {
-        this.projectMetaLabel = projectMetaLabel;
+    public void setProject(List<MetaLabelDTO> project) {
+        this.project = project;
     }
 
-    public List<MetaLabelDTO> getEntityMetaLabel() {
-        return entityMetaLabel;
+    public List<MetaLabelDTO> getEntity() {
+        return entity;
     }
 
-    public void setEntityMetaLabel(List<MetaLabelDTO> entityMetaLabel) {
-        this.entityMetaLabel = entityMetaLabel;
+    public void setEntity(List<MetaLabelDTO> entity) {
+        this.entity = entity;
     }
 
-    public List<MetaLabelDTO> getFieldMetaLabel() {
-        return fieldMetaLabel;
+    public List<MetaLabelDTO> getField() {
+        return field;
     }
 
-    public void setFieldMetaLabel(List<MetaLabelDTO> fieldMetaLabel) {
-        this.fieldMetaLabel = fieldMetaLabel;
+    public void setField(List<MetaLabelDTO> field) {
+        this.field = field;
     }
 }

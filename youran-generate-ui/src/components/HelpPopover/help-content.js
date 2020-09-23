@@ -48,17 +48,11 @@ export default {
       `
     },
     labels: `
-**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能
-
-**允许的标签格式为如下两种：**
-- **Key**：简单Key方式的标签
-- **Key:value**：以键值对的方式的标签
-
-> 注意：key只能是字符串和下划线；value可以包含大小写字母、数字、下划线、逗号
+**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能。标签是按key:value方式存储。
 
 **模板中获取标签配置**
-- **判断key是否存在**：\${this.hasLabel(label)}
-- **获取key配置的value**：\${this.getLabelValue(label)!}
+- **判断key是否存在**：\${this.hasLabel(key)}
+- **获取key配置的value**：\${this.getLabelValue(key)!}
     `
   },
   entity: {
@@ -96,17 +90,11 @@ export default {
 
     `,
     labels: `
-**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能
-
-**允许的标签格式为如下两种：**
-- **Key**：简单Key方式的标签
-- **Key:value**：以键值对的方式的标签
-
-> 注意：key只能是字符串和下划线；value可以包含大小写字母、数字、下划线、逗号
+**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能。标签是按key:value方式存储。
 
 **模板中获取标签配置**
-- **判断key是否存在**：\${this.metaEntity.hasLabel(label)}
-- **获取key配置的value**：\${this.metaEntity.getLabelValue(label)!}
+- **判断key是否存在**：\${this.metaEntity.hasLabel(key)}
+- **获取key配置的value**：\${this.metaEntity.getLabelValue(key)!}
     `
   },
   field: {
@@ -260,17 +248,11 @@ private Integer publishSignSortSign;
 **列宽**：生成前端列表时，用来指定当前列的宽度(像素值)，0值代表宽度自适应
     `,
     labels: `
-**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能
-
-**允许的标签格式为如下两种：**
-- **Key**：简单Key方式的标签
-- **Key:value**：以键值对的方式的标签
-
-> 注意：key只能是字符串和下划线；value可以包含大小写字母、数字、下划线、逗号
+**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能。标签是按key:value方式存储。
 
 **模板中获取标签配置**
-- **判断key是否存在**：\${fieldPO.hasLabel(label)}
-- **获取key配置的value**：\${fieldPO.getLabelValue(label)!}
+- **判断key是否存在**：\${fieldPO.hasLabel(key)}
+- **获取key配置的value**：\${fieldPO.getLabelValue(key)!}
     `
   },
   'const': {

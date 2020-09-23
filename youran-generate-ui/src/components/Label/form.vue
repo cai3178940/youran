@@ -22,6 +22,8 @@
 
 <script>
 
+import labelApi from '@/api/label'
+
 function initFormBean () {
   return {
     key: '',
@@ -38,6 +40,10 @@ export default {
       formVisible: false,
       // 最终返回给调用组件的表单数据
       form: initFormBean(),
+      projectId: null,
+      templateId: null,
+      labelType: null,
+      metaLabels: null,
       rules: {
         key: [
           { required: true, message: '请填写key', trigger: 'change' }
@@ -48,10 +54,19 @@ export default {
   methods: {
     /**
      * 显示表单窗口
+     * @param projectId 项目id
+     * @param templateId 模板id
+     * @param labelType 标签类型
      * @param formBean 编辑的label，如果新增则为空
      * @param position 当前编辑的label在数组中的位置
      */
-    show (formBean, position) {
+    show ({ projectId, templateId, labelType }, formBean, position) {
+      this.projectId = projectId
+      if (this.templateId !== templateId) {
+        this.templateId = templateId
+        this.metaLabels = null
+      }
+      this.labelType = labelType
       this.position = position
       if (formBean) {
         this.edit = true
@@ -72,8 +87,38 @@ export default {
           this.formVisible = false
         })
     },
-    findKeySuggestions () {},
-    findValueSuggestions () {},
+    findKeySuggestions (queryString, cb) {
+      const action = () => {
+        const metaLabels = this.metaLabels.slice(0)
+        const results = queryString ? metaLabels.filter(
+          c => c.key.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        ) : metaLabels
+        cb(results.map(c => ({ value: c.key })))
+      }
+      if (this.metaLabels) {
+        action()
+      } else {
+        labelApi.findMetaLabel(this.projectId, this.templateId, this.labelType)
+          .then(data => {
+            this.metaLabels = data
+            action()
+          })
+      }
+    },
+    findValueSuggestions (queryString, cb) {
+      let foundCandidate = false
+      if (this.form.key && this.metaLabels) {
+        const metaLabel = this.metaLabels.find(c => c.key === this.form.key)
+        if (metaLabel && metaLabel.candidate) {
+          foundCandidate = true
+          cb(metaLabel.candidate.map(v => ({ value: v })))
+        }
+      }
+      if (!foundCandidate) {
+        // eslint-disable-next-line standard/no-callback-literal
+        cb([])
+      }
+    },
     remove () {
       this.$emit('remove', this.position, this.form)
       this.formVisible = false

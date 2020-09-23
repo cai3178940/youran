@@ -8,6 +8,7 @@ import com.youran.generate.pojo.dto.MetaLabelDTO;
 import com.youran.generate.service.MetaLabelService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaLabelAPI;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,13 +40,12 @@ public class MetaLabelController extends AbstractController implements MetaLabel
         if (!LabelType.check(labelType)) {
             throw new BusinessException(ErrorCode.BAD_REQUEST, "标签类型不存在");
         }
-        List<MetaLabelDTO> list;
-        if (projectId != null) {
-            list = metaLabelService.getMetaLabelByProjectId(projectId, labelType);
-        } else {
+        List<MetaLabelDTO> list = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(templateId)){
             list = metaLabelService.getMetaLabelByTemplateId(templateId, labelType);
+        } else if (projectId != null) {
+            list = metaLabelService.getMetaLabelByProjectId(projectId, labelType);
         }
-
         return ResponseEntity.ok(list);
     }
 
