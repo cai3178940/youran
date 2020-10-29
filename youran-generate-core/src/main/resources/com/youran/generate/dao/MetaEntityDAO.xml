@@ -94,7 +94,6 @@
             t.module <if test="moduleSortSign > 0">asc</if><if test="moduleSortSign &lt; 0">desc</if>,
         </if>
             t.created_time
-        limit #{startIndex},#{pageSize}
     </select>
 
     <select id="findIdsByProject" resultType="int">
