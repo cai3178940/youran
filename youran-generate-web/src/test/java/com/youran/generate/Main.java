@@ -1,6 +1,8 @@
 package com.youran.generate;
 
 import com.youran.generate.web.rest.*;
+import com.youran.generate.web.rest.team.ProjectTeamControllerTest;
+import com.youran.generate.web.rest.team.ProjectTeamMemberControllerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -20,7 +22,8 @@ import org.junit.runners.Suite;
     MetaConstDetailControllerTest.class,
     MetaManyToManyControllerTest.class,
     MetaCascadeExtControllerTest.class,
-    ReverseEngineeringControllerTest.class
+    ProjectTeamControllerTest.class,
+    ProjectTeamMemberControllerTest.class,
 })
 public class Main {
 

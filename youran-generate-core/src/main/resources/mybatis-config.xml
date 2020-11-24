@@ -8,6 +8,7 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
     <typeAliases>
+        <package name="com.youran.common.pojo"/>
         <package name="com.youran.generate.pojo"/>
     </typeAliases>
     <mappers>

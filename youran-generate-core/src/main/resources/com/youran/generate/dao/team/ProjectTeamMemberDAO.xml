@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.dao.team.ProjectTeamMemberDAO">
+
+
+    <sql id="projectTeamMemberColumns">
+        ${alias}.id,
+        ${alias}.team_id as teamId,
+        ${alias}.username,
+        ${alias}.created_time as createdTime,
+        ${alias}.created_by as createdBy
+    </sql>
+
+
+    <select id="findById" resultType="ProjectTeamMemberPO">
+        select
+            <include refid="projectTeamMemberColumns"><property name="alias" value="t"/></include>
+        from project_team_member t
+        <where>
+            and t.id = #{arg0}
+        </where>
+        limit 1
+    </select>
+
+    <select id="exist" resultType="boolean">
+        select count(1) from project_team_member
+        <where>
+            and id = #{arg0}
+        </where>
+    </select>
+
+    <insert id="_save" useGeneratedKeys="true" keyProperty="id" parameterType="ProjectTeamMemberPO">
+        insert into project_team_member(
+        id,
+        team_id,
+        username,
+        created_time,
+        created_by
+        ) VALUES (
+        #{id,jdbcType=INTEGER},
+        #{teamId,jdbcType=INTEGER},
+        #{username,jdbcType=VARCHAR},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{createdBy,jdbcType=VARCHAR}
+        )
+    </insert>
+
+
+    <update id="_update" parameterType="ProjectTeamMemberPO">
+        update project_team_member set
+            team_id=#{teamId,jdbcType=INTEGER},
+            username=#{username,jdbcType=VARCHAR}
+        where id=#{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete">
+        delete from project_team_member
+        where id=#{arg0,jdbcType=INTEGER}
+    </delete>
+
+
+    <sql id="queryCondition">
+        <if test="teamId != null ">
+            and t.team_id = #{teamId}
+        </if>
+    </sql>
+
+    <sql id="orderCondition">
+        order by
+        <if test="createdTimeSortSign != null and createdTimeSortSign!=0">
+            t.created_time <if test="createdTimeSortSign > 0">asc</if><if test="createdTimeSortSign &lt; 0">desc</if>,
+        </if>
+            t.created_time desc
+    </sql>
+
+    <select id="findCountByQuery" parameterType="ProjectTeamMemberQO" resultType="int">
+        select count(1) from project_team_member t
+        <where>
+        <include refid="queryCondition"/>
+        </where>
+    </select>
+
+    <select id="findListByQuery" parameterType="ProjectTeamMemberQO" resultType="ProjectTeamMemberListVO">
+        select
+            <include refid="projectTeamMemberColumns"><property name="alias" value="t"/></include>
+        from project_team_member t
+        <where>
+        <include refid="queryCondition"/>
+        </where>
+        <include refid="orderCondition"/>
+    </select>
+
+    <select id="getCountByTeamId" parameterType="Integer" resultType="int">
+        select count(1)
+        from project_team_member t
+        where
+            t.team_id=#{arg0}
+    </select>
+
+
+
+    <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
+
+
+</mapper>

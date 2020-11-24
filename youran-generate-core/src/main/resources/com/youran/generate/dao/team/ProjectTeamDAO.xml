@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youran.generate.dao.team.ProjectTeamDAO">
+
+
+    <sql id="projectTeamColumns">
+        ${alias}.team_id as teamId,
+        ${alias}.`name`,
+        ${alias}.created_time as createdTime,
+        ${alias}.created_by as createdBy,
+        ${alias}.operated_time as operatedTime,
+        ${alias}.operated_by as operatedBy,
+        ${alias}.version,
+        ${alias}.deleted
+    </sql>
+
+
+    <select id="findById" resultType="ProjectTeamPO">
+        select
+            <include refid="projectTeamColumns"><property name="alias" value="t"/></include>
+        from project_team t
+        <where>
+            and t.deleted=0
+            and t.team_id = #{arg0}
+        </where>
+        limit 1
+    </select>
+
+    <select id="exist" resultType="boolean">
+        select count(1) from project_team
+        <where>
+            and deleted=0
+            and team_id = #{arg0}
+        </where>
+    </select>
+
+    <insert id="_save" useGeneratedKeys="true" keyProperty="teamId" parameterType="ProjectTeamPO">
+        insert into project_team(
+        team_id,
+        `name`,
+        created_time,
+        created_by,
+        operated_time,
+        operated_by,
+        version,
+        deleted
+        ) VALUES (
+        #{teamId,jdbcType=INTEGER},
+        #{name,jdbcType=VARCHAR},
+        #{createdTime,jdbcType=TIMESTAMP},
+        #{createdBy,jdbcType=VARCHAR},
+        #{operatedTime,jdbcType=TIMESTAMP},
+        #{operatedBy,jdbcType=VARCHAR},
+        #{version,jdbcType=INTEGER},
+        #{deleted,jdbcType=BOOLEAN}
+        )
+    </insert>
+
+
+    <update id="_update" parameterType="ProjectTeamPO">
+        update project_team set
+            `name`=#{name,jdbcType=VARCHAR},
+            operated_time=#{operatedTime,jdbcType=TIMESTAMP},
+            operated_by=#{operatedBy,jdbcType=VARCHAR},
+            version = version+1,
+            deleted=#{deleted,jdbcType=BOOLEAN}
+        where team_id=#{teamId,jdbcType=INTEGER}
+        and version=#{version,jdbcType=INTEGER}
+        and deleted=0
+    </update>
+
+    <delete id="delete">
+        update project_team set deleted=1
+        where team_id=#{arg0,jdbcType=INTEGER}
+        and deleted=0
+    </delete>
+
+
+    <sql id="queryCondition">
+        <if test="name != null and name !='' ">
+            <bind name="name_pattern" value="'%' + name + '%'" />
+            and t.`name` like #{name_pattern}
+        </if>
+    </sql>
+
+    <sql id="orderCondition">
+        order by
+        <if test="createdTimeSortSign != null and createdTimeSortSign!=0">
+            t.created_time <if test="createdTimeSortSign > 0">asc</if><if test="createdTimeSortSign &lt; 0">desc</if>,
+        </if>
+        <if test="operatedTimeSortSign != null and operatedTimeSortSign!=0">
+            t.operated_time <if test="operatedTimeSortSign > 0">asc</if><if test="operatedTimeSortSign &lt; 0">desc</if>,
+        </if>
+            t.operated_time desc
+    </sql>
+
+    <select id="findCountByQuery" parameterType="ProjectTeamQO" resultType="int">
+        select count(1) from project_team t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+    </select>
+
+    <select id="findListByQuery" parameterType="ProjectTeamQO" resultType="ProjectTeamListVO">
+        select
+            <include refid="projectTeamColumns"><property name="alias" value="t"/></include>
+        from project_team t
+        <where>
+            and t.deleted=0
+        <include refid="queryCondition"/>
+        </where>
+        <include refid="orderCondition"/>
+    </select>
+
+    <select id="findOptions" parameterType="OptionQO" resultType="OptionVO">
+        select
+            t.team_id as `key`,
+            t.`name` as `value`
+        from project_team t
+        <where>
+            and t.deleted=0
+            <if test="lastKey != null">
+                and t.team_id > #{lastKey}
+            </if>
+            <if test="matchValue != null and matchValue !='' ">
+                <bind name="matchValue_pattern" value="'%' + matchValue + '%'" />
+                and t.`name` like #{matchValue_pattern}
+            </if>
+        </where>
+        order by t.team_id asc
+        limit #{limit}
+    </select>
+
+
+
+    <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
+
+
+</mapper>

@@ -398,3 +398,28 @@ CREATE TABLE `meta_dashboard` (
     `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
     PRIMARY KEY (`dashboard_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='看板';
+
+DROP TABLE IF EXISTS `project_team`;
+
+CREATE TABLE `project_team` (
+    `team_id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `name` varchar(32) NOT NULL COMMENT '名称',
+    `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
+    `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
+    `operated_time` datetime NOT NULL COMMENT '修改时间【yyyy-MM-dd HH:mm:ss】',
+    `operated_by` varchar(20) NOT NULL COMMENT '修改人【最大长度20】',
+    `version` int(11) NOT NULL COMMENT '乐观锁版本号【整型】',
+    `deleted` tinyint(1) NOT NULL COMMENT '逻辑删除标识【0-未删除，1-已删除】',
+    PRIMARY KEY (`team_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目组';
+
+DROP TABLE IF EXISTS `project_team_member`;
+
+CREATE TABLE `project_team_member` (
+    `id` int(11) AUTO_INCREMENT COMMENT '主键ID',
+    `team_id` int(11) NOT NULL COMMENT '项目组id',
+    `username` varchar(32) NOT NULL COMMENT '用户名',
+    `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
+    `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目组成员';

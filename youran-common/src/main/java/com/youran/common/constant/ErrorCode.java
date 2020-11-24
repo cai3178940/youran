@@ -312,6 +312,10 @@ public enum ErrorCode {
      */
     PARAM_IS_NULL(523, "参数为空"),
     /**
+     * 级联删除异常
+     */
+    CASCADE_DELETE_ERROR(524, "级联删除异常"),
+    /**
      * 内部数据校验失败
      */
     INNER_DATA_ERROR(560, "内部数据校验失败"),
