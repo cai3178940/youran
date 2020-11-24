@@ -40,8 +40,8 @@ public class ProjectTeamMemberService {
     @Transactional(rollbackFor = RuntimeException.class)
     public ProjectTeamMemberPO save(ProjectTeamMemberAddDTO projectTeamMemberDTO) {
         ProjectTeamMemberPO projectTeamMember = ProjectTeamMemberMapper.INSTANCE.fromAddDTO(projectTeamMemberDTO);
-        if(projectTeamMember.getTeamId() != null){
-            Assert.isTrue(projectTeamDAO.exist(projectTeamMember.getTeamId()),"项目组id有误");
+        if (projectTeamMember.getTeamId() != null) {
+            Assert.isTrue(projectTeamDAO.exist(projectTeamMember.getTeamId()), "项目组id有误");
         }
         projectTeamMemberDAO.save(projectTeamMember);
         return projectTeamMember;
@@ -61,11 +61,11 @@ public class ProjectTeamMemberService {
     /**
      * 根据主键获取【项目组成员】
      *
-     * @param id 主键
+     * @param id    主键
      * @param force 是否强制获取
      * @return
      */
-    public ProjectTeamMemberPO getProjectTeamMember(Integer id, boolean force){
+    public ProjectTeamMemberPO getProjectTeamMember(Integer id, boolean force) {
         ProjectTeamMemberPO projectTeamMember = projectTeamMemberDAO.findById(id);
         if (force && projectTeamMember == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
@@ -89,6 +89,29 @@ public class ProjectTeamMemberService {
     }
 
 
+    /**
+     * 校验用户是否在项目组中
+     *
+     * @param teamId
+     * @param username
+     * @return
+     */
+    public boolean checkMemberInTeam(Integer teamId, String username) {
+        if (teamId == null) {
+            return false;
+        }
+        return projectTeamMemberDAO.checkExist(teamId, username);
+    }
+
+    /**
+     * 查询用户所在的项目组
+     *
+     * @param username
+     * @return
+     */
+    public List<Integer> findUserTeamIds(String username) {
+        return projectTeamMemberDAO.findTeamIdsByUsername(username);
+    }
 }
 
 

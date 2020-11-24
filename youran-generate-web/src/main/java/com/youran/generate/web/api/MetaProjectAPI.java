@@ -1,6 +1,7 @@
 package com.youran.generate.web.api;
 
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
+import com.youran.generate.pojo.dto.MetaProjectShareDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
@@ -44,6 +45,17 @@ public interface MetaProjectAPI {
         @ApiImplicitParam(name = "metaProjectUpdateDTO", dataType = "MetaProjectUpdateDTO", value = "修改项目参数", paramType = "body"),
     })
     ResponseEntity<MetaProjectShowVO> update(MetaProjectUpdateDTO metaProjectUpdateDTO);
+
+    /**
+     * 共享项目
+     *
+     * @param dto
+     */
+    @ApiOperation(value = "共享项目")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "dto", dataType = "MetaProjectShareDTO", value = "共享项目入参", paramType = "body"),
+    })
+    ResponseEntity<Integer> share(MetaProjectShareDTO dto);
 
     /**
      * 查询项目列表

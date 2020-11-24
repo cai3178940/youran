@@ -1,6 +1,7 @@
 package com.youran.generate.service;
 
 import com.youran.common.constant.ErrorCode;
+import com.youran.common.context.LoginContext;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
 import com.youran.common.util.AESSecurityUtil;
@@ -9,6 +10,7 @@ import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.dao.MetaProjectDAO;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
+import com.youran.generate.pojo.dto.MetaProjectShareDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
 import com.youran.generate.pojo.po.MetaConstPO;
@@ -19,6 +21,7 @@ import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.vo.CodeTemplateListVO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
+import com.youran.generate.service.team.ProjectTeamMemberService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +56,10 @@ public class MetaProjectService {
     private CodeTemplateService codeTemplateService;
     @Autowired
     private MetaQueryAssembleService metaQueryAssembleService;
+    @Autowired
+    private LoginContext loginContext;
+    @Autowired
+    private ProjectTeamMemberService projectTeamMemberService;
 
     /**
      * 获取项目正规名称
@@ -117,6 +124,22 @@ public class MetaProjectService {
             project.setPassword(encrypt);
         }
         this.updateProject(project);
+        return project;
+    }
+
+    /**
+     * 共享项目
+     *
+     * @param dto
+     * @return
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    @OptimisticLock
+    public MetaProjectPO share(MetaProjectShareDTO dto) {
+        Integer projectId = dto.getProjectId();
+        MetaProjectPO project = this.getAndCheckProject(projectId);
+        project.setTeamId(dto.getTeamId());
+        metaProjectDAO.update(project);
         return project;
     }
 
@@ -272,13 +295,14 @@ public class MetaProjectService {
      * @param projectPO
      */
     public void checkOperatorByProject(MetaProjectPO projectPO) {
-        /*String currentUser = loginContext.getCurrentOperatorId();
+        String currentUser = loginContext.getCurrentUser();
         if(StringUtils.isBlank(currentUser)){
             throw new BusinessException("获取当前登录用户失败");
         }
-        if(!currentUser.equals(projectPO.getCreatedBy())){
-            throw new BusinessException("您不是该项目的创建者，无此操作权限");
-        }*/
+        if (!currentUser.equals(projectPO.getCreatedBy())
+            && !projectTeamMemberService.checkMemberInTeam(projectPO.getTeamId(), currentUser)) {
+            throw new BusinessException("您无该项目的操作权限");
+        }
     }
 
 

@@ -104,4 +104,19 @@
     <!-- 以上是自动生成的代码，尽量不要手动修改，新的sql请写在本行注释以下区域 -->
 
 
+    <select id="checkExist" resultType="boolean">
+        select count(1)
+        from project_team_member t
+        where
+            t.team_id = #{teamId}
+            and t.username = #{username}
+    </select>
+
+    <select id="findTeamIdsByUsername" resultType="boolean">
+        select distinct team_id
+        from project_team_member t
+        where
+            t.username = #{arg0}
+    </select>
+
 </mapper>

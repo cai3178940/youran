@@ -1,9 +1,11 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.constant.ErrorCode;
+import com.youran.common.context.LoginContext;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
+import com.youran.generate.pojo.dto.MetaProjectShareDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
 import com.youran.generate.pojo.po.MetaProjectPO;
@@ -11,6 +13,7 @@ import com.youran.generate.pojo.qo.MetaProjectQO;
 import com.youran.generate.pojo.vo.MetaProjectListVO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
 import com.youran.generate.service.MetaProjectService;
+import com.youran.generate.service.team.ProjectTeamMemberService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaProjectAPI;
 import org.apache.commons.lang3.ArrayUtils;
@@ -36,6 +39,10 @@ public class MetaProjectController extends AbstractController implements MetaPro
 
     @Autowired
     private MetaProjectService metaProjectService;
+    @Autowired
+    private LoginContext loginContext;
+    @Autowired
+    private ProjectTeamMemberService projectTeamMemberService;
 
     @Override
     @PostMapping(value = "/save")
@@ -54,8 +61,29 @@ public class MetaProjectController extends AbstractController implements MetaPro
     }
 
     @Override
+    @PutMapping(value = "/share")
+    public ResponseEntity<Integer> share(@Valid @RequestBody MetaProjectShareDTO dto) {
+        metaProjectService.share(dto);
+        return ResponseEntity.ok(1);
+    }
+
+    @Override
     @GetMapping(value = "/list")
     public ResponseEntity<List<MetaProjectListVO>> list(@Valid MetaProjectQO metaProjectQO) {
+        String currentUser = loginContext.getCurrentUser();
+        // 封装当前用户
+        if (metaProjectQO.isWithMyProject()) {
+            metaProjectQO.set_creator(currentUser);
+        } else {
+            metaProjectQO.set_creator(null);
+        }
+        // 封装当前用户所在的项目组id
+        if (metaProjectQO.isWithSharedProject()) {
+            List<Integer> teamIds = projectTeamMemberService.findUserTeamIds(currentUser);
+            metaProjectQO.set_teamId(teamIds);
+        } else {
+            metaProjectQO.set_teamId(null);
+        }
         List<MetaProjectListVO> list = metaProjectService.list(metaProjectQO);
         return ResponseEntity.ok(list);
     }

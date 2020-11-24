@@ -19,6 +19,7 @@ CREATE TABLE `meta_project` (
   `password` varchar(256) DEFAULT NULL COMMENT 'Git密码',
   `project_version` int(11) NOT NULL COMMENT '项目版本号',
   `feature` text DEFAULT NULL COMMENT '特性json',
+  `team_id` int(11) DEFAULT NULL COMMENT '项目组id',
   `created_time` datetime DEFAULT NULL COMMENT '创建时间',
   `created_by` varchar(32) DEFAULT NULL COMMENT '创建人',
   `operated_time` datetime DEFAULT NULL COMMENT '操作时间',

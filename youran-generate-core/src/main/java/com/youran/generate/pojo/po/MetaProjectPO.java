@@ -43,6 +43,10 @@ public class MetaProjectPO extends BasePO {
      */
     private String author;
     /**
+     * 所属项目组
+     */
+    private Integer teamId;
+    /**
      * 第1个模板id
      */
     @JsonIgnore
@@ -353,4 +357,11 @@ public class MetaProjectPO extends BasePO {
         this.remoteUrl3 = remoteUrl3;
     }
 
+    public Integer getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
+    }
 }

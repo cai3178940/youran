@@ -34,6 +34,7 @@
           `password`,
           project_version,
           feature,
+          team_id,
           created_time,
           created_by,
           operated_time,
@@ -58,6 +59,7 @@
           #{password,jdbcType=VARCHAR},
           #{projectVersion,jdbcType=INTEGER},
           #{feature,jdbcType=VARCHAR},
+          #{teamId,jdbcType=INTEGER},
           #{createdTime,jdbcType=TIMESTAMP},
           #{createdBy,jdbcType=VARCHAR},
           #{operatedTime,jdbcType=TIMESTAMP},
@@ -85,6 +87,7 @@
             `password` = #{password,jdbcType=VARCHAR},
             project_version = #{projectVersion,jdbcType=INTEGER},
             feature = #{feature,jdbcType=VARCHAR},
+            team_id = #{teamId,jdbcType=INTEGER},
             operated_time = #{operatedTime,jdbcType=TIMESTAMP},
             operated_by = #{operatedBy,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}
@@ -103,6 +106,15 @@
     <select id="findListByQuery" parameterType="MetaProjectQO" resultType="MetaProjectListVO">
         select * from meta_project t
         where t.deleted = 0
+            and (
+                t.createdBy = #{_creator}
+            <if test="_teamId != null and _teamId.size()>0 ">
+                or t.team_id in
+                <foreach collection="_teamId" item="_id" open="(" separator="," close=")">
+                    #{_id}
+                </foreach>
+            </if>
+            )
         order by t.created_time
     </select>
 
