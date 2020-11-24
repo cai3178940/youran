@@ -79,6 +79,15 @@
 
 
     <sql id="queryCondition">
+        and (
+            t.createdBy = #{_creator}
+        <if test="_teamId != null and _teamId.size()>0 ">
+            or t.team_id in
+            <foreach collection="_teamId" item="_id" open="(" separator="," close=")">
+                #{_id}
+            </foreach>
+        </if>
+        )
         <if test="name != null and name !='' ">
             <bind name="name_pattern" value="'%' + name + '%'" />
             and t.`name` like #{name_pattern}
@@ -115,13 +124,22 @@
         <include refid="orderCondition"/>
     </select>
 
-    <select id="findOptions" parameterType="OptionQO" resultType="OptionVO">
+    <select id="findOptions" parameterType="ProjectTeamOptionQO" resultType="OptionVO">
         select
             t.team_id as `key`,
             t.`name` as `value`
         from project_team t
         <where>
             and t.deleted=0
+            and (
+                t.createdBy = #{_creator}
+            <if test="_teamId != null and _teamId.size()>0 ">
+                or t.team_id in
+                <foreach collection="_teamId" item="_id" open="(" separator="," close=")">
+                    #{_id}
+                </foreach>
+            </if>
+            )
             <if test="lastKey != null">
                 and t.team_id > #{lastKey}
             </if>

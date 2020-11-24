@@ -4,7 +4,10 @@ import com.youran.common.pojo.qo.AbstractQO;
 import io.swagger.annotations.ApiParam;
 import org.hibernate.validator.constraints.Length;
 
-import static com.youran.generate.pojo.example.team.ProjectTeamExample.*;
+import java.util.List;
+
+import static com.youran.generate.pojo.example.team.ProjectTeamExample.E_NAME;
+import static com.youran.generate.pojo.example.team.ProjectTeamExample.N_NAME;
 
 /**
  * 查询【项目组】的参数
@@ -13,6 +16,17 @@ import static com.youran.generate.pojo.example.team.ProjectTeamExample.*;
  * @date 2020/11/23
  */
 public class ProjectTeamQO extends AbstractQO {
+
+    /**
+     * 创建人
+     */
+    @ApiParam(hidden = true)
+    private String _creator;
+    /**
+     * 项目组id
+     */
+    @ApiParam(hidden = true)
+    private List<Integer> _teamId;
 
     @ApiParam(value = N_NAME,example = E_NAME)
     @Length(max = 32,message = "name最大长度不能超过{max}")
@@ -49,5 +63,20 @@ public class ProjectTeamQO extends AbstractQO {
         this.operatedTimeSortSign = operatedTimeSortSign;
     }
 
+    public String get_creator() {
+        return _creator;
+    }
+
+    public void set_creator(String _creator) {
+        this._creator = _creator;
+    }
+
+    public List<Integer> get_teamId() {
+        return _teamId;
+    }
+
+    public void set_teamId(List<Integer> _teamId) {
+        this._teamId = _teamId;
+    }
 }
 

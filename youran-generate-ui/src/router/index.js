@@ -33,6 +33,13 @@ import aggTableForm from '@/views/chart/aggTable/form.vue'
 import barLineForm from '@/views/chart/barLine/form.vue'
 import pieForm from '@/views/chart/pie/form.vue'
 
+import projectTeam from '@/views/projectTeam/index.vue'
+import projectTeamList from '@/views/projectTeam/list.vue'
+import projectTeamForm from '@/views/projectTeam/form.vue'
+
+import projectTeamMember from '@/views/projectTeamMember/index.vue'
+import projectTeamMemberList from '@/views/projectTeamMember/list.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -238,6 +245,36 @@ export default new Router({
         {
           path: 'edit/:templateId',
           component: templateForm,
+          props: true
+        }
+      ]
+    },
+    {
+      path: '/team',
+      component: projectTeam,
+      children: [
+        {
+          path: '',
+          component: projectTeamList
+        },
+        {
+          path: 'add',
+          component: projectTeamForm
+        },
+        {
+          path: 'edit/:teamId',
+          component: projectTeamForm,
+          props: true
+        }
+      ]
+    },
+    {
+      path: '/team/:teamId/member',
+      component: projectTeamMember,
+      children: [
+        {
+          path: '',
+          component: projectTeamMemberList,
           props: true
         }
       ]

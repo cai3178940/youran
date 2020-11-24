@@ -1,9 +1,9 @@
 package com.youran.generate.dao.team;
 
 import com.youran.common.dao.DAO;
-import com.youran.common.pojo.qo.OptionQO;
 import com.youran.common.pojo.vo.OptionVO;
 import com.youran.generate.pojo.po.team.ProjectTeamPO;
+import com.youran.generate.pojo.qo.team.ProjectTeamOptionQO;
 import com.youran.generate.pojo.qo.team.ProjectTeamQO;
 import com.youran.generate.pojo.vo.team.ProjectTeamListVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,7 +28,7 @@ public interface ProjectTeamDAO extends DAO<ProjectTeamPO> {
      */
     List<ProjectTeamListVO> findListByQuery(ProjectTeamQO projectTeamQO);
 
-    List<OptionVO<Integer, String>> findOptions(OptionQO<Integer, String> qo);
+    List<OptionVO<Integer, String>> findOptions(ProjectTeamOptionQO qo);
 
 
 }

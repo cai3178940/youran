@@ -1,9 +1,9 @@
 package com.youran.generate.web.api.team;
 
-import com.youran.common.pojo.qo.OptionQO;
 import com.youran.common.pojo.vo.OptionVO;
 import com.youran.generate.pojo.dto.team.ProjectTeamAddDTO;
 import com.youran.generate.pojo.dto.team.ProjectTeamUpdateDTO;
+import com.youran.generate.pojo.qo.team.ProjectTeamOptionQO;
 import com.youran.generate.pojo.qo.team.ProjectTeamQO;
 import com.youran.generate.pojo.vo.team.ProjectTeamListVO;
 import com.youran.generate.pojo.vo.team.ProjectTeamShowVO;
@@ -53,7 +53,7 @@ public interface ProjectTeamAPI {
      * 查询【项目组】选项列表
      */
     @ApiOperation(value = "查询【项目组】选项列表")
-    ResponseEntity<List<OptionVO<Integer, String>>> findOptions(OptionQO<Integer, String> qo);
+    ResponseEntity<List<OptionVO<Integer, String>>> findOptions(ProjectTeamOptionQO qo);
 
     /**
      * 查看【项目组】详情

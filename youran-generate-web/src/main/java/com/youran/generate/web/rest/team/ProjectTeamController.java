@@ -1,17 +1,19 @@
 package com.youran.generate.web.rest.team;
 
 import com.youran.common.constant.ErrorCode;
+import com.youran.common.context.LoginContext;
 import com.youran.common.exception.BusinessException;
-import com.youran.common.pojo.qo.OptionQO;
 import com.youran.common.pojo.vo.OptionVO;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.team.ProjectTeamAddDTO;
 import com.youran.generate.pojo.dto.team.ProjectTeamUpdateDTO;
 import com.youran.generate.pojo.mapper.team.ProjectTeamMapper;
 import com.youran.generate.pojo.po.team.ProjectTeamPO;
+import com.youran.generate.pojo.qo.team.ProjectTeamOptionQO;
 import com.youran.generate.pojo.qo.team.ProjectTeamQO;
 import com.youran.generate.pojo.vo.team.ProjectTeamListVO;
 import com.youran.generate.pojo.vo.team.ProjectTeamShowVO;
+import com.youran.generate.service.team.ProjectTeamMemberService;
 import com.youran.generate.service.team.ProjectTeamService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.team.ProjectTeamAPI;
@@ -37,6 +39,10 @@ public class ProjectTeamController extends AbstractController implements Project
 
     @Autowired
     private ProjectTeamService projectTeamService;
+    @Autowired
+    private LoginContext loginContext;
+    @Autowired
+    private ProjectTeamMemberService projectTeamMemberService;
 
     @Override
     @PostMapping
@@ -57,13 +63,25 @@ public class ProjectTeamController extends AbstractController implements Project
     @Override
     @GetMapping
     public ResponseEntity<List<ProjectTeamListVO>> list(@Valid ProjectTeamQO projectTeamQO) {
+        String currentUser = loginContext.getCurrentUser();
+        // 封装当前用户
+        projectTeamQO.set_creator(currentUser);
+        // 封装当前用户所在的项目组id
+        List<Integer> teamIds = projectTeamMemberService.findUserTeamIds(currentUser);
+        projectTeamQO.set_teamId(teamIds);
         List<ProjectTeamListVO> list = projectTeamService.list(projectTeamQO);
         return ResponseEntity.ok(list);
     }
 
     @Override
     @GetMapping(value = "/options")
-    public ResponseEntity<List<OptionVO<Integer, String>>> findOptions(OptionQO<Integer, String> qo) {
+    public ResponseEntity<List<OptionVO<Integer, String>>> findOptions(ProjectTeamOptionQO qo) {
+        String currentUser = loginContext.getCurrentUser();
+        // 封装当前用户
+        qo.set_creator(currentUser);
+        // 封装当前用户所在的项目组id
+        List<Integer> teamIds = projectTeamMemberService.findUserTeamIds(currentUser);
+        qo.set_teamId(teamIds);
         List<OptionVO<Integer, String>> options = projectTeamService.findOptions(qo);
         return ResponseEntity.ok(options);
     }

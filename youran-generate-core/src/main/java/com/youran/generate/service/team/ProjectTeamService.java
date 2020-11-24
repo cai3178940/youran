@@ -3,7 +3,6 @@ package com.youran.generate.service.team;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.optimistic.OptimisticLock;
-import com.youran.common.pojo.qo.OptionQO;
 import com.youran.common.pojo.vo.OptionVO;
 import com.youran.generate.dao.team.ProjectTeamDAO;
 import com.youran.generate.dao.team.ProjectTeamMemberDAO;
@@ -11,6 +10,7 @@ import com.youran.generate.pojo.dto.team.ProjectTeamAddDTO;
 import com.youran.generate.pojo.dto.team.ProjectTeamUpdateDTO;
 import com.youran.generate.pojo.mapper.team.ProjectTeamMapper;
 import com.youran.generate.pojo.po.team.ProjectTeamPO;
+import com.youran.generate.pojo.qo.team.ProjectTeamOptionQO;
 import com.youran.generate.pojo.qo.team.ProjectTeamQO;
 import com.youran.generate.pojo.vo.team.ProjectTeamListVO;
 import com.youran.generate.pojo.vo.team.ProjectTeamShowVO;
@@ -80,7 +80,7 @@ public class ProjectTeamService {
      *
      * @return
      */
-    public List<OptionVO<Integer, String>> findOptions(OptionQO<Integer, String> qo) {
+    public List<OptionVO<Integer, String>> findOptions(ProjectTeamOptionQO qo) {
         List<OptionVO<Integer, String>> options = projectTeamDAO.findOptions(qo);
         return options;
     }
