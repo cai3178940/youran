@@ -1,6 +1,6 @@
 package com.youran.generate.pojo.qo;
 
-import com.youran.common.pojo.qo.PageQO;
+import com.youran.common.pojo.qo.AbstractQO;
 import io.swagger.annotations.ApiParam;
 import org.hibernate.validator.constraints.Length;
 
@@ -12,7 +12,7 @@ import static com.youran.generate.pojo.example.CodeTemplateExample.*;
  * @author cbb
  * @date 2019/10/24
  */
-public class CodeTemplateQO extends PageQO {
+public class CodeTemplateQO extends AbstractQO {
 
     @ApiParam(value = N_CODE, example = E_CODE)
     @Length(max = 32, message = "code最大长度不能超过{max}")
