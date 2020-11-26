@@ -33,6 +33,10 @@
             <svg-icon className="menu-icon" iconClass="project"></svg-icon>
             <span slot="title">项目管理</span>
           </el-menu-item>
+          <el-menu-item index="/team" :class="{'is-active': isRouteIndexOf('/team')}">
+            <svg-icon className="menu-icon" iconClass="team"></svg-icon>
+            <span slot="title">联系人组</span>
+          </el-menu-item>
           <!--<el-menu-item v-if="this.systemUserInfo.templateEnabled"-->
           <el-menu-item index="/template" :class="{
                           'is-active': isRouteIndexOf('/template'),

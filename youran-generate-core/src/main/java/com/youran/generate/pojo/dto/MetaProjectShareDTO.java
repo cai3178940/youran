@@ -23,7 +23,6 @@ public class MetaProjectShareDTO extends AbstractDTO {
     private Integer projectId;
 
     @ApiModelProperty(notes = "项目组id", example = "1")
-    @NotNull
     private Integer teamId;
 
     public Integer getProjectId() {

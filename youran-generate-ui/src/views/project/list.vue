@@ -102,6 +102,10 @@
                 <svg-icon className="dropdown-icon color-danger" iconClass="trash"></svg-icon>
                 删除
               </el-dropdown-item>
+              <el-dropdown-item :command="{method:'handleShare',arg:scope.row}">
+                <svg-icon className="dropdown-icon color-primary" iconClass="share"></svg-icon>
+                共享
+              </el-dropdown-item>
               <el-dropdown-item :command="{method:'handleReverseEngineering',arg:scope.row}" divided>
                 <svg-icon className="dropdown-icon color-warning" iconClass="reverse-engineering"></svg-icon>
                 反向工程
@@ -119,7 +123,28 @@
     <!-- 元数据导入对话框 -->
     <import-project ref="importProject"
                     @success="onImportProjectSuccess"></import-project>
-
+    <!-- 项目共享对话框 -->
+    <el-dialog title="项目共享" :visible.sync="shareFormVisible" width="40%">
+      <el-form ref="shareForm" :model="shareForm" size="small">
+        <el-form-item label="共享给：" label-width="100px">
+          <el-select style="width:90%;" v-model="shareForm.teamId"
+                     placeholder="请选择联系人组" tabindex="90" clearable>
+            <el-option :label="'无'" :value="null"></el-option>
+            <el-option
+              v-for="item in teamList"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="shareFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleShareSubmit">提 交</el-button>
+      </div>
+    </el-dialog>
+    <!-- 反向工程对话框 -->
     <el-dialog title="反向工程" :visible.sync="reverseEngineeringFormVisible" width="60%">
       <el-form ref="reverseEngineeringForm" :model="reverseEngineeringForm" :rules="reverseEngineeringFormRules" size="small">
         <el-form-item label="脚本语言：" label-width="100px">
@@ -153,6 +178,7 @@
 <script>
 import projectApi from '@/api/project'
 import templateApi from '@/api/template'
+import projectTeamApi from '@/api/team/projectTeam'
 import CodePreview from './codePreview'
 import ImportProject from './import'
 import showdown from 'showdown'
@@ -175,6 +201,11 @@ export default {
       list: [],
       loading: false,
       loadingText: '',
+      shareFormVisible: false,
+      shareForm: {
+        projectId: null,
+        teamId: null
+      },
       reverseEngineeringFormVisible: false,
       reverseEngineeringForm: {
         projectId: null,
@@ -189,6 +220,7 @@ export default {
       },
       progressingProjectIds: [],
       templateList: [],
+      teamList: [],
       templateRemarkVisible: false,
       templateRemarkHtml: '',
       codeDiffVisible: false,
@@ -222,6 +254,12 @@ export default {
         })
         .catch(error => this.$common.showNotifyError(error))
         .finally(() => { this.loading = false })
+    },
+    loadProjectTeamList () {
+      return projectTeamApi.findOptions()
+        .then(data => {
+          this.teamList = data
+        })
     },
     getTemplateList () {
       return templateApi.getList()
@@ -323,6 +361,26 @@ export default {
           }
         })
         .finally(() => this.removeProgress(row))
+    },
+    handleShare (row) {
+      this.shareFormVisible = true
+      this.shareForm.projectId = row.projectId
+      this.shareForm.teamId = row.teamId
+    },
+    handleShareSubmit () {
+      let loading = this.$loading()
+      projectApi.share(this.shareForm)
+        .then(() => {
+          this.shareFormVisible = false
+          this.$common.showMsg('success', '操作成功')
+          this.doQuery()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
     },
     handleReverseEngineering (row) {
       this.reverseEngineeringFormVisible = true
@@ -456,7 +514,7 @@ export default {
     }
   },
   activated () {
-    this.getTemplateList()
+    Promise.all([this.getTemplateList(), this.loadProjectTeamList()])
       .then(() => this.doQuery())
   }
 }

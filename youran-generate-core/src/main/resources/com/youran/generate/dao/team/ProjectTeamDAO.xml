@@ -80,7 +80,7 @@
 
     <sql id="queryCondition">
         and (
-            t.createdBy = #{_creator}
+            t.created_by = #{_creator}
         <if test="_teamId != null and _teamId.size()>0 ">
             or t.team_id in
             <foreach collection="_teamId" item="_id" open="(" separator="," close=")">
@@ -132,7 +132,7 @@
         <where>
             and t.deleted=0
             and (
-                t.createdBy = #{_creator}
+                t.created_by = #{_creator}
             <if test="_teamId != null and _teamId.size()>0 ">
                 or t.team_id in
                 <foreach collection="_teamId" item="_id" open="(" separator="," close=")">

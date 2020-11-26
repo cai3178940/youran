@@ -38,6 +38,13 @@ export default {
       .then(response => checkResult(response))
   },
   /**
+   * 共享项目
+   */
+  share (data) {
+    return request.put(`/${apiPath}/meta_project/share`, data)
+      .then(response => checkResult(response))
+  },
+  /**
    * 批量删除项目
    */
   deleteBatch (data) {

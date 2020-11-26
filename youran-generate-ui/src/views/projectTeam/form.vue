@@ -7,8 +7,8 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-row type="flex" align="middle" :gutter="20">
-      <el-col :span="18">
-        <el-form ref="templateForm" class="templateForm"
+      <el-col :span="12">
+        <el-form ref="projectTeamForm" class="projectTeamForm"
                  :rules="rules" :model="form"
                  label-width="120px" size="small" v-loading="formLoading">
           <el-form-item label="项目组名称" prop="name">

@@ -38,7 +38,8 @@ export default {
   /**
    * 查询【项目组】选项列表
    */
-  findOptions(query) {
-    return request.get(`${apiPath}/project_team/options`, { params: query })
+  findOptions (query) {
+    return request.get(`/${apiPath}/project_team/options`, { params: query })
+      .then(response => checkResult(response))
   }
 }
