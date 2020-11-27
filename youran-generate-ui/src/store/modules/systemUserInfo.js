@@ -15,7 +15,11 @@ const state = {
   /**
    * 系统中存在模板
    */
-  templateExists: true
+  templateExists: true,
+  /**
+   * 启用项目组共享功能
+   */
+  teamEnabled: true
 }
 
 const mutations = {

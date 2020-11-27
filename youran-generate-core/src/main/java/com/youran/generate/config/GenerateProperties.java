@@ -50,6 +50,19 @@ public class GenerateProperties {
      */
     private boolean securityEnabled;
 
+    /**
+     * 是否启用项目组共享功能
+     */
+    private boolean teamEnabled;
+
+    public boolean isTeamEnabled() {
+        return teamEnabled;
+    }
+
+    public void setTeamEnabled(boolean teamEnabled) {
+        this.teamEnabled = teamEnabled;
+    }
+
     public String getDataDir() {
         return dataDir;
     }

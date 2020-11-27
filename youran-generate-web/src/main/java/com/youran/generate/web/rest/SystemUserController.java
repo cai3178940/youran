@@ -54,6 +54,7 @@ public class SystemUserController extends AbstractController implements SystemUs
         vo.setTemplateEnabled(userSetting.getTemplateEnabled());
         vo.setSysVersion(generateProperties.getVersion());
         vo.setTemplateExists(codeTemplateService.exists());
+        vo.setTeamEnabled(generateProperties.isTeamEnabled());
         return ResponseEntity.ok(vo);
     }
 

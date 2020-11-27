@@ -30,4 +30,5 @@ youran:
     api-path: /api
     ws-api-path: /ws_api
     security-enabled: false
+    team-enabled: false
 

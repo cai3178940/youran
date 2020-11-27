@@ -102,7 +102,7 @@
                 <svg-icon className="dropdown-icon color-danger" iconClass="trash"></svg-icon>
                 删除
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleShare',arg:scope.row}">
+              <el-dropdown-item v-if="isShareButtonVisible(scope.row)" :command="{method:'handleShare',arg:scope.row}">
                 <svg-icon className="dropdown-icon color-primary" iconClass="share"></svg-icon>
                 共享
               </el-dropdown-item>
@@ -185,6 +185,7 @@ import showdown from 'showdown'
 // 文件差异对比工具 https://github.com/rtfpessoa/diff2html
 import { html } from 'diff2html'
 import 'diff2html/bundles/css/diff2html.min.css'
+import { mapState } from 'vuex'
 
 const converter = new showdown.Converter({
   emoji: 'true',
@@ -226,6 +227,11 @@ export default {
       codeDiffVisible: false,
       codeDiffHtml: ''
     }
+  },
+  computed: {
+    ...mapState({
+      systemUserInfo: state => state.systemUserInfo
+    })
   },
   methods: {
     selectionChange (val) {
@@ -362,11 +368,26 @@ export default {
         })
         .finally(() => this.removeProgress(row))
     },
+    /**
+     * 是否显示共享按钮
+     */
+    isShareButtonVisible (row) {
+      if (!this.systemUserInfo.teamEnabled) {
+        return false
+      }
+      return row.createdBy === this.systemUserInfo.username
+    },
+    /**
+     * 点击共享按钮后触发
+     */
     handleShare (row) {
       this.shareFormVisible = true
       this.shareForm.projectId = row.projectId
       this.shareForm.teamId = row.teamId
     },
+    /**
+     * 点击共享提交按钮后触发
+     */
     handleShareSubmit () {
       let loading = this.$loading()
       projectApi.share(this.shareForm)

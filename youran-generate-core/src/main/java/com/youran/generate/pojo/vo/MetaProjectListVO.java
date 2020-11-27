@@ -60,6 +60,17 @@ public class MetaProjectListVO extends AbstractVO {
     @ApiModelProperty(notes = N_TEAM_ID, example = E_TEAM_ID)
     private Integer teamId;
 
+    @ApiModelProperty(notes = N_CREATEDBY, example = E_CREATEDBY)
+    private String createdBy;
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
     public String getGroupId() {
         return groupId;
     }

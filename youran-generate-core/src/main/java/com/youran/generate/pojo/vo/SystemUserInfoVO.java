@@ -29,6 +29,9 @@ public class SystemUserInfoVO extends AbstractVO {
     @ApiModelProperty(notes = "系统中存在模板", example = "false")
     private Boolean templateExists;
 
+    @ApiModelProperty(notes = "启用项目组共享功能",example = "false")
+    private Boolean teamEnabled;
+
     public String getUsername() {
         return username;
     }
@@ -67,5 +70,13 @@ public class SystemUserInfoVO extends AbstractVO {
 
     public void setTemplateExists(Boolean templateExists) {
         this.templateExists = templateExists;
+    }
+
+    public Boolean getTeamEnabled() {
+        return teamEnabled;
+    }
+
+    public void setTeamEnabled(Boolean teamEnabled) {
+        this.teamEnabled = teamEnabled;
     }
 }
