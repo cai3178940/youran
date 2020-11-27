@@ -1,7 +1,6 @@
 package com.youran.generate.web.rest;
 
 import com.youran.common.constant.ErrorCode;
-import com.youran.common.context.LoginContext;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.MetaProjectAddDTO;
@@ -39,8 +38,6 @@ public class MetaProjectController extends AbstractController implements MetaPro
 
     @Autowired
     private MetaProjectService metaProjectService;
-    @Autowired
-    private LoginContext loginContext;
     @Autowired
     private ProjectTeamMemberService projectTeamMemberService;
 

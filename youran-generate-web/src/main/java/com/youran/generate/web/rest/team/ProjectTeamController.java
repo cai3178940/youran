@@ -1,7 +1,6 @@
 package com.youran.generate.web.rest.team;
 
 import com.youran.common.constant.ErrorCode;
-import com.youran.common.context.LoginContext;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.pojo.vo.OptionVO;
 import com.youran.generate.constant.WebConst;
@@ -40,8 +39,6 @@ public class ProjectTeamController extends AbstractController implements Project
     @Autowired
     private ProjectTeamService projectTeamService;
     @Autowired
-    private LoginContext loginContext;
-    @Autowired
     private ProjectTeamMemberService projectTeamMemberService;
 
     @Override
@@ -56,6 +53,9 @@ public class ProjectTeamController extends AbstractController implements Project
     @Override
     @PutMapping
     public ResponseEntity<ProjectTeamShowVO> update(@Valid @RequestBody ProjectTeamUpdateDTO projectTeamUpdateDTO) {
+        // 校验用户操作权限
+        this.projectTeamService.checkTeamOperatePermissions(
+            projectTeamUpdateDTO.getTeamId(), this.loginContext.getCurrentUser(), true);
         ProjectTeamPO projectTeam = projectTeamService.update(projectTeamUpdateDTO);
         return ResponseEntity.ok(ProjectTeamMapper.INSTANCE.toShowVO(projectTeam));
     }
@@ -94,17 +94,15 @@ public class ProjectTeamController extends AbstractController implements Project
     }
 
     @Override
-    @DeleteMapping(value = "/{teamId}")
-    public ResponseEntity<Integer> delete(@PathVariable Integer teamId) {
-        int count = projectTeamService.delete(teamId);
-        return ResponseEntity.ok(count);
-    }
-
-    @Override
     @DeleteMapping
     public ResponseEntity<Integer> deleteBatch(@RequestBody Integer[] id) {
-        if(ArrayUtils.isEmpty(id)){
+        if (ArrayUtils.isEmpty(id)) {
             throw new BusinessException(ErrorCode.PARAM_IS_NULL);
+        }
+        for (Integer i : id) {
+            // 校验用户操作权限
+            this.projectTeamService.checkTeamOperatePermissions(
+                i, this.loginContext.getCurrentUser(), false);
         }
         int count = projectTeamService.delete(id);
         return ResponseEntity.ok(count);

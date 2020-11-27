@@ -86,17 +86,6 @@ public class ProjectTeamControllerTest extends AbstractWebTest {
     }
 
     /**
-     * 删除单个【项目组】
-     */
-    @Test
-    public void del() throws Exception {
-        ProjectTeamPO projectTeam = projectTeamHelper.saveProjectTeamExample();
-        restMockMvc.perform(delete(getApiPath() + "/project_team/{teamId}", projectTeam.getTeamId()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").value(is(1)));
-    }
-
-    /**
      * 批量删除【项目组】
      */
     @Test

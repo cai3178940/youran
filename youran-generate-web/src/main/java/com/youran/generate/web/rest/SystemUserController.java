@@ -1,6 +1,5 @@
 package com.youran.generate.web.rest;
 
-import com.youran.common.context.LoginContext;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.dto.UserSettingUpdateDTO;
@@ -28,8 +27,6 @@ import javax.validation.Valid;
 @RequestMapping(WebConst.API_PATH + "/system_user")
 public class SystemUserController extends AbstractController implements SystemUserAPI {
 
-    @Autowired
-    private LoginContext loginContext;
     @Autowired
     private GenerateProperties generateProperties;
     @Autowired

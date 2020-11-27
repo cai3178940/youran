@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 【项目组】增删改查服务
@@ -89,10 +90,10 @@ public class ProjectTeamService {
      * 根据主键获取【项目组】
      *
      * @param teamId 主键
-     * @param force 是否强制获取
+     * @param force  是否强制获取
      * @return
      */
-    public ProjectTeamPO getProjectTeam(Integer teamId, boolean force){
+    public ProjectTeamPO getProjectTeam(Integer teamId, boolean force) {
         ProjectTeamPO projectTeam = projectTeamDAO.findById(teamId);
         if (force && projectTeam == null) {
             throw new BusinessException(ErrorCode.RECORD_NOT_FIND);
@@ -136,11 +137,31 @@ public class ProjectTeamService {
      */
     private void checkDeleteByProjectTeamMember(Integer teamId) {
         int count = projectTeamMemberDAO.getCountByTeamId(teamId);
-        if(count>0){
+        if (count > 0) {
             throw new BusinessException(ErrorCode.CASCADE_DELETE_ERROR);
         }
     }
 
+    /**
+     * 校验项目组操作权限
+     *
+     * @param teamId
+     * @param username
+     * @param allowMember 是否允许成员操作
+     */
+    public void checkTeamOperatePermissions(Integer teamId, String username, boolean allowMember) {
+        ProjectTeamPO po = this.getProjectTeam(teamId, true);
+        // 创建人有操作权限
+        if (Objects.equals(po.getCreatedBy(), username)) {
+            return;
+        }
+        if (!allowMember) {
+            throw new BusinessException("您无此操作权限");
+        }
+        if (!projectTeamMemberDAO.checkExist(teamId, username)) {
+            throw new BusinessException("您无此操作权限");
+        }
+    }
 
 }
 

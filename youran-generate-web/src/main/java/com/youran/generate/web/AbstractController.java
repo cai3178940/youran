@@ -1,11 +1,13 @@
 package com.youran.generate.web;
 
 import com.youran.common.constant.ErrorCode;
+import com.youran.common.context.LoginContext;
 import com.youran.generate.constant.WebConst;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +25,9 @@ import java.net.URLEncoder;
 public abstract class AbstractController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractController.class);
+
+    @Autowired
+    protected LoginContext loginContext;
 
     @Value(WebConst.API_PATH)
     protected String apiPath;

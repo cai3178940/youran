@@ -65,15 +65,6 @@ public interface ProjectTeamAPI {
     ResponseEntity<ProjectTeamShowVO> show(Integer teamId);
 
     /**
-     * 删除单个【项目组】
-     */
-    @ApiOperation(value="删除单个【项目组】")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "teamId", dataType = "int", value = "【项目组】id", paramType = "path"),
-    })
-    ResponseEntity<Integer> delete(Integer teamId);
-
-    /**
      * 批量删除【项目组】
      */
     @ApiOperation(value = "批量删除【项目组】")
