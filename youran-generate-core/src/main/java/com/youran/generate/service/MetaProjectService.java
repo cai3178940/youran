@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -231,9 +232,13 @@ public class MetaProjectService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public int delete(Integer... projectId) {
+        String currentUser = loginContext.getCurrentUser();
         int count = 0;
         for (Integer id : projectId) {
-            this.getAndCheckProject(id);
+            MetaProjectPO project = this.getAndCheckProject(id);
+            if (!Objects.equals(project.getCreatedBy(), currentUser)) {
+                throw new BusinessException("只有项目创建者才能删除项目");
+            }
             count += metaProjectDAO.delete(id);
         }
         return count;
@@ -294,7 +299,7 @@ public class MetaProjectService {
      *
      * @param projectPO
      */
-    public void checkOperatorByProject(MetaProjectPO projectPO) {
+    private void checkOperatorByProject(MetaProjectPO projectPO) {
         String currentUser = loginContext.getCurrentUser();
         if(StringUtils.isBlank(currentUser)){
             throw new BusinessException("获取当前登录用户失败");

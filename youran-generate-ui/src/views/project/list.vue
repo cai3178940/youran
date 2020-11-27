@@ -98,7 +98,7 @@
                 <svg-icon className="dropdown-icon color-primary" iconClass="edit"></svg-icon>
                 编辑
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'handleDel',arg:scope.row}">
+              <el-dropdown-item v-if="isDeleteButtonVisible(scope.row)" :command="{method:'handleDel',arg:scope.row}">
                 <svg-icon className="dropdown-icon color-danger" iconClass="trash"></svg-icon>
                 删除
               </el-dropdown-item>
@@ -238,6 +238,15 @@ export default {
       this.selectItems = val
       this.activeNum = this.selectItems.length
     },
+    /**
+     * 是否显示删除按钮
+     */
+    isDeleteButtonVisible (row) {
+      return row.createdBy === this.systemUserInfo.username
+    },
+    /**
+     * 执行删除操作
+     */
     handleDel (row) {
       this.$common.confirm('是否确认删除')
         .then(() => projectApi.deleteBatch([row.projectId]))
