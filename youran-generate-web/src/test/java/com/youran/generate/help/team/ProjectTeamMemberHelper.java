@@ -1,12 +1,12 @@
 package com.youran.generate.help.team;
 
-import com.youran.generate.pojo.dto.team.*;
-import com.youran.generate.pojo.po.team.*;
+import com.youran.generate.pojo.dto.team.ProjectTeamMemberAddDTO;
+import com.youran.generate.pojo.po.team.ProjectTeamMemberPO;
 import com.youran.generate.service.team.ProjectTeamMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.youran.generate.pojo.example.team.ProjectTeamMemberExample.*;
+import static com.youran.generate.pojo.example.team.ProjectTeamMemberExample.E_USERNAME;
 
 @Component
 public class ProjectTeamMemberHelper {
@@ -30,11 +30,8 @@ public class ProjectTeamMemberHelper {
      * @return
      */
     public ProjectTeamMemberPO saveProjectTeamMemberExample(Integer teamId){
-        ProjectTeamMemberAddDTO addDTO = this.getProjectTeamMemberAddDTO(teamId);
-        return projectTeamMemberService.save(addDTO);
+        return projectTeamMemberService.save(teamId, E_USERNAME);
     }
-
-
 
 }
 

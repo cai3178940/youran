@@ -32,19 +32,38 @@ public class ProjectTeamMemberService {
 
 
     /**
-     * 新增【项目组成员】
+     * 批量新增【项目组成员】
      *
-     * @param projectTeamMemberDTO
+     * @param addDTO
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public ProjectTeamMemberPO save(ProjectTeamMemberAddDTO projectTeamMemberDTO) {
-        ProjectTeamMemberPO projectTeamMember = ProjectTeamMemberMapper.INSTANCE.fromAddDTO(projectTeamMemberDTO);
-        if (projectTeamMember.getTeamId() != null) {
-            Assert.isTrue(projectTeamDAO.exist(projectTeamMember.getTeamId()), "项目组id有误");
+    public int saveBatch(ProjectTeamMemberAddDTO addDTO) {
+        if (addDTO.getTeamId() != null) {
+            Assert.isTrue(projectTeamDAO.exist(addDTO.getTeamId()), "项目组id有误");
         }
-        projectTeamMemberDAO.save(projectTeamMember);
-        return projectTeamMember;
+        List<ProjectTeamMemberPO> list = ProjectTeamMemberMapper.INSTANCE.fromAddDTO(addDTO);
+        int count = 0;
+        for (ProjectTeamMemberPO po : list) {
+            if (projectTeamMemberDAO.checkExist(po.getTeamId(), po.getUsername())) {
+                continue;
+            }
+            projectTeamMemberDAO.save(po);
+            count++;
+        }
+        return count;
+    }
+
+    /**
+     * 新增单个【项目组成员】
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public ProjectTeamMemberPO save(Integer teamId, String username) {
+        ProjectTeamMemberPO po = new ProjectTeamMemberPO();
+        po.setTeamId(teamId);
+        po.setUsername(username);
+        projectTeamMemberDAO.save(po);
+        return po;
     }
 
     /**

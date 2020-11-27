@@ -17,9 +17,27 @@
               @selection-change="selectionChange"
               v-loading="loading" :border="true">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column property="name" label="用户名"></el-table-column>
-      <el-table-column property="createdTime" width="180" label="添加时间"></el-table-column>
+      <el-table-column property="username" label="用户名"></el-table-column>
+      <el-table-column property="createdTime" width="280" label="添加时间"></el-table-column>
     </el-table>
+
+    <!-- 添加成员对话框 -->
+    <el-dialog title="批量添加成员" :visible.sync="addFormVisible" width="40%">
+      <el-form ref="addForm" :model="addForm" size="small">
+        <el-form-item label="成员账号：" label-width="100px">
+          <el-input
+            placeholder="多个账号用英文逗号分隔"
+            v-model="addForm.username"
+            type="textarea"
+            :autosize="{ minRows: 5, maxRows: 20}">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleAddSubmit">提 交</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -34,7 +52,12 @@ export default {
       activeNum: 0,
       selectItems: [],
       list: [],
-      loading: false
+      loading: false,
+      addForm: {
+        teamId: null,
+        username: ''
+      },
+      addFormVisible: false
     }
   },
   methods: {
@@ -64,7 +87,30 @@ export default {
         .finally(() => { this.loading = false })
     },
     handleAdd () {
-      // todo
+      this.addFormVisible = true
+      this.addForm.teamId = this.teamId
+      this.addForm.username = ''
+    },
+    handleAddSubmit () {
+      let loading = null
+      // 校验表单
+      this.$refs.addForm.validate()
+        // 提交表单
+        .then(() => {
+          loading = this.$loading()
+          return projectTeamMemberApi.save(this.addForm)
+        })
+        .then(() => {
+          this.$common.showMsg('success', '添加成功')
+          this.addFormVisible = false
+          this.doQuery()
+        })
+        .catch(error => this.$common.showNotifyError(error))
+        .finally(() => {
+          if (loading) {
+            loading.close()
+          }
+        })
     }
   },
   activated () {

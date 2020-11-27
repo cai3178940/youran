@@ -15,10 +15,10 @@ export default {
       .then(response => checkResult(response))
   },
   /**
-   * 保存项目组成员
+   * 添加项目组成员
    */
-  saveOrUpdate (data, isUpdate) {
-    return request[isUpdate ? 'put' : 'post'](`/${apiPath}/project_team_member`, data)
+  save (data) {
+    return request.post(`/${apiPath}/project_team_member`, data)
       .then(response => checkResult(response))
   },
   /**

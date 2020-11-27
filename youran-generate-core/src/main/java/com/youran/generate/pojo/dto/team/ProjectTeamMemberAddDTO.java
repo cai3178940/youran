@@ -24,7 +24,7 @@ public class ProjectTeamMemberAddDTO extends AbstractDTO {
 
     @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME, required = true)
     @NotNull
-    @Length(max = 32)
+    @Length(max = 1000)
     private String username;
 
 

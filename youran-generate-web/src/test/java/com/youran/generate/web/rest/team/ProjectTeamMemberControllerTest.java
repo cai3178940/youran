@@ -50,23 +50,12 @@ public class ProjectTeamMemberControllerTest extends AbstractWebTest {
     @Test
     public void list() throws Exception {
         ProjectTeamPO projectTeam = projectTeamHelper.saveProjectTeamExample();
-        ProjectTeamMemberPO projectTeamMember = projectTeamMemberHelper.saveProjectTeamMemberExample(projectTeam.getTeamId());
+        projectTeamMemberHelper.saveProjectTeamMemberExample(projectTeam.getTeamId());
         restMockMvc.perform(get(getApiPath() + "/project_team_member"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(is(1)));
     }
 
-    /**
-     * 删除单个【项目组成员】
-     */
-    @Test
-    public void del() throws Exception {
-        ProjectTeamPO projectTeam = projectTeamHelper.saveProjectTeamExample();
-        ProjectTeamMemberPO projectTeamMember = projectTeamMemberHelper.saveProjectTeamMemberExample(projectTeam.getTeamId());
-        restMockMvc.perform(delete(getApiPath() + "/project_team_member/{id}", projectTeamMember.getId()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").value(is(1)));
-    }
 
     /**
      * 批量删除【项目组成员】

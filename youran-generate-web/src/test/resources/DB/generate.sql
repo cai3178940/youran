@@ -422,5 +422,6 @@ CREATE TABLE `project_team_member` (
     `username` varchar(32) NOT NULL COMMENT '用户名',
     `created_time` datetime NOT NULL COMMENT '创建时间【yyyy-MM-dd HH:mm:ss】',
     `created_by` varchar(20) NOT NULL COMMENT '创建人【最大长度20】',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `IDX_EJQOAQRUE` (`team_id`,`username`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目组成员';
