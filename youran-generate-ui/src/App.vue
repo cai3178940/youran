@@ -36,7 +36,7 @@
           <el-menu-item v-if="this.systemUserInfo.teamEnabled"
                         index="/team" :class="{'is-active': isRouteIndexOf('/team')}">
             <svg-icon className="menu-icon" iconClass="team"></svg-icon>
-            <span slot="title">联系人组</span>
+            <span slot="title">小组管理</span>
           </el-menu-item>
           <!--<el-menu-item v-if="this.systemUserInfo.templateEnabled"-->
           <el-menu-item index="/template" :class="{

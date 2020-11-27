@@ -128,7 +128,7 @@
       <el-form ref="shareForm" :model="shareForm" size="small">
         <el-form-item label="共享给：" label-width="100px">
           <el-select style="width:90%;" v-model="shareForm.teamId"
-                     placeholder="请选择联系人组" tabindex="90" clearable>
+                     placeholder="请选择项目组" tabindex="90" clearable>
             <el-option :label="'无'" :value="null"></el-option>
             <el-option
               v-for="item in teamList"
