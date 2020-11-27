@@ -26,7 +26,7 @@ mybatis:
 youran:
     auto-branch-name: auto
     aes-key: orpNB6YGbiiDcrrubk2rFQ==
-    version: 3.4.0
+    version: 3.5.0
     api-path: /api
     ws-api-path: /ws_api
     security-enabled: false
