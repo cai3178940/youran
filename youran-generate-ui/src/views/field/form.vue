@@ -158,8 +158,17 @@
           </el-form-item>
           <el-form-item label="不能为空" prop="notNull">
             <help-popover name="field.notNull">
-              <el-checkbox v-model="form.notNull" :disabled="isAttrDisable('notNull')"
-                           tabindex="120">是</el-checkbox>
+              <el-row type="flex" align="middle" :gutter="10">
+                <el-col :span="6">
+                <el-checkbox v-model="form.notNull" :disabled="isAttrDisable('notNull')"
+                             tabindex="120">是</el-checkbox>
+                </el-col>
+                <el-col :span="18" class="col-right">
+                  <span class="inline-label">默认值</span>
+                  <el-input v-model="form.defaultValue"
+                            tabindex="121"></el-input>
+                </el-col>
+              </el-row>
             </help-popover>
           </el-form-item>
           <el-form-item v-if="!isAttrHide('query')" label="可搜索" prop="query">

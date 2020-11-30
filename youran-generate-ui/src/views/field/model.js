@@ -21,7 +21,7 @@ export function initFormBean (forEdit) {
     primaryKey: false,
     // 主键策略
     pkStrategy: 0,
-    // 默认值(暂时不用)
+    // 默认值
     defaultValue: '',
     // 不能为空
     notNull: false,
