@@ -5,11 +5,13 @@ import com.youran.common.exception.BusinessException;
 import com.youran.common.util.DateUtil;
 import com.youran.generate.constant.JFieldType;
 import com.youran.generate.exception.SkipCurrentException;
+import com.youran.generate.pojo.dto.LabelDTO;
 import com.youran.generate.pojo.dto.MetaProjectFeatureDTO;
 import com.youran.generate.pojo.mapper.FeatureMapper;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
+import com.youran.generate.util.LabelsUtil;
 import com.youran.generate.util.SwitchCaseUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -112,6 +114,10 @@ public class BaseContext {
      */
     protected final MetaProjectFeatureDTO projectFeature;
 
+    /**
+     * 项目标签
+     */
+    protected final List<LabelDTO> labelList;
 
     public BaseContext(MetaProjectPO project) {
         //所有实体
@@ -146,6 +152,8 @@ public class BaseContext {
         this.dashboards = project.getDashboards();
         //项目特性
         this.projectFeature = FeatureMapper.asProjectFeatureDTO(project.getFeature());
+        //项目标签
+        this.labelList = project.getLabelList();
         //初始化java依赖
         this.imports = new TreeSet<>();
         this.staticImports = new TreeSet<>();
@@ -379,6 +387,29 @@ public class BaseContext {
         return sb.toString();
     }
 
+    /**
+     * 判断项目是否包含标签
+     *
+     * @param key
+     * @return
+     */
+    public boolean hasLabel(String key) {
+        return LabelsUtil.findLabel(this.labelList, key) != null;
+    }
+
+    /**
+     * 获取标签值
+     *
+     * @param key
+     * @return 标签值
+     */
+    public String getLabelValue(String key) {
+        LabelDTO label = LabelsUtil.findLabel(this.labelList, key);
+        if (label == null) {
+            return null;
+        }
+        return label.getValue();
+    }
 
     public List<MetaEntityPO> getMetaEntities() {
         return metaEntities;

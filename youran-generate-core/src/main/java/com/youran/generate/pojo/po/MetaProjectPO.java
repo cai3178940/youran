@@ -1,8 +1,10 @@
 package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.youran.generate.pojo.dto.LabelDTO;
 import com.youran.generate.pojo.po.chart.MetaChartPO;
 import com.youran.generate.pojo.po.chart.MetaDashboardPO;
+import com.youran.generate.util.LabelsUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -105,6 +107,10 @@ public class MetaProjectPO extends BasePO {
      */
     private String feature;
     /**
+     * 标签
+     */
+    private String labels;
+    /**
      * 项目下的所有实体
      */
     @JsonIgnore
@@ -129,6 +135,11 @@ public class MetaProjectPO extends BasePO {
      */
     @JsonIgnore
     private transient List<MetaDashboardPO> dashboards;
+    /**
+     * 项目下的所有标签
+     */
+    @JsonIgnore
+    private transient List<LabelDTO> labelList;
 
     /**
      * 根据序号获取远程git仓库地址
@@ -179,6 +190,30 @@ public class MetaProjectPO extends BasePO {
             return packageName.substring(0, index) + ".common";
         }
         return "common";
+    }
+
+    /**
+     * 判断实体是否包含标签
+     *
+     * @param key
+     * @return
+     */
+    public boolean hasLabel(String key) {
+        return LabelsUtil.findLabel(this.labelList, key) != null;
+    }
+
+    /**
+     * 获取标签值
+     *
+     * @param key
+     * @return 标签值
+     */
+    public String getLabelValue(String key) {
+        LabelDTO label = LabelsUtil.findLabel(this.labelList, key);
+        if (label == null) {
+            return null;
+        }
+        return label.getValue();
     }
 
     public List<MetaManyToManyPO> getMtms() {
@@ -317,6 +352,14 @@ public class MetaProjectPO extends BasePO {
         this.feature = feature;
     }
 
+    public String getLabels() {
+        return labels;
+    }
+
+    public void setLabels(String labels) {
+        this.labels = labels;
+    }
+
     public Integer getTemplateId() {
         return templateId;
     }
@@ -355,6 +398,14 @@ public class MetaProjectPO extends BasePO {
 
     public void setRemoteUrl3(String remoteUrl3) {
         this.remoteUrl3 = remoteUrl3;
+    }
+
+    public List<LabelDTO> getLabelList() {
+        return labelList;
+    }
+
+    public void setLabelList(List<LabelDTO> labelList) {
+        this.labelList = labelList;
     }
 
     public Integer getTeamId() {

@@ -2,6 +2,8 @@ package com.youran.generate.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.youran.generate.constant.PrimaryKeyStrategy;
+import com.youran.generate.pojo.dto.LabelDTO;
+import com.youran.generate.util.LabelsUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -145,6 +147,10 @@ public class MetaFieldPO extends BasePO {
      * 特殊字段类型
      */
     private String specialField;
+    /**
+     * 标签
+     */
+    private String labels;
 
     /**
      * 外键对应实体
@@ -168,7 +174,11 @@ public class MetaFieldPO extends BasePO {
     private transient List<MetaCascadeExtPO> cascadeShowExts;
     @JsonIgnore
     private transient List<MetaCascadeExtPO> cascadeListExts;
-
+    /**
+     * 字段下的所有标签
+     */
+    @JsonIgnore
+    private transient List<LabelDTO> labelList;
 
     /**
      * 获取字段注释
@@ -180,6 +190,29 @@ public class MetaFieldPO extends BasePO {
             this.fieldDesc : this.fieldComment;
     }
 
+    /**
+     * 判断实体是否包含标签
+     *
+     * @param key
+     * @return
+     */
+    public boolean hasLabel(String key) {
+        return LabelsUtil.findLabel(this.labelList, key) != null;
+    }
+
+    /**
+     * 获取标签值
+     *
+     * @param key
+     * @return 标签值
+     */
+    public String getLabelValue(String key) {
+        LabelDTO label = LabelsUtil.findLabel(this.labelList, key);
+        if (label == null) {
+            return null;
+        }
+        return label.getValue();
+    }
     public Integer getProjectId() {
         return projectId;
     }
@@ -242,6 +275,14 @@ public class MetaFieldPO extends BasePO {
 
     public void setSpecialField(String specialField) {
         this.specialField = specialField;
+    }
+
+    public String getLabels() {
+        return labels;
+    }
+
+    public void setLabels(String labels) {
+        this.labels = labels;
     }
 
     public Integer getFieldId() {
@@ -482,5 +523,13 @@ public class MetaFieldPO extends BasePO {
 
     public void setPkStrategy(Integer pkStrategy) {
         this.pkStrategy = pkStrategy;
+    }
+
+    public List<LabelDTO> getLabelList() {
+        return labelList;
+    }
+
+    public void setLabelList(List<LabelDTO> labelList) {
+        this.labelList = labelList;
     }
 }

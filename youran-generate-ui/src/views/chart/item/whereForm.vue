@@ -222,7 +222,9 @@ export default {
       } else {
         this.formVisible = true
       }
-      this.$refs.whereForm.clearValidate()
+      this.$nextTick(() => {
+        this.$refs.whereForm.clearValidate()
+      })
     },
     submit () {
       this.$refs.whereForm.validate()

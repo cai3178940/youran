@@ -115,4 +115,5 @@ public class MetaProjectController extends AbstractController implements MetaPro
         List<String> modules = metaProjectService.findModules(projectId);
         return ResponseEntity.ok(modules);
     }
+
 }

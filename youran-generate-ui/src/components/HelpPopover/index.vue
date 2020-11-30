@@ -1,5 +1,5 @@
 <template>
-  <div class="help-popover">
+  <div class="help-popover" :name="name">
     <el-popover
       ref="popover"
       placement="right"

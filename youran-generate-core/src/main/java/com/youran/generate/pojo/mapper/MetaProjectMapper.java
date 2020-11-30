@@ -14,7 +14,7 @@ import org.mapstruct.factory.Mappers;
  * @author: cbb
  * @date 2017/5/24
  */
-@Mapper(uses = FeatureMapper.class)
+@Mapper(uses = {FeatureMapper.class, LabelsMapper.class})
 public interface MetaProjectMapper {
 
     MetaProjectMapper INSTANCE = Mappers.getMapper(MetaProjectMapper.class);

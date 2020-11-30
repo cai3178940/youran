@@ -132,7 +132,9 @@ export default {
         this.form = havingModel.initFormBean()
       }
       this.formVisible = true
-      this.$refs.havingForm.clearValidate()
+      this.$nextTick(() => {
+        this.$refs.havingForm.clearValidate()
+      })
     },
     submit () {
       this.$refs.havingForm.validate()

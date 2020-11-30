@@ -89,6 +89,20 @@
               <el-checkbox v-model="form.feature.excelImport" tabindex="130">excel导入</el-checkbox>
             </help-popover>
           </el-form-item>
+          <el-form-item label="标签" prop="labels" >
+            <help-popover name="entity.labels">
+              <el-button v-for="(label,index) in form.labels"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editLabel(index, label)"
+                         plain>
+                {{label | displayLabel}}
+              </el-button>
+              <el-button type="success" @click="addLabel"
+                         class="inner-form-button inner-add-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
+            </help-popover>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()" tabindex="120">提交</el-button>
             <el-button v-if="edit" type="warning" @click="reset()" tabindex="130">重置</el-button>
@@ -97,6 +111,7 @@
         </el-form>
       </el-col>
     </el-row>
+    <label-form ref="labelForm" @submit="onLabelSubmit" @remove="onLabelRemove"></label-form>
   </div>
 </template>
 
@@ -104,12 +119,16 @@
 import projectApi from '@/api/project'
 import entityApi from '@/api/entity'
 import modulesMixin from '@/components/Mixins/modules'
+import labelForm from '@/components/Label/form'
 import { initFormBean, getRules } from './model'
 
 export default {
   name: 'entityForm',
   props: ['projectId', 'entityId'],
   mixins: [modulesMixin],
+  components: {
+    labelForm
+  },
   data () {
     const edit = !!this.entityId
     return {
@@ -118,7 +137,19 @@ export default {
       formLoading: false,
       old: initFormBean(edit),
       form: initFormBean(edit),
-      rules: getRules(this)
+      rules: getRules(this),
+      inputVisible: false,
+      inputValue: '',
+      labels: null
+    }
+  },
+  filters: {
+    displayLabel (label) {
+      if (label.value) {
+        return label.key + ':' + label.value
+      } else {
+        return label.key
+      }
     }
   },
   watch: {
@@ -176,6 +207,30 @@ export default {
     copyClassNameToTableName () {
       this.form.tableName = this.$common.snakeCase(this.form.className)
       this.$refs.entityForm.validateField('classAndTableName')
+    },
+    editLabel (index, label) {
+      this.$refs.labelForm.show({
+        projectId: this.projectId,
+        labelType: 'entity'
+      }, label, index)
+    },
+    addLabel () {
+      this.$refs.labelForm.show({
+        projectId: this.projectId,
+        labelType: 'entity'
+      }, null, this.form.labels.length)
+    },
+    onLabelSubmit (index, label) {
+      if (index >= this.form.labels.length) {
+        this.form.labels.push(label)
+      } else {
+        this.$set(this.form.labels, index, label)
+      }
+    },
+    onLabelRemove (index, label) {
+      if (index < this.form.labels.length) {
+        this.form.labels.splice(index, 1)
+      }
     }
   },
   created () {
@@ -195,6 +250,22 @@ export default {
   .entityFormDiv .entityForm {
     @include youran-form;
 
+  }
+
+ .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+  .button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
   }
 
 </style>

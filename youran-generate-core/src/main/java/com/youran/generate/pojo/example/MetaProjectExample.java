@@ -35,5 +35,4 @@ public class MetaProjectExample extends AbstractExample {
     public static final String N_PASSWORD = "Git密码";
     public static final String E_PASSWORD = "password";
 
-
 }

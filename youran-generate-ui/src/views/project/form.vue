@@ -70,42 +70,38 @@
             </help-popover>
           </el-form-item>
           <el-form-item v-if="templateItemVisible2" prop="templateId2">
-            <help-popover name="project.templateId2">
-              <el-col :span="18" class="col-left">
-                <el-select style="width:100%;" v-model="form.templateId2"
-                           placeholder="请选择第二模板" tabindex="80" clearable>
-                  <el-option
-                    v-for="item in templateList"
-                    :key="item.templateId"
-                    :disabled="item.templateId===form.templateId || item.templateId===form.templateId3"
-                    :label="item.name+'v'+item.templateVersion"
-                    :value="item.templateId">
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="6" class="col-right">
-                <el-button size="small" type="text" @click="removeTemplateItem(2)">移除第二模板</el-button>
-              </el-col>
-            </help-popover>
+            <el-col :span="18" class="col-left">
+              <el-select style="width:100%;" v-model="form.templateId2"
+                         placeholder="请选择第二模板" tabindex="80" clearable>
+                <el-option
+                  v-for="item in templateList"
+                  :key="item.templateId"
+                  :disabled="item.templateId===form.templateId || item.templateId===form.templateId3"
+                  :label="item.name+'v'+item.templateVersion"
+                  :value="item.templateId">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="6" class="col-right">
+              <el-button size="small" type="text" @click="removeTemplateItem(2)">移除第二模板</el-button>
+            </el-col>
           </el-form-item>
           <el-form-item v-if="templateItemVisible3" prop="templateId3">
-            <help-popover name="project.templateId3">
-              <el-col :span="18" class="col-left">
-                <el-select style="width:100%;" v-model="form.templateId3"
-                           placeholder="请选择第三模板" tabindex="90" clearable>
-                  <el-option
-                    v-for="item in templateList"
-                    :key="item.templateId"
-                    :disabled="item.templateId===form.templateId || item.templateId===form.templateId2"
-                    :label="item.name+'v'+item.templateVersion"
-                    :value="item.templateId">
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="6" class="col-right">
-                <el-button size="small" type="text" @click="removeTemplateItem(3)">移除第三模板</el-button>
-              </el-col>
-            </help-popover>
+            <el-col :span="18" class="col-left">
+              <el-select style="width:100%;" v-model="form.templateId3"
+                         placeholder="请选择第三模板" tabindex="90" clearable>
+                <el-option
+                  v-for="item in templateList"
+                  :key="item.templateId"
+                  :disabled="item.templateId===form.templateId || item.templateId===form.templateId2"
+                  :label="item.name+'v'+item.templateVersion"
+                  :value="item.templateId">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="6" class="col-right">
+              <el-button size="small" type="text" @click="removeTemplateItem(3)">移除第三模板</el-button>
+            </el-col>
           </el-form-item>
           <el-form-item label="启用Git仓库" prop="remote">
             <help-popover name="project.remote">
@@ -146,6 +142,20 @@
               </help-popover>
             </el-form-item>
           </template>
+          <el-form-item label="标签" prop="labels" >
+            <help-popover name="project.labels">
+              <el-button v-for="(label,index) in form.labels"
+                         :key="index" class="inner-form-button"
+                         type="primary" @click="editLabel(index, label)"
+                         plain>
+                {{label | displayLabel}}
+              </el-button>
+              <el-button type="success" @click="addLabel"
+                         class="inner-form-button inner-add-button"
+                         icon="el-icon-plus" plain>
+              </el-button>
+            </help-popover>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()" tabindex="160">提交</el-button>
             <el-button v-if="edit" type="warning" @click="reset()" tabindex="170">重置</el-button>
@@ -154,17 +164,22 @@
         </el-form>
       </el-col>
     </el-row>
+    <label-form ref="labelForm" @submit="onLabelSubmit" @remove="onLabelRemove"></label-form>
   </div>
 </template>
 
 <script>
 import projectApi from '@/api/project'
 import templateApi from '@/api/template'
+import labelForm from '@/components/Label/form'
 import { initFormBean, getRules } from './model'
 
 export default {
   name: 'projectForm',
   props: ['projectId'],
+  components: {
+    labelForm
+  },
   data () {
     const edit = !!this.projectId
     return {
@@ -175,7 +190,19 @@ export default {
       rules: getRules(),
       templateList: [],
       templateItemVisible2: false,
-      templateItemVisible3: false
+      templateItemVisible3: false,
+      inputVisible: false,
+      inputValue: '',
+      labels: null
+    }
+  },
+  filters: {
+    displayLabel (label) {
+      if (label.value) {
+        return label.key + ':' + label.value
+      } else {
+        return label.key
+      }
     }
   },
   methods: {
@@ -259,6 +286,36 @@ export default {
         this.$router.go(-1)
       } else {
         this.$router.push('/project')
+      }
+    },
+    editLabel (index, label) {
+      const templateIds = [this.form.templateId, this.form.templateId2, this.form.templateId3]
+        .filter(value => value)
+      this.$refs.labelForm.show({
+        projectId: this.projectId,
+        templateId: templateIds,
+        labelType: 'project'
+      }, label, index)
+    },
+    addLabel () {
+      const templateIds = [this.form.templateId, this.form.templateId2, this.form.templateId3]
+        .filter(value => value)
+      this.$refs.labelForm.show({
+        projectId: this.projectId,
+        templateId: templateIds,
+        labelType: 'project'
+      }, null, this.form.labels.length)
+    },
+    onLabelSubmit (index, label) {
+      if (index >= this.form.labels.length) {
+        this.form.labels.push(label)
+      } else {
+        this.$set(this.form.labels, index, label)
+      }
+    },
+    onLabelRemove (index, label) {
+      if (index < this.form.labels.length) {
+        this.form.labels.splice(index, 1)
       }
     }
   },

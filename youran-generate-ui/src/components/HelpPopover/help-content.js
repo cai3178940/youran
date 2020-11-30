@@ -46,7 +46,14 @@ export default {
 比如常见的Getter&Setter、toString()、构造函数等等。
 <a href="https://projectlombok.org" target="_blank">点击访问Lombok官网</a>
       `
-    }
+    },
+    labels: `
+**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能。标签是按key:value方式存储。
+
+**模板中获取标签配置**
+- **判断key是否存在**：\${this.hasLabel(key)}
+- **获取key配置的value**：\${this.getLabelValue(key)!}
+    `
   },
   entity: {
 
@@ -81,6 +88,13 @@ export default {
 - 单个删除： 删除单个当前业务对象
 - 批量删除： 批量删除当前业务对象
 
+    `,
+    labels: `
+**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能。标签是按key:value方式存储。
+
+**模板中获取标签配置**
+- **判断key是否存在**：\${this.metaEntity.hasLabel(key)}
+- **获取key配置的value**：\${this.metaEntity.getLabelValue(key)!}
     `
   },
   field: {
@@ -90,7 +104,6 @@ export default {
 - 普通字段：没有特殊功能的常规字段
 - 主键：标识当前字段是否业务表中的主键字段
 - 外键：当前字段是否跟其他实体的主键字段关联，可以用来实现“一对一”、“一对多”关联，外键支持\`级联扩展\`功能
-- 状态字段：可单独生成相应的修改状态方法
 - 逻辑删除：如果当前实体存在逻辑删除字段，那么调用删除方法的时候，只会将该字段改为1（默认值是0），而不是物理删除。
 - 创建时间：创建实体的时候，会自动对本字段设值为当前时间
 - 创建人员：记录下谁创建了本实体
@@ -232,6 +245,13 @@ private Integer publishSignSortSign;
     `,
     columnWidth: `
 **列宽**：生成前端列表时，用来指定当前列的宽度(像素值)，0值代表宽度自适应
+    `,
+    labels: `
+**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能。标签是按key:value方式存储。
+
+**模板中获取标签配置**
+- **判断key是否存在**：\${fieldPO.hasLabel(key)}
+- **获取key配置的value**：\${fieldPO.getLabelValue(key)!}
     `
   },
   'const': {

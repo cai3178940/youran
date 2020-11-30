@@ -28,5 +28,9 @@ public class MetaEntityExample extends AbstractExample {
     public static final String E_DESC = "动物";
     public static final String N_PAGESIGN = "是否支持分页查询";
     public static final String E_PAGESIGN = "true";
+    public static final String N_LABELS = "标签";
+    public static final String E_LABELS = "role:admin";
+
+
 
 }

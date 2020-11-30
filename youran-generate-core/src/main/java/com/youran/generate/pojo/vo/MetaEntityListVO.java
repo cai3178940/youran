@@ -1,9 +1,12 @@
 package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
+import com.youran.generate.pojo.dto.LabelDTO;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.List;
 
 import static com.youran.generate.pojo.example.MetaEntityExample.*;
 
@@ -35,6 +38,9 @@ public class MetaEntityListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_MODULE, example = E_MODULE)
     private String module;
+
+    @ApiModelProperty(notes = "标签")
+    private List<LabelDTO> labels;
 
     @ApiModelProperty(notes = N_DESC, example = E_DESC)
     private String desc;
@@ -114,6 +120,14 @@ public class MetaEntityListVO extends AbstractVO {
         this.desc = desc;
     }
 
+    public List<LabelDTO> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<LabelDTO> labels) {
+        this.labels = labels;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
@@ -123,6 +137,7 @@ public class MetaEntityListVO extends AbstractVO {
             .append("className", className)
             .append("tableName", tableName)
             .append("title", title)
+            .append("labels", labels)
             .append("desc", desc)
             .append("pageSign", pageSign)
             .toString();

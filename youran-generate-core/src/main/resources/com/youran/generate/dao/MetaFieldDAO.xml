@@ -61,6 +61,7 @@
             query_type,
             order_no,
             special_field,
+            labels,
             created_time,
             created_by,
             operated_time,
@@ -100,6 +101,7 @@
             #{queryType,jdbcType=INTEGER},
             #{orderNo,jdbcType=INTEGER},
             #{specialField,jdbcType=VARCHAR},
+            #{labels,jdbcType=VARCHAR},
             #{createdTime,jdbcType=TIMESTAMP},
             #{createdBy,jdbcType=VARCHAR},
             #{operatedTime,jdbcType=TIMESTAMP},
@@ -141,6 +143,7 @@
             query_type = #{queryType,jdbcType=INTEGER},
             order_no = #{orderNo,jdbcType=INTEGER},
             special_field = #{specialField,jdbcType=VARCHAR},
+            labels = #{labels,jdbcType=VARCHAR},
             operated_time = #{operatedTime,jdbcType=TIMESTAMP},
             operated_by = #{operatedBy,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}

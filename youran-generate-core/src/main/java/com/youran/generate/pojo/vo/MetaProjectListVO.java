@@ -1,9 +1,12 @@
 package com.youran.generate.pojo.vo;
 
 import com.youran.common.pojo.vo.AbstractVO;
+import com.youran.generate.pojo.dto.LabelDTO;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.List;
 
 import static com.youran.generate.pojo.example.MetaProjectExample.*;
 
@@ -56,6 +59,9 @@ public class MetaProjectListVO extends AbstractVO {
 
     @ApiModelProperty(notes = N_USERNAME, example = E_USERNAME)
     private String username;
+
+    @ApiModelProperty(notes = "标签")
+    private List<LabelDTO> labels;
 
     @ApiModelProperty(notes = N_TEAM_ID, example = E_TEAM_ID)
     private Integer teamId;
@@ -181,6 +187,14 @@ public class MetaProjectListVO extends AbstractVO {
 
     public void setProjectDesc(String projectDesc) {
         this.projectDesc = projectDesc;
+    }
+
+    public List<LabelDTO> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<LabelDTO> labels) {
+        this.labels = labels;
     }
 
     public Integer getTeamId() {

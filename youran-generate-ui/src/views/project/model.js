@@ -17,7 +17,8 @@ export function initFormBean (forEdit) {
     feature: {
       bootVersion: 2,
       lombokEnabled: false
-    }
+    },
+    labels: []
   }
   if (forEdit) {
     formBean['projectId'] = null

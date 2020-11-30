@@ -28,6 +28,7 @@
           `desc`,
           page_sign,
           feature,
+          labels,
           created_time,
           created_by,
           operated_time,
@@ -45,6 +46,7 @@
           #{desc,jdbcType=VARCHAR},
           #{pageSign,jdbcType=BOOLEAN},
           #{feature,jdbcType=VARCHAR},
+          #{labels,jdbcType=VARCHAR},
           #{createdTime,jdbcType=TIMESTAMP},
           #{createdBy,jdbcType=VARCHAR},
           #{operatedTime,jdbcType=TIMESTAMP},
@@ -64,6 +66,7 @@
           `desc` = #{desc,jdbcType=VARCHAR},
           page_sign = #{pageSign,jdbcType=BOOLEAN},
           feature = #{feature,jdbcType=VARCHAR},
+          labels = #{labels,jdbcType=VARCHAR},
           operated_time = #{operatedTime,jdbcType=TIMESTAMP},
           operated_by = #{operatedBy,jdbcType=VARCHAR},
           version = #{version,jdbcType=INTEGER}
@@ -174,5 +177,4 @@
             and t.entity_id = #{entityId,jdbcType=INTEGER}
             and m.hold_refer2 = #{hold,jdbcType=BOOLEAN}
     </select>
-
 </mapper>

@@ -58,7 +58,8 @@ export function initFormBean (forEdit) {
     // 编辑方式
     editType: options.editTypeOptions['TEXT'].value,
     // 排序号
-    orderNo: 1
+    orderNo: 1,
+    labels: []
   }
   if (forEdit) {
     formBean['fieldId'] = null
