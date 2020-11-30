@@ -18,3 +18,5 @@ youran:
     data-dir: D:\\youran
     # 启动时初始化用户表
     default-user-init: true
+    # 是否启用小组管理及项目共享功能，默认关闭（只有集成了统一登录才有意义）
+    team-enabled: false
