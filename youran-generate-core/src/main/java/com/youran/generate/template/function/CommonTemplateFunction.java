@@ -3,10 +3,7 @@ package com.youran.generate.template.function;
 import com.youran.generate.util.SwitchCaseUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 通用模板函数
@@ -106,6 +103,47 @@ public class CommonTemplateFunction {
         return content.substring(0, i) + content.substring(i + 1);
     }
 
+    /**
+     * 格式化参数注释
+     *
+     * @param content
+     * @return
+     */
+    public static String formatParamComments(String content) {
+        String tag = "@param ";
+        String[] lines = content.split("\n");
+        List<String[]> splits = new ArrayList<>(lines.length);
+        int maxLength = 0;
+        for (String line : lines) {
+            if (StringUtils.isBlank(line)) {
+                continue;
+            }
+            String[] arr = line.split(tag, 2);
+            if (arr.length < 2) {
+                continue;
+            }
+            String[] pair = arr[1].split("\\s+", 2);
+            String param = pair[0];
+            String comment = pair.length > 1 ? pair[1] : "";
+            if (param.length() > maxLength) {
+                maxLength = param.length();
+            }
+            splits.add(new String[]{arr[0], param, comment});
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String[] split : splits) {
+            sb.append(split[0])
+                .append(tag);
+            if (split[2].length() > 0) {
+                sb.append(StringUtils.rightPad(split[1], maxLength + 1))
+                    .append(split[2]);
+            } else {
+                sb.append(split[1]);
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 
     /**
      * map包装类

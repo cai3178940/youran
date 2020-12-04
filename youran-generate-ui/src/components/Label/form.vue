@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="配置标签" :visible.sync="formVisible" width="40%">
+  <el-dialog title="扩展属性" :visible.sync="formVisible" width="40%">
     <el-form ref="labelForm"
              :rules="rules" :model="form"
              label-width="120px" size="small">
@@ -54,11 +54,11 @@ export default {
   methods: {
     /**
      * 显示表单窗口
-     * @param projectId 项目id
+     * @param projectId  项目id
      * @param templateId 模板id
-     * @param labelType 标签类型
-     * @param formBean 编辑的label，如果新增则为空
-     * @param position 当前编辑的label在数组中的位置
+     * @param labelType  类型
+     * @param formBean   编辑的label，如果新增则为空
+     * @param position   当前编辑的label在数组中的位置
      */
     show ({ projectId, templateId, labelType }, formBean, position) {
       this.projectId = projectId

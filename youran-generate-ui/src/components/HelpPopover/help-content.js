@@ -48,11 +48,11 @@ export default {
       `
     },
     labels: `
-**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能。标签是按key:value方式存储。
+**扩展属性**：可以在模板中获取扩展属性，增强模板功能。
 
-**模板中获取标签配置**
+**模板中获取扩展属性**
 - **判断key是否存在**：\${this.hasLabel(key)}
-- **获取key配置的value**：\${this.getLabelValue(key)!}
+- **获取key配置的value**：\${this.getLabelValue(key)}
     `
   },
   entity: {
@@ -90,11 +90,11 @@ export default {
 
     `,
     labels: `
-**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能。标签是按key:value方式存储。
+**扩展属性**：可以在模板中获取扩展属性，增强模板功能。
 
-**模板中获取标签配置**
+**模板中获取扩展属性**
 - **判断key是否存在**：\${this.metaEntity.hasLabel(key)}
-- **获取key配置的value**：\${this.metaEntity.getLabelValue(key)!}
+- **获取key配置的value**：\${this.metaEntity.getLabelValue(key)}
     `
   },
   field: {
@@ -247,11 +247,11 @@ private Integer publishSignSortSign;
 **列宽**：生成前端列表时，用来指定当前列的宽度(像素值)，0值代表宽度自适应
     `,
     labels: `
-**标签**：增加标签后，可以在模板中获取标签配置，增强模板功能。标签是按key:value方式存储。
+**扩展属性**：可以在模板中获取扩展属性，增强模板功能。
 
-**模板中获取标签配置**
+**模板中获取扩展属性**
 - **判断key是否存在**：\${fieldPO.hasLabel(key)}
-- **获取key配置的value**：\${fieldPO.getLabelValue(key)!}
+- **获取key配置的value**：\${fieldPO.getLabelValue(key)}
     `
   },
   'const': {

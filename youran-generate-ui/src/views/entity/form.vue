@@ -89,7 +89,7 @@
               <el-checkbox v-model="form.feature.excelImport" tabindex="130">excel导入</el-checkbox>
             </help-popover>
           </el-form-item>
-          <el-form-item label="标签" prop="labels" >
+          <el-form-item label="扩展属性" prop="labels" >
             <help-popover name="entity.labels">
               <el-button v-for="(label,index) in form.labels"
                          :key="index" class="inner-form-button"
