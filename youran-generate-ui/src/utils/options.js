@@ -428,8 +428,8 @@ export default {
       // Integer Short Long Double Float BigDecimal：除like、in以外
       allowed = ['EQ', 'GT', 'GE', 'LT', 'LE', 'BETWEEN']
     } else {
-      // 字符串： 等于、like
-      allowed = ['EQ', 'LIKE']
+      // 字符串： 等于、like、in
+      allowed = ['EQ', 'LIKE', 'IN']
     }
     return getQueryTypeOptions(allowed)
   },

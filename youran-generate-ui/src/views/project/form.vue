@@ -40,7 +40,7 @@
             <help-popover name="project.feature.bootVersion">
               <el-radio-group v-model="form.feature.bootVersion">
                 <el-radio border disabled :label="1" tabindex="60">1.5.x</el-radio>
-                <el-radio border :label="2" tabindex="61">2.2.x</el-radio>
+                <el-radio border :label="2" tabindex="61">2.3.x</el-radio>
               </el-radio-group>
             </help-popover>
           </el-form-item>
