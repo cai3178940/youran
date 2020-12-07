@@ -52,6 +52,7 @@ public interface MetaEntityMapper {
         @Mapping(target = "desc"),
         @Mapping(target = "pageSign"),
         @Mapping(target = "feature"),
+        @Mapping(target = "labels"),
     })
     MetaEntityPO copy(MetaEntityPO entity);
 

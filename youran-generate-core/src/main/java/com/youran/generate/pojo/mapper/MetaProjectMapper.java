@@ -59,6 +59,7 @@ public interface MetaProjectMapper {
         @Mapping(target = "author"),
         @Mapping(target = "remote", constant = "false"),
         @Mapping(target = "feature"),
+        @Mapping(target = "labels"),
     })
     MetaProjectPO copyWithoutRemote(MetaProjectPO project);
 

@@ -75,6 +75,7 @@ public interface MetaFieldMapper {
         @Mapping(target = "queryType"),
         @Mapping(target = "orderNo"),
         @Mapping(target = "specialField"),
+        @Mapping(target = "labels"),
     })
     MetaFieldPO copy(MetaFieldPO field);
 

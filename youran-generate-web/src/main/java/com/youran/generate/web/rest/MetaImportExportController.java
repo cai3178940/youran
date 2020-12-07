@@ -4,9 +4,10 @@ import com.youran.generate.constant.WebConst;
 import com.youran.generate.pojo.mapper.MetaProjectMapper;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.vo.MetaProjectShowVO;
-import com.youran.generate.service.MetaImportExportService;
-import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.service.DataDirService;
+import com.youran.generate.service.MetaExportService;
+import com.youran.generate.service.MetaImportService;
+import com.youran.generate.service.MetaProjectService;
 import com.youran.generate.web.AbstractController;
 import com.youran.generate.web.api.MetaImportExportAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,9 @@ import java.net.URI;
 public class MetaImportExportController extends AbstractController implements MetaImportExportAPI {
 
     @Autowired
-    private MetaImportExportService metaImportExportService;
+    private MetaImportService metaImportService;
+    @Autowired
+    private MetaExportService metaExportService;
     @Autowired
     private MetaProjectService metaProjectService;
     @Autowired
@@ -39,7 +42,7 @@ public class MetaImportExportController extends AbstractController implements Me
     @Override
     @GetMapping(value = "/meta_export/{projectId}")
     public void metaExport(@PathVariable Integer projectId, HttpServletResponse response) {
-        File zipFile = metaImportExportService.metaExport(projectId);
+        File zipFile = metaExportService.metaExport(projectId);
         if (zipFile == null || !zipFile.exists()) {
             this.replyNotFound(response);
         } else {
@@ -60,7 +63,7 @@ public class MetaImportExportController extends AbstractController implements Me
             parentFile.mkdirs();
         }
         file.transferTo(zipFile);
-        MetaProjectPO metaProjectPO = metaImportExportService.metaImport(zipFile);
+        MetaProjectPO metaProjectPO = metaImportService.metaImport(zipFile);
         return ResponseEntity.created(new URI(apiPath + "/meta_project/" + metaProjectPO.getProjectId()))
             .body(MetaProjectMapper.INSTANCE.toShowVO(metaProjectPO));
     }
