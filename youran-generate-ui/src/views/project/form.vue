@@ -50,24 +50,22 @@
             </help-popover>
           </el-form-item>
           <el-form-item label="代码模板" prop="templateId">
-            <help-popover name="project.templateId">
-              <el-col :span="18" class="col-left">
-                <el-select style="width:100%;" v-model="form.templateId"
-                           placeholder="请选择代码模板" tabindex="70" clearable>
-                  <el-option
-                    v-for="item in templateList"
-                    :key="item.templateId"
-                    :disabled="item.templateId===form.templateId2 || item.templateId===form.templateId3"
-                    :label="item.name+'v'+item.templateVersion"
-                    :value="item.templateId">
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="6" class="col-right">
-                <el-button v-if="!templateItemVisible2 || !templateItemVisible3"
-                           size="small" type="text" @click="addTemplateItem">再加一个模板</el-button>
-              </el-col>
-            </help-popover>
+            <el-col :span="18" class="col-left">
+              <el-select style="width:100%;" v-model="form.templateId"
+                         placeholder="请选择代码模板" tabindex="70" clearable>
+                <el-option
+                  v-for="item in templateList"
+                  :key="item.templateId"
+                  :disabled="item.templateId===form.templateId2 || item.templateId===form.templateId3"
+                  :label="item.name+'v'+item.templateVersion"
+                  :value="item.templateId">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="6" class="col-right">
+              <el-button v-if="!templateItemVisible2 || !templateItemVisible3"
+                         size="small" type="text" @click="addTemplateItem">再加一个模板</el-button>
+            </el-col>
           </el-form-item>
           <el-form-item v-if="templateItemVisible2" prop="templateId2">
             <el-col :span="18" class="col-left">
@@ -142,7 +140,7 @@
               </help-popover>
             </el-form-item>
           </template>
-          <el-form-item label="扩展属性" prop="labels" >
+          <el-form-item v-if="labelVisible" label="扩展属性" prop="labels" >
             <help-popover name="project.labels">
               <el-button v-for="(label,index) in form.labels"
                          :key="index" class="inner-form-button"
@@ -193,7 +191,19 @@ export default {
       templateItemVisible3: false,
       inputVisible: false,
       inputValue: '',
+      labelVisible: false,
       labels: null
+    }
+  },
+  watch: {
+    'form.templateId' () {
+      this.loadTemplateMetaLabel()
+    },
+    'form.templateId2' () {
+      this.loadTemplateMetaLabel()
+    },
+    'form.templateId3' () {
+      this.loadTemplateMetaLabel()
     }
   },
   filters: {
@@ -288,23 +298,22 @@ export default {
         this.$router.push('/project')
       }
     },
-    editLabel (index, label) {
+    loadTemplateMetaLabel () {
       const templateIds = [this.form.templateId, this.form.templateId2, this.form.templateId3]
         .filter(value => value)
-      this.$refs.labelForm.show({
+      this.$refs.labelForm.loadMetaLabel({
         projectId: this.projectId,
         templateId: templateIds,
         labelType: 'project'
-      }, label, index)
+      }, metaLabels => {
+        this.labelVisible = metaLabels && metaLabels.length
+      })
+    },
+    editLabel (index, label) {
+      this.$refs.labelForm.show(label, index)
     },
     addLabel () {
-      const templateIds = [this.form.templateId, this.form.templateId2, this.form.templateId3]
-        .filter(value => value)
-      this.$refs.labelForm.show({
-        projectId: this.projectId,
-        templateId: templateIds,
-        labelType: 'project'
-      }, null, this.form.labels.length)
+      this.$refs.labelForm.show(null, this.form.labels.length)
     },
     onLabelSubmit (index, label) {
       if (index >= this.form.labels.length) {

@@ -1,14 +1,26 @@
 <template>
-  <el-dialog title="扩展属性" :visible.sync="formVisible" width="40%">
+  <el-dialog class="labelDialog" title="扩展属性"
+             :visible.sync="formVisible" width="40%">
     <el-form ref="labelForm"
              :rules="rules" :model="form"
-             label-width="120px" size="small">
+             label-width="60px" size="small">
       <el-form-item label="key" prop="key">
-        <el-autocomplete v-model="form.key" :fetch-suggestions="findKeySuggestions">
-        </el-autocomplete>
+        <el-select v-model="form.key" placeholder="请选择key"
+                   style="width:100%;"
+                   @change="showDesc" filterable>
+          <el-option
+            v-for="metaLabel in metaLabels"
+            :key="metaLabel.key"
+            :label="metaLabel | displayMetaLabel"
+            :value="metaLabel.key">
+          </el-option>
+        </el-select>
+        <div style="line-height: 14px;"><span style="color: #5558fa;font-size: 10px;">{{desc}}</span></div>
       </el-form-item>
-      <el-form-item label="value" prop="value">
-        <el-autocomplete v-model="form.value" :fetch-suggestions="findValueSuggestions">
+      <el-form-item label="value">
+        <el-autocomplete v-model="form.value"
+                         style="width:100%;"
+                         :fetch-suggestions="findValueSuggestions">
         </el-autocomplete>
       </el-form-item>
       <el-form-item>
@@ -40,10 +52,8 @@ export default {
       formVisible: false,
       // 最终返回给调用组件的表单数据
       form: initFormBean(),
-      projectId: null,
-      templateId: null,
-      labelType: null,
       metaLabels: null,
+      desc: '',
       rules: {
         key: [
           { required: true, message: '请填写key', trigger: 'change' }
@@ -51,34 +61,43 @@ export default {
       }
     }
   },
+  filters: {
+    displayMetaLabel (metaLabel) {
+      if (metaLabel.name) {
+        return `${metaLabel.key}(${metaLabel.name})`
+      }
+      return metaLabel.key
+    }
+  },
   methods: {
     /**
      * 显示表单窗口
-     * @param projectId  项目id
-     * @param templateId 模板id
-     * @param labelType  类型
      * @param formBean   编辑的label，如果新增则为空
      * @param position   当前编辑的label在数组中的位置
      */
-    show ({ projectId, templateId, labelType }, formBean, position) {
-      this.projectId = projectId
-      if (this.templateId !== templateId) {
-        this.templateId = templateId
-        this.metaLabels = null
-      }
-      this.labelType = labelType
+    show (formBean, position) {
       this.position = position
       if (formBean) {
         this.edit = true
         this.form = Object.assign({}, formBean)
+        this.showDesc()
       } else {
         this.edit = false
         this.form = initFormBean()
+        this.desc = ''
       }
       this.formVisible = true
       this.$nextTick(() => {
         this.$refs.labelForm.clearValidate()
       })
+    },
+    showDesc () {
+      const metaLabel = this.metaLabels.find(v => v.key === this.form.key)
+      if (metaLabel && metaLabel.desc) {
+        this.desc = metaLabel.desc
+      } else {
+        this.desc = ''
+      }
     },
     submit () {
       this.$refs.labelForm.validate()
@@ -87,20 +106,18 @@ export default {
           this.formVisible = false
         })
     },
-    findKeySuggestions (queryString, cb) {
-      const action = () => {
-        const results = this.metaLabels.slice(0)
-        cb(results.map(c => ({ value: c.key })))
-      }
-      if (this.metaLabels) {
-        action()
-      } else {
-        labelApi.findMetaLabel(this.projectId, this.templateId, this.labelType)
-          .then(data => {
-            this.metaLabels = data
-            action()
-          })
-      }
+    /**
+     * 加载扩展标签
+     * @param projectId  项目id
+     * @param templateId 模板id
+     * @param labelType  类型
+     */
+    loadMetaLabel ({ projectId, templateId, labelType }, callback) {
+      labelApi.findMetaLabel(projectId, templateId, labelType)
+        .then(data => {
+          this.metaLabels = data
+          callback(data)
+        })
     },
     findValueSuggestions (queryString, cb) {
       let foundCandidate = false
@@ -128,4 +145,7 @@ export default {
 </script>
 
 <style lang="scss">
+  .labelDialog .el-dialog__body {
+    padding: 20px 50px 20px 30px;
+  }
 </style>

@@ -247,7 +247,7 @@
               </el-select>
             </help-popover>
           </el-form-item>
-          <el-form-item label="扩展属性" prop="labels" >
+          <el-form-item v-if="labelVisible" label="扩展属性" prop="labels" >
             <help-popover name="field.labels">
               <el-button v-for="(label,index) in form.labels"
                          :key="index" class="inner-form-button"
@@ -315,6 +315,7 @@ export default {
       fkFeature: options.fkFeature,
       inputVisible: false,
       inputValue: '',
+      labelVisible: false,
       labels: null
     }
   },
@@ -582,17 +583,19 @@ export default {
       this.form.foreignKey = true
       this.formReady()
     },
-    editLabel (index, label) {
-      this.$refs.labelForm.show({
+    loadFieldMetaLabel () {
+      this.$refs.labelForm.loadMetaLabel({
         projectId: this.projectId,
         labelType: 'field'
-      }, label, index)
+      }, metaLabels => {
+        this.labelVisible = metaLabels && metaLabels.length
+      })
+    },
+    editLabel (index, label) {
+      this.$refs.labelForm.show(label, index)
     },
     addLabel () {
-      this.$refs.labelForm.show({
-        projectId: this.projectId,
-        labelType: 'field'
-      }, null, this.form.labels.length)
+      this.$refs.labelForm.show(null, this.form.labels.length)
     },
     onLabelSubmit (index, label) {
       if (index >= this.form.labels.length) {
@@ -660,6 +663,9 @@ export default {
           .catch(error => this.$common.showNotifyError(error))
       }
     }
+  },
+  mounted () {
+    this.loadFieldMetaLabel()
   }
 }
 </script>

@@ -18,6 +18,14 @@ public class MetaLabelDTO {
      */
     private String key;
     /**
+     * 标签名称
+     */
+    private String name;
+    /**
+     * 标签描述
+     */
+    private String desc;
+    /**
      * 候选项
      */
     private List<String> candidate;
@@ -28,6 +36,22 @@ public class MetaLabelDTO {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public List<String> getCandidate() {
