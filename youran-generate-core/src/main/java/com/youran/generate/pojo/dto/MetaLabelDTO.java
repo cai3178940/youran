@@ -26,6 +26,10 @@ public class MetaLabelDTO {
      */
     private String desc;
     /**
+     * 标签值模式：any、none、select
+     */
+    private String mode;
+    /**
      * 候选项
      */
     private List<String> candidate;
@@ -52,6 +56,14 @@ public class MetaLabelDTO {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
     public List<String> getCandidate() {

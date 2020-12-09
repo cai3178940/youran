@@ -90,18 +90,16 @@
             </help-popover>
           </el-form-item>
           <el-form-item v-if="labelVisible" label="扩展属性" prop="labels" >
-            <help-popover name="entity.labels">
-              <el-button v-for="(label,index) in form.labels"
-                         :key="index" class="inner-form-button"
-                         type="primary" @click="editLabel(index, label)"
-                         plain>
-                {{label | displayLabel}}
-              </el-button>
-              <el-button type="success" @click="addLabel"
-                         class="inner-form-button inner-add-button"
-                         icon="el-icon-plus" plain>
-              </el-button>
-            </help-popover>
+            <el-button v-for="(label,index) in form.labels"
+                       :key="index" class="inner-form-button"
+                       type="primary" @click="editLabel(index, label)"
+                       plain>
+              {{label | displayLabel}}
+            </el-button>
+            <el-button type="success" @click="addLabel"
+                       class="inner-form-button inner-add-button"
+                       icon="el-icon-plus" plain>
+            </el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submit()" tabindex="120">提交</el-button>
@@ -224,16 +222,24 @@ export default {
       this.$refs.labelForm.show(null, this.form.labels.length)
     },
     onLabelSubmit (index, label) {
+      for (let i = 0; i < this.form.labels.length; i++) {
+        if (i !== index && this.form.labels[i].key === label.key) {
+          this.$common.showNotifyError('属性key重复')
+          return
+        }
+      }
       if (index >= this.form.labels.length) {
         this.form.labels.push(label)
       } else {
         this.$set(this.form.labels, index, label)
       }
+      this.$refs.labelForm.close()
     },
     onLabelRemove (index, label) {
       if (index < this.form.labels.length) {
         this.form.labels.splice(index, 1)
       }
+      this.$refs.labelForm.close()
     }
   },
   created () {

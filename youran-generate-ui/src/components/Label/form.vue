@@ -7,7 +7,7 @@
       <el-form-item label="key" prop="key">
         <el-select v-model="form.key" placeholder="请选择key"
                    style="width:100%;"
-                   @change="showDesc" filterable>
+                   @change="onKeyChange" filterable>
           <el-option
             v-for="metaLabel in metaLabels"
             :key="metaLabel.key"
@@ -17,16 +17,24 @@
         </el-select>
         <div style="line-height: 14px;"><span style="color: #5558fa;font-size: 10px;">{{desc}}</span></div>
       </el-form-item>
-      <el-form-item label="value">
-        <el-autocomplete v-model="form.value"
-                         style="width:100%;"
-                         :fetch-suggestions="findValueSuggestions">
-        </el-autocomplete>
+      <el-form-item v-if="mode !== 'none'" label="value" prop="value">
+        <el-select v-if="mode === 'select'"
+                   v-model="form.value" placeholder="请选择value"
+                   style="width:100%;" filterable>
+          <el-option
+            v-for="item in candidate"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
+        <el-input v-if="mode === 'any'"
+                  v-model="form.value" placeholder="请输入value"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit()">确定</el-button>
         <el-button v-if="edit" type="danger" @click="remove()">删除</el-button>
-        <el-button @click="cancel()">取消</el-button>
+        <el-button @click="close()">取消</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -54,9 +62,14 @@ export default {
       form: initFormBean(),
       metaLabels: null,
       desc: '',
+      mode: 'none',
+      candidate: [],
       rules: {
         key: [
           { required: true, message: '请填写key', trigger: 'change' }
+        ],
+        value: [
+          { required: true, message: '请输入value', trigger: 'change' }
         ]
       }
     }
@@ -80,30 +93,32 @@ export default {
       if (formBean) {
         this.edit = true
         this.form = Object.assign({}, formBean)
-        this.showDesc()
       } else {
         this.edit = false
         this.form = initFormBean()
-        this.desc = ''
       }
+      this.onKeyChange()
       this.formVisible = true
       this.$nextTick(() => {
         this.$refs.labelForm.clearValidate()
       })
     },
-    showDesc () {
+    onKeyChange () {
       const metaLabel = this.metaLabels.find(v => v.key === this.form.key)
-      if (metaLabel && metaLabel.desc) {
+      if (metaLabel) {
         this.desc = metaLabel.desc
+        this.candidate = metaLabel.candidate
+        this.mode = metaLabel.mode
       } else {
         this.desc = ''
+        this.candidate = []
+        this.mode = 'none'
       }
     },
     submit () {
       this.$refs.labelForm.validate()
         .then(() => {
           this.$emit('submit', this.position, this.form)
-          this.formVisible = false
         })
     },
     /**
@@ -135,9 +150,8 @@ export default {
     },
     remove () {
       this.$emit('remove', this.position, this.form)
-      this.formVisible = false
     },
-    cancel () {
+    close () {
       this.formVisible = false
     }
   }

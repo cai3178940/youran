@@ -46,14 +46,7 @@ export default {
 比如常见的Getter&Setter、toString()、构造函数等等。
 <a href="https://projectlombok.org" target="_blank">点击访问Lombok官网</a>
       `
-    },
-    labels: `
-**扩展属性**：可以在模板中获取扩展属性，增强模板功能。
-
-**模板中获取扩展属性**
-- **判断key是否存在**：\${this.hasLabel(key)}
-- **获取key配置的value**：\${this.getLabelValue(key)}
-    `
+    }
   },
   entity: {
 
@@ -88,13 +81,6 @@ export default {
 - 单个删除： 删除单个当前业务对象
 - 批量删除： 批量删除当前业务对象
 
-    `,
-    labels: `
-**扩展属性**：可以在模板中获取扩展属性，增强模板功能。
-
-**模板中获取扩展属性**
-- **判断key是否存在**：\${this.metaEntity.hasLabel(key)}
-- **获取key配置的value**：\${this.metaEntity.getLabelValue(key)}
     `
   },
   field: {
@@ -245,13 +231,6 @@ private Integer publishSignSortSign;
     `,
     columnWidth: `
 **列宽**：生成前端列表时，用来指定当前列的宽度(像素值)，0值代表宽度自适应
-    `,
-    labels: `
-**扩展属性**：可以在模板中获取扩展属性，增强模板功能。
-
-**模板中获取扩展属性**
-- **判断key是否存在**：\${fieldPO.hasLabel(key)}
-- **获取key配置的value**：\${fieldPO.getLabelValue(key)}
     `
   },
   'const': {
