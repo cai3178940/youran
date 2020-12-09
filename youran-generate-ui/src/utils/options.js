@@ -181,12 +181,12 @@ function getQueryTypeOptions (allowedItems) {
     },
     'BETWEEN': {
       value: 7,
-      label: 'between',
+      label: '介于之间',
       disabled: true
     },
     'IN': {
       value: 8,
-      label: 'in',
+      label: '包含',
       disabled: true
     }
   }

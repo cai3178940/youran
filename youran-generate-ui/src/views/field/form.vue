@@ -166,6 +166,7 @@
                 <el-col :span="18" class="col-right">
                   <span class="inline-label">默认值</span>
                   <el-input v-model="form.defaultValue"
+                            style="width:200px;"
                             tabindex="121"></el-input>
                 </el-col>
               </el-row>
@@ -180,7 +181,9 @@
                 </el-col>
                 <el-col :span="18" class="col-right">
                   <span class="inline-label">搜索方式</span>
-                  <el-select :disabled="queryTypeDisabled" clearable v-model="form.queryType" style="" filterable
+                  <el-select :disabled="queryTypeDisabled" v-model="form.queryType"
+                             style="width:200px;"
+                             clearable filterable
                              placeholder="请选择" tabindex="140">
                     <el-option
                       v-for="item in allowedQueryTypes"
@@ -687,6 +690,9 @@ export default {
     }
 
     .inline-label {
+      width: 70px;
+      display:inline-block;
+      text-align: right;
       font-size: 14px;
       color: #606266;
       margin-right: 10px;
