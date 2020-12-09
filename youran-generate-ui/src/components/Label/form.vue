@@ -77,7 +77,7 @@ export default {
   filters: {
     displayMetaLabel (metaLabel) {
       if (metaLabel.name) {
-        return `${metaLabel.key}(${metaLabel.name})`
+        return `${metaLabel.key}（${metaLabel.name}）`
       }
       return metaLabel.key
     }
