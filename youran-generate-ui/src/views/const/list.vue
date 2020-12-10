@@ -37,7 +37,10 @@
               <template v-slot="detail">
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailRemark }}</span>
                 <span v-if="detail.row.editFlag">
-                  <el-input v-model="detail.row.detailRemark" placeholder="值描述，如：女"></el-input>
+                  <el-input v-model="detail.row.detailRemark"
+                            :ref="'detailCell_'+detail.$index+'_0'"
+                            @paste.native="pasteDetail($event, detail.$index, 0)"
+                            placeholder="值描述，如：女"></el-input>
                 </span>
               </template>
             </el-table-column>
@@ -45,7 +48,10 @@
               <template v-slot="detail">
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailName }}</span>
                 <span v-if="detail.row.editFlag">
-                  <el-input v-upper-case v-model="detail.row.detailName" placeholder="字段名，如：WOMAN"></el-input>
+                  <el-input v-upper-case v-model="detail.row.detailName"
+                            :ref="'detailCell_'+detail.$index+'_1'"
+                            @paste.native="pasteDetail($event, detail.$index, 1)"
+                            placeholder="字段名，如：WOMAN"></el-input>
                 </span>
               </template>
             </el-table-column>
@@ -53,7 +59,10 @@
               <template v-slot="detail">
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailValue }}</span>
                 <span v-if="detail.row.editFlag">
-                  <el-input v-model="detail.row.detailValue" placeholder="枚举值，如：2"></el-input>
+                  <el-input v-model="detail.row.detailValue"
+                            :ref="'detailCell_'+detail.$index+'_2'"
+                            @paste.native="pasteDetail($event, detail.$index, 2)"
+                            placeholder="枚举值，如：2"></el-input>
                 </span>
               </template>
             </el-table-column>
@@ -92,6 +101,7 @@
 <script>
 import Vue from 'vue'
 import options from '@/utils/options'
+import { convert2d } from '@/utils/string-util'
 import projectApi from '@/api/project'
 import constApi from '@/api/const'
 import { initDetailFormBean } from './model'
@@ -281,6 +291,41 @@ export default {
           .catch(error => this.$common.showNotifyError(error))
       } else {
         this.removeDetailAdd(detail)
+      }
+    },
+    /**
+     * 粘贴事件
+     */
+    pasteDetail (e, rowIndex, columnIndex) {
+      const text = e.clipboardData.getData('Text')
+      const textMatrix = convert2d(text)
+      let stop = false
+      // 只操作一个单元格，则走默认行为
+      if (textMatrix.length === 1 && textMatrix[0].length === 1) {
+        return
+      }
+      // 阻止事件的默认行为
+      e.preventDefault()
+      for (let i = 0; i < textMatrix.length; i++) {
+        if (stop) {
+          break
+        }
+        const textArray = textMatrix[i]
+        for (let j = 0; j < textArray.length; j++) {
+          // 超过3列则跳过
+          if (columnIndex + j > 2) {
+            continue
+          }
+          const name = 'detailCell_' + (rowIndex + i) + '_' + (columnIndex + j)
+          const input = this.$refs[name]
+          if (!input) {
+            if (j === 0) {
+              stop = true
+            }
+            break
+          }
+          input.$emit('input', textArray[j])
+        }
       }
     }
   },
