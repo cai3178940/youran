@@ -19,7 +19,7 @@ const state = {
   /**
    * 启用项目组共享功能
    */
-  teamEnabled: true
+  teamEnabled: false
 }
 
 const mutations = {

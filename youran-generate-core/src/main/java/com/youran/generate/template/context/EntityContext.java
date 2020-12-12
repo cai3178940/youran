@@ -286,20 +286,20 @@ public class EntityContext extends BaseContext {
         // 遍历有序树节点集合，进行代码打印
         for (ForeignEntityTreeNode node : dealtSet) {
             MetaEntityPO entity = node.getMetaEntity();
-            String foreigncName = SwitchCaseUtil.lowerFirstWord(entity.getClassName());
-            String foreignCName = entity.getClassName();
+            String classNameLowerCase = SwitchCaseUtil.lowerFirstWord(entity.getClassName());
+            String className = entity.getClassName();
             StringBuilder line = new StringBuilder();
             // 增加依赖
             if(StringUtils.isNotBlank(entity.getModule())) {
-                this.addImport(this.packageName + ".pojo.po."+ entity.getModule()+ "." + foreignCName + "PO");
-                this.addAutowired(this.packageName + ".help." + entity.getModule(), foreignCName + "Helper");
+                this.addImport(this.packageName + ".pojo.po."+ entity.getModule()+ "." + className + "PO");
+                this.addAutowired(this.packageName + ".help." + entity.getModule(), className + "Helper");
             }else{
-                this.addImport(this.packageName + ".pojo.po." + foreignCName + "PO");
-                this.addAutowired(this.packageName + ".help", foreignCName + "Helper");
+                this.addImport(this.packageName + ".pojo.po." + className + "PO");
+                this.addAutowired(this.packageName + ".help", className + "Helper");
             }
             // 增加注入
-            line.append(foreignCName).append("PO ").append(foreigncName).append(" = ")
-                .append(foreigncName).append("Helper.save").append(foreignCName).append("Example(")
+            line.append(className).append("PO ").append(classNameLowerCase).append(" = ")
+                .append(classNameLowerCase).append("Helper.save").append(className).append("Example(")
                 .append(printSaveExampleArg(entity)).append(");");
             lines.add(line.toString());
         }

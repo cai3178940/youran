@@ -274,19 +274,36 @@ public class BaseContext {
         this.autowired.add(className);
     }
 
+    /**
+     * 打印import依赖
+     *
+     * @return
+     */
+    @Deprecated
+    public String printImport() {
+        return this.printPackageAndImport("");
+    }
 
     /**
      * 打印import依赖
      *
      * @return
      */
-    public String printImport() {
+    public String printPackageAndImport(String packageName) {
         // 打印外部依赖
         StringBuilder sb1 = new StringBuilder();
         // 打印java内建依赖
         StringBuilder sb2 = new StringBuilder();
         StringBuilder sb3 = new StringBuilder();
         for (String imp : imports) {
+            int i = imp.lastIndexOf(".");
+            if (i > 0) {
+                String pkg = imp.substring(0, i);
+                // 跳过当前包路径下的依赖
+                if (pkg.equals(packageName)) {
+                    continue;
+                }
+            }
             if (imp.startsWith("javax.")) {
                 sb2.append("import ").append(imp).append(";\n");
             } else if (imp.startsWith("java.")) {
@@ -339,7 +356,12 @@ public class BaseContext {
             sb.deleteCharAt(0);
         }
 
-        return sb.toString();
+        if (StringUtils.isNotBlank(packageName)) {
+            return "package " + packageName + ";\n\n" +
+                sb.toString();
+        } else {
+            return sb.toString();
+        }
     }
 
 
