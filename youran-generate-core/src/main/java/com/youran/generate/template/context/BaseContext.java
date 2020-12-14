@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 基本信息上下文对象
@@ -32,11 +33,6 @@ import java.util.*;
 public class BaseContext {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseContext.class);
-    /**
-     * 当前渲染文件目录
-     * 从外部只能赋值一次
-     */
-    private String currentDir;
     /**
      * 实体列表
      */
@@ -113,11 +109,15 @@ public class BaseContext {
      * spring-boot版本
      */
     protected final MetaProjectFeatureDTO projectFeature;
-
     /**
      * 项目标签
      */
     protected final List<LabelDTO> labelList;
+    /**
+     * 当前渲染文件目录
+     * 从外部只能赋值一次
+     */
+    private String currentDir;
 
     public BaseContext(MetaProjectPO project) {
         //所有实体
@@ -177,7 +177,7 @@ public class BaseContext {
      * 往当前目录输出额外代码文件
      *
      * @param fileName 文件名
-     * @param content 文件内容
+     * @param content  文件内容
      */
     public void writeAdditionalFile(String fileName, String content) {
         File target = new File(currentDir, fileName);
@@ -312,12 +312,13 @@ public class BaseContext {
                 sb1.append("import ").append(imp).append(";\n");
             }
         }
+
         // 打印静态外部依赖
         StringBuilder sb4 = new StringBuilder();
         // 打印静态java内建依赖
         StringBuilder sb5 = new StringBuilder();
         StringBuilder sb6 = new StringBuilder();
-        for (String imp : staticImports) {
+        for (String imp : this.mergeStaticImports(staticImports)) {
             if (imp.startsWith("javax.")) {
                 sb5.append("import static ").append(imp).append(";\n");
             } else if (imp.startsWith("java.")) {
@@ -364,6 +365,25 @@ public class BaseContext {
         }
     }
 
+    private List<String> mergeStaticImports(Collection<String> staticImports) {
+        Map<String, List<String>> groups = staticImports.stream()
+            .filter(s -> s != null && s.indexOf(".") > 0)
+            .collect(Collectors.groupingBy(
+                e -> e.substring(0, e.lastIndexOf(".")),
+                TreeMap::new,
+                Collectors.toList()));
+        List<String> result = new ArrayList<>();
+        groups.forEach((staticClass, list) -> {
+            if (list.size() > 2) {
+                result.add(staticClass + ".*");
+            } else {
+                for (String staticImport : list) {
+                    result.add(staticImport);
+                }
+            }
+        });
+        return result;
+    }
 
     /**
      * 打印依赖注入
