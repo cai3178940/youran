@@ -295,7 +295,7 @@ public class BaseContext {
         // 打印java内建依赖
         StringBuilder sb2 = new StringBuilder();
         StringBuilder sb3 = new StringBuilder();
-        for (String imp : imports) {
+        for (String imp : this.mergeImports(imports,4)) {
             int i = imp.lastIndexOf(".");
             if (i > 0) {
                 String pkg = imp.substring(0, i);
@@ -318,7 +318,7 @@ public class BaseContext {
         // 打印静态java内建依赖
         StringBuilder sb5 = new StringBuilder();
         StringBuilder sb6 = new StringBuilder();
-        for (String imp : this.mergeStaticImports(staticImports)) {
+        for (String imp : this.mergeImports(staticImports, 2)) {
             if (imp.startsWith("javax.")) {
                 sb5.append("import static ").append(imp).append(";\n");
             } else if (imp.startsWith("java.")) {
@@ -365,8 +365,20 @@ public class BaseContext {
         }
     }
 
-    private List<String> mergeStaticImports(Collection<String> staticImports) {
-        Map<String, List<String>> groups = staticImports.stream()
+    /**
+     * 合并导入的内容
+     * 例如：将
+     * aaa.bbb.X1
+     * aaa.bbb.X2
+     * 合并成：
+     * aaa.bbb.*
+     *
+     * @param imports       所有待导入的类或静态方法
+     * @param maxSinglePack 同一包最大出现次数
+     * @return 合并后的所有内容
+     */
+    private List<String> mergeImports(Collection<String> imports, int maxSinglePack) {
+        Map<String, List<String>> groups = imports.stream()
             .filter(s -> s != null && s.indexOf(".") > 0)
             .collect(Collectors.groupingBy(
                 e -> e.substring(0, e.lastIndexOf(".")),
@@ -374,7 +386,7 @@ public class BaseContext {
                 Collectors.toList()));
         List<String> result = new ArrayList<>();
         groups.forEach((staticClass, list) -> {
-            if (list.size() > 2) {
+            if (list.size() > maxSinglePack) {
                 result.add(staticClass + ".*");
             } else {
                 for (String staticImport : list) {
