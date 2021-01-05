@@ -51,6 +51,7 @@ public interface CodeTemplateMapper {
         @Mapping(target = "sysLowVersion"),
         @Mapping(target = "sysDefault"),
         @Mapping(target = "remark"),
+        @Mapping(target = "metaLabel"),
     })
     CodeTemplatePO copy(CodeTemplatePO project);
 
