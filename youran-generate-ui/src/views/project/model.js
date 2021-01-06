@@ -15,7 +15,9 @@ export function initFormBean (forEdit) {
     username: '',
     password: '',
     feature: {
+      // 已废弃，不再支持spring-boot1
       bootVersion: 2,
+      // 已废弃，改用模板扩展属性来支持
       lombokEnabled: false
     },
     labels: []

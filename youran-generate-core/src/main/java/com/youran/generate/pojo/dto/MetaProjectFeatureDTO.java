@@ -26,9 +26,11 @@ public class MetaProjectFeatureDTO extends AbstractDTO {
 
     /**
      * 启用lombok
+     * 改用模板扩展属性来配置lombok
      */
     @ApiModelProperty(notes = "启用lombok", example = "false")
     @NotNull
+    @Deprecated
     private Boolean lombokEnabled = false;
 
     public Integer getBootVersion() {
