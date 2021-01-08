@@ -30,12 +30,15 @@
             <outputDirectory>conf</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>assembly/schema</directory>
-            <outputDirectory>schema</outputDirectory>
-        </fileSet>
-        <fileSet>
             <directory>assembly/resource</directory>
             <outputDirectory>resource</outputDirectory>
         </fileSet>
     </fileSets>
+    <files>
+        <file>
+            <source>../youran-generate-web/src/test/resources/DB/generate.sql</source>
+            <outputDirectory>schema</outputDirectory>
+            <destName>init.sql</destName>
+        </file>
+    </files>
 </assembly>

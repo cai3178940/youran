@@ -1,4 +1,3 @@
-# 提醒：如果修改表结构，别忘了同时修改release模块下的schema/init.sql
 DROP TABLE IF EXISTS `meta_project`;
 
 CREATE TABLE `meta_project` (
