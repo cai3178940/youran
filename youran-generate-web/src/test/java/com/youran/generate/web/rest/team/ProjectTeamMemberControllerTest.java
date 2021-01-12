@@ -41,7 +41,7 @@ public class ProjectTeamMemberControllerTest extends AbstractWebTest {
         restMockMvc.perform(post(getApiPath() + "/project_team_member")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(addDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isOk());
     }
 
     /**
