@@ -52,5 +52,77 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
+  },
+  // 配置webpack
+  configureWebpack: config => {
+    // 开启分离js
+    config.optimization = {
+      runtimeChunk: 'single',
+      splitChunks: {
+        chunks: 'all',
+        maxInitialRequests: Infinity,
+        minSize: 20000,
+        cacheGroups: {
+          libs: {
+            name: 'chunk-libs',
+            test: /[\\/]node_modules[\\/]/,
+            priority: 10,
+            chunks: 'initial' // only package third parties that are initially dependent
+          },
+          vue: {
+            name: 'chunk-vue', // split vue into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?vue*(.*)/ // in order to adapt to cnpm
+          },
+          elementUI: {
+            name: 'chunk-elementUI', // split elementUI into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
+          },
+          gojs: {
+            name: 'chunk-gojs', // split gojs into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?gojs(.*)/ // in order to adapt to cnpm
+          },
+          echarts: {
+            name: 'chunk-echarts', // split echarts into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?echarts(.*)/ // in order to adapt to cnpm
+          },
+          moment: {
+            name: 'chunk-moment', // split moment into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?moment(.*)/ // in order to adapt to cnpm
+          },
+          highlight: {
+            name: 'chunk-highlight', // split highlight into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?highlight(.*)/ // in order to adapt to cnpm
+          },
+          tui_editor: {
+            name: 'chunk-tui-editor', // split tui-editor into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?tui-editor(.*)/ // in order to adapt to cnpm
+          },
+          codemirror: {
+            name: 'chunk-codemirror', // split codemirror into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?codemirror(.*)/ // in order to adapt to cnpm
+          },
+          js_beautify: {
+            name: 'chunk-js-beautify', // split codemirror into a single package
+            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?js-beautify(.*)/ // in order to adapt to cnpm
+          },
+          commons: {
+            name: 'chunk-commons',
+            test: resolve('src/components'), // can customize your rules
+            minChunks: 3, //  minimum common number
+            priority: 5,
+            reuseExistingChunk: true
+          }
+        }
+      }
+    }
   }
 }
