@@ -30,7 +30,8 @@ export const flexibleTemplate = {
     listSort: false,
     show: true,
     editType: options.editTypeOptions['TEXT'].value,
-    orderNo: 1
+    orderNo: 1,
+    labels: []
   },
   '外键模板': {
     jfieldName: '',
@@ -58,7 +59,8 @@ export const flexibleTemplate = {
     listSort: false,
     show: true,
     editType: options.editTypeOptions['SELECT'].value,
-    orderNo: 10
+    orderNo: 10,
+    labels: []
   }
 }
 /**
@@ -91,7 +93,8 @@ export const fixedTemplate = {
     listSort: false,
     show: true,
     editType: options.editTypeOptions['TEXT'].value,
-    orderNo: 1
+    orderNo: 1,
+    labels: []
   },
   '主键ID(Integer-自增)': {
     jfieldName: 'id',
@@ -119,7 +122,8 @@ export const fixedTemplate = {
     listSort: false,
     show: true,
     editType: options.editTypeOptions['TEXT'].value,
-    orderNo: 1
+    orderNo: 1,
+    labels: []
   },
   '主键ID(UUID-32)': {
     jfieldName: 'id',
@@ -147,7 +151,8 @@ export const fixedTemplate = {
     listSort: false,
     show: true,
     editType: options.editTypeOptions['TEXT'].value,
-    orderNo: 1
+    orderNo: 1,
+    labels: []
   },
   '主键ID(UUID-16)': {
     jfieldName: 'id',
@@ -175,7 +180,8 @@ export const fixedTemplate = {
     listSort: false,
     show: true,
     editType: options.editTypeOptions['TEXT'].value,
-    orderNo: 1
+    orderNo: 1,
+    labels: []
   },
   '创建时间(Date)': {
     jfieldName: 'createdTime',
@@ -203,7 +209,8 @@ export const fixedTemplate = {
     listSort: true,
     show: false,
     editType: options.editTypeOptions['DATETIME'].value,
-    orderNo: 100
+    orderNo: 100,
+    labels: []
   },
   '创建时间(LocalDateTime)': {
     jfieldName: 'createdTime',
@@ -231,7 +238,8 @@ export const fixedTemplate = {
     listSort: true,
     show: false,
     editType: options.editTypeOptions['DATETIME'].value,
-    orderNo: 100
+    orderNo: 100,
+    labels: []
   },
   '创建人': {
     jfieldName: 'createdBy',
@@ -259,7 +267,8 @@ export const fixedTemplate = {
     listSort: false,
     show: false,
     editType: options.editTypeOptions['TEXT'].value,
-    orderNo: 101
+    orderNo: 101,
+    labels: []
   },
   '修改时间(Date)': {
     jfieldName: 'operatedTime',
@@ -287,7 +296,8 @@ export const fixedTemplate = {
     listSort: true,
     show: false,
     editType: options.editTypeOptions['DATETIME'].value,
-    orderNo: 110
+    orderNo: 110,
+    labels: []
   },
   '修改时间(LocalDateTime)': {
     jfieldName: 'operatedTime',
@@ -315,7 +325,8 @@ export const fixedTemplate = {
     listSort: true,
     show: false,
     editType: options.editTypeOptions['DATETIME'].value,
-    orderNo: 110
+    orderNo: 110,
+    labels: []
   },
   '修改人': {
     jfieldName: 'operatedBy',
@@ -343,7 +354,8 @@ export const fixedTemplate = {
     listSort: false,
     show: false,
     editType: options.editTypeOptions['TEXT'].value,
-    orderNo: 111
+    orderNo: 111,
+    labels: []
   },
   '乐观锁版本号': {
     jfieldName: 'version',
@@ -371,7 +383,8 @@ export const fixedTemplate = {
     listSort: false,
     show: false,
     editType: options.editTypeOptions['NUMBER'].value,
-    orderNo: 120
+    orderNo: 120,
+    labels: []
   },
   '逻辑删除标识': {
     jfieldName: 'deleted',
@@ -399,7 +412,8 @@ export const fixedTemplate = {
     listSort: false,
     show: false,
     editType: options.editTypeOptions['RADIO'].value,
-    orderNo: 130
+    orderNo: 130,
+    labels: []
   },
   '排序号': {
     jfieldName: 'orderNo',
@@ -427,7 +441,8 @@ export const fixedTemplate = {
     listSort: true,
     show: true,
     editType: options.editTypeOptions['NUMBER'].value,
-    orderNo: 90
+    orderNo: 90,
+    labels: []
   }
 }
 
