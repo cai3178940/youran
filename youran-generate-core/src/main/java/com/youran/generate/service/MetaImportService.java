@@ -1,6 +1,5 @@
 package com.youran.generate.service;
 
-import com.google.common.collect.ImmutableMap;
 import com.youran.common.exception.BusinessException;
 import com.youran.common.util.JsonUtil;
 import com.youran.generate.constant.ImportExportConst;
@@ -213,10 +212,18 @@ public class MetaImportService {
     private void updateEntityFeature(MetaEntityPO metaEntityPO, Map<Integer, Integer> fieldIdMap) {
         metaEntityPO.normalize();
         MetaEntityFeatureDTO feature = metaEntityPO.getEntityFeature();
+        Map<String, Object> attributes = new HashMap<>();
         if (feature.getTitleFieldId() != null) {
-            // 替换为新的字段id
-            metaEntityService.doUpdateFeature(metaEntityPO,
-                ImmutableMap.of("titleFieldId", fieldIdMap.get(feature.getTitleFieldId())));
+            // 替换为新的标题字段id
+            attributes.put("titleFieldId", fieldIdMap.get(feature.getTitleFieldId()));
+        }
+        if (feature.getPidFieldId() != null) {
+            // 替换为新的父id字段id
+            attributes.put("pidFieldId", fieldIdMap.get(feature.getPidFieldId()));
+        }
+        if (!attributes.isEmpty()) {
+            // 修改实体特性
+            metaEntityService.doUpdateFeature(metaEntityPO, attributes);
         }
     }
 

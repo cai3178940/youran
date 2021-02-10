@@ -52,6 +52,11 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
     @ApiModelProperty(notes = "mysql字段重名校验通过", example = "true")
     private Boolean sameFieldNameSuccess;
     /**
+     * 父节点id候选字段等级
+     */
+    @ApiModelProperty(notes = "父节点id候选字段等级", example = "0")
+    private Integer pidCandidate;
+    /**
      * 标题候选字段等级
      */
     @ApiModelProperty(notes = "标题候选字段等级", example = "0")
@@ -63,6 +68,7 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
         this.dicExistSuccess = true;
         this.sameJfieldNameSuccess = true;
         this.sameFieldNameSuccess = true;
+        this.pidCandidate = 0;
         this.titleCandidate = 0;
     }
 
@@ -150,6 +156,14 @@ public class MetaFieldValidateVO extends MetaAbstractValidateVO {
 
     public void setSameFieldNameSuccess(Boolean sameFieldNameSuccess) {
         this.sameFieldNameSuccess = sameFieldNameSuccess;
+    }
+
+    public Integer getPidCandidate() {
+        return pidCandidate;
+    }
+
+    public void setPidCandidate(Integer pidCandidate) {
+        this.pidCandidate = pidCandidate;
     }
 
     public Integer getTitleCandidate() {

@@ -156,6 +156,12 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     @JsonIgnore
     private transient MetaFieldPO versionField;
     /**
+     * 实体内的父id字段
+     * 如果存在，则说明当前实体是树状结构
+     */
+    @JsonIgnore
+    private transient MetaFieldPO pidField;
+    /**
      * 实体内的标题字段
      * 用于在java模板内生成findOptions服务
      */
@@ -585,6 +591,14 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setEntityFeature(MetaEntityFeatureDTO entityFeature) {
         this.entityFeature = entityFeature;
+    }
+
+    public MetaFieldPO getPidField() {
+        return pidField;
+    }
+
+    public void setPidField(MetaFieldPO pidField) {
+        this.pidField = pidField;
     }
 
     public MetaFieldPO getTitleField() {

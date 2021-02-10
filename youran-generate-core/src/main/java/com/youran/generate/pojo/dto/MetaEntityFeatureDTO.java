@@ -42,6 +42,12 @@ public class MetaEntityFeatureDTO extends AbstractDTO {
     @ApiModelProperty(notes = "是否生成show方法", example = "true")
     private Boolean show = true;
     /**
+     * 实体内的父id字段
+     * 如果存在，则说明当前实体是树状结构
+     */
+    @ApiModelProperty(notes = "实体内的父id字段", example = "1")
+    private Integer pidFieldId;
+    /**
      * 实体内的标题字段
      * 用于在java模板内生成findOptions服务
      */
@@ -128,5 +134,13 @@ public class MetaEntityFeatureDTO extends AbstractDTO {
 
     public void setExcelImport(Boolean excelImport) {
         this.excelImport = excelImport;
+    }
+
+    public Integer getPidFieldId() {
+        return pidFieldId;
+    }
+
+    public void setPidFieldId(Integer pidFieldId) {
+        this.pidFieldId = pidFieldId;
     }
 }

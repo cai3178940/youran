@@ -62,7 +62,7 @@ public class MetaValidateService {
         boolean finalMustSetTitle = mustSetTitle;
         // 校验实体中的所有字段
         List<MetaFieldValidateVO> fieldValidateVOS = fields.values().stream()
-            .map(field -> this.doValidateField(field, fields, consts, finalMustSetTitle))
+            .map(field -> this.doValidateField(field, entity, consts, finalMustSetTitle))
             .collect(Collectors.toList());
 
         MetaEntityInnerValidateVO vo = new MetaEntityInnerValidateVO();
@@ -74,13 +74,13 @@ public class MetaValidateService {
      * 字段校验
      *
      * @param field        被校验的字段
-     * @param fields       实体中所有字段
+     * @param entity       字段所属实体
      * @param consts       项目内所有枚举
      * @param mustSetTitle 是否必须要标记标题字段
      * @return
      */
     private MetaFieldValidateVO doValidateField(MetaFieldPO field,
-                                                Map<Integer, MetaFieldPO> fields,
+                                                MetaEntityPO entity,
                                                 List<MetaConstPO> consts,
                                                 boolean mustSetTitle) {
         MetaFieldValidateVO vo = new MetaFieldValidateVO(field.getFieldId());
@@ -93,7 +93,7 @@ public class MetaValidateService {
                 vo.dicNotExistError(field);
             }
         }
-        for (Map.Entry<Integer, MetaFieldPO> entry : fields.entrySet()) {
+        for (Map.Entry<Integer, MetaFieldPO> entry : entity.getFields().entrySet()) {
             if (field.getFieldId().equals(entry.getKey())) {
                 continue;
             }
@@ -105,6 +105,15 @@ public class MetaValidateService {
             // 校验mysql字段名重复
             if (Objects.equals(field.getFieldName(), otherField.getFieldName())) {
                 vo.sameFieldNameError();
+            }
+        }
+        // 标记父节点id候选字段，前提条件：外键 && 关联了当前实体主键
+        if (field.getForeignKey()) {
+            MetaFieldPO pkField = entity.getPkField();
+            MetaFieldPO foreignField = field.getForeignField();
+            if (pkField != null && foreignField != null
+                && Objects.equals(foreignField.getFieldId(), pkField.getFieldId())) {
+                vo.setPidCandidate(1);
             }
         }
         // 标记标题候选字段，前提条件是：非主键 && 非外键 && 非特殊字段 && 是字符串

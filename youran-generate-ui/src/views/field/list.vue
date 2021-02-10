@@ -66,17 +66,33 @@
           <svg-icon v-if="!scope.row.validate.success"
                     className="table-cell-icon color-warning"
                     iconClass="mark-circle"></svg-icon>
+          <!-- 父id的标签及提示 -->
+          <el-tooltip v-if="scope.row.fieldId === pidFieldId"
+                      class="item" effect="dark" placement="top">
+            <div slot="content" v-html="'树型结构实体中的父节点id'"></div>
+            <span class="table-column-tag pid-field-tag">父节点id</span>
+          </el-tooltip>
+          <!-- 父id候选字段的标签及提示 -->
+          <el-tooltip v-if="!pidFieldId && scope.row.validate.pidCandidate > 0"
+                      class="item" effect="dark" placement="top"
+                      content="设置为树型结构的父节点id">
+            <span class="table-column-tag pid-candidate-tag"
+                  @click="handleSetPidField(scope.row.fieldId)">父节点id</span>
+          </el-tooltip>
+          <!-- 标题字段的标签及提示 -->
           <el-tooltip v-if="scope.row.fieldId === titleFieldId"
                       class="item" effect="dark" placement="top">
             <div slot="content" v-html="titleFieldTip(scope.row)"></div>
             <span class="table-column-tag title-field-tag">标题</span>
           </el-tooltip>
+          <!-- 标题候选字段的标签及提示 -->
           <el-tooltip v-if="!titleFieldId && scope.row.validate.titleCandidate===2"
                       class="item" effect="dark" placement="top"
                       content="请点我设置标题">
             <span class="table-column-tag title-candidate-tag"
                   @click="handleSetTitleField(scope.row.fieldId)">标题</span>
           </el-tooltip>
+          <!-- 备注信息弹出框 -->
           <el-popover
             placement="top"
             trigger="click">
@@ -99,6 +115,12 @@
                          style="padding: 0px;" type="text">前往创建</el-button>
             </p>
             <div style="min-width: 200px; text-align: right; margin-top: 10px;">
+              <el-button v-if="scope.row.fieldId === pidFieldId"
+                         size="mini" type="warning"
+                         @click="handleSetPidField(null)">取消父节点id</el-button>
+              <el-button v-if="scope.row.fieldId !== pidFieldId && scope.row.validate.pidCandidate > 0"
+                         type="primary" size="mini"
+                         @click="handleSetPidField(scope.row.fieldId)">设为父节点id</el-button>
               <el-button v-if="scope.row.fieldId === titleFieldId"
                          size="mini" type="warning"
                          @click="handleSetTitleField(null)">取消标题</el-button>
@@ -457,6 +479,8 @@ export default {
       },
       // 当前实体
       entity: null,
+      // 父id字段id
+      pidFieldId: null,
       // 标题字段id
       titleFieldId: null
     }
@@ -623,6 +647,7 @@ export default {
             value.oldOrderNo = value.orderNo
             value.validate = {
               success: true,
+              pidCandidate: 0,
               titleCandidate: 0
             }
           })
@@ -668,6 +693,7 @@ export default {
       return entityApi.get(this.query.entityId)
         .then(data => {
           this.entity = data
+          this.pidFieldId = data.feature.pidFieldId
           this.titleFieldId = data.feature.titleFieldId
         })
         .catch(error => this.$common.showNotifyError(error))
@@ -854,6 +880,17 @@ export default {
     handleIndexEdit (index) {
       this.$router.push(`/project/${this.projectId}/entity/${this.entityId}/field/indexEdit/${index.indexId}`)
     },
+    handleSetPidField (fieldId) {
+      return entityApi.updateFeature(this.query.entityId,
+        {
+          pidFieldId: fieldId
+        })
+        .then(data => {
+          this.entity = data
+          this.pidFieldId = data.feature.pidFieldId
+        })
+        .catch(error => this.$common.showNotifyError(error))
+    },
     handleSetTitleField (fieldId) {
       return entityApi.updateFeature(this.query.entityId,
         {
@@ -984,12 +1021,21 @@ export default {
   }
 
   .fieldList {
-    .title-field-tag {
+    .pid-field-tag {
       background-color: $color-success;
       margin-right: 5px;
     }
-    .title-candidate-tag {
+    .pid-candidate-tag {
       background-color: #d2f8d2;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+    .title-field-tag {
+      background-color: #25bdcb;
+      margin-right: 5px;
+    }
+    .title-candidate-tag {
+      background-color: #c4f9ff;
       margin-right: 5px;
       cursor: pointer;
     }

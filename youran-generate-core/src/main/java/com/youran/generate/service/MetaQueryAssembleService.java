@@ -351,6 +351,9 @@ public class MetaQueryAssembleService implements InitializingBean {
             if (Objects.equals(field.getFieldId(), entity.getEntityFeature().getTitleFieldId())) {
                 entity.setTitleField(field);
             }
+            if (Objects.equals(field.getFieldId(), entity.getEntityFeature().getPidFieldId())) {
+                entity.setPidField(field);
+            }
         }
     }
 

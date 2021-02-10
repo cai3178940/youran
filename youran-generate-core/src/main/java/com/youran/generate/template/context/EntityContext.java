@@ -87,6 +87,10 @@ public class EntityContext extends BaseContext {
      */
     private final MetaFieldPO delField;
     /**
+     * 父id字段
+     */
+    private final MetaFieldPO pidField;
+    /**
      * 标题字段
      */
     private final MetaFieldPO titleField;
@@ -200,6 +204,7 @@ public class EntityContext extends BaseContext {
         this.foreignFields = entity.getForeignFields();
         this.foreignEntities = entity.getForeignEntities();
         this.entityFeature = entity.getEntityFeature();
+        this.pidField = entity.getPidField();
         this.titleField = entity.getTitleField();
     }
 
@@ -498,6 +503,10 @@ public class EntityContext extends BaseContext {
 
     public MetaFieldPO getTitleField() {
         return titleField;
+    }
+
+    public MetaFieldPO getPidField() {
+        return pidField;
     }
 
     @Override
