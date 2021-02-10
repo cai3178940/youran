@@ -339,7 +339,7 @@ public class EntityContext extends BaseContext {
             int endSize = totalMap.size();
             // 走一遍遍历没有任何效果，则报错
             if (endSize > 0 && endSize == startSize) {
-                throw new BusinessException("实体外键之间存在强循环依赖");
+                throw new BusinessException("实体外键之间存在强循环依赖，请关闭外键的“不能为空”配置项");
             }
         }
         return dealtSet;
