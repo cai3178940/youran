@@ -29,7 +29,7 @@ youran:
     # aes对称加密Key
     aes-key: orpNB6YGbiiDcrrubk2rFQ==
     # 版本号，跟pom一致
-    version: 3.5.0
+    version: 3.6.0
     # rest-api路径前缀
     api-path: /api
     # websocket-api路径前缀

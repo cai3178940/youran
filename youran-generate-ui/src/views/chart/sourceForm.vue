@@ -798,15 +798,10 @@ export default {
     .text-in-form {
       display:inline-block;
       font-size: 16px;
-      color: #FA8072;
+      color: #fa8072;
       padding: 7px 0px;
     }
-    .inner-form-button {
-      margin: 0 10px 5px 0;
-    }
-    .inner-add-button {
-      border-style: dashed;
-    }
+
   }
 
 </style>

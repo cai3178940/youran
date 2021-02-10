@@ -36,6 +36,24 @@ $el-table-padding: 3px 0;
             color: #fa5555;
         }
     }
+    .inner-form-button {
+        margin: 0 10px 5px 0;
+        padding: 9px 10px;
+        .button-in-button {
+            margin-left: .25rem;
+            color: #fa8072;
+            font-size: 17px;
+            font-weight: bold;
+            line-height: 0.7;
+            vertical-align: bottom;
+            &:hover {
+                color: #ffbdb6;
+            }
+        }
+    }
+    .inner-add-button {
+        border-style: dashed;
+    }
 }
 
 /**

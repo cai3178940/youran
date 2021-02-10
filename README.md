@@ -1,6 +1,6 @@
 # youran代码自动化平台
 
-![version](https://img.shields.io/badge/youran-v3.5.0-orange)
+![version](https://img.shields.io/badge/youran-v3.6.0-orange)
 ![license](https://img.shields.io/github/license/cai3178940/youran)
 
 ## 介绍

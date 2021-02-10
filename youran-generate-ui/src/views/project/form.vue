@@ -141,6 +141,8 @@
                        type="primary" @click="editLabel(index, label)"
                        plain>
               {{label | displayLabel}}
+              <span class="button-in-button"
+                    @click.stop="removeLabel(index, label)">&times;</span>
             </el-button>
             <el-button type="success" @click="addLabel"
                        class="inner-form-button inner-add-button"
@@ -155,9 +157,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <label-form ref="labelForm"
-                @submit="onLabelSubmit"
-                @remove="onLabelRemove"></label-form>
+    <label-form ref="labelForm" @submit="onLabelSubmit"></label-form>
   </div>
 </template>
 
@@ -307,6 +307,12 @@ export default {
     editLabel (index, label) {
       this.$refs.labelForm.show(label, index)
     },
+    removeLabel (index, label) {
+      if (index < this.form.labels.length) {
+        this.form.labels.splice(index, 1)
+      }
+      this.$refs.labelForm.close()
+    },
     addLabel () {
       this.$refs.labelForm.show(null, this.form.labels.length)
     },
@@ -321,12 +327,6 @@ export default {
         this.form.labels.push(label)
       } else {
         this.$set(this.form.labels, index, label)
-      }
-      this.$refs.labelForm.close()
-    },
-    onLabelRemove (index, label) {
-      if (index < this.form.labels.length) {
-        this.form.labels.splice(index, 1)
       }
       this.$refs.labelForm.close()
     }

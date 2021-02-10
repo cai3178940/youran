@@ -33,7 +33,6 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit()">确定</el-button>
-        <el-button v-if="edit" type="danger" @click="remove()">删除</el-button>
         <el-button @click="close()">取消</el-button>
       </el-form-item>
     </el-form>
@@ -147,9 +146,6 @@ export default {
         // eslint-disable-next-line standard/no-callback-literal
         cb([])
       }
-    },
-    remove () {
-      this.$emit('remove', this.position, this.form)
     },
     close () {
       this.formVisible = false

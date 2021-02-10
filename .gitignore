@@ -46,3 +46,5 @@ src/main/webapp/WEB-INF/classes/
 
 #ui编译目录
 /youran-generate-release/assembly/resource/ui
+#flatten-maven-plugin生成的pom文件
+.flattened-pom.xml

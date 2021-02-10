@@ -12,22 +12,45 @@
 
     <groupId>com.youran</groupId>
     <artifactId>youran</artifactId>
-    <!-- 如果需要修改版本号，请同时修改配置文件中的版本号和README中的shields -->
-    <version>3.5.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>youran-parent</module>
     </modules>
+
+    <properties>
+        <!-- 如果需要修改版本号，请同时修改配置文件中的版本号和README中的shields -->
+        <revision>3.6.0-SNAPSHOT</revision>
+    </properties>
+
     <build>
         <plugins>
+            <!-- version占位符替换插件-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.7</version>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.2.5</version>
                 <configuration>
-                    <generateBackupPoms>false</generateBackupPoms>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
