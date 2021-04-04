@@ -5,11 +5,11 @@ export default {
   /**
    * 查询项目组成员列表
    */
-  getList (fieldId) {
+  getList (teamId) {
     return request.get(`/${apiPath}/project_team_member`,
       {
         params: {
-          fieldId
+          teamId
         }
       })
       .then(response => checkResult(response))
