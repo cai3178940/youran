@@ -65,7 +65,9 @@
           <el-form-item label="字段名" prop="jieldNameCouple">
             <help-popover name="field.jfieldName">
               <el-col :span="11" class="col-left">
-                <el-input v-lower-case-first v-model="form.jfieldName" placeholder="java字段名，例如：age" tabindex="10"></el-input>
+                <el-input v-lower-case-first v-model="form.jfieldName"
+                          maxlength="50" show-word-limit
+                          placeholder="java字段名，例如：age" tabindex="10"></el-input>
                 <el-button size="mini" type="text" @click="form.jfieldName = $common.camelCase(form.jfieldName)">转驼峰</el-button>
               </el-col>
               <el-col :span="2" class="col-inner" style="text-align: center;">
@@ -77,25 +79,31 @@
                 </el-tooltip>
               </el-col>
               <el-col :span="11" class="col-right">
-                <el-input v-model="form.fieldName" placeholder="mysql字段名，例如：age" tabindex="20"></el-input>
+                <el-input v-model="form.fieldName"
+                          maxlength="64" show-word-limit
+                          placeholder="mysql字段名，例如：age" tabindex="20"></el-input>
                 <el-button size="mini" type="text" @click="form.fieldName = $common.snakeCase(form.fieldName)">转下划线</el-button>
               </el-col>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段标题" prop="fieldDesc">
             <help-popover name="field.fieldDesc">
-              <el-input v-model="form.fieldDesc" placeholder="字段标题，例如：年龄" tabindex="30"></el-input>
+              <el-input v-model="form.fieldDesc"
+                        maxlength="40" show-word-limit
+                        placeholder="字段标题，例如：年龄" tabindex="30"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段注释" prop="fieldComment">
             <help-popover name="field.fieldComment">
               <el-input v-model="form.fieldComment" type="textarea" :rows="2"
+                        maxlength="100" show-word-limit
                         placeholder="字段注释，尽量写详细，例如：年龄（法定年龄、周岁）" tabindex="40"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="字段示例" prop="fieldExample">
             <help-popover name="field.fieldExample">
               <el-input v-model="form.fieldExample" placeholder="字段示例，例如年龄字段：21"
+                        maxlength="100" show-word-limit
                         tabindex="50"></el-input>
             </help-popover>
           </el-form-item>
@@ -153,7 +161,12 @@
                                :fetch-suggestions="queryDicType"
                                placeholder="请输入枚举字典，例如：Sex"
                                tabindex="110"
-              ></el-autocomplete>
+              >
+                <template slot-scope="{ item }">
+                  <span>{{ item.value }}</span>
+                  <el-button style="float: right;" @click="handleConstList(item.constId)" type="text">跳到枚举列表</el-button>
+                </template>
+              </el-autocomplete>
             </help-popover>
           </el-form-item>
           <el-form-item label="不能为空" prop="notNull">
@@ -496,7 +509,7 @@ export default {
         const results = queryString ? constList.filter(
           c => c.constName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
         ) : constList
-        cb(results.map(c => ({ value: c.constName })))
+        cb(results.map(c => ({ value: c.constName, constId: c.constId })))
       }
       if (this.constList) {
         action()
@@ -619,6 +632,9 @@ export default {
         this.$set(this.form.labels, index, label)
       }
       this.$refs.labelForm.close()
+    },
+    handleConstList (constId) {
+      this.$router.push(`/project/${this.projectId}/const/${constId}`)
     }
   },
   created () {

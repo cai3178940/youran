@@ -38,6 +38,7 @@
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailRemark }}</span>
                 <span v-if="detail.row.editFlag">
                   <el-input v-model="detail.row.detailRemark"
+                            maxlength="100" show-word-limit
                             :ref="'detailCell_'+detail.$index+'_0'"
                             @paste.native="pasteDetail($event, detail.$index, 0)"
                             placeholder="值描述，如：女"></el-input>
@@ -49,6 +50,7 @@
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailName }}</span>
                 <span v-if="detail.row.editFlag">
                   <el-input v-upper-case v-model="detail.row.detailName"
+                            maxlength="50" show-word-limit
                             :ref="'detailCell_'+detail.$index+'_1'"
                             @paste.native="pasteDetail($event, detail.$index, 1)"
                             placeholder="字段名，如：WOMAN"></el-input>
@@ -60,6 +62,7 @@
                 <span v-if="!detail.row.editFlag">{{ detail.row.detailValue }}</span>
                 <span v-if="detail.row.editFlag">
                   <el-input v-model="detail.row.detailValue"
+                            maxlength="50" show-word-limit
                             :ref="'detailCell_'+detail.$index+'_2'"
                             @paste.native="pasteDetail($event, detail.$index, 2)"
                             placeholder="枚举值，如：2"></el-input>

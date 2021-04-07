@@ -68,6 +68,7 @@
           <el-form-item label="关联表名" prop="tableName">
             <help-popover name="mtm.tableName">
               <el-input v-model="form.tableName" placeholder="例如：r_user_role"
+                        maxlength="50" show-word-limit
                         tabindex="20"></el-input>
             </help-popover>
           </el-form-item>
@@ -94,12 +95,14 @@
           <el-form-item label="实体1外键字段" prop="entityIdField1">
             <help-popover name="mtm.entityIdField1">
               <el-input v-model="form.entityIdField1"
+                        maxlength="64" show-word-limit
                         :placeholder="'例如：' + entityIdFieldPlaceholder1" tabindex="40"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="实体2外键字段" prop="entityIdField2">
             <help-popover name="mtm.entityIdField2">
               <el-input v-model="form.entityIdField2"
+                        maxlength="64" show-word-limit
                         :placeholder="'例如：' + entityIdFieldPlaceholder2" tabindex="50"></el-input>
             </help-popover>
           </el-form-item>

@@ -13,7 +13,9 @@
                  label-width="120px" size="small" v-loading="formLoading">
           <el-form-item label="项目组名称" prop="name">
             <help-popover>
-              <el-input v-model="form.name" placeholder="例如：xxx开发组" tabindex="10"></el-input>
+              <el-input v-model="form.name"
+                        maxlength="32" show-word-limit
+                        placeholder="例如：xxx开发组" tabindex="10"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item>

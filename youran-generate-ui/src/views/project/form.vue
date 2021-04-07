@@ -13,27 +13,37 @@
                  size="small" v-loading="formLoading">
           <el-form-item label="groupId" prop="groupId">
             <help-popover name="project.groupId">
-              <el-input v-model="form.groupId" placeholder="例如：com.mygroup" tabindex="10"></el-input>
+              <el-input v-model="form.groupId"
+                        maxlength="50" show-word-limit
+                        placeholder="例如：com.mygroup" tabindex="10"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="项目标识" prop="projectName">
             <help-popover name="project.projectName">
-              <el-input v-model="form.projectName" placeholder="例如：bbs" tabindex="20"></el-input>
+              <el-input v-model="form.projectName"
+                        maxlength="50" show-word-limit
+                        placeholder="例如：bbs" tabindex="20"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="项目名称" prop="projectDesc">
             <help-popover name="project.projectDesc">
-              <el-input v-model="form.projectDesc" placeholder="例如：论坛" tabindex="30"></el-input>
+              <el-input v-model="form.projectDesc"
+                        maxlength="100" show-word-limit
+                        placeholder="例如：论坛" tabindex="30"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="包名" prop="packageName">
             <help-popover name="project.packageName">
-              <el-input v-model="form.packageName" placeholder="例如：com.cbb.bbs" tabindex="40"></el-input>
+              <el-input v-model="form.packageName"
+                        maxlength="100" show-word-limit
+                        placeholder="例如：com.cbb.bbs" tabindex="40"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="作者" prop="author">
             <help-popover name="project.author">
-              <el-input v-model="form.author" placeholder="例如：Jack" tabindex="50"></el-input>
+              <el-input v-model="form.author"
+                        maxlength="50" show-word-limit
+                        placeholder="例如：Jack" tabindex="50"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="spring-boot版本" prop="feature.bootVersion">
@@ -106,6 +116,7 @@
             <el-form-item label="Git仓库地址" prop="remoteUrl">
               <help-popover name="project.remoteUrl">
                 <el-input v-model="form.remoteUrl"
+                          maxlength="256" show-word-limit
                           placeholder="例如：https://github.com/github/testrepo.git"
                           tabindex="110"></el-input>
               </help-popover>
@@ -113,6 +124,7 @@
             <el-form-item v-if="templateItemVisible2" prop="remoteUrl2">
               <help-popover name="project.remoteUrl2">
                 <el-input v-model="form.remoteUrl2"
+                          maxlength="256" show-word-limit
                           placeholder="第二模板对应的Git仓库"
                           tabindex="120"></el-input>
               </help-popover>
@@ -120,18 +132,23 @@
             <el-form-item v-if="templateItemVisible3" prop="remoteUrl3">
               <help-popover name="project.remoteUrl3">
                 <el-input v-model="form.remoteUrl3"
+                          maxlength="256" show-word-limit
                           placeholder="第三模板对应的Git仓库"
                           tabindex="130"></el-input>
               </help-popover>
             </el-form-item>
             <el-form-item label="Git用户名" prop="username">
               <help-popover name="project.username">
-                <el-input v-model="form.username" placeholder="例如：zhangsan" tabindex="140"></el-input>
+                <el-input v-model="form.username"
+                          maxlength="32" show-word-limit
+                          placeholder="例如：zhangsan" tabindex="140"></el-input>
               </help-popover>
             </el-form-item>
             <el-form-item label="Git密码/token" prop="password">
               <help-popover name="project.password">
-                <el-input v-model="form.password" placeholder="例如：123456" tabindex="150"></el-input>
+                <el-input v-model="form.password"
+                          maxlength="32" show-word-limit
+                          placeholder="例如：123456" tabindex="150"></el-input>
               </help-popover>
             </el-form-item>
           </template>

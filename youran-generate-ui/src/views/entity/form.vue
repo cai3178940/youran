@@ -27,7 +27,9 @@
           </el-form-item>
           <el-form-item label="实体名" prop="title">
             <help-popover name="entity.title">
-              <el-input v-model="form.title" placeholder="例如：用户" tabindex="10"></el-input>
+              <el-input v-model="form.title"
+                        maxlength="25" show-word-limit
+                        placeholder="例如：用户" tabindex="10"></el-input>
             </help-popover>
           </el-form-item>
           <el-form-item label="模块名" prop="module">
@@ -37,6 +39,7 @@
                 :fetch-suggestions="findModules"
                 style="width:100%;"
                 placeholder="例如：system"
+                maxlength="50" show-word-limit
                 v-lower-case
               ></el-autocomplete>
             </help-popover>
@@ -44,7 +47,9 @@
           <el-form-item label="类名/表名" prop="classAndTableName">
             <help-popover name="entity.classAndTableName">
               <el-col :span="11" class="col-left">
-                <el-input v-upper-case-first v-model="form.className" placeholder="java类名，例如：User" tabindex="20"></el-input>
+                <el-input v-upper-case-first v-model="form.className"
+                          maxlength="50" show-word-limit
+                          placeholder="java类名，例如：User" tabindex="20"></el-input>
                 <el-button size="mini" type="text" @click="form.className = $common.upperCaseFirst($common.camelCase(form.className))">转驼峰</el-button>
               </el-col>
               <el-col :span="2" style="padding-left: 0px;padding-right: 0px;text-align: center;">
@@ -57,7 +62,9 @@
                 </el-tooltip>
               </el-col>
               <el-col :span="11" class="col-right">
-                <el-input v-model="form.tableName" placeholder="mysql表名，例如：t_user" tabindex="30"></el-input>
+                <el-input v-model="form.tableName"
+                          maxlength="50" show-word-limit
+                          placeholder="mysql表名，例如：t_user" tabindex="30"></el-input>
                 <el-button size="mini" type="text" @click="form.tableName = $common.snakeCase(form.tableName)">转下划线</el-button>
               </el-col>
             </help-popover>
@@ -65,6 +72,7 @@
           <el-form-item label="描述" prop="desc">
             <help-popover name="entity.desc">
               <el-input v-model="form.desc" type="textarea"
+                        maxlength="250" show-word-limit
                         :autosize="{ minRows: 2, maxRows: 100}"
                         tabindex="40"></el-input>
             </help-popover>
