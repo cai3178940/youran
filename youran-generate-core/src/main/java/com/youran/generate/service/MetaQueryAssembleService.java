@@ -326,6 +326,10 @@ public class MetaQueryAssembleService implements InitializingBean {
                 entity.setOperatedTimeField(field);
             } else if (MetaSpecialField.isVersion(specialField)) {
                 entity.setVersionField(field);
+            } else if (MetaSpecialField.isCreatedIp(specialField)) {
+                entity.setCreatedIpField(field);
+            } else if (MetaSpecialField.isOperatedIp(specialField)) {
+                entity.setOperatedIpField(field);
             }
             if (field.getQuery()) {
                 entity.addQueryField(field);
@@ -616,6 +620,8 @@ public class MetaQueryAssembleService implements InitializingBean {
             int operatedByCount = 0;
             int operatedTimeCount = 0;
             int versionCount = 0;
+            int createdIpCount = 0;
+            int operatedIpCount = 0;
             for (MetaFieldPO field : fields.values()) {
                 String specialField = field.getSpecialField();
                 if (field.getPrimaryKey()) {
@@ -636,6 +642,10 @@ public class MetaQueryAssembleService implements InitializingBean {
                     operatedTimeCount++;
                 } else if (MetaSpecialField.isVersion(specialField)) {
                     versionCount++;
+                } else if (MetaSpecialField.isCreatedIp(specialField)) {
+                    createdIpCount++;
+                } else if (MetaSpecialField.isOperatedIp(specialField)) {
+                    operatedIpCount++;
                 }
 
                 if (StringUtils.isNotBlank(field.getDicType())
@@ -662,13 +672,19 @@ public class MetaQueryAssembleService implements InitializingBean {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + createdTimeCount + "个创建时间字段");
             }
             if (operatedByCount > 1) {
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + operatedByCount + "个更新人员字段");
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + operatedByCount + "个修改人员字段");
             }
             if (operatedTimeCount > 1) {
-                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + operatedTimeCount + "个更新时间字段");
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + operatedTimeCount + "个修改时间字段");
             }
             if (versionCount > 1) {
                 throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + versionCount + "个乐观锁版本字段");
+            }
+            if (createdIpCount > 1) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + createdIpCount + "个创建服务器IP字段");
+            }
+            if (operatedIpCount > 1) {
+                throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】中存在" + operatedIpCount + "个修改服务器IP字段");
             }
             if (CollectionUtils.isNotEmpty(entity.getForeignEntities())
                 && entity.getTitleField() == null) {

@@ -18,7 +18,7 @@
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column property="name" label="名称"></el-table-column>
       <el-table-column property="createdTime" width="250" label="创建时间"></el-table-column>
-      <el-table-column property="operatedTime" width="250" label="更新时间"></el-table-column>
+      <el-table-column property="operatedTime" width="250" label="修改时间"></el-table-column>
       <el-table-column
         label="操作"
         width="250">

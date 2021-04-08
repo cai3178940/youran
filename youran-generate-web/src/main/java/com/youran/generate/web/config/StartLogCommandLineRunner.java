@@ -1,6 +1,6 @@
 package com.youran.generate.web.config;
 
-import com.youran.generate.web.util.IpUtil;
+import com.youran.common.util.IpUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

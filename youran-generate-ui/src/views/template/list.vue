@@ -28,7 +28,7 @@
       <el-table-column property="name" label="模板名称"></el-table-column>
       <el-table-column property="templateVersion" width="150" label="版本号"></el-table-column>
       <el-table-column property="sysLowVersion" width="150" label="最低系统兼容"></el-table-column>
-      <el-table-column property="operatedTime" width="180" label="更新时间"></el-table-column>
+      <el-table-column property="operatedTime" width="180" label="修改时间"></el-table-column>
       <el-table-column
         label="操作"
         width="200">

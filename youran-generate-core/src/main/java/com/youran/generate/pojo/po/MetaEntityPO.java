@@ -141,12 +141,12 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
     @JsonIgnore
     private transient MetaFieldPO createdTimeField;
     /**
-     * 操作人字段
+     * 修改人字段
      */
     @JsonIgnore
     private transient MetaFieldPO operatedByField;
     /**
-     * 操作时间字段
+     * 修改时间字段
      */
     @JsonIgnore
     private transient MetaFieldPO operatedTimeField;
@@ -155,6 +155,16 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
      */
     @JsonIgnore
     private transient MetaFieldPO versionField;
+    /**
+     * 创建服务器ip字段
+     */
+    @JsonIgnore
+    private transient MetaFieldPO createdIpField;
+    /**
+     * 修改服务器ip字段
+     */
+    @JsonIgnore
+    private transient MetaFieldPO operatedIpField;
     /**
      * 实体内的父id字段
      * 如果存在，则说明当前实体是树状结构
@@ -527,6 +537,22 @@ public class MetaEntityPO extends BasePO implements Comparable<MetaEntityPO> {
 
     public void setOperatedByField(MetaFieldPO operatedByField) {
         this.operatedByField = operatedByField;
+    }
+
+    public MetaFieldPO getCreatedIpField() {
+        return createdIpField;
+    }
+
+    public void setCreatedIpField(MetaFieldPO createdIpField) {
+        this.createdIpField = createdIpField;
+    }
+
+    public MetaFieldPO getOperatedIpField() {
+        return operatedIpField;
+    }
+
+    public void setOperatedIpField(MetaFieldPO operatedIpField) {
+        this.operatedIpField = operatedIpField;
     }
 
     public String getSchemaName() {

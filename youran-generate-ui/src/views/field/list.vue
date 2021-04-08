@@ -406,8 +406,10 @@ const initListContains = function () {
     deleted: false,
     createdTime: false,
     createdBy: false,
+    createdIp: false,
     operatedTime: false,
     operatedBy: false,
+    operatedIp: false,
     version: false
   }
 }

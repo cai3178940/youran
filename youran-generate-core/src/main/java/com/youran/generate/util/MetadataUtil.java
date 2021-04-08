@@ -120,7 +120,7 @@ public class MetadataUtil {
         }
         if (MetaSpecialField.isOperatedBy(specialField)) {
             if (!Objects.equals(metaField.getJfieldType(), JFieldType.STRING.getJavaType())) {
-                throw new BusinessException(ErrorCode.BAD_PARAMETER, "更新人员字段必须是String类型");
+                throw new BusinessException(ErrorCode.BAD_PARAMETER, "修改人员字段必须是String类型");
             }
         }
         if (MetaSpecialField.isCreatedTime(specialField)) {
@@ -132,7 +132,7 @@ public class MetadataUtil {
         if (MetaSpecialField.isOperatedTime(specialField)) {
             if (!Objects.equals(metaField.getJfieldType(), JFieldType.DATE.getJavaType())
                 && !Objects.equals(metaField.getJfieldType(), JFieldType.LOCALDATETIME.getJavaType())) {
-                throw new BusinessException(ErrorCode.BAD_PARAMETER, "更新时间字段必须是LocalDateTime或则Date类型");
+                throw new BusinessException(ErrorCode.BAD_PARAMETER, "修改时间字段必须是LocalDateTime或则Date类型");
             }
         }
     }

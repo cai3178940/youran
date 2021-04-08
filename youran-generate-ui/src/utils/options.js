@@ -257,8 +257,16 @@ const specialFieldFeatures = [
     disabledAttrs: ['attr-insert', 'attr-update']
   },
   {
+    value: 'createdIp',
+    label: '创建服务器IP',
+    icon: 'ip',
+    iconClassName: 'color-success',
+    hiddenAttrs: ['pkStrategy', 'foreignKey', 'dicType'],
+    disabledAttrs: ['attr-insert', 'attr-update']
+  },
+  {
     value: 'operatedTime',
-    label: '更新时间',
+    label: '修改时间',
     icon: 'time',
     iconClassName: 'color-primary',
     hiddenAttrs: ['pkStrategy', 'foreignKey', 'dicType'],
@@ -266,8 +274,16 @@ const specialFieldFeatures = [
   },
   {
     value: 'operatedBy',
-    label: '更新人员',
+    label: '修改人员',
     icon: 'edit-user',
+    iconClassName: 'color-primary',
+    hiddenAttrs: ['pkStrategy', 'foreignKey', 'dicType'],
+    disabledAttrs: ['attr-insert', 'attr-update']
+  },
+  {
+    value: 'operatedIp',
+    label: '修改服务器IP',
+    icon: 'ip',
     iconClassName: 'color-primary',
     hiddenAttrs: ['pkStrategy', 'foreignKey', 'dicType'],
     disabledAttrs: ['attr-insert', 'attr-update']
