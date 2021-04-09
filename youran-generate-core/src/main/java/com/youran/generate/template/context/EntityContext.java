@@ -131,6 +131,10 @@ public class EntityContext extends BaseContext {
      */
     private final MetaFieldPO createdByField;
     /**
+     * 创建服务器IP字段
+     */
+    private final MetaFieldPO createdIpField;
+    /**
      * 操作日期字段
      */
     private final MetaFieldPO operatedTimeField;
@@ -138,6 +142,10 @@ public class EntityContext extends BaseContext {
      * 操作人字段
      */
     private final MetaFieldPO operatedByField;
+    /**
+     * 操作服务器IP字段
+     */
+    private final MetaFieldPO operatedIpField;
 
     /**
      * 持有引用的多对多关系
@@ -197,8 +205,10 @@ public class EntityContext extends BaseContext {
         this.listSortFields = entity.getListSortFields();
         this.createdTimeField = entity.getCreatedTimeField();
         this.createdByField = entity.getCreatedByField();
+        this.createdIpField = entity.getCreatedIpField();
         this.operatedTimeField = entity.getOperatedTimeField();
         this.operatedByField = entity.getOperatedByField();
+        this.operatedIpField = entity.getOperatedIpField();
         this.holds = entity.getHolds();
         this.unHolds = entity.getUnHolds();
         this.foreignFields = entity.getForeignFields();
@@ -507,6 +517,14 @@ public class EntityContext extends BaseContext {
 
     public MetaFieldPO getPidField() {
         return pidField;
+    }
+
+    public MetaFieldPO getCreatedIpField() {
+        return createdIpField;
+    }
+
+    public MetaFieldPO getOperatedIpField() {
+        return operatedIpField;
     }
 
     @Override
