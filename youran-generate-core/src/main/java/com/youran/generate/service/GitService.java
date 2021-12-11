@@ -1,6 +1,7 @@
 package com.youran.generate.service;
 
 import com.youran.common.constant.ErrorCode;
+import com.youran.common.context.LoginContext;
 import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import org.apache.commons.collections4.CollectionUtils;
@@ -23,6 +24,7 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -37,14 +39,15 @@ import java.util.Objects;
 /**
  * Git操作业务类
  *
- * @author: cbb
- * @date: 3/16/2018
+ * @author cbb
+ * @date 3/16/2018
  */
 @Service
 public class GitService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(GitService.class);
-
+    @Autowired
+    private LoginContext loginContext;
     /**
      * 获取从远程克隆下来的git仓库
      *
@@ -187,9 +190,13 @@ public class GitService {
         try (Git git = new Git(repository)) {
             // add所有文件
             git.add().addFilepattern(".").call();
+            String user = loginContext.getCurrentUser();
+            String email = user + "@youran.com";
             // 全部提交
             RevCommit commit = git.commit()
                 .setAll(true)
+                .setCommitter(user, email)
+                .setAuthor(user, email)
                 .setMessage(message)
                 .call();
             return commit.getName();
