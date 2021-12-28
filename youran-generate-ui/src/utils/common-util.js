@@ -20,3 +20,19 @@ export const boolExceptZero = (value) => {
   }
   return !!value
 }
+
+/**
+ * 串行Promises
+ */
+export const serialPromises = (promises) => {
+  const process = function (i) {
+    const curr = promises[i]
+    if (curr) {
+      return curr.then(() => process(i + 1))
+        .catch(() => process(i + 1))
+    } else {
+      return Promise.resolve()
+    }
+  }
+  return process(0)
+}

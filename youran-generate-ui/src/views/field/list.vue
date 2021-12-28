@@ -395,6 +395,7 @@ import { flexibleTemplate, fixedTemplate, findSystemTemplate } from '@/utils/fie
 import Meteor from '@/components/Meteor'
 import { createNamespacedHelpers } from 'vuex'
 import shortid from 'shortid'
+import { serialPromises } from '@/utils/common-util'
 
 const { mapGetters, mapState, mapMutations } = createNamespacedHelpers('fieldTemplate')
 /**
@@ -768,7 +769,8 @@ export default {
       if (!multiple) {
         promise = doAddImm(template, true)
       } else {
-        promise = Promise.all(templates.map(temp => doAddImm(temp)))
+        // 串行创建字段，并行会导致后端抛乐观锁异常
+        promise = serialPromises(templates.map(temp => doAddImm(temp)))
           .then(() => {
             this.$common.showMsg('success', '创建成功')
             return this.doQuery()
