@@ -40,7 +40,7 @@
         <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
         <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
-        <h2.version>1.4.200</h2.version>
+        <h2.version>2.0.206</h2.version>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <jsoup.version>1.13.1</jsoup.version>
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
