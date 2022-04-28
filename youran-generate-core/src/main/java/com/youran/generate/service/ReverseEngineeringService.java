@@ -243,13 +243,15 @@ public class ReverseEngineeringService {
      * @return
      */
     private MetaEntityPO createEntity(MetaProjectPO project, String tableName, String comment) {
+        String title = StringUtils.isEmpty(comment) ? tableName : comment;
+        String desc = StringUtils.isEmpty(comment) ? "" : comment;
         MetaEntityAddDTO metaEntityDTO = new MetaEntityAddDTO();
         metaEntityDTO.setProjectId(project.getProjectId());
         metaEntityDTO.setSchemaName("");
         metaEntityDTO.setClassName(SwitchCaseUtil.underlineToCamelCase(tableName, true));
         metaEntityDTO.setTableName(tableName);
-        metaEntityDTO.setTitle(StringUtils.abbreviate(comment, 25));
-        metaEntityDTO.setDesc(StringUtils.abbreviate(comment, 250));
+        metaEntityDTO.setTitle(StringUtils.abbreviate(title, 25));
+        metaEntityDTO.setDesc(StringUtils.abbreviate(desc, 250));
         metaEntityDTO.setPageSign(true);
         return metaEntityService.save(metaEntityDTO);
     }
