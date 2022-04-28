@@ -770,7 +770,7 @@ export default {
         promise = doAddImm(template, true)
       } else {
         // 串行创建字段，并行会导致后端抛乐观锁异常
-        promise = serialPromises(templates.map(temp => doAddImm(temp)))
+        promise = serialPromises(templates.map(temp => () => doAddImm(temp)))
           .then(() => {
             this.$common.showMsg('success', '创建成功')
             return this.doQuery()

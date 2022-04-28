@@ -24,11 +24,11 @@ export const boolExceptZero = (value) => {
 /**
  * 串行Promises
  */
-export const serialPromises = (promises) => {
+export const serialPromises = (promiseCallers) => {
   const process = function (i) {
-    const curr = promises[i]
+    const curr = promiseCallers[i]
     if (curr) {
-      return curr.then(() => process(i + 1))
+      return curr().then(() => process(i + 1))
         .catch(() => process(i + 1))
     } else {
       return Promise.resolve()
