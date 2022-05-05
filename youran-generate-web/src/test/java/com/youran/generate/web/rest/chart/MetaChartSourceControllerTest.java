@@ -10,8 +10,8 @@ import com.youran.generate.pojo.po.MetaEntityPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.pojo.po.chart.source.MetaChartSourcePO;
 import com.youran.generate.web.AbstractWebTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
@@ -36,7 +36,7 @@ public class MetaChartSourceControllerTest extends AbstractWebTest {
     private MetaProjectPO metaProject;
     private MetaEntityPO metaEntity;
 
-    @Before
+    @BeforeEach
     public void init() {
         this.metaProject = generateHelper.saveProjectExample();
         this.metaEntity = generateHelper.saveEntityExample(metaProject.getProjectId(), 0);

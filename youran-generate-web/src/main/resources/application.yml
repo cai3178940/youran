@@ -17,6 +17,11 @@ spring:
         multipart:
             max-request-size: 100MB
             max-file-size: 100MB
+    main:
+        allow-circular-references: true
+    mvc:
+        pathmatch:
+            matching-strategy: ANT_PATH_MATCHER
 springfox:
     documentation:
         enabled: true

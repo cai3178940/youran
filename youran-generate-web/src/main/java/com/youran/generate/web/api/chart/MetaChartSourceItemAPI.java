@@ -18,6 +18,7 @@ import java.util.List;
  * @author cbb
  * @date 2020/04/04
  */
+@Deprecated
 @Api(tags = "【图表数据源项】API")
 public interface MetaChartSourceItemAPI {
 

@@ -12,7 +12,7 @@ public class MetaDashboardExample {
     public static final String N_DASHBOARD_ID = "主键ID";
     public static final String E_DASHBOARD_ID = "1";
     public static final String N_NAME = "名称";
-    public static final String E_NAME = "myDashboard1";
+    public static final String E_NAME = "MyDashboard1";
     public static final String N_TITLE = "标题";
     public static final String E_TITLE = "看板A";
     public static final String N_MODULE = "模块";

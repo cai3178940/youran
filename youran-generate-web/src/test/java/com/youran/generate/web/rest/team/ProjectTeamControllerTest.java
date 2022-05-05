@@ -7,7 +7,7 @@ import com.youran.generate.pojo.dto.team.ProjectTeamAddDTO;
 import com.youran.generate.pojo.dto.team.ProjectTeamUpdateDTO;
 import com.youran.generate.pojo.po.team.ProjectTeamPO;
 import com.youran.generate.web.AbstractWebTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 

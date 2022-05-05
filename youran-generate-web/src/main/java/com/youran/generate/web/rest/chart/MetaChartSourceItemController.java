@@ -27,6 +27,7 @@ import java.util.List;
  * @author cbb
  * @date 2020/04/04
  */
+@Deprecated
 @RestController
 @RequestMapping(WebConst.API_PATH + "/meta_chart_source_item")
 public class MetaChartSourceItemController extends AbstractController implements MetaChartSourceItemAPI {
@@ -58,13 +59,13 @@ public class MetaChartSourceItemController extends AbstractController implements
         return ResponseEntity.ok(MetaChartSourceItemMapper.INSTANCE.toAggOrderVO(po));
     }
     @Override
-    @PostMapping("/detailColumn")
+    @PostMapping("/detail_column")
     public ResponseEntity<DetailColumnVO> saveDetailColumn(@Valid @RequestBody DetailColumnAddDTO addDTO) throws Exception {
         DetailColumnPO po = detailColumnService.save(addDTO);
         return ResponseEntity.ok(MetaChartSourceItemMapper.INSTANCE.toDetailColumnVO(po));
     }
     @Override
-    @PostMapping("/detailOrder")
+    @PostMapping("/detail_order")
     public ResponseEntity<DetailOrderVO> saveDetailOrder(@Valid @RequestBody DetailOrderAddDTO addDTO) throws Exception {
         DetailOrderPO po = detailOrderService.save(addDTO);
         return ResponseEntity.ok(MetaChartSourceItemMapper.INSTANCE.toDetailOrderVO(po));

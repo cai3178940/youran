@@ -45,7 +45,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 注册websocket的url路径
         registry.addEndpoint(wsApiPath)
-            .setAllowedOrigins("*")
+            .setAllowedOriginPatterns("*")
             .withSockJS()
             .setInterceptors(httpSessionHandshakeInterceptor());;
     }

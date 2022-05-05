@@ -5,8 +5,8 @@ import com.youran.generate.help.GenerateHelper;
 import com.youran.generate.pojo.dto.ReverseEngineeringDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.web.AbstractWebTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -26,7 +26,7 @@ public class ReverseEngineeringControllerTest extends AbstractWebTest {
 
     private String ddl;
 
-    @Before
+    @BeforeEach
     public void init() {
         this.metaProject = generateHelper.saveProjectExample();
         this.ddl = "CREATE TABLE `meta_entity` (\n" +

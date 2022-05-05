@@ -9,7 +9,7 @@ import com.youran.generate.pojo.dto.TemplateFileUpdateDTO;
 import com.youran.generate.pojo.po.CodeTemplatePO;
 import com.youran.generate.pojo.po.TemplateFilePO;
 import com.youran.generate.web.AbstractWebTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 

@@ -1,5 +1,6 @@
 package com.youran.generate.help.chart;
 
+import com.youran.common.util.UUIDUtil;
 import com.youran.generate.constant.*;
 import com.youran.generate.pojo.dto.chart.source.item.*;
 import com.youran.generate.pojo.po.chart.source.item.*;
@@ -36,6 +37,7 @@ public class MetaChartSourceItemHelper {
                                             Integer sourceId,
                                             Integer parentId) {
         AggOrderAddDTO dto = new AggOrderAddDTO();
+        dto.setKey(UUIDUtil.getUUID16());
         dto.setProjectId(projectId);
         dto.setSourceId(sourceId);
         dto.setJoinIndex(0);
@@ -48,6 +50,7 @@ public class MetaChartSourceItemHelper {
                                                     Integer sourceId,
                                                     Integer fieldId) {
         DetailColumnAddDTO dto = new DetailColumnAddDTO();
+        dto.setKey(UUIDUtil.getUUID16());
         dto.setProjectId(projectId);
         dto.setSourceId(sourceId);
         dto.setJoinIndex(0);
@@ -62,6 +65,7 @@ public class MetaChartSourceItemHelper {
                                                   Integer sourceId,
                                                   Integer parentId) {
         DetailOrderAddDTO dto = new DetailOrderAddDTO();
+        dto.setKey(UUIDUtil.getUUID16());
         dto.setProjectId(projectId);
         dto.setSourceId(sourceId);
         dto.setJoinIndex(0);
@@ -74,6 +78,7 @@ public class MetaChartSourceItemHelper {
                                               Integer sourceId,
                                               Integer fieldId) {
         DimensionAddDTO dto = new DimensionAddDTO();
+        dto.setKey(UUIDUtil.getUUID16());
         dto.setProjectId(projectId);
         dto.setSourceId(sourceId);
         dto.setJoinIndex(0);
@@ -86,6 +91,7 @@ public class MetaChartSourceItemHelper {
                                         Integer sourceId,
                                         Integer parentId) {
         HavingAddDTO dto = new HavingAddDTO();
+        dto.setKey(UUIDUtil.getUUID16());
         dto.setProjectId(projectId);
         dto.setSourceId(sourceId);
         dto.setJoinIndex(0);
@@ -99,6 +105,7 @@ public class MetaChartSourceItemHelper {
                                           Integer sourceId,
                                           Integer fieldId) {
         MetricsAddDTO dto = new MetricsAddDTO();
+        dto.setKey(UUIDUtil.getUUID16());
         dto.setProjectId(projectId);
         dto.setSourceId(sourceId);
         dto.setJoinIndex(0);
@@ -114,6 +121,7 @@ public class MetaChartSourceItemHelper {
                                       Integer sourceId,
                                       Integer fieldId) {
         WhereAddDTO dto = new WhereAddDTO();
+        dto.setKey(UUIDUtil.getUUID16());
         dto.setProjectId(projectId);
         dto.setSourceId(sourceId);
         dto.setJoinIndex(0);
@@ -131,6 +139,7 @@ public class MetaChartSourceItemHelper {
      */
     public AggOrderUpdateDTO getAggOrderUpdateDTO(AggOrderPO po) {
         AggOrderUpdateDTO dto = new AggOrderUpdateDTO();
+        dto.setKey(UUIDUtil.getUUID16());
         dto.setSourceItemId(po.getSourceItemId());
         dto.setProjectId(po.getProjectId());
         dto.setSourceId(po.getSourceId());
@@ -142,6 +151,7 @@ public class MetaChartSourceItemHelper {
 
     public DetailColumnUpdateDTO getDetailColumnUpdateDTO(DetailColumnPO po) {
         DetailColumnUpdateDTO dto = new DetailColumnUpdateDTO();
+        dto.setKey(po.getKey());
         dto.setSourceItemId(po.getSourceItemId());
         dto.setProjectId(po.getProjectId());
         dto.setSourceId(po.getSourceId());
@@ -156,6 +166,7 @@ public class MetaChartSourceItemHelper {
 
     public DetailOrderUpdateDTO getDetailOrderUpdateDTO(DetailOrderPO po) {
         DetailOrderUpdateDTO dto = new DetailOrderUpdateDTO();
+        dto.setKey(po.getKey());
         dto.setSourceItemId(po.getSourceItemId());
         dto.setProjectId(po.getProjectId());
         dto.setSourceId(po.getSourceId());
@@ -167,6 +178,7 @@ public class MetaChartSourceItemHelper {
 
     public DimensionUpdateDTO getDimensionUpdateDTO(DimensionPO po) {
         DimensionUpdateDTO dto = new DimensionUpdateDTO();
+        dto.setKey(po.getKey());
         dto.setSourceItemId(po.getSourceItemId());
         dto.setProjectId(po.getProjectId());
         dto.setSourceId(po.getSourceId());
@@ -179,6 +191,7 @@ public class MetaChartSourceItemHelper {
 
     public HavingUpdateDTO getHavingUpdateDTO(HavingPO po) {
         HavingUpdateDTO dto = new HavingUpdateDTO();
+        dto.setKey(po.getKey());
         dto.setSourceItemId(po.getSourceItemId());
         dto.setProjectId(po.getProjectId());
         dto.setSourceId(po.getSourceId());
@@ -191,6 +204,7 @@ public class MetaChartSourceItemHelper {
 
     public MetricsUpdateDTO getMetricsUpdateDTO(MetricsPO po) {
         MetricsUpdateDTO dto = new MetricsUpdateDTO();
+        dto.setKey(po.getKey());
         dto.setSourceItemId(po.getSourceItemId());
         dto.setProjectId(po.getProjectId());
         dto.setSourceId(po.getSourceId());
@@ -206,6 +220,7 @@ public class MetaChartSourceItemHelper {
 
     public WhereUpdateDTO getWhereUpdateDTO(WherePO po) {
         WhereUpdateDTO dto = new WhereUpdateDTO();
+        dto.setKey(po.getKey());
         dto.setSourceItemId(po.getSourceItemId());
         dto.setProjectId(po.getProjectId());
         dto.setSourceId(po.getSourceId());

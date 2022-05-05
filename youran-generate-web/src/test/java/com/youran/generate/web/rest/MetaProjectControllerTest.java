@@ -8,7 +8,7 @@ import com.youran.generate.pojo.dto.MetaProjectAddDTO;
 import com.youran.generate.pojo.dto.MetaProjectUpdateDTO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.web.AbstractWebTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;

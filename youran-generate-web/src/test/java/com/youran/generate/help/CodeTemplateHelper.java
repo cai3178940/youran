@@ -22,6 +22,7 @@ public class CodeTemplateHelper {
      */
     public CodeTemplateAddDTO getCodeTemplateAddDTO() {
         CodeTemplateAddDTO dto = new CodeTemplateAddDTO();
+        dto.setCode(E_CODE);
         dto.setName(E_NAME);
         dto.setTemplateVersion(E_TEMPLATE_VERSION);
         dto.setSysLowVersion(E_SYS_LOW_VERSION);
@@ -38,6 +39,7 @@ public class CodeTemplateHelper {
     public CodeTemplateUpdateDTO getCodeTemplateUpdateDTO(CodeTemplatePO codeTemplate) {
         CodeTemplateUpdateDTO dto = new CodeTemplateUpdateDTO();
         dto.setTemplateId(codeTemplate.getTemplateId());
+        dto.setCode(codeTemplate.getCode());
         dto.setName(codeTemplate.getName());
         dto.setTemplateVersion(codeTemplate.getTemplateVersion());
         dto.setSysLowVersion(codeTemplate.getSysLowVersion());

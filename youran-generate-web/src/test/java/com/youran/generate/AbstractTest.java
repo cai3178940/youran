@@ -1,11 +1,9 @@
 package com.youran.generate;
 
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * 单元测试抽象类
@@ -13,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author: cbb
  * @date: 2017/09/13
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = GenerateApp.class)
 public class AbstractTest {
 
@@ -23,7 +20,7 @@ public class AbstractTest {
     @Value("${spring.datasource.url}")
     private String jdbcUrl;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         if (!jdbcUrl.startsWith("jdbc:h2:mem:")) {
             return;

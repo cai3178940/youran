@@ -8,8 +8,8 @@ import com.youran.generate.pojo.dto.MetaMtmCascadeExtAddDTO;
 import com.youran.generate.pojo.dto.MetaMtmCascadeExtUpdateDTO;
 import com.youran.generate.pojo.po.*;
 import com.youran.generate.web.AbstractWebTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
@@ -36,7 +36,7 @@ public class MetaMtmCascadeExtControllerTest extends AbstractWebTest {
     private MetaFieldPO metaField2;
     private MetaManyToManyPO metaManyToMany;
 
-    @Before
+    @BeforeEach
     public void init() {
         this.metaProject = generateHelper.saveProjectExample();
         this.metaEntity1 = generateHelper.saveEntityExample(metaProject.getProjectId(), 1);
@@ -98,7 +98,7 @@ public class MetaMtmCascadeExtControllerTest extends AbstractWebTest {
     public void deleteBatch() throws Exception {
         MetaMtmCascadeExtPO metaMtmCascadeExt = generateHelper.saveMtmCascadeExtExample(this.metaManyToMany.getMtmId(),
             metaEntity1.getEntityId(), metaEntity2.getEntityId(), metaField2.getFieldId());
-        restMockMvc.perform(put(getApiPath() + "/meta_mtm_cascade_ext")
+        restMockMvc.perform(put(getApiPath() + "/meta_mtm_cascade_ext/delete_batch")
             .contentType(MediaType.APPLICATION_JSON)
             .content(JsonUtil.toJSONString(Lists.newArrayList(metaMtmCascadeExt.getMtmCascadeExtId()))))
             .andExpect(status().isOk())

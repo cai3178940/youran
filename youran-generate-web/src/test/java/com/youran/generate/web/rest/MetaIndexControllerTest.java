@@ -10,8 +10,8 @@ import com.youran.generate.pojo.po.MetaFieldPO;
 import com.youran.generate.pojo.po.MetaIndexPO;
 import com.youran.generate.pojo.po.MetaProjectPO;
 import com.youran.generate.web.AbstractWebTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -33,7 +33,7 @@ public class MetaIndexControllerTest extends AbstractWebTest {
     private MetaEntityPO metaEntity;
     private MetaFieldPO metaField;
 
-    @Before
+    @BeforeEach
     public void init() {
         this.metaProject = generateHelper.saveProjectExample();
         this.metaEntity = generateHelper.saveEntityExample(metaProject.getProjectId(), 0);
