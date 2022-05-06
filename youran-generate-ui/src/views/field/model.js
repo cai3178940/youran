@@ -69,8 +69,9 @@ export function initFormBean (forEdit) {
 
 export function getRules (vm) {
   return {
-    jieldNameCouple: [
+    jfieldNameCouple: [
       {
+        required: true,
         validator: (rule, value, callback) => {
           if (!vm.form.jfieldName) {
             callback(new Error('请输入java字段名'))
@@ -119,6 +120,9 @@ export function getRules (vm) {
     ],
     foreignKey: [
       { required: true, type: 'boolean', message: '请选择是否外键', trigger: 'change' }
+    ],
+    foreignFieldId: [
+      { required: true, message: '请选择外键关联', trigger: 'change' }
     ],
     fieldExample: [
       { required: true, message: '请输入字段示例', trigger: 'blur' },

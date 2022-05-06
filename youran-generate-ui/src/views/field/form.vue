@@ -51,7 +51,7 @@
               </el-select>
             </help-popover>
           </el-form-item>
-          <el-form-item v-if="!isAttrHide('foreignKey')" label="外键关联" prop="foreignKey">
+          <el-form-item v-if="!isAttrHide('foreignKey')" label="外键关联" prop="foreignFieldId">
             <help-popover name="field.foreignKey">
               <el-cascader
                 placeholder="请选择外键字段"
@@ -62,7 +62,7 @@
               </el-cascader>
             </help-popover>
           </el-form-item>
-          <el-form-item label="字段名" prop="jieldNameCouple">
+          <el-form-item label="字段名" prop="jfieldNameCouple">
             <help-popover name="field.jfieldName">
               <el-col :span="11" class="col-left">
                 <el-input v-lower-case-first v-model="form.jfieldName"
@@ -464,10 +464,10 @@ export default {
       const entity = this.entityFieldOptions.find(option => option.value === entityId)
       // 没找到则直接返回
       if (!entity) {
-        return
+        return Promise.reject(new Error('关联实体不存在'))
       }
       if (entity.children.length) {
-        return
+        return Promise.reject(new Error('关联实体下无字段'))
       }
       return fieldApi.getList(entityId, false)
         .then(data => {
@@ -500,6 +500,8 @@ export default {
       this.form.fieldType = field.fieldType
       this.form.fieldLength = field.fieldLength
       this.form.fieldScale = field.fieldScale
+      this.form.foreignEntityId = entityId
+      this.form.foreignFieldId = fieldId
     },
     // 搜索可用枚举字典
     queryDicType (queryString, cb) {
@@ -537,8 +539,6 @@ export default {
       if (!options.showFieldScale(this.form.fieldType)) {
         this.form.fieldScale = null
       }
-      this.form.foreignEntityId = this.foreignField[0]
-      this.form.foreignFieldId = this.foreignField[1]
       let loading = null
       // 校验表单
       this.$refs.fieldForm.validate()
@@ -568,7 +568,7 @@ export default {
     },
     copyJfieldNameToFieldName () {
       this.form.fieldName = this.$common.snakeCase(this.form.jfieldName)
-      this.$refs.fieldForm.validateField('jieldNameCouple')
+      this.$refs.fieldForm.validateField('jfieldNameCouple')
     },
     /**
      * 数据准备完成
@@ -641,10 +641,14 @@ export default {
     if (this.edit) {
       Promise.all([this.getField(), this.initForeignEntityOptions()])
         .then(() => this.reset())
-        .then(() => this.handleForeignEntityChange([this.form.foreignEntityId]))
-        .then(() => {
-          this.foreignField = [this.form.foreignEntityId, this.form.foreignFieldId]
-        })
+        .then(() => this.handleForeignEntityChange([this.form.foreignEntityId])
+          .then(() => {
+            this.foreignField = [this.form.foreignEntityId, this.form.foreignFieldId]
+          })
+          .catch(() => {
+            this.form.foreignEntityId = null
+            this.form.foreignFieldId = null
+          }))
         .then(() => this.formReady())
         .catch(error => this.$common.showNotifyError(error))
     } else {
@@ -683,6 +687,10 @@ export default {
               return this.handleForeignEntityChange([this.form.foreignEntityId])
                 .then(() => {
                   this.foreignField = [this.form.foreignEntityId, this.form.foreignFieldId]
+                })
+                .catch(() => {
+                  this.form.foreignEntityId = null
+                  this.form.foreignFieldId = null
                 })
             }
           })
