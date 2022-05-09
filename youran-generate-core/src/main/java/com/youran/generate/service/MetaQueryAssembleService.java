@@ -630,6 +630,21 @@ public class MetaQueryAssembleService implements InitializingBean {
                         throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "实体【" + entity.getTitle() + "】的主键【" + field.getFieldDesc() + "】不可以是特殊字段");
                     }
                 }
+                if (field.getForeignKey()) {
+                    if (field.getForeignEntity() == null) {
+                        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                            "实体【" + entity.getTitle() + "】的外键【" + field.getFieldName() + "】未指定关联实体");
+                    }
+                    if (field.getForeignField() == null) {
+                        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                            "实体【" + entity.getTitle() + "】的外键【" + field.getFieldName() + "】未指定关联字段");
+                    }
+                    MetaFieldPO foreignField = field.getForeignEntity().getPkField();
+                    if (!Objects.equals(foreignField.getFieldId(), field.getForeignFieldId())) {
+                        throw new BusinessException(ErrorCode.INNER_DATA_ERROR,
+                            "实体【" + entity.getTitle() + "】的外键【" + field.getFieldName() + "】指定的关联字段并非主键");
+                    }
+                }
                 if (MetaSpecialField.isDeleted(specialField)) {
                     deletedCount++;
                 } else if (MetaSpecialField.isCreatedBy(specialField)) {

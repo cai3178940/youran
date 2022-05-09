@@ -54,7 +54,6 @@ public class MetaFieldService {
         MetaProjectPO project = metaProjectService.getProjectByEntityId(entityId, true);
         MetaFieldPO field = MetaFieldMapper.INSTANCE.fromAddDTO(metaFieldDTO);
         field.setProjectId(project.getProjectId());
-
         this.doSave(field);
         metaProjectService.updateProject(project);
         return field;
@@ -80,7 +79,6 @@ public class MetaFieldService {
         MetadataUtil.jfieldNameCheck(updateDTO.getJfieldName());
         Integer fieldId = updateDTO.getFieldId();
         MetaFieldPO metaField = this.getField(fieldId, true);
-        Integer entityId = metaField.getEntityId();
         // 查询项目,同时校验用户权限
         MetaProjectPO project = metaProjectService.getAndCheckProject(metaField.getProjectId());
         MetaFieldMapper.INSTANCE.setPO(metaField, updateDTO);
