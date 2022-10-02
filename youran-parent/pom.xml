@@ -42,7 +42,7 @@
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <h2.version>1.4.200</h2.version>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-        <jsoup.version>1.13.1</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
         <swagger-annotations.version>1.5.24</swagger-annotations.version>
