@@ -49,6 +49,7 @@ public interface MetaEntityMapper {
         @Mapping(target = "className"),
         @Mapping(target = "tableName"),
         @Mapping(target = "title"),
+        @Mapping(target = "module"),
         @Mapping(target = "desc"),
         @Mapping(target = "pageSign"),
         @Mapping(target = "feature"),
