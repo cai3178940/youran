@@ -77,7 +77,6 @@ public class MetaProjectAddDTO extends AbstractDTO {
     private String username;
 
     @ApiModelProperty(notes = N_PASSWORD, example = E_PASSWORD)
-    @Length(max = 32, message = "password最大长度不能超过{max}")
     private String password;
 
     /**
