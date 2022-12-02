@@ -40,6 +40,8 @@ public class GitCredentialDTO {
         GitCredentialDTO dto = new GitCredentialDTO();
         dto.setPrivateKeyPath(privateKeyPath);
         dto.setType(TYPE_PRIVATE_KEY);
+        dto.setUsername("any");
+        dto.setPassword("any");
         return dto;
     }
 
