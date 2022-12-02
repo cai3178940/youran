@@ -17,10 +17,10 @@ public class GitServiceTest {
     @Test
     @Disabled
     public void cloneRemoteRepository() throws Exception {
-        String remoteUrl = "git@xxxxx.com:rmb/rebirth-cis-platform.git";
+        String remoteUrl = "git@coding.xx.com:rmb/rebirth-cis-platform.git";
         String lastCommit = "a5177c74e5bdf6f070e6e0edf753163d6fd6dd0e";
         File repoDirFile = new File("D:\\youran-test");
-        GitCredentialDTO credential = GitCredentialDTO.buildPrivateKeyCredential("D:\\putty_key\\id_rsa");
+        GitCredentialDTO credential = GitCredentialDTO.buildPrivateKeyCredential("D:\\id_rsa");
         gitService.cloneRemoteRepository(repoDirFile,
             remoteUrl, credential,
             "auto", "auto", lastCommit);

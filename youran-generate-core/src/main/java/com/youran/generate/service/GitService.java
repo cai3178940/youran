@@ -9,9 +9,7 @@ import com.youran.common.exception.BusinessException;
 import com.youran.generate.pojo.dto.GitCredentialDTO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jgit.api.CloneCommand;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.TransportConfigCallback;
+import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
@@ -96,26 +94,16 @@ public class GitService {
             LOGGER.info("从远程仓库clone,远程仓库地址=" + remoteUrl +
                 " , 目录=" + repoDirFile.getPath() +
                 " , 老分支=" + oldBranchName + " , 新分支=" + newBranchName);
-
             CloneCommand cloneCommand = Git.cloneRepository()
                 .setURI(remoteUrl)
                 .setCloneAllBranches(true)
                 .setDirectory(repoDirFile);
-            if (credential.getType() == GitCredentialDTO.TYPE_PRIVATE_KEY) {
-                cloneCommand.setTransportConfigCallback(this.buildTransportConfigCallback(credential));
-            }
-            // 认证
-            CredentialsProvider credentialsProvider = null;
-            if (credential != null) {
-                credentialsProvider = new UsernamePasswordCredentialsProvider(credential.getUsername(), credential.getPassword());
-            }
-            try (Git git = cloneCommand
-                .setCredentialsProvider(credentialsProvider)
-                .call()) {
+            this.setCredential(cloneCommand, credential);
+            try (Git git = cloneCommand.call()) {
                 // 列出远程所有分支
-                Collection<Ref> refs = git.lsRemote()
-                    .setCredentialsProvider(credentialsProvider)
-                    .call();
+                LsRemoteCommand lsRemote = git.lsRemote();
+                this.setCredential(lsRemote, credential);
+                Collection<Ref> refs = lsRemote.call();
                 // 如果没有任何分支,或不存在旧分支则进行一次提交
                 if (CollectionUtils.isEmpty(refs) || StringUtils.isBlank(oldBranchName)) {
                     git.commit()
@@ -265,14 +253,10 @@ public class GitService {
      */
     public void push(Repository repository, GitCredentialDTO credential) {
         Assert.notNull(repository, "本地仓库为空");
-        CredentialsProvider credentialsProvider = null;
-        if (credential != null) {
-            credentialsProvider = new UsernamePasswordCredentialsProvider(credential.getUsername(), credential.getPassword());
-        }
         try (Git git = new Git(repository)) {
-            Iterable<PushResult> pushResults = git.push()
-                .setCredentialsProvider(credentialsProvider)
-                .call();
+            PushCommand push = git.push();
+            this.setCredential(push, credential);
+            Iterable<PushResult> pushResults = push.call();
             pushResults.forEach(pushResult -> {
                 if (StringUtils.isNotBlank(pushResult.getMessages())){
                     // 不一定是错误信息，但是大概率是；error级别醒目些。
@@ -282,6 +266,19 @@ public class GitService {
         } catch (GitAPIException e) {
             LOGGER.error("推送远程仓库异常", e);
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "推送远程仓库异常");
+        }
+    }
+
+    /**
+     * 给git命令设置凭证
+     */
+    private void setCredential(TransportCommand command, GitCredentialDTO credential) {
+        if (credential != null) {
+            if (credential.getType() == GitCredentialDTO.TYPE_PRIVATE_KEY) {
+                command.setTransportConfigCallback(this.buildTransportConfigCallback(credential));
+            } else if (credential.getType() == GitCredentialDTO.TYPE_USER_PASSWORD) {
+                command.setCredentialsProvider(new UsernamePasswordCredentialsProvider(credential.getUsername(), credential.getPassword()));
+            }
         }
     }
 
