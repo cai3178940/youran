@@ -50,7 +50,8 @@
         <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
         <druid.version>1.2.3</druid.version>
         <!-- https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit -->
-        <jgit.version>5.9.0.202009080501-r</jgit.version>
+        <!-- 参考手册 https://github.com/centic9/jgit-cookbook -->
+        <jgit.version>5.13.1.202206130422-r</jgit.version>
     </properties>
 
     <dependencyManagement>
@@ -163,6 +164,11 @@
             <dependency>
                 <groupId>org.eclipse.jgit</groupId>
                 <artifactId>org.eclipse.jgit.archive</artifactId>
+                <version>${jgit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jgit</groupId>
+                <artifactId>org.eclipse.jgit.ssh.jsch</artifactId>
                 <version>${jgit.version}</version>
             </dependency>
         </dependencies>

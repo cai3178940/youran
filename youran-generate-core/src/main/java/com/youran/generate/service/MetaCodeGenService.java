@@ -386,7 +386,7 @@ public class MetaCodeGenService {
         // 3.1.0之后使用auto分支作为新分支
         String newBranchName = generateProperties.getAutoBranchName();
         String repoDir = dataDirService.getProjectRepoDir(projectId, templateId, lastVersion);
-        GitCredentialDTO credential = this.getCredentialDTO(project);
+        GitCredentialDTO credential = this.getCredentialDTO(project, remoteUrl);
         this.progressing(progressConsumer, 5, 10, 1, "克隆远程仓库");
         Repository repository = gitService.getClonedRemoteRepository(repoDir, remoteUrl,
             credential, oldBranchName, newBranchName, lastCommit);
@@ -441,7 +441,7 @@ public class MetaCodeGenService {
             lastVersion = genHistory.getProjectVersion();
         }
         String repoDir = dataDirService.getProjectRepoDir(projectId, templateId, lastVersion);
-        GitCredentialDTO credential = this.getCredentialDTO(project);
+        GitCredentialDTO credential = this.getCredentialDTO(project, remoteUrl);
         this.progressing(progressConsumer, 5, 10, 1, "克隆远程仓库");
         try (Repository repository = gitService.getClonedRemoteRepository(repoDir, remoteUrl,
             credential, oldBranchName, generateProperties.getAutoBranchName(), lastCommit)) {
@@ -490,27 +490,46 @@ public class MetaCodeGenService {
 
     /**
      * 获取认证DTO
-     *
-     * @param project
-     * @return
      */
-    private GitCredentialDTO getCredentialDTO(MetaProjectPO project) {
-        if (StringUtils.isBlank(project.getUsername())) {
-            return null;
+    private GitCredentialDTO getCredentialDTO(MetaProjectPO project, String remoteUrl) {
+        if (remoteUrl.startsWith("git") || remoteUrl.startsWith("ssh")) {
+            String password = project.getPassword();
+            if (StringUtils.isBlank(password)) {
+                throw new BusinessException("远程仓库使用ssh协议，请在密码输入框配置私钥");
+            }
+            String pwd = this.decryptPassword(password);
+            String privateKeyFilePath = dataDirService.getPrivateKeyFilePath(project.getProjectId(), pwd);
+            File privateKeyFile = new File(privateKeyFilePath);
+            if (!privateKeyFile.exists()) {
+                try {
+                    FileUtils.writeStringToFile(privateKeyFile, pwd, "utf-8");
+                } catch (IOException e) {
+                    throw new BusinessException("生成私钥文件异常", e);
+                }
+            }
+            return GitCredentialDTO.buildPrivateKeyCredential(privateKeyFilePath);
+        } else if (remoteUrl.startsWith("http")) {
+            if (StringUtils.isBlank(project.getUsername())) {
+                return null;
+            }
+            if (StringUtils.isBlank(project.getPassword())) {
+                return GitCredentialDTO.buildUserPasswordCredential(project.getUsername(), "");
+            }
+            return GitCredentialDTO.buildUserPasswordCredential(
+                project.getUsername(), this.decryptPassword(project.getPassword()));
+        } else {
+            throw new BusinessException("远程仓库路径不合法");
         }
-        if (StringUtils.isBlank(project.getPassword())) {
-            return new GitCredentialDTO(project.getUsername(), "");
-        }
-        String password;
+    }
+
+    private String decryptPassword(String password) {
         try {
-            password = AESSecurityUtil.decrypt(project.getPassword(), generateProperties.getAesKey());
+            return AESSecurityUtil.decrypt(password, generateProperties.getAesKey());
         } catch (Exception e) {
             LOGGER.error("密码解密异常", e);
             throw new BusinessException(ErrorCode.INNER_DATA_ERROR, "密码解密异常");
         }
-        return new GitCredentialDTO(project.getUsername(), password);
     }
-
 
     /**
      * 执行进度通知

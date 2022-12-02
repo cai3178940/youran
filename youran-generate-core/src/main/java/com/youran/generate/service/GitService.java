@@ -1,5 +1,8 @@
 package com.youran.generate.service;
 
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 import com.youran.common.constant.ErrorCode;
 import com.youran.common.context.LoginContext;
 import com.youran.common.exception.BusinessException;
@@ -8,6 +11,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.TransportConfigCallback;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
@@ -18,10 +22,9 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-import org.eclipse.jgit.transport.CredentialsProvider;
-import org.eclipse.jgit.transport.PushResult;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.transport.*;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,10 +96,14 @@ public class GitService {
             LOGGER.info("从远程仓库clone,远程仓库地址=" + remoteUrl +
                 " , 目录=" + repoDirFile.getPath() +
                 " , 老分支=" + oldBranchName + " , 新分支=" + newBranchName);
+
             CloneCommand cloneCommand = Git.cloneRepository()
                 .setURI(remoteUrl)
                 .setCloneAllBranches(true)
                 .setDirectory(repoDirFile);
+            if (credential.getType() == GitCredentialDTO.TYPE_PRIVATE_KEY) {
+                cloneCommand.setTransportConfigCallback(this.buildTransportConfigCallback(credential));
+            }
             // 认证
             CredentialsProvider credentialsProvider = null;
             if (credential != null) {
@@ -138,6 +145,26 @@ public class GitService {
             LOGGER.error("clone仓库异常", e);
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "clone仓库异常:" + e.getMessage());
         }
+    }
+
+    private TransportConfigCallback buildTransportConfigCallback(GitCredentialDTO credential) {
+        SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
+            @Override
+            protected void configure(OpenSshConfig.Host host, Session session) {
+                session.setConfig("StrictHostKeyChecking", "no");
+            }
+
+            @Override
+            protected JSch createDefaultJSch(FS fs) throws JSchException {
+                JSch defaultJSch = super.createDefaultJSch(fs);
+                defaultJSch.addIdentity(credential.getPrivateKeyPath());
+                return defaultJSch;
+            }
+        };
+        return transport -> {
+            SshTransport sshTransport = (SshTransport) transport;
+            sshTransport.setSshSessionFactory(sshSessionFactory);
+        };
     }
 
     /**

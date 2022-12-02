@@ -77,9 +77,6 @@ export function getRules () {
     username: [
       { max: 32, message: '长度不能超过32个字符', trigger: 'blur' }
     ],
-    password: [
-      { max: 32, message: '长度不能超过32个字符', trigger: 'blur' }
-    ],
     feature: {
       bootVersion: [
         { required: true, type: 'number', message: '请选择spring-boot版本', trigger: 'change' }

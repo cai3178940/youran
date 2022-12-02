@@ -27,7 +27,7 @@ export default {
 **Git用户名/oauth2**：请填写一个有代码提交权限的用户名，如果不想提供用户名密码，而是选择access_token则填入oauth2
     `,
     password: `
-**Git密码/token**：密码/token不会回显，如果不想修改请置空
+**Git密码/token/私钥**：本输入框内容不会回显，如果不想修改请置空
 
 **access_token在以下三个站点的获取方式：**
 
@@ -36,6 +36,8 @@ export default {
 - **gitlab**：Settings-->User Settings-->Access Tokens
 - **码云**：设置-->安全设置-->
 <a href="https://gitee.com/profile/personal_access_tokens" target="_blank">私人令牌</a>
+
+**如果是ssh协议，请将完整的私钥文件内容拷贝到输入框中**
     `,
     feature: {
       bootVersion: `

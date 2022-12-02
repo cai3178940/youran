@@ -1,6 +1,7 @@
 package com.youran.generate.service;
 
 import com.youran.common.exception.BusinessException;
+import com.youran.common.util.MD5Util;
 import com.youran.common.util.TempDirUtil;
 import com.youran.generate.config.GenerateProperties;
 import com.youran.generate.pojo.po.CodeTemplatePO;
@@ -102,6 +103,20 @@ public class DataDirService implements InitializingBean {
             + File.separator + projectId
             + "_" + templateId
             + "_" + lastVersion;
+    }
+
+    /**
+     * 获取私钥文件路径
+     *
+     * @param projectId  项目ID
+     * @param privateKey 私钥内容
+     * @return
+     */
+    public String getPrivateKeyFilePath(Integer projectId, String privateKey) {
+        return this.getDataDir()
+            + File.separator + "privateKey"
+            + File.separator + projectId
+            + MD5Util.getMD5(privateKey);
     }
 
     /**

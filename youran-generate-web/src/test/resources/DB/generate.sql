@@ -15,7 +15,7 @@ CREATE TABLE `meta_project` (
   `remote_url_2` varchar(256) DEFAULT NULL COMMENT 'Git仓库地址2',
   `remote_url_3` varchar(256) DEFAULT NULL COMMENT 'Git仓库地址3',
   `username` varchar(32) DEFAULT NULL COMMENT 'Git用户名',
-  `password` varchar(256) DEFAULT NULL COMMENT 'Git密码',
+  `password` text DEFAULT NULL COMMENT 'Git密码',
   `project_version` int(11) NOT NULL COMMENT '项目版本号',
   `feature` text DEFAULT NULL COMMENT '特性json',
   `labels` text DEFAULT NULL COMMENT '标签',

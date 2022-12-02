@@ -144,10 +144,10 @@
                           placeholder="例如：zhangsan" tabindex="140"></el-input>
               </help-popover>
             </el-form-item>
-            <el-form-item label="Git密码/token" prop="password">
+            <el-form-item label="Git密码/token/私钥" prop="password">
               <help-popover name="project.password">
-                <el-input v-model="form.password"
-                          maxlength="32" show-word-limit
+                <el-input v-model="form.password" type="textarea"
+                          :autosize="{ minRows: 1, maxRows: 100}"
                           placeholder="例如：123456" tabindex="150"></el-input>
               </help-popover>
             </el-form-item>
